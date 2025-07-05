@@ -8,6 +8,7 @@ import numpy as np
 import networkx as nx
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+from .PFASGroupModel import PFASGroup
 from typing import Union, List, Dict
 from PIL import Image
 from io import BytesIO
@@ -17,157 +18,258 @@ import os
 
 PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl','Polyfluoro','Polyfluorobr']
 
-class PFASGroup:
-    def __init__(self, id, name, smarts1, smarts2, smartsPath, constraints, **kwargs):
-        self.id = id
-        self.name = name
-        self.smarts1 = smarts1
-        self.smarts2 = smarts2
-        self.smartsPath = smartsPath
-        if self.smarts1 != "" and self.smarts1 is not None:
-            self.smarts1 = Chem.MolFromSmarts(self.smarts1)
-            self.smarts1.UpdatePropertyCache()
-            Chem.GetSymmSSSR(self.smarts1)
-            self.smarts1.GetRingInfo().NumRings()
-            if self.smarts2 != "" and self.smarts2 is not None:
-                self.smarts2 = Chem.MolFromSmarts(self.smarts2)
-                self.smarts2.UpdatePropertyCache()
-                Chem.GetSymmSSSR(self.smarts2)
-                self.smarts2.GetRingInfo().NumRings()
-            else:
-                self.smarts2 = None
-        else:
-            self.smarts1 = None
-            self.smarts2 = None
-        self.constraints = constraints
-    def __str__(self):
-        return self.name
-    def constraint_gte(self, formula_dict):
-        success = True
-        for e, n in self.constraints.get('gte', {}).items():
-            success = success and formula_dict.get(e, 0) >= n
-        return success
-    def constraint_lte(self, formula_dict):
-        success = True
-        for e, n in self.constraints.get('lte', {}).items():
-            success = success and formula_dict.get(e, 0) <= n
-        return success
-    def constraint_eq(self, formula_dict):
-        success = True
-        for e, n in self.constraints.get('eq', {}).items():
-            success = success and formula_dict.get(e, 0) == n
-        return success
-    def constraint_only(self, formula_dict):
-        success = True
-        if 'only' in self.constraints.keys():
-            tot = sum(formula_dict.values())
-            nn = 0
-            for e in self.constraints['only']:
-                nn += formula_dict.get(e, 0)
-            success = success and tot == nn
-        return success
-    def constraint_rel(self, formula_dict):
-        success = True
-        for e, v in self.constraints.get('rel', {}).items():
-            n = sum([formula_dict.get(x, 0) for x in v.get('atoms', [])])
-            success = success and formula_dict.get(e, 0) == n / v.get('div', 1) + v.get('add', 0) + sum([formula_dict.get(x, 0) for x in v.get('add_atoms', [])])
-        return success
-    def formula_dict_satisfies_constraints(self, formula_dict):
-        if len(self.constraints.keys()) == 0:
-            return True
-        success = True
-        process = [None, self.constraint_rel, self.constraint_only, self.constraint_eq, self.constraint_lte, self.constraint_gte]
-        k = process.pop()
-        while success and k is not None:
-            success = k(formula_dict)
-            k = process.pop()
-        return success
-
 # --- Load SMARTS paths from fpaths.json ---
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(MODULE_DIR, 'data')
 FPATHS_FILE = os.path.join(DATA_DIR, 'fpaths.json')
 PFAS_GROUPS_FILE = os.path.join(DATA_DIR, 'PFAS_groups_smarts.json')
 
-with open(FPATHS_FILE, 'r') as f:
-    SMARTS_PATHS = json.load(f)
-
-def get_smarts_path(name):
-    """Return Chem.MolFromSmarts for a named path from fpaths.json."""
-    s = SMARTS_PATHS.get(name)
-    if s:
-        return Chem.MolFromSmarts(s)
-    return None
 
 # --- Load PFAS groups from PFAS_groups_smarts.json ---
-def load_pfas_groups():
-    """Load PFAS groups from the JSON file and return a list of PFASGroup objects."""
-    with open(PFAS_GROUPS_FILE, 'r') as f:
-        group_data = json.load(f)
-    groups = []
-    for g in group_data:
-        smarts1 = g.get('smarts1')
-        smarts2 = g.get('smarts2')
-        smartsPath = g.get('smartsPath')
-        constraints = g.get('constraints', {})
-        # If smartsPath is set, use fpaths.json
-        if smartsPath:
-            smartsPathMol = get_smarts_path(smartsPath)
-        else:
-            smartsPathMol = None
-        groups.append(PFASGroup(
-            name=g.get('name'),
-            smarts1=smarts1,
-            smarts2=smarts2,
-            constraints=constraints
-        ))
-    return groups
+def load_PFASGroups():
+    """
+    Adds default PFASGroups to function
+    """
+    with open(PFAS_GROUPS_FILE,'r') as f:
+        pfg = json.load(f)
+    pfg = [PFASGroup(**x) for x in pfg]
+    def inner(func):
+        def wrapper(*args,**kwargs):
+            kwargs['pfas_groups'] = kwargs.get('pfas_groups',pfg)
+            return func(*args, **kwargs)
+        return wrapper
+    return inner
 
-PFAS_GROUPS = load_pfas_groups()
+# --- Add SMARTS paths to function ---
+def add_smartsPath(names =PATH_NAMES):
+    """Yields SMARTS for chains"""
+    paths = {}
+    pathsEnd = {}
+    with open(FPATHS_FILE,'r') as f:
+        fpaths = json.load(f) 
+    for n in names:
+        s = fpaths.get(n)
+        e = fpaths.get(n+"_end")
+        smol = Chem.MolFromSmarts(s)
+        smol.UpdatePropertyCache()
+        Chem.GetSymmSSSR(smol)
+        smol.GetRingInfo().NumRings()
+        emol = Chem.MolFromSmarts(e)
+        emol.UpdatePropertyCache()
+        Chem.GetSymmSSSR(emol)
+        emol.GetRingInfo().NumRings()
+        paths[n] = [smol,emol]
+    def inner(func):
+        def wrapper(*args,**kwargs):
+            kwargs["smartsPaths"] = paths
+            return func(*args, **kwargs)
+        return wrapper
+    return inner
 
 # --- Helper functions ---
 
-def n_from_formula(formula: str, element=None) -> Union[int, dict]:
+
+def n_from_formula(formula:str, element=None)->Union[int,dict]:
     """
-    Compute the number of elements (any or one specific) in a formula string.
+    Compute the number of elements (any or one specific)
+
+    :params formula: Formula to parse
+    :params element: Element's symbol to find
+    :return: Number of elements in the formula
     """
     if element is not None:
         PAT = f"([{element}])"+r"(\d*)"
     else:
         PAT = r"([A-Z][a-z]?)(\d*)"
-    mat = re.findall(PAT, formula)
+    mat = re.findall(PAT,formula)
     formula_dict = {}
-    for sym, nb in mat:
+    for sym,nb in mat:
         if nb != '':
-            formula_dict[sym] = formula_dict.setdefault(sym, 0) + int(nb)
+            formula_dict[sym] = formula_dict.setdefault(sym,0) + int(nb)
         else:
-            formula_dict[sym] = formula_dict.setdefault(sym, 0) + 1
+            formula_dict[sym] =formula_dict.setdefault(sym,0) + 1
     if element is not None:
         return formula_dict[element]
     return formula_dict
 
+def fragment_on_bond(mol, a1, a2):
+    """Fragment a molecule on a bond between atoms a1 and a2 (indices)"""
+    bond = mol.GetBondBetweenAtoms(a1, a2)
+    mms =  Chem.FragmentOnBonds(mol, [bond.GetIdx()], addDummies=False)
+    return [x for x in Chem.GetMolFrags(mms, asMols=True, sanitizeFrags = False)]
+
+def fragment_until_valence_is_correct(mol, frags):
+    """Iterate over the molecule and fragment it until  valence is corrected"""
+    try:    
+        Chem.SanitizeMol(mol)
+    except Chem.AtomValenceException as e:
+        all = [int(x) for x in re.findall(r"(?<=#\s)(\d)",str(e))]
+        if len(all)==0:
+            raise e
+        neighbours = mol.GetAtomWithIdx(all[0]).GetNeighbors()
+        atom = sorted([(mol.GetBondBetweenAtoms(all[0], x.GetIdx()).GetBondType(),x.GetIdx()) for x in neighbours], reverse = True)[0][1] # return index of neighbour with bond of highest degree
+        mols = fragment_on_bond(mol, all[0], atom)
+        for m in mols:
+            try:
+                frags = fragment_until_valence_is_correct(m, frags)
+            except IndexError:
+                # assume that element in frag is actually isolated
+                return frags 
+        return frags
+    else:
+        return frags + [mol]
+
+
 def dry_mol_to_nx(mol):
-    """
-    Construct a networkx graph from a molecule.
-    """
+    """Construct a networkx graph from a molecule"""
     G = nx.Graph()
     for n, atom in enumerate(mol.GetAtoms()):
         element_Z = atom.GetAtomicNum()
-        node_params = {"element": element_Z, "symbol": atom.GetSymbol()}
-        G.add_node(atom.GetIdx(), **node_params)
+        node_params = {"element" : element_Z,
+                       "symbol" : atom.GetSymbol()}
+        G.add_node(atom.GetIdx(),
+                   **node_params
+                   )
     for bond in mol.GetBonds():
-        edgeOrder = bond.GetBondTypeAsDouble()
-        G.add_edge(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), order=edgeOrder)
+        edgeOrder=bond.GetBondTypeAsDouble()
+        node1 = bond.GetBeginAtom()
+        node1 = node1.GetAtomicNum()
+        node2 = bond.GetEndAtom()
+        node2 = node2.GetAtomicNum()
+        G.add_edge(bond.GetBeginAtomIdx(),
+                   bond.GetEndAtomIdx(),
+                   order=edgeOrder)
     return G
 
-def get_substruct(_mol: Chem.Mol, struct: Chem.Mol):
-    """
-    Returns the indices of the atoms in the molecule that match the substructure.
-    """
+def get_substruct(_mol:Chem.Mol,struct:Chem.Mol):
+    """Returns the indices of the atoms in the molecule that match the substructure"""
     return set([x[0] for x in _mol.GetSubstructMatches(struct)])
+
+@add_smartsPath()
+def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
+    """Iterates over substructures matched by smarts1 and smarts2 and finds fluorinated paths between them.
+    Fluorinated atoms are defined by the SMARTS yield by the decorator add_smartsPath.
+    if smarts2 is None, uses SMARTS corresponding to smartsPath."""
+    chains = {}
+    #logger.debug("====================")
+    smartsMatches1 = get_substruct(mol, smarts1)
+    if smarts2 is not None:
+        pairs = {smarts2:[(path,get_substruct(mol,smartsPath)) for path, (smartsPath,_)  in smartsPaths.items()]}
+    else:
+        pairs = {_smarts2:[(path,get_substruct(mol, smartsPath))] for path, (smartsPath,_smarts2) in smartsPaths.items()}
+    def match_intersection(_pair,_setp):
+        for path,pmatch in _pair:
+            #logger.debug(f"intersection = {setp.intersection(pmatch)}")
+            if _setp == _setp.intersection(pmatch):
+                chains.setdefault(path,[]).append(_setp)
+                return path
+        return None
+    #logger.debug(f"{smartsMatches1=}")
+    for match1 in smartsMatches1:
+        #logger.debug(f"{pairs=}")
+        #logger.debug("---------------")
+        for _smarts2, smartsPath in pairs.items():
+            smartsMatches2 = get_substruct(mol,_smarts2)
+            #logger.debug(f"{smartsMatches2=}")
+            for match2 in smartsMatches2:
+                if (smarts1 != _smarts2) or (match1!=match2):# avoid double matching for diacids
+                    path_idx = nx.shortest_path(G, match1, match2, method='dijkstra')
+                    setp = set(path_idx)
+                    #logger.debug(f"{setp=}")
+                    match_intersection(smartsPath,setp)
+                    #logger.debug(f"Found path {found_path}")
+    chains = {k:sorted(v, key=len, reverse=True) for k,v in chains.items()}
+    for path, chain in chains.items():
+        remove = []
+        for i in range(0,len(chain)):
+            if sum([chain[i].issubset(x) for x in chain[0:i]])>0:
+                remove.append(i)
+        chains[path] = [x for i,x in enumerate(chain) if i not in remove]
+    
+    if len(chains.keys())==0:
+        n = 0
+        n_CFchain = []
+    else:
+        n = min([len(x) for x in chains.values()])#{k:len(chain) for k,chain in chains.items()}
+        n_CFchain = [len(x) for x in chains.get('Perfluoroalkyl',[[]])]#{k:[len(x) for x in chain] for k,chain in chains.items()}
+    chains = [{'chain':list(chain), 'length':len(chain),'SMARTS':path} for path,all_chains in chains.items() for chain in all_chains]
+    #logger.debug(f"{chains=}, {n=}, {n_CFchain=}")
+    return n,n_CFchain, n, chains  
+
+
+def path_between_smarts(mol:Chem.Mol, smarts1,smarts2,**kwargs):
+    """
+    :params compound: Molecule
+    :params smarts1, smarts2: SMARTS as string
+    :params pathsmarts: SMARTS (parsed as Chem.MolFromSmarts) with constraint for the atoms on the path
+    :return: number of chains, and max_length in chain for path between an occurrence of smarts1 and smarts2 with all atoms satisfying pathsmarts."""
+    try:
+        G = dry_mol_to_nx(mol)
+    except ValueError as e:
+        raise e
+    return find_path_between_smarts(mol,
+                                    smarts1,
+                                    smarts2,
+                                    G)
+
+
+@load_PFASGroups()
+def parse_PFAS_groups(mol, formula, pfas_groups=None):
+    """Iterates over PFAS groups and finds the ones that match the molecule."""
+    mol = Chem.AddHs(mol)
+    try:
+        Chem.SanitizeMol(mol)
+    except Chem.AtomValenceException:
+        #logger.debug("failed sanitisation, fragmenting")
+        frags = fragment_until_valence_is_correct(mol, [])
+        formulas = [n_from_formula(CalcMolFormula(frag)) for frag in frags]
+    else:
+        frags = [mol]
+        formulas = [n_from_formula(formula)]# formula as a dictionary
+    group_matches = []
+    for pf in pfas_groups:
+        matched1_len = 0
+        for fd,mol in zip(formulas,frags):
+            if pf.formula_dict_satisfies_constraints(fd) is True:
+                n_CFchain = []
+                if pf.smarts2 is not None and pf.smarts1 is not None:
+                    try:
+                        n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
+                                                                            pf.smarts1,
+                                                                            pf.smarts2)
+                    except ValueError as e:
+                        raise e
+                elif pf.smarts1 is not None and len(pf.constraints.keys())==0:
+                    try:
+                        n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
+                                                                            pf.smarts1,
+                                                                            None)
+                    except ValueError as e:
+                        raise e
+                elif pf.smarts1 is not None:
+                    try:
+                        n = len(mol.GetSubstructMatch(pf.smarts1))
+                    except:
+                        try:
+                            Chem.SanitizeMol(mol)
+                        except Chem.AtomValenceException:
+                            frags = fragment_until_valence_is_correct(mol, [])
+                        n = 0
+                        for frag in frags:
+                            n += len(frag.GetSubstructMatches(pf.smarts1))
+                    chains = []
+                    matched1_len = 1
+                else:
+                    n=1
+                    chains = []
+                    matched1_len = 1
+                if n>0 and matched1_len>0:
+                    group_matches.append((pf,n,n_CFchain, chains))
+    return group_matches
 
 # --- Main PFAS group parsing functions ---
 
+@load_PFASGroups()
 def parse_PFAS_groups(mol, formula, pfas_groups: List[PFASGroup] = None):
     """
     Iterates over PFAS groups and finds the ones that match the molecule.
@@ -182,8 +284,6 @@ def parse_PFAS_groups(mol, formula, pfas_groups: List[PFASGroup] = None):
     else:
         frags = [mol]
         formulas = [n_from_formula(formula)]
-    if pfas_groups is None:
-        pfas_groups = PFAS_GROUPS
     group_matches = []
     for pf in pfas_groups:
         for fd, frag in zip(formulas, frags):
@@ -215,8 +315,6 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
     if isinstance(smiles, str):
         smiles = [smiles]
     imgs = []
-    if paths is None:
-        paths = [0, 1, 2, 3]
     for i, s in enumerate(paths):
         if isinstance(s, int):
             paths[i] = PATH_NAMES[s]
