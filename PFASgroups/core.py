@@ -15,6 +15,7 @@ from io import BytesIO
 import re
 import json
 import os
+from itertools import product, groupby
 
 PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl','Polyfluoro','Polyfluorobr']
 
@@ -66,7 +67,108 @@ def add_smartsPath(names =PATH_NAMES):
         return wrapper
     return inner
 
+def add_smarts(name = 'smarts'):
+    """Yields preprocessed SMARTS to decorated function"""
+    smarts = {}
+    def add(s):
+        smol = Chem.MolFromSmarts(s)
+        smol.UpdatePropertyCache()
+        Chem.GetSymmSSSR(smol)
+        smol.GetRingInfo().NumRings()
+        smarts[s]=smol
+        return smol
+    def get(s):
+        return smarts.get(s,add(s))
+    def inner(func):
+        def wrapper(*args,**kwargs):
+            kwargs[name] = get(kwargs.get(name))
+            return func(*args, **kwargs)
+        return wrapper
+    return inner
+
 # --- Helper functions ---
+
+def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error = False):
+    """Remove atoms by indices and rebuild molecular structure"""
+    to_remove = []
+    bonds = []
+    for idx in idxs:
+        atom = mol.GetAtomWithIdx(idx)
+        neighbors_r = [x.GetIdx() for x in atom.GetNeighbors() if x.GetSymbol() in removable]
+        neighbors_c = [x.GetIdx() for x in atom.GetNeighbors() if x.GetSymbol() not in removable]
+        if len(neighbors_c)>2:
+            raise ValueError(f"There are too many neighbors not in {removable} for atom {idx} in {Chem.MolToSmiles(mol)}, found {neighbors_c=}")
+        to_remove = to_remove + neighbors_r + [idx]
+        bonds.append([neighbors_c[0],idx])
+        bonds.append([idx,neighbors_c[-1]])
+    bonds.sort()
+    bonds = list(k for k,_ in groupby(bonds))
+    new_bonds = []
+    last_items = []
+    for i,(a,b) in enumerate(bonds):
+        if a in last_items:
+            for j, (x,y) in enumerate(new_bonds):
+                if a == y:
+                    last_items.pop(last_items.index(y))
+                    last_items.append(b)
+                    new_bonds[j][1]=b
+        else:
+            new_bonds.append([a,b])
+            last_items.append(b)
+    last_items = []
+    bonds = new_bonds
+    bonds.sort(reverse = True)
+    new_bonds=[]
+    for i,(a,b) in enumerate(bonds):
+        if a in last_items:
+            for j, (x,y) in enumerate(new_bonds):
+                if a == y:
+                    last_items.pop(last_items.index(y))
+                    last_items.append(b)
+                    new_bonds[j][1]=b
+        else:
+            new_bonds.append([a,b])
+            last_items.append(b)
+    
+    # Create a new editable molecule
+    rwm = Chem.RWMol()
+    _rwm = Chem.RWMol(mol)
+    Chem.Kekulize(_rwm)
+    # Map from old atom indices to new atom indices
+    old_to_new = {}
+    charged_atoms = []
+    for i, atom in enumerate(_rwm.GetAtoms()):
+        if i not in set(to_remove):
+            new_atom = Chem.Atom(atom.GetAtomicNum())
+            new_idx = rwm.AddAtom(new_atom)
+            # Copy formal charge if present
+            if atom.GetFormalCharge() != 0:
+                charged_atoms.append(atom.GetIdx())
+            old_to_new[i] = new_idx
+
+    # Copy bonds that do not involve removed atoms
+    for bond in _rwm.GetBonds():
+        a1 = bond.GetBeginAtomIdx()
+        a2 = bond.GetEndAtomIdx()
+        if a1 in old_to_new and a2 in old_to_new:
+            rwm.AddBond(old_to_new[a1], old_to_new[a2], bond.GetBondType())
+
+    # Add new bonds
+    for a, b in new_bonds:
+        if a in old_to_new and b in old_to_new and old_to_new[a]!=old_to_new[b]:
+            rwm.AddBond(old_to_new[a], old_to_new[b], Chem.BondType.SINGLE)
+    for idx in charged_atoms:
+        atom = rwm.GetAtomWithIdx(old_to_new[idx])
+        atom.SetFormalCharge(_rwm.GetAtomWithIdx(idx).GetFormalCharge())
+    try:
+        Chem.SanitizeMol(rwm)
+    except Exception as e:
+        if show_on_error is True:
+            _mol = rwm.GetMol()
+            # Could add visualization here if needed
+            pass
+        raise e
+    return rwm.GetMol()
 
 
 def n_from_formula(formula:str, element=None)->Union[int,dict]:
