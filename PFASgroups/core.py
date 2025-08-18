@@ -89,56 +89,84 @@ def add_smarts(name = 'smarts'):
 # --- Helper functions ---
 
 def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error = False):
-    """Remove atoms by indices and rebuild molecular structure"""
-    to_remove = []
-    bonds = []
+    """Remove atoms by indices and maintain connectivity.
+    
+    This function removes the specified atoms and their removable neighbors,
+    then reconnects the remaining structure to maintain molecular integrity.
+    """
+    if not idxs:
+        return mol
+    
+    to_remove = set()
+    # Map each removed atom to its non-removable neighbors
+    removed_to_neighbors = {}
+    
+    # First pass: identify all atoms to remove and their connections
     for idx in idxs:
         atom = mol.GetAtomWithIdx(idx)
         neighbors_r = [x.GetIdx() for x in atom.GetNeighbors() if x.GetSymbol() in removable]
         neighbors_c = [x.GetIdx() for x in atom.GetNeighbors() if x.GetSymbol() not in removable]
-        if len(neighbors_c)>2:
-            raise ValueError(f"There are too many neighbors not in {removable} for atom {idx} in {Chem.MolToSmiles(mol)}, found {neighbors_c=}")
-        to_remove = to_remove + neighbors_r + [idx]
-        bonds.append([neighbors_c[0],idx])
-        bonds.append([idx,neighbors_c[-1]])
-    bonds.sort()
-    bonds = list(k for k,_ in groupby(bonds))
-    new_bonds = []
-    last_items = []
-    for i,(a,b) in enumerate(bonds):
-        if a in last_items:
-            for j, (x,y) in enumerate(new_bonds):
-                if a == y:
-                    last_items.pop(last_items.index(y))
-                    last_items.append(b)
-                    new_bonds[j][1]=b
-        else:
-            new_bonds.append([a,b])
-            last_items.append(b)
-    last_items = []
-    bonds = new_bonds
-    bonds.sort(reverse = True)
-    new_bonds=[]
-    for i,(a,b) in enumerate(bonds):
-        if a in last_items:
-            for j, (x,y) in enumerate(new_bonds):
-                if a == y:
-                    last_items.pop(last_items.index(y))
-                    last_items.append(b)
-                    new_bonds[j][1]=b
-        else:
-            new_bonds.append([a,b])
-            last_items.append(b)
+        
+        # Add the atom and its removable neighbors to removal list
+        to_remove.add(idx)
+        to_remove.update(neighbors_r)
+        
+        # Store non-removable neighbors for reconnection
+        if neighbors_c:
+            removed_to_neighbors[idx] = neighbors_c
     
-    # Create a new editable molecule
+    # Build a graph of connectivity between removed atoms and their neighbors
+    # to determine how to reconnect the structure
+    new_bonds = []
+    processed_chains = set()
+    
+    # Process each chain of consecutive removed atoms
+    for start_idx in idxs:
+        if start_idx in processed_chains:
+            continue
+            
+        # Find the chain of consecutive removed atoms containing start_idx
+        chain = [start_idx]
+        processed_chains.add(start_idx)
+        
+        # Extend chain in both directions
+        queue = [start_idx]
+        while queue:
+            current = queue.pop(0)
+            for neighbor_idx in [n.GetIdx() for n in mol.GetAtomWithIdx(current).GetNeighbors()]:
+                if neighbor_idx in idxs and neighbor_idx not in processed_chains:
+                    chain.append(neighbor_idx)
+                    processed_chains.add(neighbor_idx)
+                    queue.append(neighbor_idx)
+        
+        # Find the endpoints of this chain (atoms that connect to non-removable parts)
+        chain_endpoints = []
+        for atom_idx in chain:
+            if atom_idx in removed_to_neighbors:
+                non_removable_neighbors = [n for n in removed_to_neighbors[atom_idx] if n not in to_remove]
+                if non_removable_neighbors:
+                    chain_endpoints.extend(non_removable_neighbors)
+        
+        # Connect the endpoints if there are exactly 2
+        if len(chain_endpoints) == 2 and chain_endpoints[0] != chain_endpoints[1]:
+            new_bonds.append((chain_endpoints[0], chain_endpoints[1]))
+        elif len(chain_endpoints) > 2:
+            # For branched structures, don't create connections that would change topology
+            # This prevents fragmentation but may not be chemically meaningful
+            pass
+    
+    # Create new molecule without removed atoms
     rwm = Chem.RWMol()
     _rwm = Chem.RWMol(mol)
     Chem.Kekulize(_rwm)
+    
     # Map from old atom indices to new atom indices
     old_to_new = {}
     charged_atoms = []
+    
+    # Add all atoms except those to be removed
     for i, atom in enumerate(_rwm.GetAtoms()):
-        if i not in set(to_remove):
+        if i not in to_remove:
             new_atom = Chem.Atom(atom.GetAtomicNum())
             new_idx = rwm.AddAtom(new_atom)
             # Copy formal charge if present
@@ -146,28 +174,40 @@ def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error =
                 charged_atoms.append(atom.GetIdx())
             old_to_new[i] = new_idx
 
-    # Copy bonds that do not involve removed atoms
+    # Copy existing bonds that don't involve removed atoms
     for bond in _rwm.GetBonds():
         a1 = bond.GetBeginAtomIdx()
         a2 = bond.GetEndAtomIdx()
         if a1 in old_to_new and a2 in old_to_new:
             rwm.AddBond(old_to_new[a1], old_to_new[a2], bond.GetBondType())
 
-    # Add new bonds
+    # Add new bonds to maintain connectivity
     for a, b in new_bonds:
-        if a in old_to_new and b in old_to_new and old_to_new[a]!=old_to_new[b]:
-            rwm.AddBond(old_to_new[a], old_to_new[b], Chem.BondType.SINGLE)
+        if a in old_to_new and b in old_to_new and old_to_new[a] != old_to_new[b]:
+            # Check if bond already exists to avoid duplication
+            existing_bond = rwm.GetBondBetweenAtoms(old_to_new[a], old_to_new[b])
+            if existing_bond is None:
+                rwm.AddBond(old_to_new[a], old_to_new[b], Chem.BondType.SINGLE)
+    
+    # Restore formal charges
     for idx in charged_atoms:
-        atom = rwm.GetAtomWithIdx(old_to_new[idx])
-        atom.SetFormalCharge(_rwm.GetAtomWithIdx(idx).GetFormalCharge())
+        if idx in old_to_new:
+            atom = rwm.GetAtomWithIdx(old_to_new[idx])
+            atom.SetFormalCharge(_rwm.GetAtomWithIdx(idx).GetFormalCharge())
+    
     try:
         Chem.SanitizeMol(rwm)
     except Exception as e:
         if show_on_error is True:
             _mol = rwm.GetMol()
-            # Could add visualization here if needed
-            pass
+            try:
+                from elements.scripts.utility_image import plot_mol
+                img,_,_ = plot_mol(_mol, subwidth=600, subheight=600, svg=False, addAtomIndices=True, bondLineWidth=0.5, fixedBondLength=15, minFontSize=12)
+                img.show()
+            except:
+                pass
         raise e
+    
     return rwm.GetMol()
 
 
