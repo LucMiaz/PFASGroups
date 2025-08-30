@@ -481,7 +481,7 @@
     "smarts2":null,
     "smartsPath":null,
     "constraints":{},
-    "definition":"Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American Heritage\u00ae Dictionary of the English Language, 5th Edition)"
+    "definition":"Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American Heritage® Dictionary of the English Language, 5th Edition)"
 },
 {
     "name":"azine",
@@ -493,7 +493,7 @@
     "smarts2":null,
     "smartsPath":null,
     "constraints":{},
-    "definition":"A six-membered heterocyclic compound, such as pyridine, that contains one or more atoms of nitrogen with a ring structure resembling that of benzene. (The American Heritage\u00ae Dictionary of the English Language, 5th Edition)"
+    "definition":"A six-membered heterocyclic compound, such as pyridine, that contains one or more atoms of nitrogen with a ring structure resembling that of benzene. (The American Heritage® Dictionary of the English Language, 5th Edition)"
 },
 {
     "name":"benzodioxole",

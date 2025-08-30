@@ -8,7 +8,7 @@ import numpy as np
 import networkx as nx
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from .PFASGroupModel import PFASGroup
+from PFASGroupModel import PFASGroup
 from typing import Union, List, Dict
 from PIL import Image
 from io import BytesIO
@@ -120,7 +120,7 @@ def fragment_until_valence_is_correct(mol, frags):
         return frags + [mol]
 
 
-def dry_mol_to_nx(mol):
+def mol_to_nx(mol):
     """Construct a networkx graph from a molecule"""
     G = nx.Graph()
     for n, atom in enumerate(mol.GetAtoms()):
@@ -151,7 +151,6 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
     Fluorinated atoms are defined by the SMARTS yield by the decorator add_smartsPath.
     if smarts2 is None, uses SMARTS corresponding to smartsPath."""
     chains = {}
-    #logger.debug("====================")
     smartsMatches1 = get_substruct(mol, smarts1)
     if smarts2 is not None:
         pairs = {smarts2:[(path,get_substruct(mol,smartsPath)) for path, (smartsPath,_)  in smartsPaths.items()]}
@@ -159,25 +158,18 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
         pairs = {_smarts2:[(path,get_substruct(mol, smartsPath))] for path, (smartsPath,_smarts2) in smartsPaths.items()}
     def match_intersection(_pair,_setp):
         for path,pmatch in _pair:
-            #logger.debug(f"intersection = {setp.intersection(pmatch)}")
             if _setp == _setp.intersection(pmatch):
                 chains.setdefault(path,[]).append(_setp)
                 return path
         return None
-    #logger.debug(f"{smartsMatches1=}")
     for match1 in smartsMatches1:
-        #logger.debug(f"{pairs=}")
-        #logger.debug("---------------")
         for _smarts2, smartsPath in pairs.items():
             smartsMatches2 = get_substruct(mol,_smarts2)
-            #logger.debug(f"{smartsMatches2=}")
             for match2 in smartsMatches2:
                 if (smarts1 != _smarts2) or (match1!=match2):# avoid double matching for diacids
                     path_idx = nx.shortest_path(G, match1, match2, method='dijkstra')
                     setp = set(path_idx)
-                    #logger.debug(f"{setp=}")
                     match_intersection(smartsPath,setp)
-                    #logger.debug(f"Found path {found_path}")
     chains = {k:sorted(v, key=len, reverse=True) for k,v in chains.items()}
     for path, chain in chains.items():
         remove = []
@@ -193,8 +185,7 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
         n = min([len(x) for x in chains.values()])#{k:len(chain) for k,chain in chains.items()}
         n_CFchain = [len(x) for x in chains.get('Perfluoroalkyl',[[]])]#{k:[len(x) for x in chain] for k,chain in chains.items()}
     chains = [{'chain':list(chain), 'length':len(chain),'SMARTS':path} for path,all_chains in chains.items() for chain in all_chains]
-    #logger.debug(f"{chains=}, {n=}, {n_CFchain=}")
-    return n,n_CFchain, n, chains  
+    return n,n_CFchain, len(smartsMatches1), chains  
 
 
 def path_between_smarts(mol:Chem.Mol, smarts1,smarts2,**kwargs):
@@ -204,7 +195,7 @@ def path_between_smarts(mol:Chem.Mol, smarts1,smarts2,**kwargs):
     :params pathsmarts: SMARTS (parsed as Chem.MolFromSmarts) with constraint for the atoms on the path
     :return: number of chains, and max_length in chain for path between an occurrence of smarts1 and smarts2 with all atoms satisfying pathsmarts."""
     try:
-        G = dry_mol_to_nx(mol)
+        G = mol_to_nx(mol)
     except ValueError as e:
         raise e
     return find_path_between_smarts(mol,
@@ -212,7 +203,7 @@ def path_between_smarts(mol:Chem.Mol, smarts1,smarts2,**kwargs):
                                     smarts2,
                                     G)
 
-
+# --- Main PFAS group parsing functions ---
 @load_PFASGroups()
 def parse_PFAS_groups(mol, formula, pfas_groups=None):
     """Iterates over PFAS groups and finds the ones that match the molecule."""
@@ -228,6 +219,7 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
         formulas = [n_from_formula(formula)]# formula as a dictionary
     group_matches = []
     for pf in pfas_groups:
+        #logger.debug(f"{pf.name}")
         matched1_len = 0
         for fd,mol in zip(formulas,frags):
             if pf.formula_dict_satisfies_constraints(fd) is True:
@@ -265,34 +257,6 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
                     matched1_len = 1
                 if n>0 and matched1_len>0:
                     group_matches.append((pf,n,n_CFchain, chains))
-    return group_matches
-
-# --- Main PFAS group parsing functions ---
-
-@load_PFASGroups()
-def parse_PFAS_groups(mol, formula, pfas_groups: List[PFASGroup] = None):
-    """
-    Iterates over PFAS groups and finds the ones that match the molecule.
-    Returns a list of (PFASGroup, n_matches, match_indices).
-    """
-    mol = Chem.AddHs(mol)
-    try:
-        Chem.SanitizeMol(mol)
-    except Chem.AtomValenceException:
-        # Fallback: just return empty for now
-        return []
-    else:
-        frags = [mol]
-        formulas = [n_from_formula(formula)]
-    group_matches = []
-    for pf in pfas_groups:
-        for fd, frag in zip(formulas, frags):
-            if pf.formula_dict_satisfies_constraints(fd):
-                if pf.smarts1 is not None:
-                    matches = frag.GetSubstructMatches(pf.smarts1)
-                    n = len(matches)
-                    if n > 0:
-                        group_matches.append((pf, n, matches))
     return group_matches
 
 def parse_pfas(smiles_list):
