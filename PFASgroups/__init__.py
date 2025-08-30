@@ -1,7 +1,7 @@
 # PFASgroups package
 from .PFASGroupModel import PFASGroup
 from .core import parse_pfas, parse_PFAS_groups, plot_pfasgroups
-
+from .draw_mols import plot_mol, plot_mols
 # Optional imports for testing
 try:
     from . import test_examples
@@ -11,4 +11,4 @@ except ImportError:
     pass
 
 __version__ = "0.1.0"
-__all__ = ['PFASGroup', 'parse_pfas', 'parse_PFAS_groups', 'plot_pfasgroups']
+__all__ = ['PFASGroup', 'parse_pfas', 'parse_PFAS_groups', 'plot_pfasgroups', 'plot_mol','plot_mols']
