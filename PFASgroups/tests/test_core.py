@@ -3,8 +3,20 @@ Unit tests for PFASgroups core functions.
 """
 
 from rdkit import Chem
-from PFASgroups.core import parse_PFAS_groups
-from PFASgroups.generate_mol import generate_random_mol
+try:
+    from core import parse_PFAS_groups
+    from generate_mol import generate_random_mol
+except ImportError:
+    try:
+        from .core import parse_PFAS_groups
+        from .generate_mol import generate_random_mol
+    except ImportError:
+        try:
+            from PFASgroups.core import parse_PFAS_groups
+            from PFASgroups.generate_mol import generate_random_mol
+        except ImportError as e:
+            print(f"Error importing PFASgroups modules: {e}")
+            raise e
 
 def test_parse_PFAS_groups_basic():
     """Test parse_PFAS_groups on a simple perfluorinated carboxylic acid."""

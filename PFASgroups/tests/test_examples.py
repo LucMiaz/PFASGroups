@@ -16,9 +16,20 @@ from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 
 # Handle imports - try relative first, then absolute
-from core import parse_PFAS_groups
-from generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
-
+try:
+    from core import parse_PFAS_groups
+    from generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
+except ImportError:
+    try:
+        from .core import parse_PFAS_groups
+        from .generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
+    except ImportError:
+        try:
+            from PFASgroups.core import parse_PFAS_groups
+            from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
+        except ImportError as e:
+            print(f"Error importing PFASgroups modules: {e}")
+            raise e
 
 # Try to import pytest, but make it optional
 try:
@@ -149,8 +160,7 @@ class TestPFASGroups:
                 assert detection_rate > 0.5, f"Detection rate too low: {detection_rate:.2%}"
             return detection_rate > 0.5
         else:
-            print("No valid test results generated")
-            return False
+            assert False, "No valid test results generated"
     
     def test_generic_pfas_groups(self):
         """Test generic PFAS group detection with synthetic compounds."""
@@ -198,12 +208,9 @@ class TestPFASGroups:
         if test_results:
             detection_rate = sum(result['detected'] for result in test_results) / len(test_results)
             print(f"Generic detection rate: {detection_rate:.2%}")
-            if PYTEST_AVAILABLE:
-                assert detection_rate > 0.3, f"Generic detection rate too low: {detection_rate:.2%}"
-            return detection_rate > 0.3
+            assert detection_rate > 0.3, f"Generic detection rate too low: {detection_rate:.2%}"
         else:
-            print("No valid test results generated")
-            return False
+            assert False, "No valid test results generated"
 
     def run_all_tests(self):
         """Run all tests manually (for when pytest is not available)."""
@@ -231,14 +238,13 @@ class TestPFASGroups:
             specificity_result = False
         
         overall_result = oecd_result and generic_result and specificity_result
-        print(f"Overall test result: {'PASSED' if overall_result else 'FAILED'}")
-        return overall_result
+        assert overall_result, f"Overall test result FAILED"
 
     def test_specificity(self):
         """Test PFAS group specificity using the dedicated test function."""
         print("Testing PFAS group specificity...")
         try:
-            results_df = test_pfas_group_specificity(verbose=False)
+            results_df = df_test_pfas_group_specificity(verbose=False)
             
             # Calculate success metrics
             valid_tests = results_df[results_df['valid_smiles'] == True]
@@ -248,12 +254,10 @@ class TestPFASGroups:
             # Pass if detection rate > 80% and specificity rate > 60%
             success = detection_rate > 0.8 and specificity_rate > 0.6
             
-            print(f"Specificity test - Detection: {detection_rate:.1%}, Specificity: {specificity_rate:.1%}")
-            return success
+            assert success, f"Specificity test - Detection: {detection_rate:.1%}, Specificity: {specificity_rate:.1%}"
             
         except Exception as e:
-            print(f"Specificity test failed: {e}")
-            return False
+            assert False, f"Specificity test failed: {e}"
 
 def create_specificity_test_molecules():
     """
@@ -342,7 +346,7 @@ def create_specificity_test_molecules():
                          [9,10,[per]],
                          [14,29,[per]],
                          [2,33,[per,poly]],
-                         [7,36,[per,poly]]]]
+                         [7,36,[per,poly]]]
     for x,y,types in equivalent_groups:
         for t in types:
             for group_id, inchi,formula,inchikey,pathtype in test_results:
@@ -352,7 +356,7 @@ def create_specificity_test_molecules():
     specificity_test_molecules = specificity_test_molecules.groupby(['inchi','inchikey','formula','pathtype']).agg({'group_ids':lambda x: sorted(set([int(y) for y in x]))}).reset_index()
     return specificity_test_molecules
 
-def test_pfas_group_specificity(test_molecules=None, output_file='tests/specificity_test_results.csv', verbose=True):
+def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/specificity_test_results.csv', verbose=True):
     """
     Test the specificity of each PFAS group by using simple, unambiguous test molecules.
     
@@ -666,7 +670,7 @@ def test_pfoa_like_compounds():
     
     success_rate = success_count / len(test_smiles)
     print(f"PFOA-like compound detection rate: {success_rate:.1%}")
-    return success_rate > 0.5
+    assert success_rate > 0.5
 
 def run_quick_test():
     """Run a quick test to verify the module is working."""
@@ -684,14 +688,12 @@ def run_quick_test():
         
         if pfoa_success:
             print("✓ Quick test PASSED - Module is working correctly")
-            return True
+            assert True
         else:
-            print("✗ Quick test FAILED - Some issues detected")
-            return False
+            assert False,"✗ Quick test FAILED - Some issues detected"
             
     except Exception as e:
-        print(f"✗ Quick test FAILED with error: {e}")
-        return False
+        assert False,f"✗ Quick test FAILED with error: {e}"
 
 if __name__ == "__main__":
     print("PFASgroups Test Examples Module")
@@ -740,7 +742,7 @@ if __name__ == "__main__":
             print("This tests that each group only matches appropriate compounds\n")
             
             test_molecules = create_specificity_test_molecules()
-            results = test_pfas_group_specificity(test_molecules)
+            results = df_test_pfas_group_specificity(test_molecules)
             analyze_group_overlap(results)
         
         else:

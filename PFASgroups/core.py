@@ -8,7 +8,7 @@ import numpy as np
 import networkx as nx
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from PFASGroupModel import PFASGroup
+from .PFASGroupModel import PFASGroup
 from typing import Union, List, Dict
 from PIL import Image
 from io import BytesIO
