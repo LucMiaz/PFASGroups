@@ -4,6 +4,9 @@ setup.cfg
 PFASgroups/PFASGroupModel.py
 PFASgroups/__init__.py
 PFASgroups/core.py
+PFASgroups/draw_mols.py
+PFASgroups/fragmentation.py
+PFASgroups/generate_homologues.py
 PFASgroups/generate_mol.py
 PFASgroups.egg-info/PKG-INFO
 PFASgroups.egg-info/SOURCES.txt
@@ -12,4 +15,3 @@ PFASgroups.egg-info/requires.txt
 PFASgroups.egg-info/top_level.txt
 PFASgroups/tests/test_core.py
 PFASgroups/tests/test_examples.py
-PFASgroups/tests/test_set.py

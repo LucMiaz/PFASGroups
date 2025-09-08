@@ -158,7 +158,7 @@ class TestPFASGroups:
             print(f"OECD detection rate: {detection_rate:.2%}")
             if PYTEST_AVAILABLE:
                 assert detection_rate > 0.5, f"Detection rate too low: {detection_rate:.2%}"
-            return detection_rate > 0.5
+            assert detection_rate > 0.5, f"Detection rate too low: {detection_rate:.2%}"
         else:
             assert False, "No valid test results generated"
     
@@ -301,9 +301,10 @@ def create_specificity_test_molecules():
                     continue   
             inchi = Chem.MolToInchi(mol)
             inchikey = Chem.MolToInchiKey(mol)
+            smiles = Chem.MolToSmiles(mol)
             # Test classification
             formula = CalcMolFormula(mol)
-            test_results.append((group_id, inchi,formula,inchikey,pathtype))
+            test_results.append((group_id, smiles,inchi,formula,inchikey,pathtype))
         for group_id, group_name, group_smiles, insertion_mode in GENERIC_PFAS_GROUPS:
             for pathtype in ['Perfluoroalkyl', 'Polyfluoroalkyl']:
                 m = mF if pathtype == 'Perfluoroalkyl' else mpF
@@ -319,7 +320,8 @@ def create_specificity_test_molecules():
                 inchikey = Chem.MolToInchiKey(mol)
                 # Test classification
                 formula = CalcMolFormula(mol)
-                test_results.append((group_id, inchi,formula,inchikey,pathtype))
+                smiles = Chem.MolToSmiles(mol)
+                test_results.append((group_id, smiles, inchi,formula,inchikey,pathtype))
     # Add expected ids for equivalent groups:
     # [[x,y],...] means group x is also y
     per = 'Perfluoroalkyl'
@@ -349,11 +351,14 @@ def create_specificity_test_molecules():
                          [7,36,[per,poly]]]
     for x,y,types in equivalent_groups:
         for t in types:
-            for group_id, inchi,formula,inchikey,pathtype in test_results:
+            for group_id, smiles, inchi,formula,inchikey,pathtype in test_results:
                 if group_id == x and pathtype == t:
-                    test_results.append((y,inchi,formula,inchikey,t))
-    specificity_test_molecules = pd.DataFrame(test_results, columns=['group_ids','inchi','formula','inchikey','pathtype'])
-    specificity_test_molecules = specificity_test_molecules.groupby(['inchi','inchikey','formula','pathtype']).agg({'group_ids':lambda x: sorted(set([int(y) for y in x]))}).reset_index()
+                    test_results.append((y,smiles, inchi,formula,inchikey,t))
+    specificity_test_molecules = pd.DataFrame(test_results, columns=['group_ids','smiles','inchi','formula','inchikey','pathtype'])
+    specificity_test_molecules = specificity_test_molecules.groupby(['inchi','inchikey','formula','pathtype']).agg({
+        'group_ids': lambda x: sorted(set([int(y) for y in x])),
+        'smiles': 'first'
+    }).reset_index()
     return specificity_test_molecules
 
 def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/specificity_test_results.csv', verbose=True):
@@ -373,11 +378,11 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
         test_molecules = create_specificity_test_molecules()
     print(test_molecules.head())
     results = []
-    for i,(inchi, inchikey, formula, pathtype, group_ids) in test_molecules.iterrows():
+    for i,(inchi, inchikey, formula, pathtype, group_ids,smiles) in test_molecules.iterrows():
         try:
-            mol = Chem.MolFromInchi(inchi)
+            mol = Chem.MolFromSmiles(smiles)
             if mol is None:
-                print(f"Warning: Invalid Inchi {inchi}")
+                print(f"Warning: Invalid smiles {smiles}")
                 results.append({
                     'groups_id': group_ids,
                     'inchi':inchi,
@@ -474,7 +479,11 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
     # Save results if requested
     print(f'{output_file=}')
     if output_file:
-        df.to_csv(output_file, index=False)
+        try:
+            df.to_csv(output_file, index=False)
+        except:
+            os.makedirs(os.path.dirname(output_file), exist_ok=True)
+            df.to_csv(output_file, index=False)
         print(f"\nResults saved to {output_file}")
     
     return df
