@@ -1,0 +1,10 @@
+[{"source": "Hydrofluorocarbons", "target": "Semi-fluorinated alkanes", "edge_type": "poly"},
+{"source": "Semi-fluorinated alkanes", "target": "Hydrofluoroethers", "edge_type": "poly"},
+{"source": "Semi-fluorinated alkanes", "target": "Perfluoroalkyl alcohols", "edge_type": "poly"},
+{"source": "Semi-fluorinated alkanes", "target": "Perfluoroalkyl sulfinic acids", "edge_type": "poly"},
+{"source": "Semi-fluorinated alkanes", "target": "Perfluoroalkyl sulfonic acids", "edge_type": "poly"},
+{"source": "Semi-fluorinated alkanes", "target": "fluorotelomer alcohols", "edge_type": "poly"},
+{"source": "Semi-fluorinated alkanes", "target": "Perfluoroalkyl phosphonic acids", "edge_type": "poly"},
+{"source": "Semi-fluorinated alkanes", "target": "Perfluoroalkyl phosphinic acids", "edge_type": "poly"},
+{"source": "Semi-fluorinated alkanes", "target": "Perfluoroalkyl iodides", "edge_type": "poly"}
+]

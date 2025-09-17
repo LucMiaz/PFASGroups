@@ -13,5 +13,6 @@ PFASgroups.egg-info/SOURCES.txt
 PFASgroups.egg-info/dependency_links.txt
 PFASgroups.egg-info/requires.txt
 PFASgroups.egg-info/top_level.txt
+PFASgroups/tests/generate_graph_PFASgroups.py
 PFASgroups/tests/test_core.py
 PFASgroups/tests/test_examples.py

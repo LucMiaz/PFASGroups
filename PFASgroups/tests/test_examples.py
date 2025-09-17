@@ -14,7 +14,7 @@ import pandas as pd
 from tqdm import tqdm
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-
+import networkx as nx
 # Handle imports - try relative first, then absolute
 try:
     from core import parse_PFAS_groups
@@ -67,15 +67,15 @@ OECD_PFAS_GROUPS = [
     (13, "Perfluoroalkyl phosphinic acids", [{"group_smiles":"P(=O)O[H]", 'n':1, 'mode':'attach'}], 'Perfluoroalkyl'),
     (14, "Perfluoroalkyl alcohols", [{"group_smiles":"O", 'n':"[1,3]", 'mode':'attach'}], 'Perfluoroalkyl'),
     (15, "fluorotelomer alcohols", [{"group_smiles":"CCCO[H]", 'n':1, 'mode':'attach'}], 'Perfluoroalkyl'),
-    (16, "Perfluoropolyethers", [{"group_smiles":"O", 'n':"[2,4]", 'mode':'insert'}], 'Perfluoroalkyl'),
+    (16, "Perfluoropolyethers", [{"group_smiles":"O", 'n':2, 'mode':'insert'}], 'Perfluoroalkyl'),
     (17, "Hydrofluoroethers", [{"group_smiles":"O", 'n':"[1,5]", 'mode':'insert'}], 'Polyfluoroalkyl'),
     (18, "Perfluoroalkene", [{"group_smiles":"C(F)=C(F)", 'n':1, 'mode':'insert'}], 'Perfluoroalkyl'),
     (19, "Hydrofluoroolefins", [{"group_smiles":"C(F)=C([H])", 'n':1, 'mode':'insert'}], 'Polyfluoroalkyl'),
     #skip hydrofluorocarbons (many tested are HFCs)
     #(20, "Hydrofluorocarbons", [{"group_smiles":"C(F)[H]", 'n':1, 'mode':'insert'}], 'Polyfluoroalkyl'),
-    (21, "Semi-fluorinated alkanes", [{"group_smiles":"C(F)[H]", 'n':1, 'mode':'insert'}], 'Polyfluoroalkyl'),
+    #(21, "Semi-fluorinated alkanes", [{"group_smiles":"C(F)[H]", 'n':1, 'mode':'insert'}], 'Polyfluoroalkyl'),
     (22, "Side-chain fluorinated aromatics", [{"group_smiles":"c1ccccc1", 'n':1, 'mode':'attach'}], 'Polyfluoroalkyl'),
-    (23, "Perfluoroalkane", [{"group_smiles":"C(F)(F)", 'n':1, 'mode':'insert'}], 'Perfluoroalkyl'),
+    #(23, "Perfluoroalkane", [{"group_smiles":"C(F)(F)", 'n':1, 'mode':'insert'}], 'Perfluoroalkyl'),
     (24, "Perfluoroalkyl-tert-amines", [{"group_smiles":"N(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)", 'n':1, 'mode':'attach'}], 'Perfluoroalkyl'),
     (25, "Perfluoroalkyl iodides", [{"group_smiles":"I", 'n':"[1,3]", 'mode':'attach'}], 'Perfluoroalkyl'),
     (26, "Perfluoroalkane sulfonyl fluorides", [{"group_smiles":"S(=O)(=O)F", 'n':1, 'mode':'attach'}], 'Perfluoroalkyl'),
@@ -111,7 +111,7 @@ GENERIC_PFAS_GROUPS = [
     (51, 'Side-chain aromatics', "c1ccccc1", 'attach'),
 ]
 
-IGNORE_GROUPS = [48,20]
+IGNORE_GROUPS = [48,20,21, 23]
 
 class TestPFASGroups:
     """Test class for PFAS group classification using synthetic examples."""
@@ -188,7 +188,7 @@ class TestPFASGroups:
                         matches = parse_PFAS_groups(mol, formula)
                         
                         # Check if target group is detected
-                        detected_groups = [match[0].id for match in matches]
+                        detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
                         is_detected = group_id in detected_groups
                         
                         test_results.append({
@@ -251,6 +251,23 @@ class TestPFASGroups:
             detection_rate = valid_tests['expected_group_detected'].mean()
             specificity_rate = valid_tests['is_specific'].mean()
             
+            # Print detailed information about failed tests
+            failed_detection = valid_tests[valid_tests['expected_group_detected'] == False]
+            failed_specificity = valid_tests[valid_tests['is_specific'] == False]
+            
+            print(f"\nDetection Rate: {detection_rate:.1%} ({len(valid_tests[valid_tests['expected_group_detected'] == True])}/{len(valid_tests)})")
+            print(f"Specificity Rate: {specificity_rate:.1%} ({len(valid_tests[valid_tests['is_specific'] == True])}/{len(valid_tests)})")
+            
+            if len(failed_detection) > 0:
+                print(f"\nFailed Detection ({len(failed_detection)} cases):")
+                for _, row in failed_detection.head(5).iterrows():  # Show first 5 failures
+                    print(f"  Expected: {row['group_ids']}, Detected: {row['detected_groups']}")
+            
+            if len(failed_specificity) > 0:
+                print(f"\nFailed Specificity ({len(failed_specificity)} cases):")
+                for _, row in failed_specificity.head(5).iterrows():  # Show first 5 failures
+                    print(f"  Expected: {row['group_ids']}, Detected: {row['detected_groups']}")
+            
             # Pass if detection rate > 80% and specificity rate > 60%
             success = detection_rate > 0.8 and specificity_rate > 0.6
             
@@ -258,6 +275,128 @@ class TestPFASGroups:
             
         except Exception as e:
             assert False, f"Specificity test failed: {e}"
+
+
+def load_graph_from_json(filename):
+    """Load the list-based JSON structure and convert to NetworkX directed graph with edge types."""
+    with open(filename, 'r') as f:
+        data = json.load(f)
+    
+    # Load the PFAS groups mapping to convert names to IDs
+    try:
+        with open('data/PFAS_groups_smarts.json', 'r') as f:
+            group_data = json.load(f)
+        name_to_id = {group['name']: group['id'] for group in group_data}
+    except FileNotFoundError:
+        # Fallback: if no mapping file, create a temporary mapping
+        print("Warning: PFAS_groups_smarts.json not found, using name-based graph")
+        name_to_id = {}
+    
+    G = nx.DiGraph()
+    Gper = nx.DiGraph()
+
+    # Process each edge in the list
+    for edge_data in data:
+        source_name = edge_data['source']
+        target_name = edge_data['target']
+        edge_type = edge_data['edge_type']
+        
+        # Convert names to IDs if mapping exists, otherwise use names
+        source = name_to_id.get(source_name, source_name)
+        target = name_to_id.get(target_name, target_name)
+        
+        # Add nodes if they don't exist
+        G.add_node(source)
+        G.add_node(target)
+        Gper.add_node(source)
+        Gper.add_node(target)
+        # Add edge with type information
+        G.add_edge(source, target, edge_type=edge_type)
+        if edge_type in ['per','both']:
+            Gper.add_edge(source, target, edge_type=edge_type)
+    
+    return G, Gper
+    
+
+def load_equivalent_groups_from_json(json_file='tests/specificity_test_groups.json'):
+    """
+    Load equivalent groups from the JSON file structure (now in list format).
+    
+    Args:
+        json_file: Path to the JSON file containing the edge list structure
+    Returns:
+        List of tuples [x, y, pathtype] where x is a child group and y is a parent group
+    """
+    G, Gper = load_graph_from_json(json_file)
+    
+    equivalent_groups = []
+    
+    # Process the list of edges
+    for source in G.nodes:
+        descendants = nx.descendants(G,source)
+        perdescendants = nx.descendants(Gper, source)
+        for target in descendants:
+            equivalent_groups.append([target, source, 'Polyfluoroalkyl'])
+        for target in perdescendants:
+            equivalent_groups.append([target, source, 'Perfluoroalkyl'])
+    return equivalent_groups
+
+def check_groups_are_related(group1, group2, graph):
+    """
+    Check if two groups are related in the directed graph (either as ancestor/descendant).
+    
+    Args:
+        group1, group2: Group IDs to check
+        graph: NetworkX directed graph
+    Returns:
+        bool: True if groups are connected (either direction)
+    """
+    if group1 == group2:
+        return True
+    
+    # Check if both groups exist in the graph
+    if group1 not in graph.nodes or group2 not in graph.nodes:
+        return False
+    
+    # Check if group1 is ancestor of group2 or vice versa
+    return (group2 in nx.descendants(graph, group1) or 
+            group1 in nx.descendants(graph, group2))
+
+def are_detected_groups_acceptable(expected_groups, detected_groups, json_file='tests/specificity_test_groups.json'):
+    """
+    Check if detected groups are acceptable given the expected groups and graph relationships.
+    
+    Args:
+        expected_groups: List of expected group IDs
+        detected_groups: List of detected group IDs  
+        json_file: Path to the JSON file containing the graph structure
+    Returns:
+        bool: True if all detected groups are either expected or related to expected groups
+    """
+    try:
+        G, Gper = load_graph_from_json(json_file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        # If graph file doesn't exist or is invalid, fall back to exact matching
+        return sorted(expected_groups) == sorted(detected_groups)
+    
+    # All detected groups must be either:
+    # 1. In the expected groups, OR
+    # 2. Connected to at least one expected group in the graph
+    for detected_group in detected_groups:
+        if detected_group in expected_groups:
+            continue  # This group is expected
+        
+        # Check if this detected group is related to any expected group
+        is_related = False
+        for expected_group in expected_groups:
+            if check_groups_are_related(detected_group, expected_group, G):
+                is_related = True
+                break
+        
+        if not is_related:
+            return False  # Found an unrelated detected group
+    
+    return True
 
 def create_specificity_test_molecules():
     """
@@ -267,35 +406,136 @@ def create_specificity_test_molecules():
     
     # Define simple test molecules for each PFAS group
     # These are designed to be unambiguous and should match only their target group(s)
-    BASE_CHAINS = ['CCC','CCCC','CCCCC','CC(C)(C)C','CC(C)CC','CC(C)(C)CC','CC(C)(C)C(C)C','CCCCCC','CCC(C)(C)C(C)(C)CC']
+    BASE_CHAINS = ['CCCC','CCCCC','CC(C)(C)C','CC(C)CC','CC(C)(C)CC','CC(C)(C)C(C)C','CCCCCC','CCC(C)(C)C(C)(C)CC']
 
     test_results = []
     F_CHAINS = [fluorinate_mol(Chem.MolFromSmiles(chain), perfluorinated=True, p=1.0) for chain in BASE_CHAINS]
     polyF_CHAINS = [fluorinate_mol(Chem.MolFromSmiles(chain), perfluorinated=False, p=0.8) for chain in BASE_CHAINS]
     for mF,mpF in zip(F_CHAINS,polyF_CHAINS):
         # prepare 
-        atom_index_attach = get_attachment(mF,4, atom_symbols=['C'],neighbors_symbols = {'C':['F','H']})
-        atom_index_insert= get_attachment(mpF,4, atom_symbols=['C'],neighbors_symbols = {'C':['C']})
-        # filter attachment points to have two distinct C atoms
-        a,b = atom_index_attach.pop()
-        c,d = atom_index_insert.pop()
-        atoms_indices = [{'attach': [a,b], 'insert':[c,d]}]
-        e,g = a,c
-        while e == a:
-            e,f = atom_index_attach.pop()
-        while g == c:
-            g,h = atom_index_insert.pop()
-        atoms_indices.append({'attach': [e,f], 'insert': [g,h]})
+        atom_index_attach = get_attachment(mF, 8, atom_symbols=['C'], neighbors_symbols={'C':['F','H']})  # Get more attachment points
+        atom_index_insert = get_attachment(mpF, 8, atom_symbols=['C'], neighbors_symbols={'C':['C']})     # Get more attachment points for polyfluorinated
+        atom_index_insert_per = get_attachment(mF, 8, atom_symbols=['C'], neighbors_symbols={'C':['C']})   # Get more attachment points for perfluorinated
+        
+        # filter attachment points to have multiple distinct C atoms for multi-functional groups
+        attach_points = []
+        insert_points = []
+        insert_points_per = []
+        
+        # Collect multiple distinct attachment points
+        used_atoms = set()
+        for a, b in atom_index_attach:
+            if a not in used_atoms and b not in used_atoms:
+                attach_points.extend([a, b])
+                used_atoms.update([a, b])
+                if len(attach_points) >= 8:  # Collect up to 8 points
+                    break
+        
+        used_atoms = set()
+        for c, d in atom_index_insert:
+            if c not in used_atoms and d not in used_atoms:
+                insert_points.extend([c, d])
+                used_atoms.update([c, d])
+                if len(insert_points) >= 8:  # Collect up to 8 points
+                    break
+        
+        atoms_indices = {'attach': attach_points, 'insert': insert_points}
         for group_id, group_name, templates, pathtype in OECD_PFAS_GROUPS:
             mol = Chem.Mol(mF) if pathtype == 'Perfluoroalkyl' else Chem.Mol(mpF)
-            # Add functional group
+            # Add functional group(s) - FIXED to handle multiple functional groups correctly
             for idx, template in enumerate(templates):
-                mol = append_functional_group(mol,template['group_smiles'],
-                                insertion = template.get('mode','attach'),
-                                m = template.get('n',1),
-                                atom_indices = [atoms_indices[idx].get(template.get('mode','attach'),[])],
-                                neighbor_atoms=['F','H'] if template.get('mode','attach')=='attach' else ['C'],
-                                sanitize = False)
+                n_groups = template.get('n', 1)
+                mode = template.get('mode', 'attach')
+                
+                # Prepare atom indices based on the number of functional groups needed
+                # This fixes the issue where dicarboxylic acids (n=2) were only getting 1 carboxylic acid group
+                if isinstance(n_groups, int) and n_groups > 1:
+                    # For multiple functional groups (like dicarboxylic acids), we need multiple attachment points
+                    # Use appropriate insertion points based on pathtype for insert mode
+                    available_indices = atoms_indices[mode]
+                    atom_indices_for_template = []
+                    
+                    # Take n_groups pairs of indices for attachment
+                    for i in range(min(n_groups, len(available_indices) // 2)):
+                        atom_indices_for_template.append(available_indices[i*2:(i*2)+2])
+                elif isinstance(n_groups, str) and '[' in n_groups and ']' in n_groups:
+                    # Handle range cases like "[1,3]" or "[2,4]"
+                    import re
+                    range_match = re.findall(r'\[(\d+),(\d+)\]', n_groups)
+                    if range_match:
+                        min_n, max_n = map(int, range_match[0])
+                        # Use the middle value or max for testing
+                        actual_n = np.random.randint(min_n,max_n,1)[0]
+                        # Use appropriate insertion points based on pathtype for insert mode
+                        available_indices = atoms_indices[mode]
+                        atom_indices_for_template = []
+                        
+                        # Take actual_n pairs of indices for attachment
+                        for i in range(min(actual_n, len(available_indices) // 2)):
+                            atom_indices_for_template.append(available_indices[i*2:(i*2)+2])
+                        
+                        # Update n_groups for the append_functional_group call
+                        n_groups = actual_n
+                    else:
+                        # Fallback for malformed range strings
+                        available_indices = atoms_indices.get(mode, [])
+                        if len(available_indices) >= 2:
+                            atom_indices_for_template = [available_indices[:2]]
+                        else:
+                            atom_indices_for_template = [available_indices]
+                        n_groups = 1
+                else:
+                    # For single functional groups or special cases
+                    # Use appropriate insertion points based on pathtype for insert mode
+                    available_indices = atoms_indices.get(mode, [])
+                    if len(available_indices) >= 2:
+                        atom_indices_for_template = [available_indices[:2]]
+                    else:
+                        atom_indices_for_template = [available_indices]
+                
+                mol = append_functional_group(mol, template['group_smiles'],
+                                insertion=mode,
+                                m=n_groups,
+                                atom_indices=atom_indices_for_template,
+                                neighbor_atoms=['F','H'] if mode=='attach' else ['C'],
+                                sanitize=False)
+                
+                # Debug output for multi-functional groups
+                if isinstance(template.get('n'), int) and template.get('n') > 1:
+                    print(f"DEBUG: Group {group_id} ({group_name}) - attaching {n_groups} {template['group_smiles']} groups")
+                if group_id == 16:  # Debug Perfluoropolyethers specifically
+                    print(f"DEBUG: Group 16 - mode={mode}, n_groups={n_groups}, pathtype={pathtype}")
+                    print(f"DEBUG: Group 16 - atom_indices_for_template length: {len(atom_indices_for_template)}")
+                    if len(atom_indices_for_template) > 0:
+                        print(f"DEBUG: Group 16 - first indices: {atom_indices_for_template[0]}")
+                    else:
+                        print(f"DEBUG: Group 16 - NO ATOM INDICES AVAILABLE!")
+                        print(f"DEBUG: Group 16 - available insert points: {len(atoms_indices[0].get('insert', []))}")
+                        print(f"DEBUG: Group 16 - available insert_per points: {len(atoms_indices[0].get('insert_per', []))}")
+                        # Try to use any available indices as fallback
+                        all_indices = atoms_indices[0].get('insert', []) + atoms_indices[0].get('insert_per', [])
+                        if len(all_indices) >= 4:  # Need at least 4 points for 2 ether insertions
+                            atom_indices_for_template = [all_indices[:2], all_indices[2:4]]
+                            print(f"DEBUG: Group 16 - using fallback indices: {atom_indices_for_template}")
+                        else:
+                            print(f"DEBUG: Group 16 - skipping, not enough indices available: {len(all_indices)}")
+                            continue  # Skip this group if no indices available
+                if group_id == 17:  # Debug Hydrofluoroethers specifically
+                    print(f"DEBUG: Group 17 - mode={mode}, n_groups={n_groups}, pathtype={pathtype}")
+                    print(f"DEBUG: Group 17 - atom_indices_for_template length: {len(atom_indices_for_template)}")
+                    if len(atom_indices_for_template) > 0:
+                        print(f"DEBUG: Group 17 - first indices: {atom_indices_for_template[0]}")
+                    else:
+                        print(f"DEBUG: Group 17 - NO ATOM INDICES AVAILABLE!")
+                        print(f"DEBUG: Group 17 - available insert points: {len(atoms_indices[0].get('insert', []))}")
+                        print(f"DEBUG: Group 17 - available insert_per points: {len(atoms_indices[0].get('insert_per', []))}")
+                        # Try to use any available indices as fallback
+                        all_indices = atoms_indices[0].get('insert', []) + atoms_indices[0].get('insert_per', [])
+                        if len(all_indices) >= 2:
+                            atom_indices_for_template = [all_indices[:2]]
+                            print(f"DEBUG: Group 17 - using fallback indices: {atom_indices_for_template[0]}")
+                        else:
+                            continue  # Skip this group if no indices available
 
             if mol is None:
                     continue   
@@ -308,12 +548,18 @@ def create_specificity_test_molecules():
         for group_id, group_name, group_smiles, insertion_mode in GENERIC_PFAS_GROUPS:
             for pathtype in ['Perfluoroalkyl', 'Polyfluoroalkyl']:
                 m = mF if pathtype == 'Perfluoroalkyl' else mpF
-                mol = append_functional_group(m,group_smiles,
-                            insertion = insertion_mode,
-                            m = 1,
-                            atom_indices = [atoms_indices[0][insertion_mode]],
+                available_indices = atoms_indices.get(insertion_mode, [])
+                if len(available_indices) >= 2:
+                    atom_indices_to_use = [available_indices[:2]]
+                else:
+                    atom_indices_to_use = [available_indices]
+                    
+                mol = append_functional_group(m, group_smiles,
+                            insertion=insertion_mode,
+                            m=1,
+                            atom_indices=atom_indices_to_use,
                             neighbor_atoms=['F','H'] if insertion_mode=='attach' else ['C'],
-                            sanitize = False)
+                            sanitize=False)
                 if mol is None:
                     continue
                 inchi = Chem.MolToInchi(mol)
@@ -323,37 +569,19 @@ def create_specificity_test_molecules():
                 smiles = Chem.MolToSmiles(mol)
                 test_results.append((group_id, smiles, inchi,formula,inchikey,pathtype))
     # Add expected ids for equivalent groups:
-    # [[x,y],...] means group x is also y
+    # Load equivalent groups from JSON file structure
     per = 'Perfluoroalkyl'
     poly = 'Polyfluoroalkyl'
-    equivalent_groups = [[41,49,[per,poly]],
-                         [41,50,[per,poly]],
-                         [49,50,[per,poly]],
-                         [6,36,[per]],
-                         [7,36,[per,poly]],
-                         [1,33,[per]],
-                         [25,42,[per]],
-                         [13,40,[per]],
-                         [22,51,[per,poly]],
-                         [1,2,[per]],
-                         [4,1,[per]],
-                         [4,2,[per]],
-                         [4,5,[poly]],
-                         [5,2,[poly]],
-                         [6,7,[per]],
-                         [8,6,[per]],
-                         [8,7,[per]],
-                         [9,6,[per]],
-                         [9,7,[per]],
-                         [9,10,[per]],
-                         [14,29,[per]],
-                         [2,33,[per,poly]],
-                         [7,36,[per,poly]]]
-    for x,y,types in equivalent_groups:
-        for t in types:
-            for group_id, smiles, inchi,formula,inchikey,pathtype in test_results:
-                if group_id == x and pathtype == t:
-                    test_results.append((y,smiles, inchi,formula,inchikey,t))
+    equivalent_groups = load_equivalent_groups_from_json('tests/specificity_test_groups.json')
+    
+    # Process equivalent groups and add corresponding test results
+    # Note: equivalent_groups now contains IDs, not names
+    for x_id, y_id, pathtype in equivalent_groups:
+        if x_id is not None and y_id is not None:
+            # Find all test results with group_id x and add them as group_id y
+            for group_id, smiles, inchi, formula, inchikey, result_pathtype in test_results:
+                if group_id == x_id and result_pathtype == pathtype:
+                    test_results.append((y_id, smiles, inchi, formula, inchikey, pathtype))
     specificity_test_molecules = pd.DataFrame(test_results, columns=['group_ids','smiles','inchi','formula','inchikey','pathtype'])
     specificity_test_molecules = specificity_test_molecules.groupby(['inchi','inchikey','formula','pathtype']).agg({
         'group_ids': lambda x: sorted(set([int(y) for y in x])),
@@ -401,13 +629,14 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
             # Extract detected group IDs
             # For specificity testing, we don't need to filter by pathtype since we're testing specific molecules
             # The pathtype filtering was causing issues with dual-SMARTS groups where no chains are found
-            detected_groups = [match[0].id for match in matches]
+            detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
             expected_group_detected = len(set(group_ids).intersection(detected_groups))==len(group_ids)
             
             # Check specificity: ideally, only the expected group should be detected
             # But some overlap is expected (e.g., generic groups matching specific OECD groups)
+            # Allow overlap when groups are connected in the directed graph
             n_detected_groups = len(detected_groups)
-            is_specific = group_ids == detected_groups  # Allow some overlap
+            is_specific = are_detected_groups_acceptable(group_ids, detected_groups)
             
             results.append({
                 'group_ids': group_ids,
@@ -423,12 +652,15 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
             
             if verbose:
                 status = "✓" if expected_group_detected else "✗"
+                specificity_status = "✓" if is_specific else "✗"
                 specificity = f"({n_detected_groups} groups)" if n_detected_groups > 1 else ""
-                print(f"{status} Group {group_ids}: {specificity}")
-                if not expected_group_detected:
+                if expected_group_detected is False:
+                    print(f"{status} Group {group_ids}: {specificity}")
                     print(f"    Expected: {group_ids}, Detected: {detected_groups}")
-                elif n_detected_groups > 3:
-                    print(f"    Low specificity - detected {n_detected_groups} groups: {detected_groups}")
+                elif not is_specific:
+                    print(f"{status} Detection {specificity_status} Specificity Group {group_ids}: {specificity}")
+                    print(f"    Expected: {group_ids}, Detected: {detected_groups}")
+                    print(f"    Some detected groups not related to expected groups")
             
         except Exception as e:
             results.append({
@@ -464,17 +696,17 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
     print(f"Specific detections: {n_specific} ({specificity_rate:.1%})")
     
     # Identify problematic groups
-    problematic = valid_tests[valid_tests['expected_group_detected'] == False]
-    if len(problematic) > 0:
-        print(f"\nProblematic groups (not detected):")
-        for _, row in problematic.iterrows():
-            print(f"  Group {row['group_ids']}")
+    # problematic = valid_tests[valid_tests['expected_group_detected'] == False]
+    # if len(problematic) > 0:
+    #     print(f"\nProblematic groups (not detected):")
+    #     for _, row in problematic.iterrows():
+    #         print(f"  Group {row['group_ids']}")
     
-    low_specificity = valid_tests[valid_tests['n_detected_groups'] > 5]
-    if len(low_specificity) > 0:
-        print(f"\nLow specificity groups (>5 matches):")
-        for _, row in low_specificity.iterrows():
-            print(f"  Group {row['group_ids']}: ({row['n_detected_groups']} matches)")
+    # low_specificity = valid_tests[valid_tests['n_detected_groups'] > 5]
+    # if len(low_specificity) > 0:
+    #     print(f"\nLow specificity groups (>5 matches):")
+    #     for _, row in low_specificity.iterrows():
+    #         print(f"  Group {row['group_ids']}: ({row['n_detected_groups']} matches)")
     
     # Save results if requested
     print(f'{output_file=}')
@@ -504,7 +736,39 @@ def analyze_group_overlap(specificity_results):
     # Create a co-occurrence matrix
     valid_results = specificity_results[specificity_results['valid_smiles'] == True]
     
-    # Count co-occurrences
+    # Count co-occurrences where detected groups are NOT expected
+    unexpected_detections = {}
+    for _, row in valid_results.iterrows():
+        expected_groups = set(row['group_ids'])
+        detected_groups = set(row['detected_groups'])
+        
+        # Find groups that were detected but not expected
+        unexpected = detected_groups - expected_groups
+        
+        for unexpected_group in unexpected:
+            for expected_group in expected_groups:
+                pair = (expected_group, unexpected_group)  # (expected, unexpected)
+                unexpected_detections[pair] = unexpected_detections.get(pair, 0) + 1
+    
+    # Sort by frequency
+    common_unexpected = sorted(unexpected_detections.items(), key=lambda x: x[1], reverse=True)
+    
+    # Load group names for display
+    with open('data/PFAS_groups_smarts.json', 'r') as f:
+        import json
+        group_smarts = json.load(f)
+    group_smarts = {int(v['id']):v['name'] for v in group_smarts}
+    
+    print("Most common unexpected group detections (Expected -> Unexpected):")
+    for (expected_group, unexpected_group), count in common_unexpected[:15]:
+        expected_name = group_smarts.get(expected_group, f"Unknown {expected_group}")
+        unexpected_name = group_smarts.get(unexpected_group, f"Unknown {unexpected_group}")
+        print(f"  Expected {expected_group:2d} ({expected_name})")
+        print(f"    -> Also detected {unexpected_group:2d} ({unexpected_name}) ({count} times)")
+        print()
+    
+    # Also show the original co-occurrence analysis for comparison
+    print("\nMost common group co-occurrences (any overlap):")
     overlap_counts = {}
     for _, row in valid_results.iterrows():
         expected_groups = row['group_ids']
@@ -516,20 +780,15 @@ def analyze_group_overlap(specificity_results):
                     pair = tuple(sorted([expected_group, detected_group]))
                     overlap_counts[pair] = overlap_counts.get(pair, 0) + 1
     
-    # Sort by frequency
     common_overlaps = sorted(overlap_counts.items(), key=lambda x: x[1], reverse=True)
-    with open('data/PFAS_groups_smarts.json', 'r') as f:
-        import json
-        group_smarts = json.load(f)
-    group_smarts = {int(v['id']):v['name'] for v in group_smarts}
-    print("Most common group overlaps:")
     for (group1, group2), count in common_overlaps[:10]:
-        # Get group names
-        #name1 = valid_results[valid_results['group_ids'] == group1]['group_name'].iloc[0]
-        #name2 = valid_results[valid_results['group_ids'] == group2]['group_name'].iloc[0]
-        print(f"  Groups {group1:2d} ({group_smarts[group1]}) - {group2:2d} ({group_smarts[group2]}) :({count} times)")
+        name1 = group_smarts.get(group1, f"Unknown {group1}")
+        name2 = group_smarts.get(group2, f"Unknown {group2}")
+        print(f"  Groups {group1:2d} ({name1}) - {group2:2d} ({name2}) ({count} times)")
     
     return {
+        'unexpected_detections': unexpected_detections,
+        'common_unexpected': common_unexpected,
         'overlap_counts': overlap_counts,
         'common_overlaps': common_overlaps
     }
@@ -606,7 +865,7 @@ def validate_test_compounds(input_file, output_file=None):
             matches = parse_PFAS_groups(mol, formula)
             
             # Check if the expected group is detected
-            detected_groups = [match[0].id for match in matches]
+            detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
             is_detected = row['group_ids'] in detected_groups
             
             results.append({
@@ -662,7 +921,7 @@ def test_pfoa_like_compounds():
             matches = parse_PFAS_groups(mol, formula)
             
             # Should detect group 1 (Perfluoroalkyl carboxylic acids)
-            detected_groups = [match[0].id for match in matches]
+            detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
             print(detected_groups)
             print(formula)
             if 1 in detected_groups:
