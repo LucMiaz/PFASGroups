@@ -8,7 +8,7 @@ import numpy as np
 import networkx as nx
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from .PFASGroupModel import PFASGroup
+from PFASGroupModel import PFASGroup
 from typing import Union, List, Dict
 from PIL import Image
 from io import BytesIO
@@ -16,6 +16,8 @@ import re
 import json
 import os
 from itertools import product, groupby
+import svgutils.transform as sg
+from draw_mols import draw_images, plot_mols
 
 PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl','Polyfluoro','Polyfluorobr']
 
@@ -201,8 +203,7 @@ def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error =
         if show_on_error is True:
             _mol = rwm.GetMol()
             try:
-                from elements.scripts.utility_image import plot_mol
-                img,_,_ = plot_mol(_mol, subwidth=600, subheight=600, svg=False, addAtomIndices=True, bondLineWidth=0.5, fixedBondLength=15, minFontSize=12)
+                img,_,_ = plot_mols([Chem.MolToSmiles(_mol)], subwidth=600, subheight=600, svg=False, addAtomIndices=True, bondLineWidth=0.5, fixedBondLength=15, minFontSize=12)
                 img.show()
             except:
                 pass
@@ -413,7 +414,7 @@ def parse_pfas(smiles_list):
         results.append(matches)
     return results
 
-def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, buffer=1, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3]):
+def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], **kwargs):
     """
     Plot PFAS group assignments for a list of SMILES strings.
     """
@@ -444,9 +445,9 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
         mol = Chem.AddHs(mol)
         matches = parse_PFAS_groups(mol, CalcMolFormula(mol))
         highlight_atoms = []
-        for pf, n, match_indices in matches:
+        for pf, n, n_cfchains, match_indices in matches:
             for match in match_indices:
-                highlight_atoms.extend(match)
+                highlight_atoms.extend(match['chain'])
         new_img = draw_subfig(f"{i}", atoms=highlight_atoms)
         imgs.append(new_img)
     if len(imgs) == 0:
@@ -466,10 +467,11 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
         imgs.append(d2d.GetDrawingText())
     # For now, just return the images as PIL Images
     if svg is True:
-        imgs = [Image.open(BytesIO(img.encode('utf-8'))) for img in imgs]
+        imgs = [sg.fromstring(img) for img in imgs]
     else:
         imgs = [Image.open(BytesIO(img)) for img in imgs]
     # Simple grid
+    return draw_images(imgs, buffer = kwargs.get('buffer',2), ncols = ncols, svg = svg)
     width = subwidth * min(ncols, len(imgs))
     height = subheight * ((len(imgs) + ncols - 1) // ncols)
     grid = Image.new('RGBA', (width, height), (255, 255, 255, 0))
