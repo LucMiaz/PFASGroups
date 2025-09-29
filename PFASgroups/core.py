@@ -448,8 +448,8 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
         for pf, n, n_cfchains, match_indices in matches:
             for match in match_indices:
                 highlight_atoms.extend(match['chain'])
-        new_img = draw_subfig(f"{i}", atoms=highlight_atoms)
-        imgs.append(new_img)
+                new_img = draw_subfig(f"{pf.name}", atoms=highlight_atoms)
+                imgs.append(new_img)
     if len(imgs) == 0:
         if svg is True:
             d2d = Draw.MolDraw2DSVG(subwidth, subheight)
