@@ -414,9 +414,24 @@ def parse_pfas(smiles_list):
         results.append(matches)
     return results
 
-def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], **kwargs):
+def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, **kwargs):
     """
     Plot PFAS group assignments for a list of SMILES strings.
+
+    :params smiles: List of SMILES strings or a single SMILES string.
+    :params display: Whether to display the plot.
+    :params path: Path to save the plot image.
+    :params svg: Whether to generate SVG images.
+    :params ipython: Whether to display in an IPython environment.
+    :params subwidth: Width of each sub-image.
+    :params subheight: Height of each sub-image.
+    :params ncols: Number of columns in the grid layout.
+    :params addAtomIndices: Whether to add atom indices to the plot.
+    :params addBondIndices: Whether to add bond indices to the plot.
+    :params paths: List of PFAS group indices or names to include in the plot.
+    :params split_matches: Whether to create separate images for each match.
+    :params SMARTS: Optional SMARTS pattern to highlight in the plots.
+    :params kwargs: Additional keyword arguments for customization.
     """
     from rdkit.Chem import Draw
     if isinstance(smiles, str):
@@ -447,9 +462,14 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
         highlight_atoms = []
         for pf, n, n_cfchains, match_indices in matches:
             for match in match_indices:
-                highlight_atoms.extend(match['chain'])
-                new_img = draw_subfig(f"{pf.name}", atoms=highlight_atoms)
-                imgs.append(new_img)
+                if SMARTS is None or match['SMARTS'] in SMARTS:
+                    highlight_atoms.extend(match['chain'])
+                    if split_matches is True:
+                        new_img = draw_subfig(f"{pf.name}, {match['SMARTS']}", atoms=match['chain'])
+                        imgs.append(new_img)
+        if split_matches is False:
+            new_img = draw_subfig(f"{SMARTS if SMARTS is not None else ''}", atoms=highlight_atoms)
+            imgs.append(new_img)
     if len(imgs) == 0:
         if svg is True:
             d2d = Draw.MolDraw2DSVG(subwidth, subheight)
