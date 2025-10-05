@@ -114,7 +114,7 @@
     "alias":"PFSiAs",
     "base_functional_groups":["sulfinic acid"],
     "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16](=O)[OH1])]",
+    "smarts1":"[#6$([#6][#16X3](=O)[OH1])]",
     "smarts2":null,
     "smartsPath":null,
     "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
