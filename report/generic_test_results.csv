@@ -1,0 +1,89 @@
+group_ids,group_name,chain_length,pathtype,smiles,detected,all_matches
+29,alcohol,9,Perfluoroalkyl,OC(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,True,"[14, 29]"
+29,alcohol,11,Perfluoroalkyl,OC(F)(F)C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,True,"[14, 29]"
+29,alcohol,11,Polyfluoroalkyl,[H]C(O)(F)C(C(F)(F)F)(C([H])(F)C([H])(F)F)C([H])(C([H])(F)F)C(F)(F)C([H])(C([H])(F)F)C([H])(F)F,True,[29]
+29,alcohol,5,Polyfluoroalkyl,[H]C(F)(F)C([H])(O)C([H])(F)C([H])(F)C([H])(F)F,True,[29]
+30,ketone,10,Perfluoroalkyl,O=C(C(F)(F)F)C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,True,"[27, 28, 30]"
+30,ketone,11,Perfluoroalkyl,O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,True,"[27, 28, 30]"
+30,ketone,13,Polyfluoroalkyl,[H]C([H])(F)C(=O)C(C([H])(F)F)(C([H])(F)C([H])([H])F)C(C(F)(F)F)(C([H])(F)C(F)(F)F)C(F)(F)C(F)(F)C([H])(F)C([H])([H])F,True,"[28, 30]"
+30,ketone,6,Polyfluoroalkyl,[H]C(F)(F)C(=O)C([H])(F)C([H])(F)C(F)(F)C(F)(F)C([H])(F)F,True,"[28, 30]"
+31,ether,6,Perfluoroalkyl,FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,True,"[17, 31]"
+31,ether,7,Perfluoroalkyl,FC(F)(F)C(F)(F)OC(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,True,"[17, 31]"
+31,ether,13,Polyfluoroalkyl,[H]C([H])(F)OC(C([H])(F)C([H])([H])F)(C([H])(C(F)(F)F)C(F)(F)F)C(C([H])(F)F)(C([H])(F)C([H])(F)F)C([H])(F)C([H])(F)F,True,"[17, 31]"
+31,ether,5,Polyfluoroalkyl,[H]C([H])(F)C(F)(F)OC([H])(C([H])([H])F)C([H])(F)F,True,"[17, 31]"
+32,ester,9,Perfluoroalkyl,O=C(OCC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,True,[32]
+32,ester,6,Perfluoroalkyl,O=C(OCC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,True,[32]
+32,ester,14,Polyfluoroalkyl,[H]C(F)(F)C(=O)OCC(C(F)(F)F)(C([H])(F)C(F)(F)F)C(C([H])(F)F)(C([H])(F)F)C(C([H])(F)F)(C([H])(F)C([H])([H])F)C([H])(F)C([H])(F)F,True,[32]
+32,ester,11,Polyfluoroalkyl,[H]C(F)(F)C(=O)OCC([H])(C([H])(F)C([H])(F)F)C([H])(F)C(C([H])([H])F)(C([H])(F)F)C(F)(C([H])([H])F)C([H])([H])F,True,[32]
+33,carboxylic acid,6,Perfluoroalkyl,O=C(O)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,True,"[1, 2, 33]"
+33,carboxylic acid,10,Perfluoroalkyl,O=C(O)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,True,"[1, 2, 33]"
+33,carboxylic acid,8,Polyfluoroalkyl,[H]C([H])(F)C([H])(F)C(F)(F)C(F)(C([H])(F)C(=O)O)C(F)(C(F)(F)F)C(F)(F)F,True,"[2, 33]"
+33,carboxylic acid,6,Polyfluoroalkyl,[H]C(F)(F)C(C([H])(F)F)(C(F)(F)F)C([H])([H])C([H])(F)C(=O)O,True,"[2, 33]"
+34,amide,6,Perfluoroalkyl,O=C(NC(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,True,[34]
+34,amide,9,Perfluoroalkyl,O=C(NC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,True,[34]
+34,amide,6,Polyfluoroalkyl,[H]C([H])(F)C(=O)NC([H])(F)C([H])(F)C(F)(F)C(F)(F)C([H])(F)F,True,[34]
+34,amide,8,Polyfluoroalkyl,[H]C([H])(F)C(NC(=O)C([H])([H])C(F)(F)C(F)(F)F)(C([H])(F)F)C([H])(F)C([H])(F)F,True,[34]
+35,acyl halide,8,Perfluoroalkyl,O=C(Cl)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,True,[35]
+35,acyl halide,7,Perfluoroalkyl,O=C(Cl)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,True,[35]
+35,acyl halide,5,Polyfluoroalkyl,[H]C(F)(F)C([H])(F)C(F)(C(F)(F)F)C(F)(F)C(=O)Cl,True,[35]
+35,acyl halide,13,Polyfluoroalkyl,[H]C([H])(F)C([H])([H])C(C(F)(F)F)(C(F)(F)F)C([H])(C([H])(F)C(=O)Cl)C(F)(C([H])(F)F)C(C([H])([H])F)(C(F)(F)F)C(F)(F)F,True,[35]
+36,sulfonic acid,14,Perfluoroalkyl,O=S(=O)(O)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,True,"[6, 7, 11, 36]"
+36,sulfonic acid,14,Perfluoroalkyl,O=S(=O)(O)C(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,True,"[6, 7, 11, 36]"
+36,sulfonic acid,12,Polyfluoroalkyl,[H]C([H])(F)C([H])(F)C([H])(C([H])(F)C(F)(C([H])(F)C([H])([H])F)C(F)(C([H])(F)F)C([H])(F)F)C([H])(F)C(F)(F)S(=O)(=O)O,True,"[7, 36]"
+36,sulfonic acid,5,Polyfluoroalkyl,[H]C([H])(F)C(F)(F)C(F)(C([H])(F)F)C([H])([H])S(=O)(=O)O,True,"[7, 36]"
+37,sulfenic acid,10,Perfluoroalkyl,OSC(F)(F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,True,[37]
+37,sulfenic acid,12,Perfluoroalkyl,OSC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,True,[37]
+37,sulfenic acid,13,Polyfluoroalkyl,[H]C([H])([H])C(C(F)(F)F)(C([H])(F)C(F)(F)F)C(C([H])([H])C(F)(F)C([H])(F)F)(C([H])(F)C([H])(F)SO)C(F)(F)C([H])([H])F,True,[37]
+37,sulfenic acid,6,Polyfluoroalkyl,[H]C([H])(F)C([H])(F)C(F)(C(F)(F)F)C(F)(F)C([H])(F)SO,True,[37]
+38,sulfinic acid,8,Perfluoroalkyl,O=S(O)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,True,"[11, 38]"
+38,sulfinic acid,7,Perfluoroalkyl,O=S(O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,True,"[11, 38]"
+38,sulfinic acid,11,Polyfluoroalkyl,[H]C(F)(F)C([H])([H])C(F)(C([H])(F)F)C(F)(F)C(F)(C([H])(F)C([H])(F)F)C([H])(C([H])(F)F)C(F)(F)S(=O)O,True,[38]
+38,sulfinic acid,12,Polyfluoroalkyl,[H]C([H])([H])C(C([H])(F)S(=O)O)(C([H])(C([H])(F)C([H])(F)F)C([H])(F)C([H])(F)F)C(C([H])([H])F)(C([H])(F)F)C(F)(F)F,True,[38]
+39,phosphonic acid,12,Perfluoroalkyl,O=P(O)(O)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,True,"[12, 39]"
+39,phosphonic acid,9,Perfluoroalkyl,O=P(O)(O)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,True,"[12, 39]"
+39,phosphonic acid,12,Polyfluoroalkyl,[H]C([H])(F)C(C(F)(F)C(F)(F)C([H])(F)F)(C([H])(C([H])([H])C([H])(F)F)C(F)(F)C([H])(F)F)C(F)(C([H])(F)F)P(=O)(O)O,True,[39]
+39,phosphonic acid,11,Polyfluoroalkyl,[H]C([H])(F)C(F)(C(F)(C([H])(F)C([H])(F)C(F)(F)C(F)(F)F)C([H])(C([H])(F)F)C([H])(F)F)C([H])([H])P(=O)(O)O,True,[39]
+40,phosphinic acid,9,Perfluoroalkyl,O=[PH](O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,True,"[13, 40]"
+40,phosphinic acid,7,Perfluoroalkyl,O=[PH](O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,True,"[13, 40]"
+40,phosphinic acid,14,Polyfluoroalkyl,[H]C(F)(F)C([H])(F)C(F)([PH](=O)O)C([H])(C([H])(F)F)C(C(F)(F)F)(C([H])(F)C(F)(F)F)C(F)(F)C([H])(F)C([H])(F)C([H])([H])C(F)(F)F,True,[40]
+40,phosphinic acid,13,Polyfluoroalkyl,[H]C([H])(F)C([H])(F)C(F)(C(F)(F)C([H])([H])F)C(C([H])([H])F)(C(F)(F)F)C([H])(C([H])([H])C([H])(F)[PH](=O)O)C(F)(F)C(F)(F)F,True,[40]
+41,ethene,13,Perfluoroalkyl,FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,True,"[18, 19, 41, 49]"
+41,ethene,12,Perfluoroalkyl,FC(=C(F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,True,"[18, 19, 41, 49]"
+41,ethene,7,Polyfluoroalkyl,[H]C([H])(F)C([H])(F)C(F)(C([H])(F)F)C([H])(F)C(F)(F)C(F)=C(F)C(F)(F)F,True,"[19, 41, 49]"
+41,ethene,8,Polyfluoroalkyl,[H]C([H])(F)C(F)=C(F)C(F)(F)C(C([H])([H])F)(C([H])(F)F)C([H])(C([H])(F)F)C(F)(F)F,True,"[19, 41, 49]"
+42,iodide,10,Perfluoroalkyl,FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(I)C(F)(C(F)(F)F)C(F)(F)F,True,"[25, 42]"
+42,iodide,13,Perfluoroalkyl,FC(F)(F)C(F)(F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(I)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,True,"[25, 42]"
+42,iodide,8,Polyfluoroalkyl,[H]C([H])(F)C(C([H])(F)F)(C(F)(F)C(F)(F)C([H])(F)C([H])(F)F)C(F)(I)C([H])(F)F,True,[42]
+42,iodide,6,Polyfluoroalkyl,[H]C([H])(F)C([H])(F)C(F)(C(F)(F)F)C([H])(F)C(F)(I)C([H])(F)F,True,[42]
+43,sulfonamide,11,Perfluoroalkyl,O=S(=O)(NC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,True,"[43, 47]"
+43,sulfonamide,5,Perfluoroalkyl,O=S(=O)(NC(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,True,"[43, 47]"
+43,sulfonamide,14,Polyfluoroalkyl,[H]C([H])(F)C(F)(F)C(C([H])(F)F)(C(F)(F)F)C(F)(F)C(C([H])(F)F)(C([H])(F)F)C(F)(NS(=O)(=O)C([H])(F)C([H])([H])F)C([H])(F)C(F)(F)F,True,"[43, 47]"
+43,sulfonamide,12,Polyfluoroalkyl,[H]C([H])(F)C([H])(F)C(F)(C([H])(F)F)C(C([H])(F)F)(C(F)(F)F)C(NS(=O)(=O)C([H])(F)F)(C([H])(F)F)C([H])(F)C([H])(F)F,True,"[43, 47]"
+44,azole,12,Perfluoroalkyl,FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)c1ncc[nH]1)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,True,"[22, 44, 51]"
+44,azole,7,Perfluoroalkyl,FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)c1ncc[nH]1)C(F)(F)C(F)(F)F,True,"[22, 44, 51]"
+44,azole,8,Polyfluoroalkyl,[H]C([H])(F)C(F)(F)C([H])(C([H])(F)c1ncc[nH]1)C([H])(F)C([H])(C([H])([H])F)C([H])(F)F,True,"[22, 44, 51]"
+44,azole,6,Polyfluoroalkyl,[H]C([H])(F)C(F)(C([H])(F)C(F)(F)F)C([H])(F)C(F)(F)c1ncc[nH]1,True,"[22, 44, 51]"
+45,azine,5,Perfluoroalkyl,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1,True,"[22, 45, 51]"
+45,azine,5,Perfluoroalkyl,FC(F)(F)C(F)(F)C(c1ccccn1)(C(F)(F)F)C(F)(F)F,True,"[22, 45, 51]"
+45,azine,7,Polyfluoroalkyl,[H]C(F)(F)C([H])(F)C([H])(C([H])(F)C(F)(F)F)C([H])(c1ccccn1)C(F)(F)F,True,"[22, 45, 51]"
+45,azine,13,Polyfluoroalkyl,[H]C([H])(F)C(F)(C(C([H])([H])F)(C([H])([H])F)C(F)(F)F)C(C([H])(F)F)(C(F)(F)C([H])([H])C([H])(F)F)C(F)(c1ccccn1)C(F)(F)F,True,"[22, 45, 51]"
+46,benzodioxole,12,Perfluoroalkyl,FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)cc2O1,True,"[22, 31, 46, 51]"
+46,benzodioxole,14,Perfluoroalkyl,FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,True,"[22, 31, 46, 51]"
+46,benzodioxole,6,Polyfluoroalkyl,[H]C([H])(F)C(F)(C(F)(F)F)C([H])(C([H])(F)F)C([H])(F)c1ccc2c(c1)OC(F)(F)O2,True,"[22, 31, 46, 51]"
+46,benzodioxole,8,Polyfluoroalkyl,[H]C([H])(F)C([H])(F)C([H])(C(F)(F)C([H])(F)F)C(F)(C(F)(F)F)C([H])(F)c1ccc2c(c1)OC(F)(F)O2,True,"[22, 31, 46, 51]"
+47,amine,9,Perfluoroalkyl,FC(F)(F)NC(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,True,[47]
+47,amine,11,Perfluoroalkyl,FC(F)(F)NC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,True,[47]
+47,amine,6,Polyfluoroalkyl,[H]C(F)(F)NC(C([H])(F)F)(C(F)(F)F)C([H])(F)C([H])(F)F,True,[47]
+47,amine,11,Polyfluoroalkyl,[H]C(F)(F)NC(C([H])([H])F)(C([H])(F)C([H])(F)F)C(F)(F)C([H])(F)C(F)(F)C(F)(C([H])([H])F)C([H])(F)F,True,[47]
+49,alkene,12,Perfluoroalkyl,FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,True,"[18, 19, 41, 49]"
+49,alkene,14,Perfluoroalkyl,FC(=C(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,True,"[18, 19, 41, 49]"
+49,alkene,13,Polyfluoroalkyl,[H]C(F)(F)C([H])([H])C(C([H])(F)F)(C(F)(F)C([H])(F)F)C([H])(C(F)=C(F)C(C([H])(F)F)(C([H])(F)F)C([H])(F)F)C([H])(F)C([H])(F)F,True,"[19, 41, 49]"
+49,alkene,7,Polyfluoroalkyl,[H]C([H])(F)C([H])(F)C(F)=C(F)C([H])(C(F)(F)F)C([H])(C([H])(F)F)C(F)(F)F,True,"[19, 41, 49]"
+50,alkyne,12,Perfluoroalkyl,FC(F)(F)C(F)(F)C(F)(C#CC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,True,[50]
+50,alkyne,6,Perfluoroalkyl,FC(F)(F)C#CC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,True,[50]
+50,alkyne,11,Polyfluoroalkyl,[H]C(F)(F)C#CC([H])(F)C(C(F)(F)F)(C([H])(C([H])(F)F)C(F)(F)C([H])([H])F)C(F)(C([H])([H])F)C(F)(F)F,True,[50]
+50,alkyne,12,Polyfluoroalkyl,[H]C(F)(F)C#CC(F)(C([H])(F)C(C([H])(F)F)(C([H])([H])C([H])(F)C(F)(F)F)C(F)(F)C([H])([H])F)C(F)(F)C(F)(F)F,True,[50]
+51,Side-chain aromatics,8,Perfluoroalkyl,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)c1ccccc1)C(F)(F)C(F)(F)F,True,"[22, 51]"
+51,Side-chain aromatics,8,Perfluoroalkyl,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccc1,True,"[22, 51]"
+51,Side-chain aromatics,5,Polyfluoroalkyl,[H]C(F)(F)C(F)(F)C(F)(F)C([H])([H])C(F)(F)c1ccccc1,True,"[22, 51]"
+51,Side-chain aromatics,7,Polyfluoroalkyl,[H]C([H])([H])C(C(F)(F)F)(C([H])(F)C(F)(F)c1ccccc1)C(F)(F)C([H])(F)F,True,"[22, 51]"

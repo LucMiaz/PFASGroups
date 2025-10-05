@@ -4,8 +4,8 @@ Unit tests for PFASgroups core functions.
 
 from rdkit import Chem
 try:
-    from core import parse_PFAS_groups
-    from generate_mol import generate_random_mol
+    from ..core import parse_PFAS_groups
+    from ..generate_mol import generate_random_mol
 except ImportError:
     try:
         from .core import parse_PFAS_groups

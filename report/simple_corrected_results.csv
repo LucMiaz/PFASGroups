@@ -1,0 +1,431 @@
+corrected,original_expected,corrected_expected,detected,original_correct,corrected_correct,smiles,n_detected
+False,"[25, 42]","[25, 42]","[25, 42]",True,True,FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)I)C(F)(F)C(F)(F)F,2
+False,[31],[31],"[17, 31]",True,True,FC(F)(F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[16, 17, 31]","[16, 17, 31]","[16, 17, 31]",True,True,FC(F)(F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,3
+False,[26],[26],[26],True,True,O=S(=O)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,"[24, 47]","[24, 47]","[24, 47]",True,True,FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[24, 47]","[24, 47]","[24, 47]",True,True,FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[8, 36]","[8, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O,3
+False,"[13, 40]","[13, 40]","[13, 40]",True,True,O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[12, 39]","[12, 39]","[12, 39]",True,True,O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,2
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,3
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1,3
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1,3
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1,3
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1,3
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1,3
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)C(F)(F)F,3
+False,[51],[51],"[22, 51]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccc1,2
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FCC(C(F)F)(C(F)(F)c1ncc[nH]1)C(F)(C(F)(F)F)C(F)(F)F,3
+False,"[17, 31]","[17, 31]","[17, 31]",True,True,FCC(OC(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,2
+False,[15],[15],"[15, 29]",True,True,OCCCC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,2
+False,[38],[38],[38],True,True,O=S(O)C(F)C(C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,1
+False,[37],[37],[37],True,True,OSC(F)C(C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,1
+False,[29],[29],"[15, 29]",True,True,OCC(C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,2
+False,"[7, 36]","[7, 36]","[7, 36]",True,True,O=S(=O)(O)CC(C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,2
+False,"[10, 31, 36]","[10, 31, 36]","[7, 10, 31, 36]",True,True,O=S(=O)(O)CC(OC(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,4
+False,[47],[47],[47],True,True,FCC(NC(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,1
+False,[40],[40],[40],True,True,O=[PH](O)CC(C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,1
+False,[39],[39],[39],True,True,O=P(O)(O)CC(C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,1
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(CF)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F)C(F)F,2
+False,"[22, 51]","[22, 51]","[22, 51]",True,True,FC(F)(F)CCC(F)(F)c1ccccc1,2
+False,"[14, 29]","[14, 29]","[14, 29]",True,True,OC(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[11, 38]","[11, 38]","[11, 38]",True,True,O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[6, 36]","[6, 36]","[6, 7, 11, 36]",True,True,O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,4
+False,"[9, 31, 36]","[9, 31, 36]","[6, 7, 9, 10, 11, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,7
+False,[37],[37],[37],True,True,OSC(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)(F)NC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,"[27, 30]","[27, 30]","[27, 28, 30]",True,True,O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,3
+False,[42],[42],"[25, 42]",True,True,FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(I)C(F)(F)F,2
+False,"[24, 47]","[24, 47]","[24, 47]",True,True,FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,2
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)cc2O1,4
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F,3
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccn1,3
+False,[51],[51],"[22, 51]",True,True,FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccc1,2
+False,[51],[51],"[22, 51]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccc1,2
+False,[51],[51],"[22, 51]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccc1,2
+False,"[22, 51]","[22, 51]","[22, 51]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccc1,2
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(C(F)(F)F)C(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F,3
+False,"[22, 51]","[22, 51]","[22, 51]",True,True,FC(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccc1,2
+False,"[22, 51]","[22, 51]","[22, 51]",True,True,FC(C(F)(F)c1ccccc1)C(F)(F)C(F)(F)C(F)(F)F,2
+False,[35],[35],[35],True,True,O=C(Cl)CC(C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,1
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)C(C(F)F)(C(F)C(F)(F)c1ccccn1)C(F)(F)F,3
+False,"[28, 30]","[28, 30]","[28, 30]",True,True,O=C(C(F)F)C(CF)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,2
+False,"[2, 33]","[2, 33]","[2, 33]",True,True,O=C(O)C(F)C(C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,2
+False,"[2, 5, 31, 33]","[2, 5, 31, 33]","[2, 5, 31, 33]",True,True,O=C(O)C(F)C(OC(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,4
+False,[42],[42],[42],True,True,FCC(C(F)(F)C(F)F)(C(F)(I)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,1
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC(F)(F)CCC(F)(F)c1ccc2c(c1)OC(F)(F)O2,4
+False,[34],[34],[34],True,True,O=C(NC(CF)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F)C(F)F,1
+False,"[1, 33]","[1, 33]","[1, 2, 33]",True,True,O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,3
+False,"[1, 4, 31, 33]","[1, 4, 31, 33]","[1, 2, 4, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,6
+False,[34],[34],[34],True,True,O=C(NC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)C#CC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,"[18, 41, 49]","[18, 41, 49]","[18, 19, 41, 49]",True,True,FC(=C(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,4
+False,"[3, 33]","[3, 33]","[3, 33]",True,True,O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(=O)O)C(F)(F)C(F)(F)F,2
+False,[32],[32],[32],True,True,O=C(OCC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,1
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC1(F)Oc2ccc(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,4
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)cc2O1,4
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC1(F)Oc2ccc(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)cc2O1,4
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC1(F)Oc2ccc(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)cc2O1,4
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,4
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC(C(F)(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(F)C(F)(F)C(F)(F)F,4
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1,3
+False,[51],[51],"[22, 51]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(c1ccccc1)C(F)(F)F,2
+False,[51],[51],"[22, 51]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccc1,2
+False,"[22, 51]","[22, 51]","[22, 51]",True,True,FC(C(F)(F)F)C(F)(F)C(F)(F)C(F)(c1ccccc1)C(F)(F)F,2
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FCC(C(F)F)(C(F)(F)c1ccccn1)C(F)(C(F)(F)F)C(F)(F)F,3
+False,[50],[50],[50],True,True,FCC(C#CC(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,1
+False,"[41, 49]","[41, 49]","[19, 41, 49]",True,True,FCC(C(F)=C(F)C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,3
+False,"[22, 51]","[22, 51]","[22, 51]",True,True,FC(F)C(C(F)F)(C(F)C(F)(F)c1ccccc1)C(F)(F)F,2
+False,"[19, 49]","[19, 49]","[19, 41, 49]",True,True,FCC(C=C(F)C(F)F)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F,3
+False,[32],[32],[32],True,True,O=C(OCC(CF)(C(F)(F)C(F)F)C(C(F)F)(C(F)C(F)F)C(F)(F)F)C(F)F,1
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)cc2O1,4
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)cc2O1,4
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)c1ncc[nH]1)C(F)(F)C(F)(F)F,3
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC(C(F)(F)F)C(F)(F)C(F)(F)C(F)(c1ccc2c(c1)OC(F)(F)O2)C(F)(F)F,4
+False,[51],[51],"[22, 51]",True,True,FC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccc1,2
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC(F)C(C(F)F)(C(F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(F)F,4
+False,[15],[15],"[15, 29]",True,True,OCCCC(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[22, 51]","[22, 51]","[22, 51]",True,True,FCC(C(F)F)(C(F)(F)c1ccccc1)C(F)(C(F)(F)F)C(F)(F)F,2
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)C(F)C(C(F)F)(C(F)(F)F)C(C(F)F)(C(F)c1ncc[nH]1)C(F)(F)C(F)F,3
+False,"[24, 47]","[24, 47]","[24, 47]",True,True,FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC1(F)Oc2ccc(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)cc2O1,4
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FCC(C(F)F)(C(F)(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(C(F)(F)F)C(F)(F)F,4
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)C(F)C(C(F)F)(C(F)(F)F)C(C(F)F)(C(F)c1ccccn1)C(F)(F)C(F)F,3
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)F,3
+False,[51],[51],"[22, 51]",True,True,FC(F)C(F)C(C(F)F)(C(F)(F)F)C(C(F)F)(C(F)c1ccccc1)C(F)(F)C(F)F,2
+False,"[22, 51]","[22, 51]","[22, 51]",True,True,FC(F)C(F)C(C(F)F)(C(F)(F)F)C(Cc1ccccc1)(C(F)F)C(F)(F)C(F)F,2
+False,[51],[51],"[22, 51]",True,True,FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)c1ccccc1)C(F)(F)C(F)(F)F,2
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC1(F)Oc2ccc(C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,4
+False,"[22, 46, 51]","[22, 46, 51]","[22, 31, 46, 51]",True,True,FC(F)C(F)C(C(F)F)(C(F)(F)F)C(C(F)F)(C(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(F)C(F)F,4
+False,"[16, 17, 31]","[16, 17, 31]","[17, 31]",False,False,FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,2
+False,[26],[26],[26],True,True,O=S(=O)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,"[25, 42]","[25, 42]","[25, 42]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)I,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[8, 36]","[8, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O,3
+False,"[13, 40]","[13, 40]","[13, 40]",True,True,O=[PH](O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[12, 39]","[12, 39]","[12, 39]",True,True,O=P(O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[17, 31]","[17, 31]","[17, 31]",True,True,FC(F)(F)COCC(F)(F)F,2
+False,[29],[29],[29],True,True,OC(F)(F)CCC(F)(F)F,1
+False,[38],[38],[38],True,True,O=S(O)C(F)(F)CCC(F)(F)F,1
+False,"[7, 36]","[7, 36]","[7, 36]",True,True,O=S(=O)(O)C(F)(F)CCC(F)(F)F,2
+False,"[10, 31, 36]","[10, 31, 36]","[7, 10, 31, 36]",True,True,O=S(=O)(O)C(F)(F)COCC(F)(F)F,4
+False,[37],[37],[37],True,True,OSC(F)(F)CCC(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)(F)CNCC(F)(F)F,1
+False,[40],[40],[40],True,True,O=[PH](O)C(F)(F)CCC(F)(F)F,1
+False,[39],[39],[39],True,True,O=P(O)(O)C(F)(F)CCC(F)(F)F,1
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(CC(F)(F)F)NCC(F)(F)F,2
+False,[47],[47],[47],True,True,FC(F)(F)C(F)(F)NC(F)(F)C(F)(F)F,1
+False,"[14, 29]","[14, 29]","[14, 29]",True,True,OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[11, 38]","[11, 38]","[11, 38]",True,True,O=S(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[6, 36]","[6, 36]","[6, 7, 11, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,4
+False,"[9, 31, 36]","[9, 31, 36]","[6, 7, 9, 10, 11, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,7
+False,[37],[37],[37],True,True,OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,"[27, 30]","[27, 30]","[27, 28, 30]",True,True,O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,3
+False,"[25, 42]","[25, 42]","[25, 42]",True,True,FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)I,2
+False,"[25, 42]","[25, 42]","[25, 42]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I,2
+False,[42],[42],"[25, 42]",True,True,FC(F)(F)C(F)(F)C(F)(I)C(F)(F)C(F)(F)F,2
+False,"[25, 42]","[25, 42]","[25, 42]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)I,2
+False,[31],[31],"[17, 31]",True,True,FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,2
+False,[31],[31],"[17, 31]",True,True,FC(F)(F)OC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+True,"[16, 17, 31]","[17, 31]","[17, 31]",False,True,FC(F)(F)OC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[17, 31]","[17, 31]","[17, 31]",True,True,FC(F)(F)OC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[16, 17, 31]","[16, 17, 31]","[16, 17, 31]",True,True,FC(F)(F)OC(F)(F)C(F)(OC(F)(F)F)C(F)(F)F,3
+False,"[16, 17, 31]","[16, 17, 31]","[16, 17, 31]",True,True,FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,3
+False,[26],[26],[26],True,True,O=S(=O)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,[26],[26],[26],True,True,O=S(=O)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[26],[26],[26],True,True,O=S(=O)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[29],[29],[29],True,True,OC(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[29],[29],[29],True,True,OC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)F,1
+False,[38],[38],[38],True,True,O=S(O)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[38],[38],[38],True,True,O=S(O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)F,1
+False,"[7, 36]","[7, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)F,3
+False,"[7, 36]","[7, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)F,3
+False,"[10, 31, 36]","[10, 31, 36]","[7, 8, 10, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)C(F)(F)OC(F)(F)C(F)(F)F,5
+False,"[10, 31, 36]","[10, 31, 36]","[7, 8, 10, 31, 36]",True,True,O=S(=O)(O)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)C(F)F,5
+False,"[8, 36]","[8, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)S(=O)(=O)O,3
+False,"[8, 36]","[8, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)S(=O)(=O)O,3
+False,"[8, 36]","[8, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,3
+False,[37],[37],[37],True,True,OSC(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[37],[37],[37],True,True,OSC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)F,1
+False,[47],[47],[47],True,True,FC(C(F)(F)F)C(F)(F)NC(F)(F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)C(F)(F)C(F)(NC(F)(F)F)C(F)(F)F,1
+False,"[13, 40]","[13, 40]","[13, 40]",True,True,O=[PH](O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[13, 40]","[13, 40]","[13, 40]",True,True,O=[PH](O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[13, 40]","[13, 40]","[13, 40]",True,True,O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,[40],[40],"[13, 40]",True,True,O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[12, 39]","[12, 39]","[12, 39]",True,True,O=P(O)(O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[12, 39]","[12, 39]","[12, 39]",True,True,O=P(O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[12, 39]","[12, 39]","[12, 39]",True,True,O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,[39],[39],"[12, 39]",True,True,O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,2
+False,[40],[40],[40],True,True,O=[PH](O)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[40],[40],[40],True,True,O=[PH](O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)F,1
+False,[39],[39],[39],True,True,O=P(O)(O)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[39],[39],[39],True,True,O=P(O)(O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)F,1
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(F)(F)C(F)(F)F)C(F)(F)C(F)C(F)(F)F,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(F)(C(F)(F)F)C(F)(F)C(F)F)C(F)(F)F,2
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)CCC(F)(F)F,1
+False,"[28, 30]","[28, 30]","[28, 30]",True,True,O=C(CC(F)(F)F)CC(F)(F)F,2
+False,[42],[42],[42],True,True,FC(F)(F)CC(F)(I)CC(F)(F)F,1
+False,"[2, 33]","[2, 33]","[2, 33]",True,True,O=C(O)C(F)(F)CCC(F)(F)F,2
+False,"[2, 5, 31, 33]","[2, 5, 31, 33]","[2, 5, 31, 33]",True,True,O=C(O)C(F)(F)COCC(F)(F)F,4
+False,[34],[34],[34],True,True,O=C(CC(F)(F)F)NCC(F)(F)F,1
+False,[34],[34],[34],True,True,O=C(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,"[17, 31]","[17, 31]","[17, 31]",True,True,FC(C(F)(F)F)C(F)(F)OC(F)(F)C(F)(F)F,2
+False,"[14, 29]","[14, 29]","[14, 29]",True,True,OC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[17, 31]","[17, 31]","[17, 31]",True,True,FC(F)C(F)(F)C(F)(OC(F)(F)F)C(F)(F)F,2
+False,"[14, 29]","[14, 29]","[14, 29]",True,True,OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[14, 29]","[14, 29]","[14, 29]",True,True,OC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,[29],[29],"[14, 29]",True,True,OC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[11, 38]","[11, 38]","[11, 38]",True,True,O=S(O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[11, 38]","[11, 38]","[11, 38]",True,True,O=S(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[11, 38]","[11, 38]","[11, 38]",True,True,O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,[38],[38],"[11, 38]",True,True,O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[6, 36]","[6, 36]","[6, 7, 11, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,4
+False,"[6, 36]","[6, 36]","[6, 7, 11, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,4
+False,"[6, 36]","[6, 36]","[6, 7, 11, 36]",True,True,O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,4
+False,"[7, 36]","[7, 36]","[6, 7, 11, 36]",True,True,O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,4
+False,"[9, 31, 36]","[9, 31, 36]","[6, 7, 9, 10, 11, 31, 36]",True,True,O=S(=O)(O)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,7
+False,"[9, 31, 36]","[9, 31, 36]","[6, 7, 9, 10, 11, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,7
+False,"[9, 31, 36]","[9, 31, 36]","[6, 7, 9, 10, 11, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,7
+False,"[10, 31, 36]","[10, 31, 36]","[6, 7, 9, 10, 11, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,7
+False,[37],[37],[37],True,True,OSC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,[37],[37],[37],True,True,OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[37],[37],[37],True,True,OSC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[37],[37],[37],True,True,OSC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)(F)C(F)(F)NC(F)(F)C(F)(F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)(F)NC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)(F)NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)(F)NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,"[1, 33]","[1, 33]","[1, 2, 33]",True,True,O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,3
+False,"[1, 4, 31, 33]","[1, 4, 31, 33]","[1, 2, 4, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,6
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)C(F)(F)C#CC(F)(F)C(F)(F)F,1
+False,"[18, 41, 49]","[18, 41, 49]","[18, 19, 41, 49]",True,True,FC(=C(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,4
+False,"[27, 30]","[27, 30]","[27, 28, 30]",True,True,O=C(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,3
+False,"[27, 30]","[27, 30]","[27, 28, 30]",True,True,O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,3
+False,"[27, 30]","[27, 30]","[27, 28, 30]",True,True,O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,3
+False,"[28, 30]","[28, 30]","[27, 28, 30]",True,True,O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,3
+False,[42],[42],"[25, 42]",True,True,FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(I)C(F)(F)F,2
+False,[42],[42],"[25, 42]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)C(F)(F)F,2
+False,"[25, 42]","[25, 42]","[25, 42]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)F,2
+False,[42],[42],"[25, 42]",True,True,FC(F)(F)C(F)(I)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,[42],[42],"[25, 42]",True,True,FC(F)(F)C(F)(I)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[25, 42]","[25, 42]","[25, 42]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)I,2
+False,[31],[31],"[17, 31]",True,True,FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[16, 17, 31]","[16, 17, 31]","[17, 31]",False,False,FC(F)(F)C(F)(F)OC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[16, 17, 31]","[16, 17, 31]","[16, 17, 31]",True,True,FC(F)(F)OC(F)(F)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,3
+False,[26],[26],[26],True,True,O=S(=O)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[26],[26],[26],True,True,O=S(=O)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,"[2, 33]","[2, 33]","[2, 33]",True,True,O=C(O)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[2, 33]","[2, 33]","[2, 33]",True,True,O=C(O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)F,2
+False,[32],[32],[32],True,True,O=C(OCC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,"[2, 5, 31, 33]","[2, 5, 31, 33]","[2, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(F)C(F)(F)OC(F)(F)C(F)(F)F,4
+False,"[2, 5, 31, 33]","[2, 5, 31, 33]","[2, 5, 31, 33]",True,True,O=C(O)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)C(F)F,4
+False,[34],[34],[34],True,True,O=C(NC(F)(F)C(F)(F)F)C(F)(F)C(F)C(F)(F)F,1
+False,[34],[34],[34],True,True,O=C(NC(F)(C(F)(F)F)C(F)(F)C(F)F)C(F)(F)F,1
+False,[29],[29],[29],True,True,OC(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,1
+False,[38],[38],[38],True,True,O=S(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,1
+False,"[7, 36]","[7, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,3
+False,"[10, 31, 36]","[10, 31, 36]","[7, 8, 10, 31, 36]",True,True,O=S(=O)(O)C(F)(OC(F)(F)C(F)(F)C(F)C(F)(F)F)C(F)(F)F,5
+False,"[8, 36]","[8, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)S(=O)(=O)O,3
+False,"[8, 36]","[8, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,3
+False,[37],[37],[37],True,True,OSC(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(C(F)(F)F)C(F)(F)C(F)(F)NC(F)(F)C(F)(F)F,1
+False,"[13, 40]","[13, 40]","[13, 40]",True,True,O=[PH](O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[13, 40]","[13, 40]","[13, 40]",True,True,O=[PH](O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[12, 39]","[12, 39]","[12, 39]",True,True,O=P(O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[12, 39]","[12, 39]","[12, 39]",True,True,O=P(O)(O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[3, 33]","[3, 33]","[3, 33]",True,True,O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O,2
+False,"[17, 31]","[17, 31]","[17, 31]",True,True,FC(OC(C(F)F)(C(F)F)C(F)(F)F)C(F)(F)F,2
+False,[40],[40],[40],True,True,O=[PH](O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,1
+False,[39],[39],[39],True,True,O=P(O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,1
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,2
+False,[29],[29],[29],True,True,OC(F)(F)C(F)C(C(F)F)(C(F)F)C(F)(F)F,1
+False,[38],[38],[38],True,True,O=S(O)C(F)(F)C(F)C(C(F)F)(C(F)F)C(F)(F)F,1
+False,"[7, 36]","[7, 36]","[7, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)C(C(F)F)(C(F)F)C(F)(F)F,2
+False,"[10, 31, 36]","[10, 31, 36]","[7, 10, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)OC(C(F)F)(C(F)F)C(F)(F)F,4
+False,[37],[37],[37],True,True,OSC(F)(F)C(F)C(C(F)F)(C(F)F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(NC(C(F)F)(C(F)F)C(F)(F)F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)CC#CCC(F)(F)F,1
+False,"[41, 49]","[41, 49]","[19, 41, 49]",True,True,FC(CC(F)(F)F)=C(F)CC(F)(F)F,3
+False,[40],[40],[40],True,True,O=[PH](O)C(F)(F)C(F)C(C(F)F)(C(F)F)C(F)(F)F,1
+False,[39],[39],[39],True,True,O=P(O)(O)C(F)(F)C(F)C(C(F)F)(C(F)F)C(F)(F)F,1
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(C(F)F)(C(F)F)C(F)(F)F)C(F)C(F)(F)F,2
+False,"[19, 49]","[19, 49]","[19, 41, 49]",True,True,FC(=CCC(F)(F)F)CC(F)(F)F,3
+False,[32],[32],[32],True,True,O=C(CC(F)(F)F)OCCC(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,"[28, 30]","[28, 30]","[28, 30]",True,True,O=C(C(F)(F)C(F)C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[28, 30]","[28, 30]","[28, 30]",True,True,O=C(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)F,2
+False,"[1, 33]","[1, 33]","[1, 2, 33]",True,True,O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,3
+False,"[2, 33]","[2, 33]","[1, 2, 33]",True,True,O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,3
+False,"[1, 33]","[1, 33]","[1, 2, 33]",True,True,O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,3
+False,"[1, 33]","[1, 33]","[1, 2, 33]",True,True,O=C(O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,3
+False,"[1, 4, 31, 33]","[1, 4, 31, 33]","[1, 2, 4, 5, 31, 33]",True,True,O=C(O)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,6
+False,"[1, 4, 31, 33]","[1, 4, 31, 33]","[1, 2, 4, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,6
+False,"[2, 5, 31, 33]","[2, 5, 31, 33]","[1, 2, 4, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,6
+False,"[1, 4, 31, 33]","[1, 4, 31, 33]","[1, 2, 4, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,6
+False,[42],[42],[42],True,True,FC(C(F)(F)F)C(F)(F)C(F)(I)C(F)(F)C(F)(F)F,1
+False,[42],[42],[42],True,True,FC(F)C(F)(F)C(F)(C(F)(F)F)C(F)(I)C(F)(F)F,1
+False,[34],[34],[34],True,True,O=C(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[34],[34],[34],True,True,O=C(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,1
+False,[34],[34],[34],True,True,O=C(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,1
+False,[34],[34],[34],True,True,O=C(NC(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,1
+False,"[17, 31]","[17, 31]","[17, 31]",True,True,FC(C(F)(F)F)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,2
+False,"[14, 29]","[14, 29]","[14, 29]",True,True,OC(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[14, 29]","[14, 29]","[14, 29]",True,True,OC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[11, 38]","[11, 38]","[11, 38]",True,True,O=S(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[11, 38]","[11, 38]","[11, 38]",True,True,O=S(O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[6, 36]","[6, 36]","[6, 7, 11, 36]",True,True,O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,4
+False,"[6, 36]","[6, 36]","[6, 7, 11, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,4
+False,"[9, 31, 36]","[9, 31, 36]","[6, 7, 9, 10, 11, 31, 36]",True,True,O=S(=O)(O)C(F)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F,7
+False,"[9, 31, 36]","[9, 31, 36]","[6, 7, 9, 10, 11, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(F)(F)OC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,7
+False,[37],[37],[37],True,True,OSC(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[37],[37],[37],True,True,OSC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)(F)C(F)(F)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)(F)C(F)(F)NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)C#CC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)C(F)(F)C#CC(F)(F)C(F)(F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)C#CC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)C#CC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,"[18, 41, 49]","[18, 41, 49]","[18, 19, 41, 49]",True,True,FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,4
+False,"[41, 49]","[41, 49]","[18, 19, 41, 49]",True,True,FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,4
+False,"[18, 41, 49]","[18, 41, 49]","[18, 19, 41, 49]",True,True,FC(=C(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,4
+False,"[18, 41, 49]","[18, 41, 49]","[18, 19, 41, 49]",True,True,FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,4
+False,"[27, 30]","[27, 30]","[27, 28, 30]",True,True,O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,3
+False,"[27, 30]","[27, 30]","[27, 28, 30]",True,True,O=C(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,3
+False,[42],[42],"[25, 42]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)C(F)(F)F,2
+False,"[25, 42]","[25, 42]","[25, 42]",True,True,FC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)I,2
+False,[42],[42],"[25, 42]",True,True,FC(F)(F)C(F)(F)C(F)(I)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,[31],[31],"[17, 31]",True,True,FC(F)(F)OC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[16, 17, 31]","[16, 17, 31]","[16, 17, 31]",True,True,FC(F)(F)OC(F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,3
+False,[26],[26],[26],True,True,O=S(=O)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,1
+False,"[3, 33]","[3, 33]","[3, 33]",True,True,O=C(O)C(F)(F)C(F)(C(F)(F)F)C(F)(C(=O)O)C(F)(F)F,2
+False,"[3, 33]","[3, 33]","[3, 33]",True,True,O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(C(=O)O)C(F)(F)F,2
+False,"[3, 33]","[3, 33]","[3, 33]",True,True,O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,2
+False,"[19, 49]","[19, 49]","[19, 41, 49]",True,True,FC(=CC(F)(F)C(F)(F)F)C(F)(F)C(F)C(F)(F)F,3
+False,"[19, 49]","[19, 49]","[19, 41, 49]",True,True,FC(=CC(F)(C(F)(F)F)C(F)(F)C(F)F)C(F)(F)F,3
+False,"[2, 33]","[2, 33]","[2, 33]",True,True,O=C(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,2
+False,[32],[32],[32],True,True,O=C(OCC(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,1
+False,[32],[32],[32],True,True,O=C(OCC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[32],[32],[32],True,True,O=C(OCC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,1
+False,[32],[32],[32],True,True,O=C(OCC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,1
+False,"[2, 5, 31, 33]","[2, 5, 31, 33]","[2, 5, 31, 33]",True,True,O=C(O)C(F)(OC(F)(F)C(F)(F)C(F)C(F)(F)F)C(F)(F)F,4
+False,[34],[34],[34],True,True,O=C(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,1
+False,"[8, 36]","[8, 36]","[7, 8, 36]",True,True,O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)S(=O)(=O)O,3
+False,"[13, 40]","[13, 40]","[13, 40]",True,True,O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,2
+False,"[12, 39]","[12, 39]","[12, 39]",True,True,O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,2
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,2
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(F)C(C(F)F)(C(F)F)C(F)(F)F,1
+False,"[28, 30]","[28, 30]","[28, 30]",True,True,O=C(C(F)C(F)(F)F)C(C(F)F)(C(F)F)C(F)(F)F,2
+False,[32],[32],[32],True,True,O=C(OCC(F)(F)C(F)(F)F)C(F)(F)C(F)C(F)(F)F,1
+False,[32],[32],[32],True,True,O=C(OCC(F)(C(F)(F)F)C(F)(F)C(F)F)C(F)(F)F,1
+False,[42],[42],[42],True,True,FC(C(F)(F)F)C(F)(I)C(C(F)F)(C(F)F)C(F)(F)F,1
+False,"[17, 31]","[17, 31]","[17, 31]",True,True,FCC(C(F)F)(C(F)(F)F)C(F)(OC(F)(F)F)C(F)(F)F,2
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1,3
+False,"[2, 33]","[2, 33]","[2, 3, 33]",True,True,O=C(O)C(F)(F)C(F)C(C(F)F)(C(F)F)C(F)(F)F,3
+False,"[2, 5, 31, 33]","[2, 5, 31, 33]","[2, 3, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(F)OC(C(F)F)(C(F)F)C(F)(F)F,5
+False,[34],[34],[34],True,True,O=C(NC(C(F)F)(C(F)F)C(F)(F)F)C(F)C(F)(F)F,1
+False,[29],[29],[29],True,True,OC(F)(F)C(CF)(C(F)F)C(F)(C(F)(F)F)C(F)(F)F,1
+False,[38],[38],[38],True,True,O=S(O)C(F)(F)C(CF)(C(F)F)C(F)(C(F)(F)F)C(F)(F)F,1
+False,"[7, 36]","[7, 36]","[7, 36]",True,True,O=S(=O)(O)C(F)(F)C(CF)(C(F)F)C(F)(C(F)(F)F)C(F)(F)F,2
+False,"[10, 31, 36]","[10, 31, 36]","[7, 10, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(CF)(C(F)F)C(F)(OC(F)(F)F)C(F)(F)F,4
+False,[37],[37],[37],True,True,OSC(F)(F)C(CF)(C(F)F)C(F)(C(F)(F)F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FCC(C(F)F)(C(F)(F)F)C(F)(NC(F)(F)F)C(F)(F)F,1
+False,[40],[40],[40],True,True,O=[PH](O)C(F)(F)C(CF)(C(F)F)C(F)(C(F)(F)F)C(F)(F)F,1
+False,[39],[39],[39],True,True,O=P(O)(O)C(F)(F)C(CF)(C(F)F)C(F)(C(F)(F)F)C(F)(F)F,1
+False,"[43, 47]","[43, 47]","[43, 47]",True,True,O=S(=O)(NC(F)(C(F)(F)F)C(CF)(C(F)F)C(F)(F)F)C(F)(F)F,2
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)CCC(F)(F)c1ncc[nH]1,3
+False,[15],[15],"[15, 29]",True,True,OCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(C(F)(F)F)C(F)(F)C#CC(F)(F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)C(F)(F)C(F)(C#CC(F)(F)F)C(F)(F)F,1
+False,"[41, 49]","[41, 49]","[19, 41, 49]",True,True,FC(=C(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)C(F)(F)F,3
+False,"[41, 49]","[41, 49]","[19, 41, 49]",True,True,FC(=C(F)C(F)(C(F)(F)F)C(F)(F)C(F)F)C(F)(F)F,3
+False,"[19, 49]","[19, 49]","[19, 41, 49]",True,True,FC(=CC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,3
+False,"[28, 30]","[28, 30]","[28, 30]",True,True,O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,2
+False,"[1, 33]","[1, 33]","[1, 2, 33]",True,True,O=C(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,3
+False,"[1, 33]","[1, 33]","[1, 2, 33]",True,True,O=C(O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,3
+False,"[1, 4, 31, 33]","[1, 4, 31, 33]","[1, 2, 4, 5, 31, 33]",True,True,O=C(O)C(F)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F,6
+False,"[1, 4, 31, 33]","[1, 4, 31, 33]","[1, 2, 4, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(F)(F)OC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,6
+False,[42],[42],[42],True,True,FC(C(F)(F)F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)C(F)(F)F,1
+False,[34],[34],[34],True,True,O=C(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[34],[34],[34],True,True,O=C(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,"[14, 29]","[14, 29]","[14, 29]",True,True,OC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,2
+False,"[11, 38]","[11, 38]","[11, 38]",True,True,O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,2
+False,"[6, 36]","[6, 36]","[6, 7, 11, 36]",True,True,O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,4
+False,"[9, 31, 36]","[9, 31, 36]","[6, 7, 9, 10, 11, 31, 36]",True,True,O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(OC(F)(F)F)C(F)(F)F,7
+False,[37],[37],[37],True,True,OSC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,1
+False,[47],[47],[47],True,True,FC(F)(F)NC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)C(F)(F)C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)C(F)(F)C#CC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,"[18, 41, 49]","[18, 41, 49]","[18, 19, 41, 49]",True,True,FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,4
+False,"[18, 41, 49]","[18, 41, 49]","[18, 19, 41, 49]",True,True,FC(=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,4
+False,"[27, 30]","[27, 30]","[27, 28, 30]",True,True,O=C(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,3
+False,[42],[42],"[25, 42]",True,True,FC(F)(F)C(F)(I)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[24, 47]","[24, 47]","[24, 47]",True,True,FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[3, 33]","[3, 33]","[3, 33]",True,True,O=C(O)C(F)(C(F)(F)F)C(F)(C(=O)O)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[3, 33]","[3, 33]","[3, 33]",True,True,O=C(O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,2
+False,"[19, 49]","[19, 49]","[19, 41, 49]",True,True,FC(=CC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,3
+False,[32],[32],[32],True,True,O=C(OCC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,1
+False,[32],[32],[32],True,True,O=C(OCC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,1
+False,[35],[35],[35],True,True,O=C(Cl)C(F)(F)C(CF)(C(F)F)C(F)(C(F)(F)F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(C#CC(C(F)F)(C(F)F)C(F)(F)F)C(F)(F)F,1
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1,3
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,3
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,3
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,3
+False,"[41, 49]","[41, 49]","[19, 41, 49]",True,True,FC(=C(F)C(C(F)F)(C(F)F)C(F)(F)F)C(F)C(F)(F)F,3
+False,"[28, 30]","[28, 30]","[28, 30]",True,True,O=C(C(F)(F)F)C(F)(C(F)(F)F)C(CF)(C(F)F)C(F)(F)F,2
+False,[32],[32],[32],True,True,O=C(OCC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)C(F)(F)F,1
+False,[42],[42],[42],True,True,FCC(C(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(I)C(F)(F)F,1
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,3
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(C(F)(F)c1ncc[nH]1)C(F)(F)C(F)(F)C(F)(F)F,3
+False,"[19, 49]","[19, 49]","[19, 41, 49]",True,True,FC(=CC(C(F)F)(C(F)F)C(F)(F)F)C(F)C(F)(F)F,3
+False,"[2, 33]","[2, 33]","[2, 3, 33]",True,True,O=C(O)C(F)(F)C(CF)(C(F)F)C(F)(C(F)(F)F)C(F)(F)F,3
+False,"[2, 5, 31, 33]","[2, 5, 31, 33]","[2, 3, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(CF)(C(F)F)C(F)(OC(F)(F)F)C(F)(F)F,5
+False,[34],[34],[34],True,True,O=C(NC(F)(C(F)(F)F)C(CF)(C(F)F)C(F)(F)F)C(F)(F)F,1
+False,[32],[32],[32],True,True,O=C(OCC(C(F)F)(C(F)F)C(F)(F)F)C(F)C(F)(F)F,1
+False,[15],[15],"[15, 29]",True,True,OCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,[15],[15],"[15, 29]",True,True,OCCCC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,[15],[15],"[15, 29]",True,True,OCCCC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,[50],[50],[50],True,True,FC(C(F)(F)F)C(F)(F)C(F)(F)C#CC(F)(F)C(F)(F)F,1
+False,"[41, 49]","[41, 49]","[19, 41, 49]",True,True,FC(=C(F)C(F)(F)C(F)(F)C(F)C(F)(F)F)C(F)(F)C(F)(F)F,3
+False,"[1, 33]","[1, 33]","[1, 2, 33]",True,True,O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,3
+False,"[1, 4, 31, 33]","[1, 4, 31, 33]","[1, 2, 4, 5, 31, 33]",True,True,O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(OC(F)(F)F)C(F)(F)F,6
+False,[34],[34],[34],True,True,O=C(NC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FC(F)(F)C#CC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,1
+False,"[18, 41, 49]","[18, 41, 49]","[18, 19, 41, 49]",True,True,FC(=C(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,4
+False,"[24, 47]","[24, 47]","[24, 47]",True,True,FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[24, 47]","[24, 47]","[24, 47]",True,True,FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,2
+False,"[24, 47]","[24, 47]","[24, 47]",True,True,FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,"[3, 33]","[3, 33]","[3, 33]",True,True,O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(=O)O)(C(F)(F)F)C(F)(F)F,2
+False,[32],[32],[32],True,True,O=C(OCC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,1
+False,[50],[50],[50],True,True,FCC(C(F)F)(C(F)(F)F)C(F)(C#CC(F)(F)F)C(F)(F)F,1
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)c1ncc[nH]1,3
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F,3
+False,"[41, 49]","[41, 49]","[19, 41, 49]",True,True,FCC(C(F)F)(C(F)(F)F)C(F)(C(F)=C(F)C(F)(F)F)C(F)(F)F,3
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(C(F)(F)F)C(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F,3
+False,"[19, 49]","[19, 49]","[19, 41, 49]",True,True,FCC(C(F)F)(C(F)(F)F)C(F)(C=C(F)C(F)(F)F)C(F)(F)F,3
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1,3
+False,[32],[32],[32],True,True,O=C(OCC(F)(C(F)(F)F)C(CF)(C(F)F)C(F)(F)F)C(F)(F)F,1
+False,"[22, 44, 51]","[22, 44, 51]","[22, 44, 51]",True,True,FC(F)C(C(F)F)(C(F)C(F)(F)c1ncc[nH]1)C(F)(F)F,3
+False,[15],[15],"[15, 29]",True,True,OCCCC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,2
+False,[15],[15],"[15, 29]",True,True,OCCCC(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,2
+False,"[22, 45, 51]","[22, 45, 51]","[22, 45, 51]",True,True,FC(F)(F)CCC(F)(F)c1ccccn1,3

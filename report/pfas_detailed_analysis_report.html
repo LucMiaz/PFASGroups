@@ -1,0 +1,689 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PFAS Algorithm Detailed Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .section { margin-bottom: 40px; }
+        .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .metric-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #f9f9f9; }
+        .metric-title { font-weight: bold; margin-bottom: 10px; color: #333; }
+        .metric-value { font-size: 20px; font-weight: bold; }
+        .good { color: #28a745; }
+        .warning { color: #ffc107; }
+        .bad { color: #dc3545; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; font-weight: bold; }
+        .smiles { font-family: monospace; font-size: 11px; max-width: 200px; word-break: break-all; }
+        .group-list { font-size: 12px; }
+        .summary-stats { background: #e9ecef; padding: 20px; border-radius: 8px; }
+        .highlight { background-color: #fff3cd; padding: 10px; border-left: 4px solid #ffc107; margin: 10px 0; }
+        .error { background-color: #f8d7da; padding: 10px; border-left: 4px solid #dc3545; margin: 10px 0; }
+        .success { background-color: #d1eddd; padding: 10px; border-left: 4px solid #28a745; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>PFAS Group Identification Algorithm</h1>
+        <h2>Detailed Performance Analysis Report</h2>
+        <p>Generated on: 2025-10-05 17:39:45</p>
+    </div>
+    
+    <div class="section">
+        <h2>Executive Summary</h2>
+        <div class="summary-stats">
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-title">Total Tests</div>
+                    <div class="metric-value">448</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Valid Tests</div>
+                    <div class="metric-value">448</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Detection Rate</div>
+                    <div class="metric-value good">
+                        99.8%
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Specificity Rate</div>
+                    <div class="metric-value good">
+                        91.7%
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Avg Groups per Test</div>
+                    <div class="metric-value">2.3</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">False Negatives</div>
+                    <div class="metric-value good">
+                        1
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="section">
+        <h2>Individual Group Performance Analysis</h2>
+        <p>This table shows how well each PFAS group is detected across all test cases.</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Group ID</th>
+                    <th>Total Tests</th>
+                    <th>Successful Detections</th>
+                    <th>Detection Rate</th>
+                    <th>Avg Other Groups Detected</th>
+                    <th>Performance</th>
+                </tr>
+            </thead>
+            <tbody>
+        
+                <tr>
+                    <td>25</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>42</td>
+                    <td>24</td>
+                    <td>24</td>
+                    <td class="good">100.0%</td>
+                    <td>0.8</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>31</td>
+                    <td>62</td>
+                    <td>62</td>
+                    <td class="good">100.0%</td>
+                    <td>3.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>17</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>1.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>26</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>0.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>24</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>47</td>
+                    <td>40</td>
+                    <td>40</td>
+                    <td class="good">100.0%</td>
+                    <td>0.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>14</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>29</td>
+                    <td>24</td>
+                    <td>24</td>
+                    <td class="good">100.0%</td>
+                    <td>0.8</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>8</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>2.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>36</td>
+                    <td>42</td>
+                    <td>42</td>
+                    <td class="good">100.0%</td>
+                    <td>3.3</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>13</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>40</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>0.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>12</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>39</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>0.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>43</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>1.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>22</td>
+                    <td>56</td>
+                    <td>56</td>
+                    <td class="good">100.0%</td>
+                    <td>2.1</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>44</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>2.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>51</td>
+                    <td>64</td>
+                    <td>64</td>
+                    <td class="good">100.0%</td>
+                    <td>2.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>45</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>2.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>38</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>0.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.9</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>10</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>4.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>37</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>0.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>15</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>11</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>6</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>3.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>9</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>6.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>35</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>0.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>27</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>2.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>30</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>1.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>46</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>3.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>28</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.2</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>2</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>2.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>33</td>
+                    <td>40</td>
+                    <td>40</td>
+                    <td class="good">100.0%</td>
+                    <td>2.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>5</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>3.8</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>34</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>0.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>1</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>3.5</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>4</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>5.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>50</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>0.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>18</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>3.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>41</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>2.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>49</td>
+                    <td>24</td>
+                    <td>24</td>
+                    <td class="good">100.0%</td>
+                    <td>2.3</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>3</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>32</td>
+                    <td>16</td>
+                    <td>16</td>
+                    <td class="good">100.0%</td>
+                    <td>0.0</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>19</td>
+                    <td>8</td>
+                    <td>8</td>
+                    <td class="good">100.0%</td>
+                    <td>1.6</td>
+                    <td class="good">Excellent</td>
+                </tr>
+            
+                <tr>
+                    <td>16</td>
+                    <td>8</td>
+                    <td>7</td>
+                    <td class="good">87.5%</td>
+                    <td>2.0</td>
+                    <td class="good">Good</td>
+                </tr>
+            </tbody></table></div>
+    <div class="section">
+        <h2>Misidentification Analysis</h2>
+        
+        <h3>False Negatives (1 cases)</h3>
+        <p>These are cases where expected PFAS groups were not detected by the algorithm.</p>
+        
+            <table>
+                <thead>
+                    <tr>
+                        <th>Expected Groups</th>
+                        <th>Detected Groups</th>
+                        <th>SMILES</th>
+                        <th>Groups Detected</th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+                    <tr>
+                        <td class="group-list">[16, 17, 31]</td>
+                        <td class="group-list">[17, 31]</td>
+                        <td class="smiles">FC(F)(F)OC(C(F)(F)F)(C(F)(F)F)C(F)(F)F</td>
+                        <td>2</td>
+                    </tr>
+                </tbody></table>
+        <h3>Low Specificity Cases (69 cases)</h3>
+        <p>These are cases where too many PFAS groups were detected (more than 3), indicating low specificity.</p>
+        
+            <table>
+                <thead>
+                    <tr>
+                        <th>Expected Groups</th>
+                        <th>All Detected Groups</th>
+                        <th>Total Detected</th>
+                        <th>SMILES</th>
+                        <th>Specificity Issue</th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+                    <tr>
+                        <td class="group-list">[9, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(...</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[9, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(OC(F)(F)F)C(F)(F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[10, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(OC(F)(F)F)C(F)(F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[9, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[9, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[10, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[9, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[9, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[9, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[9, 31, 36]</td>
+                        <td class="group-list">[6, 7, 9, 10, 11, 31, 36]</td>
+                        <td class="warning">7</td>
+                        <td class="smiles">O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(OC(F)(F)F)C(F)(F)...</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[1, 4, 31, 33]</td>
+                        <td class="group-list">[1, 2, 4, 5, 31, 33]</td>
+                        <td class="warning">6</td>
+                        <td class="smiles">O=C(O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F...</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[1, 4, 31, 33]</td>
+                        <td class="group-list">[1, 2, 4, 5, 31, 33]</td>
+                        <td class="warning">6</td>
+                        <td class="smiles">O=C(O)C(F)(OC(F)(F)F)C(F)(F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[2, 5, 31, 33]</td>
+                        <td class="group-list">[1, 2, 4, 5, 31, 33]</td>
+                        <td class="warning">6</td>
+                        <td class="smiles">O=C(O)C(F)(OC(F)(F)F)C(F)(F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[1, 4, 31, 33]</td>
+                        <td class="group-list">[1, 2, 4, 5, 31, 33]</td>
+                        <td class="warning">6</td>
+                        <td class="smiles">O=C(O)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                
+                    <tr>
+                        <td class="group-list">[2, 5, 31, 33]</td>
+                        <td class="group-list">[1, 2, 4, 5, 31, 33]</td>
+                        <td class="warning">6</td>
+                        <td class="smiles">O=C(O)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)C(F)(F)F</td>
+                        <td class="warning">High</td>
+                    </tr>
+                </tbody></table><p><em>Showing first 15 of 69 low specificity cases.</em></p>
+    <div class="section">
+        <h2>Recommendations for Algorithm Improvement</h2>
+    
+        <div class="success">
+            <h3>✅ General Improvement Strategies</h3>
+            <ul>
+                <li><strong>SMARTS Pattern Review:</strong> Regularly validate SMARTS patterns against known PFAS structures</li>
+                <li><strong>Test Case Expansion:</strong> Add more diverse test molecules, especially for poorly performing groups</li>
+                <li><strong>Hierarchical Classification:</strong> Implement parent-child relationships between groups to reduce conflicts</li>
+                <li><strong>Confidence Scoring:</strong> Add confidence metrics to help users interpret results</li>
+                <li><strong>Performance Monitoring:</strong> Regular automated testing with performance benchmarks</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
+    

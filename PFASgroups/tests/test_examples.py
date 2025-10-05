@@ -15,10 +15,15 @@ from tqdm import tqdm
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 import networkx as nx
+from datetime import datetime
+import time
+
+tests_folder = os.path.dirname(os.path.abspath(__file__))
+data_folder = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)) + '/data'
 # Handle imports - try relative first, then absolute
 try:
-    from core import parse_PFAS_groups
-    from generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
+    from ..core import parse_PFAS_groups
+    from ..generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
 except ImportError:
     try:
         from .core import parse_PFAS_groups
@@ -35,6 +40,29 @@ except ImportError:
 try:
     import pytest
     PYTEST_AVAILABLE = True
+    
+    # Add pytest hooks for better integration
+    def pytest_sessionstart(session):
+        """Called after the Session object has been created."""
+        global TEST_SUMMARY_DATA
+        TEST_SUMMARY_DATA['test_start_time'] = datetime.now()
+        print(f"Starting PFAS Groups test session at {TEST_SUMMARY_DATA['test_start_time']}")
+    
+    def pytest_sessionfinish(session, exitstatus):
+        """Called after whole test run finished."""
+        global TEST_SUMMARY_DATA
+        try:
+            summary = generate_test_summary()
+            # Save detailed results
+            if TEST_SUMMARY_DATA['oecd_results']:
+                pd.DataFrame(TEST_SUMMARY_DATA['oecd_results']).to_csv('oecd_test_results.csv', index=False)
+            if TEST_SUMMARY_DATA['generic_results']:
+                pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('generic_test_results.csv', index=False)
+            if TEST_SUMMARY_DATA['specificity_results'] is not None:
+                TEST_SUMMARY_DATA['specificity_results'].to_csv('specificity_test_results.csv', index=False)
+        except Exception as e:
+            print(f"Warning: Could not generate test summary: {e}")
+    
 except ImportError:
     PYTEST_AVAILABLE = False
     print("pytest not available - test classes will be defined but not runnable with pytest")
@@ -113,11 +141,212 @@ GENERIC_PFAS_GROUPS = [
 
 IGNORE_GROUPS = [48,20,21, 23]
 
+# Global variable to store test results for summary generation
+TEST_SUMMARY_DATA = {
+    'oecd_results': [],
+    'generic_results': [],
+    'specificity_results': None,
+    'test_start_time': None,
+    'test_end_time': None
+}
+
+def generate_test_summary(output_file='test_summary_report.json'):
+    """
+    Generate a comprehensive test summary report with accuracy and specificity metrics.
+    
+    Args:
+        output_file: Path to save the summary report
+    
+    Returns:
+        dict: Summary statistics
+    """
+    global TEST_SUMMARY_DATA
+    
+    if TEST_SUMMARY_DATA['test_start_time'] is None:
+        TEST_SUMMARY_DATA['test_start_time'] = datetime.now()
+    
+    TEST_SUMMARY_DATA['test_end_time'] = datetime.now()
+    test_duration = (TEST_SUMMARY_DATA['test_end_time'] - TEST_SUMMARY_DATA['test_start_time']).total_seconds()
+    
+    summary = {
+        'test_metadata': {
+            'timestamp': datetime.now().isoformat(),
+            'test_start_time': TEST_SUMMARY_DATA['test_start_time'].isoformat(),
+            'test_end_time': TEST_SUMMARY_DATA['test_end_time'].isoformat(),
+            'test_duration_seconds': test_duration,
+            'python_version': sys.version,
+            'rdkit_available': True,  # If we got here, RDKit is available
+            'pytest_available': PYTEST_AVAILABLE
+        },
+        'oecd_test_results': {},
+        'generic_test_results': {},
+        'specificity_test_results': {},
+        'overall_summary': {}
+    }
+    
+    # Analyze OECD test results
+    if TEST_SUMMARY_DATA['oecd_results']:
+        oecd_df = pd.DataFrame(TEST_SUMMARY_DATA['oecd_results'])
+        total_oecd = len(oecd_df)
+        detected_oecd = len(oecd_df[oecd_df['detected'] == True])
+        oecd_detection_rate = detected_oecd / total_oecd if total_oecd > 0 else 0
+        
+        # Group-wise analysis
+        group_stats = oecd_df.groupby('group_ids').agg({
+            'detected': ['count', 'sum', 'mean'],
+            'group_name': 'first'
+        }).round(3)
+        group_stats.columns = ['total_tests', 'successful_detections', 'detection_rate', 'group_name']
+        
+        summary['oecd_test_results'] = {
+            'total_tests': int(total_oecd),
+            'successful_detections': int(detected_oecd),
+            'overall_detection_rate': round(oecd_detection_rate, 3),
+            'group_wise_results': group_stats.reset_index().to_dict('records'),
+            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate').reset_index().to_dict('records'),
+            'best_performing_groups': group_stats.nlargest(5, 'detection_rate').reset_index().to_dict('records')
+        }
+    
+    # Analyze generic test results
+    if TEST_SUMMARY_DATA['generic_results']:
+        generic_df = pd.DataFrame(TEST_SUMMARY_DATA['generic_results'])
+        total_generic = len(generic_df)
+        detected_generic = len(generic_df[generic_df['detected'] == True])
+        generic_detection_rate = detected_generic / total_generic if total_generic > 0 else 0
+        
+        # Group-wise analysis
+        group_stats = generic_df.groupby('group_ids').agg({
+            'detected': ['count', 'sum', 'mean'],
+            'group_name': 'first'
+        }).round(3)
+        group_stats.columns = ['total_tests', 'successful_detections', 'detection_rate', 'group_name']
+        
+        summary['generic_test_results'] = {
+            'total_tests': int(total_generic),
+            'successful_detections': int(detected_generic),
+            'overall_detection_rate': round(generic_detection_rate, 3),
+            'group_wise_results': group_stats.reset_index().to_dict('records'),
+            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate').reset_index().to_dict('records'),
+            'best_performing_groups': group_stats.nlargest(5, 'detection_rate').reset_index().to_dict('records')
+        }
+    
+    # Analyze specificity test results
+    if TEST_SUMMARY_DATA['specificity_results'] is not None:
+        specificity_df = TEST_SUMMARY_DATA['specificity_results']
+        valid_tests = specificity_df[specificity_df['valid_smiles'] == True]
+        
+        if len(valid_tests) > 0:
+            detection_rate = valid_tests['expected_group_detected'].mean()
+            specificity_rate = valid_tests['is_specific'].mean()
+            
+            # Analyze failed cases
+            failed_detection = valid_tests[valid_tests['expected_group_detected'] == False]
+            failed_specificity = valid_tests[valid_tests['is_specific'] == False]
+            
+            # Calculate average number of detected groups (measure of specificity)
+            avg_detected_groups = valid_tests['n_detected_groups'].mean()
+            
+            summary['specificity_test_results'] = {
+                'total_tests': int(len(valid_tests)),
+                'detection_rate': round(detection_rate, 3),
+                'specificity_rate': round(specificity_rate, 3),
+                'average_detected_groups_per_test': round(avg_detected_groups, 2),
+                'failed_detection_cases': int(len(failed_detection)),
+                'failed_specificity_cases': int(len(failed_specificity)),
+                'specificity_details': {
+                    'tests_with_exact_match': int(len(valid_tests[valid_tests['n_detected_groups'] == 1])),
+                    'tests_with_multiple_matches': int(len(valid_tests[valid_tests['n_detected_groups'] > 1])),
+                    'tests_with_no_matches': int(len(valid_tests[valid_tests['n_detected_groups'] == 0]))
+                }
+            }
+    
+    # Calculate overall summary
+    total_tests = 0
+    total_successful = 0
+    
+    if 'total_tests' in summary['oecd_test_results']:
+        total_tests += summary['oecd_test_results']['total_tests']
+        total_successful += summary['oecd_test_results']['successful_detections']
+    
+    if 'total_tests' in summary['generic_test_results']:
+        total_tests += summary['generic_test_results']['total_tests']
+        total_successful += summary['generic_test_results']['successful_detections']
+    
+    overall_accuracy = total_successful / total_tests if total_tests > 0 else 0
+    
+    summary['overall_summary'] = {
+        'total_tests_run': total_tests,
+        'total_successful_detections': total_successful,
+        'overall_accuracy': round(overall_accuracy, 3),
+        'specificity_rate': summary['specificity_test_results'].get('specificity_rate', 0) if 'specificity_rate' in summary['specificity_test_results'] else 0,
+        'detection_rate': summary['specificity_test_results'].get('detection_rate', 0) if 'detection_rate' in summary['specificity_test_results'] else 0,
+        'test_status': 'PASSED' if (overall_accuracy > 0.5 and 
+                                   summary['specificity_test_results'].get('detection_rate', 0) > 0.8 and 
+                                   summary['specificity_test_results'].get('specificity_rate', 0) > 0.6) else 'FAILED'
+    }
+    
+    # Save summary to file
+    try:
+        with open(output_file, 'w') as f:
+            json.dump(summary, f, indent=2, default=str)
+        print(f"\nTest summary saved to: {output_file}")
+    except Exception as e:
+        print(f"Warning: Could not save summary to {output_file}: {e}")
+    
+    # Print summary to console
+    print("\n" + "="*60)
+    print("PFAS GROUPS TEST SUMMARY")
+    print("="*60)
+    print(f"Test Duration: {test_duration:.1f} seconds")
+    print(f"Overall Accuracy: {summary['overall_summary']['overall_accuracy']:.1%}")
+    print(f"Overall Status: {summary['overall_summary']['test_status']}")
+    
+    if 'total_tests' in summary['oecd_test_results']:
+        print(f"\nOECD Tests: {summary['oecd_test_results']['successful_detections']}/{summary['oecd_test_results']['total_tests']} "
+              f"({summary['oecd_test_results']['overall_detection_rate']:.1%})")
+    
+    if 'total_tests' in summary['generic_test_results']:
+        print(f"Generic Tests: {summary['generic_test_results']['successful_detections']}/{summary['generic_test_results']['total_tests']} "
+              f"({summary['generic_test_results']['overall_detection_rate']:.1%})")
+    
+    if 'detection_rate' in summary['specificity_test_results']:
+        print(f"Specificity Tests:")
+        print(f"  Detection Rate: {summary['specificity_test_results']['detection_rate']:.1%}")
+        print(f"  Specificity Rate: {summary['specificity_test_results']['specificity_rate']:.1%}")
+        print(f"  Avg Groups per Test: {summary['specificity_test_results']['average_detected_groups_per_test']:.1f}")
+    
+    print("="*60)
+    
+    return summary
+
 class TestPFASGroups:
     """Test class for PFAS group classification using synthetic examples."""
     
+    @classmethod
+    def setup_class(cls):
+        """Set up test class - called once before any tests in this class."""
+        global TEST_SUMMARY_DATA
+        TEST_SUMMARY_DATA['test_start_time'] = datetime.now()
+        print(f"Starting PFAS Groups tests at {TEST_SUMMARY_DATA['test_start_time']}")
+    
+    @classmethod
+    def teardown_class(cls):
+        """Clean up after all tests - called once after all tests in this class."""
+        global TEST_SUMMARY_DATA
+        if PYTEST_AVAILABLE:
+            # Generate summary when running with pytest
+            summary = generate_test_summary()
+            # Save detailed results as well
+            if TEST_SUMMARY_DATA['oecd_results']:
+                pd.DataFrame(TEST_SUMMARY_DATA['oecd_results']).to_csv('oecd_test_results.csv', index=False)
+            if TEST_SUMMARY_DATA['generic_results']:
+                pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('generic_test_results.csv', index=False)
+            if TEST_SUMMARY_DATA['specificity_results'] is not None:
+                TEST_SUMMARY_DATA['specificity_results'].to_csv('specificity_test_results.csv', index=False)
+    
     def test_oecd_pfas_groups(self):
         """Test OECD PFAS group detection with synthetic compounds."""
+        global TEST_SUMMARY_DATA
         print("Testing OECD PFAS groups...")
         test_results = []
         
@@ -139,7 +368,7 @@ class TestPFASGroups:
                     detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
                     is_detected = group_id in detected_groups
                     
-                    test_results.append({
+                    result = {
                         'group_ids': group_id,
                         'group_name': group_name,
                         'chain_length': n,
@@ -147,7 +376,11 @@ class TestPFASGroups:
                         'smiles': smiles,
                         'detected': is_detected,
                         'all_matches': detected_groups
-                    })
+                    }
+                    test_results.append(result)
+                    
+                    # Store for summary
+                    TEST_SUMMARY_DATA['oecd_results'].append(result)
                     
                 except Exception as e:
                     print(f"Error testing group {group_id}, n={n}: {e}")
@@ -164,6 +397,7 @@ class TestPFASGroups:
     
     def test_generic_pfas_groups(self):
         """Test generic PFAS group detection with synthetic compounds."""
+        global TEST_SUMMARY_DATA
         print("Testing generic PFAS groups...")
         test_results = []
         
@@ -191,7 +425,7 @@ class TestPFASGroups:
                         detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
                         is_detected = group_id in detected_groups
                         
-                        test_results.append({
+                        result = {
                             'group_ids': group_id,
                             'group_name': group_name,
                             'chain_length': n,
@@ -199,7 +433,11 @@ class TestPFASGroups:
                             'smiles': smiles,
                             'detected': is_detected,
                             'all_matches': detected_groups
-                        })
+                        }
+                        test_results.append(result)
+                        
+                        # Store for summary
+                        TEST_SUMMARY_DATA['generic_results'].append(result)
                         
                     except Exception as e:
                         print(f"Error testing generic group {group_id}, n={n}: {e}")
@@ -214,37 +452,63 @@ class TestPFASGroups:
 
     def run_all_tests(self):
         """Run all tests manually (for when pytest is not available)."""
+        global TEST_SUMMARY_DATA
+        TEST_SUMMARY_DATA['test_start_time'] = datetime.now()
         print("Running all PFAS group tests...")
         
+        oecd_result = True
+        generic_result = True
+        specificity_result = True
+        
         try:
-            oecd_result = self.test_oecd_pfas_groups()
-            print(f"OECD tests: {'PASSED' if oecd_result else 'FAILED'}")
+            self.test_oecd_pfas_groups()
+            print(f"OECD tests: PASSED")
         except Exception as e:
             print(f"OECD tests: FAILED - {e}")
             oecd_result = False
         
         try:
-            generic_result = self.test_generic_pfas_groups()
-            print(f"Generic tests: {'PASSED' if generic_result else 'FAILED'}")
+            self.test_generic_pfas_groups()
+            print(f"Generic tests: PASSED")
         except Exception as e:
             print(f"Generic tests: FAILED - {e}")
             generic_result = False
         
         try:
-            specificity_result = self.test_specificity()
-            print(f"Specificity tests: {'PASSED' if specificity_result else 'FAILED'}")
+            self.test_specificity()
+            print(f"Specificity tests: PASSED")
         except Exception as e:
             print(f"Specificity tests: FAILED - {e}")
             specificity_result = False
         
         overall_result = oecd_result and generic_result and specificity_result
+        
+        # Generate summary for manual runs
+        summary = generate_test_summary()
+        
+        # Save detailed results
+        if TEST_SUMMARY_DATA['oecd_results']:
+            pd.DataFrame(TEST_SUMMARY_DATA['oecd_results']).to_csv('oecd_test_results.csv', index=False)
+            print("OECD test details saved to: oecd_test_results.csv")
+        if TEST_SUMMARY_DATA['generic_results']:
+            pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('generic_test_results.csv', index=False)
+            print("Generic test details saved to: generic_test_results.csv")
+        if TEST_SUMMARY_DATA['specificity_results'] is not None:
+            TEST_SUMMARY_DATA['specificity_results'].to_csv('specificity_test_results.csv', index=False)
+            print("Specificity test details saved to: specificity_test_results.csv")
+        
         assert overall_result, f"Overall test result FAILED"
+        return overall_result
 
     def test_specificity(self):
         """Test PFAS group specificity using the dedicated test function."""
+        global TEST_SUMMARY_DATA
         print("Testing PFAS group specificity...")
         try:
             results_df = df_test_pfas_group_specificity(verbose=False)
+            
+            # Store results for summary
+            TEST_SUMMARY_DATA['specificity_results'] = results_df
             
             # Calculate success metrics
             valid_tests = results_df[results_df['valid_smiles'] == True]
@@ -284,7 +548,7 @@ def load_graph_from_json(filename):
     
     # Load the PFAS groups mapping to convert names to IDs
     try:
-        with open('data/PFAS_groups_smarts.json', 'r') as f:
+        with open(f'{data_folder}/PFAS_groups_smarts.json', 'r') as f:
             group_data = json.load(f)
         name_to_id = {group['name']: group['id'] for group in group_data}
     except FileNotFoundError:
@@ -318,7 +582,7 @@ def load_graph_from_json(filename):
     return G, Gper
     
 
-def load_equivalent_groups_from_json(json_file='tests/specificity_test_groups.json'):
+def load_equivalent_groups_from_json(json_file=f'{tests_folder}/specificity_test_groups.json'):
     """
     Load equivalent groups from the JSON file structure (now in list format).
     
@@ -362,7 +626,7 @@ def check_groups_are_related(group1, group2, graph):
     return (group2 in nx.descendants(graph, group1) or 
             group1 in nx.descendants(graph, group2))
 
-def are_detected_groups_acceptable(expected_groups, detected_groups, json_file='tests/specificity_test_groups.json'):
+def are_detected_groups_acceptable(expected_groups, detected_groups, json_file=f'{tests_folder}/specificity_test_groups.json'):
     """
     Check if detected groups are acceptable given the expected groups and graph relationships.
     
@@ -572,7 +836,7 @@ def create_specificity_test_molecules():
     # Load equivalent groups from JSON file structure
     per = 'Perfluoroalkyl'
     poly = 'Polyfluoroalkyl'
-    equivalent_groups = load_equivalent_groups_from_json('tests/specificity_test_groups.json')
+    equivalent_groups = load_equivalent_groups_from_json(f'{tests_folder}/specificity_test_groups.json')
     
     # Process equivalent groups and add corresponding test results
     # Note: equivalent_groups now contains IDs, not names
@@ -754,7 +1018,7 @@ def analyze_group_overlap(specificity_results):
     common_unexpected = sorted(unexpected_detections.items(), key=lambda x: x[1], reverse=True)
     
     # Load group names for display
-    with open('data/PFAS_groups_smarts.json', 'r') as f:
+    with open(f'{data_folder}/PFAS_groups_smarts.json', 'r') as f:
         import json
         group_smarts = json.load(f)
     group_smarts = {int(v['id']):v['name'] for v in group_smarts}

@@ -8,7 +8,7 @@ import numpy as np
 import networkx as nx
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from PFASGroupModel import PFASGroup
+from .PFASGroupModel import PFASGroup
 from typing import Union, List, Dict
 from PIL import Image
 from io import BytesIO
@@ -17,7 +17,7 @@ import json
 import os
 from itertools import product, groupby
 import svgutils.transform as sg
-from draw_mols import draw_images, plot_mols
+from .draw_mols import draw_images, plot_mols
 
 PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl','Polyfluoro','Polyfluorobr']
 

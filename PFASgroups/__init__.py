@@ -2,6 +2,8 @@
 from .PFASGroupModel import PFASGroup
 from .core import parse_pfas, parse_PFAS_groups, plot_pfasgroups
 from .draw_mols import plot_mol, plot_mols
+from .generate_homologues import generate_homologues
+from .fragmentation import generate_degradation_products
 # Optional imports for testing
 try:
     from . import test_examples

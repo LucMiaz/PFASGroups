@@ -1,4 +1,4 @@
-from .core import add_smarts, add_smartsPath, get_substruct, remove_atoms, dry_mol_to_nx
+from .core import add_smarts, add_smartsPath, get_substruct, remove_atoms, mol_to_nx
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 import networkx as nx
@@ -12,7 +12,7 @@ def find_chain(mol,pathsmarts,endsmarts, repeating = 'C(F)(F)'):
     if smarts2 is None, uses SMARTS corresponding to smartsPath."""
     chains = []
     try:
-        G = dry_mol_to_nx(mol)
+        G = mol_to_nx(mol)
     except ValueError as e:
         raise e
     #logger.debug("====================")

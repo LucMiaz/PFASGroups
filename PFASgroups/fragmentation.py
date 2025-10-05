@@ -12,7 +12,6 @@ import json
 import os
 from itertools import combinations, product
 import networkx as nx
-from core import mol_to_nx
 
 def keysToInt(x):
     """Convert string keys to integers in a dictionary"""
