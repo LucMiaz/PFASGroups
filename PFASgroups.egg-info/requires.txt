@@ -3,3 +3,4 @@ numpy
 pandas
 networkx
 tqdm
+svgutils

@@ -4,6 +4,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 import numpy as np
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 def load_graph_from_json(filename):
     """Load the list-based JSON structure and convert to NetworkX directed graph with edge types."""
@@ -14,8 +16,8 @@ def load_graph_from_json(filename):
     
     # Process each edge in the list
     for edge_data in data:
-        source = edge_data['source']
-        target = edge_data['target']
+        source = edge_data['target']
+        target = edge_data['source']
         edge_type = edge_data['edge_type']
         
         # Add nodes if they don't exist
@@ -56,9 +58,9 @@ def visualize_graph(G, title="PFAS Groups Network"):
                               alpha=0.7, width=2, style='dashed', label='Polyfluorinated')
     
     if both_edges:
-        nx.draw_networkx_edges(G, pos, edgelist=both_edges, edge_color='gray', 
+        nx.draw_networkx_edges(G, pos, edgelist=both_edges, edge_color='green', 
                               arrows=True, arrowsize=15, arrowstyle='->', 
-                              alpha=0.6, width=1.5, style='dotted', label='Both')
+                              alpha=0.6, width=1.5, style='dashed', label='Both')
     
     # Categorize nodes by their characteristics for coloring
     node_colors = []
@@ -252,7 +254,7 @@ def analyze_edge_patterns(G):
     print(f"- Nodes in both pathway types: {len(both_types)}")
 
 # Main execution
-filename = 'tests/specificity_test_groups.json'
+filename = f'{current_dir}/specificity_test_groups.json'
 
 if __name__ == "__main__":
     try:

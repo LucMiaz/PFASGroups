@@ -309,7 +309,8 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
         for _smarts2, smartsPath in pairs.items():
             smartsMatches2 = get_substruct(mol,_smarts2)
             for match2 in smartsMatches2:
-                if (smarts1 != _smarts2) or (match1!=match2):# avoid double matching for diacids
+                # Fix: Compare SMARTS strings, not object identity, to avoid self-matching
+                if (match1!=match2) or (Chem.MolToSmarts(smarts1) != Chem.MolToSmarts(_smarts2)):# avoid double matching for diacids
                     path_idx = nx.shortest_path(G, match1, match2, method='dijkstra')
                     setp = set(path_idx)
                     match_intersection(smartsPath,setp)

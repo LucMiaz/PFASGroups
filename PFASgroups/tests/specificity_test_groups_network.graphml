@@ -1,155 +1,165 @@
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d0" for="edge" attr.name="edge_type" attr.type="string"/>
-<graph edgedefault="directed"><node id="carboxylic acid"/>
-<node id="Perfluoroalkyl carboxylic acids"/>
+<graph edgedefault="directed"><node id="Perfluoroalkyl carboxylic acids"/>
+<node id="carboxylic acid"/>
 <node id="Polyfluoroalkyl carboxylic acid"/>
 <node id="Perfluoroalkyl dicarboxylic acids"/>
 <node id="Perfluoroalkylether carboxylic acids"/>
 <node id="Polyfluoroalkylether carboxylic acid"/>
-<node id="ether"/>
 <node id="Hydrofluoroethers"/>
+<node id="ether"/>
 <node id="Perfluoropolyethers"/>
+<node id="benzodioxole"/>
 <node id="Perfluoroalkylether sulfonic acids"/>
 <node id="Polyfluoroalkylether sulfonic acid"/>
-<node id="alcohol"/>
 <node id="fluorotelomer alcohols"/>
+<node id="alcohol"/>
 <node id="Perfluoroalkyl alcohols"/>
-<node id="sulfonic acid"/>
 <node id="Perfluoroalkyl sulfonic acids"/>
+<node id="sulfonic acid"/>
 <node id="Polyfluoroalkyl sulfonic acid"/>
+<node id="Perfluoroalkyl sulfonic acid"/>
 <node id="Perfluoroalkyl disulfonic acids"/>
-<node id="sulfinic acid"/>
 <node id="Perfluoroalkyl sulfinic acids"/>
-<node id="phosphonic acid"/>
+<node id="sulfinic acid"/>
 <node id="Perfluoroalkyl phosphonic acids"/>
-<node id="phosphinic acid"/>
+<node id="phosphonic acid"/>
 <node id="Perfluoroalkyl phosphinic acids"/>
-<node id="Side-chain aromatics"/>
+<node id="phosphinic acid"/>
 <node id="Side-chain fluorinated aromatics"/>
+<node id="Side-chain aromatics"/>
 <node id="azole"/>
 <node id="azine"/>
-<node id="benzodioxole"/>
-<node id="amine"/>
 <node id="Perfluoroalkyl-tert-amines"/>
+<node id="amine"/>
 <node id="sulfonamide"/>
-<node id="iodide"/>
 <node id="Perfluoroalkyl iodides"/>
-<node id="ketone"/>
+<node id="iodide"/>
 <node id="Perfluoroalkyl ketones"/>
+<node id="ketone"/>
 <node id="Semi-fluoroalkyl ketones"/>
-<node id="alkene"/>
 <node id="Perfluoroalkene"/>
+<node id="alkene"/>
 <node id="Hydrofluoroolefins"/>
 <node id="ethene"/>
-<edge source="carboxylic acid" target="Perfluoroalkyl carboxylic acids">
+<edge source="Perfluoroalkyl carboxylic acids" target="carboxylic acid">
   <data key="d0">both</data>
 </edge>
-<edge source="carboxylic acid" target="Polyfluoroalkyl carboxylic acid">
+<edge source="Polyfluoroalkyl carboxylic acid" target="carboxylic acid">
   <data key="d0">both</data>
 </edge>
-<edge source="carboxylic acid" target="Perfluoroalkyl dicarboxylic acids">
+<edge source="Perfluoroalkyl dicarboxylic acids" target="carboxylic acid">
   <data key="d0">per</data>
 </edge>
-<edge source="Perfluoroalkyl carboxylic acids" target="Perfluoroalkylether carboxylic acids">
+<edge source="Perfluoroalkylether carboxylic acids" target="Perfluoroalkyl carboxylic acids">
   <data key="d0">per</data>
 </edge>
-<edge source="Polyfluoroalkyl carboxylic acid" target="Polyfluoroalkylether carboxylic acid">
-  <data key="d0">poly</data>
+<edge source="Perfluoroalkylether carboxylic acids" target="ether">
+  <data key="d0">per</data>
 </edge>
-<edge source="ether" target="Hydrofluoroethers">
+<edge source="Polyfluoroalkylether carboxylic acid" target="Polyfluoroalkyl carboxylic acid">
   <data key="d0">both</data>
 </edge>
-<edge source="ether" target="Perfluoropolyethers">
-  <data key="d0">per</data>
-</edge>
-<edge source="ether" target="Perfluoroalkylether carboxylic acids">
-  <data key="d0">per</data>
-</edge>
-<edge source="ether" target="Polyfluoroalkylether carboxylic acid">
-  <data key="d0">poly</data>
-</edge>
-<edge source="ether" target="Perfluoroalkylether sulfonic acids">
-  <data key="d0">per</data>
-</edge>
-<edge source="ether" target="Polyfluoroalkylether sulfonic acid">
-  <data key="d0">poly</data>
-</edge>
-<edge source="Hydrofluoroethers" target="Perfluoropolyethers">
-  <data key="d0">per</data>
-</edge>
-<edge source="alcohol" target="fluorotelomer alcohols">
-  <data key="d0">poly</data>
-</edge>
-<edge source="alcohol" target="Perfluoroalkyl alcohols">
-  <data key="d0">per</data>
-</edge>
-<edge source="sulfonic acid" target="Perfluoroalkyl sulfonic acids">
-  <data key="d0">per</data>
-</edge>
-<edge source="sulfonic acid" target="Polyfluoroalkyl sulfonic acid">
+<edge source="Polyfluoroalkylether carboxylic acid" target="ether">
   <data key="d0">both</data>
 </edge>
-<edge source="sulfonic acid" target="Perfluoroalkyl disulfonic acids">
+<edge source="Hydrofluoroethers" target="ether">
+  <data key="d0">both</data>
+</edge>
+<edge source="Perfluoropolyethers" target="ether">
   <data key="d0">per</data>
 </edge>
-<edge source="sulfonic acid" target="Perfluoroalkylether sulfonic acids">
+<edge source="Perfluoropolyethers" target="Hydrofluoroethers">
   <data key="d0">per</data>
 </edge>
-<edge source="sulfonic acid" target="Polyfluoroalkylether sulfonic acid">
+<edge source="benzodioxole" target="ether">
   <data key="d0">both</data>
 </edge>
-<edge source="sulfinic acid" target="Perfluoroalkyl sulfinic acids">
+<edge source="benzodioxole" target="Side-chain aromatics">
+  <data key="d0">both</data>
+</edge>
+<edge source="benzodioxole" target="Side-chain fluorinated aromatics">
+  <data key="d0">both</data>
+</edge>
+<edge source="Perfluoroalkylether sulfonic acids" target="ether">
   <data key="d0">per</data>
 </edge>
-<edge source="phosphonic acid" target="Perfluoroalkyl phosphonic acids">
+<edge source="Perfluoroalkylether sulfonic acids" target="sulfonic acid">
   <data key="d0">per</data>
 </edge>
-<edge source="phosphinic acid" target="Perfluoroalkyl phosphinic acids">
+<edge source="Polyfluoroalkylether sulfonic acid" target="ether">
+  <data key="d0">both</data>
+</edge>
+<edge source="Polyfluoroalkylether sulfonic acid" target="sulfonic acid">
+  <data key="d0">both</data>
+</edge>
+<edge source="fluorotelomer alcohols" target="alcohol">
+  <data key="d0">both</data>
+</edge>
+<edge source="Perfluoroalkyl alcohols" target="alcohol">
   <data key="d0">per</data>
 </edge>
-<edge source="Side-chain aromatics" target="Side-chain fluorinated aromatics">
-  <data key="d0">both</data>
-</edge>
-<edge source="Side-chain aromatics" target="azole">
-  <data key="d0">both</data>
-</edge>
-<edge source="Side-chain aromatics" target="azine">
-  <data key="d0">both</data>
-</edge>
-<edge source="Side-chain aromatics" target="benzodioxole">
-  <data key="d0">both</data>
-</edge>
-<edge source="Side-chain fluorinated aromatics" target="azole">
-  <data key="d0">both</data>
-</edge>
-<edge source="Side-chain fluorinated aromatics" target="azine">
-  <data key="d0">both</data>
-</edge>
-<edge source="Side-chain fluorinated aromatics" target="benzodioxole">
-  <data key="d0">both</data>
-</edge>
-<edge source="amine" target="Perfluoroalkyl-tert-amines">
-  <data key="d0">both</data>
-</edge>
-<edge source="amine" target="sulfonamide">
-  <data key="d0">both</data>
-</edge>
-<edge source="iodide" target="Perfluoroalkyl iodides">
+<edge source="Perfluoroalkyl sulfonic acids" target="sulfonic acid">
   <data key="d0">per</data>
 </edge>
-<edge source="ketone" target="Perfluoroalkyl ketones">
+<edge source="Polyfluoroalkyl sulfonic acid" target="sulfonic acid">
+  <data key="d0">both</data>
+</edge>
+<edge source="Polyfluoroalkyl sulfonic acid" target="Polyfluoroalkylether sulfonic acid">
+  <data key="d0">both</data>
+</edge>
+<edge source="Perfluoroalkyl sulfonic acid" target="Polyfluoroalkyl sulfonic acid">
   <data key="d0">per</data>
 </edge>
-<edge source="ketone" target="Semi-fluoroalkyl ketones">
-  <data key="d0">poly</data>
-</edge>
-<edge source="alkene" target="Perfluoroalkene">
+<edge source="Perfluoroalkyl disulfonic acids" target="sulfonic acid">
   <data key="d0">per</data>
 </edge>
-<edge source="alkene" target="Hydrofluoroolefins">
-  <data key="d0">poly</data>
+<edge source="Perfluoroalkyl sulfinic acids" target="sulfinic acid">
+  <data key="d0">per</data>
 </edge>
-<edge source="alkene" target="ethene">
+<edge source="Perfluoroalkyl phosphonic acids" target="phosphonic acid">
+  <data key="d0">per</data>
+</edge>
+<edge source="Perfluoroalkyl phosphinic acids" target="phosphinic acid">
+  <data key="d0">per</data>
+</edge>
+<edge source="Side-chain fluorinated aromatics" target="Side-chain aromatics">
+  <data key="d0">both</data>
+</edge>
+<edge source="azole" target="Side-chain aromatics">
+  <data key="d0">both</data>
+</edge>
+<edge source="azole" target="Side-chain fluorinated aromatics">
+  <data key="d0">both</data>
+</edge>
+<edge source="azine" target="Side-chain aromatics">
+  <data key="d0">both</data>
+</edge>
+<edge source="azine" target="Side-chain fluorinated aromatics">
+  <data key="d0">both</data>
+</edge>
+<edge source="Perfluoroalkyl-tert-amines" target="amine">
+  <data key="d0">per</data>
+</edge>
+<edge source="sulfonamide" target="amine">
+  <data key="d0">both</data>
+</edge>
+<edge source="Perfluoroalkyl iodides" target="iodide">
+  <data key="d0">per</data>
+</edge>
+<edge source="Perfluoroalkyl ketones" target="ketone">
+  <data key="d0">per</data>
+</edge>
+<edge source="Semi-fluoroalkyl ketones" target="ketone">
+  <data key="d0">both</data>
+</edge>
+<edge source="Perfluoroalkene" target="alkene">
+  <data key="d0">per</data>
+</edge>
+<edge source="Hydrofluoroolefins" target="alkene">
+  <data key="d0">both</data>
+</edge>
+<edge source="ethene" target="alkene">
   <data key="d0">both</data>
 </edge>
 </graph></graphml>

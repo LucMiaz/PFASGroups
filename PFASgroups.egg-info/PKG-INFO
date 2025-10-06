@@ -1,9 +1,9 @@
 Metadata-Version: 2.4
 Name: PFASgroups
-Version: 0.1.0
+Version: 1.0.1
 Summary: A Python module for parsing and visualizing PFAS groups.
-Author: Your Name
-Author-email: Your Name <your.email@example.com>
+Author: Luc Miaz
+Author-email: Luc Miaz <luc@miaz.ch>
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 Requires-Dist: rdkit
@@ -11,6 +11,7 @@ Requires-Dist: numpy
 Requires-Dist: pandas
 Requires-Dist: networkx
 Requires-Dist: tqdm
+Requires-Dist: svgutils
 
 # PFASgroups
 

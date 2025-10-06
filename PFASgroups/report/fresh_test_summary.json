@@ -1,17 +1,17 @@
 {
   "test_metadata": {
-    "timestamp": "2025-10-05T00:20:00.888901",
-    "test_start_time": "2025-10-05T00:19:45.197879",
-    "test_end_time": "2025-10-05T00:20:00.888901",
-    "test_duration_seconds": 15.691022,
+    "timestamp": "2025-10-06T18:11:07.742472",
+    "test_start_time": "2025-10-06T18:11:07.742472",
+    "test_end_time": "2025-10-06T18:11:07.742472",
+    "test_duration_seconds": 0.0,
     "python_version": "3.12.8 | packaged by conda-forge | (main, Dec  5 2024, 14:06:27) [MSC v.1942 64 bit (AMD64)]",
     "rdkit_available": true,
     "pytest_available": true
   },
   "oecd_test_results": {
     "total_tests": 75,
-    "successful_detections": 75,
-    "overall_detection_rate": 1.0,
+    "successful_detections": 74,
+    "overall_detection_rate": 0.987,
     "group_wise_results": [
       {
         "group_ids": 1,
@@ -65,8 +65,8 @@
       {
         "group_ids": 8,
         "total_tests": 3,
-        "successful_detections": 3,
-        "detection_rate": 1.0,
+        "successful_detections": 2,
+        "detection_rate": 0.667,
         "group_name": "Perfluoroalkyl disulfonic acids"
       },
       {
@@ -191,6 +191,13 @@
     ],
     "worst_performing_groups": [
       {
+        "group_ids": 8,
+        "total_tests": 3,
+        "successful_detections": 2,
+        "detection_rate": 0.667,
+        "group_name": "Perfluoroalkyl disulfonic acids"
+      },
+      {
         "group_ids": 1,
         "total_tests": 3,
         "successful_detections": 3,
@@ -217,13 +224,6 @@
         "successful_detections": 3,
         "detection_rate": 1.0,
         "group_name": "Perfluoroalkylether carboxylic acids"
-      },
-      {
-        "group_ids": 5,
-        "total_tests": 3,
-        "successful_detections": 3,
-        "detection_rate": 1.0,
-        "group_name": "Polyfluoroalkylether carboxylic acid"
       }
     ],
     "best_performing_groups": [
@@ -499,25 +499,13 @@
       }
     ]
   },
-  "specificity_test_results": {
-    "total_tests": 448,
-    "detection_rate": 0.998,
-    "specificity_rate": 0.917,
-    "average_detected_groups_per_test": 2.32,
-    "failed_detection_cases": 1,
-    "failed_specificity_cases": 37,
-    "specificity_details": {
-      "tests_with_exact_match": 134,
-      "tests_with_multiple_matches": 314,
-      "tests_with_no_matches": 0
-    }
-  },
+  "specificity_test_results": {},
   "overall_summary": {
     "total_tests_run": 163,
-    "total_successful_detections": 163,
-    "overall_accuracy": 1.0,
-    "specificity_rate": 0.917,
-    "detection_rate": 0.998,
-    "test_status": "PASSED"
+    "total_successful_detections": 162,
+    "overall_accuracy": 0.994,
+    "specificity_rate": 0,
+    "detection_rate": 0,
+    "test_status": "FAILED"
   }
 }

@@ -576,8 +576,6 @@ def load_graph_from_json(filename):
         Gper.add_node(target)
         # Add edge with type information
         G.add_edge(source, target, edge_type=edge_type)
-        if edge_type in ['per','both']:
-            Gper.add_edge(source, target, edge_type=edge_type)
     
     return G, Gper
     
@@ -808,7 +806,7 @@ def create_specificity_test_molecules():
             smiles = Chem.MolToSmiles(mol)
             # Test classification
             formula = CalcMolFormula(mol)
-            test_results.append((group_id, smiles,inchi,formula,inchikey,pathtype))
+            test_results.append((f"{group_name}-{'per' if pathtype=='Perfluoroalkyl' else 'poly'}",group_id, smiles,inchi,formula,inchikey,pathtype))
         for group_id, group_name, group_smiles, insertion_mode in GENERIC_PFAS_GROUPS:
             for pathtype in ['Perfluoroalkyl', 'Polyfluoroalkyl']:
                 m = mF if pathtype == 'Perfluoroalkyl' else mpF
@@ -831,7 +829,7 @@ def create_specificity_test_molecules():
                 # Test classification
                 formula = CalcMolFormula(mol)
                 smiles = Chem.MolToSmiles(mol)
-                test_results.append((group_id, smiles, inchi,formula,inchikey,pathtype))
+                test_results.append((f"{group_name}-{'per' if pathtype=='Perfluoroalkyl' else 'poly'}",group_id, smiles, inchi,formula,inchikey,pathtype))
     # Add expected ids for equivalent groups:
     # Load equivalent groups from JSON file structure
     per = 'Perfluoroalkyl'
@@ -843,13 +841,14 @@ def create_specificity_test_molecules():
     for x_id, y_id, pathtype in equivalent_groups:
         if x_id is not None and y_id is not None:
             # Find all test results with group_id x and add them as group_id y
-            for group_id, smiles, inchi, formula, inchikey, result_pathtype in test_results:
+            for origin, group_id, smiles, inchi, formula, inchikey, result_pathtype in test_results:
                 if group_id == x_id and result_pathtype == pathtype:
-                    test_results.append((y_id, smiles, inchi, formula, inchikey, pathtype))
-    specificity_test_molecules = pd.DataFrame(test_results, columns=['group_ids','smiles','inchi','formula','inchikey','pathtype'])
+                    test_results.append((origin,y_id, smiles, inchi, formula, inchikey, pathtype))
+    specificity_test_molecules = pd.DataFrame(test_results, columns=['origin','group_ids','smiles','inchi','formula','inchikey','pathtype'])
     specificity_test_molecules = specificity_test_molecules.groupby(['inchi','inchikey','formula','pathtype']).agg({
         'group_ids': lambda x: sorted(set([int(y) for y in x])),
-        'smiles': 'first'
+        'smiles': 'first',
+        'origin':lambda x: ", ".join([str(y) for y in x])
     }).reset_index()
     return specificity_test_molecules
 
@@ -870,12 +869,13 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
         test_molecules = create_specificity_test_molecules()
     print(test_molecules.head())
     results = []
-    for i,(inchi, inchikey, formula, pathtype, group_ids,smiles) in test_molecules.iterrows():
+    for i,(inchi, inchikey, formula, pathtype, group_ids,smiles,origin) in test_molecules.iterrows():
         try:
             mol = Chem.MolFromSmiles(smiles)
             if mol is None:
                 print(f"Warning: Invalid smiles {smiles}")
                 results.append({
+                    'origin':origin,
                     'groups_id': group_ids,
                     'inchi':inchi,
                     'smiles': None,
@@ -903,6 +903,7 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
             is_specific = are_detected_groups_acceptable(group_ids, detected_groups)
             
             results.append({
+                'origin':origin,
                 'group_ids': group_ids,
                 'smiles': smiles,
                 'inchi':inchi,
@@ -928,6 +929,7 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
             
         except Exception as e:
             results.append({
+                'origin':origin,
                 'group_ids': group_ids,
                 'smiles': None,
                 'inchi':inchi,
@@ -1203,6 +1205,7 @@ def test_pfoa_like_compounds():
     success_rate = success_count / len(test_smiles)
     print(f"PFOA-like compound detection rate: {success_rate:.1%}")
     assert success_rate > 0.5
+    return success_rate > 0.5
 
 def run_quick_test():
     """Run a quick test to verify the module is working."""

@@ -2,11 +2,11 @@ graph [
   directed 1
   node [
     id 0
-    label "carboxylic acid"
+    label "Perfluoroalkyl carboxylic acids"
   ]
   node [
     id 1
-    label "Perfluoroalkyl carboxylic acids"
+    label "carboxylic acid"
   ]
   node [
     id 2
@@ -26,11 +26,11 @@ graph [
   ]
   node [
     id 6
-    label "ether"
+    label "Hydrofluoroethers"
   ]
   node [
     id 7
-    label "Hydrofluoroethers"
+    label "ether"
   ]
   node [
     id 8
@@ -38,15 +38,15 @@ graph [
   ]
   node [
     id 9
-    label "Perfluoroalkylether sulfonic acids"
+    label "benzodioxole"
   ]
   node [
     id 10
-    label "Polyfluoroalkylether sulfonic acid"
+    label "Perfluoroalkylether sulfonic acids"
   ]
   node [
     id 11
-    label "alcohol"
+    label "Polyfluoroalkylether sulfonic acid"
   ]
   node [
     id 12
@@ -54,11 +54,11 @@ graph [
   ]
   node [
     id 13
-    label "Perfluoroalkyl alcohols"
+    label "alcohol"
   ]
   node [
     id 14
-    label "sulfonic acid"
+    label "Perfluoroalkyl alcohols"
   ]
   node [
     id 15
@@ -66,59 +66,59 @@ graph [
   ]
   node [
     id 16
-    label "Polyfluoroalkyl sulfonic acid"
+    label "sulfonic acid"
   ]
   node [
     id 17
-    label "Perfluoroalkyl disulfonic acids"
+    label "Polyfluoroalkyl sulfonic acid"
   ]
   node [
     id 18
-    label "sulfinic acid"
+    label "Perfluoroalkyl sulfonic acid"
   ]
   node [
     id 19
-    label "Perfluoroalkyl sulfinic acids"
+    label "Perfluoroalkyl disulfonic acids"
   ]
   node [
     id 20
-    label "phosphonic acid"
+    label "Perfluoroalkyl sulfinic acids"
   ]
   node [
     id 21
-    label "Perfluoroalkyl phosphonic acids"
+    label "sulfinic acid"
   ]
   node [
     id 22
-    label "phosphinic acid"
+    label "Perfluoroalkyl phosphonic acids"
   ]
   node [
     id 23
-    label "Perfluoroalkyl phosphinic acids"
+    label "phosphonic acid"
   ]
   node [
     id 24
-    label "Side-chain aromatics"
+    label "Perfluoroalkyl phosphinic acids"
   ]
   node [
     id 25
-    label "Side-chain fluorinated aromatics"
+    label "phosphinic acid"
   ]
   node [
     id 26
-    label "azole"
+    label "Side-chain fluorinated aromatics"
   ]
   node [
     id 27
-    label "azine"
+    label "Side-chain aromatics"
   ]
   node [
     id 28
-    label "benzodioxole"
+    label "azole"
   ]
   node [
     id 29
-    label "amine"
+    label "azine"
   ]
   node [
     id 30
@@ -126,11 +126,11 @@ graph [
   ]
   node [
     id 31
-    label "sulfonamide"
+    label "amine"
   ]
   node [
     id 32
-    label "iodide"
+    label "sulfonamide"
   ]
   node [
     id 33
@@ -138,7 +138,7 @@ graph [
   ]
   node [
     id 34
-    label "ketone"
+    label "iodide"
   ]
   node [
     id 35
@@ -146,11 +146,11 @@ graph [
   ]
   node [
     id 36
-    label "Semi-fluoroalkyl ketones"
+    label "ketone"
   ]
   node [
     id 37
-    label "alkene"
+    label "Semi-fluoroalkyl ketones"
   ]
   node [
     id 38
@@ -158,10 +158,14 @@ graph [
   ]
   node [
     id 39
-    label "Hydrofluoroolefins"
+    label "alkene"
   ]
   node [
     id 40
+    label "Hydrofluoroolefins"
+  ]
+  node [
+    id 41
     label "ethene"
   ]
   edge [
@@ -170,24 +174,34 @@ graph [
     edge_type "both"
   ]
   edge [
-    source 0
+    source 2
+    target 1
+    edge_type "both"
+  ]
+  edge [
+    source 3
+    target 1
+    edge_type "per"
+  ]
+  edge [
+    source 4
+    target 0
+    edge_type "per"
+  ]
+  edge [
+    source 4
+    target 7
+    edge_type "per"
+  ]
+  edge [
+    source 5
     target 2
     edge_type "both"
   ]
   edge [
-    source 0
-    target 3
-    edge_type "per"
-  ]
-  edge [
-    source 1
-    target 4
-    edge_type "per"
-  ]
-  edge [
-    source 2
-    target 5
-    edge_type "poly"
+    source 5
+    target 7
+    edge_type "both"
   ]
   edge [
     source 6
@@ -195,73 +209,83 @@ graph [
     edge_type "both"
   ]
   edge [
-    source 6
-    target 8
+    source 8
+    target 7
     edge_type "per"
   ]
   edge [
-    source 6
-    target 4
+    source 8
+    target 6
     edge_type "per"
   ]
   edge [
-    source 6
-    target 5
-    edge_type "poly"
+    source 9
+    target 7
+    edge_type "both"
   ]
   edge [
-    source 6
-    target 9
+    source 9
+    target 27
+    edge_type "both"
+  ]
+  edge [
+    source 9
+    target 26
+    edge_type "both"
+  ]
+  edge [
+    source 10
+    target 7
     edge_type "per"
   ]
   edge [
-    source 6
-    target 10
-    edge_type "poly"
-  ]
-  edge [
-    source 7
-    target 8
+    source 10
+    target 16
     edge_type "per"
   ]
   edge [
     source 11
-    target 12
-    edge_type "poly"
+    target 7
+    edge_type "both"
   ]
   edge [
     source 11
-    target 13
-    edge_type "per"
-  ]
-  edge [
-    source 14
-    target 15
-    edge_type "per"
-  ]
-  edge [
-    source 14
     target 16
     edge_type "both"
   ]
   edge [
-    source 14
-    target 17
-    edge_type "per"
+    source 12
+    target 13
+    edge_type "both"
   ]
   edge [
     source 14
-    target 9
+    target 13
     edge_type "per"
   ]
   edge [
-    source 14
-    target 10
+    source 15
+    target 16
+    edge_type "per"
+  ]
+  edge [
+    source 17
+    target 16
+    edge_type "both"
+  ]
+  edge [
+    source 17
+    target 11
     edge_type "both"
   ]
   edge [
     source 18
-    target 19
+    target 17
+    edge_type "per"
+  ]
+  edge [
+    source 19
+    target 16
     edge_type "per"
   ]
   edge [
@@ -277,76 +301,71 @@ graph [
   edge [
     source 24
     target 25
-    edge_type "both"
+    edge_type "per"
   ]
   edge [
-    source 24
-    target 26
-    edge_type "both"
-  ]
-  edge [
-    source 24
+    source 26
     target 27
     edge_type "both"
   ]
   edge [
-    source 24
-    target 28
-    edge_type "both"
-  ]
-  edge [
-    source 25
-    target 26
-    edge_type "both"
-  ]
-  edge [
-    source 25
+    source 28
     target 27
     edge_type "both"
   ]
   edge [
-    source 25
-    target 28
+    source 28
+    target 26
     edge_type "both"
   ]
   edge [
     source 29
-    target 30
+    target 27
     edge_type "both"
   ]
   edge [
     source 29
+    target 26
+    edge_type "both"
+  ]
+  edge [
+    source 30
+    target 31
+    edge_type "per"
+  ]
+  edge [
+    source 32
     target 31
     edge_type "both"
   ]
   edge [
-    source 32
-    target 33
+    source 33
+    target 34
     edge_type "per"
   ]
   edge [
-    source 34
-    target 35
-    edge_type "per"
-  ]
-  edge [
-    source 34
+    source 35
     target 36
-    edge_type "poly"
-  ]
-  edge [
-    source 37
-    target 38
     edge_type "per"
   ]
   edge [
     source 37
-    target 39
-    edge_type "poly"
+    target 36
+    edge_type "both"
   ]
   edge [
-    source 37
-    target 40
+    source 38
+    target 39
+    edge_type "per"
+  ]
+  edge [
+    source 40
+    target 39
+    edge_type "both"
+  ]
+  edge [
+    source 41
+    target 39
     edge_type "both"
   ]
 ]

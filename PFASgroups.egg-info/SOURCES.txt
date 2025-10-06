@@ -13,6 +13,15 @@ PFASgroups.egg-info/SOURCES.txt
 PFASgroups.egg-info/dependency_links.txt
 PFASgroups.egg-info/requires.txt
 PFASgroups.egg-info/top_level.txt
+PFASgroups/report/automated_test_runner.py
+PFASgroups/report/debug_group8.py
+PFASgroups/report/debug_group8_detailed.py
+PFASgroups/report/generate_test_report.py
+PFASgroups/report/show_summary.py
+PFASgroups/report/standalone_report_generator.py
 PFASgroups/tests/generate_graph_PFASgroups.py
+PFASgroups/tests/test_bond_strategies.py
 PFASgroups/tests/test_core.py
+PFASgroups/tests/test_degradation.py
 PFASgroups/tests/test_examples.py
+PFASgroups/tests/test_runner_example.py
