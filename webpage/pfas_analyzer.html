@@ -1,0 +1,4064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFAS Group Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Average+Sans&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Average Sans",sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .results-section {
+            margin-top: 30px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .results-header h2 {
+            color: #333;
+            font-size: 1.8rem;
+        }
+
+        .molecule-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .molecule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .molecule-input {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #666;
+            word-break: break-all;
+        }
+
+        .formula-breakdown {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .formula-breakdown .element {
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .formula-breakdown .element-symbol {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .molecule-structure {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .group-matches {
+            margin-top: 20px;
+        }
+
+        .group-match {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .group-match:hover {
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .group-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .group-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .chain-info {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-top: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin-bottom: 20px;
+        }
+
+        .info-message {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .badge-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .examples {
+            margin-top: 15px;
+            padding: 15px;
+            background: #e7f3ff;
+            border-radius: 8px;
+        }
+
+        .examples h4 {
+            margin-bottom: 10px;
+            color: #004085;
+        }
+
+        .example-item {
+            cursor: pointer;
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #b8daff;
+            transition: all 0.2s;
+        }
+
+        .example-item:hover {
+            background: #cce5ff;
+            transform: translateX(5px);
+        }
+
+        .example-label {
+            font-weight: 600;
+            color: #004085;
+        }
+
+        .example-value {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-input-label:hover {
+            background: #e7f0ff;
+            border-color: #764ba2;
+        }
+
+        .file-input-label.has-file {
+            background: #d4edda;
+            border-color: #28a745;
+            border-style: solid;
+        }
+
+        .file-input-label.drag-over {
+            background: #e7f0ff;
+            border-color: #764ba2;
+            border-style: solid;
+            border-width: 3px;
+            transform: scale(1.02);
+        }
+
+        .file-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e7f3ff;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .export-options {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .export-options h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .checkbox-group {
+            margin: 10px 0;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .btn-export {
+            background: #28a745;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .btn-export:hover {
+            background: #218838;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.2s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+            margin-top: 30px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .tab:hover {
+            background: #e7f0ff;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: -3px;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .info-section h4 {
+            color: #333;
+            margin: 20px 0 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .info-section p {
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-section ul li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .info-section ul li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .diagram-container {
+            text-align: center;
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .diagram-container img,
+        .diagram-container svg {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .diagram-caption {
+            margin-top: 15px;
+            font-style: italic;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box.warning {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+
+        .info-box.success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .constraint-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .constraint-table th,
+        .constraint-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .constraint-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .constraint-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .molecule-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 PFAS Group Analyzer</h1>
+            <p>Identify PFAS groups and homologue series from molecular structures</p>
+        </div>
+
+        <div class="content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="inputType">Input Format:</label>
+                    <select id="inputType">
+                        <option value="smiles">SMILES</option>
+                        <option value="inchi">InChI</option>
+                    </select>
+                </div>
+
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" onchange="handleFileUpload(event)">
+                    <label for="fileInput" class="file-input-label" id="fileInputLabel">
+                        📁 Click to import CSV or Excel file<br>
+                        <small>File should contain a column with SMILES or InChI strings</small>
+                    </label>
+                </div>
+
+                <div class="checkbox-group" style="margin-bottom: 15px;">
+                    <label>
+                        <input type="checkbox" id="useFormulaColumn" onchange="toggleFormulaColumnInput()">
+                        Use molecular formula from file column
+                    </label>
+                    <div class="input-group" style="margin-top: 8px; margin-bottom: 0;">
+                        <input type="text" id="formulaColumnName" placeholder="Formula column name (e.g., 'Formula' or 'Molecular_Formula')" 
+                               style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; background: #f5f5f5; color: #999;" 
+                               disabled>
+                    </div>
+                </div>
+
+                <div id="fileInfo" class="file-info" style="display: none;"></div>
+
+                <div class="input-group">
+                    <label for="moleculeInput">Enter Molecule(s) (one per line) or import file:</label>
+                    <textarea id="moleculeInput" placeholder="Enter SMILES or InChI strings, one per line..."></textarea>
+                </div>
+
+                <div class="examples">
+                    <h4>Example Molecules (click to use):</h4>
+                    <div class="example-item" onclick="loadExample('PFOA')">
+                        <div class="example-label">PFOA (Perfluorooctanoic acid)</div>
+                        <div class="example-value">C(=O)(C(C(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)O</div>
+                    </div>
+                    <div class="example-item" onclick="loadExample('PFOS')">
+                        <div class="example-label">PFOS (Perfluorooctanesulfonic acid)</div>
+                        <div class="example-value">C(C(C(C(C(C(C(C(F)(F)S(=O)(=O)O)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)(F)F</div>
+                    </div>
+                    <div class="example-item" onclick="loadExample('GenX')">
+                        <div class="example-label">GenX (HFPO-DA)</div>
+                        <div class="example-value">C(C(C(OC(C(F)(F)F)(F)F)(F)F)(F)F)(=O)O</div>
+                    </div>
+                    <div class="example-item" onclick="loadExample('FTOH')">
+                        <div class="example-label">6:2 Fluorotelomer alcohol</div>
+                        <div class="example-value">C(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)(F)CCO</div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="analyzeMolecules()">Analyze</button>
+                    <button class="btn-secondary" onclick="clearResults()">Clear</button>
+                </div>
+            </div>
+
+
+            <div id="exportSection" style="display: none;">
+                <div class="export-options">
+                    <h4>📊 Export Results</h4>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="includeAllColumns">
+                            Include all detected PFAS groups in separate columns
+                        </label>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn-export" onclick="exportSummaryCSV()">Export Summary CSV</button>
+                        <button class="btn-export" onclick="exportDetailedCSV()">Export Detailed CSV</button>
+                        <button class="btn-export" onclick="exportToExcel()">Export to Excel</button>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        <strong>Summary:</strong> One row per molecule with all groups in same row<br>
+                        <strong>Detailed:</strong> One row per match with pathway types and chain information
+                    </p>
+                </div>
+            </div>
+
+            
+            <div id="resultsContainer"></div>
+
+            <!-- Information/Documentation Section -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab(event, 'about')">About</button>
+                <button class="tab" onclick="switchTab(event, 'algorithm')">Algorithm</button>
+                <button class="tab" onclick="switchTab(event, 'groups')">PFAS Groups</button>
+                <button class="tab" onclick="switchTab(event, 'pathways')">Pathways</button>
+                <button class="tab" onclick="switchTab(event, 'usage')">Usage Guide</button>
+            </div>
+
+            <div id="about" class="tab-content active">
+                <div class="info-section">
+                    <h3>About the PFAS Analyzer</h3>
+                    <p>
+                        The PFAS Analyzer is a web-based tool for identifying Per- and Polyfluoroalkyl Substances (PFAS) 
+                        in molecular structures. It uses chemical structure patterns (SMARTS) and formula constraints 
+                        to classify molecules into specific PFAS groups.
+                        This tool is designed for researchers, environmental scientists, and chemists working with 
+                        fluorinated compounds.
+                    </p>
+                    <p>
+                        The original work was developed in Python and should be preferred to JavaScript for production use. This web version is provided mainly for quick analyses and educational purposes for those who do not have access to Python or RDKit.
+                    </p>
+                    
+
+
+                    <h4>What are PFAS?</h4>
+                    <p>
+                        PFAS are a large group of synthetic chemicals that contain carbon-fluorine bonds. They are known 
+                        as "forever chemicals" because they don't break down easily in the environment. PFAS are used in 
+                        many industrial and consumer products, including non-stick cookware, water-repellent fabrics, 
+                        firefighting foam, and food packaging.
+                        See <a href="https://medium.com/cogitopia/a-very-brief-introduction-to-per-and-polyfluoroalkyl-substances-or-pfas-9c717519148b">this very brief introduction</a> for more information.
+                    </p>
+
+                    <div class="info-box success">
+                        <strong>✨ Key Features:</strong>
+                        <ul>
+                            <li>Identifies 28 OECD PFAS groups corresponding to the terminology in <a href="https://one.oecd.org/document/ENV/CBC/MONO(2021)25/En/pdf#page=23">this report (figure 9)</a> and 23 other more generic PFAS groups (see the tab on PFAS Groups).</li>
+                            <li>Supports SMILES and InChI input formats</li>
+                            <li>Batch processing via CSV/Excel import</li>
+                            <li>Export results with molecular structures</li>
+                            <li>Runs entirely in your browser (no data sent to servers)</li>
+                        </ul>
+                    </div>
+
+                    <h4>Technology</h4>
+                    <p>
+                        This tool uses <strong>RDKit.js</strong> (a WebAssembly port of the RDKit cheminformatics library) 
+                        for molecular structure processing, SMARTS pattern matching, and structure visualization. All 
+                        analysis happens locally in your browser.
+                    </p>
+
+                    <div class="info-box warning">
+                        <strong>⚠️ Note:</strong> This is a simplified web version of the Python PFASgroups library. 
+                        The full Python library includes additional features like homologue series analysis and more 
+                        detailed chain length calculations.
+                    </div>
+
+                    <h4>Citation & Credits</h4>
+                    <p></p>
+                    The tool was developed by Luc T. Miaz, part of the <a href="https://zeropm.eu/">ZeroPM project</a> (WP2) which received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 101036756. This work was developed at the <a href="https://aces.su.se">Department of Environmental Science</a> at Stockholm University.
+                </p>
+            <img alt="EU logo" src="https://zeropm.eu/wp-content/uploads/2021/12/flag_yellow_low.jpg" width=100/>&nbsp;<a rel='zeropm_web' href="https://zeropm.eu/"><img alt="zeropm logo" src="https://zeropm.eu/wp-content/uploads/2022/01/ZeroPM-logo.png" width=250 /></a>&nbsp;&nbsp;&nbsp;<a rel='zeropm_web' href="https://su.se/"><img alt="zeropm logo" src="https://eu01web.zoom.us/account/branding/p/5065401a-9915-4baa-9c16-665dcd743470.png" width=200 /></a><br/>
+            <a href="https://www.rdkit.org/"><img src="https://img.shields.io/badge/Powered%20by-RDKit-3838ff.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAFVBMVEXc3NwUFP8UPP9kZP+MjP+0tP////9ZXZotAAAAAXRSTlMAQObYZgAAAAFiS0dEBmFmuH0AAAAHdElNRQfmAwsPGi+MyC9RAAAAQElEQVQI12NgQABGQUEBMENISUkRLKBsbGwEEhIyBgJFsICLC0iIUdnExcUZwnANQWfApKCK4doRBsKtQFgKAQC5Ww1JEHSEkAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wMy0xMVQxNToyNjo0NyswMDowMDzr2J4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDMtMTFUMTU6MjY6NDcrMDA6MDBNtmAiAAAAAElFTkSuQmCC" width=200 /></a>
+            <br/>
+            
+<br/>
+
+                    <p>
+                        Based on the <strong>PFASgroups</strong> Python library. If you use this tool in your research, 
+                        please cite the original publication.
+                    </p>
+                </div>
+            </div>
+
+            <div id="algorithm" class="tab-content">
+                <div class="info-section">
+                    <h3>Detection Algorithm</h3>
+                    <p>
+                        The PFAS group detection algorithm follows a multi-step process to identify and classify 
+                        fluorinated compounds. The flowchart below illustrates the complete workflow:
+                    </p>
+
+                    <div class="diagram-container">
+                        <object data="algorithm_diagram.svg" type="image/svg+xml" width="100%" style="max-width: 800px;">
+                            <p>Algorithm diagram could not be loaded.</p>
+                        </object>
+                        <div class="diagram-caption">
+                            Figure 1: PFAS Group Detection Algorithm Flowchart
+                        </div>
+                    </div>
+
+                    <h4>Algorithm Steps</h4>
+                    
+                    <h4>1. Input & Preprocessing</h4>
+                    <ul>
+                        <li>Parse SMILES or InChI string into molecular structure</li>
+                        <li>Add explicit hydrogens to molecule (critical for formula calculation)</li>
+                        <li>Calculate molecular formula and parse into element dictionary</li>
+                    </ul>
+
+                    <h4>2. Molecule Sanitization</h4>
+                    <ul>
+                        <li>Attempt to sanitize the molecule (validate valences)</li>
+                        <li>If sanitization fails, fragment the molecule to fix valence errors</li>
+                        <li>Continue with valid fragments</li>
+                    </ul>
+
+                    <h4>3. PFAS Group Iteration</h4>
+                    <p>For each PFAS group definition in the database:</p>
+                    <ul>
+                        <li><strong>Formula Constraint Check:</strong> Verify molecular formula satisfies group constraints
+                            (relational, minimum/maximum counts, element restrictions)</li>
+                        <li><strong>SMARTS Pattern Matching:</strong> Check if functional groups are present using 
+                            substructure searches</li>
+                        <li><strong>Path Finding:</strong> For groups with two SMARTS patterns, find fluorinated paths 
+                            between matched substructures</li>
+                    </ul>
+
+                    <h4>4. Result Recording</h4>
+                    <ul>
+                        <li>Record all matching PFAS groups</li>
+                        <li>Count number of matches for each group</li>
+                        <li>Store chain information (for path-based matches)</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <strong>💡 Technical Note:</strong> The algorithm uses both chemical structure patterns (SMARTS) 
+                        and mathematical formula constraints. This dual approach ensures accurate classification while 
+                        minimizing false positives.
+                    </div>
+
+                    <h4>Formula Constraint Types</h4>
+                    
+                    <table class="constraint-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>rel</strong></td>
+                                <td>Relational constraint between elements</td>
+                                <td>C = F/2 + 0.5<br>(carbon equals half of fluorines plus 0.5)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>gte</strong></td>
+                                <td>Greater than or equal (minimum)</td>
+                                <td>F ≥ 1<br>(at least one fluorine atom)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>lte</strong></td>
+                                <td>Less than or equal (maximum)</td>
+                                <td>H ≤ 2<br>(at most two hydrogens)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>eq</strong></td>
+                                <td>Equal to (exact count)</td>
+                                <td>O = 2<br>(exactly two oxygen atoms)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>only</strong></td>
+                                <td>Only these elements allowed</td>
+                                <td>only: [C, F, H]<br>(no other elements permitted)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="groups" class="tab-content">
+                <div class="info-section">
+                    <h3>🔬 PFAS Groups Taxonomy</h3>
+                    <p style="margin-bottom: 15px;">
+                        Interactive visualization of OECD and Generic PFAS group classifications. 
+                        Click on any group to see SMARTS patterns, constraints, and parent-child relationships.
+                    </p>
+
+                    <!-- Controls -->
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                        <button onclick="expandAllGroups()" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                            📂 Expand All
+                        </button>
+                        <button onclick="collapseAllGroups()" style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                            📁 Collapse All
+                        </button>
+                        <button id="filter-oecd-btn" onclick="toggleGroupFilter('oecd')" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                            OECD Groups (1-28)
+                        </button>
+                        <button id="filter-generic-btn" onclick="toggleGroupFilter('generic')" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                            Generic Groups (29-51)
+                        </button>
+                        <input type="text" id="group-search-input" placeholder="🔍 Search groups by name, ID, or alias..." 
+                               oninput="searchGroupsFunc(this.value)" 
+                               style="flex: 1; min-width: 250px; padding: 8px 12px; border: 2px solid #ddd; border-radius: 4px;">
+                    </div>
+
+                    <!-- Legend -->
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; font-size: 13px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="width: 16px; height: 16px; background: #e74c3c; border-radius: 3px;"></div>
+                            <span>Carboxylic</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="width: 16px; height: 16px; background: #f39c12; border-radius: 3px;"></div>
+                            <span>Sulfonic</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="width: 16px; height: 16px; background: #3498db; border-radius: 3px;"></div>
+                            <span>Alcohols/O</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="width: 16px; height: 16px; background: #2980b9; border-radius: 3px;"></div>
+                            <span>Ethers</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="width: 16px; height: 16px; background: #1abc9c; border-radius: 3px;"></div>
+                            <span>Alkenes</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="width: 16px; height: 16px; background: #9b59b6; border-radius: 3px;"></div>
+                            <span>N/Halides</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div style="width: 16px; height: 16px; background: #27ae60; border-radius: 3px;"></div>
+                            <span>Aromatics</span>
+                        </div>
+                    </div>
+
+
+                    <!-- Tree Container -->
+                    <div id="pfas-tree-container" style="margin-top: 20px;"></div>
+
+                    <!-- Statistics -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; padding: 15px; background: #ecf0f1; border-radius: 6px;">
+                        <div style="text-align: center; padding: 10px; background: white; border-radius: 6px;">
+                            <div style="font-size: 2em; font-weight: bold; color: #3498db;">51</div>
+                            <div style="color: #7f8c8d; font-size: 0.9em;">Total Groups</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: white; border-radius: 6px;">
+                            <div style="font-size: 2em; font-weight: bold; color: #3498db;">26</div>
+                            <div style="color: #7f8c8d; font-size: 0.9em;">OECD Groups</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: white; border-radius: 6px;">
+                            <div style="font-size: 2em; font-weight: bold; color: #3498db;">23</div>
+                            <div style="color: #7f8c8d; font-size: 0.9em;">Generic Groups</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: white; border-radius: 6px;">
+                            <div style="font-size: 2em; font-weight: bold; color: #3498db;">12</div>
+                            <div style="color: #7f8c8d; font-size: 0.9em;">With Path Types</div>
+                        </div>
+                    </div>
+
+                    <style>
+                        .pfas-tree-section {
+                            margin-bottom: 20px;
+                        }
+                        
+                        .pfas-section-title {
+                            font-size: 1.3em;
+                            font-weight: bold;
+                            color: #2c3e50;
+                            margin-bottom: 15px;
+                            padding: 10px;
+                            background: #ecf0f1;
+                            border-left: 5px solid #3498db;
+                            border-radius: 4px;
+                        }
+                        
+                        .pfas-node {
+                            margin-left: 20px;
+                            position: relative;
+                            padding: 8px 12px;
+                            border-radius: 6px;
+                            margin-bottom: 5px;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            border: 2px solid transparent;
+                            background: white;
+                        }
+                        
+                        .pfas-node:hover {
+                            transform: translateX(5px);
+                            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+                        }
+                        
+                        .pfas-node::before {
+                            content: '';
+                            position: absolute;
+                            left: -15px;
+                            top: 50%;
+                            width: 15px;
+                            height: 2px;
+                            background: #95a5a6;
+                        }
+                        
+                        .pfas-node-header {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            flex-wrap: wrap;
+                        }
+                        
+                        .pfas-node-id {
+                            background: #3498db;
+                            color: white;
+                            padding: 3px 8px;
+                            border-radius: 4px;
+                            font-weight: bold;
+                            font-size: 0.85em;
+                            flex-shrink: 0;
+                        }
+                        
+                        .pfas-node-name {
+                            font-weight: 600;
+                            font-size: 1.05em;
+                            color: #2c3e50;
+                            flex-grow: 1;
+                        }
+                        
+                        .pfas-node-alias {
+                            color: #7f8c8d;
+                            font-size: 0.9em;
+                            font-style: italic;
+                        }
+                        
+                        .pfas-node-details {
+                            margin-top: 10px;
+                            padding: 12px;
+                            background: #f8f9fa;
+                            border-radius: 4px;
+                            font-size: 0.9em;
+                            line-height: 1.6;
+                            border-left: 3px solid #3498db;
+                        }
+                        
+                        .pfas-node-details.hidden {
+                            display: none;
+                        }
+                        
+                        .pfas-detail-row {
+                            margin-bottom: 8px;
+                            display: flex;
+                            gap: 8px;
+                        }
+                        
+                        .pfas-detail-label {
+                            font-weight: bold;
+                            color: #34495e;
+                            min-width: 100px;
+                        }
+                        
+                        .pfas-detail-value {
+                            color: #555;
+                            font-family: 'Courier New', monospace;
+                            flex: 1;
+                            word-break: break-all;
+                        }
+                        
+                        /* Color coding by category */
+                        .pfas-node.oecd-carboxylic { border-left: 5px solid #e74c3c; }
+                        .pfas-node.oecd-sulfonic { border-left: 5px solid #f39c12; }
+                        .pfas-node.oecd-other-acids { border-left: 5px solid #d35400; }
+                        .pfas-node.oecd-alcohols { border-left: 5px solid #3498db; }
+                        .pfas-node.oecd-ethers { border-left: 5px solid #2980b9; }
+                        .pfas-node.oecd-alkenes { border-left: 5px solid #1abc9c; }
+                        .pfas-node.oecd-alkanes { border-left: 5px solid #16a085; }
+                        .pfas-node.oecd-halides { border-left: 5px solid #9b59b6; }
+                        .pfas-node.oecd-other { border-left: 5px solid #95a5a6; }
+                        .pfas-node.generic-oxygen { border-left: 5px solid #3498db; }
+                        .pfas-node.generic-sulfur { border-left: 5px solid #f39c12; }
+                        .pfas-node.generic-phosphorus { border-left: 5px solid #e67e22; }
+                        .pfas-node.generic-nitrogen { border-left: 5px solid #9b59b6; }
+                        .pfas-node.generic-halogen { border-left: 5px solid #8e44ad; }
+                        .pfas-node.generic-unsaturated { border-left: 5px solid #1abc9c; }
+                        .pfas-node.generic-saturated { border-left: 5px solid #27ae60; }
+                        
+                        .pfas-node.highlight {
+                            background: #fff3cd;
+                            border-color: #ffc107;
+                        }
+                    </style>
+
+                    <script>
+                        const pfasGroupsData = {
+                            oecd: {
+                                title: "OECD PFAS GROUPS (IDs 1-28)",
+                                categories: {
+                                    "Perfluoroalkyl Acids - Carboxylic": {
+                                        class: "oecd-carboxylic",
+                                        groups: [
+                                            { id: 1, name: "Perfluoroalkyl carboxylic acids", alias: "PFCAs", smarts1: "[#6$([#6](=O)([OH1]))]", constraints: "C_rel: (F) ≥ C*0.5/2", parent: 33, children: [4] },
+                                            { id: 2, name: "Polyfluoroalkyl carboxylic acid", alias: "PolyFCAs", smarts1: "[#6$([#6](=O)([OH1]))]", constraints: "C_rel: (F,H,Cl,Br,I) ≥ C*0/2", parent: 33, children: [5] },
+                                            { id: 3, name: "Perfluoroalkyl dicarboxylic acids", alias: "PFdiCAs", smarts1: "[#6$([#6](=O)([OH1]))]", smarts2: "[#6$([#6](=O)([OH1]))]", path: "per", constraints: "C_rel: (F) ≥ (C+2)*0.5/2", parent: 33 },
+                                            { id: 4, name: "Perfluoroalkylether carboxylic acids", alias: "PFECAs", smarts1: "[#6$([#6](=O)([OH1]))]", smarts2: "[#6$([#6]O[#6])]", path: "per", constraints: "C_rel: (F) ≥ C*0.5/2", parent: [1, 31] },
+                                            { id: 5, name: "Polyfluoroalkylether carboxylic acid", alias: "PolyFECAs", smarts1: "[#6$([#6](=O)([OH1]))]", smarts2: "[#6$([#6]O[#6])]", path: "poly", constraints: "C_rel: (F,H,Cl,Br,I) ≥ C*0/2", parent: [2, 31] }
+                                        ]
+                                    },
+                                    "Perfluoroalkyl Acids - Sulfonic": {
+                                        class: "oecd-sulfonic",
+                                        groups: [
+                                            { id: 6, name: "Perfluoroalkyl sulfonic acids", alias: "PFSAs", smarts1: "[#6$([#6][#16](=O)(=O)[OH1])]", constraints: "C_rel: (F) ≥ (C-0.5)*0.5/2", parent: 36 },
+                                            { id: 7, name: "Polyfluoroalkyl sulfonic acid", alias: "PolyFSAs", smarts1: "[#6$([#6][#16](=O)(=O)[OH1])]", constraints: "C_rel: (F,H,Cl,Br,I) ≥ (C-1)*0.5/2", parent: 36, children: [10] },
+                                            { id: 8, name: "Perfluoroalkyl disulfonic acids", alias: "PFdiSAs", smarts1: "[#6$([#6][#16](=O)(=O)[OH1])]", smarts2: "[#6$([#6][#16](=O)(=O)[OH1])]", path: "per", constraints: "C_rel: (F) ≥ C*0.5/2", parent: 36 },
+                                            { id: 9, name: "Perfluoroalkylether sulfonic acids", alias: "PFESAs", smarts1: "[#6$([#6][#16](=O)(=O)([OH]))]", smarts2: "[#6$([#6]O[#6])]", path: "per", constraints: "C_rel: (F) ≥ (C-0.5)*0.5/2", parent: [36, 31] },
+                                            { id: 10, name: "Polyfluoroalkylether sulfonic acid", alias: "PolyFESAs", smarts1: "[#6$([#6][#16](=O)(=O)([OH]))]", smarts2: "[#6$([#6]O[#6])]", path: "poly", constraints: "C_rel: (F,H,Cl,Br,I) ≥ (C-1)*0.5/2", parent: [7, 36, 31] }
+                                        ]
+                                    },
+                                    "Perfluoroalkyl Acids - Other": {
+                                        class: "oecd-other-acids",
+                                        groups: [
+                                            { id: 11, name: "Perfluoroalkyl sulfinic acids", alias: "PFSiAs", smarts1: "[#6$([#6][#16X3](=O)[OH1])]", constraints: "C_rel: (F) ≥ (C-0.5)*0.5/2", parent: 38 },
+                                            { id: 12, name: "Perfluoroalkyl phosphonic acids", alias: "PFPAs", smarts1: "[#6$([#6][#15](=[#8])([#8])[#8])]", constraints: "C_rel: (F) ≥ (C-0.5)*0.5/2", parent: 39 },
+                                            { id: 13, name: "Perfluoroalkyl phosphinic acids", alias: "PFPiAs", smarts1: "[#6X4$([#6][#15](=[#8])([#8])[#1,#6])]", constraints: "C_rel: (F) ≥ (C-0.5)*0.5/2", parent: 40 }
+                                        ]
+                                    },
+                                    "Precursors - Alcohols": {
+                                        class: "oecd-alcohols",
+                                        groups: [
+                                            { id: 14, name: "Perfluoroalkyl alcohols", alias: "Perfluoroalkyl alcohols", smarts1: "[#6X4$([#6;!$([#6]=O)][OH1])]", constraints: "C_rel: (F,O) ≥ (C-1)*0.5/2", parent: 29 },
+                                            { id: 15, name: "fluorotelomer alcohols", alias: "fluorotelomer alcohols", smarts1: "[C$([#6][C$([CH2]O[H]),...])]", constraints: "None", parent: 29 }
+                                        ]
+                                    },
+                                    "Precursors - Ethers": {
+                                        class: "oecd-ethers",
+                                        groups: [
+                                            { id: 16, name: "Perfluoropolyethers", alias: "PFPEs", smarts1: "[#6$([#6]O[#6])]", smarts2: "[#6$([#6]O[#6])]", path: "per", constraints: "O ≥ 2, C_rel: (F) ≥ (C-1)*0.5/2", parent: 31 },
+                                            { id: 17, name: "Hydrofluoroethers", alias: "HFEs", smarts1: "[#6][#8][#6]", constraints: "O ≥ 1, only: C,F,O,H, C_rel: (F,H) ≥ (C-1)*0.5/2", parent: 31 }
+                                        ]
+                                    },
+                                    "Precursors - Alkenes": {
+                                        class: "oecd-alkenes",
+                                        groups: [
+                                            { id: 18, name: "Perfluoroalkene", alias: "Perfluoroalkene", smarts1: "[#6X3$([#6]=[#6X3])]", path: "per", constraints: "C_rel: (F) ≥ C*0.5/2", parent: 49 },
+                                            { id: 19, name: "Hydrofluoroolefins", alias: "HFOs", smarts1: "[#6X3$([#6]=[#6])]", smarts2: "[#6X4$([#6]F)]", constraints: "F ≥ 1, only: C,F,H", parent: 49 }
+                                        ]
+                                    },
+                                    "Precursors - Alkanes": {
+                                        class: "oecd-alkanes",
+                                        groups: [
+                                            { id: 20, name: "Hydrofluorocarbons", alias: "HFCs", constraints: "F ≥ 1, only: C,F,H, C_rel: (F,H) ≥ (C-1)*0.5/2" },
+                                            { id: 21, name: "Semi-fluorinated alkanes", alias: "SFAs", smarts1: "[#6X4$([#6](F)(F))]", smarts2: "[#6X4$([#6][H,I,Br,Cl])]", path: "poly", constraints: "F ≥ 1, C_rel: (Cl,I,Br,F,H) ≥ (C-1)*0.5/2", parent: 48 }
+                                        ]
+                                    },
+                                    "Precursors - Halides & Ketones": {
+                                        class: "oecd-halides",
+                                        groups: [
+                                            { id: 25, name: "Perfluoroalkyl iodides", alias: "PFAIs", constraints: "I ≥ 1, C_rel: (F,I) ≥ (C-1)*0.5/2", parent: 42 },
+                                            { id: 26, name: "Perfluoroalkane sulfonyl fluorides", alias: "PASFs", smarts1: "[#16$([#16](=O)(=O)[F])]", constraints: "C_rel: (F) ≥ (C-1)*0.5/2" },
+                                            { id: 27, name: "Perfluoroalkyl ketones", alias: "Perfluoroalkyl ketones", smarts1: "[#6X4$([#6]C(=O)[#6])]", constraints: "C_rel: (F) ≥ C*0.5/2", parent: 30 },
+                                            { id: 28, name: "Semi-fluoroalkyl ketones", alias: "Semi-fluoroalkyl ketones", smarts1: "[#6X4$([#6]C(=O)[#6])]", constraints: "O ≥ 1, F ≥ 3", parent: 30 }
+                                        ]
+                                    },
+                                    "Other PFAS": {
+                                        class: "oecd-other",
+                                        groups: [
+                                            { id: 22, name: "Side-chain fluorinated aromatics", alias: "Side-chain fluorinated aromatics", smarts1: "[#6X4$([#6]a)]", path: "per", parent: 51 },
+                                            { id: 23, name: "Perfluoroalkane", alias: "Perfluoroalkane", constraints: "C_rel: (F) ≥ (C-1)*0.5/2" },
+                                            { id: 24, name: "Perfluoroalkyl-tert-amines", alias: "Perfluoroalkyl-tert-amines", smarts1: "[#6$([#6][#7D3])]", constraints: "C_rel: (F) ≥ (C-1.5)*0.5/2", parent: 47 }
+                                        ]
+                                    }
+                                }
+                            },
+                            generic: {
+                                title: "GENERIC PFAS GROUPS (IDs 29-51)",
+                                categories: {
+                                    "Oxygen-Containing": {
+                                        class: "generic-oxygen",
+                                        groups: [
+                                            { id: 29, name: "alcohol", alias: "alcohol", smarts1: "[#6$([#6;!$([#6]=O)][OH1])]", children: [14, 15] },
+                                            { id: 30, name: "ketone", alias: "ketones", smarts1: "[#6$([#6][#6](=O)[#6])]", children: [27, 28] },
+                                            { id: 31, name: "ether", alias: "ether", smarts1: "[#6$([#6]([#8X2H0][#6;!$(C=O)])[#1,!$(C=O)]);#6!$([#6](=O))]", children: [17, 16, 4, 5, 9, 10, 46] },
+                                            { id: 32, name: "ester", alias: "ester", smarts1: "[#6X4$([#6][#6](=O)O[#6,...]),#6X4$([#6]O[#6](=O)[#6,...])]" },
+                                            { id: 33, name: "carboxylic acid", alias: "carboxylic acid", smarts1: "[$(*[#6](=O)[OH1])]", children: [1, 2, 3] },
+                                            { id: 34, name: "amide", alias: "amide", smarts1: "[$([#6][#6]([#7H0,#7H1,#7H2])=[#8]),$([#6]~[#7H0,#7H1,#7H2][#6X3]=[#8])]" },
+                                            { id: 35, name: "acyl halide", alias: "acyl halide", smarts1: "[#6$([#6][#6](=O)[#9,#17,#35,#53])]" }
+                                        ]
+                                    },
+                                    "Sulfur-Containing": {
+                                        class: "generic-sulfur",
+                                        groups: [
+                                            { id: 36, name: "sulfonic acid", alias: "sulfonic acid", smarts1: "[$(*[#16](=O)(=O)[O,OH1])]", children: [6, 7, 8, 9, 10] },
+                                            { id: 37, name: "sulfenic acid", alias: "sulfenic acid", smarts1: "[$(*[#16X2][OH1])]" },
+                                            { id: 38, name: "sulfinic acid", alias: "sulfinic acid", smarts1: "[$(*[#16X3](=O)[O])]", children: [11] },
+                                            { id: 43, name: "sulfonamide", alias: "sulfonamide", smarts1: "[$(*[#16]([#7])(=[#8])=[#8]),$(*[#7][#16](=[#8])=[#8])]", parent: 47 }
+                                        ]
+                                    },
+                                    "Phosphorus-Containing": {
+                                        class: "generic-phosphorus",
+                                        groups: [
+                                            { id: 39, name: "phosphonic acid", alias: "phosphonic acid", smarts1: "[#6$([#6][#15]([#8])(=[#8])[#8])]", children: [12] },
+                                            { id: 40, name: "phosphinic acid", alias: "phosphinic acid", smarts1: "[#6$([#6][#15](=[#8])([#8])[#1;!$([#8])])]", children: [13] }
+                                        ]
+                                    },
+                                    "Nitrogen-Containing": {
+                                        class: "generic-nitrogen",
+                                        groups: [
+                                            { id: 47, name: "amine", alias: "amine", smarts1: "[$([#6;!$([#6]=O)][N;!$(*[#6]=O)])]", children: [24, 43] }
+                                        ]
+                                    },
+                                    "Halogen-Containing": {
+                                        class: "generic-halogen",
+                                        groups: [
+                                            { id: 42, name: "iodide", alias: "iodide", smarts1: "[#6$([#6][#6](F)[#53])]", children: [25] }
+                                        ]
+                                    },
+                                    "Unsaturated": {
+                                        class: "generic-unsaturated",
+                                        groups: [
+                                            { id: 41, name: "ethene", alias: "ethene", smarts1: "[#6$([#6X3]([F,...])=[#6X3][F,...])]", constraints: "F ≥ 2", parent: 49 },
+                                            { id: 49, name: "alkene", alias: "alkene", smarts1: "[#6$([#6][#6X3]=[#6])]", children: [18, 19, 41] },
+                                            { id: 50, name: "alkyne", alias: "alkyne", smarts1: "[#6$([#6][#6]#[#6])]" }
+                                        ]
+                                    },
+                                    "Saturated & Aromatic": {
+                                        class: "generic-saturated",
+                                        groups: [
+                                            { id: 48, name: "alkane", alias: "alkane", smarts1: "[C$([CX4](F)(F)([F,!$(*[#9])])[CX4](F)([F,C,O,S,N,Si,P,B,Se,Te])[F,...])]", children: [21] },
+                                            { id: 44, name: "azole", alias: "azole", smarts1: "[$(*[#7r5,$([#6r5,#8r5,#16r5]:[#7r5]),$(...:[#7r5])])]", parent: [51, 22] },
+                                            { id: 45, name: "azine", alias: "azine", smarts1: "[$(*[#7r6,$([#6r6,#8r6,#16r6]:[#7r6]),$(...:[#7r6])])]", parent: [51, 22] },
+                                            { id: 46, name: "benzodioxole", alias: "benzodioxole", smarts1: "[$([#6]1[#6][#6]([#6]2[#6]([#6]1)[#8][#6][#8]2))]", constraints: "F ≥ 2", parent: [31, 51, 22] },
+                                            { id: 51, name: "Side-chain aromatics", alias: "Side-chain aromatics", smarts1: "[#6X4$([#6]a)]", children: [22, 44, 45, 46] }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+
+                        let groupFilters = { oecd: true, generic: true };
+
+                        function renderPfasTree() {
+                            const container = document.getElementById('pfas-tree-container');
+                            container.innerHTML = '';
+
+                            if (groupFilters.oecd) {
+                                renderPfasSection(container, pfasGroupsData.oecd, 'oecd');
+                            }
+                            if (groupFilters.generic) {
+                                renderPfasSection(container, pfasGroupsData.generic, 'generic');
+                            }
+                        }
+
+                        function renderPfasSection(container, data, type) {
+                            const section = document.createElement('div');
+                            section.className = 'pfas-tree-section';
+                            section.dataset.type = type;
+
+                            const title = document.createElement('div');
+                            title.className = 'pfas-section-title';
+                            title.textContent = data.title;
+                            section.appendChild(title);
+
+                            for (const [categoryName, categoryData] of Object.entries(data.categories)) {
+                                const categoryDiv = document.createElement('div');
+                                categoryDiv.style.marginBottom = '15px';
+
+                                const categoryTitle = document.createElement('h4');
+                                categoryTitle.textContent = categoryName;
+                                categoryTitle.style.marginLeft = '10px';
+                                categoryTitle.style.color = '#34495e';
+                                categoryDiv.appendChild(categoryTitle);
+
+                                for (const group of categoryData.groups) {
+                                    categoryDiv.appendChild(createPfasNode(group, categoryData.class));
+                                }
+
+                                section.appendChild(categoryDiv);
+                            }
+
+                            container.appendChild(section);
+                        }
+
+                        function createPfasNode(group, className) {
+                            const node = document.createElement('div');
+                            node.className = `pfas-node ${className}`;
+                            node.dataset.id = group.id;
+                            node.dataset.name = group.name.toLowerCase();
+                            node.dataset.alias = group.alias.toLowerCase();
+
+                            const header = document.createElement('div');
+                            header.className = 'pfas-node-header';
+
+                            const id = document.createElement('span');
+                            id.className = 'pfas-node-id';
+                            id.textContent = group.id;
+                            header.appendChild(id);
+
+                            const name = document.createElement('span');
+                            name.className = 'pfas-node-name';
+                            name.textContent = group.name;
+                            header.appendChild(name);
+
+                            const alias = document.createElement('span');
+                            alias.className = 'pfas-node-alias';
+                            alias.textContent = `(${group.alias})`;
+                            header.appendChild(alias);
+
+                            node.appendChild(header);
+
+                            // Details
+                            const details = document.createElement('div');
+                            details.className = 'pfas-node-details hidden';
+
+                            if (group.smarts1) {
+                                details.appendChild(createPfasDetailRow('SMARTS1', group.smarts1));
+                            }
+                            if (group.smarts2) {
+                                details.appendChild(createPfasDetailRow('SMARTS2', group.smarts2));
+                            }
+                            if (group.path) {
+                                details.appendChild(createPfasDetailRow('Path Type', group.path));
+                            }
+                            if (group.constraints) {
+                                details.appendChild(createPfasDetailRow('Constraints', group.constraints));
+                            }
+                            if (group.parent) {
+                                const parents = Array.isArray(group.parent) ? group.parent : [group.parent];
+                                details.appendChild(createPfasDetailRow('Parent(s)', parents.join(', ')));
+                            }
+                            if (group.children && group.children.length > 0) {
+                                details.appendChild(createPfasDetailRow('Children', group.children.join(', ')));
+                            }
+
+                            node.appendChild(details);
+
+                            node.onclick = () => togglePfasDetails(node);
+
+                            return node;
+                        }
+
+                        function createPfasDetailRow(label, value) {
+                            const row = document.createElement('div');
+                            row.className = 'pfas-detail-row';
+
+                            const labelSpan = document.createElement('span');
+                            labelSpan.className = 'pfas-detail-label';
+                            labelSpan.textContent = label + ':';
+
+                            const valueSpan = document.createElement('span');
+                            valueSpan.className = 'pfas-detail-value';
+                            valueSpan.textContent = value;
+
+                            row.appendChild(labelSpan);
+                            row.appendChild(valueSpan);
+                            return row;
+                        }
+
+                        function togglePfasDetails(node) {
+                            const details = node.querySelector('.pfas-node-details');
+                            details.classList.toggle('hidden');
+                        }
+
+                        function expandAllGroups() {
+                            document.querySelectorAll('.pfas-node-details').forEach(el => el.classList.remove('hidden'));
+                        }
+
+                        function collapseAllGroups() {
+                            document.querySelectorAll('.pfas-node-details').forEach(el => el.classList.add('hidden'));
+                        }
+
+                        function toggleGroupFilter(type) {
+                            groupFilters[type] = !groupFilters[type];
+                            const btn = document.getElementById(`filter-${type}-btn`);
+                            btn.style.background = groupFilters[type] ? '#007bff' : '#6c757d';
+                            renderPfasTree();
+                        }
+
+                        function searchGroupsFunc(query) {
+                            const nodes = document.querySelectorAll('.pfas-node');
+                            query = query.toLowerCase().trim();
+
+                            nodes.forEach(node => {
+                                node.classList.remove('highlight');
+                                
+                                if (!query) {
+                                    node.style.display = '';
+                                    return;
+                                }
+
+                                const id = node.dataset.id;
+                                const name = node.dataset.name;
+                                const alias = node.dataset.alias;
+
+                                if (id.includes(query) || name.includes(query) || alias.includes(query)) {
+                                    node.style.display = '';
+                                    node.classList.add('highlight');
+                                } else {
+                                    node.style.display = 'none';
+                                }
+                            });
+                        }
+
+                        // Initialize when tab is shown
+                        if (document.getElementById('pfas-tree-container') && document.getElementById('pfas-tree-container').innerHTML === '') {
+                            renderPfasTree();
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <div id="pathways" class="tab-content">
+                <div class="info-section">
+                    <h3>Fluorinated Chain Pathways</h3>
+                    <p>
+                        For some PFAS groups, the analyzer looks for fluorinated chains connecting two functional groups. 
+                        The pathway patterns defined in <code>fpaths.json</code> specify which atoms are considered part 
+                        of a valid fluorinated path.
+                    </p>
+
+                    <div class="diagram-container">
+                        <img src="webpage/imgs/algorithm_test_paths.png" 
+                             alt="Fluorinated pathway patterns" 
+                             style="max-width: 100%;">
+                        <div class="diagram-caption">
+                            Figure 3: Fluorinated Chain Pathway Patterns (from fpaths.json)
+                        </div>
+                    </div>
+
+                    <h4>Pathway Types</h4>
+
+                    <div class="info-box">
+                        <h4 style="margin-top: 0;">1. Perfluoroalkyl Paths</h4>
+                        <p>
+                            Fully fluorinated carbon chains where every carbon has only C-F or C-C bonds 
+                            (no C-H, C-Cl, etc.). Used for identifying PFCAs, PFSAs, and related compounds.
+                        </p>
+                        <p><strong>SMARTS Pattern:</strong></p>
+                        <code style="font-size: 0.85em; background: #f0f0f0; padding: 5px; border-radius: 3px; display: block; overflow-x: auto;">
+                            [#6$([#6H0X4]([F,$(CF),$(CCF),$([#8]CF)])([!#17,!#35,!#54])([!#17,!#35,!#54])[C,F]),#8$([#8]CF)]
+                        </code>
+                    </div>
+
+                    <div class="info-box success">
+                        <h4 style="margin-top: 0;">2. Polyfluoroalkyl Paths</h4>
+                        <p>
+                            Partially fluorinated carbon chains that may contain C-H bonds in addition to C-F bonds. 
+                            Used for identifying PolyFCAs, PolyFSAs, and fluorotelomer compounds.
+                        </p>
+                        <p><strong>SMARTS Pattern:</strong></p>
+                        <code style="font-size: 0.85em; background: #f0f0f0; padding: 5px; border-radius: 3px; display: block; overflow-x: auto;">
+                            [#6$([CX4]([#9,$(C[#9]),$(CC[#9]),$([#8]CF)])[C,F,#1,#17,#35,#53]),#8$([#8]CF)]
+                        </code>
+                    </div>
+
+                    <h4>Path Finding Algorithm</h4>
+                    <ol>
+                        <li>Identify all atoms matching <code>smarts1</code> (e.g., carboxylic acid group)</li>
+                        <li>Identify all atoms matching <code>smarts2</code> (e.g., another functional group or chain end)</li>
+                        <li>Find shortest path between each pair of matched atoms</li>
+                        <li>Check if all atoms in the path match the pathway SMARTS pattern</li>
+                        <li>Record valid paths as fluorinated chains</li>
+                    </ol>
+
+                    <div class="info-box warning">
+                        <strong>⚠️ Web Version Limitation:</strong> The web version implements simplified path-finding. 
+                        For complex homologue series analysis and detailed chain length calculations, use the full 
+                        Python library.
+                    </div>
+
+                    <h4>Example: PFOA (Perfluorooctanoic acid)</h4>
+                    <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto;">
+Structure: CF₃-CF₂-CF₂-CF₂-CF₂-CF₂-CF₂-COOH
+
+Functional group (smarts1): -COOH (carboxylic acid)
+Chain end (smarts2): -CF₃ (trifluoromethyl)
+Path: All carbon atoms between -COOH and -CF₃
+Pattern match: All carbons are fully fluorinated
+Result: Matches "Perfluoroalkyl" pathway → Classified as PFCA
+                    </pre>
+                </div>
+            </div>
+
+            <div id="usage" class="tab-content">
+                <div class="info-section">
+                    <h3>Usage Guide</h3>
+
+                    <h4>Single Molecule Analysis</h4>
+                    <ol>
+                        <li>Select input format (SMILES or InChI)</li>
+                        <li>Enter molecular structure in the text area</li>
+                        <li>Click "Analyze" or press Ctrl+Enter</li>
+                        <li>View results with structure visualization and detected groups</li>
+                    </ol>
+
+                    <h4>Batch Processing</h4>
+                    <ol>
+                        <li>Prepare a CSV or Excel file with a column containing SMILES or InChI strings</li>
+                        <li>Click "📁 Click to import CSV or Excel file"</li>
+                        <li>Select your file (column auto-detection happens automatically)</li>
+                        <li>Click "Analyze" to process all molecules</li>
+                        <li>Export results to CSV or Excel with optional structure images</li>
+                    </ol>
+
+                    <div class="info-box">
+                        <strong>💡 Tip:</strong> For files with multiple columns, name your molecule column "SMILES" 
+                        or "InChI" for automatic detection. All other columns will be preserved in the export.
+                    </div>
+
+                    <h4>Export Options</h4>
+                    <ul>
+                        <li><strong>Include all columns:</strong> Creates separate Yes/No columns for each PFAS group type</li>
+                    </ul>
+
+                    <h4>Example Input Formats</h4>
+
+                    <h4>SMILES Examples:</h4>
+                    <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto;">
+# PFOA (Perfluorooctanoic acid)
+C(=O)(C(C(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)O
+
+# PFOS (Perfluorooctanesulfonic acid)  
+C(C(C(C(C(C(C(C(F)(F)S(=O)(=O)O)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)(F)F
+
+# 6:2 FTOH
+C(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)(F)CCO
+                    </pre>
+
+                    <h4>CSV File Structure:</h4>
+                    <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto;">
+Name,SMILES,CAS,Category
+PFOA,C(=O)(C(C(...))O,335-67-1,PFCA
+PFOS,C(C(C(...))F,1763-23-1,PFSA
+GenX,C(C(C(OC(...))O,13252-13-6,PFECA
+                    </pre>
+
+                    <h4>Keyboard Shortcuts</h4>
+                    <ul>
+                        <li><strong>Ctrl+Enter:</strong> Analyze molecules (when text area is focused)</li>
+                    </ul>
+
+                    <div class="info-box success">
+                        <strong>✨ Pro Tips:</strong>
+                        <ul>
+                            <li>Use the example molecules to test the analyzer</li>
+                            <li>Check browser console (F12) for detailed debugging information</li>
+                            <li>For large datasets (>100 molecules), use Excel export (better compression)</li>
+                            <li>Disable image export if you only need classification data</li>
+                        </ul>
+                    </div>
+
+                    <h4>Troubleshooting</h4>
+                    <table class="constraint-table">
+                        <thead>
+                            <tr>
+                                <th>Issue</th>
+                                <th>Solution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Invalid molecule structure</td>
+                                <td>Check SMILES/InChI format; try copying from a chemical database</td>
+                            </tr>
+                            <tr>
+                                <td>No PFAS groups detected</td>
+                                <td>Molecule may not contain fluorine or doesn't match PFAS patterns</td>
+                            </tr>
+                            <tr>
+                                <td>Import file not working</td>
+                                <td>Ensure file has header row; check that molecule column contains valid structures</td>
+                            </tr>
+                            <tr>
+                                <td>Slow performance</td>
+                                <td>For very large datasets, consider splitting into smaller batches</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>PFAS Group Analyzer • Uses RDKit.js for molecular analysis</p>
+            <a href="x">Idenfication Algorithm for PFAS groups</a> © 2025 by <a href="https://medium.com/@luc.miaz">Luc T. Miaz</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+        </div>
+    </div>
+
+    <!-- RDKit.js MinimalLib -->
+    <script src="https://unpkg.com/@rdkit/rdkit/Code/MinimalLib/dist/RDKit_minimal.js"></script>
+    
+    <!-- PapaParse for CSV parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <!-- SheetJS for Excel support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+        // Store the example molecules
+        const examples = {
+            'PFOA': 'C(=O)(C(C(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)O',
+            'PFOS': 'C(C(C(C(C(C(C(C(F)(F)S(=O)(=O)O)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)(F)F',
+            'GenX': 'C(C(C(OC(C(F)(F)F)(F)F)(F)F)(F)F)(=O)O',
+            'FTOH': 'C(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)(F)CCO'
+        };
+
+        // Store analysis results globally for export
+        let analysisResults = [];
+        let importedData = null;
+
+        // RDKit module
+        let RDKit = null;
+
+        // Initialize RDKit when the page loads
+        window.initRDKitModule().then(function(instance) {
+            RDKit = instance;
+            console.log('RDKit.js loaded successfully');
+            console.log('Version:', RDKit.version());
+        }).catch(function(error) {
+            console.error('Failed to load RDKit.js:', error);
+            showError('Failed to load chemistry library. Please refresh the page.');
+        });
+
+        function loadExample(name) {
+            document.getElementById('moleculeInput').value = examples[name];
+            document.getElementById('inputType').value = 'smiles';
+        }
+
+        function clearResults() {
+            document.getElementById('moleculeInput').value = '';
+            document.getElementById('resultsContainer').innerHTML = '';
+            document.getElementById('exportSection').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileInputLabel').classList.remove('has-file');
+            document.getElementById('fileInfo').style.display = 'none';
+            analysisResults = [];
+            importedData = null;
+        }
+
+        // Toggle formula column input based on checkbox
+        function toggleFormulaColumnInput() {
+            const checkbox = document.getElementById('useFormulaColumn');
+            const input = document.getElementById('formulaColumnName');
+            
+            if (checkbox.checked) {
+                input.disabled = false;
+                input.style.background = 'white';
+                input.style.color = '#333';
+            } else {
+                input.disabled = true;
+                input.style.background = '#f5f5f5';
+                input.style.color = '#999';
+                input.value = '';
+            }
+        }
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const fileName = file.name;
+            const fileExt = fileName.split('.').pop().toLowerCase();
+
+            document.getElementById('fileInputLabel').classList.add('has-file');
+            document.getElementById('fileInputLabel').innerHTML = `✅ ${fileName}<br><small>Click to change file</small>`;
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                try {
+                    let data;
+                    
+                    if (fileExt === 'csv') {
+                        // Parse CSV
+                        const result = Papa.parse(e.target.result, {
+                            header: true,
+                            skipEmptyLines: true
+                        });
+                        data = result.data;
+                    } else if (fileExt === 'xlsx' || fileExt === 'xls') {
+                        // Parse Excel
+                        const workbook = XLSX.read(e.target.result, { type: 'binary' });
+                        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                        data = XLSX.utils.sheet_to_json(firstSheet);
+                    } else {
+                        throw new Error('Unsupported file format');
+                    }
+
+                    if (data.length === 0) {
+                        throw new Error('No data found in file');
+                    }
+
+                    // Try to detect the column with molecular structures
+                    const columns = Object.keys(data[0]);
+                    let moleculeColumn = null;
+                    let detectedType = null;
+                    let formulaColumn = null;
+
+                    // Look for common column names
+                    const smilesPatterns = /smiles|smi|canonical|structure/i;
+                    const inchiPatterns = /inchi/i;
+                    const formulaPatterns = /formula|molecular.formula|molform/i;
+
+                    for (const col of columns) {
+                        if (smilesPatterns.test(col)) {
+                            moleculeColumn = col;
+                            detectedType = 'smiles';
+                        } else if (inchiPatterns.test(col) && !moleculeColumn) {
+                            moleculeColumn = col;
+                            detectedType = 'inchi';
+                        }
+                        
+                        // Try to detect formula column
+                        if (formulaPatterns.test(col)) {
+                            formulaColumn = col;
+                        }
+                    }
+
+                    // If not found, use first column
+                    if (!moleculeColumn) {
+                        moleculeColumn = columns[0];
+                        detectedType = 'smiles'; // Default to SMILES
+                    }
+
+                    // Extract molecules
+                    const molecules = data
+                        .map(row => row[moleculeColumn])
+                        .filter(val => val && val.toString().trim().length > 0);
+
+                    if (molecules.length === 0) {
+                        throw new Error('No valid molecules found in column: ' + moleculeColumn);
+                    }
+
+                    // Store imported data
+                    importedData = {
+                        data: data,
+                        moleculeColumn: moleculeColumn,
+                        formulaColumn: formulaColumn,
+                        columns: columns,
+                        type: detectedType
+                    };
+
+                    // Update UI
+                    document.getElementById('inputType').value = detectedType;
+                    document.getElementById('moleculeInput').value = molecules.join('\n');
+
+                    const fileInfo = document.getElementById('fileInfo');
+                    fileInfo.style.display = 'block';
+                    let infoHTML = `
+                        <strong>File loaded:</strong> ${molecules.length} molecules found<br>
+                        <strong>Using column:</strong> "${moleculeColumn}"<br>
+                        <strong>Detected format:</strong> ${detectedType.toUpperCase()}<br>
+                    `;
+                    
+                    if (formulaColumn) {
+                        infoHTML += `<strong>Formula column detected:</strong> "${formulaColumn}" (use checkbox below to enable)<br>`;
+                    }
+                    
+                    infoHTML += `<strong>Other columns:</strong> ${columns.filter(c => c !== moleculeColumn && c !== formulaColumn).join(', ') || 'None'}`;
+                    
+                    fileInfo.innerHTML = infoHTML;
+
+                    showInfo(`Successfully loaded ${molecules.length} molecules from ${fileName}`);
+
+                } catch (error) {
+                    showError(`Error reading file: ${error.message}`);
+                    document.getElementById('fileInputLabel').classList.remove('has-file');
+                    document.getElementById('fileInputLabel').innerHTML = `📁 Click to import CSV or Excel file<br><small>File should contain a column with SMILES or InChI strings</small>`;
+                }
+            };
+
+            if (fileExt === 'csv') {
+                reader.readAsText(file);
+            } else {
+                reader.readAsBinaryString(file);
+            }
+        }
+
+
+        async function exportSummaryCSV() {
+            if (analysisResults.length === 0) {
+                showError('No results to export. Please analyze molecules first.');
+                return;
+            }
+            const includeAllColumns = document.getElementById('includeAllColumns').checked;
+
+            // Build CSV data
+            const rows = [];
+            
+            // Header row
+            const headers = ['Input', 'Formula'];
+            if (importedData) {
+                // Include original columns
+                importedData.columns.forEach(col => {
+                    if (col !== importedData.moleculeColumn) {
+                        headers.push(col);
+                    }
+                });
+            }
+            
+            headers.push('PFAS_Groups_Count');
+            
+            if (includeAllColumns) {
+                // Get all unique PFAS group names
+                const allGroups = new Set();
+                analysisResults.forEach(result => {
+                    if (result.matches) {
+                        result.matches.forEach(match => allGroups.add(match.alias));
+                    }
+                });
+                allGroups.forEach(group => headers.push(`Has_${group}`));
+            } else {
+                headers.push('PFAS_Groups');
+            }
+            
+            
+            rows.push(headers);
+
+            // Data rows - process with image conversion
+            for (let idx = 0; idx < analysisResults.length; idx++) {
+                const result = analysisResults[idx];
+                const row = [result.input, result.formula || ''];
+                
+                // Add original data if imported
+                if (importedData && importedData.data[idx]) {
+                    importedData.columns.forEach(col => {
+                        if (col !== importedData.moleculeColumn) {
+                            row.push(importedData.data[idx][col] || '');
+                        }
+                    });
+                }
+                
+                if (result.error) {
+                    row.push('ERROR');
+                    if (includeAllColumns) {
+                        const allGroups = new Set();
+                        analysisResults.forEach(r => {
+                            if (r.matches) r.matches.forEach(m => allGroups.add(m.alias));
+                        });
+                        allGroups.forEach(() => row.push(''));
+                    } else {
+                        row.push(result.error);
+                    }
+                } else {
+                    row.push(result.matches ? result.matches.length : 0);
+                    
+                    if (includeAllColumns) {
+                        const allGroups = new Set();
+                        analysisResults.forEach(r => {
+                            if (r.matches) r.matches.forEach(m => allGroups.add(m.alias));
+                        });
+                        const matchedGroups = new Set(result.matches ? result.matches.map(m => m.alias) : []);
+                        allGroups.forEach(group => {
+                            row.push(matchedGroups.has(group) ? 'Yes' : 'No');
+                        });
+                    } else {
+                        const groupNames = result.matches ? result.matches.map(m => m.alias).join('; ') : '';
+                        row.push(groupNames);
+                    }
+                    
+                }
+                
+                rows.push(row);
+            }
+
+            // Convert to CSV string
+            const csvContent = rows.map(row => 
+                row.map(cell => {
+                    // Escape quotes and wrap in quotes if contains comma, quote, or newline
+                    const cellStr = String(cell);
+                    if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+                        return '"' + cellStr.replace(/"/g, '""') + '"';
+                    }
+                    return cellStr;
+                }).join(',')
+            ).join('\n');
+
+            // Download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `pfas_analysis_summary_${Date.now()}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+        }
+
+        async function exportDetailedCSV() {
+            if (analysisResults.length === 0) {
+                showError('No results to export. Please analyze molecules first.');
+                return;
+            }
+
+            // Build CSV data
+            const rows = [];
+            
+            // Header row
+            const headers = ['Input', 'Formula'];
+            if (importedData) {
+                // Include original columns
+                importedData.columns.forEach(col => {
+                    if (col !== importedData.moleculeColumn) {
+                        headers.push(col);
+                    }
+                });
+            }
+            
+            headers.push('Group_ID', 'Group_Name', 'Group_Alias', 'Match_Count', 
+                        'Perfluoroalkyl_Chain_Lengths', 'Pathway_Type', 'Chain_Length', 'Chain_Atoms');
+            
+            rows.push(headers);
+
+            // Data rows - one row per match
+            for (let idx = 0; idx < analysisResults.length; idx++) {
+                const result = analysisResults[idx];
+                
+                if (result.error) {
+                    // Add one row for errors
+                    const row = [result.input, result.formula || ''];
+                    
+                    // Add original data if imported
+                    if (importedData && importedData.data[idx]) {
+                        importedData.columns.forEach(col => {
+                            if (col !== importedData.moleculeColumn) {
+                                row.push(importedData.data[idx][col] || '');
+                            }
+                        });
+                    }
+                    
+                    row.push('ERROR', result.error, '', '', '', '', '', '');
+                    rows.push(row);
+                } else if (!result.matches || result.matches.length === 0) {
+                    // Add one row for molecules with no matches
+                    const row = [result.input, result.formula || ''];
+                    
+                    // Add original data if imported
+                    if (importedData && importedData.data[idx]) {
+                        importedData.columns.forEach(col => {
+                            if (col !== importedData.moleculeColumn) {
+                                row.push(importedData.data[idx][col] || '');
+                            }
+                        });
+                    }
+                    
+                    row.push('', 'No PFAS groups detected', '', '', '', '', '', '');
+                    rows.push(row);
+                } else {
+                    // Add one or more rows for each match
+                    for (const match of result.matches) {
+                        if (match.chains && match.chains.length > 0) {
+                            // If chains exist, add one row per chain
+                            for (const chain of match.chains) {
+                                const row = [result.input, result.formula || ''];
+                                
+                                // Add original data if imported
+                                if (importedData && importedData.data[idx]) {
+                                    importedData.columns.forEach(col => {
+                                        if (col !== importedData.moleculeColumn) {
+                                            row.push(importedData.data[idx][col] || '');
+                                        }
+                                    });
+                                }
+                                
+                                row.push(
+                                    match.id || '',
+                                    match.name || '',
+                                    match.alias || '',
+                                    match.matchCount || '',
+                                    match.nCFchain ? match.nCFchain.join('; ') : '',
+                                    chain.SMARTS || '',
+                                    chain.length || '',
+                                    chain.chain ? chain.chain.join('; ') : ''
+                                );
+                                rows.push(row);
+                            }
+                        } else {
+                            // If no chains, add one row for the match
+                            const row = [result.input, result.formula || ''];
+                            
+                            // Add original data if imported
+                            if (importedData && importedData.data[idx]) {
+                                importedData.columns.forEach(col => {
+                                    if (col !== importedData.moleculeColumn) {
+                                        row.push(importedData.data[idx][col] || '');
+                                    }
+                                });
+                            }
+                            
+                            row.push(
+                                match.id || '',
+                                match.name || '',
+                                match.alias || '',
+                                match.matchCount || '',
+                                match.nCFchain ? match.nCFchain.join('; ') : '',
+                                '',
+                                '',
+                                ''
+                            );
+                            rows.push(row);
+                        }
+                    }
+                }
+            }
+
+            // Convert to CSV string
+            const csvContent = rows.map(row => 
+                row.map(cell => {
+                    // Escape quotes and wrap in quotes if contains comma, quote, or newline
+                    const cellStr = String(cell);
+                    if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+                        return '"' + cellStr.replace(/"/g, '""') + '"';
+                    }
+                    return cellStr;
+                }).join(',')
+            ).join('\n');
+
+            // Download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `pfas_analysis_detailed_${Date.now()}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+        }
+
+        async function exportToExcel() {
+            if (analysisResults.length === 0) {
+                showError('No results to export. Please analyze molecules first.');
+                return;
+            }
+
+            const includeAllColumns = document.getElementById('includeAllColumns').checked;
+
+            // === SUMMARY SHEET DATA ===
+            const summaryData = [];
+            
+            // Get all unique PFAS groups if needed
+            let allGroups = [];
+            if (includeAllColumns) {
+                const groupSet = new Set();
+                analysisResults.forEach(result => {
+                    if (result.matches) {
+                        result.matches.forEach(match => groupSet.add(match.alias));
+                    }
+                });
+                allGroups = Array.from(groupSet);
+            }
+
+            for (let idx = 0; idx < analysisResults.length; idx++) {
+                const result = analysisResults[idx];
+                const row = {
+                    'Input': result.input,
+                    'Formula': result.formula || ''
+                };
+                
+                // Add original data if imported
+                if (importedData && importedData.data[idx]) {
+                    importedData.columns.forEach(col => {
+                        if (col !== importedData.moleculeColumn) {
+                            row[col] = importedData.data[idx][col] || '';
+                        }
+                    });
+                }
+                
+                if (result.error) {
+                    row['PFAS_Groups_Count'] = 'ERROR';
+                    if (includeAllColumns) {
+                        allGroups.forEach(group => {
+                            row[`Has_${group}`] = '';
+                        });
+                    } else {
+                        row['PFAS_Groups'] = result.error;
+                    }
+                } else {
+                    row['PFAS_Groups_Count'] = result.matches ? result.matches.length : 0;
+                    
+                    if (includeAllColumns) {
+                        const matchedGroups = new Set(result.matches ? result.matches.map(m => m.alias) : []);
+                        allGroups.forEach(group => {
+                            row[`Has_${group}`] = matchedGroups.has(group) ? 'Yes' : 'No';
+                        });
+                    } else {
+                        row['PFAS_Groups'] = result.matches ? result.matches.map(m => m.alias).join('; ') : '';
+                    }
+                }
+                
+                summaryData.push(row);
+            }
+
+            // === DETAILED SHEET DATA ===
+            const detailedData = [];
+
+            for (let idx = 0; idx < analysisResults.length; idx++) {
+                const result = analysisResults[idx];
+                
+                if (result.error) {
+                    // Add one row for errors
+                    const row = {
+                        'Input': result.input,
+                        'Formula': result.formula || ''
+                    };
+                    
+                    // Add original data if imported
+                    if (importedData && importedData.data[idx]) {
+                        importedData.columns.forEach(col => {
+                            if (col !== importedData.moleculeColumn) {
+                                row[col] = importedData.data[idx][col] || '';
+                            }
+                        });
+                    }
+                    
+                    row['Group_ID'] = 'ERROR';
+                    row['Group_Name'] = result.error;
+                    row['Group_Alias'] = '';
+                    row['Match_Count'] = '';
+                    row['Perfluoroalkyl_Chain_Lengths'] = '';
+                    row['Pathway_Type'] = '';
+                    row['Chain_Length'] = '';
+                    row['Chain_Atoms'] = '';
+                    
+                    detailedData.push(row);
+                } else if (!result.matches || result.matches.length === 0) {
+                    // Add one row for molecules with no matches
+                    const row = {
+                        'Input': result.input,
+                        'Formula': result.formula || ''
+                    };
+                    
+                    // Add original data if imported
+                    if (importedData && importedData.data[idx]) {
+                        importedData.columns.forEach(col => {
+                            if (col !== importedData.moleculeColumn) {
+                                row[col] = importedData.data[idx][col] || '';
+                            }
+                        });
+                    }
+                    
+                    row['Group_ID'] = '';
+                    row['Group_Name'] = 'No PFAS groups detected';
+                    row['Group_Alias'] = '';
+                    row['Match_Count'] = '';
+                    row['Perfluoroalkyl_Chain_Lengths'] = '';
+                    row['Pathway_Type'] = '';
+                    row['Chain_Length'] = '';
+                    row['Chain_Atoms'] = '';
+                    
+                    detailedData.push(row);
+                } else {
+                    // Add one or more rows for each match
+                    for (const match of result.matches) {
+                        if (match.chains && match.chains.length > 0) {
+                            // If chains exist, add one row per chain
+                            for (const chain of match.chains) {
+                                const row = {
+                                    'Input': result.input,
+                                    'Formula': result.formula || ''
+                                };
+                                
+                                // Add original data if imported
+                                if (importedData && importedData.data[idx]) {
+                                    importedData.columns.forEach(col => {
+                                        if (col !== importedData.moleculeColumn) {
+                                            row[col] = importedData.data[idx][col] || '';
+                                        }
+                                    });
+                                }
+                                
+                                row['Group_ID'] = match.id || '';
+                                row['Group_Name'] = match.name || '';
+                                row['Group_Alias'] = match.alias || '';
+                                row['Match_Count'] = match.matchCount || '';
+                                row['Pathway_Type'] = chain.SMARTS || '';
+                                row['Chain_Length'] = chain.length || '';
+                                row['Chain_Atoms'] = chain.chain ? chain.chain.join('; ') : '';
+                                
+                                detailedData.push(row);
+                            }
+                        } else {
+                            // If no chains, add one row for the match
+                            const row = {
+                                'Input': result.input,
+                                'Formula': result.formula || ''
+                            };
+                            
+                            // Add original data if imported
+                            if (importedData && importedData.data[idx]) {
+                                importedData.columns.forEach(col => {
+                                    if (col !== importedData.moleculeColumn) {
+                                        row[col] = importedData.data[idx][col] || '';
+                                    }
+                                });
+                            }
+                            
+                            row['Group_ID'] = match.id || '';
+                            row['Group_Name'] = match.name || '';
+                            row['Group_Alias'] = match.alias || '';
+                            row['Match_Count'] = match.matchCount || '';
+                            row['Perfluoroalkyl_Chain_Lengths'] = match.nCFchain ? match.nCFchain.join('; ') : '';
+                            row['Pathway_Type'] = '';
+                            row['Chain_Length'] = '';
+                            row['Chain_Atoms'] = '';
+                            
+                            detailedData.push(row);
+                        }
+                    }
+                }
+            }
+
+            // === CREATE WORKBOOK WITH TWO SHEETS ===
+            const wb = XLSX.utils.book_new();
+            
+            // Create summary sheet
+            const wsSummary = XLSX.utils.json_to_sheet(summaryData);
+            
+            // Auto-size columns for summary
+            const summaryColWidths = [];
+            const summaryHeaders = Object.keys(summaryData[0] || {});
+            summaryHeaders.forEach((header, i) => {
+                let maxWidth = header.length;
+                summaryData.forEach(row => {
+                    const cellValue = String(row[header] || '');
+                    if (cellValue.length > maxWidth) {
+                        maxWidth = Math.min(cellValue.length, 50);
+                    }
+                });
+                summaryColWidths.push({ wch: maxWidth + 2 });
+            });
+            wsSummary['!cols'] = summaryColWidths;
+            
+            XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+            // Create detailed sheet
+            const wsDetailed = XLSX.utils.json_to_sheet(detailedData);
+            
+            // Auto-size columns for detailed
+            const detailedColWidths = [];
+            const detailedHeaders = Object.keys(detailedData[0] || {});
+            detailedHeaders.forEach((header, i) => {
+                let maxWidth = header.length;
+                detailedData.forEach(row => {
+                    const cellValue = String(row[header] || '');
+                    if (cellValue.length > maxWidth) {
+                        maxWidth = Math.min(cellValue.length, 50);
+                    }
+                });
+                detailedColWidths.push({ wch: maxWidth + 2 });
+            });
+            wsDetailed['!cols'] = detailedColWidths;
+            
+            XLSX.utils.book_append_sheet(wb, wsDetailed, 'Detailed');
+
+            // Download
+            XLSX.writeFile(wb, `pfas_analysis_${Date.now()}.xlsx`);
+            
+            showInfo(`Successfully exported ${analysisResults.length} molecules with Summary and Detailed sheets.`);
+        }
+
+        function clearResults() {
+            document.getElementById('moleculeInput').value = '';
+            document.getElementById('resultsContainer').innerHTML = '';
+        }
+
+        function showError(message) {
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = `<div class="error-message">${message}</div>`;
+        }
+
+        function showInfo(message) {
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = `<div class="info-message">${message}</div>`;
+        }
+
+        function showLoading() {
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing molecules...</p>
+                </div>
+            `;
+        }
+
+        // Fluorinated path SMARTS patterns (from fpaths.json)
+        const FLUORINATED_PATHS = {
+            "Perfluoroalkyl": {
+                "chain": "[#6$([#6H0X4]([F,$(CF),$(CCF),$([#8]CF)])([!#17,!#35,!#54])([!#17,!#35,!#54])[C,F]),#8$([#8]CF)]",
+                "end": "[#6$([CX4H0]([F,CX4$([CH0](F)F)])([F,CX4$([CH0](F)F)])([$(*[#1,#17,#35,#53]),!$(*[#9]);!#9])),#6$([CX4H0](F)(F)F)]"
+            },
+            "Polyfluoroalkyl": {
+                "chain": "[#6$([CX4]([#9,$(C[#9]),$(CC[#9]),$([#8]CF)])[C,F,#1,#17,#35,#53]),#8$([#8]CF)]",
+                "end": "[#6$([#6X4]([!$([#6][#9]),#1,F,#17,#35,#53])([!$([#6][#9]),F,#1,#17,#35,#53])F)]"
+            },
+            "Polyfluoro": {
+                "chain": "[#6$([#6X4](~[$(*[#9]),#9])~[#6,#7,#8,#16,F,#1,#17,#35,#53]),#6$([#6X3](~[#9,$(*[#9]),$([*H0][$(*[#9])])])~[#6,#7,#8,#16,F,#1,#17,#35,#53]),#6$([#6X2]~[#9,$(*[#9]),$([*H0][$(*[#9])])]),$([#8X2,#7]([$([#6][#9])])[$([#6][#9])]),$([#8X2,#7,#15,#16]([$([#6][#9])])[$([#6][#9])]),$([#6](=O)([$(*[#9])])[$(*[#9])])]",
+                "end": "[#6$([#6X4](~[!$([#6][#9]),#7,#8,#16,#1,#17,#35,#53])(~[!$([#6][#9]),#7,#8,#16,F,#1,#17,#35,#53])(~[$(*[$(*[#9])]),F])F),#6$([#6X3](~[!$([#6][#9]),#7,#8X2,#16,#17,#35,#53])(~[$(*[$(*[#9])]),F])F),#6$([#6X2](~[$(*[$(*[#9])]),F])F),#6$([#6x](F)([!$([*x]),!$([#6][#9])])]"
+            },
+            "Polyfluorobr": {
+                "chain": "[#6$([#6X4](~[#6,#9])~[#6,#7,#8,#16,F,#1,#17,#35,#53]),#6$([#6X3](~[#9,#6])~[#6,#7,#8,#16,F,#1,#17,#35,#53]),#6$([#6X2]~[#9,#6]),$([#8X2,#7]([$([#6][#9])])[$([#6][#9])]),$([#8X2,#7,#15,#16]([$([#6][#9])])[$([#6][#9])]),$([#6](=O)([$(*[#9])])[$(*[#9])])]",
+                "end": "[#6$([#6X4](~[!$([#6][#9]),#7,#8,#16,#1,#17,#35,#53])(~[!$([#6][#9]),#7,#8,#16,F,#1,#17,#35,#53])(~[$(*[$(*[#9])]),F])F),#6$([#6X3](~[!$([#6][#9]),#7,#8X2,#16,#17,#35,#53])(~[$(*[$(*[#9])]),F])F),#6$([#6X2](~[$(*[$(*[#9])]),F])F),#6$([#6x](F)([!$([*x]),!$([#6][#9])])]"
+            }
+        };
+
+        // PFAS Groups data (embedded from PFAS_groups_smarts.json)
+        const PFAS_GROUPS = [{
+                    "id":1,
+                    "name":"Perfluoroalkyl carboxylic acids",
+                    "alias":"PFCAs",
+                    "base_functional_groups":["carboxylic acid"],
+                    "main_group":"Perfluoroalkyl acids",
+                    "smarts1":"[#6$([#6](=O)([OH1]))]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
+                },
+                {
+                    "id":2,
+                    "name":"Polyfluoroalkyl carboxylic acid",
+                    "alias":"PolyFCAs",
+                    "base_functional_groups":["carboxylic acid"],
+                    "main_group":"Polyfluoroalkyl acids",
+                    "smarts1":"[#6$([#6](=O)([OH1]))]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
+                },
+                {
+                    "id":3,
+                    "name":"Perfluoroalkyl dicarboxylic acids",
+                    "alias":"PFdiCAs",
+                    "base_functional_groups":["carboxylic acid"],
+                    "main_group":"Perfluoroalkyl acids",
+                    "smarts1":"[#6$([#6](=O)([OH1]))]",
+                    "smarts2":"[#6$([#6](=O)([OH1]))]",
+                    "smartsPath":"per",
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":2,"div":2}}}
+                },
+                {
+                    "id":4,
+                    "name":"Perfluoroalkylether carboxylic acids",
+                    "alias":"PFECAs",
+                    "base_functional_groups":["carboxylic acid","ether"],
+                    "main_group":"Perfluoroalkyl acids",
+                    "smarts1":"[#6$([#6](=O)([OH1]))]",
+                    "smarts2":"[#6$([#6]O[#6])]",
+                    "smartsPath":"per",
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
+                },
+                {
+                    "id":5,
+                    "name":"Polyfluoroalkylether carboxylic acid",
+                    "alias":"PolyFECAs",
+                    "base_functional_groups":["carboxylic acid","ether"],
+                    "main_group":"Polyfluoroalkyl acids",
+                    "smarts1":"[#6$([#6](=O)([OH1]))]",
+                    "smarts2":"[#6$([#6]O[#6])]",
+                    "smartsPath":"poly",
+                    "constraints":{"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
+                },
+                {
+                    "id":6,
+                    "name":"Perfluoroalkyl sulfonic acids",
+                    "alias":"PFSAs",
+                    "base_functional_groups":["sulfonic acid"],
+                    "main_group":"Perfluoroalkyl acids",
+                    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+                },
+                {
+                    "id":7,
+                    "name":"Polyfluoroalkyl sulfonic acid",
+                    "alias":"PolyFSAs",
+                    "base_functional_groups":["sulfonic acid"],
+                    "main_group":"Polyfluoroalkyl acids",
+                    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":-1,"div":2}}}
+                },
+                {
+                    "id":8,
+                    "name":"Perfluoroalkyl disulfonic acids",
+                    "alias":"PFdiSAs",
+                    "base_functional_groups":["sulfonic acid"],
+                    "main_group":"Perfluoroalkyl acids",
+                    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
+                    "smarts2":"[#6$([#6][#16](=O)(=O)[OH1])]",
+                    "smartsPath":"per",
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
+                },
+                {
+                    "id":9,
+                    "name":"Perfluoroalkylether sulfonic acids",
+                    "alias":"PFESAs",
+                    "base_functional_groups":["sulfonic acid","ether"],
+                    "main_group":"Perfluoroalkyl acids",
+                    "smarts1":"[#6$([#6][#16](=O)(=O)([OH]))]",
+                    "smarts2":"[#6$([#6]O[#6])]",
+                    "smartsPath":"per",
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+                },
+                {
+                    "id":10,
+                    "name":"Polyfluoroalkylether sulfonic acid",
+                    "alias":"PolyFESAs",
+                    "base_functional_groups":["sulfonic acid","ether"],
+                    "main_group":"Polyfluoroalkyl acids",
+                    "smarts1":"[#6$([#6][#16](=O)(=O)([OH]))]",
+                    "smarts2":"[#6$([#6]O[#6])]",
+                    "smartsPath":"poly",
+                    "constraints":{"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":-1,"div":2}}}
+                },
+                {
+                    "id":11,
+                    "name":"Perfluoroalkyl sulfinic acids",
+                    "alias":"PFSiAs",
+                    "base_functional_groups":["sulfinic acid"],
+                    "main_group":"Perfluoroalkyl acids",
+                    "smarts1":"[#6$([#6][#16X3](=O)[OH1])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+                },
+                {
+                    "id":12,
+                    "name":"Perfluoroalkyl phosphonic acids",
+                    "alias":"PFPAs",
+                    "base_functional_groups":["phosphonic acid"],
+                    "main_group":"Perfluoroalkyl acids",
+                    "smarts1":"[#6$([#6][#15](=[#8])([#8])[#8])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+                },
+                {
+                    "id":13,
+                    "name":"Perfluoroalkyl phosphinic acids",
+                    "alias":"PFPiAs",
+                    "base_functional_groups":["phosphinic acid"],
+                    "main_group":"Perfluoroalkyl acids",
+                    "smarts1":"[#6X4$([#6][#15](=[#8])([#8])[#1,#6])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+                },
+                {
+                    "id":14,
+                    "name":"Perfluoroalkyl alcohols",
+                    "alias":"Perfluoroalkyl alcohols",
+                    "base_functional_groups":["alcohol"],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":"[#6X4$([#6;!$([#6]=O)][OH1])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F","O"],"add":-1,"div":2}}}
+                },		
+                {
+                    "id":15,
+                    "name":"fluorotelomer alcohols",
+                    "alias":"fluorotelomer alcohols",
+                    "base_functional_groups":["alcohol"],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":"[C$([#6][C$([CH2]O[H]),C$([CH2][CH2]O[H]),C$([CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H])])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "id":16,
+                    "name":"Perfluoropolyethers",
+                    "alias":"PFPEs",
+                    "base_functional_groups":["ether"],
+                    "main_group":"other PFAS",
+                    "smarts1":"[#6$([#6]O[#6])]",
+                    "smarts2":"[#6$([#6]O[#6])]",
+                    "smartsPath":"per",
+                    "constraints":{"gte":{"O":2}, "rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
+                },
+                {
+                    "id":17,
+                    "name":"Hydrofluoroethers",
+                    "alias":"HFEs",
+                    "base_functional_groups":["ether"],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":"[#6][#8][#6]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"gte":{"O":1},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","H"],"add":-1,"div":2}}}
+                },
+                {
+                    "id":18,
+                    "name":"Perfluoroalkene",
+                    "alias":"Perfluoroalkene",
+                    "base_functional_groups":[],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":"[#6X3$([#6]=[#6X3])]",
+                    "smarts2":null,
+                    "smartsPath":"per",
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
+                },
+                {
+                    "id":19,
+                    "name":"Hydrofluoroolefins",
+                    "alias":"HFOs",
+                    "base_functional_groups":[],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":"[#6X3$([#6]=[#6])]",
+                    "smarts2":"[#6X4$([#6]F)]",
+                    "smartsPath":null,
+                    "constraints":{"gte":{"F":1}, "lte":{}, "eq":{}, "only":["C","F","H"]}
+                },
+                {
+                    "id":20,
+                    "name":"Hydrofluorocarbons",
+                    "alias":"HFCs",
+                    "base_functional_groups":[],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":null,
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"gte":{"F":1}, "lte":{}, "eq":{}, "only":["C","F","H"], "rel":{"C":{"atoms":["F","H"],"add":-1,"div":2}}}
+                },
+                {
+                    "id":21,
+                    "name":"Semi-fluorinated alkanes",
+                    "alias":"SFAs",
+                    "base_functional_groups":[],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":"[#6X4$([#6](F)(F))]",
+                    "smarts2":"[#6X4$([#6][H,I,Br,Cl])]",
+                    "smartsPath":"poly",
+                    "constraints":{"gte":{"F":1},"eq":{"O":0}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2}}}
+                },
+                {
+                    "id":22,
+                    "name":"Side-chain fluorinated aromatics",
+                    "alias":"Side-chain fluorinated aromatics",
+                    "base_functional_groups":[],
+                    "main_group":"other PFAS",
+                    "smarts1":"[#6X4$([#6]a)]",
+                    "smarts2":null,
+                    "smartsPath":"per",
+                    "constraints":{}
+                },
+                {
+                    "id":23,
+                    "name":"Perfluoroalkane",
+                    "alias":"Perfluoroalkane",
+                    "base_functional_groups":[],
+                    "main_group":"other PFAS",
+                    "smarts1":null,
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
+                },
+                {
+                    "id":24,
+                    "name":"Perfluoroalkyl-tert-amines",
+                    "alias":"Perfluoroalkyl-tert-amines",
+                    "base_functional_groups":["amine"],
+                    "main_group":"other PFAS",
+                    "smarts1":"[#6$([#6][#7D3])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":-1.5,"div":2}}}
+                },
+                {
+                    "id":25,
+                    "name":"Perfluoroalkyl iodides",
+                    "alias":"PFAIs",
+                    "base_functional_groups":["iodide"],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":null,
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"gte":{"I":1}, "rel":{"C":{"atoms":["F","I"],"add":-1,"div":2}}}
+                },
+                {
+                    "id":26,
+                    "name":"Perfluoroalkane sulfonyl fluorides",
+                    "alias":"PASFs",
+                    "base_functional_groups":"",
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":"[#16$([#16](=O)(=O)[F])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
+                },
+                {
+                    "id":27,
+                    "name":"Perfluoroalkyl ketones",
+                    "alias":"Perfluoroalkyl ketones",
+                    "base_functional_groups":["ketone"],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":"[#6X4$([#6]C(=O)[#6])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
+                },
+                {
+                    "id":28,
+                    "name":"Semi-fluoroalkyl ketones",
+                    "alias":"Semi-fluoroalkyl ketones",
+                    "base_functional_groups":["ketone"],
+                    "main_group":"Perfluoroalkyl acids precursors",
+                    "smarts1":"[#6X4$([#6]C(=O)[#6])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"gte":{"O":1,"F":3}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2,"add_atoms":["O"]}}}
+                },
+                {
+                    "name":"alcohol",
+                    "alias":"alcohol",
+                    "id":29,
+                    "base_functional_groups":["alcohol"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6;!$([#6]=O)][OH1])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"ketone",
+                    "alias":"ketones",
+                    "id":30,
+                    "base_functional_groups":["ketone"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6][#6](=O)[#6])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"ether",
+                    "alias":"ether",
+                    "id":31,
+                    "base_functional_groups":[],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6]([#8X2H0][#6;!$(C=O)])[#1,!$(C=O)]);#6!$([#6](=O))]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"ester",
+                    "alias":"ester",
+                    "id":32,
+                    "base_functional_groups":["ester"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6X4$([#6][#6](=O)O[#6,#7,#9,#15,#16,#17,#34,#35,#53]),#6X4$([#6]O[#6](=O)[#6,#7,#9,#15,#16,#17,#34,#35,#53])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"carboxylic acid",
+                    "alias":"carboxylic acid",
+                    "id":33,
+                    "base_functional_groups":["carboxylic acid"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$(*[#6](=O)[OH1])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"amide",
+                    "alias":"amide",
+                    "id":34,
+                    "base_functional_groups":["amide"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$([#6][#6]([#7H0,#7H1,#7H2])=[#8]),$([#6]~[#7H0,#7H1,#7H2][#6X3]=[#8])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"acyl halide",
+                    "alias":"acyl halide",
+                    "id":35,
+                    "base_functional_groups":["acyl halide"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6][#6](=O)[#9,#17,#35,#53])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"sulfonic acid",
+                    "alias":"sulfonic acid",
+                    "id":36,
+                    "base_functional_groups":["sulfonic acid"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$(*[#16](=O)(=O)[O,OH1])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"sulfenic acid",
+                    "alias":"sulfenic acid",
+                    "id":37,
+                    "base_functional_groups":["sulfenic acid"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$(*[#16X2][OH1])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"sulfinic acid",
+                    "alias":"sulfinic acid",
+                    "id":38,
+                    "base_functional_groups":["sulfinic acid"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$(*[#16X3](=O)[O])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"phosphonic acid",
+                    "alias":"phosphonic acid",
+                    "id":39,
+                    "base_functional_groups":["phosphonic acid"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6][#15]([#8])(=[#8])[#8])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"phosphinic acid",
+                    "alias":"phosphinic acid",
+                    "id":40,
+                    "base_functional_groups":["phosphinic acid"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6][#15](=[#8])([#8])[#1;!$([#8])])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name" : "ethene",
+                    "alias":"ethene",
+                    "id":41,
+                    "base_functional_groups":["ethene"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6X3]([F,#6$([#6][#6]F),#6$([#6][#6][#6]F)])=[#6X3][F,#6$([#6][#6]F),#6$([#6][#6][#6]F)])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"gte":{"F":2}}
+                },
+                {
+                    "name":"iodide",
+                    "alias":"iodide",
+                    "id":42,
+                    "base_functional_groups":["iodide"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6][#6](F)[#53])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"sulfonamide",
+                    "alias":"sulfonamide",
+                    "id":43,
+                    "base_functional_groups":["sulfonamide"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$(*[#16]([#7])(=[#8])=[#8]),$(*[#7][#16](=[#8])=[#8])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"azole",
+                    "alias":"azole",
+                    "id":44,
+                    "base_functional_groups":["azole"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$(*[#7r5,$([#6r5,#8r5,#16r5]:[#7r5]),$([#6r5,#8r5,#16r5]:[#6r5,#8r5,#16r5]:[#7r5])])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{},
+                    "definition":"Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American Heritage® Dictionary of the English Language, 5th Edition)"
+                },
+                {
+                    "name":"azine",
+                    "alias":"azine",
+                    "id":45,
+                    "base_functional_groups":["azine"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$(*[#7r6,$([#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6])])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{},
+                    "definition":"A six-membered heterocyclic compound, such as pyridine, that contains one or more atoms of nitrogen with a ring structure resembling that of benzene. (The American Heritage® Dictionary of the English Language, 5th Edition)"
+                },
+                {
+                    "name":"benzodioxole",
+                    "alias":"benzodioxole",
+                    "id":46,
+                    "base_functional_groups":["benzodioxole"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$([#6]1[#6][#6]([#6]2[#6]([#6]1)[#8][#6][#8]2))]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{"gte":{"F":2}},
+                    "definition":"Fluorinated Benzodioxole. Generic SMARTS was [$([#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1),$([#6r6,#7r6,#8r6,#16r6]~[#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1)]"
+                },
+                {
+                    "name":"amine",
+                    "alias":"amine",
+                    "id":47,
+                    "base_functional_groups":["amine"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[$([#6;!$([#6]=O)][N;!$(*[#6]=O)])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"alkane",
+                    "alias":"alkane",
+                    "id":48,
+                    "base_functional_groups":["aliphatic"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[C$([CX4](F)(F)([F,!$(*[#9])])[CX4](F)([F,C,O,S,N,Si,P,B,Se,Te])[F,C,O,S,N,Si,P,B,Se,Te])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"alkene",
+                    "alias":"alkene",
+                    "id":49,
+                    "base_functional_groups":["alkene"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6][#6X3]=[#6])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "name":"alkyne",
+                    "alias":"alkyne",
+                    "id":50,
+                    "base_functional_groups":["alkyne"],
+                    "main_group":"other perfluorinated compound",
+                    "smarts1":"[#6$([#6][#6]#[#6])]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                },
+                {
+                    "id":51,
+                    "name":"Side-chain aromatics",
+                    "alias":"Side-chain aromatics",
+                    "base_functional_groups":["aromatic"],
+                    "main_group":"other PFAS",
+                    "smarts1":"[#6X4$([#6]a)]",
+                    "smarts2":null,
+                    "smartsPath":null,
+                    "constraints":{}
+                }];
+
+        // Parse molecular formula string into element count dictionary
+        // JavaScript implementation of Python's n_from_formula() from utility.py
+        // Regex: ([A-Z][a-z]?)(\d*) matches element symbol + optional count
+        // Example: "C8HO2F15" -> {C: 8, H: 1, O: 2, F: 15}
+        function parseFormula(formula) {
+            const formulaDict = {};
+            const pattern = /([A-Z][a-z]?)(\d*)/g;
+            let match;
+            
+            while ((match = pattern.exec(formula)) !== null) {
+                const element = match[1];
+                const count = match[2] === '' ? 1 : parseInt(match[2]);
+                formulaDict[element] = (formulaDict[element] || 0) + count;
+            }
+            
+            return formulaDict;
+        }
+
+        // Build a graph structure from a molecule
+        // Replicates Python's mol_to_nx() function
+        // Note: RDKit.js has limited API, so we use get_molblock() and parse it
+        function molToGraph(mol) {
+            const graph = {
+                nodes: new Map(), // Map of atom index -> {element: Z, symbol: string}
+                edges: new Map()  // Map of atom index -> [{to: atomIdx, order: bondOrder}]
+            };
+            
+            try {
+                // Get molblock (MDL format) which contains all structural information
+                const molblock = mol.get_molblock();
+                const lines = molblock.split('\n');
+                
+                // MDL V2000 format:
+                // Line 0-2: Header
+                // Line 3: Counts line (aaabbblllfffcccsssxxxrrrpppiiimmmvvvvvv)
+                //         aaa = number of atoms
+                //         bbb = number of bonds
+                // Line 4+: Atom block (one line per atom)
+                // Then: Bond block (one line per bond)
+                
+                // Parse counts line (should be line 3)
+                let atomCount = 0;
+                let bondCount = 0;
+                let atomBlockStart = 4;
+                
+                if (lines.length > 3) {
+                    const countsLine = lines[3].trim();
+                    // First 3 characters are atom count, next 3 are bond count
+                    atomCount = parseInt(countsLine.substring(0, 3).trim());
+                    bondCount = parseInt(countsLine.substring(3, 6).trim());
+                }
+                
+                // Parse atom block
+                // Format: xxxxx.xxxxyyyyy.yyyyzzzzz.zzzz aaaddcccssshhhbbbvvvHHHrrriiimmmnnneee
+                //         x,y,z = coordinates
+                //         aaa = atom symbol (right justified)
+                for (let i = 0; i < atomCount; i++) {
+                    const atomLine = lines[atomBlockStart + i];
+                    if (atomLine && atomLine.length >= 34) {
+                        // Atom symbol is at positions 31-33 (0-indexed)
+                        const symbol = atomLine.substring(31, 34).trim();
+                        const atomicNum = getAtomicNumber(symbol);
+                        
+                        graph.nodes.set(i, {
+                            element: atomicNum,
+                            symbol: symbol
+                        });
+                        graph.edges.set(i, []);
+                    }
+                }
+                
+                // Parse bond block
+                // Format: 111222tttsssxxxrrrccc
+                //         111 = first atom number (1-indexed)
+                //         222 = second atom number (1-indexed)
+                //         ttt = bond type (1=single, 2=double, 3=triple, 4=aromatic)
+                const bondBlockStart = atomBlockStart + atomCount;
+                for (let i = 0; i < bondCount; i++) {
+                    const bondLine = lines[bondBlockStart + i];
+                    if (bondLine && bondLine.length >= 9) {
+                        // Atom indices are 1-indexed in molblock, convert to 0-indexed
+                        const atom1Idx = parseInt(bondLine.substring(0, 3).trim()) - 1;
+                        const atom2Idx = parseInt(bondLine.substring(3, 6).trim()) - 1;
+                        const bondType = parseInt(bondLine.substring(6, 9).trim());
+                        
+                        // Add edge in both directions (undirected graph)
+                        if (graph.edges.has(atom1Idx) && graph.edges.has(atom2Idx)) {
+                            graph.edges.get(atom1Idx).push({ to: atom2Idx, order: bondType });
+                            graph.edges.get(atom2Idx).push({ to: atom1Idx, order: bondType });
+                        }
+                    }
+                }
+                
+                if (graph.nodes.size === 0) {
+                    console.error('Failed to parse any atoms from molblock');
+                }
+                
+            } catch (error) {
+                console.error('Error parsing molblock:', error);
+                console.warn('Graph construction failed, path finding will not work correctly');
+            }
+            
+            return graph;
+        }
+        
+        // Helper function to convert element symbol to atomic number
+        function getAtomicNumber(symbol) {
+            const atomicNumbers = {
+                'H': 1, 'He': 2, 'Li': 3, 'Be': 4, 'B': 5, 'C': 6, 'N': 7, 'O': 8, 
+                'F': 9, 'Ne': 10, 'Na': 11, 'Mg': 12, 'Al': 13, 'Si': 14, 'P': 15, 
+                'S': 16, 'Cl': 17, 'Ar': 18, 'K': 19, 'Ca': 20, 'Br': 35, 'I': 53,
+                'Se': 34, 'Te': 52, 'As': 33
+            };
+            return atomicNumbers[symbol] || 6; // Default to carbon if unknown
+        }
+
+        // Dijkstra's shortest path algorithm
+        // Replicates nx.shortest_path(G, source, target, method='dijkstra')
+        function dijkstraShortestPath(graph, source, target) {
+            const distances = new Map();
+            const previous = new Map();
+            const unvisited = new Set();
+            
+            // Initialize distances
+            for (const nodeIdx of graph.nodes.keys()) {
+                distances.set(nodeIdx, Infinity);
+                unvisited.add(nodeIdx);
+            }
+            distances.set(source, 0);
+            
+            while (unvisited.size > 0) {
+                // Find node with minimum distance
+                let currentNode = null;
+                let minDistance = Infinity;
+                for (const nodeIdx of unvisited) {
+                    const dist = distances.get(nodeIdx);
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                        currentNode = nodeIdx;
+                    }
+                }
+                
+                if (currentNode === null || minDistance === Infinity) {
+                    break; // No path exists
+                }
+                
+                if (currentNode === target) {
+                    break; // Found target
+                }
+                
+                unvisited.delete(currentNode);
+                
+                // Update distances for neighbors
+                const neighbors = graph.edges.get(currentNode) || [];
+                for (const edge of neighbors) {
+                    const neighborIdx = edge.to;
+                    if (!unvisited.has(neighborIdx)) continue;
+                    
+                    // For molecular graphs, all bonds have weight 1
+                    const altDistance = distances.get(currentNode) + 1;
+                    
+                    if (altDistance < distances.get(neighborIdx)) {
+                        distances.set(neighborIdx, altDistance);
+                        previous.set(neighborIdx, currentNode);
+                    }
+                }
+            }
+            
+            // Reconstruct path
+            if (!previous.has(target) && source !== target) {
+                return null; // No path exists
+            }
+            
+            const path = [];
+            let current = target;
+            while (current !== undefined) {
+                path.unshift(current);
+                current = previous.get(current);
+            }
+            
+            return path;
+        }
+
+        // Get substructure matches for a SMARTS pattern
+        // Returns a Set of atom indices (first atom of each match)
+        function getSubstructMatches(mol, smartsPattern) {
+            try {
+                const pattern = RDKit.get_qmol(smartsPattern);
+                if (!pattern || !pattern.is_valid()) {
+                    pattern?.delete();
+                    return new Set();
+                }
+                
+                // RDKit.js get_substruct_matches returns a JSON string
+                const matchesJson = mol.get_substruct_matches(pattern);
+                pattern.delete();
+                
+                // Handle empty results
+                if (!matchesJson || matchesJson === '[]' || matchesJson === '' || matchesJson === '{}') {
+                    return new Set();
+                }
+                
+                // Parse the JSON
+                let matches;
+                if (typeof matchesJson === 'string') {
+                    try {
+                        matches = JSON.parse(matchesJson);
+                    } catch (parseError) {
+                        return new Set();
+                    }
+                } else {
+                    matches = matchesJson;
+                }
+                
+                // RDKit.js might return matches as an object with numeric keys instead of array
+                // Convert to array if needed
+                if (!Array.isArray(matches)) {
+                    if (typeof matches === 'object' && matches !== null) {
+                        const keys = Object.keys(matches);
+                        if (keys.length > 0 && keys.every(k => !isNaN(k))) {
+                            matches = keys.map(k => matches[k]);
+                        } else {
+                            return new Set();
+                        }
+                    } else {
+                        return new Set();
+                    }
+                }
+                
+                // Return set of first atom indices from each match
+                const firstAtoms = new Set();
+                for (const match of matches) {
+                    if (Array.isArray(match) && match.length > 0) {
+                        firstAtoms.add(match[0]);
+                    } else if (match && match.atoms && Array.isArray(match.atoms) && match.atoms.length > 0) {
+                        firstAtoms.add(match.atoms[0]);
+                    }
+                }
+                return firstAtoms;
+            } catch (error) {
+                console.warn('Error getting substructure matches:', error, 'Pattern:', smartsPattern);
+                return new Set();
+            }
+        }
+
+        // Get all atom indices in substructure matches
+        // Returns a Set of all atom indices involved in any match
+        function getAllSubstructMatchAtoms(mol, smartsPattern) {
+            try {
+                const pattern = RDKit.get_qmol(smartsPattern);
+                if (!pattern || !pattern.is_valid()) {
+                    pattern?.delete();
+                    console.log(`getAllSubstructMatchAtoms('${smartsPattern}'): invalid pattern`);
+                    return new Set();
+                }
+                
+                const matchesJson = mol.get_substruct_matches(pattern);
+                pattern.delete();
+                
+                if (!matchesJson || matchesJson === '[]' || matchesJson === '' || matchesJson === '{}') {
+                    console.log(`getAllSubstructMatchAtoms('${smartsPattern}'): no matches`);
+                    return new Set();
+                }
+                
+                // Parse the JSON
+                let matches;
+                if (typeof matchesJson === 'string') {
+                    try {
+                        matches = JSON.parse(matchesJson);
+                    } catch (parseError) {
+                        return new Set();
+                    }
+                } else {
+                    matches = matchesJson;
+                }
+                
+                // Convert object to array if needed
+                if (!Array.isArray(matches)) {
+                    if (typeof matches === 'object' && matches !== null) {
+                        const keys = Object.keys(matches);
+                        if (keys.length > 0 && keys.every(k => !isNaN(k))) {
+                            matches = keys.map(k => matches[k]);
+                        } else {
+                            return new Set();
+                        }
+                    } else {
+                        return new Set();
+                    }
+                }
+                
+                // Return set of all atom indices from all matches
+                const allAtoms = new Set();
+                for (const match of matches) {
+                    if (Array.isArray(match)) {
+                        for (const atomIdx of match) {
+                            allAtoms.add(atomIdx);
+                        }
+                    } else if (match && match.atoms && Array.isArray(match.atoms)) {
+                        for (const atomIdx of match.atoms) {
+                            allAtoms.add(atomIdx);
+                        }
+                    }
+                }
+                return allAtoms;
+            } catch (error) {
+                console.warn('Error getting all substruct match atoms:', error, 'Pattern:', smartsPattern);
+                return new Set();
+            }
+        }
+
+        // Find fluorinated paths between SMARTS patterns
+        // Replicates Python's find_path_between_smarts() function
+        function findPathBetweenSmarts(mol, smarts1, smarts2, graph) {
+            const chains = {};
+            
+            // Get matches for smarts1
+            const smartsMatches1 = getSubstructMatches(mol, smarts1);
+            
+            if (smartsMatches1.size === 0) {
+                return {
+                    n: 0,
+                    nCFchain: [],
+                    matched1Len: 0,
+                    chains: []
+                };
+            }
+            
+            // Build pairs of (smarts2_pattern, [(pathName, pathMatchAtoms)])
+            const pairs = {};
+            
+            if (smarts2 !== null) {
+                // Case 1: Specific smarts2 provided
+                pairs[smarts2] = [];
+                for (const [pathName, pathSmarts] of Object.entries(FLUORINATED_PATHS)) {
+                    const pathMatchAtoms = getAllSubstructMatchAtoms(mol, pathSmarts.chain);
+                    pairs[smarts2].push([pathName, pathMatchAtoms]);
+                }
+            } else {
+                // Case 2: Use end patterns from FLUORINATED_PATHS as smarts2
+                for (const [pathName, pathSmarts] of Object.entries(FLUORINATED_PATHS)) {
+                    const endPattern = pathSmarts.end;
+                    if (!pairs[endPattern]) {
+                        pairs[endPattern] = [];
+                    }
+                    const pathMatchAtoms = getAllSubstructMatchAtoms(mol, pathSmarts.chain);
+                    pairs[endPattern].push([pathName, pathMatchAtoms]);
+                }
+            }
+            
+            // Helper function to check if path atoms match fluorinated pattern
+            function matchIntersection(pairList, pathSet) {
+                for (const [pathName, pathMatchAtoms] of pairList) {
+                    // Check if all atoms in pathSet are in pathMatchAtoms
+                    let allMatch = true;
+                    for (const atomIdx of pathSet) {
+                        if (!pathMatchAtoms.has(atomIdx)) {
+                            allMatch = false;
+                            break;
+                        }
+                    }
+                    
+                    if (allMatch) {
+                        if (!chains[pathName]) {
+                            chains[pathName] = [];
+                        }
+                        chains[pathName].push(pathSet);
+                        return pathName;
+                    }
+                }
+                return null;
+            }
+            
+            // Find paths between all pairs of smarts1 and smarts2 matches
+            let totalPaths = 0;
+            for (const match1 of smartsMatches1) {
+                for (const [smarts2Pattern, smartsPathList] of Object.entries(pairs)) {
+                    const smartsMatches2 = getSubstructMatches(mol, smarts2Pattern);
+                    
+                    for (const match2 of smartsMatches2) {
+                        // Avoid self-matching (unless smarts1 and smarts2 are different)
+                        if (match1 !== match2 || smarts1.get_inchi !== smarts2Pattern.get_inchi) {
+                            const pathIndices = dijkstraShortestPath(graph, match1, match2);
+                            
+                            if (pathIndices && pathIndices.length > 0) {
+                                totalPaths++;
+                                const pathSet = new Set(pathIndices);
+                                matchIntersection(smartsPathList, pathSet);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Sort chains by length (longest first) and remove subsets
+            for (const pathName in chains) {
+                chains[pathName].sort((a, b) => b.size - a.size);
+                
+                const filteredChains = [];
+                for (let i = 0; i < chains[pathName].length; i++) {
+                    const currentChain = chains[pathName][i];
+                    let isSubset = false;
+                    
+                    // Check if current chain is subset of any previous chain
+                    for (let j = 0; j < i; j++) {
+                        const prevChain = chains[pathName][j];
+                        let allInPrev = true;
+                        for (const atomIdx of currentChain) {
+                            if (!prevChain.has(atomIdx)) {
+                                allInPrev = false;
+                                break;
+                            }
+                        }
+                        if (allInPrev) {
+                            isSubset = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!isSubset) {
+                        filteredChains.push(currentChain);
+                    }
+                }
+                
+                chains[pathName] = filteredChains;
+            }
+            
+            // Calculate results
+            // n = minimum number of chains across all pathway types
+            // This matches Python: n = min([len(x) for x in chains.values()])
+            // where chains.values() are lists of chains for each pathway
+            let n = 0;
+            let nCFchain = [];
+            
+            if (Object.keys(chains).length > 0) {
+                // Get minimum count of chains across all pathways
+                const chainCounts = Object.values(chains).map(chainList => chainList.length);
+                n = chainCounts.length > 0 ? Math.min(...chainCounts) : 0;
+                
+                // Get Perfluoroalkyl chain lengths
+                if (chains['Perfluoroalkyl']) {
+                    nCFchain = chains['Perfluoroalkyl'].map(chain => chain.size);
+                }
+            }
+            
+            // Format chains for output
+            const chainsList = [];
+            for (const [pathName, chainList] of Object.entries(chains)) {
+                for (const chain of chainList) {
+                    chainsList.push({
+                        chain: Array.from(chain),
+                        length: chain.size,
+                        SMARTS: pathName
+                    });
+                }
+            }
+            
+            return {
+                n: n,
+                nCFchain: nCFchain,
+                matched1Len: smartsMatches1.size,
+                chains: chainsList
+            };
+        }
+
+        // Check if formula satisfies constraints
+        // Example: "C8HO2F15" -> {C: 8, H: 1, O: 2, F: 15}
+        function parseFormula(formula) {
+            const formulaDict = {};
+            // Pattern matches element symbol (capital letter + optional lowercase) followed by optional digits
+            const pattern = /([A-Z][a-z]?)(\d*)/g;
+            let match;
+            
+            while ((match = pattern.exec(formula)) !== null) {
+                const element = match[1];
+                const count = match[2] === '' ? 1 : parseInt(match[2]);
+                // Accumulate counts (same element can appear multiple times)
+                formulaDict[element] = (formulaDict[element] || 0) + count;
+            }
+            
+            return formulaDict;
+        }
+
+        // Check if formula satisfies constraints
+        function checkConstraints(formulaDict, constraints) {
+            if (!constraints || Object.keys(constraints).length === 0) {
+                return true;
+            }
+
+            // Check "gte" (greater than or equal)
+            if (constraints.gte) {
+                for (const [element, minCount] of Object.entries(constraints.gte)) {
+                    if ((formulaDict[element] || 0) < minCount) {
+                        return false;
+                    }
+                }
+            }
+
+            // Check "lte" (less than or equal)
+            if (constraints.lte) {
+                for (const [element, maxCount] of Object.entries(constraints.lte)) {
+                    if ((formulaDict[element] || 0) > maxCount) {
+                        return false;
+                    }
+                }
+            }
+
+            // Check "eq" (equal)
+            if (constraints.eq) {
+                for (const [element, exactCount] of Object.entries(constraints.eq)) {
+                    if ((formulaDict[element] || 0) !== exactCount) {
+                        return false;
+                    }
+                }
+            }
+
+            // Check "only" (only these elements allowed)
+            if (constraints.only) {
+                const allowedElements = new Set(constraints.only);
+                for (const element of Object.keys(formulaDict)) {
+                    if (!allowedElements.has(element)) {
+                        return false;
+                    }
+                }
+            }
+
+            // Check "rel" (relational constraints)
+            if (constraints.rel) {
+                for (const [element, relConstraint] of Object.entries(constraints.rel)) {
+                    const atoms = relConstraint.atoms || [];
+                    const div = relConstraint.div || 1;
+                    const add = relConstraint.add || 0;
+                    const addAtoms = relConstraint.add_atoms || [];
+
+                    let sumAtoms = 0;
+                    for (const atom of atoms) {
+                        sumAtoms += formulaDict[atom] || 0;
+                    }
+
+                    let sumAddAtoms = 0;
+                    for (const atom of addAtoms) {
+                        sumAddAtoms += formulaDict[atom] || 0;
+                    }
+
+                    const expected = sumAtoms / div + add + sumAddAtoms;
+                    const actual = formulaDict[element] || 0;
+
+                    // Allow some tolerance for floating point
+                    if (Math.abs(actual - expected) > 0.1) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        // Analyze a single molecule
+        function analyzeMolecule(input, inputType, providedFormula = null) {
+            if (!RDKit) {
+                throw new Error('RDKit not initialized');
+            }
+
+            let mol;
+            try {
+                if (inputType === 'smiles') {
+                    mol = RDKit.get_mol(input);
+                } else if (inputType === 'inchi') {
+                    mol = RDKit.get_mol_from_inchi(input);
+                } else {
+                    throw new Error('Invalid input type');
+                }
+
+                if (!mol || !mol.is_valid()) {
+                    throw new Error('Invalid molecule structure');
+                }
+                
+                // Add explicit hydrogens to make SMARTS matching more reliable
+                try {
+                    if (mol.add_hs) {
+                        mol = mol.add_hs();
+                        mol = RDKit.get_mol(mol); // Re-parse to update
+                    }
+                } catch (e) {
+                    // add_hs() not available or failed
+                }
+            } catch (error) {
+                throw new Error(`Failed to parse molecule: ${error.message}`);
+            }
+
+            const results = {
+                input: input,
+                inputType: inputType,
+                formula: '',
+                formulaDict: {},
+                matches: []
+            };
+
+            // Get molecular formula
+            let formulaDict = {};
+            try {
+                let formulaString = '';
+                
+                // Priority 1: Use provided formula from file if available
+                if (providedFormula && providedFormula.trim() !== '') {
+                    formulaString = providedFormula.trim();
+                    formulaDict = parseFormula(formulaString);
+                    console.log('Using provided formula:', formulaString, '| Dict:', formulaDict);
+                } else {
+                    // Method 1: Try get_mol_formula if available (RDKit.js includes implicit H)
+                    try {
+                        if (mol.get_mol_formula) {
+                            formulaString = mol.get_mol_formula();
+                            formulaDict = parseFormula(formulaString);
+                            console.log('Formula from get_mol_formula():', formulaString);
+                        }
+                    } catch (e) {
+                        console.warn('get_mol_formula() not available or failed:', e);
+                    }
+                    
+                    // Method 2: Parse molblock as fallback (may miss implicit H)
+                    // Only use if get_mol_formula failed
+                    if (Object.keys(formulaDict).length === 0) {
+                        try {
+                            const molblock = mol.get_molblock();
+                            const lines = molblock.split('\n');
+                            
+                            if (lines.length > 3) {
+                                const countsLine = lines[3].trim();
+                                const atomCount = parseInt(countsLine.substring(0, 3).trim());
+                                const atomBlockStart = 4;
+                                
+                                // Count atoms by symbol from molblock
+                                const explicitAtoms = {};
+                                for (let i = 0; i < atomCount; i++) {
+                                    const atomLine = lines[atomBlockStart + i];
+                                    if (atomLine && atomLine.length >= 34) {
+                                        const symbol = atomLine.substring(31, 34).trim();
+                                        explicitAtoms[symbol] = (explicitAtoms[symbol] || 0) + 1;
+                                    }
+                                }
+                                
+                                // Try to get implicit hydrogen counts from RDKit
+                                // RDKit.js calculates implicit H automatically
+                                try {
+                                    // Use the descriptor to get total H count
+                                    const totalHCount = mol.get_num_heavy_atoms ? 
+                                        (mol.get_num_atoms ? mol.get_num_atoms() - mol.get_num_heavy_atoms() : 0) : 
+                                        0;
+                                    
+                                    if (totalHCount > 0) {
+                                        explicitAtoms['H'] = totalHCount;
+                                    }
+                                } catch (e) {
+                                    console.warn('Could not calculate implicit H count:', e);
+                                }
+                                
+                                formulaDict = explicitAtoms;
+                                console.log('Formula from molblock parsing:', formulaDict);
+                            }
+                        } catch (e) {
+                            console.warn('Could not parse molblock:', e);
+                        }
+                    }
+                }
+                
+                // Format formula string (C first, H second, then alphabetical)
+                // This matches RDKit's CalcMolFormula ordering
+                results.formula = Object.entries(formulaDict)
+                    .sort((a, b) => {
+                        // Carbon first
+                        if (a[0] === 'C') return -1;
+                        if (b[0] === 'C') return 1;
+                        // Hydrogen second
+                        if (a[0] === 'H') return b[0] === 'C' ? 1 : -1;
+                        if (b[0] === 'H') return a[0] === 'C' ? -1 : 1;
+                        // Others alphabetically
+                        return a[0].localeCompare(b[0]);
+                    })
+                    .map(([symbol, count]) => count > 1 ? `${symbol}${count}` : symbol)
+                    .join('');
+                
+                // Store the formula dict for constraint checking
+                results.formulaDict = formulaDict;
+                
+                console.log('Molecular formula:', results.formula, '| Dict:', formulaDict);
+            } catch (error) {
+                console.error('Error building formula:', error);
+                results.formula = 'Unknown';
+                results.formulaDict = {};
+            }
+
+            // Build molecular graph for path finding
+            const graph = molToGraph(mol);
+
+            // Check each PFAS group
+            for (const group of PFAS_GROUPS) {
+                try {
+                    // Check formula constraints first (optimization)
+                    const constraintsPassed = checkConstraints(formulaDict, group.constraints);
+                    
+                    console.log(`Checking group ${group.id} (${group.alias}):`, {
+                        hasSmarts1: !!group.smarts1,
+                        hasSmarts2: !!group.smarts2,
+                        constraintKeys: Object.keys(group.constraints),
+                        constraintsPassed
+                    });
+                    
+                    if (!constraintsPassed) {
+                        console.log(`  → Skipped (constraints not satisfied)`);
+                        continue; // Skip if formula constraints not satisfied
+                    }
+
+                    let hasMatch = false;
+                    let matchCount = 0;
+                    let nCFchain = [];
+                    let chains = [];
+
+                    // Determine matching strategy based on SMARTS patterns
+                    // This follows Python's parse_PFAS_groups() logic
+                    if (group.smarts1 && group.smarts2) {
+                        // Case 1: Both smarts1 and smarts2 present - use path finding
+                        // Matches Python: path_between_smarts(mol, pf.smarts1, pf.smarts2)
+                        try {
+                            const pathResult = findPathBetweenSmarts(mol, group.smarts1, group.smarts2, graph);
+                            
+                            if (pathResult.n > 0 && pathResult.matched1Len > 0) {
+                                // Check if group requires specific chain type (smartsPath)
+                                let chainTypeValid = true;
+                                if (group.smartsPath === "per") {
+                                    // Must have at least one Perfluoroalkyl chain
+                                    chainTypeValid = pathResult.chains.some(chain => 
+                                        chain.SMARTS === "Perfluoroalkyl"
+                                    );
+                                } else if (group.smartsPath === "poly") {
+                                    // Must have at least one Polyfluoroalkyl chain
+                                    chainTypeValid = pathResult.chains.some(chain => 
+                                        chain.SMARTS === "Polyfluoroalkyl" || chain.SMARTS === "Perfluoroalkyl"
+                                    );
+                                }
+                                
+                                // smartsPath === null means any chain type is acceptable
+                                
+                                if (chainTypeValid) {
+                                    hasMatch = true;
+                                    matchCount = pathResult.n;
+                                    nCFchain = pathResult.nCFchain;
+                                    chains = pathResult.chains;
+                                }
+                            }
+                        } catch (error) {
+                            console.warn(`Error in path finding for ${group.name}:`, error);
+                        }
+                    } else if (group.smarts1 && Object.keys(group.constraints).length === 0) {
+                        // Case 2: Only smarts1 present and no additional constraints - use path finding with null smarts2
+                        // Matches Python: elif pf.smarts1 is not None and len(pf.constraints.keys())==0:
+                        // This finds paths to any fluorinated chain end
+                        try {
+                            const pathResult = findPathBetweenSmarts(mol, group.smarts1, null, graph);
+                            
+                            if (pathResult.n > 0 && pathResult.matched1Len > 0) {
+                                // Check if group requires specific chain type (smartsPath)
+                                let chainTypeValid = true;
+                                if (group.smartsPath === "per") {
+                                    // Must have at least one Perfluoroalkyl chain
+                                    chainTypeValid = pathResult.chains.some(chain => 
+                                        chain.SMARTS === "Perfluoroalkyl"
+                                    );
+                                } else if (group.smartsPath === "poly") {
+                                    // Must have at least one Polyfluoroalkyl chain
+                                    chainTypeValid = pathResult.chains.some(chain => 
+                                        chain.SMARTS === "Polyfluoroalkyl"
+                                    );
+                                }
+                                // smartsPath === null means any chain type is acceptable
+                                
+                                if (chainTypeValid) {
+                                    hasMatch = true;
+                                    matchCount = pathResult.n;
+                                    nCFchain = pathResult.nCFchain;
+                                    chains = pathResult.chains;
+                                }
+                            }
+                        } catch (error) {
+                            console.warn(`Error in path finding for ${group.name}:`, error);
+                        }
+                    } else if (group.smarts1) {
+                        // Case 3: Only smarts1 present with constraints - simple substructure match
+                        try {
+                            const pattern = RDKit.get_qmol(group.smarts1);
+                            if (pattern && pattern.is_valid()) {
+                                let matchesJson;
+                                try {
+                                    matchesJson = mol.get_substruct_match(pattern);
+                                } catch (e) {
+                                    matchesJson = mol.get_substruct_matches(pattern);
+                                }
+                                
+                                let match;
+                                if (typeof matchesJson === 'string') {
+                                    match = JSON.parse(matchesJson);
+                                } else {
+                                    match = matchesJson;
+                                }
+                                
+                                // Handle different return formats from RDKit.js
+                                let atomIndices;
+                                if (typeof match === 'object' && match !== null) {
+                                    if (match.atoms && Array.isArray(match.atoms)) {
+                                        atomIndices = match.atoms;
+                                    } else if (Array.isArray(match)) {
+                                        if (match.length > 0 && Array.isArray(match[0])) {
+                                            atomIndices = match[0];
+                                        } else {
+                                            atomIndices = match;
+                                        }
+                                    } else {
+                                        atomIndices = [];
+                                    }
+                                } else {
+                                    atomIndices = [];
+                                }
+                                
+                                matchCount = atomIndices.length;
+                                hasMatch = matchCount > 0;
+                                pattern.delete();
+                            }
+                        } catch (error) {
+                            console.warn(`Error matching SMARTS for ${group.name}:`, error);
+                        }
+                    } else {
+                        // Case 4: No SMARTS, just check formula constraints
+                        hasMatch = true;
+                        matchCount = 1;
+                    }
+
+                    // Debug logging for first few groups
+                    if (group.id <= 5) {
+                        console.log(`Group ${group.id} (${group.alias}):`, {
+                            hasSmarts1: !!group.smarts1,
+                            hasSmarts2: !!group.smarts2,
+                            hasConstraints: Object.keys(group.constraints).length > 0,
+                            hasMatch,
+                            matchCount,
+                            nCFchain,
+                            numChains: chains.length,
+                            constraintsPassed,
+                            formulaDict,
+                            constraints: group.constraints
+                        });
+                    }
+                    
+                    // Log when a group matches
+                    if (hasMatch && constraintsPassed) {
+                        console.log(`✓ Group ${group.id} (${group.alias}) MATCHED and ADDED to results`);
+                        results.matches.push({
+                            id: group.id,
+                            name: group.name,
+                            alias: group.alias,
+                            matchCount: matchCount,
+                            nCFchain: nCFchain,
+                            chains: chains,
+                            formulaMatch: true
+                        });
+                    } else if (hasMatch && !constraintsPassed) {
+                        console.log(`✗ Group ${group.id} (${group.alias}) matched but CONSTRAINTS FAILED`);
+                    } else if (!hasMatch && constraintsPassed) {
+                        console.log(`✗ Group ${group.id} (${group.alias}) constraints passed but NO MATCH`);
+                    }
+                } catch (error) {
+                    console.error(`Error checking group ${group.name}:`, error);
+                }
+            }
+
+            // NO PATHWAY FILTERING - the Python test script filter is NOT what we need to match
+            // The Python parse_PFAS_groups() already returns the correct groups
+            // The test script filtering is just for test comparison purposes
+
+            // Generate SVG structure
+            try {
+                results.svg = mol.get_svg();
+            } catch (error) {
+                console.error('Error generating SVG:', error);
+                results.svg = null;
+            }
+
+            return results;
+        }
+
+        function analyzeMolecules() {
+            if (!RDKit) {
+                showError('Chemistry library not loaded yet. Please wait and try again.');
+                return;
+            }
+
+            const input = document.getElementById('moleculeInput').value.trim();
+            const inputType = document.getElementById('inputType').value;
+
+            if (!input) {
+                showError('Please enter at least one molecule.');
+                return;
+            }
+
+            const inputs = input.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+            
+            // Show initial progress bar
+            if (inputs.length > 1) {
+                updateProgress(0, inputs.length);
+            } else {
+                showLoading();
+            }
+
+            // Check if user wants to use formula column from imported data
+            const useFormulaColumn = document.getElementById('useFormulaColumn').checked;
+            const formulaColumnName = document.getElementById('formulaColumnName').value.trim();
+
+            // Process molecules asynchronously to allow UI updates
+            const processAsync = async () => {
+                try {
+                    const results = [];
+                    const showProgress = inputs.length > 1;
+                    let processed = 0;
+
+                    for (let i = 0; i < inputs.length; i++) {
+                        const moleculeInput = inputs[i];
+                        try {
+                            // Try to get formula from imported data if enabled
+                            let providedFormula = null;
+                            if (useFormulaColumn && importedData && importedData.data) {
+                                const row = importedData.data[i];
+                                if (row) {
+                                    const columnToUse = formulaColumnName || importedData.formulaColumn;
+                                    if (columnToUse && row[columnToUse]) {
+                                        providedFormula = row[columnToUse];
+                                    }
+                                }
+                            }
+                            
+                            const result = analyzeMolecule(moleculeInput, inputType, providedFormula);
+                            results.push(result);
+                        } catch (error) {
+                            results.push({
+                                input: moleculeInput,
+                                error: error.message
+                            });
+                        }
+
+                        processed++;
+                        
+                        // Update progress bar and yield to UI every few molecules
+                        if (showProgress && (processed % 2 === 0 || processed === inputs.length)) {
+                            updateProgress(processed, inputs.length);
+                            // Yield to browser to update UI
+                            await new Promise(resolve => setTimeout(resolve, 0));
+                        }
+                    }
+
+                    // Store results globally for export
+                    analysisResults = results;
+
+                    displayResults(results);
+                    
+                    // Show export section if we have results
+                    if (results.length > 0) {
+                        document.getElementById('exportSection').style.display = 'block';
+                    }
+                } catch (error) {
+                    showError(`Analysis failed: ${error.message}`);
+                }
+            };
+
+            // Start async processing
+            processAsync();
+        }
+
+        function updateProgress(current, total) {
+            const container = document.getElementById('resultsContainer');
+            const percent = Math.round((current / total) * 100);
+            container.innerHTML = `
+                <div class="loading">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${percent}%">
+                            ${current} / ${total} (${percent}%)
+                        </div>
+                    </div>
+                    <p>Analyzing molecules... ${current} of ${total} completed</p>
+                </div>
+            `;
+        }
+
+        function displayResults(results) {
+            const container = document.getElementById('resultsContainer');
+            
+            if (results.length === 0) {
+                showInfo('No results to display.');
+                return;
+            }
+
+            let html = '<div class="results-section">';
+            html += '<div class="results-header">';
+            html += '<h2>Analysis Results</h2>';
+            html += `<span class="badge badge-info">${results.length} molecule(s)</span>`;
+            html += '</div>';
+
+            for (const result of results) {
+                html += '<div class="molecule-card">';
+                
+                if (result.error) {
+                    html += `<div class="error-message">
+                        <strong>Error:</strong> ${result.error}<br>
+                        <small>Input: ${result.input}</small>
+                    </div>`;
+                } else {
+                    html += '<div class="molecule-header">';
+                    html += `<div class="molecule-input">${result.input}</div>`;
+                    html += `<span class="badge badge-primary">${result.formula}</span>`;
+                    html += '</div>';
+
+                    // Add formula breakdown
+                    if (result.formulaDict && Object.keys(result.formulaDict).length > 0) {
+                        html += '<div class="formula-breakdown">';
+                        html += '<strong>Atom counts:</strong> ';
+                        const sortedElements = Object.entries(result.formulaDict).sort((a, b) => {
+                            if (a[0] === 'C') return -1;
+                            if (b[0] === 'C') return 1;
+                            if (a[0] === 'H') return b[0] === 'C' ? 1 : -1;
+                            if (b[0] === 'H') return a[0] === 'C' ? -1 : 1;
+                            return a[0].localeCompare(b[0]);
+                        });
+                        for (const [element, count] of sortedElements) {
+                            html += `<span class="element"><span class="element-symbol">${element}</span>: ${count}</span>`;
+                        }
+                        html += '</div>';
+                    }
+
+                    if (result.svg) {
+                        html += `<div class="molecule-structure">${result.svg}</div>`;
+                    }
+
+                    if (result.matches.length > 0) {
+                        html += '<div class="group-matches">';
+                        html += `<h3>PFAS Groups Found <span class="badge badge-success">${result.matches.length}</span></h3>`;
+                        
+                        for (const match of result.matches) {
+                            html += '<div class="group-match">';
+                            html += `<div class="group-name">${match.name} (${match.alias})</div>`;
+                            html += '<div class="group-details">';
+                            if (match.matchCount > 0) {
+                                html += `Functional group matches: ${match.matchCount}<br>`;
+                            }
+                            
+                            // Display chain information if available
+                            if (match.nCFchain && match.nCFchain.length > 0) {
+                                html += `Perfluoroalkyl chain lengths: ${match.nCFchain.join(', ')}<br>`;
+                            }
+                            
+                            if (match.chains && match.chains.length > 0) {
+                                html += `<br><strong>Fluorinated chains detected:</strong><br>`;
+                                for (const chain of match.chains) {
+                                    html += `<div class="chain-info">`;
+                                    html += `Path: ${chain.SMARTS}<br>`;
+                                    html += `Length: ${chain.length} atoms<br>`;
+                                    html += `Atom indices: [${chain.chain.join(', ')}]`;
+                                    html += `</div>`;
+                                }
+                            }
+                            
+                            html += `Formula constraints: ✓ Satisfied`;
+                            html += '</div>';
+                            html += '</div>';
+                        }
+                        
+                        html += '</div>';
+                    } else {
+                        html += '<div class="info-message">No PFAS groups detected in this molecule.</div>';
+                    }
+                }
+
+                html += '</div>';
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // Tab switching function for information pages
+        function switchTab(event, tabId) {
+            // Hide all tab contents
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let content of tabContents) {
+                content.classList.remove('active');
+            }
+
+            // Remove active class from all tabs
+            const tabs = document.getElementsByClassName('tab');
+            for (let tab of tabs) {
+                tab.classList.remove('active');
+            }
+
+            // Show selected tab content
+            const selectedContent = document.getElementById(tabId);
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+
+            // Mark clicked tab as active
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+        }
+
+        // Add keyboard shortcut for analysis
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('moleculeInput').addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    analyzeMolecules();
+                }
+            });
+
+            // Setup drag-and-drop for file input
+            const fileInputLabel = document.getElementById('fileInputLabel');
+            const fileInput = document.getElementById('fileInput');
+
+            // Prevent default drag behaviors on the document
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Highlight drop area when dragging over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                fileInputLabel.addEventListener(eventName, function() {
+                    fileInputLabel.classList.add('drag-over');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                fileInputLabel.addEventListener(eventName, function() {
+                    fileInputLabel.classList.remove('drag-over');
+                }, false);
+            });
+
+            // Handle dropped files
+            fileInputLabel.addEventListener('drop', function(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+
+                if (files.length > 0) {
+                    // Simulate file input change
+                    fileInput.files = files;
+                    handleFileUpload({ target: { files: files } });
+                }
+            }, false);
+        });
+    </script>
+</body>
+</html>

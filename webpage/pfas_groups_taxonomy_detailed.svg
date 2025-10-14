@@ -1,0 +1,1856 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1400"
+   height="2000"
+   viewBox="0 0 1400 2000"
+   version="1.1"
+   id="svg134"
+   sodipodi:docname="pfas_groups_taxonomy_detailed.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs134" />
+  <sodipodi:namedview
+     id="namedview134"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.0973606"
+     inkscape:cx="414.17563"
+     inkscape:cy="623.76945"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg134" />
+  <!-- Title -->
+  <text
+     x="700"
+     y="40"
+     text-anchor="middle"
+     font-family="Arial, sans-serif"
+     font-size="28"
+     font-weight="bold"
+     fill="#2c3e50"
+     id="text1">
+    PFAS Groups Taxonomy
+  </text>
+  <text
+     x="700"
+     y="70"
+     text-anchor="middle"
+     font-family="Arial, sans-serif"
+     font-size="14"
+     fill="#7f8c8d"
+     id="text2">
+    Hierarchical classification of OECD and generic PFAS groups
+  </text>
+  <!-- Legend -->
+  <g
+     id="legend"
+     transform="translate(50, 100)">
+    <text
+       x="0"
+       y="0"
+       font-family="Arial, sans-serif"
+       font-size="14"
+       font-weight="bold"
+       fill="#2c3e50"
+       id="text3">Legend:</text>
+    <rect
+       x="0"
+       y="10"
+       width="180"
+       height="25"
+       fill="#e74c3c"
+       opacity="0.2"
+       stroke="#e74c3c"
+       stroke-width="2"
+       rx="3"
+       id="rect3" />
+    <text
+       x="10"
+       y="28"
+       font-family="Arial, sans-serif"
+       font-size="12"
+       fill="#2c3e50"
+       id="text4">Carboxylic Acids</text>
+    <rect
+       x="190"
+       y="10"
+       width="160"
+       height="25"
+       fill="#f39c12"
+       opacity="0.2"
+       stroke="#f39c12"
+       stroke-width="2"
+       rx="3"
+       id="rect4" />
+    <text
+       x="200"
+       y="28"
+       font-family="Arial, sans-serif"
+       font-size="12"
+       fill="#2c3e50"
+       id="text5">Sulfonic Acids</text>
+    <rect
+       x="360"
+       y="10"
+       width="120"
+       height="25"
+       fill="#3498db"
+       opacity="0.2"
+       stroke="#3498db"
+       stroke-width="2"
+       rx="3"
+       id="rect5" />
+    <text
+       x="370"
+       y="28"
+       font-family="Arial, sans-serif"
+       font-size="12"
+       fill="#2c3e50"
+       id="text6">Alcohols</text>
+    <rect
+       x="490"
+       y="10"
+       width="100"
+       height="25"
+       fill="#2980b9"
+       opacity="0.2"
+       stroke="#2980b9"
+       stroke-width="2"
+       rx="3"
+       id="rect6" />
+    <text
+       x="500"
+       y="28"
+       font-family="Arial, sans-serif"
+       font-size="12"
+       fill="#2c3e50"
+       id="text7">Ethers</text>
+    <rect
+       x="600"
+       y="10"
+       width="110"
+       height="25"
+       fill="#1abc9c"
+       opacity="0.2"
+       stroke="#1abc9c"
+       stroke-width="2"
+       rx="3"
+       id="rect7" />
+    <text
+       x="610"
+       y="28"
+       font-family="Arial, sans-serif"
+       font-size="12"
+       fill="#2c3e50"
+       id="text8">Alkenes</text>
+    <rect
+       x="720"
+       y="10"
+       width="100"
+       height="25"
+       fill="#16a085"
+       opacity="0.2"
+       stroke="#16a085"
+       stroke-width="2"
+       rx="3"
+       id="rect8" />
+    <text
+       x="730"
+       y="28"
+       font-family="Arial, sans-serif"
+       font-size="12"
+       fill="#2c3e50"
+       id="text9">Alkanes</text>
+    <rect
+       x="830"
+       y="10"
+       width="100"
+       height="25"
+       fill="#9b59b6"
+       opacity="0.2"
+       stroke="#9b59b6"
+       stroke-width="2"
+       rx="3"
+       id="rect9" />
+    <text
+       x="840"
+       y="28"
+       font-family="Arial, sans-serif"
+       font-size="12"
+       fill="#2c3e50"
+       id="text10">Halides</text>
+    <rect
+       x="940"
+       y="10"
+       width="110"
+       height="25"
+       fill="#27ae60"
+       opacity="0.2"
+       stroke="#27ae60"
+       stroke-width="2"
+       rx="3"
+       id="rect10" />
+    <text
+       x="950"
+       y="28"
+       font-family="Arial, sans-serif"
+       font-size="12"
+       fill="#2c3e50"
+       id="text11">Aromatics</text>
+  </g>
+  <!-- Main Content -->
+  <g
+     id="content"
+     transform="translate(50, 180)">
+    <!-- OECD PFAS GROUPS Header -->
+    <rect
+       x="0"
+       y="0"
+       width="600"
+       height="40"
+       fill="#34495e"
+       rx="5"
+       id="rect11" />
+    <text
+       x="300"
+       y="25"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       fill="white"
+       id="text12">
+      OECD PFAS GROUPS (IDs 1-28)
+    </text>
+    <!-- Perfluoroalkyl Acids - Carboxylic -->
+    <g
+       id="oecd-carboxylic"
+       transform="translate(0, 60)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text13">Carboxylic Acids</text>
+      <rect
+         x="20"
+         y="10"
+         width="250"
+         height="30"
+         fill="#e74c3c"
+         opacity="0.15"
+         stroke="#e74c3c"
+         stroke-width="2"
+         rx="3"
+         id="rect13" />
+      <text
+         x="30"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text14">1</text>
+      <text
+         x="50"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text15">Perfluoroalkyl carboxylic acids (PFCAs)</text>
+      <rect
+         x="20"
+         y="45"
+         width="250"
+         height="30"
+         fill="#e74c3c"
+         opacity="0.15"
+         stroke="#e74c3c"
+         stroke-width="2"
+         rx="3"
+         id="rect15" />
+      <text
+         x="30"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text16">2</text>
+      <text
+         x="50"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text17">Polyfluoroalkyl carboxylic acid (PolyFCAs)</text>
+      <rect
+         x="20"
+         y="80"
+         width="250"
+         height="30"
+         fill="#e74c3c"
+         opacity="0.15"
+         stroke="#e74c3c"
+         stroke-width="2"
+         rx="3"
+         id="rect17" />
+      <text
+         x="30"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text18">3</text>
+      <text
+         x="50"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text19">Perfluoroalkyl dicarboxylic acids (PFdiCAs)</text>
+      <rect
+         x="20"
+         y="115"
+         width="270"
+         height="30"
+         fill="#e74c3c"
+         opacity="0.15"
+         stroke="#e74c3c"
+         stroke-width="2"
+         rx="3"
+         id="rect19" />
+      <text
+         x="30"
+         y="135"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text20">4</text>
+      <text
+         x="50"
+         y="135"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text21">Perfluoroalkylether carboxylic acids (PFECAs)</text>
+      <rect
+         x="20"
+         y="150"
+         width="270"
+         height="30"
+         fill="#e74c3c"
+         opacity="0.15"
+         stroke="#e74c3c"
+         stroke-width="2"
+         rx="3"
+         id="rect21" />
+      <text
+         x="30"
+         y="170"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text22">5</text>
+      <text
+         x="50"
+         y="170"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text23">Polyfluoroalkylether carboxylic acid (PolyFECAs)</text>
+    </g>
+    <!-- Perfluoroalkyl Acids - Sulfonic -->
+    <g
+       id="oecd-sulfonic"
+       transform="translate(320, 60)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text24">Sulfonic Acids</text>
+      <rect
+         x="20"
+         y="10"
+         width="240"
+         height="30"
+         fill="#f39c12"
+         opacity="0.15"
+         stroke="#f39c12"
+         stroke-width="2"
+         rx="3"
+         id="rect24" />
+      <text
+         x="30"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text25">6</text>
+      <text
+         x="50"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text26">Perfluoroalkyl sulfonic acids (PFSAs)</text>
+      <rect
+         x="20"
+         y="45"
+         width="240"
+         height="30"
+         fill="#f39c12"
+         opacity="0.15"
+         stroke="#f39c12"
+         stroke-width="2"
+         rx="3"
+         id="rect26" />
+      <text
+         x="30"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text27">7</text>
+      <text
+         x="50"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text28">Polyfluoroalkyl sulfonic acid (PolyFSAs)</text>
+      <rect
+         x="20"
+         y="80"
+         width="240"
+         height="30"
+         fill="#f39c12"
+         opacity="0.15"
+         stroke="#f39c12"
+         stroke-width="2"
+         rx="3"
+         id="rect28" />
+      <text
+         x="30"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text29">8</text>
+      <text
+         x="50"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text30">Perfluoroalkyl disulfonic acids (PFdiSAs)</text>
+      <rect
+         x="20"
+         y="115"
+         width="260"
+         height="30"
+         fill="#f39c12"
+         opacity="0.15"
+         stroke="#f39c12"
+         stroke-width="2"
+         rx="3"
+         id="rect30" />
+      <text
+         x="30"
+         y="135"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text31">9</text>
+      <text
+         x="50"
+         y="135"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text32">Perfluoroalkylether sulfonic acids (PFESAs)</text>
+      <rect
+         x="20"
+         y="150"
+         width="260"
+         height="30"
+         fill="#f39c12"
+         opacity="0.15"
+         stroke="#f39c12"
+         stroke-width="2"
+         rx="3"
+         id="rect32" />
+      <text
+         x="30"
+         y="170"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text33">10</text>
+      <text
+         x="50"
+         y="170"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text34">Polyfluoroalkylether sulfonic acid (PolyFESAs)</text>
+    </g>
+    <!-- Other Acids -->
+    <g
+       id="oecd-other-acids"
+       transform="translate(640, 60)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text35">Other Acids</text>
+      <rect
+         x="20"
+         y="10"
+         width="240"
+         height="30"
+         fill="#d35400"
+         opacity="0.15"
+         stroke="#d35400"
+         stroke-width="2"
+         rx="3"
+         id="rect35" />
+      <text
+         x="30"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text36">11</text>
+      <text
+         x="55"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text37">Perfluoroalkyl sulfinic acids (PFSiAs)</text>
+      <rect
+         x="20"
+         y="45"
+         width="250"
+         height="30"
+         fill="#d35400"
+         opacity="0.15"
+         stroke="#d35400"
+         stroke-width="2"
+         rx="3"
+         id="rect37" />
+      <text
+         x="30"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text38">12</text>
+      <text
+         x="55"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text39">Perfluoroalkyl phosphonic acids (PFPAs)</text>
+      <rect
+         x="20"
+         y="80"
+         width="250"
+         height="30"
+         fill="#d35400"
+         opacity="0.15"
+         stroke="#d35400"
+         stroke-width="2"
+         rx="3"
+         id="rect39" />
+      <text
+         x="30"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text40">13</text>
+      <text
+         x="55"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text41">Perfluoroalkyl phosphinic acids (PFPiAs)</text>
+    </g>
+    <!-- Precursors - Alcohols -->
+    <g
+       id="precursors-alcohols"
+       transform="translate(960, 60)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text42">Alcohols</text>
+      <rect
+         x="20"
+         y="10"
+         width="200"
+         height="30"
+         fill="#3498db"
+         opacity="0.15"
+         stroke="#3498db"
+         stroke-width="2"
+         rx="3"
+         id="rect42" />
+      <text
+         x="30"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text43">14</text>
+      <text
+         x="55"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text44">Perfluoroalkyl alcohols</text>
+      <rect
+         x="20"
+         y="45"
+         width="200"
+         height="30"
+         fill="#3498db"
+         opacity="0.15"
+         stroke="#3498db"
+         stroke-width="2"
+         rx="3"
+         id="rect44" />
+      <text
+         x="30"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text45">15</text>
+      <text
+         x="55"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text46">Fluorotelomer alcohols</text>
+    </g>
+    <!-- Precursors - Ethers -->
+    <g
+       id="precursors-ethers"
+       transform="translate(0, 330)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text47">Ethers</text>
+      <rect
+         x="20"
+         y="10"
+         width="200"
+         height="30"
+         fill="#2980b9"
+         opacity="0.15"
+         stroke="#2980b9"
+         stroke-width="2"
+         rx="3"
+         id="rect47" />
+      <text
+         x="30"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text48">16</text>
+      <text
+         x="55"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text49">Perfluoropolyethers (PFPEs)</text>
+      <rect
+         x="20"
+         y="45"
+         width="200"
+         height="30"
+         fill="#2980b9"
+         opacity="0.15"
+         stroke="#2980b9"
+         stroke-width="2"
+         rx="3"
+         id="rect49" />
+      <text
+         x="30"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text50">17</text>
+      <text
+         x="55"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text51">Hydrofluoroethers (HFEs)</text>
+    </g>
+    <!-- Precursors - Alkenes -->
+    <g
+       id="precursors-alkenes"
+       transform="translate(240, 330)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text52">Alkenes</text>
+      <rect
+         x="20"
+         y="10"
+         width="180"
+         height="30"
+         fill="#1abc9c"
+         opacity="0.15"
+         stroke="#1abc9c"
+         stroke-width="2"
+         rx="3"
+         id="rect52" />
+      <text
+         x="30"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text53">18</text>
+      <text
+         x="55"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text54">Perfluoroalkene</text>
+      <rect
+         x="20"
+         y="45"
+         width="200"
+         height="30"
+         fill="#1abc9c"
+         opacity="0.15"
+         stroke="#1abc9c"
+         stroke-width="2"
+         rx="3"
+         id="rect54" />
+      <text
+         x="30"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text55">19</text>
+      <text
+         x="55"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text56">Hydrofluoroolefins (HFOs)</text>
+    </g>
+    <!-- Precursors - Alkanes & Halides -->
+    <g
+       id="precursors-alkanes"
+       transform="translate(460, 330)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text57">Alkanes  Halides</text>
+      <rect
+         x="20"
+         y="10"
+         width="200"
+         height="30"
+         fill="#16a085"
+         opacity="0.15"
+         stroke="#16a085"
+         stroke-width="2"
+         rx="3"
+         id="rect57" />
+      <text
+         x="30"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text58">20</text>
+      <text
+         x="55"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text59">Hydrofluorocarbons (HFCs)</text>
+      <rect
+         x="20"
+         y="45"
+         width="220"
+         height="30"
+         fill="#16a085"
+         opacity="0.15"
+         stroke="#16a085"
+         stroke-width="2"
+         rx="3"
+         id="rect59" />
+      <text
+         x="30"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text60">21</text>
+      <text
+         x="55"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text61">Semi-fluorinated alkanes (SFAs)</text>
+      <rect
+         x="20"
+         y="80"
+         width="220"
+         height="30"
+         fill="#9b59b6"
+         opacity="0.15"
+         stroke="#9b59b6"
+         stroke-width="2"
+         rx="3"
+         id="rect61" />
+      <text
+         x="30"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text62">25</text>
+      <text
+         x="55"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text63">Perfluoroalkyl iodides (PFAIs)</text>
+      <rect
+         x="20"
+         y="115"
+         width="250"
+         height="30"
+         fill="#9b59b6"
+         opacity="0.15"
+         stroke="#9b59b6"
+         stroke-width="2"
+         rx="3"
+         id="rect63" />
+      <text
+         x="30"
+         y="135"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text64">26</text>
+      <text
+         x="55"
+         y="135"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text65">Perfluoroalkane sulfonyl fluorides (PASFs)</text>
+    </g>
+    <!-- Precursors - Ketones -->
+    <g
+       id="precursors-ketones"
+       transform="translate(740, 330)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text66">Ketones</text>
+      <rect
+         x="20"
+         y="10"
+         width="190"
+         height="30"
+         fill="#9b59b6"
+         opacity="0.15"
+         stroke="#9b59b6"
+         stroke-width="2"
+         rx="3"
+         id="rect66" />
+      <text
+         x="30"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text67">27</text>
+      <text
+         x="55"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text68">Perfluoroalkyl ketones</text>
+      <rect
+         x="20"
+         y="45"
+         width="190"
+         height="30"
+         fill="#9b59b6"
+         opacity="0.15"
+         stroke="#9b59b6"
+         stroke-width="2"
+         rx="3"
+         id="rect68" />
+      <text
+         x="30"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text69">28</text>
+      <text
+         x="55"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text70">Semi-fluoroalkyl ketones</text>
+    </g>
+    <!-- Other PFAS -->
+    <g
+       id="other-pfas"
+       transform="translate(960, 330)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text71">Other PFAS</text>
+      <rect
+         x="20"
+         y="10"
+         width="240"
+         height="30"
+         fill="#95a5a6"
+         opacity="0.15"
+         stroke="#95a5a6"
+         stroke-width="2"
+         rx="3"
+         id="rect71" />
+      <text
+         x="30"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text72">22</text>
+      <text
+         x="55"
+         y="30"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text73">Side-chain fluorinated aromatics</text>
+      <rect
+         x="20"
+         y="45"
+         width="170"
+         height="30"
+         fill="#95a5a6"
+         opacity="0.15"
+         stroke="#95a5a6"
+         stroke-width="2"
+         rx="3"
+         id="rect73" />
+      <text
+         x="30"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text74">23</text>
+      <text
+         x="55"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text75">Perfluoroalkane</text>
+      <rect
+         x="20"
+         y="80"
+         width="210"
+         height="30"
+         fill="#95a5a6"
+         opacity="0.15"
+         stroke="#95a5a6"
+         stroke-width="2"
+         rx="3"
+         id="rect75" />
+      <text
+         x="30"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text76">24</text>
+      <text
+         x="55"
+         y="100"
+         font-family="Arial, sans-serif"
+         font-size="11"
+         fill="#2c3e50"
+         id="text77">Perfluoroalkyl-tert-amines</text>
+    </g>
+    <!-- GENERIC PFAS GROUPS Header -->
+    <rect
+       x="0"
+       y="550"
+       width="600"
+       height="40"
+       fill="#27ae60"
+       rx="5"
+       id="rect77" />
+    <text
+       x="300"
+       y="575"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="16"
+       font-weight="bold"
+       fill="white"
+       id="text78">
+      GENERIC PFAS GROUPS (IDs 29-51)
+    </text>
+    <!-- Oxygen-Containing -->
+    <g
+       id="generic-oxygen"
+       transform="translate(0, 610)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text79">Oxygen-Containing</text>
+      <rect
+         x="20"
+         y="10"
+         width="120"
+         height="25"
+         fill="#3498db"
+         opacity="0.15"
+         stroke="#3498db"
+         stroke-width="2"
+         rx="3"
+         id="rect79" />
+      <text
+         x="30"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text80">29</text>
+      <text
+         x="55"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text81">alcohol</text>
+      <rect
+         x="150"
+         y="10"
+         width="120"
+         height="25"
+         fill="#3498db"
+         opacity="0.15"
+         stroke="#3498db"
+         stroke-width="2"
+         rx="3"
+         id="rect81" />
+      <text
+         x="160"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text82">30</text>
+      <text
+         x="185"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text83">ketone</text>
+      <rect
+         x="280"
+         y="10"
+         width="120"
+         height="25"
+         fill="#3498db"
+         opacity="0.15"
+         stroke="#3498db"
+         stroke-width="2"
+         rx="3"
+         id="rect83" />
+      <text
+         x="290"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text84">31</text>
+      <text
+         x="315"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text85">ether</text>
+      <rect
+         x="410"
+         y="10"
+         width="120"
+         height="25"
+         fill="#3498db"
+         opacity="0.15"
+         stroke="#3498db"
+         stroke-width="2"
+         rx="3"
+         id="rect85" />
+      <text
+         x="420"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text86">32</text>
+      <text
+         x="445"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text87">ester</text>
+      <rect
+         x="20"
+         y="40"
+         width="160"
+         height="25"
+         fill="#3498db"
+         opacity="0.15"
+         stroke="#3498db"
+         stroke-width="2"
+         rx="3"
+         id="rect87" />
+      <text
+         x="30"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text88">33</text>
+      <text
+         x="55"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text89">carboxylic acid</text>
+      <rect
+         x="190"
+         y="40"
+         width="120"
+         height="25"
+         fill="#3498db"
+         opacity="0.15"
+         stroke="#3498db"
+         stroke-width="2"
+         rx="3"
+         id="rect89" />
+      <text
+         x="200"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text90">34</text>
+      <text
+         x="225"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text91">amide</text>
+      <rect
+         x="320"
+         y="40"
+         width="130"
+         height="25"
+         fill="#3498db"
+         opacity="0.15"
+         stroke="#3498db"
+         stroke-width="2"
+         rx="3"
+         id="rect91" />
+      <text
+         x="330"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text92">35</text>
+      <text
+         x="355"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text93">acyl halide</text>
+    </g>
+    <!-- Sulfur-Containing -->
+    <g
+       id="generic-sulfur"
+       transform="translate(570, 610)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text94">Sulfur-Containing</text>
+      <rect
+         x="20"
+         y="10"
+         width="150"
+         height="25"
+         fill="#f39c12"
+         opacity="0.15"
+         stroke="#f39c12"
+         stroke-width="2"
+         rx="3"
+         id="rect94" />
+      <text
+         x="30"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text95">36</text>
+      <text
+         x="55"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text96">sulfonic acid</text>
+      <rect
+         x="180"
+         y="10"
+         width="150"
+         height="25"
+         fill="#f39c12"
+         opacity="0.15"
+         stroke="#f39c12"
+         stroke-width="2"
+         rx="3"
+         id="rect96" />
+      <text
+         x="190"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text97">37</text>
+      <text
+         x="215"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text98">sulfenic acid</text>
+      <rect
+         x="20"
+         y="40"
+         width="140"
+         height="25"
+         fill="#f39c12"
+         opacity="0.15"
+         stroke="#f39c12"
+         stroke-width="2"
+         rx="3"
+         id="rect98" />
+      <text
+         x="30"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text99">38</text>
+      <text
+         x="55"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text100">sulfinic acid</text>
+      <rect
+         x="170"
+         y="40"
+         width="140"
+         height="25"
+         fill="#f39c12"
+         opacity="0.15"
+         stroke="#f39c12"
+         stroke-width="2"
+         rx="3"
+         id="rect100" />
+      <text
+         x="180"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text101">43</text>
+      <text
+         x="205"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text102">sulfonamide</text>
+    </g>
+    <!-- Phosphorus-Containing -->
+    <g
+       id="generic-phosphorus"
+       transform="translate(920, 610)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text103">Phosphorus</text>
+      <rect
+         x="20"
+         y="10"
+         width="170"
+         height="25"
+         fill="#e67e22"
+         opacity="0.15"
+         stroke="#e67e22"
+         stroke-width="2"
+         rx="3"
+         id="rect103" />
+      <text
+         x="30"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text104">39</text>
+      <text
+         x="55"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text105">phosphonic acid</text>
+      <rect
+         x="20"
+         y="40"
+         width="170"
+         height="25"
+         fill="#e67e22"
+         opacity="0.15"
+         stroke="#e67e22"
+         stroke-width="2"
+         rx="3"
+         id="rect105" />
+      <text
+         x="30"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text106">40</text>
+      <text
+         x="55"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text107">phosphinic acid</text>
+    </g>
+    <!-- Nitrogen & Halogen -->
+    <g
+       id="generic-nitrogen"
+       transform="translate(0, 730)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text108">Nitrogen  Halogen</text>
+      <rect
+         x="20"
+         y="10"
+         width="120"
+         height="25"
+         fill="#9b59b6"
+         opacity="0.15"
+         stroke="#9b59b6"
+         stroke-width="2"
+         rx="3"
+         id="rect108" />
+      <text
+         x="30"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text109">42</text>
+      <text
+         x="55"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text110">iodide</text>
+      <rect
+         x="150"
+         y="10"
+         width="120"
+         height="25"
+         fill="#9b59b6"
+         opacity="0.15"
+         stroke="#9b59b6"
+         stroke-width="2"
+         rx="3"
+         id="rect110" />
+      <text
+         x="160"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text111">47</text>
+      <text
+         x="185"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text112">amine</text>
+    </g>
+    <!-- Unsaturated -->
+    <g
+       id="generic-unsaturated"
+       transform="translate(300, 730)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text113">Unsaturated</text>
+      <rect
+         x="20"
+         y="10"
+         width="120"
+         height="25"
+         fill="#1abc9c"
+         opacity="0.15"
+         stroke="#1abc9c"
+         stroke-width="2"
+         rx="3"
+         id="rect113" />
+      <text
+         x="30"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text114">41</text>
+      <text
+         x="55"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text115">ethene</text>
+      <rect
+         x="150"
+         y="10"
+         width="120"
+         height="25"
+         fill="#1abc9c"
+         opacity="0.15"
+         stroke="#1abc9c"
+         stroke-width="2"
+         rx="3"
+         id="rect115" />
+      <text
+         x="160"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text116">49</text>
+      <text
+         x="185"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text117">alkene</text>
+      <rect
+         x="280"
+         y="10"
+         width="120"
+         height="25"
+         fill="#1abc9c"
+         opacity="0.15"
+         stroke="#1abc9c"
+         stroke-width="2"
+         rx="3"
+         id="rect117" />
+      <text
+         x="290"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text118">50</text>
+      <text
+         x="315"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text119">alkyne</text>
+    </g>
+    <!-- Saturated & Aromatic -->
+    <g
+       id="generic-saturated"
+       transform="translate(720, 730)">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="14"
+         font-weight="bold"
+         fill="#2c3e50"
+         id="text120">Saturated  Aromatic</text>
+      <rect
+         x="20"
+         y="10"
+         width="120"
+         height="25"
+         fill="#27ae60"
+         opacity="0.15"
+         stroke="#27ae60"
+         stroke-width="2"
+         rx="3"
+         id="rect120" />
+      <text
+         x="30"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text121">44</text>
+      <text
+         x="55"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text122">azole</text>
+      <rect
+         x="150"
+         y="10"
+         width="120"
+         height="25"
+         fill="#27ae60"
+         opacity="0.15"
+         stroke="#27ae60"
+         stroke-width="2"
+         rx="3"
+         id="rect122" />
+      <text
+         x="160"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text123">45</text>
+      <text
+         x="185"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text124">azine</text>
+      <rect
+         x="280"
+         y="10"
+         width="140"
+         height="25"
+         fill="#27ae60"
+         opacity="0.15"
+         stroke="#27ae60"
+         stroke-width="2"
+         rx="3"
+         id="rect124" />
+      <text
+         x="290"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text125">46</text>
+      <text
+         x="315"
+         y="28"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text126">benzodioxole</text>
+      <rect
+         x="20"
+         y="40"
+         width="120"
+         height="25"
+         fill="#27ae60"
+         opacity="0.15"
+         stroke="#27ae60"
+         stroke-width="2"
+         rx="3"
+         id="rect126" />
+      <text
+         x="30"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text127">48</text>
+      <text
+         x="55"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text128">alkane</text>
+      <rect
+         x="150"
+         y="40"
+         width="180"
+         height="25"
+         fill="#27ae60"
+         opacity="0.15"
+         stroke="#27ae60"
+         stroke-width="2"
+         rx="3"
+         id="rect128" />
+      <text
+         x="160"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         font-weight="bold"
+         id="text129">51</text>
+      <text
+         x="185"
+         y="58"
+         font-family="Arial, sans-serif"
+         font-size="10"
+         fill="#2c3e50"
+         id="text130">Side-chain aromatics</text>
+    </g>
+    <!-- Hierarchical relationships (key parent-child arrows) -->
+    <g
+       id="relationships">
+      <!-- Carboxylic acid (33) to PFCAs (1) -->
+      <path
+         d="M 80 670 L 80 230"
+         stroke="#e74c3c"
+         stroke-width="2"
+         fill="none"
+         stroke-dasharray="5,5"
+         marker-end="url(#arrowhead)"
+         id="path130" />
+      <!-- Sulfonic acid (36) to PFSAs (6) -->
+      <path
+         d="M 650 650 L 450 220"
+         stroke="#f39c12"
+         stroke-width="2"
+         fill="none"
+         stroke-dasharray="5,5"
+         marker-end="url(#arrowhead)"
+         id="path131" />
+      <!-- Ether (31) to HFEs (17) -->
+      <path
+         d="M 340 650 L 120 400"
+         stroke="#2980b9"
+         stroke-width="2"
+         fill="none"
+         stroke-dasharray="5,5"
+         marker-end="url(#arrowhead)"
+         id="path132" />
+      <!-- Alcohol (29) to Perfluoroalkyl alcohols (14) -->
+      <path
+         d="M 80 650 L 1060 180"
+         stroke="#3498db"
+         stroke-width="2"
+         fill="none"
+         stroke-dasharray="5,5"
+         marker-end="url(#arrowhead)"
+         id="path133" />
+    </g>
+    <!-- Arrow marker definition -->
+    <defs
+       id="defs133">
+      <marker
+         id="arrowhead"
+         markerWidth="10"
+         markerHeight="10"
+         refX="9"
+         refY="3"
+         orient="auto">
+        <polygon
+           points="0 0, 10 3, 0 6"
+           fill="#666"
+           id="polygon133" />
+      </marker>
+    </defs>
+  </g>
+  <!-- Footer -->
+  <text
+     x="700"
+     y="1950"
+     text-anchor="middle"
+     font-family="Arial, sans-serif"
+     font-size="12"
+     fill="#7f8c8d"
+     id="text133">
+    PFAS Groups Taxonomy - Based on OECD classification and PFASgroups Python library
+  </text>
+  <text
+     x="700"
+     y="1975"
+     text-anchor="middle"
+     font-family="Arial, sans-serif"
+     font-size="10"
+     fill="#95a5a6"
+     id="text134">
+    Dashed lines indicate parent-child relationships between generic and specific groups
+  </text>
+</svg>

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -11,6 +11,7 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.7"
+license = {text = "CC-BY-NC-4.0"}
 dependencies = [
     "rdkit",
     "numpy",
@@ -19,3 +20,9 @@ dependencies = [
     "tqdm",
     "svgutils"
 ]
+
+[tool.setuptools]
+packages = ["PFASgroups"]
+
+[tool.setuptools.package-data]
+PFASgroups = ["data/*.json", "data/*.txt"]

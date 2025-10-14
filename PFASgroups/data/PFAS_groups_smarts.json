@@ -227,7 +227,7 @@
     "smarts1":"[#6X4$([#6](F)(F))]",
     "smarts2":"[#6X4$([#6][H,I,Br,Cl])]",
     "smartsPath":"poly",
-    "constraints":{"gte":{"F":1}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2}}}
+    "constraints":{"gte":{"F":1},"eq":{"O":0}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2}}}
 },
 {
     "id":22,

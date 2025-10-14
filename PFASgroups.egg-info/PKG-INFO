@@ -4,6 +4,7 @@ Version: 1.0.1
 Summary: A Python module for parsing and visualizing PFAS groups.
 Author: Luc Miaz
 Author-email: Luc Miaz <luc@miaz.ch>
+License: CC-BY-NC-4.0
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 Requires-Dist: rdkit

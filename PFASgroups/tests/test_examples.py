@@ -19,7 +19,7 @@ from datetime import datetime
 import time
 
 tests_folder = os.path.dirname(os.path.abspath(__file__))
-data_folder = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)) + '/data'
+data_folder =  os.path.join(os.path.dirname(tests_folder),'data')
 # Handle imports - try relative first, then absolute
 try:
     from ..core import parse_PFAS_groups

@@ -1,0 +1,679 @@
+Input,Formula,PFAS_Groups_Count,PFAS_Groups
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)I)C(F)(F)C(F)(F)F,C10F21I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10F22O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10F22O2,5,PFPEs; HFEs; Perfluoroalkane; ether; alkane
+O=S(=O)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10F22O2S,3,Perfluoroalkane; PASFs; alkane
+FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C10F23N,3,Perfluoroalkyl-tert-amines; amine; alkane
+FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10F23N,3,Perfluoroalkyl-tert-amines; amine; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(O)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10H2F20O,3,SFAs; alcohol; alkane
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C10H2F20O,4,HFEs; SFAs; ether; alkane
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(OC(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C10H2F20O2,4,HFEs; SFAs; ether; alkane
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(OC(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C10H2F20O2,4,HFEs; SFAs; ether; alkane
+OC(F)(F)C(C(O)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10H2F20O2,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O,C10H2F20O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O,C10H2F20O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O,C10H2F20O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O,C10H2F20O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O,C10H2F20O6S2,4,PolyFSAs; PFdiSAs; sulfonic acid; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)SO)C(F)(F)C(F)(F)F,C10H2F20OS,3,SFAs; sulfenic acid; alkane
+O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10H2F21O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10H2F21O2P,3,PFPiAs; phosphinic acid; alkane
+O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10H2F21O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10H2F21O3P,3,PFPAs; phosphonic acid; alkane
+O=S(=O)(NC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C10HF22NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+FC(F)(F)C(F)(C(F)(F)c1ncc[nH]1)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C10H3F15N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(S(=O)O)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C10H3F19O2S,3,SFAs; sulfinic acid; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O,C10H3F19O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O,C10H3F19O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C(F)(F)C(NC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C10H3F20N,2,amine; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)[PH](=O)O)C(F)(F)C(F)(F)F,C10H3F20O2P,2,phosphinic acid; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1,C10H4F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1,C10H4F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1,C10H4F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1,C10H4F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1,C10H4F11N,3,Side-chain fluorinated aromatics; azine; Side-chain aromatics
+FC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccn1,C10H4F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)P(=O)(O)O,C10H4F19O3P,2,phosphonic acid; alkane
+[H]C(F)(F)C(NS(=O)(=O)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C10H3F20NO2S,3,sulfonamide; amine; alkane
+[H]C(F)(F)C(NS(=O)(=O)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C10H3F20NO2S,3,sulfonamide; amine; alkane
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccn1,C10H5F10N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccn1,C10H5F10N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccn1,C10H5F10N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1,C10H5F10N,3,Side-chain fluorinated aromatics; azine; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1,C10H5F10N,3,Side-chain fluorinated aromatics; azine; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1,C10H5F10N,3,Side-chain fluorinated aromatics; azine; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(c1ccccc1)C(F)(F)F,C10H5F9,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(c1ccccc1)C(F)(F)F,C10H5F9,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(c1ccccc1)C(F)(F)F,C10H5F9,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,C10H7F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,C10H7F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,C10H7F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+OCCCC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C10H7F15O,3,fluorotelomer alcohols; SFAs; alkane
+OC(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10HF21O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10HF21O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10HF21O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10HF21O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10HF21O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10HF21O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+OSC(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10HF21OS,2,sulfenic acid; alkane
+FC(F)(F)NC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C10HF22N,3,Perfluoroalkane; amine; alkane
+O=C(Cl)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C11ClF21O,2,acyl halide; alkane
+O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C11F22O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C11F22O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(I)C(F)(F)F,C11F23I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C11F25N,3,Perfluoroalkyl-tert-amines; amine; alkane
+[H]C(F)(C(=O)Cl)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C11H2ClF19O,2,acyl halide; alkane
+[H]C(F)(F)C(C(=O)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C11H2F20O,3,Semi-fluoroalkyl ketones; ketones; alkane
+[H]C(F)(F)C(C(=O)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C11H2F20O,3,Semi-fluoroalkyl ketones; ketones; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(=O)O)C(F)(F)C(F)(F)F,C11H2F20O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(=O)O)C(F)(F)C(F)(F)F,C11H2F20O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(I)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C11H2F21I,3,SFAs; iodide; alkane
+FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,C11H3F11O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,C11H3F11O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,C11H3F11O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,C11H3F11O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,C11H3F11O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(C(=O)O)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C11H3F19O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(C(=O)O)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C11H3F19O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(C(=O)O)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C11H3F19O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(C(=O)O)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C11H3F19O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(NC(=O)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C11H3F20NO,2,amide; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F,C11H4F13N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1,C11H4F13N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccc1,C11H5F11,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccc1,C11H5F11,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccc1,C11H5F11,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccc1,C11H5F11,2,Side-chain fluorinated aromatics; Side-chain aromatics
+FC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccc1,C11H5F11,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccc1,C11H6F10,2,Side-chain fluorinated aromatics; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccc1,C11H6F10,2,Side-chain fluorinated aromatics; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccc1,C11H6F10,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccc1,C11H6F10,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)F,C11H6F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)F,C11H6F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)F,C11H6F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(c1ccccn1)C(F)(F)F,C11H6F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(c1ccccn1)C(F)(F)F,C11H6F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(c1ccccn1)C(F)(F)F,C11H6F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C11HF21O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C11HF21O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C11HF21O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(NC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C11HF22NO,2,amide; alkane
+FC(F)(F)C#CC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C12F22,2,alkane; alkyne
+FC(=C(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C12F24,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C12F24,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C12F24,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+[H]C(F)(F)C(C#CC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C12H2F20,2,alkane; alkyne
+O=C(O)C(F)(F)C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C12H2F20O4,3,PFdiCAs; carboxylic acid; alkane
+[H]C(F)(F)C(C(F)=C(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C12H2F22,4,HFOs; ethene; alkane; alkene
+[H]C(F)(F)C(C(F)=C(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C12H2F22,4,HFOs; ethene; alkane; alkene
+O=C(OCC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C12H2F22O2,2,ester; alkane
+FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)cc2O1,C12H3F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)cc2O1,C12H3F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)cc2O1,C12H3F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)cc2O1,C12H3F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)cc2O1,C12H3F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)cc2O1,C12H3F13O2,4,Side-chain fluorinated aromatics; ether; benzodioxole; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)cc2O1,C12H3F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(F)C(C=C(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C12H3F21,4,HFOs; ethene; alkane; alkene
+[H]C(F)(F)C(C=C(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C12H3F21,4,HFOs; ethene; alkane; alkene
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C12H4F12O2,4,Side-chain fluorinated aromatics; ether; benzodioxole; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C12H4F12O2,4,Side-chain fluorinated aromatics; ether; benzodioxole; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C12H4F12O2,4,Side-chain fluorinated aromatics; ether; benzodioxole; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C12H4F12O2,4,Side-chain fluorinated aromatics; ether; benzodioxole; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C12H4F12O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C12H4F12O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C12H4F12O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C12H4F12O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(C(F)(F)c1ccccn1)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C12H4F15N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(F)C(COC(=O)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C12H4F20O2,2,ester; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(c1ccccc1)C(F)(F)F,C12H5F13,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccc1,C12H5F13,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C([H])(F)c1ccccc1)C(F)(F)C(F)(F)F,C12H8F10,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C([H])(F)c1ccccc1)C(F)(F)C(F)(F)F,C12H8F10,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(c1ccccc1)C(F)(F)F,C12H8F10,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(c1ccccc1)C(F)(F)F,C12H8F10,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1,C12H8F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1,C12H8F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1,C12H8F11N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)cc2O1,C13H3F15O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,C13H3F15O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)c1ncc[nH]1)C(F)(F)C(F)(F)F,C13H3F21N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(c1ccc2c(c1)OC(F)(F)O2)C(F)(F)F,C13H5F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(c1ccc2c(c1)OC(F)(F)O2)C(F)(F)F,C13H5F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(c1ccc2c(c1)OC(F)(F)O2)C(F)(F)F,C13H5F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(c1ccc2c(c1)OC(F)(F)O2)C(F)(F)F,C13H5F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(C(F)(F)c1ccccc1)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C13H5F15,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C(F)(c1ncc[nH]1)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C13H5F19N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(c1ncc[nH]1)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C13H5F19N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(c1ncc[nH]1)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C13H5F19N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C([H])(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(F)C(F)(F)F,C13H6F12O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C([H])(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(F)C(F)(F)F,C13H6F12O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C([H])(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(F)C(F)(F)F,C13H6F12O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C([H])(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(F)C(F)(F)F,C13H6F12O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+OCCCC(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C13H7F21O,3,fluorotelomer alcohols; SFAs; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ccccc1,C13H9F11,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ccccc1,C13H9F11,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C14F31N,3,Perfluoroalkyl-tert-amines; amine; alkane
+FC1(F)Oc2ccc(C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)cc2O1,C14H3F17O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C14H7F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C14H7F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C14H7F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)c1ccc2c(c1)OC(F)(F)O2,C14H7F13O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)F,C15H4F21N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(c1ccccn1)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C15H6F19N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(c1ccccn1)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C15H6F19N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C(F)(c1ccccn1)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C15H6F19N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)c1ccccc1)C(F)(F)C(F)(F)F,C16H5F21,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C(F)(c1ccccc1)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C16H7F19,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+[H]C(F)(c1ccccc1)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C16H7F19,3,Side-chain fluorinated aromatics; alkane; Side-chain aromatics
+FC1(F)Oc2ccc(C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1,C17H3F23O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(c1ccc2c(c1)OC(F)(F)O2)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C17H5F21O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(c1ccc2c(c1)OC(F)(F)O2)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C17H5F21O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(c1ccc2c(c1)OC(F)(F)O2)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C17H5F21O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+[H]C(F)(c1ccc2c(c1)OC(F)(F)O2)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F,C17H5F21O2,5,Side-chain fluorinated aromatics; ether; benzodioxole; alkane; Side-chain aromatics
+FC(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C4F10O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C4F10O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)F,C4F10O2,5,PFPEs; HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)F,C4F10O2,5,PFPEs; HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)F,C4F10O2,5,PFPEs; HFEs; Perfluoroalkane; ether; alkane
+O=S(=O)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4F10O2S,3,Perfluoroalkane; PASFs; alkane
+FC(F)(F)C(F)(F)C(F)(I)C(F)(F)F,C4F9I,4,SFAs; PFAIs; iodide; alkane
+O=S(=O)(NC(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C4HF10NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+O=S(=O)(NC(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C4HF10NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+O=S(=O)(NC(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C4HF10NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+OC(F)(F)C(O)(F)C(F)(F)C(F)(F)F,C4H2F8O2,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+O=S(=O)(O)C(F)(F)C(F)(C(F)(F)C(F)(F)F)S(=O)(=O)O,C4H2F8O6S2,4,PolyFSAs; PFdiSAs; sulfonic acid; alkane
+O=[PH](O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4H2F9O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4H2F9O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4H2F9O2P,3,PFPiAs; phosphinic acid; alkane
+O=P(O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4H2F9O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4H2F9O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4H2F9O3P,3,PFPAs; phosphonic acid; alkane
+FC(F)(F)NC(F)(F)C(F)(F)C(F)(F)F,C4HF10N,3,Perfluoroalkane; amine; alkane
+FC(F)(F)NC(F)(F)C(F)(F)C(F)(F)F,C4HF10N,3,Perfluoroalkane; amine; alkane
+OC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+OC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+O=S(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C4HF9O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C4HF9O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C4HF9O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C4HF9O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C4HF9O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+OSC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9OS,2,sulfenic acid; alkane
+OSC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C4HF9OS,2,sulfenic acid; alkane
+O=C(Cl)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C5ClF9O,2,acyl halide; alkane
+O=C(Cl)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C5ClF9O,2,acyl halide; alkane
+O=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C5F10O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C5F10O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C5F10O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C5F10O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+FC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)I,C5F11I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)F,C5F11I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)F,C5F11I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I,C5F11I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)I,C5F11I,3,SFAs; PFAIs; iodide
+FC(F)(F)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)F,C5F12O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)F,C5F12O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C5F12O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C5F12O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5F12O,3,HFEs; Perfluoroalkane; ether
+FC(F)(F)OC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5F12O,3,HFEs; Perfluoroalkane; ether
+FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,C5F12O2,5,PFPEs; HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,C5F12O2,5,PFPEs; HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,C5F12O2,5,PFPEs; HFEs; Perfluoroalkane; ether; alkane
+O=S(=O)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5F12O2S,3,Perfluoroalkane; PASFs; alkane
+O=S(=O)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5F12O2S,3,Perfluoroalkane; PASFs; alkane
+O=S(=O)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5F12O2S,2,Perfluoroalkane; PASFs
+[H]C(F)(F)C(C(O)(F)F)(C(F)(F)F)C(F)(F)F,C5H2F10O,2,SFAs; alcohol
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(O)(F)F,C5H2F10O,3,SFAs; alcohol; alkane
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)O,C5H2F10O2S,2,SFAs; sulfinic acid
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)S(=O)O,C5H2F10O2S,3,SFAs; sulfinic acid; alkane
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C5H2F10O3S,3,PolyFSAs; SFAs; sulfonic acid
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C5H2F10O3S,3,PolyFSAs; SFAs; sulfonic acid
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)S(=O)(=O)O,C5H2F10O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)S(=O)(=O)O,C5H2F10O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C5H2F10O4S,5,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C5H2F10O4S,5,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C5H2F10O4S,5,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C5H2F10O4S,5,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)S(=O)(=O)O)C(F)(F)F,C5H2F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)S(=O)(=O)O)C(F)(F)F,C5H2F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)S(=O)(=O)O)C(F)(F)F,C5H2F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)S(=O)(=O)O)C(F)(F)F,C5H2F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C5H2F10O6S2,4,PolyFSAs; PFdiSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O,C5H2F10O6S2,4,PolyFSAs; PFdiSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C5H2F10O6S2,3,PolyFSAs; PFdiSAs; sulfonic acid
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)SO,C5H2F10OS,2,SFAs; sulfenic acid
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)SO,C5H2F10OS,3,SFAs; sulfenic acid; alkane
+[H]C(F)(F)C(NC(F)(F)F)(C(F)(F)F)C(F)(F)F,C5H2F11N,1,amine
+[H]C(F)(F)C(F)(NC(F)(F)C(F)(F)F)C(F)(F)F,C5H2F11N,2,amine; alkane
+O=[PH](O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5H2F11O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5H2F11O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5H2F11O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5H2F11O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5H2F11O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5H2F11O2P,2,PFPiAs; phosphinic acid
+O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5H2F11O2P,2,PFPiAs; phosphinic acid
+O=P(O)(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5H2F11O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5H2F11O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5H2F11O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5H2F11O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5H2F11O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5H2F11O3P,2,PFPAs; phosphonic acid
+O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5H2F11O3P,2,PFPAs; phosphonic acid
+O=S(=O)(NC(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,C5HF12NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+O=S(=O)(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C5HF12NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+O=S(=O)(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C5HF12NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+O=S(=O)(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C5HF12NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+O=S(=O)(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C5HF12NO2S,3,Perfluoroalkane; sulfonamide; amine
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)[PH](=O)O,C5H3F10O2P,1,phosphinic acid
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)[PH](=O)O,C5H3F10O2P,2,phosphinic acid; alkane
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)P(=O)(O)O,C5H3F10O3P,1,phosphonic acid
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)P(=O)(O)O,C5H3F10O3P,2,phosphonic acid; alkane
+[H]C(F)(F)C(NS(=O)(=O)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5H2F11NO2S,2,sulfonamide; amine
+[H]C(F)(F)C(NS(=O)(=O)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5H2F11NO2S,2,sulfonamide; amine
+[H]C(F)(F)C(F)(NS(=O)(=O)C(F)(F)C(F)(F)F)C(F)(F)F,C5H2F11NO2S,3,sulfonamide; amine; alkane
+[H]C(F)(F)C(F)(NS(=O)(=O)C(F)(F)C(F)(F)F)C(F)(F)F,C5H2F11NO2S,3,sulfonamide; amine; alkane
+O=C(NC(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C5HF10NO,2,amide; alkane
+O=C(NC(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C5HF10NO,2,amide; alkane
+OC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5HF11O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+OC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5HF11O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11O,3,HFEs; SFAs; ether
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11O,3,HFEs; SFAs; ether
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)F)C(F)(F)F,C5HF11O,4,HFEs; SFAs; ether; alkane
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)F)C(F)(F)F,C5HF11O,4,HFEs; SFAs; ether; alkane
+OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+OC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11O,3,Perfluoroalkyl alcohols; SFAs; alcohol
+OC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11O,3,Perfluoroalkyl alcohols; SFAs; alcohol
+O=S(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5HF11O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5HF11O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11O2S,2,PFSiAs; sulfinic acid
+O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11O2S,2,PFSiAs; sulfinic acid
+O=S(=O)(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5HF11O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5HF11O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11O3S,3,PFSAs; PolyFSAs; sulfonic acid
+O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11O3S,3,PFSAs; PolyFSAs; sulfonic acid
+O=S(=O)(O)C(F)(F)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)F,C5HF11O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C5HF11O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C5HF11O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C5HF11O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C5HF11O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C5HF11O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11O4S,6,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid
+OSC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C5HF11OS,2,sulfenic acid; alkane
+OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11OS,2,sulfenic acid; alkane
+OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C5HF11OS,2,sulfenic acid; alkane
+OSC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF11OS,1,sulfenic acid
+FC(F)(F)C(F)(F)NC(F)(C(F)(F)F)C(F)(F)F,C5HF12N,3,Perfluoroalkane; amine; alkane
+FC(F)(F)C(F)(F)NC(F)(F)C(F)(F)C(F)(F)F,C5HF12N,3,Perfluoroalkane; amine; alkane
+FC(F)(F)C(F)(F)NC(F)(F)C(F)(F)C(F)(F)F,C5HF12N,3,Perfluoroalkane; amine; alkane
+FC(F)(F)NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C5HF12N,2,Perfluoroalkane; amine
+O=C(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C5HF9O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C5HF9O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C5HF9O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C5HF9O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C5HF9O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C5HF9O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C5HF9O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C5HF9O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C5HF9O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(Cl)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6ClF11O,2,acyl halide; alkane
+O=C(Cl)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6ClF11O,2,acyl halide; alkane
+O=C(Cl)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C6ClF11O,1,acyl halide
+O=C(Cl)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C6ClF11O,2,acyl halide; alkane
+FC(F)(F)C#CC(F)(F)C(F)(F)C(F)(F)F,C6F10,2,alkane; alkyne
+FC(F)(F)C#CC(F)(F)C(F)(F)C(F)(F)F,C6F10,2,alkane; alkyne
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F,C6F12,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F,C6F12,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F,C6F12,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F,C6F12,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F,C6F12,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+O=C(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,C6F12O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,C6F12O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6F12O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6F12O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6F12O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6F12O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C6F12O,3,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones
+O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C6F12O,3,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones
+FC(F)(F)C(F)(F)C(F)(I)C(F)(C(F)(F)F)C(F)(F)F,C6F13I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)C(F)(F)F,C6F13I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)C(F)(F)F,C6F13I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)F,C6F13I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(I)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C6F13I,3,SFAs; PFAIs; iodide
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)I,C6F13I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6F14O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6F14O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F,C6F14O2,5,PFPEs; HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,C6F14O2,4,PFPEs; HFEs; Perfluoroalkane; ether
+O=S(=O)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6F14O2S,3,Perfluoroalkane; PASFs; alkane
+O=S(=O)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6F14O2S,3,Perfluoroalkane; PASFs; alkane
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,C6H2F10O2,2,PolyFCAs; carboxylic acid
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,C6H2F10O2,2,PolyFCAs; carboxylic acid
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(=O)O,C6H2F10O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(=O)O,C6H2F10O2,3,PolyFCAs; carboxylic acid; alkane
+O=C(OCC(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6H2F10O2,2,ester; alkane
+O=C(OCC(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6H2F10O2,2,ester; alkane
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,C6H2F10O3,4,PolyFCAs; PolyFECAs; ether; carboxylic acid
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,C6H2F10O3,4,PolyFCAs; PolyFECAs; ether; carboxylic acid
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,C6H2F10O3,4,PolyFCAs; PolyFECAs; ether; carboxylic acid
+[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,C6H2F10O3,4,PolyFCAs; PolyFECAs; ether; carboxylic acid
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)C(=O)O)C(F)(F)F,C6H2F10O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)C(=O)O)C(F)(F)F,C6H2F10O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)C(=O)O)C(F)(F)F,C6H2F10O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(F)(OC(F)(F)C(F)(F)C(=O)O)C(F)(F)F,C6H2F10O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(NC(=O)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C6H2F11NO,1,amide
+[H]C(F)(F)C(F)(NC(=O)C(F)(F)C(F)(F)F)C(F)(F)F,C6H2F11NO,2,amide; alkane
+OC(F)(F)C(C(O)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H2F12O2,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)S(=O)(=O)O,C6H2F12O6S2,4,PolyFSAs; PFdiSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O,C6H2F12O6S2,4,PolyFSAs; PFdiSAs; sulfonic acid; alkane
+O=[PH](O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6H2F13O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6H2F13O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H2F13O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H2F13O2P,3,PFPiAs; phosphinic acid; alkane
+O=P(O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6H2F13O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6H2F13O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H2F13O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H2F13O3P,3,PFPAs; phosphonic acid; alkane
+O=S(=O)(NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C6HF14NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+O=S(=O)(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C6HF14NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+O=C(O)C(F)(F)C(F)(C(=O)O)C(F)(F)C(F)(F)F,C6H2F8O4,3,PFdiCAs; carboxylic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)OC([H])(F)C(F)(F)F,C6H3F11O,4,HFEs; SFAs; ether; alkane
+[H]C([H])(F)OC(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H3F11O,4,HFEs; SFAs; ether; alkane
+[H]C([H])(F)C(C(O)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H3F11O,3,SFAs; alcohol; alkane
+[H]C(F)(F)C(F)(F)OC(F)(F)C([H])(F)OC([H])(F)C(F)(F)F,C6H3F11O2,4,HFEs; SFAs; ether; alkane
+[H]C(F)(F)C(F)(F)OC(F)(F)C([H])(F)OC([H])(F)C(F)(F)F,C6H3F11O2,4,HFEs; SFAs; ether; alkane
+[H]C([H])(F)OC(C([H])(F)F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C6H3F11O2,3,HFEs; SFAs; ether
+[H]C([H])(F)OC(C([H])(F)F)(C(F)(F)F)C(F)(F)OC(F)(F)F,C6H3F11O2,3,HFEs; SFAs; ether
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)S(=O)O)C(F)(F)C(F)(F)F,C6H3F11O2S,2,sulfinic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(O)C(F)(F)F,C6H4F10O,3,SFAs; alcohol; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(S(=O)O)C(F)(F)F,C6H4F10O2S,3,SFAs; sulfinic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(C(F)(F)F)S(=O)(=O)O,C6H4F10O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(C(F)(F)F)S(=O)(=O)O,C6H4F10O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O,C6H4F10O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O,C6H4F10O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)OC([H])(C(F)(F)F)S(=O)(=O)O,C6H4F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)OC([H])(C(F)(F)F)S(=O)(=O)O,C6H4F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)OC([H])(C(F)(F)F)S(=O)(=O)O,C6H4F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)OC([H])(C(F)(F)F)S(=O)(=O)O,C6H4F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C([H])(F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O,C6H4F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C([H])(F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O,C6H4F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C([H])(F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O,C6H4F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C([H])(F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O,C6H4F10O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(SO)C(F)(F)F,C6H4F10OS,3,SFAs; sulfenic acid; alkane
+[H]C([H])(F)C(C(F)(F)F)(C([H])(F)SO)C(F)(F)C(F)(F)F,C6H4F10OS,3,SFAs; sulfenic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)NC([H])(F)C(F)(F)F,C6H4F11N,2,amine; alkane
+[H]C([H])(F)NC(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H4F11N,2,amine; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(C(F)(F)F)P(=O)(O)O,C6H4F11O3P,2,phosphonic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])([PH](=O)O)C(F)(F)F,C6H5F10O2P,2,phosphinic acid; alkane
+[H]C([H])(F)C(C(F)(F)F)(C([H])(F)[PH](=O)O)C(F)(F)C(F)(F)F,C6H5F10O2P,2,phosphinic acid; alkane
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)P(=O)(O)O,C6H5F10O3P,2,phosphonic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)NS(=O)(=O)C([H])(F)C(F)(F)F,C6H4F11NO2S,3,sulfonamide; amine; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)NS(=O)(=O)C([H])(F)C(F)(F)F,C6H4F11NO2S,3,sulfonamide; amine; alkane
+[H]C(F)(F)C(NS(=O)(=O)C([H])([H])F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H4F11NO2S,3,sulfonamide; amine; alkane
+[H]C(F)(F)C(NS(=O)(=O)C([H])([H])F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6H4F11NO2S,3,sulfonamide; amine; alkane
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)Cl,C6HClF10O,1,acyl halide
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(=O)Cl,C6HClF10O,2,acyl halide; alkane
+FC(=CC(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6HF11,3,HFOs; alkane; alkene
+FC(=CC(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6HF11,3,HFOs; alkane; alkene
+[H]C(F)(F)C(C(=O)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C6HF11O,2,Semi-fluoroalkyl ketones; ketones
+[H]C(F)(F)C(C(=O)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C6HF11O,2,Semi-fluoroalkyl ketones; ketones
+[H]C(F)(F)C(F)(C(=O)C(F)(F)C(F)(F)F)C(F)(F)F,C6HF11O,3,Semi-fluoroalkyl ketones; ketones; alkane
+[H]C(F)(F)C(F)(C(=O)C(F)(F)C(F)(F)F)C(F)(F)F,C6HF11O,3,Semi-fluoroalkyl ketones; ketones; alkane
+O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C6HF11O2,3,PFCAs; PolyFCAs; carboxylic acid
+O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C6HF11O2,3,PFCAs; PolyFCAs; carboxylic acid
+O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF11O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF11O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF11O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF11O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C6HF11O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C6HF11O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,C6HF11O3,6,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid
+O=C(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C6HF11O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C6HF11O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C6HF11O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C6HF11O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F,C6HF11O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)F,C6HF11O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(I)C(F)(F)F,C6HF12I,2,SFAs; iodide
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(I)C(F)(F)C(F)(F)F,C6HF12I,3,SFAs; iodide; alkane
+O=C(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6HF12NO,2,amide; alkane
+O=C(NC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C6HF12NO,2,amide; alkane
+O=C(NC(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,C6HF12NO,2,amide; alkane
+O=C(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C6HF12NO,1,amide
+OC(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF13O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+OC(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF13O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+OC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6HF13O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+O=S(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF13O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF13O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6HF13O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6HF13O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF13O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF13O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6HF13O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6HF13O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F,C6HF13O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6HF13O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+OSC(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF13OS,2,sulfenic acid; alkane
+OSC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6HF13OS,2,sulfenic acid; alkane
+FC(F)(F)C(F)(F)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C6HF14N,3,Perfluoroalkane; amine; alkane
+FC(F)(F)NC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C6HF14N,3,Perfluoroalkane; amine; alkane
+O=C(Cl)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7ClF13O,2,acyl halide; alkane
+O=C(Cl)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C7ClF13O,2,acyl halide; alkane
+FC(F)(F)C(F)(F)C#CC(F)(C(F)(F)F)C(F)(F)F,C7F12,2,alkane; alkyne
+FC(F)(F)C(F)(F)C#CC(F)(F)C(F)(F)C(F)(F)F,C7F12,2,alkane; alkyne
+FC(F)(F)C(F)(F)C#CC(F)(F)C(F)(F)C(F)(F)F,C7F12,2,alkane; alkyne
+FC(F)(F)C#CC(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7F12,1,alkyne
+FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C7F14,4,Perfluoroalkene; HFOs; ethene; alkene
+FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C7F14,4,Perfluoroalkene; HFOs; ethene; alkene
+FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C7F14,4,Perfluoroalkene; HFOs; ethene; alkene
+FC(=C(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,C7F14,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,C7F14,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,C7F14,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C7F14,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C7F14,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C7F14,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C7F14,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C7F14,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C7F14O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C7F14O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7F14O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7F14O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(I)C(F)(F)C(F)(F)F,C7F15I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(C(F)(F)I)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7F15I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(I)C(F)(F)F,C7F15I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)OC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7F16O,4,HFEs; Perfluoroalkane; ether; alkane
+FC(F)(F)OC(F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)F,C7F16O2,5,PFPEs; HFEs; Perfluoroalkane; ether; alkane
+O=S(=O)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7F16O2S,3,Perfluoroalkane; PASFs; alkane
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)C(=O)Cl)C(F)(F)C(F)(F)F,C7H2ClF11O,2,acyl halide; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(C(=O)Cl)C(F)(F)F,C7H2ClF11O,2,acyl halide; alkane
+O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O,C7H2F10O4,3,PFdiCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(=O)O,C7H2F10O4,3,PFdiCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,C7H2F10O4,2,PFdiCAs; carboxylic acid
+[H]C(F)(F)C(C=C(F)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7H2F12,3,HFOs; ethene; alkene
+[H]C(F)(F)C(C=C(F)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7H2F12,3,HFOs; ethene; alkene
+[H]C(F)(F)C(F)(C=C(F)C(F)(F)C(F)(F)F)C(F)(F)F,C7H2F12,4,HFOs; ethene; alkane; alkene
+[H]C(F)(F)C(F)(C=C(F)C(F)(F)C(F)(F)F)C(F)(F)F,C7H2F12,4,HFOs; ethene; alkane; alkene
+O=C(OCC(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F,C7H2F12O2,2,ester; alkane
+O=C(OCC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C7H2F12O2,2,ester; alkane
+O=C(OCC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C7H2F12O2,2,ester; alkane
+O=C(OCC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C7H2F12O2,1,ester
+OC(F)(F)C(F)(C(F)(F)F)C(C(O)(F)F)(C(F)(F)F)C(F)(F)F,C7H2F14O2,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+O=S(=O)(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C7H2F14O6S2,4,PolyFSAs; PFdiSAs; sulfonic acid; alkane
+O=[PH](O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7H2F15O2P,3,PFPiAs; phosphinic acid; alkane
+O=[PH](O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7H2F15O2P,3,PFPiAs; phosphinic acid; alkane
+O=P(O)(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7H2F15O3P,3,PFPAs; phosphonic acid; alkane
+O=P(O)(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7H2F15O3P,3,PFPAs; phosphonic acid; alkane
+O=S(=O)(NC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C7HF16NO2S,4,Perfluoroalkane; sulfonamide; amine; alkane
+[H]C([H])(F)C(=O)C(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7H3F11O,3,Semi-fluoroalkyl ketones; ketones; alkane
+[H]C([H])(F)C(=O)C(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7H3F11O,3,Semi-fluoroalkyl ketones; ketones; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(=O)C([H])(F)C(F)(F)F,C7H3F11O,3,Semi-fluoroalkyl ketones; ketones; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(=O)C([H])(F)C(F)(F)F,C7H3F11O,3,Semi-fluoroalkyl ketones; ketones; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(C(=O)O)C(F)(F)F,C7H3F11O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(C(=O)O)C(F)(F)F,C7H3F11O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)C(=O)O)C(F)(F)C(F)(F)F,C7H3F11O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)C(=O)O)C(F)(F)C(F)(F)F,C7H3F11O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C(F)(F)C(F)(COC(=O)C(F)(F)C(F)(F)F)C(F)(F)F,C7H3F11O2,2,ester; alkane
+[H]C(F)(F)C(COC(=O)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7H3F11O2,1,ester
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)OC(F)(C(=O)O)C(F)(F)F,C7H3F11O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)OC(F)(C(=O)O)C(F)(F)F,C7H3F11O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)OC(F)(C(=O)O)C(F)(F)F,C7H3F11O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)OC(F)(C(=O)O)C(F)(F)F,C7H3F11O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)(I)C([H])(F)C(F)(F)F,C7H3F12I,3,SFAs; iodide; alkane
+[H]C([H])(F)C(F)(I)C(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7H3F12I,3,SFAs; iodide; alkane
+FC(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F,C7H3F9N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F,C7H3F9N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F,C7H3F9N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F,C7H3F9N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C([H])(F)C(=O)O)C(F)(F)C(F)(F)F,C7H4F10O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C([H])(F)OC(C(F)(F)F)(C([H])(F)C(=O)O)C(F)(F)C(F)(F)F,C7H4F10O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C([H])(F)OC(C(F)(F)F)(C([H])(F)C(=O)O)C(F)(F)C(F)(F)F,C7H4F10O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C([H])(F)OC(C(F)(F)F)(C([H])(F)C(=O)O)C(F)(F)C(F)(F)F,C7H4F10O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C([H])(F)OC(C(F)(F)F)(C([H])(F)C(=O)O)C(F)(F)C(F)(F)F,C7H4F10O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)NC(=O)C([H])(F)C(F)(F)F,C7H4F11NO,2,amide; alkane
+[H]C([H])(F)C(=O)NC(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7H4F11NO,2,amide; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)F,C7H4F12O,4,HFEs; SFAs; ether; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)F,C7H4F12O,4,HFEs; SFAs; ether; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(O)(F)F)C(F)(F)F,C7H5F11O,3,SFAs; alcohol; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)S(=O)O,C7H5F11O2S,3,SFAs; sulfinic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C7H5F11O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)S(=O)(=O)O,C7H5F11O3S,4,PolyFSAs; SFAs; sulfonic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)S(=O)(=O)O,C7H5F11O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)S(=O)(=O)O,C7H5F11O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)S(=O)(=O)O,C7H5F11O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)S(=O)(=O)O,C7H5F11O4S,6,PolyFSAs; PolyFESAs; SFAs; ether; sulfonic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)SO,C7H5F11OS,3,SFAs; sulfenic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(NC(F)(F)F)C(F)(F)F,C7H5F12N,2,amine; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)[PH](=O)O,C7H6F11O2P,2,phosphinic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)P(=O)(O)O,C7H6F11O3P,2,phosphonic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(NS(=O)(=O)C(F)(F)F)C(F)(F)F,C7H5F12NO2S,3,sulfonamide; amine; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(NS(=O)(=O)C(F)(F)F)C(F)(F)F,C7H5F12NO2S,3,sulfonamide; amine; alkane
+OCCCC(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7H7F9O,3,fluorotelomer alcohols; SFAs; alkane
+[H]C(F)(F)C(F)(C#CC(F)(F)C(F)(F)F)C(F)(F)F,C7HF11,2,alkane; alkyne
+[H]C(F)(F)C(C#CC(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF11,1,alkyne
+[H]C(F)(F)C(C(F)=C(F)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF13,3,HFOs; ethene; alkene
+[H]C(F)(F)C(C(F)=C(F)C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF13,3,HFOs; ethene; alkene
+[H]C(F)(F)C(F)(C(F)=C(F)C(F)(F)C(F)(F)F)C(F)(F)F,C7HF13,4,HFOs; ethene; alkane; alkene
+[H]C(F)(F)C(F)(C(F)=C(F)C(F)(F)C(F)(F)F)C(F)(F)F,C7HF13,4,HFOs; ethene; alkane; alkene
+FC(=CC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C7HF13,4,HFOs; ethene; alkane; alkene
+FC(=CC(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,C7HF13,4,HFOs; ethene; alkane; alkene
+O=C(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C7HF13O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C7HF13O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7HF13O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7HF13O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F,C7HF13O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C7HF13O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(NC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C7HF14NO,2,amide; alkane
+O=C(NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C7HF14NO,2,amide; alkane
+OC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF15O,4,Perfluoroalkyl alcohols; SFAs; alcohol; alkane
+O=S(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF15O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF15O2S,3,PFSiAs; sulfinic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF15O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF15O3S,4,PFSAs; PolyFSAs; sulfonic acid; alkane
+O=S(=O)(O)C(F)(F)C(F)(OC(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF15O4S,7,PFSAs; PolyFSAs; PFESAs; PolyFESAs; ether; sulfonic acid; alkane
+OSC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF15OS,2,sulfenic acid; alkane
+FC(F)(F)NC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C7HF16N,3,Perfluoroalkane; amine; alkane
+O=C(Cl)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C8ClF15O,2,acyl halide; alkane
+FC(F)(F)C(F)(F)C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C8F14,2,alkane; alkyne
+FC(F)(F)C#CC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C8F14,2,alkane; alkyne
+FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C8F16,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C8F16,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C8F16,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C8F16,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C8F16,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C8F16,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+O=C(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C8F16O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+O=C(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C8F16O,4,Perfluoroalkyl ketones; Semi-fluoroalkyl ketones; ketones; alkane
+FC(F)(F)C(F)(I)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C8F17I,4,SFAs; PFAIs; iodide; alkane
+FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,C8F19N,3,Perfluoroalkyl-tert-amines; amine; alkane
+O=C(O)C(F)(C(F)(F)F)C(F)(F)C(F)(C(=O)O)C(F)(F)C(F)(F)F,C8H2F12O4,3,PFdiCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(C(F)(F)F)(C(F)(F)C(=O)O)C(F)(F)C(F)(F)F,C8H2F12O4,3,PFdiCAs; carboxylic acid; alkane
+O=C(OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,C8H2F14O2,2,ester; alkane
+O=C(OCC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F,C8H2F14O2,2,ester; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C#CC([H])(F)C(F)(F)F,C8H3F11,2,alkane; alkyne
+[H]C([H])(F)C#CC(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C8H3F11,2,alkane; alkyne
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1,C8H3F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1,C8H3F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1,C8H3F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1,C8H3F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,C8H3F11N2,3,Side-chain fluorinated aromatics; azole; Side-chain aromatics
+FC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ncc[nH]1,C8H3F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)=C(F)C([H])(F)C(F)(F)F,C8H3F13,4,HFOs; ethene; alkane; alkene
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C(F)=C(F)C([H])(F)C(F)(F)F,C8H3F13,4,HFOs; ethene; alkane; alkene
+[H]C([H])(F)C(F)=C(F)C(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C8H3F13,4,HFOs; ethene; alkane; alkene
+[H]C([H])(F)C(F)=C(F)C(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C8H3F13,4,HFOs; ethene; alkane; alkene
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)C(=O)Cl,C8H4ClF11O,2,acyl halide; alkane
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ncc[nH]1,C8H4F10N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ncc[nH]1,C8H4F10N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ncc[nH]1,C8H4F10N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,C8H4F10N2,3,Side-chain fluorinated aromatics; azole; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,C8H4F10N2,3,Side-chain fluorinated aromatics; azole; Side-chain aromatics
+[H]C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,C8H4F10N2,3,Side-chain fluorinated aromatics; azole; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C=C(F)C([H])(F)C(F)(F)F,C8H4F12,4,HFOs; ethene; alkane; alkene
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C=C(F)C([H])(F)C(F)(F)F,C8H4F12,4,HFOs; ethene; alkane; alkene
+[H]C([H])(F)C(F)=CC(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C8H4F12,4,HFOs; ethene; alkane; alkene
+[H]C([H])(F)C(F)=CC(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C8H4F12,4,HFOs; ethene; alkane; alkene
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(=O)C(F)(F)F)C(F)(F)F,C8H4F12O,3,Semi-fluoroalkyl ketones; ketones; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(=O)C(F)(F)F)C(F)(F)F,C8H4F12O,3,Semi-fluoroalkyl ketones; ketones; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(I)C(F)(F)F,C8H4F13I,3,SFAs; iodide; alkane
+[H]C([H])(F)C(=O)OCC(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C8H5F11O2,2,ester; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)C(=O)O,C8H5F11O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)(F)F)C(F)(F)C(=O)O,C8H5F11O2,3,PolyFCAs; carboxylic acid; alkane
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)COC(=O)C([H])(F)C(F)(F)F,C8H5F11O2,2,ester; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)C(=O)O,C8H5F11O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)C(=O)O,C8H5F11O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)C(=O)O,C8H5F11O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(OC(F)(F)F)C(F)(F)C(=O)O,C8H5F11O3,5,PolyFCAs; PolyFECAs; ether; carboxylic acid; alkane
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(NC(=O)C(F)(F)F)C(F)(F)F,C8H5F12NO,2,amide; alkane
+OCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C8H7F11O,3,fluorotelomer alcohols; SFAs; alkane
+OCCCC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C8H7F11O,2,fluorotelomer alcohols; SFAs
+OCCCC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C8H7F11O,3,fluorotelomer alcohols; SFAs; alkane
+O=C(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C8HF15O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C8HF15O2,4,PFCAs; PolyFCAs; carboxylic acid; alkane
+O=C(O)C(F)(F)C(F)(OC(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C8HF15O3,7,PFCAs; PolyFCAs; PFECAs; PolyFECAs; ether; carboxylic acid; alkane
+O=C(NC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C8HF16NO,2,amide; alkane
+FC(F)(F)C#CC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C9F16,2,alkane; alkyne
+FC(=C(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C9F18,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C9F18,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(=C(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C9F18,5,Perfluoroalkene; HFOs; ethene; alkane; alkene
+FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C9F21N,3,Perfluoroalkyl-tert-amines; amine; alkane
+FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,C9F21N,3,Perfluoroalkyl-tert-amines; amine; alkane
+FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,C9F21N,3,Perfluoroalkyl-tert-amines; amine; alkane
+O=C(O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(=O)O,C9H2F14O4,3,PFdiCAs; carboxylic acid; alkane
+O=C(OCC(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F,C9H2F16O2,2,ester; alkane
+FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1,C9H3F13N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F,C9H3F13N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C#CC(F)(F)F)C(F)(F)F,C9H4F12,2,alkane; alkyne
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)=C(F)C(F)(F)F)C(F)(F)F,C9H4F14,4,HFOs; ethene; alkane; alkene
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C(F)=C(F)C(F)(F)F)C(F)(F)F,C9H4F14,4,HFOs; ethene; alkane; alkene
+FC(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F,C9H4F9N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F,C9H4F9N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F,C9H4F9N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+FC(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F,C9H4F9N,4,Side-chain fluorinated aromatics; azine; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)c1ncc[nH]1)C(F)(F)C(F)(F)F,C9H5F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)c1ncc[nH]1)C(F)(F)C(F)(F)F,C9H5F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C(F)(F)F)(C(F)(F)c1ncc[nH]1)C(F)(F)C(F)(F)F,C9H5F11N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C=C(F)C(F)(F)F)C(F)(F)F,C9H5F13,4,HFOs; ethene; alkane; alkene
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(C=C(F)C(F)(F)F)C(F)(F)F,C9H5F13,4,HFOs; ethene; alkane; alkene
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(c1ncc[nH]1)C(F)(F)F,C9H6F10N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(c1ncc[nH]1)C(F)(F)F,C9H6F10N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C(F)(F)C(F)(F)C(F)(F)C([H])(F)C([H])(c1ncc[nH]1)C(F)(F)F,C9H6F10N2,4,Side-chain fluorinated aromatics; azole; alkane; Side-chain aromatics
+[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(F)(COC(=O)C(F)(F)F)C(F)(F)F,C9H6F12O2,2,ester; alkane
+OCCCC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,C9H7F13O,3,fluorotelomer alcohols; SFAs; alkane
+OCCCC(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,C9H7F13O,3,fluorotelomer alcohols; SFAs; alkane

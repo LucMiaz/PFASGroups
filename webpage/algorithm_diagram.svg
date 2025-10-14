@@ -1,0 +1,136 @@
+<!-- Algorithm Flowchart for parse_PFAS_groups -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1400" width="800" height="1400">
+  <defs>
+    <style>
+      .box { fill: #e7f3ff; stroke: #667eea; stroke-width: 2; }
+      .decision { fill: #fff3cd; stroke: #ffc107; stroke-width: 2; }
+      .process { fill: #d4edda; stroke: #28a745; stroke-width: 2; }
+      .result { fill: #f8d7da; stroke: #dc3545; stroke-width: 2; }
+      .text { font-family: Arial, sans-serif; font-size: 14px; text-anchor: middle; }
+      .title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: Arial, sans-serif; font-size: 12px; fill: #666; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" class="title">PFAS Group Detection Algorithm</text>
+  
+  <!-- Step 1: Input -->
+  <rect x="250" y="60" width="300" height="60" class="box" rx="10"/>
+  <text x="400" y="85" class="text" font-weight="bold">INPUT</text>
+  <text x="400" y="105" class="text">Molecule (SMILES/InChI)</text>
+  <path d="M 400 120 L 400 160" class="arrow"/>
+  
+  <!-- Step 2: Add Hydrogens -->
+  <rect x="250" y="160" width="300" height="60" class="process" rx="10"/>
+  <text x="400" y="185" class="text">Add Explicit Hydrogens</text>
+  <text x="400" y="205" class="text" font-size="12">(Chem.AddHs in Python)</text>
+  <path d="M 400 220 L 400 260" class="arrow"/>
+  
+  <!-- Step 3: Calculate Formula -->
+  <rect x="250" y="260" width="300" height="60" class="process" rx="10"/>
+  <text x="400" y="285" class="text">Calculate Molecular Formula</text>
+  <text x="400" y="305" class="text" font-size="12">Parse to element dictionary</text>
+  <path d="M 400 320 L 400 360" class="arrow"/>
+  
+  <!-- Step 4: Sanitize Check -->
+  <polygon points="400,360 500,410 400,460 300,410" class="decision"/>
+  <text x="400" y="415" class="text">Can sanitize</text>
+  <text x="400" y="430" class="text">molecule?</text>
+  
+  <!-- Yes path -->
+  <path d="M 500 410 L 600 410 L 600 500 L 550 500" class="arrow"/>
+  <text x="550" y="405" class="label">Yes</text>
+  
+  <!-- No path -->
+  <path d="M 300 410 L 200 410 L 200 500 L 250 500" class="arrow"/>
+  <text x="250" y="405" class="label">No</text>
+  
+  <!-- Step 5a: Fragment -->
+  <rect x="50" y="500" width="150" height="60" class="process" rx="10"/>
+  <text x="125" y="520" class="text" font-size="12">Fragment molecule</text>
+  <text x="125" y="540" class="text" font-size="12">Fix valence errors</text>
+  <path d="M 200 530 L 250 530" class="arrow"/>
+  
+  <!-- Step 5b: Keep as is -->
+  <rect x="550" y="500" width="150" height="60" class="process" rx="10"/>
+  <text x="625" y="525" class="text" font-size="12">Use molecule</text>
+  <text x="625" y="545" class="text" font-size="12">as single fragment</text>
+  <path d="M 550 530 L 400 530 L 400 590" class="arrow"/>
+  <path d="M 250 530 L 400 530" class="arrow"/>
+  
+  <!-- Step 6: Iterate PFAS Groups -->
+  <rect x="250" y="590" width="300" height="60" class="box" rx="10"/>
+  <text x="400" y="615" class="text" font-weight="bold">For each PFAS group:</text>
+  <text x="400" y="635" class="text" font-size="12">(15+ group definitions)</text>
+  <path d="M 400 650 L 400 690" class="arrow"/>
+  
+  <!-- Step 7: Check Formula Constraints -->
+  <polygon points="400,690 520,750 400,810 280,750" class="decision"/>
+  <text x="400" y="745" class="text">Formula satisfies</text>
+  <text x="400" y="765" class="text">constraints?</text>
+  <text x="400" y="780" class="text" font-size="11">(rel, gte, lte, eq, only)</text>
+  
+  <!-- No - next group -->
+  <path d="M 520 750 L 650 750 L 650 630 L 550 630" class="arrow"/>
+  <text x="600" y="745" class="label">No - Next group</text>
+  
+  <!-- Yes -->
+  <path d="M 400 810 L 400 850" class="arrow"/>
+  <text x="420" y="830" class="label">Yes</text>
+  
+  <!-- Step 8: Check SMARTS -->
+  <polygon points="400,850 520,910 400,970 280,910" class="decision"/>
+  <text x="400" y="905" class="text">SMARTS pattern</text>
+  <text x="400" y="925" class="text">matches?</text>
+  <text x="400" y="940" class="text" font-size="11">(smarts1, smarts2)</text>
+  
+  <!-- No - next group -->
+  <path d="M 520 910 L 650 910 L 650 630 L 550 630" class="arrow"/>
+  <text x="600" y="905" class="label">No - Next group</text>
+  
+  <!-- Yes -->
+  <path d="M 400 970 L 400 1010" class="arrow"/>
+  <text x="420" y="990" class="label">Yes</text>
+  
+  <!-- Step 9: Path Finding (if needed) -->
+  <rect x="250" y="1010" width="300" height="80" class="process" rx="10"/>
+  <text x="400" y="1035" class="text">Find fluorinated paths</text>
+  <text x="400" y="1055" class="text" font-size="11">between SMARTS matches</text>
+  <text x="400" y="1070" class="text" font-size="11">(if smarts2 defined)</text>
+  <text x="400" y="1085" class="text" font-size="11">using fpaths patterns</text>
+  <path d="M 400 1090 L 400 1130" class="arrow"/>
+  
+  <!-- Step 10: Record Match -->
+  <rect x="250" y="1130" width="300" height="60" class="result" rx="10"/>
+  <text x="400" y="1155" class="text" font-weight="bold">Record Match</text>
+  <text x="400" y="1175" class="text" font-size="12">(group, count, chains)</text>
+  
+  <!-- Loop back -->
+  <path d="M 250 1160 L 150 1160 L 150 630 L 250 630" class="arrow" stroke-dasharray="5,5"/>
+  <text x="100" y="900" class="label">Next group</text>
+  
+  <!-- Final output -->
+  <path d="M 400 1190 L 400 1230" class="arrow"/>
+  <rect x="250" y="1230" width="300" height="80" class="result" rx="10"/>
+  <text x="400" y="1255" class="text" font-weight="bold">OUTPUT</text>
+  <text x="400" y="1275" class="text">List of matched PFAS groups</text>
+  <text x="400" y="1295" class="text" font-size="11">with counts and chain info</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="1350" width="120" height="30" class="box" rx="5"/>
+  <text x="110" y="1370" class="text" font-size="12">Input/Process</text>
+  
+  <rect x="200" y="1350" width="120" height="30" class="decision" rx="5"/>
+  <text x="260" y="1370" class="text" font-size="12">Decision</text>
+  
+  <rect x="350" y="1350" width="120" height="30" class="process" rx="5"/>
+  <text x="410" y="1370" class="text" font-size="12">Action</text>
+  
+  <rect x="500" y="1350" width="120" height="30" class="result" rx="5"/>
+  <text x="560" y="1370" class="text" font-size="12">Result</text>
+</svg>
