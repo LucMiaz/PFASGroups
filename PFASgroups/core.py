@@ -50,9 +50,9 @@ def add_smartsPath(names =PATH_NAMES):
     pathsEnd = {}
     with open(FPATHS_FILE,'r') as f:
         fpaths = json.load(f) 
-    for n, k in names.items():
-        s = fpaths.get(k['chain'])
-        e = fpaths.get(k['end'])
+    for n in names:
+        s = fpaths[n]['chain']
+        e = fpaths[n]['end']
         smol = Chem.MolFromSmarts(s)
         smol.UpdatePropertyCache()
         Chem.GetSymmSSSR(smol)
