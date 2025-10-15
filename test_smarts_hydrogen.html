@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test SMARTS Pattern for Hydrogen Matching</title>
+    <script src="https://unpkg.com/@rdkit/rdkit/Code/MinimalLib/dist/RDKit_minimal.js"></script>
+</head>
+<body>
+    <h1>Test SMARTS Pattern for Hydrogen Matching</h1>
+    
+    <div>
+        <h2>Testing Group 21 (SFAs) SMARTS Patterns</h2>
+        <p><strong>SMARTS1:</strong> <code>[#6X4$([#6](F)(F))]</code> - Carbon with 2 fluorines</p>
+        <p><strong>SMARTS2:</strong> <code>[#6X4$([#6][H,I,Br,Cl])]</code> - Carbon with H, I, Br, or Cl</p>
+        
+        <h3>Test Molecules</h3>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const testMolecules = [
+            {
+                name: "Simple polyfluoro with explicit H",
+                smiles: "[H]C(F)(F)C(F)(F)C(F)(F)H",
+                expected: "Should match both SMARTS1 (CF2) and SMARTS2 (C-H)"
+            },
+            {
+                name: "Polyfluoro with implicit H",
+                smiles: "FC(F)C(F)C(F)F",
+                expected: "Should match both SMARTS1 (CF2) and SMARTS2 (C-H)"
+            },
+            {
+                name: "SFA from test set (line 8)",
+                smiles: "[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(O)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+                expected: "Python detects as SFA (group 21) - should match both patterns"
+            },
+            {
+                name: "SFA with iodide (line 2)",
+                smiles: "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)I)C(F)(F)C(F)(F)F",
+                expected: "HTML detects as SFA - should match both patterns"
+            },
+            {
+                name: "Perfluoro (no H)",
+                smiles: "FC(F)(F)C(F)(F)C(F)(F)F",
+                expected: "Should match SMARTS1 (CF2) but NOT SMARTS2 (no H/halogen)"
+            }
+        ];
+
+        window.initRDKitModule().then(function(RDKit) {
+            console.log('RDKit version: ' + RDKit.version());
+            
+            const resultsDiv = document.getElementById('results');
+            
+            testMolecules.forEach((test, idx) => {
+                console.log(`\n=== Test ${idx + 1}: ${test.name} ===`);
+                console.log(`SMILES: ${test.smiles}`);
+                console.log(`Expected: ${test.expected}`);
+                
+                const mol = RDKit.get_mol(test.smiles);
+                
+                if (!mol || !mol.is_valid()) {
+                    console.error('Invalid molecule');
+                    resultsDiv.innerHTML += `<div style="border: 1px solid red; margin: 10px; padding: 10px;">
+                        <h4>Test ${idx + 1}: ${test.name}</h4>
+                        <p><strong>SMILES:</strong> <code>${test.smiles}</code></p>
+                        <p style="color: red;"><strong>ERROR:</strong> Invalid molecule</p>
+                    </div>`;
+                    return;
+                }
+                
+                // Test SMARTS1: [#6X4$([#6](F)(F))]
+                const smarts1 = "[#6X4$([#6](F)(F))]";
+                const pattern1 = RDKit.get_qmol(smarts1);
+                const matches1 = mol.get_substruct_matches(pattern1);
+                const matches1Str = JSON.stringify(matches1);
+                console.log(`SMARTS1 matches: ${matches1Str}`);
+                
+                // Test SMARTS2: [#6X4$([#6][H,I,Br,Cl])]
+                const smarts2 = "[#6X4$([#6][H,I,Br,Cl])]";
+                const pattern2 = RDKit.get_qmol(smarts2);
+                const matches2 = mol.get_substruct_matches(pattern2);
+                const matches2Str = JSON.stringify(matches2);
+                console.log(`SMARTS2 matches: ${matches2Str}`);
+                
+                // Try alternative SMARTS2 patterns
+                console.log("\nTrying alternative SMARTS2 patterns:");
+                
+                // Pattern A: Just [#6X4][H]
+                const smarts2a = "[#6X4][H]";
+                try {
+                    const pattern2a = RDKit.get_qmol(smarts2a);
+                    const matches2a = mol.get_substruct_matches(pattern2a);
+                    console.log(`  [#6X4][H] matches: ${JSON.stringify(matches2a)}`);
+                } catch(e) {
+                    console.log(`  [#6X4][H] - ERROR: ${e.message}`);
+                }
+                
+                // Pattern B: [#6H]
+                const smarts2b = "[#6H]";
+                try {
+                    const pattern2b = RDKit.get_qmol(smarts2b);
+                    const matches2b = mol.get_substruct_matches(pattern2b);
+                    console.log(`  [#6H] matches: ${JSON.stringify(matches2b)}`);
+                } catch(e) {
+                    console.log(`  [#6H] - ERROR: ${e.message}`);
+                }
+                
+                // Pattern C: [#6X4] (any sp3 carbon)
+                const smarts2c = "[#6X4]";
+                try {
+                    const pattern2c = RDKit.get_qmol(smarts2c);
+                    const matches2c = mol.get_substruct_matches(pattern2c);
+                    console.log(`  [#6X4] (any sp3 carbon) matches: ${JSON.stringify(matches2c)}`);
+                } catch(e) {
+                    console.log(`  [#6X4] - ERROR: ${e.message}`);
+                }
+                
+                // Extract match counts
+                let count1 = 0;
+                let count2 = 0;
+                
+                if (typeof matches1 === 'string') {
+                    const parsed = JSON.parse(matches1);
+                    count1 = Array.isArray(parsed) ? parsed.length : 0;
+                } else if (Array.isArray(matches1)) {
+                    count1 = matches1.length;
+                }
+                
+                if (typeof matches2 === 'string') {
+                    const parsed = JSON.parse(matches2);
+                    count2 = Array.isArray(parsed) ? parsed.length : 0;
+                } else if (Array.isArray(matches2)) {
+                    count2 = matches2.length;
+                }
+                
+                const hasBothMatches = count1 > 0 && count2 > 0;
+                const color = hasBothMatches ? 'green' : 'orange';
+                
+                resultsDiv.innerHTML += `<div style="border: 1px solid ${color}; margin: 10px; padding: 10px;">
+                    <h4>Test ${idx + 1}: ${test.name}</h4>
+                    <p><strong>SMILES:</strong> <code>${test.smiles}</code></p>
+                    <p><strong>Expected:</strong> ${test.expected}</p>
+                    <p><strong>SMARTS1 matches:</strong> ${count1} (CF2 groups)</p>
+                    <p><strong>SMARTS2 matches:</strong> ${count2} (C with H/halogen)</p>
+                    <p style="color: ${color}; font-weight: bold;">
+                        ${hasBothMatches ? '✓ BOTH patterns match - would be detected as SFA' : '✗ Missing matches - would NOT be detected as SFA'}
+                    </p>
+                </div>`;
+                
+                mol.delete();
+                pattern1.delete();
+                pattern2.delete();
+            });
+            
+            console.log('\n=== Tests Complete ===');
+        });
+    </script>
+</body>
+</html>

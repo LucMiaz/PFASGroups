@@ -3252,18 +3252,15 @@ GenX,C(C(C(OC(...))O,13252-13-6,PFECA
             }
             
             // Helper function to check if path atoms match fluorinated pattern
+            // This replicates Python: if _setp == _setp.intersection(pmatch)
+            // Meaning: ALL atoms in the path must be in the fluorinated pattern
             function matchIntersection(pairList, pathSet) {
                 for (const [pathName, pathMatchAtoms] of pairList) {
-                    // Check if all atoms in pathSet are in pathMatchAtoms
-                    let allMatch = true;
-                    for (const atomIdx of pathSet) {
-                        if (!pathMatchAtoms.has(atomIdx)) {
-                            allMatch = false;
-                            break;
-                        }
-                    }
+                    // Check if pathSet is a subset of pathMatchAtoms (all path atoms are fluorinated)
+                    const intersection = new Set([...pathSet].filter(x => pathMatchAtoms.has(x)));
                     
-                    if (allMatch) {
+                    // If intersection equals pathSet, then ALL path atoms are in the fluorinated pattern
+                    if (intersection.size === pathSet.size) {
                         if (!chains[pathName]) {
                             chains[pathName] = [];
                         }
@@ -3276,9 +3273,13 @@ GenX,C(C(C(OC(...))O,13252-13-6,PFECA
             
             // Find paths between all pairs of smarts1 and smarts2 matches
             let totalPaths = 0;
+            console.log(`Starting path finding between ${smartsMatches1.size} smarts1 matches`);
+            
             for (const match1 of smartsMatches1) {
+                //console.log(`\n  Checking paths from smarts1 match at atom ${match1}`);
                 for (const [smarts2Pattern, smartsPathList] of Object.entries(pairs)) {
                     const smartsMatches2 = getSubstructMatches(mol, smarts2Pattern);
+                    //console.log(`    Found ${smartsMatches2.size} smarts2 matches for pattern`);
                     
                     for (const match2 of smartsMatches2) {
                         // Avoid self-matching (unless smarts1 and smarts2 are different)
@@ -3288,12 +3289,35 @@ GenX,C(C(C(OC(...))O,13252-13-6,PFECA
                             if (pathIndices && pathIndices.length > 0) {
                                 totalPaths++;
                                 const pathSet = new Set(pathIndices);
-                                matchIntersection(smartsPathList, pathSet);
+                                //console.log(`      Path found: ${match1} -> ${match2}, atoms: [${Array.from(pathSet).sort((a,b) => a-b).join(', ')}]`);
+                                
+                                const matchedPathName = matchIntersection(smartsPathList, pathSet);
+                                if (matchedPathName) {
+                                    //console.log(`      ✓ Path classified as ${matchedPathName}`);
+                                    // BUG FIX: Store the chain instead of skipping it with continue
+                                    if (!chains[matchedPathName]) {
+                                        chains[matchedPathName] = [];
+                                    }
+                                    chains[matchedPathName].push(pathSet);
+                                } else {
+                                    //console.log(`      ✗ Path did not match any fluorinated pattern`);
+                                    // Debug: show which atoms matched each pattern
+                                    for (const [pathName, pathMatchAtoms] of smartsPathList) {
+                                        const intersection = new Set([...pathSet].filter(x => pathMatchAtoms.has(x)));
+                                        //console.log(`        ${pathName}: ${intersection.size}/${pathSet.size} atoms match`);
+                                        if (intersection.size < pathSet.size) {
+                                            const missing = [...pathSet].filter(x => !pathMatchAtoms.has(x));
+                                            //console.log(`          Missing atoms: [${missing.join(', ')}]`);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
+            
+            //console.log(`\nTotal paths found: ${totalPaths}`);
             
             // Sort chains by length (longest first) and remove subsets
             for (const pathName in chains) {

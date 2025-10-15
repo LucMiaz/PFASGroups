@@ -300,7 +300,7 @@ def compare_results(python_baseline_file, html_results_file, output_report='comp
     # We'll match by SMILES (Input column) to Python baseline
     
     # First, load group name to ID mapping (including aliases)
-    data_folder = os.path.join(os.path.dirname(__file__), 'PFASgroups', 'data')
+    data_folder = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'PFASgroups', 'data')
     with open(os.path.join(data_folder, 'PFAS_groups_smarts.json'), 'r') as f:
         group_data = json.load(f)
     name_to_id = {}

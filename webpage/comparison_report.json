@@ -1,553 +1,531 @@
 {
-  "timestamp": "2025-10-13T18:36:08.304122",
+  "timestamp": "2025-10-15T08:04:04.791769",
   "total_comparisons": 678,
-  "exact_matches": 566,
-  "match_rate": 0.8348,
+  "exact_matches": 478,
+  "match_rate": 0.705,
   "python_success_rate": 1.0,
   "mismatches": [
     {
-      "test_id": 50,
-      "expected_group": 15,
-      "expected_group_name": "Specificity test for group 15",
+      "test_id": 7,
+      "expected_group": 29,
+      "expected_group_name": "Specificity test for group 29",
       "python_groups": [
-        15,
-        48
-      ],
-      "python_group_names": "15:fluorotelomer alcohols; 48:alkane",
-      "html_groups": [
-        15,
         21,
+        29,
         48
       ],
-      "html_group_names": "15:fluorotelomer alcohols; 21:Semi-fluorinated alkanes; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
+      "python_group_names": "21:Semi-fluorinated alkanes; 29:alcohol; 48:alkane",
+      "html_groups": [
+        29,
+        48
+      ],
+      "html_group_names": "29:alcohol; 48:alkane",
+      "missing_in_html": [
         21
       ],
-      "extra_in_html_names": "21:Semi-fluorinated alkanes",
-      "smiles": "OCCCC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F"
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(O)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F"
     },
     {
-      "test_id": 75,
-      "expected_group": 2,
-      "expected_group_name": "Specificity test for group 2",
+      "test_id": 8,
+      "expected_group": 31,
+      "expected_group_name": "Specificity test for group 31",
       "python_groups": [
-        2,
-        31,
-        33,
-        48
-      ],
-      "python_group_names": "2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        2,
-        5,
-        31,
-        33,
-        48
-      ],
-      "html_group_names": "2:Polyfluoroalkyl carboxylic acid; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        5
-      ],
-      "extra_in_html_names": "5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "[H]C(F)(C(=O)O)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
-    },
-    {
-      "test_id": 75,
-      "expected_group": 2,
-      "expected_group_name": "Specificity test for group 2",
-      "python_groups": [
-        2,
-        31,
-        33,
-        48
-      ],
-      "python_group_names": "2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        2,
-        5,
-        31,
-        33,
-        48
-      ],
-      "html_group_names": "2:Polyfluoroalkyl carboxylic acid; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        5
-      ],
-      "extra_in_html_names": "5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "[H]C(F)(C(=O)O)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
-    },
-    {
-      "test_id": 75,
-      "expected_group": 2,
-      "expected_group_name": "Specificity test for group 2",
-      "python_groups": [
-        2,
-        31,
-        33,
-        48
-      ],
-      "python_group_names": "2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        2,
-        5,
-        31,
-        33,
-        48
-      ],
-      "html_group_names": "2:Polyfluoroalkyl carboxylic acid; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        5
-      ],
-      "extra_in_html_names": "5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "[H]C(F)(C(=O)O)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
-    },
-    {
-      "test_id": 75,
-      "expected_group": 2,
-      "expected_group_name": "Specificity test for group 2",
-      "python_groups": [
-        2,
-        31,
-        33,
-        48
-      ],
-      "python_group_names": "2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        2,
-        5,
-        31,
-        33,
-        48
-      ],
-      "html_group_names": "2:Polyfluoroalkyl carboxylic acid; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        5
-      ],
-      "extra_in_html_names": "5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "[H]C(F)(C(=O)O)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
-    },
-    {
-      "test_id": 99,
-      "expected_group": 4,
-      "expected_group_name": "Specificity test for group 4",
-      "python_groups": [
-        1,
-        2,
-        31,
-        33,
-        48
-      ],
-      "python_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        1,
-        2,
-        4,
-        5,
-        31,
-        33,
-        48
-      ],
-      "html_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        4,
-        5
-      ],
-      "extra_in_html_names": "4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "O=C(O)C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F"
-    },
-    {
-      "test_id": 102,
-      "expected_group": 18,
-      "expected_group_name": "Specificity test for group 18",
-      "python_groups": [
-        18,
-        41,
-        48,
-        49
-      ],
-      "python_group_names": "18:Perfluoroalkene; 41:ethene; 48:alkane; 49:alkene",
-      "html_groups": [
-        18,
-        19,
-        41,
-        48,
-        49
-      ],
-      "html_group_names": "18:Perfluoroalkene; 19:Hydrofluoroolefins; 41:ethene; 48:alkane; 49:alkene",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        19
-      ],
-      "extra_in_html_names": "19:Hydrofluoroolefins",
-      "smiles": "FC(=C(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F"
-    },
-    {
-      "test_id": 102,
-      "expected_group": 18,
-      "expected_group_name": "Specificity test for group 18",
-      "python_groups": [
-        18,
-        41,
-        48,
-        49
-      ],
-      "python_group_names": "18:Perfluoroalkene; 41:ethene; 48:alkane; 49:alkene",
-      "html_groups": [
-        18,
-        19,
-        41,
-        48,
-        49
-      ],
-      "html_group_names": "18:Perfluoroalkene; 19:Hydrofluoroolefins; 41:ethene; 48:alkane; 49:alkene",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        19
-      ],
-      "extra_in_html_names": "19:Hydrofluoroolefins",
-      "smiles": "FC(=C(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F"
-    },
-    {
-      "test_id": 102,
-      "expected_group": 18,
-      "expected_group_name": "Specificity test for group 18",
-      "python_groups": [
-        18,
-        41,
-        48,
-        49
-      ],
-      "python_group_names": "18:Perfluoroalkene; 41:ethene; 48:alkane; 49:alkene",
-      "html_groups": [
-        18,
-        19,
-        41,
-        48,
-        49
-      ],
-      "html_group_names": "18:Perfluoroalkene; 19:Hydrofluoroolefins; 41:ethene; 48:alkane; 49:alkene",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        19
-      ],
-      "extra_in_html_names": "19:Hydrofluoroolefins",
-      "smiles": "FC(=C(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F"
-    },
-    {
-      "test_id": 106,
-      "expected_group": 3,
-      "expected_group_name": "Specificity test for group 3",
-      "python_groups": [
-        33,
-        48
-      ],
-      "python_group_names": "33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        3,
-        33,
-        48
-      ],
-      "html_group_names": "3:Perfluoroalkyl dicarboxylic acids; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        3
-      ],
-      "extra_in_html_names": "3:Perfluoroalkyl dicarboxylic acids",
-      "smiles": "O=C(O)C(F)(F)C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F"
-    },
-    {
-      "test_id": 107,
-      "expected_group": 41,
-      "expected_group_name": "Specificity test for group 41",
-      "python_groups": [
-        41,
-        48,
-        49
-      ],
-      "python_group_names": "41:ethene; 48:alkane; 49:alkene",
-      "html_groups": [
-        19,
-        41,
-        48,
-        49
-      ],
-      "html_group_names": "19:Hydrofluoroolefins; 41:ethene; 48:alkane; 49:alkene",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        19
-      ],
-      "extra_in_html_names": "19:Hydrofluoroolefins",
-      "smiles": "[H]C(F)(F)C(C(F)=C(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
-    },
-    {
-      "test_id": 107,
-      "expected_group": 41,
-      "expected_group_name": "Specificity test for group 41",
-      "python_groups": [
-        41,
-        48,
-        49
-      ],
-      "python_group_names": "41:ethene; 48:alkane; 49:alkene",
-      "html_groups": [
-        19,
-        41,
-        48,
-        49
-      ],
-      "html_group_names": "19:Hydrofluoroolefins; 41:ethene; 48:alkane; 49:alkene",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        19
-      ],
-      "extra_in_html_names": "19:Hydrofluoroolefins",
-      "smiles": "[H]C(F)(F)C(C(F)=C(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
-    },
-    {
-      "test_id": 117,
-      "expected_group": 19,
-      "expected_group_name": "Specificity test for group 19",
-      "python_groups": [
-        41,
-        48,
-        49
-      ],
-      "python_group_names": "41:ethene; 48:alkane; 49:alkene",
-      "html_groups": [
-        19,
-        41,
-        48,
-        49
-      ],
-      "html_group_names": "19:Hydrofluoroolefins; 41:ethene; 48:alkane; 49:alkene",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        19
-      ],
-      "extra_in_html_names": "19:Hydrofluoroolefins",
-      "smiles": "[H]C(F)(F)C(C=C(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
-    },
-    {
-      "test_id": 117,
-      "expected_group": 19,
-      "expected_group_name": "Specificity test for group 19",
-      "python_groups": [
-        41,
-        48,
-        49
-      ],
-      "python_group_names": "41:ethene; 48:alkane; 49:alkene",
-      "html_groups": [
-        19,
-        41,
-        48,
-        49
-      ],
-      "html_group_names": "19:Hydrofluoroolefins; 41:ethene; 48:alkane; 49:alkene",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        19
-      ],
-      "extra_in_html_names": "19:Hydrofluoroolefins",
-      "smiles": "[H]C(F)(F)C(C=C(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
-    },
-    {
-      "test_id": 153,
-      "expected_group": 15,
-      "expected_group_name": "Specificity test for group 15",
-      "python_groups": [
-        15,
-        48
-      ],
-      "python_group_names": "15:fluorotelomer alcohols; 48:alkane",
-      "html_groups": [
-        15,
+        17,
         21,
+        31,
         48
       ],
-      "html_group_names": "15:fluorotelomer alcohols; 21:Semi-fluorinated alkanes; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
+      "python_group_names": "17:Hydrofluoroethers; 21:Semi-fluorinated alkanes; 31:ether; 48:alkane",
+      "html_groups": [
+        17,
+        31,
+        48
+      ],
+      "html_group_names": "17:Hydrofluoroethers; 31:ether; 48:alkane",
+      "missing_in_html": [
         21
       ],
-      "extra_in_html_names": "21:Semi-fluorinated alkanes",
-      "smiles": "OCCCC(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F"
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
     },
     {
-      "test_id": 330,
-      "expected_group": 4,
-      "expected_group_name": "Specificity test for group 4",
+      "test_id": 9,
+      "expected_group": 17,
+      "expected_group_name": "Specificity test for group 17",
       "python_groups": [
-        1,
-        2,
+        17,
+        21,
         31,
-        33,
         48
       ],
-      "python_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
+      "python_group_names": "17:Hydrofluoroethers; 21:Semi-fluorinated alkanes; 31:ether; 48:alkane",
       "html_groups": [
-        1,
-        2,
-        4,
-        5,
+        17,
         31,
-        33,
         48
       ],
-      "html_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
+      "html_group_names": "17:Hydrofluoroethers; 31:ether; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(OC(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
+    },
+    {
+      "test_id": 9,
+      "expected_group": 17,
+      "expected_group_name": "Specificity test for group 17",
+      "python_groups": [
+        17,
+        21,
+        31,
+        48
+      ],
+      "python_group_names": "17:Hydrofluoroethers; 21:Semi-fluorinated alkanes; 31:ether; 48:alkane",
+      "html_groups": [
+        17,
+        31,
+        48
+      ],
+      "html_group_names": "17:Hydrofluoroethers; 31:ether; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(OC(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
+    },
+    {
+      "test_id": 11,
+      "expected_group": 14,
+      "expected_group_name": "Specificity test for group 14",
+      "python_groups": [
+        14,
+        21,
+        29,
+        48
+      ],
+      "python_group_names": "14:Perfluoroalkyl alcohols; 21:Semi-fluorinated alkanes; 29:alcohol; 48:alkane",
+      "html_groups": [
+        14,
+        29,
+        48
+      ],
+      "html_group_names": "14:Perfluoroalkyl alcohols; 29:alcohol; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "OC(F)(F)C(C(O)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F"
+    },
+    {
+      "test_id": 12,
+      "expected_group": 7,
+      "expected_group_name": "Specificity test for group 7",
+      "python_groups": [
+        7,
+        10,
+        21,
+        31,
+        36,
+        48
+      ],
+      "python_group_names": "7:Polyfluoroalkyl sulfonic acid; 10:Polyfluoroalkylether sulfonic acid; 21:Semi-fluorinated alkanes; 31:ether; 36:sulfonic acid; 48:alkane",
+      "html_groups": [
+        7,
+        10,
+        31,
+        36,
+        48
+      ],
+      "html_group_names": "7:Polyfluoroalkyl sulfonic acid; 10:Polyfluoroalkylether sulfonic acid; 31:ether; 36:sulfonic acid; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O"
+    },
+    {
+      "test_id": 12,
+      "expected_group": 7,
+      "expected_group_name": "Specificity test for group 7",
+      "python_groups": [
+        7,
+        10,
+        21,
+        31,
+        36,
+        48
+      ],
+      "python_group_names": "7:Polyfluoroalkyl sulfonic acid; 10:Polyfluoroalkylether sulfonic acid; 21:Semi-fluorinated alkanes; 31:ether; 36:sulfonic acid; 48:alkane",
+      "html_groups": [
+        7,
+        10,
+        31,
+        36,
+        48
+      ],
+      "html_group_names": "7:Polyfluoroalkyl sulfonic acid; 10:Polyfluoroalkylether sulfonic acid; 31:ether; 36:sulfonic acid; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O"
+    },
+    {
+      "test_id": 12,
+      "expected_group": 7,
+      "expected_group_name": "Specificity test for group 7",
+      "python_groups": [
+        7,
+        10,
+        21,
+        31,
+        36,
+        48
+      ],
+      "python_group_names": "7:Polyfluoroalkyl sulfonic acid; 10:Polyfluoroalkylether sulfonic acid; 21:Semi-fluorinated alkanes; 31:ether; 36:sulfonic acid; 48:alkane",
+      "html_groups": [
+        7,
+        10,
+        31,
+        36,
+        48
+      ],
+      "html_group_names": "7:Polyfluoroalkyl sulfonic acid; 10:Polyfluoroalkylether sulfonic acid; 31:ether; 36:sulfonic acid; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O"
+    },
+    {
+      "test_id": 12,
+      "expected_group": 7,
+      "expected_group_name": "Specificity test for group 7",
+      "python_groups": [
+        7,
+        10,
+        21,
+        31,
+        36,
+        48
+      ],
+      "python_group_names": "7:Polyfluoroalkyl sulfonic acid; 10:Polyfluoroalkylether sulfonic acid; 21:Semi-fluorinated alkanes; 31:ether; 36:sulfonic acid; 48:alkane",
+      "html_groups": [
+        7,
+        10,
+        31,
+        36,
+        48
+      ],
+      "html_group_names": "7:Polyfluoroalkyl sulfonic acid; 10:Polyfluoroalkylether sulfonic acid; 31:ether; 36:sulfonic acid; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(OC(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O"
+    },
+    {
+      "test_id": 17,
+      "expected_group": 37,
+      "expected_group_name": "Specificity test for group 37",
+      "python_groups": [
+        21,
+        37,
+        48
+      ],
+      "python_group_names": "21:Semi-fluorinated alkanes; 37:sulfenic acid; 48:alkane",
+      "html_groups": [
+        37,
+        48
+      ],
+      "html_group_names": "37:sulfenic acid; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)SO)C(F)(F)C(F)(F)F"
+    },
+    {
+      "test_id": 24,
+      "expected_group": 38,
+      "expected_group_name": "Specificity test for group 38",
+      "python_groups": [
+        21,
+        38,
+        48
+      ],
+      "python_group_names": "21:Semi-fluorinated alkanes; 38:sulfinic acid; 48:alkane",
+      "html_groups": [
+        38,
+        48
+      ],
+      "html_group_names": "38:sulfinic acid; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(S(=O)O)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C([H])(F)C(F)(F)F"
+    },
+    {
+      "test_id": 25,
+      "expected_group": 7,
+      "expected_group_name": "Specificity test for group 7",
+      "python_groups": [
+        7,
+        21,
+        36,
+        48
+      ],
+      "python_group_names": "7:Polyfluoroalkyl sulfonic acid; 21:Semi-fluorinated alkanes; 36:sulfonic acid; 48:alkane",
+      "html_groups": [
+        7,
+        36,
+        48
+      ],
+      "html_group_names": "7:Polyfluoroalkyl sulfonic acid; 36:sulfonic acid; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O"
+    },
+    {
+      "test_id": 25,
+      "expected_group": 7,
+      "expected_group_name": "Specificity test for group 7",
+      "python_groups": [
+        7,
+        21,
+        36,
+        48
+      ],
+      "python_group_names": "7:Polyfluoroalkyl sulfonic acid; 21:Semi-fluorinated alkanes; 36:sulfonic acid; 48:alkane",
+      "html_groups": [
+        7,
+        36,
+        48
+      ],
+      "html_group_names": "7:Polyfluoroalkyl sulfonic acid; 36:sulfonic acid; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "[H]C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C([H])(F)S(=O)(=O)O"
+    },
+    {
+      "test_id": 51,
+      "expected_group": 29,
+      "expected_group_name": "Specificity test for group 29",
+      "python_groups": [
+        14,
+        21,
+        29,
+        48
+      ],
+      "python_group_names": "14:Perfluoroalkyl alcohols; 21:Semi-fluorinated alkanes; 29:alcohol; 48:alkane",
+      "html_groups": [
+        14,
+        29,
+        48
+      ],
+      "html_group_names": "14:Perfluoroalkyl alcohols; 29:alcohol; 48:alkane",
+      "missing_in_html": [
+        21
+      ],
+      "missing_in_html_names": "21:Semi-fluorinated alkanes",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "OC(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F"
+    },
+    {
+      "test_id": 70,
+      "expected_group": 46,
+      "expected_group_name": "Specificity test for group 46",
+      "python_groups": [
+        22,
+        31,
+        46,
+        48,
+        51
+      ],
+      "python_group_names": "22:Side-chain fluorinated aromatics; 31:ether; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "html_groups": [
+        22,
+        46,
+        48,
+        51
+      ],
+      "html_group_names": "22:Side-chain fluorinated aromatics; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "missing_in_html": [
+        31
+      ],
+      "missing_in_html_names": "31:ether",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1"
+    },
+    {
+      "test_id": 70,
+      "expected_group": 46,
+      "expected_group_name": "Specificity test for group 46",
+      "python_groups": [
+        22,
+        31,
+        46,
+        48,
+        51
+      ],
+      "python_group_names": "22:Side-chain fluorinated aromatics; 31:ether; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "html_groups": [
+        22,
+        46,
+        48,
+        51
+      ],
+      "html_group_names": "22:Side-chain fluorinated aromatics; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "missing_in_html": [
+        31
+      ],
+      "missing_in_html_names": "31:ether",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1"
+    },
+    {
+      "test_id": 70,
+      "expected_group": 46,
+      "expected_group_name": "Specificity test for group 46",
+      "python_groups": [
+        22,
+        31,
+        46,
+        48,
+        51
+      ],
+      "python_group_names": "22:Side-chain fluorinated aromatics; 31:ether; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "html_groups": [
+        22,
+        46,
+        48,
+        51
+      ],
+      "html_group_names": "22:Side-chain fluorinated aromatics; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "missing_in_html": [
+        31
+      ],
+      "missing_in_html_names": "31:ether",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1"
+    },
+    {
+      "test_id": 70,
+      "expected_group": 46,
+      "expected_group_name": "Specificity test for group 46",
+      "python_groups": [
+        22,
+        31,
+        46,
+        48,
+        51
+      ],
+      "python_group_names": "22:Side-chain fluorinated aromatics; 31:ether; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "html_groups": [
+        22,
+        46,
+        48,
+        51
+      ],
+      "html_group_names": "22:Side-chain fluorinated aromatics; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "missing_in_html": [
+        31
+      ],
+      "missing_in_html_names": "31:ether",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1"
+    },
+    {
+      "test_id": 70,
+      "expected_group": 46,
+      "expected_group_name": "Specificity test for group 46",
+      "python_groups": [
+        22,
+        31,
+        46,
+        48,
+        51
+      ],
+      "python_group_names": "22:Side-chain fluorinated aromatics; 31:ether; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "html_groups": [
+        22,
+        46,
+        48,
+        51
+      ],
+      "html_group_names": "22:Side-chain fluorinated aromatics; 46:benzodioxole; 48:alkane; 51:Side-chain aromatics",
+      "missing_in_html": [
+        31
+      ],
+      "missing_in_html_names": "31:ether",
+      "extra_in_html": [],
+      "extra_in_html_names": "",
+      "smiles": "FC1(F)Oc2ccc(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)cc2O1"
+    },
+    {
+      "test_id": 102,
+      "expected_group": 18,
+      "expected_group_name": "Specificity test for group 18",
+      "python_groups": [
+        18,
+        41,
+        48,
+        49
+      ],
+      "python_group_names": "18:Perfluoroalkene; 41:ethene; 48:alkane; 49:alkene",
+      "html_groups": [
+        18,
+        19,
+        41,
+        48,
+        49
+      ],
+      "html_group_names": "18:Perfluoroalkene; 19:Hydrofluoroolefins; 41:ethene; 48:alkane; 49:alkene",
       "missing_in_html": [],
       "missing_in_html_names": "",
       "extra_in_html": [
-        4,
-        5
+        19
       ],
-      "extra_in_html_names": "4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F"
-    },
-    {
-      "test_id": 330,
-      "expected_group": 4,
-      "expected_group_name": "Specificity test for group 4",
-      "python_groups": [
-        1,
-        2,
-        31,
-        33,
-        48
-      ],
-      "python_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        1,
-        2,
-        4,
-        5,
-        31,
-        33,
-        48
-      ],
-      "html_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        4,
-        5
-      ],
-      "extra_in_html_names": "4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F"
-    },
-    {
-      "test_id": 330,
-      "expected_group": 4,
-      "expected_group_name": "Specificity test for group 4",
-      "python_groups": [
-        1,
-        2,
-        31,
-        33,
-        48
-      ],
-      "python_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        1,
-        2,
-        4,
-        5,
-        31,
-        33,
-        48
-      ],
-      "html_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        4,
-        5
-      ],
-      "extra_in_html_names": "4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F"
-    },
-    {
-      "test_id": 330,
-      "expected_group": 4,
-      "expected_group_name": "Specificity test for group 4",
-      "python_groups": [
-        1,
-        2,
-        31,
-        33,
-        48
-      ],
-      "python_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        1,
-        2,
-        4,
-        5,
-        31,
-        33,
-        48
-      ],
-      "html_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        4,
-        5
-      ],
-      "extra_in_html_names": "4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F"
-    },
-    {
-      "test_id": 330,
-      "expected_group": 4,
-      "expected_group_name": "Specificity test for group 4",
-      "python_groups": [
-        1,
-        2,
-        31,
-        33,
-        48
-      ],
-      "python_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "html_groups": [
-        1,
-        2,
-        4,
-        5,
-        31,
-        33,
-        48
-      ],
-      "html_group_names": "1:Perfluoroalkyl carboxylic acids; 2:Polyfluoroalkyl carboxylic acid; 4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid; 31:ether; 33:carboxylic acid; 48:alkane",
-      "missing_in_html": [],
-      "missing_in_html_names": "",
-      "extra_in_html": [
-        4,
-        5
-      ],
-      "extra_in_html_names": "4:Perfluoroalkylether carboxylic acids; 5:Polyfluoroalkylether carboxylic acid",
-      "smiles": "O=C(O)C(F)(C(F)(F)F)C(F)(F)OC(F)(F)F"
+      "extra_in_html_names": "19:Hydrofluoroolefins",
+      "smiles": "FC(=C(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F"
     }
   ]
 }
