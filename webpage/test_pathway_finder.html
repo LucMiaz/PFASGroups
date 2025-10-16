@@ -370,13 +370,27 @@
                 </div>
 
                 <div class="input-group">
+                    <label for="pfasGroupSelect">Select PFAS Group:</label>
+                    <select id="pfasGroupSelect" onchange="loadPFASGroup()">
+                        <option value="">-- Select a PFAS Group --</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="groupInfo">Group Information:</label>
+                    <div id="groupInfo" style="background: #f0f0f0; padding: 12px; border-radius: 5px; min-height: 60px; font-size: 0.9rem;">
+                        Select a PFAS group to see its details
+                    </div>
+                </div>
+
+                <div class="input-group">
                     <label for="smarts1Input">SMARTS 1 (start functional group):</label>
-                    <input type="text" id="smarts1Input" placeholder="e.g., [#6$([#6](=O)([OH1]))] for COOH">
+                    <input type="text" id="smarts1Input" placeholder="Auto-filled from selected PFAS group" readonly style="background: #f8f9fa;">
                 </div>
 
                 <div class="input-group">
                     <label for="smarts2Input">SMARTS 2 (end functional group) - leave empty to find all chain ends:</label>
-                    <input type="text" id="smarts2Input" placeholder="e.g., [#6$([#6]O[#6])] for ether">
+                    <input type="text" id="smarts2Input" placeholder="Auto-filled from selected PFAS group (if applicable)" readonly style="background: #f8f9fa;">
                 </div>
 
                 <div class="input-group">
@@ -442,10 +456,145 @@
             RDKit = instance;
             console.log('RDKit loaded successfully');
             console.log('Version:', RDKit.version());
+            
+            // Populate PFAS groups dropdown
+            populatePFASGroupsDropdown();
         }).catch(function(error) {
             console.error('Failed to load RDKit:', error);
             showError('Failed to load chemistry library. Please refresh the page.');
         });
+
+        // Populate the PFAS groups dropdown
+        function populatePFASGroupsDropdown() {
+            const select = document.getElementById('pfasGroupSelect');
+            
+            // Add groups that have smarts2 defined (path-based groups)
+            const pathBasedGroups = PFAS_GROUPS.filter(group => group.smarts2 && group.smarts2.trim() !== '');
+            
+            if (pathBasedGroups.length > 0) {
+                const optgroup1 = document.createElement('optgroup');
+                optgroup1.label = 'Path-Based Groups (with chain detection)';
+                pathBasedGroups.forEach(group => {
+                    const option = document.createElement('option');
+                    option.value = group.id;
+                    option.textContent = `${group.id}. ${group.name}`;
+                    optgroup1.appendChild(option);
+                });
+                select.appendChild(optgroup1);
+            }
+            
+            // Add groups without smarts2 (functional groups only)
+            const functionalGroups = PFAS_GROUPS.filter(group => !group.smarts2 || group.smarts2.trim() === '');
+            
+            if (functionalGroups.length > 0) {
+                const optgroup2 = document.createElement('optgroup');
+                optgroup2.label = 'Functional Groups (no chain detection)';
+                functionalGroups.forEach(group => {
+                    const option = document.createElement('option');
+                    option.value = group.id;
+                    option.textContent = `${group.id}. ${group.name}`;
+                    optgroup2.appendChild(option);
+                });
+                select.appendChild(optgroup2);
+            }
+        }
+
+        // Load selected PFAS group
+        function loadPFASGroup() {
+            const select = document.getElementById('pfasGroupSelect');
+            const groupId = parseInt(select.value);
+            
+            if (!groupId) {
+                document.getElementById('groupInfo').innerHTML = 'Select a PFAS group to see its details';
+                document.getElementById('smarts1Input').value = '';
+                document.getElementById('smarts2Input').value = '';
+                return;
+            }
+            
+            const group = PFAS_GROUPS.find(g => g.id === groupId);
+            if (!group) return;
+            
+            // Update group info display
+            let infoHtml = `<strong>ID:</strong> ${group.id}<br>`;
+            infoHtml += `<strong>Name:</strong> ${group.name || group.alias}<br>`;
+            if (group.alias && group.name !== group.alias) {
+                infoHtml += `<strong>Alias:</strong> ${group.alias}<br>`;
+            }
+            if (group.definition) {
+                infoHtml += `<strong>Definition:</strong> ${group.definition}<br>`;
+            }
+            if (group.main_group) {
+                infoHtml += `<strong>Main Group:</strong> ${group.main_group}<br>`;
+            }
+            infoHtml += `<strong>Has Chain Detection:</strong> ${group.smarts2 ? 'Yes' : 'No'}<br>`;
+            
+            // Display constraints if any
+            if (group.constraints && Object.keys(group.constraints).length > 0) {
+                infoHtml += `<strong>Constraints:</strong><br>`;
+                infoHtml += '<div style="margin-left: 15px; font-size: 0.85rem;">';
+                
+                if (group.constraints.gte) {
+                    infoHtml += '• <strong>Greater than or equal (≥):</strong> ';
+                    const gteItems = [];
+                    for (const [elem, count] of Object.entries(group.constraints.gte)) {
+                        gteItems.push(`${elem} ≥ ${count}`);
+                    }
+                    infoHtml += gteItems.join(', ') + '<br>';
+                }
+                
+                if (group.constraints.lte) {
+                    infoHtml += '• <strong>Less than or equal (≤):</strong> ';
+                    const lteItems = [];
+                    for (const [elem, count] of Object.entries(group.constraints.lte)) {
+                        lteItems.push(`${elem} ≤ ${count}`);
+                    }
+                    infoHtml += lteItems.join(', ') + '<br>';
+                }
+                
+                if (group.constraints.eq) {
+                    infoHtml += '• <strong>Equal (=):</strong> ';
+                    const eqItems = [];
+                    for (const [elem, count] of Object.entries(group.constraints.eq)) {
+                        eqItems.push(`${elem} = ${count}`);
+                    }
+                    infoHtml += eqItems.join(', ') + '<br>';
+                }
+                
+                if (group.constraints.only) {
+                    infoHtml += '• <strong>Only elements allowed:</strong> ';
+                    infoHtml += group.constraints.only.join(', ') + '<br>';
+                }
+                
+                if (group.constraints.rel) {
+                    infoHtml += '• <strong>Relational constraints:</strong><br>';
+                    for (const [elem, relConstraint] of Object.entries(group.constraints.rel)) {
+                        infoHtml += `  - ${elem}: `;
+                        const parts = [];
+                        if (relConstraint.atoms) {
+                            parts.push(`sum of [${relConstraint.atoms.join(', ')}]`);
+                        }
+                        if (relConstraint.add !== undefined && relConstraint.add !== 0) {
+                            parts.push(`${relConstraint.add > 0 ? '+' : ''}${relConstraint.add}`);
+                        }
+                        if (relConstraint.div !== undefined && relConstraint.div !== 1) {
+                            parts.push(`÷ ${relConstraint.div}`);
+                        }
+                        if (relConstraint.add_atoms) {
+                            parts.push(`(excluding ${relConstraint.add_atoms.join(', ')})`);
+                        }
+                        infoHtml += parts.join(' ') + '<br>';
+                    }
+                }
+                
+                infoHtml += '</div>';
+            }
+            
+            document.getElementById('groupInfo').innerHTML = infoHtml;
+            
+            // Update SMARTS inputs
+            document.getElementById('smarts1Input').value = group.smarts1 || '';
+            document.getElementById('smarts2Input').value = group.smarts2 || '';
+        }
 
         // Example molecules
         const examples = {
@@ -474,15 +623,25 @@
         function loadExample(name) {
             const example = examples[name];
             document.getElementById('smilesInput').value = example.smiles;
+            // Reset PFAS group selection
+            document.getElementById('pfasGroupSelect').value = '';
+            document.getElementById('groupInfo').innerHTML = 'Example loaded - showing custom SMARTS patterns';
+            // Set SMARTS directly for examples
             document.getElementById('smarts1Input').value = example.smarts1;
+            document.getElementById('smarts1Input').readOnly = false;
             document.getElementById('smarts2Input').value = example.smarts2;
+            document.getElementById('smarts2Input').readOnly = false;
         }
 
         function clearResults() {
             document.getElementById('resultsContainer').innerHTML = '';
             document.getElementById('smilesInput').value = '';
+            document.getElementById('pfasGroupSelect').value = '';
+            document.getElementById('groupInfo').innerHTML = 'Select a PFAS group to see its details';
             document.getElementById('smarts1Input').value = '';
+            document.getElementById('smarts1Input').readOnly = true;
             document.getElementById('smarts2Input').value = '';
+            document.getElementById('smarts2Input').readOnly = true;
         }
 
         function showError(message) {
@@ -500,7 +659,576 @@
             "Perfluoroalkyl": {"chain":"[#6]([#9])([#9])[#6]([#9])([#9])",
             "end": "[#6]([#9])([#9])([#6,#9,#17,#35,#53])"},
             "Polyfluoroalkyl": {"chain":"[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])",
-            "end": "[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])([#6,#9,#1,#17,#35,#53])"}};
+                        "end": "[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])([#6,#9,#1,#17,#35,#53])"}};
+
+        // PFAS Groups data (same as in pfas_analyzer.html)
+        const PFAS_GROUPS = [{
+    "id":1,
+    "name":"Perfluoroalkyl carboxylic acids",
+    "alias":"PFCAs",
+    "base_functional_groups":["carboxylic acid"],
+    "main_group":"Perfluoroalkyl acids",
+    "smarts1":"[#6$([#6](=O)([OH1]))]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
+},
+{
+    "id":2,
+    "name":"Polyfluoroalkyl carboxylic acid",
+    "alias":"PolyFCAs",
+    "base_functional_groups":["carboxylic acid"],
+    "main_group":"Polyfluoroalkyl acids",
+    "smarts1":"[#6$([#6](=O)([OH1]))]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
+},
+{
+    "id":3,
+    "name":"Perfluoroalkyl dicarboxylic acids",
+    "alias":"PFdiCAs",
+    "base_functional_groups":["carboxylic acid"],
+    "main_group":"Perfluoroalkyl acids",
+    "smarts1":"[#6$([#6](=O)([OH1]))]",
+    "smarts2":"[#6$([#6](=O)([OH1]))]",
+    "smartsPath":"per",
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":2,"div":2}}}
+},
+{
+    "id":4,
+    "name":"Perfluoroalkylether carboxylic acids",
+    "alias":"PFECAs",
+    "base_functional_groups":["carboxylic acid","ether"],
+    "main_group":"Perfluoroalkyl acids",
+    "smarts1":"[#6$([#6](=O)([OH1]))]",
+    "smarts2":"[#6$([#6]O[#6])]",
+    "smartsPath":"per",
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
+},
+{
+    "id":5,
+    "name":"Polyfluoroalkylether carboxylic acid",
+    "alias":"PolyFECAs",
+    "base_functional_groups":["carboxylic acid","ether"],
+    "main_group":"Polyfluoroalkyl acids",
+    "smarts1":"[#6$([#6](=O)([OH1]))]",
+    "smarts2":"[#6$([#6]O[#6])]",
+    "smartsPath":"poly",
+    "constraints":{"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
+},
+{
+    "id":6,
+    "name":"Perfluoroalkyl sulfonic acids",
+    "alias":"PFSAs",
+    "base_functional_groups":["sulfonic acid"],
+    "main_group":"Perfluoroalkyl acids",
+    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+},
+{
+    "id":7,
+    "name":"Polyfluoroalkyl sulfonic acid",
+    "alias":"PolyFSAs",
+    "base_functional_groups":["sulfonic acid"],
+    "main_group":"Polyfluoroalkyl acids",
+    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":-1,"div":2}}}
+},
+{
+    "id":8,
+    "name":"Perfluoroalkyl disulfonic acids",
+    "alias":"PFdiSAs",
+    "base_functional_groups":["sulfonic acid"],
+    "main_group":"Perfluoroalkyl acids",
+    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
+    "smarts2":"[#6$([#6][#16](=O)(=O)[OH1])]",
+    "smartsPath":"per",
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
+},
+{
+    "id":9,
+    "name":"Perfluoroalkylether sulfonic acids",
+    "alias":"PFESAs",
+    "base_functional_groups":["sulfonic acid","ether"],
+    "main_group":"Perfluoroalkyl acids",
+    "smarts1":"[#6$([#6][#16](=O)(=O)([OH]))]",
+    "smarts2":"[#6$([#6]O[#6])]",
+    "smartsPath":"per",
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+},
+{
+    "id":10,
+    "name":"Polyfluoroalkylether sulfonic acid",
+    "alias":"PolyFESAs",
+    "base_functional_groups":["sulfonic acid","ether"],
+    "main_group":"Polyfluoroalkyl acids",
+    "smarts1":"[#6$([#6][#16](=O)(=O)([OH]))]",
+    "smarts2":"[#6$([#6]O[#6])]",
+    "smartsPath":"poly",
+    "constraints":{"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":-1,"div":2}}}
+},
+{
+    "id":11,
+    "name":"Perfluoroalkyl sulfinic acids",
+    "alias":"PFSiAs",
+    "base_functional_groups":["sulfinic acid"],
+    "main_group":"Perfluoroalkyl acids",
+    "smarts1":"[#6$([#6][#16X3](=O)[OH1])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+},
+{
+    "id":12,
+    "name":"Perfluoroalkyl phosphonic acids",
+    "alias":"PFPAs",
+    "base_functional_groups":["phosphonic acid"],
+    "main_group":"Perfluoroalkyl acids",
+    "smarts1":"[#6$([#6][#15](=[#8])([#8])[#8])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+},
+{
+    "id":13,
+    "name":"Perfluoroalkyl phosphinic acids",
+    "alias":"PFPiAs",
+    "base_functional_groups":["phosphinic acid"],
+    "main_group":"Perfluoroalkyl acids",
+    "smarts1":"[#6X4$([#6][#15](=[#8])([#8])[#1,#6])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
+},
+{
+    "id":14,
+    "name":"Perfluoroalkyl alcohols",
+    "alias":"Perfluoroalkyl alcohols",
+    "base_functional_groups":["alcohol"],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":"[#6X4$([#6;!$([#6]=O)][OH1])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F","O"],"add":-1,"div":2}}}
+},		
+{
+    "id":15,
+    "name":"fluorotelomer alcohols",
+    "alias":"fluorotelomer alcohols",
+    "base_functional_groups":["alcohol"],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":"[C$([#6][C$([CH2]O[H]),C$([CH2][CH2]O[H]),C$([CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H])])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "id":16,
+    "name":"Perfluoropolyethers",
+    "alias":"PFPEs",
+    "base_functional_groups":["ether"],
+    "main_group":"other PFAS",
+    "smarts1":"[#6$([#6]O[#6])]",
+    "smarts2":"[#6$([#6]O[#6])]",
+    "smartsPath":"per",
+    "constraints":{"gte":{"O":2}, "rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
+},
+{
+    "id":17,
+    "name":"Hydrofluoroethers",
+    "alias":"HFEs",
+    "base_functional_groups":["ether"],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":"[#6][#8][#6]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"gte":{"O":1},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","H"],"add":-1,"div":2}}}
+},
+{
+    "id":18,
+    "name":"Perfluoroalkene",
+    "alias":"Perfluoroalkene",
+    "base_functional_groups":[],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":"[#6X3$([#6]=[#6X3])]",
+    "smarts2":null,
+    "smartsPath":"per",
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
+},
+{
+    "id":19,
+    "name":"Hydrofluoroolefins",
+    "alias":"HFOs",
+    "base_functional_groups":[],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":"[#6X3$([#6]=[#6])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"gte":{"F":1}, "lte":{}, "eq":{}, "only":["C","F","H"]}
+},
+{
+    "id":20,
+    "name":"Hydrofluorocarbons",
+    "alias":"HFCs",
+    "base_functional_groups":[],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":null,
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"gte":{"F":1}, "lte":{}, "eq":{}, "only":["C","F","H"], "rel":{"C":{"atoms":["F","H"],"add":-1,"div":2}}}
+},
+{
+    "id":21,
+    "name":"Semi-fluorinated alkanes",
+    "alias":"SFAs",
+    "base_functional_groups":[],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":"[#6X4$([#6](F)(F))]",
+    "smarts2":"[#6X4$([#6][H,I,Br,Cl])]",
+    "smartsPath":"poly",
+    "constraints":{"gte":{"F":1},"eq":{"O":0,"S":0}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2}}}
+},
+{
+    "id":22,
+    "name":"Side-chain fluorinated aromatics",
+    "alias":"Side-chain fluorinated aromatics",
+    "base_functional_groups":[],
+    "main_group":"other PFAS",
+    "smarts1":"[#6X4$([#6]a)]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "id":23,
+    "name":"Perfluoroalkane",
+    "alias":"Perfluoroalkane",
+    "base_functional_groups":[],
+    "main_group":"other PFAS",
+    "smarts1":null,
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
+},
+{
+    "id":24,
+    "name":"Perfluoroalkyl-tert-amines",
+    "alias":"Perfluoroalkyl-tert-amines",
+    "base_functional_groups":["amine"],
+    "main_group":"other PFAS",
+    "smarts1":"[#6$([#6][#7D3])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":-1.5,"div":2}}}
+},
+{
+    "id":25,
+    "name":"Perfluoroalkyl iodides",
+    "alias":"PFAIs",
+    "base_functional_groups":["iodide"],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":null,
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"gte":{"I":1}, "rel":{"C":{"atoms":["F","I"],"add":-1,"div":2}}}
+},
+{
+    "id":26,
+    "name":"Perfluoroalkane sulfonyl fluorides",
+    "alias":"PASFs",
+    "base_functional_groups":"",
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":"[#16$([#16](=O)(=O)[F])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
+},
+{
+    "id":27,
+    "name":"Perfluoroalkyl ketones",
+    "alias":"Perfluoroalkyl ketones",
+    "base_functional_groups":["ketone"],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":"[#6X4$([#6]C(=O)[#6])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
+},
+{
+    "id":28,
+    "name":"Semi-fluoroalkyl ketones",
+    "alias":"Semi-fluoroalkyl ketones",
+    "base_functional_groups":["ketone"],
+    "main_group":"Perfluoroalkyl acids precursors",
+    "smarts1":"[#6X4$([#6]C(=O)[#6])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"gte":{"O":1,"F":3}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2,"add_atoms":["O"]}}}
+},
+{
+    "name":"alcohol",
+    "alias":"alcohol",
+    "id":29,
+    "base_functional_groups":["alcohol"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6;!$([#6]=O)][OH1])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"ketone",
+    "alias":"ketones",
+    "id":30,
+    "base_functional_groups":["ketone"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6][#6](=O)[#6])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"ether",
+    "alias":"ether",
+    "id":31,
+    "base_functional_groups":[],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6]([#8X2H0][#6;!$(C=O)])[#1,!$(C=O)]);#6!$([#6](=O))]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"ester",
+    "alias":"ester",
+    "id":32,
+    "base_functional_groups":["ester"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6X4$([#6][#6](=O)O[#6,#7,#9,#15,#16,#17,#34,#35,#53]),#6X4$([#6]O[#6](=O)[#6,#7,#9,#15,#16,#17,#34,#35,#53])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"carboxylic acid",
+    "alias":"carboxylic acid",
+    "id":33,
+    "base_functional_groups":["carboxylic acid"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$(*[#6](=O)[OH1])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"amide",
+    "alias":"amide",
+    "id":34,
+    "base_functional_groups":["amide"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$([#6][#6]([#7H0,#7H1,#7H2])=[#8]),$([#6]~[#7H0,#7H1,#7H2][#6X3]=[#8])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"acyl halide",
+    "alias":"acyl halide",
+    "id":35,
+    "base_functional_groups":["acyl halide"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6][#6](=O)[#9,#17,#35,#53])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"sulfonic acid",
+    "alias":"sulfonic acid",
+    "id":36,
+    "base_functional_groups":["sulfonic acid"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$(*[#16](=O)(=O)[O,OH1])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"sulfenic acid",
+    "alias":"sulfenic acid",
+    "id":37,
+    "base_functional_groups":["sulfenic acid"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$(*[#16X2][OH1])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"sulfinic acid",
+    "alias":"sulfinic acid",
+    "id":38,
+    "base_functional_groups":["sulfinic acid"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$(*[#16X3](=O)[O])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"phosphonic acid",
+    "alias":"phosphonic acid",
+    "id":39,
+    "base_functional_groups":["phosphonic acid"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6][#15]([#8])(=[#8])[#8])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"phosphinic acid",
+    "alias":"phosphinic acid",
+    "id":40,
+    "base_functional_groups":["phosphinic acid"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6][#15](=[#8])([#8])[#1;!$([#8])])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name" : "ethene",
+    "alias":"ethene",
+    "id":41,
+    "base_functional_groups":["ethene"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6X3]([F,#6$([#6][#6]F),#6$([#6][#6][#6]F)])=[#6X3][F,#6$([#6][#6]F),#6$([#6][#6][#6]F)])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"gte":{"F":2}}
+},
+{
+    "name":"iodide",
+    "alias":"iodide",
+    "id":42,
+    "base_functional_groups":["iodide"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6][#6](F)[#53])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"sulfonamide",
+    "alias":"sulfonamide",
+    "id":43,
+    "base_functional_groups":["sulfonamide"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$(*[#16]([#7])(=[#8])=[#8]),$(*[#7][#16](=[#8])=[#8])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"azole",
+    "alias":"azole",
+    "id":44,
+    "base_functional_groups":["azole"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$(*[#7r5,$([#6r5,#8r5,#16r5]:[#7r5]),$([#6r5,#8r5,#16r5]:[#6r5,#8r5,#16r5]:[#7r5])])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{},
+    "definition":"Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American Heritage® Dictionary of the English Language, 5th Edition)"
+},
+{
+    "name":"azine",
+    "alias":"azine",
+    "id":45,
+    "base_functional_groups":["azine"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$(*[#7r6,$([#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6])])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{},
+    "definition":"A six-membered heterocyclic compound, such as pyridine, that contains one or more atoms of nitrogen with a ring structure resembling that of benzene. (The American Heritage® Dictionary of the English Language, 5th Edition)"
+},
+{
+    "name":"benzodioxole",
+    "alias":"benzodioxole",
+    "id":46,
+    "base_functional_groups":["benzodioxole"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$([#6]1[#6][#6]([#6]2[#6]([#6]1)[#8][#6][#8]2))]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{"gte":{"F":2}},
+    "definition":"Fluorinated Benzodioxole. Generic SMARTS was [$([#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1),$([#6r6,#7r6,#8r6,#16r6]~[#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1)]"
+},
+{
+    "name":"amine",
+    "alias":"amine",
+    "id":47,
+    "base_functional_groups":["amine"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[$([#6;!$([#6]=O)][N;!$(*[#6]=O)])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"alkane",
+    "alias":"alkane",
+    "id":48,
+    "base_functional_groups":["aliphatic"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[C$([CX4](F)(F)([F,!$(*[#9])])[CX4](F)([F,C,O,S,N,Si,P,B,Se,Te])[F,C,O,S,N,Si,P,B,Se,Te])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"alkene",
+    "alias":"alkene",
+    "id":49,
+    "base_functional_groups":["alkene"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6][#6X3]=[#6])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "name":"alkyne",
+    "alias":"alkyne",
+    "id":50,
+    "base_functional_groups":["alkyne"],
+    "main_group":"other perfluorinated compound",
+    "smarts1":"[#6$([#6][#6]#[#6])]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+},
+{
+    "id":51,
+    "name":"Side-chain aromatics",
+    "alias":"Side-chain aromatics",
+    "base_functional_groups":["aromatic"],
+    "main_group":"other PFAS",
+    "smarts1":"[#6X4$([#6]a)]",
+    "smarts2":null,
+    "smartsPath":null,
+    "constraints":{}
+}
+];
+
+        // Example molecules
 
         // Build molecular graph
         function molToGraph(mol) {
@@ -817,7 +1545,8 @@
                     
                     for (const match2 of smartsMatches2) {
                         // Avoid self-matching (unless smarts1 and smarts2 are different)
-                        if (match1 !== match2 || smarts1.get_inchi !== smarts2Pattern.get_inchi) {
+                        // BUG FIX: Compare SMARTS strings directly, not undefined properties
+                        if (match1 !== match2 || smarts1 !== smarts2Pattern) {
                             const pathIndices = dijkstraShortestPath(graph, match1, match2);
                             
                             if (pathIndices && pathIndices.length > 0) {
@@ -918,7 +1647,7 @@
             }
 
             if (!smarts1) {
-                showError('Please enter SMARTS 1 (start functional group).');
+                showError('Please select a PFAS group or load an example.');
                 return;
             }
 
@@ -985,6 +1714,20 @@
             // Molecule structure
             if (svg) {
                 html += `<div class="molecule-structure">${svg}</div>`;
+            }
+
+            // Show selected PFAS group if any
+            const selectedGroupId = document.getElementById('pfasGroupSelect').value;
+            if (selectedGroupId) {
+                const group = PFAS_GROUPS.find(g => g.id === parseInt(selectedGroupId));
+                if (group) {
+                    html += '<div class="info-message" style="background: #d4edda; border-left-color: #28a745;">';
+                    html += `<strong>PFAS Group:</strong> ${group.id}. ${group.name}`;
+                    if (group.definition) {
+                        html += `<br><strong>Definition:</strong> ${group.definition}`;
+                    }
+                    html += '</div>';
+                }
             }
 
             // Input information

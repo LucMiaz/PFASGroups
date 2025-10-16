@@ -203,7 +203,7 @@
     "base_functional_groups":[],
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[#6X3$([#6]=[#6])]",
-    "smarts2":"[#6X4$([#6]F)]",
+    "smarts2":null,
     "smartsPath":null,
     "constraints":{"gte":{"F":1}, "lte":{}, "eq":{}, "only":["C","F","H"]}
 },

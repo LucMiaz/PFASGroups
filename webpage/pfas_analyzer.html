@@ -2576,7 +2576,7 @@ GenX,C(C(C(OC(...))O,13252-13-6,PFECA
                     "main_group":"other PFAS",
                     "smarts1":"[#6X4$([#6]a)]",
                     "smarts2":null,
-                    "smartsPath":"per",
+                    "smartsPath":null,
                     "constraints":{}
                 },
                 {
@@ -3283,7 +3283,8 @@ GenX,C(C(C(OC(...))O,13252-13-6,PFECA
                     
                     for (const match2 of smartsMatches2) {
                         // Avoid self-matching (unless smarts1 and smarts2 are different)
-                        if (match1 !== match2 || smarts1.get_inchi !== smarts2Pattern.get_inchi) {
+                        console.log(`  Checking path from ${smarts1} to ${smarts2Pattern}`);
+                        if (match1 !== match2 || smarts1 !== smarts2Pattern) {
                             const pathIndices = dijkstraShortestPath(graph, match1, match2);
                             
                             if (pathIndices && pathIndices.length > 0) {
