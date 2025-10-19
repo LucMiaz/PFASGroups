@@ -4,11 +4,15 @@ Test cases for PFASgroups based on example generation scripts.
 This module provides comprehensive test generation for both OECD-defined and generic PFAS groups,
 combining functionality from generate_OECD_pfas_examples.py and generate_generic_pfas_examples.py.
 """
-
+from rich import print
 import sys
 import os
 import csv
 import json
+from rdkit import RDLogger
+
+# Silence RDKit warnings
+RDLogger.DisableLog('rdApp.*')
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -150,7 +154,7 @@ TEST_SUMMARY_DATA = {
     'test_end_time': None
 }
 
-def generate_test_summary(output_file='test_summary_report.json'):
+def generate_test_summary(output_file=f'{tests_folder}/results/test_summary_report.json'):
     """
     Generate a comprehensive test summary report with accuracy and specificity metrics.
     
@@ -480,7 +484,7 @@ class TestPFASGroups:
         except Exception as e:
             print(f"Specificity tests: FAILED - {e}")
             specificity_result = False
-        
+    
         overall_result = oecd_result and generic_result and specificity_result
         
         # Generate summary for manual runs
@@ -575,14 +579,18 @@ def load_graph_from_json(filename):
         Gper.add_node(source)
         Gper.add_node(target)
         # Add edge with type information
-        G.add_edge(source, target, edge_type=edge_type)
-    
+        G.add_edge(source, target)
+        if edge_type == 'per':
+            Gper.add_edge(source, target)
+        elif edge_type == 'poly':
+            G.add_edge(source, target)
     return G, Gper
     
 
 def load_equivalent_groups_from_json(json_file=f'{tests_folder}/specificity_test_groups.json'):
     """
     Load equivalent groups from the JSON file structure (now in list format).
+    Explore the directed graph to find all descendants for each source node.
     
     Args:
         json_file: Path to the JSON file containing the edge list structure
@@ -599,6 +607,7 @@ def load_equivalent_groups_from_json(json_file=f'{tests_folder}/specificity_test
         perdescendants = nx.descendants(Gper, source)
         for target in descendants:
             equivalent_groups.append([target, source, 'Polyfluoroalkyl'])
+            equivalent_groups.append([target, source, 'Perfluoroalkyl'])
         for target in perdescendants:
             equivalent_groups.append([target, source, 'Perfluoroalkyl'])
     return equivalent_groups
@@ -666,9 +675,10 @@ def create_specificity_test_molecules():
     Returns a DataFrame with expected group matches.
     """
     
-    # Define simple test molecules for each PFAS group
+    # Define test molecules for each PFAS group
     # These are designed to be unambiguous and should match only their target group(s)
-    BASE_CHAINS = ['CCCC','CCCCC','CC(C)(C)C','CC(C)CC','CC(C)(C)CC','CC(C)(C)C(C)C','CCCCCC','CCC(C)(C)C(C)(C)CC']
+    # Start with defining base carbon chains (no cycles, no double/triple bonds) with lengths 5-15 and up to 3 replicates for each length (randomly occuring duplicates are discarded)
+    BASE_CHAINS = list(set([Chem.MolToSmiles(generate_random_carbon_chain(i,cycle = False, alkene=False, alkyne = False)) for i in [j for j in range(5,16) for _ in range(3)]]))
 
     test_results = []
     F_CHAINS = [fluorinate_mol(Chem.MolFromSmiles(chain), perfluorinated=True, p=1.0) for chain in BASE_CHAINS]
@@ -761,44 +771,6 @@ def create_specificity_test_molecules():
                                 atom_indices=atom_indices_for_template,
                                 neighbor_atoms=['F','H'] if mode=='attach' else ['C'],
                                 sanitize=False)
-                
-                # Debug output for multi-functional groups
-                if isinstance(template.get('n'), int) and template.get('n') > 1:
-                    print(f"DEBUG: Group {group_id} ({group_name}) - attaching {n_groups} {template['group_smiles']} groups")
-                if group_id == 16:  # Debug Perfluoropolyethers specifically
-                    print(f"DEBUG: Group 16 - mode={mode}, n_groups={n_groups}, pathtype={pathtype}")
-                    print(f"DEBUG: Group 16 - atom_indices_for_template length: {len(atom_indices_for_template)}")
-                    if len(atom_indices_for_template) > 0:
-                        print(f"DEBUG: Group 16 - first indices: {atom_indices_for_template[0]}")
-                    else:
-                        print(f"DEBUG: Group 16 - NO ATOM INDICES AVAILABLE!")
-                        print(f"DEBUG: Group 16 - available insert points: {len(atoms_indices[0].get('insert', []))}")
-                        print(f"DEBUG: Group 16 - available insert_per points: {len(atoms_indices[0].get('insert_per', []))}")
-                        # Try to use any available indices as fallback
-                        all_indices = atoms_indices[0].get('insert', []) + atoms_indices[0].get('insert_per', [])
-                        if len(all_indices) >= 4:  # Need at least 4 points for 2 ether insertions
-                            atom_indices_for_template = [all_indices[:2], all_indices[2:4]]
-                            print(f"DEBUG: Group 16 - using fallback indices: {atom_indices_for_template}")
-                        else:
-                            print(f"DEBUG: Group 16 - skipping, not enough indices available: {len(all_indices)}")
-                            continue  # Skip this group if no indices available
-                if group_id == 17:  # Debug Hydrofluoroethers specifically
-                    print(f"DEBUG: Group 17 - mode={mode}, n_groups={n_groups}, pathtype={pathtype}")
-                    print(f"DEBUG: Group 17 - atom_indices_for_template length: {len(atom_indices_for_template)}")
-                    if len(atom_indices_for_template) > 0:
-                        print(f"DEBUG: Group 17 - first indices: {atom_indices_for_template[0]}")
-                    else:
-                        print(f"DEBUG: Group 17 - NO ATOM INDICES AVAILABLE!")
-                        print(f"DEBUG: Group 17 - available insert points: {len(atoms_indices[0].get('insert', []))}")
-                        print(f"DEBUG: Group 17 - available insert_per points: {len(atoms_indices[0].get('insert_per', []))}")
-                        # Try to use any available indices as fallback
-                        all_indices = atoms_indices[0].get('insert', []) + atoms_indices[0].get('insert_per', [])
-                        if len(all_indices) >= 2:
-                            atom_indices_for_template = [all_indices[:2]]
-                            print(f"DEBUG: Group 17 - using fallback indices: {atom_indices_for_template[0]}")
-                        else:
-                            continue  # Skip this group if no indices available
-
             if mol is None:
                     continue   
             inchi = Chem.MolToInchi(mol)
@@ -837,22 +809,26 @@ def create_specificity_test_molecules():
     equivalent_groups = load_equivalent_groups_from_json(f'{tests_folder}/specificity_test_groups.json')
     
     # Process equivalent groups and add corresponding test results
-    # Note: equivalent_groups now contains IDs, not names
     for x_id, y_id, pathtype in equivalent_groups:
+        ## Process both Polyfluoroalkyl and Perfluoroalkyl relationships
+        ## For perfluoroalkyl groups (like diacids), we also need to add their parent groups
         if x_id is not None and y_id is not None:
             # Find all test results with group_id x and add them as group_id y
             for origin, group_id, smiles, inchi, formula, inchikey, result_pathtype in test_results:
-                if group_id == x_id and result_pathtype == pathtype:
-                    test_results.append((origin,y_id, smiles, inchi, formula, inchikey, pathtype))
+                # Only add the parent group if the pathtype matches or if result is perfluoroalkyl
+                # (perfluoroalkyl molecules can match both per and poly parent groups)
+                if group_id == x_id and (pathtype == result_pathtype or result_pathtype == 'Perfluoroalkyl'):
+                    # Keep the original molecule's pathtype, not the relationship pathtype
+                    test_results.append((origin,y_id, smiles, inchi, formula, inchikey, result_pathtype))
     specificity_test_molecules = pd.DataFrame(test_results, columns=['origin','group_ids','smiles','inchi','formula','inchikey','pathtype'])
     specificity_test_molecules = specificity_test_molecules.groupby(['inchi','inchikey','formula','pathtype']).agg({
         'group_ids': lambda x: sorted(set([int(y) for y in x])),
         'smiles': 'first',
-        'origin':lambda x: ", ".join([str(y) for y in x])
+        'origin':lambda x: ", ".join([str(y) for y in set(x)])
     }).reset_index()
     return specificity_test_molecules
 
-def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/specificity_test_results.csv', verbose=True):
+def df_test_pfas_group_specificity(test_molecules=None, output_file=f'{tests_folder}/results/specificity_test_results.csv', verbose=True):
     """
     Test the specificity of each PFAS group by using simple, unambiguous test molecules.
     
@@ -867,7 +843,6 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
     print("Testing PFAS group specificity...")
     if test_molecules is None:
         test_molecules = create_specificity_test_molecules()
-    print(test_molecules.head())
     results = []
     for i,(inchi, inchikey, formula, pathtype, group_ids,smiles,origin) in test_molecules.iterrows():
         try:
@@ -881,6 +856,7 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
                     'smiles': None,
                     'valid_smiles': False,
                     'expected_group_detected': False,
+                    'expected_groups': [],
                     'detected_groups': [],
                     'n_detected_groups': 0,
                     'is_specific': False,
@@ -909,6 +885,7 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file='tests/speci
                 'inchi':inchi,
                 'valid_smiles': True,
                 'expected_group_detected': expected_group_detected,
+                'expected_groups': [group_ids],
                 'detected_groups': detected_groups,
                 'n_detected_groups': n_detected_groups,
                 'is_specific': is_specific,
@@ -1059,7 +1036,7 @@ def analyze_group_overlap(specificity_results):
         'common_overlaps': common_overlaps
     }
 
-def generate_oecd_test_compounds(output_file='tests/oecd_test_compounds.csv', n_compounds_per_group=10):
+def generate_oecd_test_compounds(output_file=f'{tests_folder}/results/oecd_test_compounds.csv', n_compounds_per_group=10):
     """Generate comprehensive test dataset for OECD PFAS groups."""
     with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
@@ -1083,7 +1060,7 @@ def generate_oecd_test_compounds(output_file='tests/oecd_test_compounds.csv', n_
     
     print(f'OECD test compounds generated in {output_file}')
 
-def generate_generic_test_compounds(output_file='tests/generic_test_compounds.csv', n_compounds_per_group=10):
+def generate_generic_test_compounds(output_file=f'{tests_folder}/results/generic_test_compounds.csv', n_compounds_per_group=10):
     """Generate comprehensive test dataset for generic PFAS groups."""
     with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
