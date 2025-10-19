@@ -16,8 +16,8 @@ def load_graph_from_json(filename):
     
     # Process each edge in the list
     for edge_data in data:
-        source = edge_data['target']
-        target = edge_data['source']
+        source = edge_data['source']
+        target = edge_data['target']
         edge_type = edge_data['edge_type']
         
         # Add nodes if they don't exist
@@ -25,8 +25,11 @@ def load_graph_from_json(filename):
         G.add_node(target)
         
         # Add edge with type information
-        G.add_edge(source, target, edge_type=edge_type)
-    
+        G.add_edge(source, target, edge_type="oneway")
+        if edge_type == 'poly':
+            G.add_edge(target, source, edge_type='poly')
+        elif edge_type == 'per':
+            G.add_edge(target, source, edge_type='per')
     return G
 
 def visualize_graph(G, title="PFAS Groups Network"):
@@ -39,52 +42,51 @@ def visualize_graph(G, title="PFAS Groups Network"):
     except:
         # Fallback to spring layout if graphviz is not available
         print("Graphviz not available, using spring layout...")
-        pos = nx.spring_layout(G, k=3, iterations=50, seed=42)
+        pos = nx.spring_layout(G, k=4, iterations=50, seed=40)
     
     # Separate edges by type for different styling
     per_edges = [(u, v) for u, v, d in G.edges(data=True) if d.get('edge_type') == 'per']
     poly_edges = [(u, v) for u, v, d in G.edges(data=True) if d.get('edge_type') == 'poly']
-    both_edges = [(u, v) for u, v, d in G.edges(data=True) if d.get('edge_type') == 'both']
+    oneway_edges = [(u, v) for u, v, d in G.edges(data=True) if d.get('edge_type') == 'oneway']
     
     # Draw edges with different colors and styles based on type
     if per_edges:
-        nx.draw_networkx_edges(G, pos, edgelist=per_edges, edge_color='red', 
-                              arrows=True, arrowsize=15, arrowstyle='->', 
-                              alpha=0.7, width=2, style='solid', label='Perfluorinated')
+        nx.draw_networkx_edges(G, pos, edgelist=per_edges, edge_color='#01665e', 
+                      arrows=True, arrowsize=15, arrowstyle='->', 
+                      alpha=0.7, width=2, style='dashed', connectionstyle='arc3,rad=0.1',
+                      label='Co-occurs if perfluorinated')
     
     if poly_edges:
-        nx.draw_networkx_edges(G, pos, edgelist=poly_edges, edge_color='blue', 
-                              arrows=True, arrowsize=15, arrowstyle='->', 
-                              alpha=0.7, width=2, style='dashed', label='Polyfluorinated')
-    
-    if both_edges:
-        nx.draw_networkx_edges(G, pos, edgelist=both_edges, edge_color='green', 
-                              arrows=True, arrowsize=15, arrowstyle='->', 
-                              alpha=0.6, width=1.5, style='dashed', label='Both')
+        nx.draw_networkx_edges(G, pos, edgelist=poly_edges, edge_color='#8c510a', 
+                              arrows=True, arrowsize=15, arrowstyle='->', connectionstyle='arc3,rad=0.1',
+                              alpha=0.7, width=2, style='dashed', label='Co-occurs if polyfluorinated')
+    if oneway_edges:
+        nx.draw_networkx_edges(G, pos, edgelist=poly_edges, edge_color='#8c510a', 
+                              arrows=True, arrowsize=15, arrowstyle='->', connectionstyle='arc3,rad=0.1',
+                              alpha=0.7, width=2, style='solid', label='Co-occurs with')
     
     # Categorize nodes by their characteristics for coloring
     node_colors = []
     node_sizes = []
-    
     for node in G.nodes():
         # Color nodes based on their names
         if 'Perfluoro' in node:
-            node_colors.append('#FF6B6B')  # Red for perfluoro compounds
+            node_colors.append('#b3e2cd')  # Red for perfluoro compounds
             node_sizes.append(800)
         elif 'Polyfluoro' in node:
-            node_colors.append('#4ECDC4')  # Teal for polyfluoro compounds
+            node_colors.append('#fdcdac')  # Teal for polyfluoro compounds
             node_sizes.append(700)
         elif 'acid' in node.lower():
-            node_colors.append('#45B7D1')  # Blue for acids
+            node_colors.append('#cbd5e8')  # Blue for acids
             node_sizes.append(600)
         elif 'alcohol' in node.lower():
-            node_colors.append('#96CEB4')  # Green for alcohols
+            node_colors.append('#f4cae4')  # Green for alcohols
             node_sizes.append(600)
         elif 'ether' in node.lower():
-            node_colors.append('#FFEAA7')  # Yellow for ethers
+            node_colors.append('#e6f5c9')  # Yellow for ethers
             node_sizes.append(600)
         else:
-            node_colors.append('#DDA0DD')  # Purple for others
+            node_colors.append('#fff2ae')  # Purple for others
             node_sizes.append(500)
     
     # Draw nodes
@@ -105,7 +107,7 @@ def visualize_graph(G, title="PFAS Groups Network"):
         else:
             labels[node] = node
     
-    nx.draw_networkx_labels(G, pos, labels, font_size=8, font_weight='bold')
+    nx.draw_networkx_labels(G, pos, labels, font_size=12)
     
     plt.title(title, fontsize=16, fontweight='bold', pad=20)
     plt.axis('off')
@@ -114,16 +116,16 @@ def visualize_graph(G, title="PFAS Groups Network"):
     # Add comprehensive legend
     legend_elements = [
         # Node types
-        plt.scatter([], [], c='#FF6B6B', s=100, label='Perfluoro compounds', marker='o'),
-        plt.scatter([], [], c='#4ECDC4', s=100, label='Polyfluoro compounds', marker='o'),
-        plt.scatter([], [], c='#45B7D1', s=100, label='Acids', marker='o'),
-        plt.scatter([], [], c='#96CEB4', s=100, label='Alcohols', marker='o'),
-        plt.scatter([], [], c='#FFEAA7', s=100, label='Ethers', marker='o'),
-        plt.scatter([], [], c='#DDA0DD', s=100, label='Other compounds', marker='o'),
+        plt.scatter([], [], c='#b3e2cd', s=100, label='Perfluoro compounds', marker='o'),
+        plt.scatter([], [], c='#fdcdac', s=100, label='Polyfluoro compounds', marker='o'),
+        plt.scatter([], [], c='#cbd5e8', s=100, label='Acids', marker='o'),
+        plt.scatter([], [], c='#f4cae4', s=100, label='Alcohols', marker='o'),
+        plt.scatter([], [], c='#e6f5c9', s=100, label='Ethers', marker='o'),
+        plt.scatter([], [], c='#fff2ae', s=100, label='Other compounds', marker='o'),
         # Edge types
-        plt.Line2D([0], [0], color='red', linewidth=2, linestyle='-', label='Perfluorinated edge'),
-        plt.Line2D([0], [0], color='blue', linewidth=2, linestyle='--', label='Polyfluorinated edge'),
-        plt.Line2D([0], [0], color='gray', linewidth=1.5, linestyle=':', label='Both types edge')
+        plt.Line2D([0], [0], color='#8c510a', linewidth=2, linestyle='-', label='Co-occurs'),
+        plt.Line2D([0], [0], color='#01665e', linewidth=2, linestyle='--', label='Co-occurs if perfluorinated'),
+        plt.Line2D([0], [0], color='#8c510a', linewidth=2, linestyle='--', label='Co-occurs if polyfluorinated'),
     ]
     plt.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1, 1))
     
