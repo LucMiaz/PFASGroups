@@ -3535,7 +3535,7 @@ GenX,C(C(C(OC(...))O,13252-13-6,PFECA
                     formulaDict = parseFormula(formulaString);
                     console.log('Using provided formula:', formulaString, '| Dict:', formulaDict);
                 } else {
-                    // Method 1: Try get_mol_formula if available (RDKit.js includes implicit H)
+                    // Method 1: Try get_mol_formula if available (not found in RDKit.js)
                     try {
                         if (mol.get_mol_formula) {
                             formulaString = mol.get_mol_formula();
