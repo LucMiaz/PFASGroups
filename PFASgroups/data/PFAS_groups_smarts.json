@@ -345,7 +345,7 @@
     "id":32,
     "base_functional_groups":["ester"],
     "main_group":"other perfluorinated compound",
-    "smarts1":"[#6X4$([#6][#6](=O)O[#6,#7,#9,#15,#16,#17,#34,#35,#53]),#6X4$([#6]O[#6](=O)[#6,#7,#9,#15,#16,#17,#34,#35,#53])]",
+    "smarts1":"[#6X4$([#6][#6](=O)O[#6]),#6X4$([#6]O[#6](=O)[#6])]",
     "smarts2":null,
     "smartsPath":null,
     "constraints":{}
@@ -472,8 +472,8 @@
     "constraints":{}
 },
 {
-    "name":"azole",
-    "alias":"azole",
+    "name":"Heterocyclic azole",
+    "alias":"heterocyclic azole",
     "id":44,
     "base_functional_groups":["azole"],
     "main_group":"other perfluorinated compound",
@@ -484,8 +484,8 @@
     "definition":"Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American Heritage® Dictionary of the English Language, 5th Edition)"
 },
 {
-    "name":"azine",
-    "alias":"azine",
+    "name":"Heterocyclic azine",
+    "alias":"heterocyclic azine",
     "id":45,
     "base_functional_groups":["azine"],
     "main_group":"other perfluorinated compound",
