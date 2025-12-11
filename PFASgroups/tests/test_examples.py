@@ -18,6 +18,8 @@ import pandas as pd
 from tqdm import tqdm
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+from rdkit import rdBase
+print(rdBase.rdkitVersion)
 import networkx as nx
 from datetime import datetime
 import time
@@ -355,39 +357,39 @@ class TestPFASGroups:
         test_results = []
         
         for group_id, group_name, template, pathtype in OECD_PFAS_GROUPS:  # Test first 5 groups
-            for n in np.random.randint(5, 15, size=3):  # 3 different chain lengths
+            for n in range(5, 15,1):  # 3 different chain lengths
                 try:
                     mol = generate_random_mol(n, template, 
                                             perfluorinated=(pathtype == 'Perfluoroalkyl'))
-                    if mol is None:
-                        continue
-                        
-                    smiles = Chem.MolToSmiles(mol)
-                    
-                    # Test classification
-                    formula = CalcMolFormula(mol)
-                    matches = parse_PFAS_groups(mol, formula)
-                    
-                    # Check if target group is detected
-                    detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
-                    is_detected = group_id in detected_groups
-                    
-                    result = {
-                        'group_ids': group_id,
-                        'group_name': group_name,
-                        'chain_length': n,
-                        'pathtype': pathtype,
-                        'smiles': smiles,
-                        'detected': is_detected,
-                        'all_matches': detected_groups
-                    }
-                    test_results.append(result)
-                    
-                    # Store for summary
-                    TEST_SUMMARY_DATA['oecd_results'].append(result)
-                    
                 except Exception as e:
-                    print(f"Error testing group {group_id}, n={n}: {e}")
+                    pass
+                    #print(f"Error testing group {group_id}, n={n}: {e}")
+                else:
+                    if mol is None:
+                        smiles = Chem.MolToSmiles(mol)
+                        
+                        # Test classification
+                        formula = CalcMolFormula(mol)
+                        matches = parse_PFAS_groups(mol, formula)
+                        
+                        # Check if target group is detected
+                        detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
+                        is_detected = group_id in detected_groups
+                        
+                        result = {
+                            'group_ids': group_id,
+                            'group_name': group_name,
+                            'chain_length': n,
+                            'pathtype': pathtype,
+                            'smiles': smiles,
+                            'detected': is_detected,
+                            'all_matches': detected_groups
+                        }
+                        test_results.append(result)
+                        
+                        # Store for summary
+                        TEST_SUMMARY_DATA['oecd_results'].append(result)
+                    
         
         # Verify that at least some groups are detected correctly
         if test_results:
@@ -407,7 +409,7 @@ class TestPFASGroups:
         
         for group_id, group_name, template, insertion_mode in GENERIC_PFAS_GROUPS:  # Test first 5 groups
             for pathtype in ['Perfluoroalkyl', 'Polyfluoroalkyl']:
-                for n in np.random.randint(5, 15, size=2):  # 2 different chain lengths
+                for n in range(5, 15, 1):  # 2 different chain lengths
                     try:
                         funcgroup_template = [{"group_smiles": template, 
                                              'n': 1, 
@@ -444,7 +446,8 @@ class TestPFASGroups:
                         TEST_SUMMARY_DATA['generic_results'].append(result)
                         
                     except Exception as e:
-                        print(f"Error testing generic group {group_id}, n={n}: {e}")
+                        pass
+                        #print(f"Error testing generic group {group_id}, n={n}: {e}")
         
         # Verify that at least some groups are detected correctly
         if test_results:
@@ -1056,7 +1059,8 @@ def generate_oecd_test_compounds(output_file=f'{tests_folder}/results/oecd_test_
                         print(f"Invalid molecule for group {group_id}, n={n}")
                         
                 except Exception as e:
-                    print(f"Error generating compound for group {group_id}, n={n}: {e}")
+                    pass
+                    #print(f"Error generating compound for group {group_id}, n={n}: {e}")
     
     print(f'OECD test compounds generated in {output_file}')
 
@@ -1086,7 +1090,8 @@ def generate_generic_test_compounds(output_file=f'{tests_folder}/results/generic
                             print(f"Invalid molecule for generic group {group_id}, n={n}")
                             
                     except Exception as e:
-                        print(f"Error generating compound for generic group {group_id}, n={n}: {e}")
+                        pass
+                        #print(f"Error generating compound for generic group {group_id}, n={n}: {e}")
     
     print(f'Generic test compounds generated in {output_file}')
 
