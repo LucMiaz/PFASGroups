@@ -44,45 +44,6 @@ def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False):
     Chem.SanitizeMol(m2)
     return m2
 
-def attach_mol(mol, submol, atom_index):
-    """Insert a submolecule into a molecule at a specific atom index on mol
-    attach at index 0 on submol."""
-    rwm = Chem.RWMol(mol)
-    submol_index = rwm.GetNumAtoms() # index of the first atom in the submol
-    rwm.InsertMol(submol)
-    rwm.BeginBatchEdit() # start a batch
-    atom = rwm.GetAtomWithIdx(atom_index)
-    # choose random neighbor atom (either 'F' or 'H') to remove
-    neighbors = [x.GetIdx() for x in atom.GetNeighbors() if x.GetSymbol() in ['F', 'H']]
-    atom_to_remove = int(np.random.choice(neighbors))
-    rwm.RemoveBond(atom_index, atom_to_remove)
-    rwm.RemoveAtom(atom_to_remove)  # remove the atom
-    rwm.AddBond(atom_index, submol_index, Chem.BondType.SINGLE)
-    rwm.CommitBatchEdit()  # finish the batch
-    Chem.SanitizeMol(rwm)
-    return rwm.GetMol()
-
-def insert_mol(mol, group_mol, atom_index, neighbor_index):
-    """Insert a submolecule into a molecule between two bonded atoms."""
-    rwm = Chem.RWMol(mol)
-    submol_index = rwm.GetNumAtoms() # index of the first atom in the submol
-    rwm.BeginBatchEdit() # start a batch
-    # Get the atoms to be replaced
-    atom1 = rwm.GetAtomWithIdx(atom_index)
-    atom2 = rwm.GetAtomWithIdx(neighbor_index)
-    # Remove the existing bond between the two atoms
-    rwm.RemoveBond(atom1.GetIdx(), atom2.GetIdx())
-    # Insert the submolecule
-    rwm.InsertMol(group_mol)
-    # Add bonds from the functional group to the original atoms
-    rwm.AddBond(atom1.GetIdx(), submol_index, Chem.BondType.SINGLE)
-    end_atom_index = rwm.GetNumAtoms()-1
-    while rwm.GetAtoms()[end_atom_index].GetImplicitValence() == 0:
-        end_atom_index -= 1
-    rwm.AddBond(atom2.GetIdx(), end_atom_index, Chem.BondType.SINGLE)
-    rwm.CommitBatchEdit()  # finish the batch
-    return rwm.GetMol()
-
 def get_attachment(mol, m, atom_symbols = ['C'], neighbors_symbols = {'C':['F','H']}):
     """Find the first atom in the main molecule to attach the functional group"""
     candidates = []
@@ -149,10 +110,14 @@ def insert_mol(mol, group_mol, atom_index, neighbor_index):
     # Add bonds from the functional group to the original atoms
     rwm.AddBond(atom1.GetIdx(), submol_index, Chem.BondType.SINGLE)
     end_atom_index = rwm.GetNumAtoms()-1
-    while rwm.GetAtoms()[end_atom_index].GetImplicitValence() == 0:
-        end_atom_index -= 1
+    try:
+        while rwm.GetAtoms()[end_atom_index].GetImplicitValence() == 0:
+            end_atom_index -= 1
+    except:
+        pass
     rwm.AddBond(atom2.GetIdx(), end_atom_index, Chem.BondType.SINGLE)
     rwm.CommitBatchEdit()  # finish the batch
+    Chem.SanitizeMol(rwm)
     return rwm.GetMol()
 
 def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error = False):
