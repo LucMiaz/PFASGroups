@@ -1,228 +1,551 @@
 {
   "test_metadata": {
-    "timestamp": "2025-12-11T14:16:05.634992",
-    "test_start_time": "2025-12-11T14:15:45.438801",
-    "test_end_time": "2025-12-11T14:16:05.634942",
-    "test_duration_seconds": 20.196141,
+    "timestamp": "2025-12-12T01:13:50.759754",
+    "test_start_time": "2025-12-12T01:11:35.293720",
+    "test_end_time": "2025-12-12T01:13:50.759719",
+    "test_duration_seconds": 135.465999,
     "python_version": "3.14.2 | packaged by conda-forge | (main, Dec  6 2025, 11:17:27) [MSC v.1944 64 bit (AMD64)]",
     "rdkit_available": true,
-    "pytest_available": false
+    "pytest_available": true
   },
-  "oecd_test_results": {},
+  "oecd_test_results": {
+    "total_tests": 838,
+    "successful_detections": 834,
+    "overall_detection_rate": 0.995,
+    "group_wise_results": [
+      {
+        "group_ids": 1,
+        "total_tests": 29,
+        "successful_detections": 29,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl carboxylic acids"
+      },
+      {
+        "group_ids": 2,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Polyfluoroalkyl carboxylic acid"
+      },
+      {
+        "group_ids": 3,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl dicarboxylic acids"
+      },
+      {
+        "group_ids": 4,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkylether carboxylic acids"
+      },
+      {
+        "group_ids": 5,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Polyfluoroalkylether carboxylic acid"
+      },
+      {
+        "group_ids": 6,
+        "total_tests": 29,
+        "successful_detections": 29,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl sulfonic acids"
+      },
+      {
+        "group_ids": 7,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Polyfluoroalkyl sulfonic acid"
+      },
+      {
+        "group_ids": 8,
+        "total_tests": 30,
+        "successful_detections": 26,
+        "detection_rate": 0.867,
+        "group_name": "Perfluoroalkyl disulfonic acids"
+      },
+      {
+        "group_ids": 9,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkylether sulfonic acids"
+      },
+      {
+        "group_ids": 10,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Polyfluoroalkylether sulfonic acid"
+      },
+      {
+        "group_ids": 11,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl sulfinic acids"
+      },
+      {
+        "group_ids": 12,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl phosphonic acids"
+      },
+      {
+        "group_ids": 13,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl phosphinic acids"
+      },
+      {
+        "group_ids": 14,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl alcohols"
+      },
+      {
+        "group_ids": 15,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "fluorotelomer alcohols"
+      },
+      {
+        "group_ids": 16,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoropolyethers"
+      },
+      {
+        "group_ids": 17,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Hydrofluoroethers"
+      },
+      {
+        "group_ids": 18,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkene"
+      },
+      {
+        "group_ids": 19,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Hydrofluoroolefins"
+      },
+      {
+        "group_ids": 20,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Hydrofluorocarbons"
+      },
+      {
+        "group_ids": 21,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Semi-fluorinated alkanes"
+      },
+      {
+        "group_ids": 22,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Side-chain fluorinated aromatics"
+      },
+      {
+        "group_ids": 23,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkane"
+      },
+      {
+        "group_ids": 24,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl-tert-amines"
+      },
+      {
+        "group_ids": 25,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl iodides"
+      },
+      {
+        "group_ids": 26,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkane sulfonyl fluorides"
+      },
+      {
+        "group_ids": 27,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl ketones"
+      },
+      {
+        "group_ids": 28,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Semi-fluoroalkyl ketones"
+      }
+    ],
+    "worst_performing_groups": [
+      {
+        "group_ids": 8,
+        "total_tests": 30,
+        "successful_detections": 26,
+        "detection_rate": 0.867,
+        "group_name": "Perfluoroalkyl disulfonic acids"
+      },
+      {
+        "group_ids": 1,
+        "total_tests": 29,
+        "successful_detections": 29,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl carboxylic acids"
+      },
+      {
+        "group_ids": 2,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Polyfluoroalkyl carboxylic acid"
+      },
+      {
+        "group_ids": 3,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl dicarboxylic acids"
+      },
+      {
+        "group_ids": 4,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkylether carboxylic acids"
+      }
+    ],
+    "best_performing_groups": [
+      {
+        "group_ids": 1,
+        "total_tests": 29,
+        "successful_detections": 29,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl carboxylic acids"
+      },
+      {
+        "group_ids": 2,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Polyfluoroalkyl carboxylic acid"
+      },
+      {
+        "group_ids": 3,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkyl dicarboxylic acids"
+      },
+      {
+        "group_ids": 4,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Perfluoroalkylether carboxylic acids"
+      },
+      {
+        "group_ids": 5,
+        "total_tests": 30,
+        "successful_detections": 30,
+        "detection_rate": 1.0,
+        "group_name": "Polyfluoroalkylether carboxylic acid"
+      }
+    ]
+  },
   "generic_test_results": {
-    "total_tests": 360,
-    "successful_detections": 360,
-    "overall_detection_rate": 1.0,
+    "total_tests": 920,
+    "successful_detections": 919,
+    "overall_detection_rate": 0.999,
     "group_wise_results": [
       {
         "group_ids": 29,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "alcohol"
       },
       {
+        "group_ids": 30,
+        "total_tests": 40,
+        "successful_detections": 40,
+        "detection_rate": 1.0,
+        "group_name": "ketone"
+      },
+      {
+        "group_ids": 31,
+        "total_tests": 40,
+        "successful_detections": 40,
+        "detection_rate": 1.0,
+        "group_name": "ether"
+      },
+      {
         "group_ids": 32,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "ester"
       },
       {
         "group_ids": 33,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "carboxylic acid"
       },
       {
         "group_ids": 34,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "amide"
       },
       {
         "group_ids": 35,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "acyl halide"
       },
       {
         "group_ids": 36,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "sulfonic acid"
       },
       {
         "group_ids": 37,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "sulfenic acid"
       },
       {
         "group_ids": 38,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "sulfinic acid"
       },
       {
         "group_ids": 39,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "phosphonic acid"
       },
       {
         "group_ids": 40,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "phosphinic acid"
       },
       {
         "group_ids": 41,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "ethene"
       },
       {
+        "group_ids": 42,
+        "total_tests": 40,
+        "successful_detections": 40,
+        "detection_rate": 1.0,
+        "group_name": "iodide"
+      },
+      {
         "group_ids": 43,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "sulfonamide"
       },
       {
         "group_ids": 44,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "azole"
       },
       {
         "group_ids": 45,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "azine"
       },
       {
         "group_ids": 46,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "benzodioxole"
       },
       {
+        "group_ids": 47,
+        "total_tests": 40,
+        "successful_detections": 40,
+        "detection_rate": 1.0,
+        "group_name": "amine"
+      },
+      {
+        "group_ids": 48,
+        "total_tests": 40,
+        "successful_detections": 39,
+        "detection_rate": 0.975,
+        "group_name": "alkane"
+      },
+      {
         "group_ids": 49,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "alkene"
       },
       {
         "group_ids": 50,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "alkyne"
       },
       {
         "group_ids": 51,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "Side-chain aromatics"
       }
     ],
     "worst_performing_groups": [
       {
+        "group_ids": 48,
+        "total_tests": 40,
+        "successful_detections": 39,
+        "detection_rate": 0.975,
+        "group_name": "alkane"
+      },
+      {
         "group_ids": 29,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "alcohol"
       },
       {
+        "group_ids": 30,
+        "total_tests": 40,
+        "successful_detections": 40,
+        "detection_rate": 1.0,
+        "group_name": "ketone"
+      },
+      {
+        "group_ids": 31,
+        "total_tests": 40,
+        "successful_detections": 40,
+        "detection_rate": 1.0,
+        "group_name": "ether"
+      },
+      {
         "group_ids": 32,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "ester"
-      },
-      {
-        "group_ids": 33,
-        "total_tests": 20,
-        "successful_detections": 20,
-        "detection_rate": 1.0,
-        "group_name": "carboxylic acid"
-      },
-      {
-        "group_ids": 34,
-        "total_tests": 20,
-        "successful_detections": 20,
-        "detection_rate": 1.0,
-        "group_name": "amide"
-      },
-      {
-        "group_ids": 35,
-        "total_tests": 20,
-        "successful_detections": 20,
-        "detection_rate": 1.0,
-        "group_name": "acyl halide"
       }
     ],
     "best_performing_groups": [
       {
         "group_ids": 29,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "alcohol"
       },
       {
+        "group_ids": 30,
+        "total_tests": 40,
+        "successful_detections": 40,
+        "detection_rate": 1.0,
+        "group_name": "ketone"
+      },
+      {
+        "group_ids": 31,
+        "total_tests": 40,
+        "successful_detections": 40,
+        "detection_rate": 1.0,
+        "group_name": "ether"
+      },
+      {
         "group_ids": 32,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "ester"
       },
       {
         "group_ids": 33,
-        "total_tests": 20,
-        "successful_detections": 20,
+        "total_tests": 40,
+        "successful_detections": 40,
         "detection_rate": 1.0,
         "group_name": "carboxylic acid"
-      },
-      {
-        "group_ids": 34,
-        "total_tests": 20,
-        "successful_detections": 20,
-        "detection_rate": 1.0,
-        "group_name": "amide"
-      },
-      {
-        "group_ids": 35,
-        "total_tests": 20,
-        "successful_detections": 20,
-        "detection_rate": 1.0,
-        "group_name": "acyl halide"
       }
     ]
   },
-  "specificity_test_results": {},
+  "specificity_test_results": {
+    "total_tests": 1832,
+    "detection_rate": 0.973,
+    "specificity_rate": 0.463,
+    "average_detected_groups_per_test": 3.25,
+    "failed_detection_cases": 50,
+    "failed_specificity_cases": 983,
+    "specificity_details": {
+      "tests_with_exact_match": 45,
+      "tests_with_multiple_matches": 1787,
+      "tests_with_no_matches": 0
+    }
+  },
   "overall_summary": {
-    "total_tests_run": 360,
-    "total_successful_detections": 360,
-    "overall_accuracy": 1.0,
-    "specificity_rate": 0,
-    "detection_rate": 0,
+    "total_tests_run": 1758,
+    "total_successful_detections": 1753,
+    "overall_accuracy": 0.997,
+    "specificity_rate": 0.463,
+    "detection_rate": 0.973,
     "test_status": "FAILED"
   }
 }

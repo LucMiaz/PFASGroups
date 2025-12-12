@@ -105,11 +105,10 @@ OECD_PFAS_GROUPS = [
     (17, "Hydrofluoroethers", [{"group_smiles":"O", 'n':"[1,5]", 'mode':'insert'}], 'Polyfluoroalkyl'),
     (18, "Perfluoroalkene", [{"group_smiles":"C(F)=C(F)", 'n':1, 'mode':'insert'}], 'Perfluoroalkyl'),
     (19, "Hydrofluoroolefins", [{"group_smiles":"C(F)=C([H])", 'n':1, 'mode':'insert'}], 'Polyfluoroalkyl'),
-    #skip hydrofluorocarbons (many tested are HFCs)
-    #(20, "Hydrofluorocarbons", [{"group_smiles":"C(F)[H]", 'n':1, 'mode':'insert'}], 'Polyfluoroalkyl'),
-    #(21, "Semi-fluorinated alkanes", [{"group_smiles":"C(F)[H]", 'n':1, 'mode':'insert'}], 'Polyfluoroalkyl'),
+    (20, "Hydrofluorocarbons", [{"group_smiles":"C(F)[H]", 'n':1, 'mode':'insert'}], 'Polyfluoroalkyl'),
+    (21, "Semi-fluorinated alkanes", [{"group_smiles":"C(F)[H]", 'n':1, 'mode':'insert'}], 'Polyfluoroalkyl'),
     (22, "Side-chain fluorinated aromatics", [{"group_smiles":"c1ccccc1", 'n':1, 'mode':'attach'}], 'Polyfluoroalkyl'),
-    #(23, "Perfluoroalkane", [{"group_smiles":"C(F)(F)", 'n':1, 'mode':'insert'}], 'Perfluoroalkyl'),
+    (23, "Perfluoroalkane", [{"group_smiles":"C(F)(F)", 'n':1, 'mode':'insert'}], 'Perfluoroalkyl'),
     (24, "Perfluoroalkyl-tert-amines", [{"group_smiles":"N(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)", 'n':1, 'mode':'attach'}], 'Perfluoroalkyl'),
     (25, "Perfluoroalkyl iodides", [{"group_smiles":"I", 'n':"[1,3]", 'mode':'attach'}], 'Perfluoroalkyl'),
     (26, "Perfluoroalkane sulfonyl fluorides", [{"group_smiles":"S(=O)(=O)F", 'n':1, 'mode':'attach'}], 'Perfluoroalkyl'),
@@ -138,14 +137,13 @@ GENERIC_PFAS_GROUPS = [
     (45, 'azine', "c1ncccc1", 'attach'),
     (46, 'benzodioxole', "c1ccc2OC(F)(F)Oc2c1", 'attach'),
     (47, 'amine', "N", 'insert'),
-    # skip alkane (most tested are alkanes)
-    #(48, 'alkane', 'C(F)(F)', 'insert'),
+    (48, 'alkane', 'C(F)(F)', 'insert'),
     (49, 'alkene', 'C(F)=C(F)', 'insert'),
     (50, 'alkyne', "C#C", 'insert'),
     (51, 'Side-chain aromatics', "c1ccccc1", 'attach'),
 ]
 
-IGNORE_GROUPS = [48,20,21, 23]
+IGNORE_GROUPS = []  # Test all groups including broad ones
 
 # Global variable to store test results for summary generation
 TEST_SUMMARY_DATA = {
@@ -357,15 +355,27 @@ class TestPFASGroups:
         test_results = []
         
         for group_id, group_name, template, pathtype in OECD_PFAS_GROUPS:  # Test first 5 groups
+            existing_test = []
             for n in range(5, 15,1):  # 3 different chain lengths
-                try:
-                    mol = generate_random_mol(n, template, 
-                                            perfluorinated=(pathtype == 'Perfluoroalkyl'))
-                except Exception as e:
-                    pass
-                    #print(f"Error testing group {group_id}, n={n}: {e}")
-                else:
-                    if mol is None:
+                r = 0
+                k = 0
+                while r < 3 and k < 5:  # 3 replicates per chain length
+                    k+=1
+                    try:
+                        mol = generate_random_mol(n, template, 
+                                                perfluorinated=(pathtype == 'Perfluoroalkyl'))
+                    except Exception as e:
+                        pass
+                        #print(f"Error testing group {group_id}, n={n}: {e}")
+                    else:
+                        if mol is None:
+                            continue
+                        inchikey = Chem.MolToInchiKey(mol)
+                        if inchikey in existing_test:
+                            continue
+                        else:
+                            existing_test.append(inchikey)
+                            r+=1
                         smiles = Chem.MolToSmiles(mol)
                         
                         # Test classification
@@ -389,7 +399,7 @@ class TestPFASGroups:
                         
                         # Store for summary
                         TEST_SUMMARY_DATA['oecd_results'].append(result)
-                    
+                        
         
         # Verify that at least some groups are detected correctly
         if test_results:
@@ -409,45 +419,56 @@ class TestPFASGroups:
         
         for group_id, group_name, template, insertion_mode in GENERIC_PFAS_GROUPS:  # Test first 5 groups
             for pathtype in ['Perfluoroalkyl', 'Polyfluoroalkyl']:
+                existing_test = []
                 for n in range(5, 15, 1):  # 2 different chain lengths
-                    try:
-                        funcgroup_template = [{"group_smiles": template, 
-                                             'n': 1, 
-                                             'mode': insertion_mode, 
-                                             'neighbours': ['C']}]
-                        
-                        mol = generate_random_mol(n, funcgroup_template, 
-                                                perfluorinated=(pathtype == 'Perfluoroalkyl'))
-                        if mol is None:
-                            continue
+                    r = 1
+                    k = 0
+                    while r<3 and k< 6:  # 3 replicates per chain length
+                        try:
+                            funcgroup_template = [{"group_smiles": template, 
+                                                'n': 1, 
+                                                'mode': insertion_mode, 
+                                                'neighbours': ['C']}]
                             
-                        smiles = Chem.MolToSmiles(mol)
+                            mol = generate_random_mol(n, funcgroup_template, 
+                                                    perfluorinated=(pathtype == 'Perfluoroalkyl'))
+                        except Exception as e:
+                            pass
+                            #print(f"Error testing generic group {group_id}, n={n}: {e}")
+                        else:
+                            if mol is None:
+                                continue
+                            inchikey = Chem.MolToInchiKey(mol)
+                            if inchikey in existing_test:
+                                continue
+                            else:
+                                existing_test.append(inchikey)
+                                r+=1
+                            smiles = Chem.MolToSmiles(mol)
+                            
+                            # Test classification
+                            formula = CalcMolFormula(mol)
+                            matches = parse_PFAS_groups(mol, formula)
+                            
+                            # Check if target group is detected
+                            detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
+                            is_detected = group_id in detected_groups
+                            
+                            result = {
+                                'group_ids': group_id,
+                                'group_name': group_name,
+                                'chain_length': n,
+                                'pathtype': pathtype,
+                                'smiles': smiles,
+                                'detected': is_detected,
+                                'all_matches': detected_groups
+                            }
+                            test_results.append(result)
+                            
+                            # Store for summary
+                            TEST_SUMMARY_DATA['generic_results'].append(result)
+                            
                         
-                        # Test classification
-                        formula = CalcMolFormula(mol)
-                        matches = parse_PFAS_groups(mol, formula)
-                        
-                        # Check if target group is detected
-                        detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
-                        is_detected = group_id in detected_groups
-                        
-                        result = {
-                            'group_ids': group_id,
-                            'group_name': group_name,
-                            'chain_length': n,
-                            'pathtype': pathtype,
-                            'smiles': smiles,
-                            'detected': is_detected,
-                            'all_matches': detected_groups
-                        }
-                        test_results.append(result)
-                        
-                        # Store for summary
-                        TEST_SUMMARY_DATA['generic_results'].append(result)
-                        
-                    except Exception as e:
-                        pass
-                        #print(f"Error testing generic group {group_id}, n={n}: {e}")
         
         # Verify that at least some groups are detected correctly
         if test_results:
@@ -565,6 +586,9 @@ def load_graph_from_json(filename):
     
     G = nx.DiGraph()
     Gper = nx.DiGraph()
+    Gpoly = nx.DiGraph()
+    Gboth = nx.DiGraph()
+    Goneway = nx.DiGraph()
 
     # Process each edge in the list
     for edge_data in data:
@@ -576,18 +600,25 @@ def load_graph_from_json(filename):
         source = name_to_id.get(source_name, source_name)
         target = name_to_id.get(target_name, target_name)
         
-        # Add nodes if they don't exist
-        G.add_node(source)
-        G.add_node(target)
-        Gper.add_node(source)
-        Gper.add_node(target)
-        # Add edge with type information
+        # Add nodes to all graphs
+        for graph in [G, Gper, Gpoly, Gboth, Goneway]:
+            graph.add_node(source)
+            graph.add_node(target)
+        
+        # Add edge to main graph (all edges)
         G.add_edge(source, target)
+        
+        # Add to specific graph based on type
         if edge_type == 'per':
             Gper.add_edge(source, target)
         elif edge_type == 'poly':
-            G.add_edge(source, target)
-    return G, Gper
+            Gpoly.add_edge(source, target)
+        elif edge_type == 'both':
+            Gboth.add_edge(source, target)
+        elif edge_type == 'oneway':
+            Goneway.add_edge(source, target)
+    
+    return G, Gper, Gpoly, Gboth, Goneway
     
 
 def load_equivalent_groups_from_json(json_file=f'{tests_folder}/specificity_test_groups.json'):
@@ -599,20 +630,40 @@ def load_equivalent_groups_from_json(json_file=f'{tests_folder}/specificity_test
         json_file: Path to the JSON file containing the edge list structure
     Returns:
         List of tuples [x, y, pathtype] where x is a child group and y is a parent group
+        pathtype indicates when the relationship applies:
+        - 'Perfluoroalkyl': only for perfluorinated molecules (per edges)
+        - 'Polyfluoroalkyl': only for polyfluorinated molecules (poly edges)
+        - 'Both': for both types (both + oneway edges)
     """
-    G, Gper = load_graph_from_json(json_file)
+    G, Gper, Gpoly, Gboth, Goneway = load_graph_from_json(json_file)
     
     equivalent_groups = []
     
     # Process the list of edges
     for source in G.nodes:
-        descendants = nx.descendants(G,source)
         perdescendants = nx.descendants(Gper, source)
-        for target in descendants:
-            equivalent_groups.append([target, source, 'Polyfluoroalkyl'])
-            equivalent_groups.append([target, source, 'Perfluoroalkyl'])
+        polydescendants = nx.descendants(Gpoly, source)
+        bothdescendants = nx.descendants(Gboth, source)
+        onewaydescendants = nx.descendants(Goneway, source)
+        
+        # Add per edges (only for perfluorinated molecules)
         for target in perdescendants:
             equivalent_groups.append([target, source, 'Perfluoroalkyl'])
+        
+        # Add poly edges (only for polyfluorinated molecules)
+        for target in polydescendants:
+            equivalent_groups.append([target, source, 'Polyfluoroalkyl'])
+        
+        # Add both edges (for BOTH perfluorinated and polyfluorinated)
+        for target in bothdescendants:
+            equivalent_groups.append([target, source, 'Perfluoroalkyl'])
+            equivalent_groups.append([target, source, 'Polyfluoroalkyl'])
+        
+        # Add oneway edges (for BOTH perfluorinated and polyfluorinated)
+        for target in onewaydescendants:
+            equivalent_groups.append([target, source, 'Perfluoroalkyl'])
+            equivalent_groups.append([target, source, 'Polyfluoroalkyl'])
+    
     return equivalent_groups
 
 def check_groups_are_related(group1, group2, graph):
@@ -648,7 +699,7 @@ def are_detected_groups_acceptable(expected_groups, detected_groups, json_file=f
         bool: True if all detected groups are either expected or related to expected groups
     """
     try:
-        G, Gper = load_graph_from_json(json_file)
+        G, Gper, Gpoly, Gboth, Goneway = load_graph_from_json(json_file)
     except (FileNotFoundError, json.JSONDecodeError):
         # If graph file doesn't exist or is invalid, fall back to exact matching
         return sorted(expected_groups) == sorted(detected_groups)
@@ -775,7 +826,7 @@ def create_specificity_test_molecules():
                                 neighbor_atoms=['F','H'] if mode=='attach' else ['C'],
                                 sanitize=False)
             if mol is None:
-                    continue   
+                continue   
             inchi = Chem.MolToInchi(mol)
             inchikey = Chem.MolToInchiKey(mol)
             smiles = Chem.MolToSmiles(mol)
@@ -818,9 +869,8 @@ def create_specificity_test_molecules():
         if x_id is not None and y_id is not None:
             # Find all test results with group_id x and add them as group_id y
             for origin, group_id, smiles, inchi, formula, inchikey, result_pathtype in test_results:
-                # Only add the parent group if the pathtype matches or if result is perfluoroalkyl
-                # (perfluoroalkyl molecules can match both per and poly parent groups)
-                if group_id == x_id and (pathtype == result_pathtype or result_pathtype == 'Perfluoroalkyl'):
+                # Only add the parent group if the pathtype matches
+                if group_id == x_id and pathtype == result_pathtype:
                     # Keep the original molecule's pathtype, not the relationship pathtype
                     test_results.append((origin,y_id, smiles, inchi, formula, inchikey, result_pathtype))
     specificity_test_molecules = pd.DataFrame(test_results, columns=['origin','group_ids','smiles','inchi','formula','inchikey','pathtype'])
