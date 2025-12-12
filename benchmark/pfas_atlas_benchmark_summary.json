@@ -1,0 +1,12 @@
+{
+  "total_molecules": 1832,
+  "pfasgroups_classified": 1832,
+  "pfas_atlas_classified": 0,
+  "both_classified": 0,
+  "neither_classified": 0,
+  "pfasgroups_only": 1832,
+  "pfas_atlas_only": 0,
+  "pfasgroups_coverage": 100.0,
+  "pfas_atlas_coverage": 0.0,
+  "agreement_rate": 0.0
+}
