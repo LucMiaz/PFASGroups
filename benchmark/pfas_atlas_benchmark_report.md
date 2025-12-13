@@ -28,6 +28,8 @@
 - halide (ID: 21): 154 molecules
 
 ### Top PFAS-atlas Classifications
-- Complex structure: 1573 molecules
-- Other PFASs: 246 molecules
+- Other PFASs: 770 molecules
+- PFAA precursors: 633 molecules
+- PFAAs: 252 molecules
+- Polyfluoroalkyl acids: 164 molecules
 - Not PFAS: 13 molecules
