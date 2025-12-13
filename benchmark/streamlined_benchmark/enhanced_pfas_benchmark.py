@@ -125,7 +125,7 @@ class EnhancedPFASBenchmark:
         for i in range(count):
             try:
                 # Generate base carbon chain with varying lengths for multi-group molecules
-                chain_length = 4 + (i % 6)  # Chain lengths 4-9 for more space for multiple groups
+                chain_length = 5 + (i % 6)  # Chain lengths 5-10 for more space for multiple groups
                 
                 # Create functional group specifications for all target groups following test_examples.py format
                 functional_groups_specs = []
@@ -142,9 +142,9 @@ class EnhancedPFASBenchmark:
                     n=chain_length,
                     functional_groups=functional_groups_specs,
                     perfluorinated=True,
-                    cycle=(i % 8 == 0),  # Some cyclic molecules
-                    alkene=(i % 6 == 0),  # Some alkenes
-                    alkyne=(i % 7 == 0)   # Some alkynes
+                    # cycle=(i % 8 == 0),  # Some cyclic molecules
+                    # alkene=(i % 6 == 0),  # Some alkenes
+                    # alkyne=(i % 7 == 0)   # Some alkynes
                 )
                 
                 if mol is not None:
@@ -229,27 +229,27 @@ class EnhancedPFASBenchmark:
         
         return atlas_result
     
-    def run_enhanced_benchmark(self):
+    def run_enhanced_benchmark(self, replicates = 40):
         """Run enhanced benchmark with larger datasets"""
         
         print("🚀 ENHANCED COMPREHENSIVE PFAS BENCHMARK")
         print("=" * 55)
         print(f"📊 Testing {len(self.target_groups)} functional groups with larger datasets")
-        print(f"   • Single groups: 15 molecules each ({len(self.target_groups) * 15} total)")
-        print(f"   • Pairs: 5 combinations, 10 molecules each (50 total)")
-        print(f"   • Triplets: 5 combinations, 10 molecules each (50 total)")
+        print(f"   • Single groups: {replicates} molecules each ({len(self.target_groups) * replicates} total)")
+        print(f"   • Pairs: 7 combinations, 40 molecules each (280 total)")
+        print(f"   • Triplets: 5 combinations, 40 molecules each (200 total)")
         
         all_results = []
         
-        # Part 1: Enhanced Single group molecules (15 per group)
-        print("\n📋 PART 1: Enhanced Single Group Molecules (15 each)")
+        # Part 1: Enhanced Single group molecules (40 per group)
+        print("\n📋 PART 1: Enhanced Single Group Molecules (40 each)")
         print("=" * 55)
         
         for group_id in self.target_groups:
             group_name = self.functional_smarts[group_id]['name']
             print(f"🧪 Generating molecules for Group {group_id}: {group_name}")
             
-            molecules = self.generate_single_group_molecules(group_id, count=15)
+            molecules = self.generate_single_group_molecules(group_id, count=replicates)
             success_count = 0
             
             for mol_data in molecules:
@@ -270,8 +270,8 @@ class EnhancedPFASBenchmark:
                     
                     all_results.append(result)
             
-            success_rate = (success_count / 15) * 100
-            print(f"  ✅ Generated {success_count}/15 molecules ({success_rate:.1f}% success)")
+            success_rate = (success_count / replicates) * 100
+            print(f"  ✅ Generated {success_count}/40 molecules ({success_rate:.1f}% success)")
         
         # Part 2: Enhanced Multi-group molecules  
         print("\n📋 PART 2: Enhanced Multi-Group Molecules")
@@ -284,6 +284,8 @@ class EnhancedPFASBenchmark:
             [31, 36],  # ether + sulfonic acid  
             [32, 35],  # ester + acyl halide
             [34, 39],  # amide + phosphonic acid
+            [33, 33],  # dicarboxylic acid
+            [33, 36],  # carboxylic acid and sulfonic acid
         ]
         
         # 5 triplets with 10 molecules each
@@ -296,12 +298,12 @@ class EnhancedPFASBenchmark:
         ]
         
         # Test pairs
-        print("🔬 Testing 5 functional group pairs (10 molecules each):")
+        print("🔬 Testing 5 functional group pairs (40 molecules each):")
         for combo in multi_group_pairs:
             combo_str = ' + '.join([self.functional_smarts[g]['name'] for g in combo])
             print(f"   • Groups {combo[0]}-{combo[1]}: {combo_str}")
             
-            molecules = self.generate_multi_group_molecules(combo, count=10)
+            molecules = self.generate_multi_group_molecules(combo, count=replicates)
             success_count = 0
             
             for mol_data in molecules:
@@ -322,8 +324,8 @@ class EnhancedPFASBenchmark:
                     
                     all_results.append(result)
             
-            success_rate = (success_count / 10) * 100
-            print(f"     ✅ Generated {success_count}/10 molecules ({success_rate:.1f}% success)")
+            success_rate = (success_count / replicates) * 100
+            print(f"     ✅ Generated {success_count}/40 molecules ({success_rate:.1f}% success)")
         
         # Test triplets
         print("\n🔬 Testing 5 functional group triplets (10 molecules each):")
@@ -331,7 +333,7 @@ class EnhancedPFASBenchmark:
             combo_str = ' + '.join([self.functional_smarts[g]['name'] for g in combo])
             print(f"   • Groups {'-'.join(map(str, combo))}: {combo_str}")
             
-            molecules = self.generate_multi_group_molecules(combo, count=10)
+            molecules = self.generate_multi_group_molecules(combo, count=replicates)
             success_count = 0
             
             for mol_data in molecules:
@@ -352,8 +354,8 @@ class EnhancedPFASBenchmark:
                     
                     all_results.append(result)
             
-            success_rate = (success_count / 10) * 100
-            print(f"     ✅ Generated {success_count}/10 molecules ({success_rate:.1f}% success)")
+            success_rate = (success_count / replicates) * 100
+            print(f"     ✅ Generated {success_count}/40 molecules ({success_rate:.1f}% success)")
         
         # Save results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
