@@ -1,4 +1,0 @@
-Atlas_Classification,Molecules,Avg_Groups_Per_Molecule,Specificity_Rate_%,Unique_Group_Types,Top_3_Groups
-Aromatic PFASs,246,3.9,4.5,7,"Polyfluoroalkyl(246), Side-chain aromatics(246), Perfluoroalkyl(225)"
-Complex structure,1573,3.2,52.6,46,"Perfluoroalkyl(1464), Ether(244), Alkane-perfluoro(190)"
-Not PFAS by current definition,13,2.0,84.6,17,"Polyfluoroalkyl(3), Side-chain aromatics(3), Sulfonic acid(2)"
