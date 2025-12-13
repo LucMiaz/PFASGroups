@@ -1,0 +1,41 @@
+{
+  "analysis_date": "2025-12-13",
+  "total_molecules": 1832,
+  "success_rates": {
+    "pfasgroups": 1.0,
+    "atlas": 1.0
+  },
+  "agreement_metrics": {
+    "agreement_rate": 0.9929039301310044,
+    "disagreement_count": 13,
+    "disagreement_percentage": 0.7096069868995634
+  },
+  "pfasgroups_metrics": {
+    "average_groups_per_molecule": 3.59,
+    "specific_detection_rate": 0.4634279475982533,
+    "total_group_instances": 5954,
+    "unique_group_types": 51
+  },
+  "atlas_classifications": {
+    "Complex structure": 1573,
+    "Other PFASs": 246,
+    "Not PFAS": 13
+  },
+  "top_functional_groups": {
+    "48": 1689,
+    "31": 308,
+    "22": 249,
+    "51": 249,
+    "23": 190,
+    "7": 158,
+    "36": 158,
+    "33": 156,
+    "47": 155,
+    "21": 154
+  },
+  "technical_status": {
+    "mhfp_overflow_fixed": true,
+    "classification_failures": 0,
+    "error_rate": 0.0
+  }
+}

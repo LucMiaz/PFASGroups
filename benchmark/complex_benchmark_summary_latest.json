@@ -1,0 +1,394 @@
+{
+  "benchmark_info": {
+    "timestamp": "2025-12-13T13:43:03.747648",
+    "total_molecules": 90,
+    "functional_group_configs": 8,
+    "pfas_atlas_available": false,
+    "successful_generations": 90
+  },
+  "pfasgroups_performance": {
+    "overall_success_rate": 0.1,
+    "perfect_matches": 0,
+    "partial_matches": 9,
+    "total_molecules": 90,
+    "by_config": {
+      "carboxylic_acid_sulfonic": {
+        "config_info": {
+          "groups": [
+            {
+              "group_smiles": "C(=O)O[H]",
+              "n": 1,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            },
+            {
+              "group_smiles": "S(=O)(=O)O[H]",
+              "n": 1,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            }
+          ],
+          "description": "Carboxylic acid + Sulfonic acid",
+          "expected_pfasgroups": [
+            2,
+            7
+          ],
+          "expected_atlas": "Complex structure"
+        },
+        "detection_stats": [
+          {
+            "group_id": 2,
+            "group_name": "Polyfluoroalkyl carboxylic acid",
+            "detected_count": 15,
+            "total_molecules": 15,
+            "detection_rate": 1.0
+          },
+          {
+            "group_id": 7,
+            "group_name": "Polyfluoroalkyl sulfonic acid",
+            "detected_count": 0,
+            "total_molecules": 15,
+            "detection_rate": 0.0
+          }
+        ],
+        "perfect_matches": 0,
+        "partial_matches": 0,
+        "no_matches": 15,
+        "perfect_rate": 0.0,
+        "partial_rate": 0.0,
+        "total_molecules": 15
+      },
+      "sulfonic_ester_alcohol": {
+        "config_info": {
+          "groups": [
+            {
+              "group_smiles": "S(=O)(=O)O[H]",
+              "n": 1,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            },
+            {
+              "group_smiles": "C(=O)OC",
+              "n": 1,
+              "mode": "insert"
+            },
+            {
+              "group_smiles": "O[H]",
+              "n": 1,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            }
+          ],
+          "description": "Sulfonic acid + Ester + Alcohol",
+          "expected_pfasgroups": [
+            7,
+            33,
+            29
+          ],
+          "expected_atlas": "Complex structure"
+        },
+        "detection_stats": [
+          {
+            "group_id": 7,
+            "group_name": "Polyfluoroalkyl sulfonic acid",
+            "detected_count": 0,
+            "total_molecules": 15,
+            "detection_rate": 0.0
+          },
+          {
+            "group_id": 33,
+            "group_name": "carboxylic acid",
+            "detected_count": 0,
+            "total_molecules": 15,
+            "detection_rate": 0.0
+          },
+          {
+            "group_id": 29,
+            "group_name": "alcohol",
+            "detected_count": 15,
+            "total_molecules": 15,
+            "detection_rate": 1.0
+          }
+        ],
+        "perfect_matches": 0,
+        "partial_matches": 0,
+        "no_matches": 15,
+        "perfect_rate": 0.0,
+        "partial_rate": 0.0,
+        "total_molecules": 15
+      },
+      "aromatic_side_chain": {
+        "config_info": {
+          "groups": [
+            {
+              "group_smiles": "c1ccccc1",
+              "n": 1,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            },
+            {
+              "group_smiles": "C(=O)O[H]",
+              "n": 1,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            }
+          ],
+          "description": "Aromatic ring + Carboxylic acid",
+          "expected_pfasgroups": [
+            51,
+            2
+          ],
+          "expected_atlas": "Aromatic PFASs"
+        },
+        "detection_stats": [
+          {
+            "group_id": 51,
+            "group_name": "Side-chain aromatics",
+            "detected_count": 15,
+            "total_molecules": 15,
+            "detection_rate": 1.0
+          },
+          {
+            "group_id": 2,
+            "group_name": "Polyfluoroalkyl carboxylic acid",
+            "detected_count": 0,
+            "total_molecules": 15,
+            "detection_rate": 0.0
+          }
+        ],
+        "perfect_matches": 0,
+        "partial_matches": 0,
+        "no_matches": 15,
+        "perfect_rate": 0.0,
+        "partial_rate": 0.0,
+        "total_molecules": 15
+      },
+      "dicarboxylic_ether": {
+        "config_info": {
+          "groups": [
+            {
+              "group_smiles": "C(=O)O[H]",
+              "n": 2,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            },
+            {
+              "group_smiles": "O",
+              "n": 1,
+              "mode": "insert"
+            }
+          ],
+          "description": "Dicarboxylic acid + Ether",
+          "expected_pfasgroups": [
+            2,
+            31
+          ],
+          "expected_atlas": "Complex structure"
+        },
+        "detection_stats": [
+          {
+            "group_id": 2,
+            "group_name": "Polyfluoroalkyl carboxylic acid",
+            "detected_count": 0,
+            "total_molecules": 15,
+            "detection_rate": 0.0
+          },
+          {
+            "group_id": 31,
+            "group_name": "ether",
+            "detected_count": 15,
+            "total_molecules": 15,
+            "detection_rate": 1.0
+          }
+        ],
+        "perfect_matches": 0,
+        "partial_matches": 0,
+        "no_matches": 15,
+        "perfect_rate": 0.0,
+        "partial_rate": 0.0,
+        "total_molecules": 15
+      },
+      "phosphonic_amide": {
+        "config_info": {
+          "groups": [
+            {
+              "group_smiles": "P(=O)(O[H])O[H]",
+              "n": 1,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            },
+            {
+              "group_smiles": "C(=O)N",
+              "n": 1,
+              "mode": "insert"
+            }
+          ],
+          "description": "Phosphonic acid + Amide",
+          "expected_pfasgroups": [
+            40,
+            34
+          ],
+          "expected_atlas": "Complex structure"
+        },
+        "detection_stats": [
+          {
+            "group_id": 40,
+            "group_name": "phosphinic acid",
+            "detected_count": 0,
+            "total_molecules": 15,
+            "detection_rate": 0.0
+          },
+          {
+            "group_id": 34,
+            "group_name": "amide",
+            "detected_count": 15,
+            "total_molecules": 15,
+            "detection_rate": 1.0
+          }
+        ],
+        "perfect_matches": 0,
+        "partial_matches": 0,
+        "no_matches": 15,
+        "perfect_rate": 0.0,
+        "partial_rate": 0.0,
+        "total_molecules": 15
+      },
+      "iodide_ketone_alcohol": {
+        "config_info": {
+          "groups": [
+            {
+              "group_smiles": "I",
+              "n": 1,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            },
+            {
+              "group_smiles": "C(=O)",
+              "n": 1,
+              "mode": "insert"
+            },
+            {
+              "group_smiles": "O[H]",
+              "n": 1,
+              "mode": "attach",
+              "neighbours": [
+                "C"
+              ]
+            }
+          ],
+          "description": "Iodide + Ketone + Alcohol",
+          "expected_pfasgroups": [
+            42,
+            30,
+            29
+          ],
+          "expected_atlas": "Complex structure"
+        },
+        "detection_stats": [
+          {
+            "group_id": 42,
+            "group_name": "iodide",
+            "detected_count": 9,
+            "total_molecules": 15,
+            "detection_rate": 0.6
+          },
+          {
+            "group_id": 30,
+            "group_name": "ketone",
+            "detected_count": 15,
+            "total_molecules": 15,
+            "detection_rate": 1.0
+          },
+          {
+            "group_id": 29,
+            "group_name": "alcohol",
+            "detected_count": 15,
+            "total_molecules": 15,
+            "detection_rate": 1.0
+          }
+        ],
+        "perfect_matches": 0,
+        "partial_matches": 9,
+        "no_matches": 6,
+        "perfect_rate": 0.0,
+        "partial_rate": 0.6,
+        "total_molecules": 15
+      }
+    }
+  },
+  "atlas_performance": {},
+  "system_comparison": {
+    "carboxylic_acid_sulfonic": {
+      "pfas_success_rate": 0.0,
+      "pfas_perfect": 0,
+      "pfas_partial": 0,
+      "atlas_success_rate": 0,
+      "atlas_correct": 0,
+      "total_molecules": 15
+    },
+    "sulfonic_ester_alcohol": {
+      "pfas_success_rate": 0.0,
+      "pfas_perfect": 0,
+      "pfas_partial": 0,
+      "atlas_success_rate": 0,
+      "atlas_correct": 0,
+      "total_molecules": 15
+    },
+    "aromatic_side_chain": {
+      "pfas_success_rate": 0.0,
+      "pfas_perfect": 0,
+      "pfas_partial": 0,
+      "atlas_success_rate": 0,
+      "atlas_correct": 0,
+      "total_molecules": 15
+    },
+    "dicarboxylic_ether": {
+      "pfas_success_rate": 0.0,
+      "pfas_perfect": 0,
+      "pfas_partial": 0,
+      "atlas_success_rate": 0,
+      "atlas_correct": 0,
+      "total_molecules": 15
+    },
+    "phosphonic_amide": {
+      "pfas_success_rate": 0.0,
+      "pfas_perfect": 0,
+      "pfas_partial": 0,
+      "atlas_success_rate": 0,
+      "atlas_correct": 0,
+      "total_molecules": 15
+    },
+    "iodide_ketone_alcohol": {
+      "pfas_success_rate": 0.6,
+      "pfas_perfect": 0,
+      "pfas_partial": 9,
+      "atlas_success_rate": 0,
+      "atlas_correct": 0,
+      "total_molecules": 15
+    }
+  },
+  "overall_statistics": {
+    "pfasgroups_success_rate": 0.1,
+    "atlas_accuracy": 0,
+    "molecules_per_config": 11.25,
+    "successful_generation_rate": 1.0
+  }
+}
