@@ -31,12 +31,12 @@ def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False):
             j = np.random.randint(0, len(rwm.GetAtoms())-1)
             if j == i:
                 j = None
-            elif rwm.GetAtoms()[j].GetExplicitValence() == 4:
+            elif rwm.GetAtoms()[j].GetValence(which=Chem.rdchem.ValenceType.EXPLICIT) == 4:
                 j = None
         bondtype = Chem.BondType.SINGLE
-        if alkene and np.random.uniform(0,1) < 0.5 and rwm.GetAtoms()[j].GetExplicitValence() < 3:
+        if alkene and np.random.uniform(0,1) < 0.5 and rwm.GetAtoms()[j].GetValence(which=Chem.rdchem.ValenceType.EXPLICIT) < 3:
             bondtype = Chem.BondType.DOUBLE
-        elif alkyne and bondtype != Chem.BondType.DOUBLE and np.random.uniform(0,1) < 0.5 and rwm.GetAtoms()[j].GetExplicitValence() < 2:
+        elif alkyne and bondtype != Chem.BondType.DOUBLE and np.random.uniform(0,1) < 0.5 and rwm.GetAtoms()[j].GetValence(which=Chem.rdchem.ValenceType.EXPLICIT) < 2:
             bondtype = Chem.BondType.TRIPLE
         rwm.AddBond(i, j, bondtype)
         Chem.SanitizeMol(rwm)
@@ -111,7 +111,7 @@ def insert_mol(mol, group_mol, atom_index, neighbor_index):
     rwm.AddBond(atom1.GetIdx(), submol_index, Chem.BondType.SINGLE)
     end_atom_index = rwm.GetNumAtoms()-1
     try:
-        while rwm.GetAtoms()[end_atom_index].GetImplicitValence() == 0:
+        while rwm.GetAtoms()[end_atom_index].GetValence(which=Chem.rdchem.ValenceType.IMPLICIT) == 0:
             end_atom_index -= 1
     except:
         pass
