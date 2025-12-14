@@ -16,6 +16,29 @@ from collections import defaultdict, Counter
 from datetime import datetime
 import sys
 
+# PFAS-Atlas class mapping to understand their output classes (discovered from testing)
+PFAS_ATLAS_CLASSES = {
+    "first_class": {
+        "PFAA precursors": "Precursors to perfluoroalkyl acids",
+        "PFAAs": "Perfluoroalkyl acids",
+        "Other PFASs": "Other per- and polyfluoroalkyl substances", 
+        "Polyfluoroalkyl acids": "Polyfluoroalkyl carboxylic/sulfonic acids",
+        "Not PFAS": "Not identified as PFAS"
+    },
+    "second_class": {
+        "HFEs": "Hydrofluoroethers",
+        "PFAIs": "Perfluoroalkyl iodides", 
+        "PFAenes": "Perfluoroalkenes",
+        "PFSA derivatives": "Perfluorosulfonic acid derivatives",
+        "PolyFCA derivatives": "Polyfluorocarboxylic acid derivatives",
+        "Perfluoroalkanes": "Perfluoroalkanes",
+        "Aromatic PFASs": "Aromatic per- and polyfluoroalkyl substances",
+        "Amide derivatives": "Amide derivatives of PFASs",
+        "others": "Other PFAS classifications",
+        "Not PFAS by current definition": "Not identified as PFAS by current definition"
+    }
+}
+
 def load_benchmark_results(filename):
     """Load enhanced benchmark results from JSON"""
     
@@ -54,7 +77,9 @@ def analyze_system_comparison(results):
                 'pfasgroups_times': [],
                 'atlas_times': [],
                 'pfasgroups_avg_time': 0.0,
-                'atlas_avg_time': 0.0
+                'atlas_avg_time': 0.0,
+                'pfasgroups_failures': [],  # Track molecules not correctly identified
+                'atlas_classifications_detail': []  # Track Atlas class distributions
             }
         
         single_analysis[group_id]['total_molecules'] += 1
@@ -76,12 +101,30 @@ def analyze_system_comparison(results):
             if result['atlas_result']['second_class']:
                 single_analysis[group_id]['atlas_any_detection'] += 1
         
+        # Track molecules not correctly identified by PFASGroups
+        if not pfas_detected or group_id not in detected_groups:
+            single_analysis[group_id]['pfasgroups_failures'].append({
+                'smiles': result['molecule_data']['smiles'],
+                'expected_group': group_id,
+                'detected_groups': detected_groups,
+                'detection_status': 'no_detection' if not pfas_detected else 'wrong_group'
+            })
+            
+        # Track Atlas classification details
+        if atlas_success:
+            single_analysis[group_id]['atlas_classifications_detail'].append({
+                'smiles': result['molecule_data']['smiles'],
+                'first_class': result['atlas_result']['first_class'],
+                'second_class': result['atlas_result']['second_class']
+            })
+        
         single_analysis[group_id]['molecules'].append({
             'smiles': result['molecule_data']['smiles'],
             'pfasgroups_detected': detected_groups,
             'pfasgroups_success': pfas_detected,
             'atlas_success': atlas_success,
-            'atlas_class': result['atlas_result']['second_class']
+            'atlas_first_class': result['atlas_result']['first_class'],
+            'atlas_second_class': result['atlas_result']['second_class']
         })
         
         # Collect timing data
@@ -293,7 +336,7 @@ def create_comparison_heatmap(single_analysis):
     ))
     
     fig.update_layout(
-        title="PFASGroups vs PFAS-Atlas Detection Performance Comparison",
+        title="PFASGroups vs PFAS-Atlas Detection Performance Comparison<br><sub>Single Functional Group Molecules - PFASGroups Module Performance</sub>",
         xaxis_title="PFAS Functional Groups",
         yaxis_title="Detection Systems", 
         font_size=12,
@@ -358,6 +401,92 @@ def create_multi_group_heatmap(multi_analysis):
         width=1200,
         height=600,
         margin=dict(l=150, r=50, t=100, b=50)
+    )
+    
+    return fig
+
+def create_atlas_classification_flow(single_analysis):
+    """Create Sankey diagram showing PFAS-Atlas classification flow using actual data"""
+    
+    # Create PFAS-Atlas classification flow using actual data
+    atlas_class_counts = {}
+    for group_data in single_analysis.values():
+        for mol in group_data['atlas_classifications_detail']:
+            first_class = mol['first_class']
+            second_class = mol['second_class']
+            
+            if first_class not in atlas_class_counts:
+                atlas_class_counts[first_class] = {}
+            if second_class not in atlas_class_counts[first_class]:
+                atlas_class_counts[first_class][second_class] = 0
+            atlas_class_counts[first_class][second_class] += 1
+    
+    if not atlas_class_counts:
+        # Return empty figure if no data
+        return go.Figure().update_layout(
+            title="PFAS-Atlas Classification Flow<br><sub>No classification data available</sub>",
+            annotations=[{"text": "No PFAS-Atlas classification data found", 
+                         "xref": "paper", "yref": "paper", "x": 0.5, "y": 0.5, 
+                         "xanchor": "center", "yanchor": "center", "showarrow": False}]
+        )
+    
+    # Build nodes and links for actual Atlas classification flow
+    nodes = ["PFAS Molecules<br>(Single Groups)"]
+    first_classes = list(atlas_class_counts.keys())
+    second_classes = set()
+    for first_class_data in atlas_class_counts.values():
+        second_classes.update(first_class_data.keys())
+    second_classes = list(second_classes)
+    
+    # Add first class nodes
+    for fc in first_classes:
+        nodes.append(f"First Class:<br>{fc}")
+    
+    # Add second class nodes  
+    for sc in second_classes:
+        nodes.append(f"Second Class:<br>{sc}")
+    
+    sources, targets, values = [], [], []
+    
+    # Connect root to first classes
+    for i, first_class in enumerate(first_classes):
+        total_in_first = sum(atlas_class_counts[first_class].values())
+        sources.append(0)  # Root node
+        targets.append(i + 1)  # First class node
+        values.append(total_in_first)
+    
+    # Connect first classes to second classes
+    for i, first_class in enumerate(first_classes):
+        for second_class, count in atlas_class_counts[first_class].items():
+            second_idx = second_classes.index(second_class) + len(first_classes) + 1
+            sources.append(i + 1)  # First class node
+            targets.append(second_idx)  # Second class node
+            values.append(count)
+    
+    # Create Sankey diagram
+    fig = go.Figure(data=[go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=20,
+            line=dict(color="black", width=0.5),
+            label=nodes,
+            color=["rgba(31, 119, 180, 0.8)"] + 
+                  ["rgba(255, 127, 14, 0.8)"] * len(first_classes) + 
+                  ["rgba(44, 160, 44, 0.8)"] * len(second_classes)
+        ),
+        link=dict(
+            source=sources,
+            target=targets,
+            value=values,
+            color=["rgba(255, 127, 14, 0.4)"] * len(sources)
+        )
+    )])
+    
+    fig.update_layout(
+        title="PFAS-Atlas Classification Flow<br><sub>Native PFAS-Atlas class distribution (not mapped to PFASGroups)</sub>",
+        font_size=12,
+        width=1000,
+        height=600
     )
     
     return fig
@@ -442,9 +571,9 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis):
     atlas_multi_rate = (atlas_multi_success / total_multi * 100) if total_multi > 0 else 0
     
     fig.update_layout(
-        title=f"Enhanced System Comparison: PFASGroups vs PFAS-Atlas<br>" + 
-              f"<sub>Single: PFASGroups {pfas_single_rate:.1f}% vs Atlas {atlas_single_rate:.1f}% | " +
-              f"Multi: PFASGroups {pfas_multi_rate:.1f}% vs Atlas {atlas_multi_rate:.1f}%</sub>",
+        title=f"Enhanced System Comparison: PFASGroups Module vs PFAS-Atlas<br>" + 
+              f"<sub>PFASGroups Single: {pfas_single_rate:.1f}% vs Atlas {atlas_single_rate:.1f}% | " +
+              f"Multi-Group: {pfas_multi_rate:.1f}% vs Atlas {atlas_multi_rate:.1f}%</sub>",
         font_size=12,
         width=1200,
         height=600
@@ -520,16 +649,51 @@ def create_single_group_atlas_sankey(single_analysis):
         # This would require access to individual results, not just aggregated data
         # For now, create a representative diagram
         
-    # Create simplified Sankey for demonstration
-    nodes = [
-        "Single Groups<br>Detected by PFASGroups",
-        "PFAA precursors", "PFAAs", "Polyfluoroalkyl acids", "Other PFASs", "Not PFAS"
-    ]
+    # Create PFAS-Atlas classification flow using actual data
+    atlas_class_counts = {}
+    for group_data in single_analysis.values():
+        for mol in group_data['atlas_classifications_detail']:
+            first_class = mol['first_class']
+            second_class = mol['second_class']
+            
+            if first_class not in atlas_class_counts:
+                atlas_class_counts[first_class] = {}
+            if second_class not in atlas_class_counts[first_class]:
+                atlas_class_counts[first_class][second_class] = 0
+            atlas_class_counts[first_class][second_class] += 1
     
-    # Mock data for demonstration - in real implementation, collect from individual results
-    sources = [0, 0, 0, 0, 0]
-    targets = [1, 2, 3, 4, 5]
-    values = [200, 300, 250, 200, 50]  # Example values
+    # Build nodes and links for actual Atlas classification flow
+    nodes = ["PFAS Molecules<br>(Single Groups)"]
+    first_classes = list(atlas_class_counts.keys())
+    second_classes = set()
+    for first_class_data in atlas_class_counts.values():
+        second_classes.update(first_class_data.keys())
+    second_classes = list(second_classes)
+    
+    # Add first class nodes
+    for fc in first_classes:
+        nodes.append(f"First Class:<br>{fc}")
+    
+    # Add second class nodes  
+    for sc in second_classes:
+        nodes.append(f"Second Class:<br>{sc}")
+    
+    sources, targets, values = [], [], []
+    
+    # Connect root to first classes
+    for i, first_class in enumerate(first_classes):
+        total_in_first = sum(atlas_class_counts[first_class].values())
+        sources.append(0)  # Root node
+        targets.append(i + 1)  # First class node
+        values.append(total_in_first)
+    
+    # Connect first classes to second classes
+    for i, first_class in enumerate(first_classes):
+        for second_class, count in atlas_class_counts[first_class].items():
+            second_idx = second_classes.index(second_class) + len(first_classes) + 1
+            sources.append(i + 1)  # First class node
+            targets.append(second_idx)  # Second class node
+            values.append(count)
     
     fig = go.Figure(data=[go.Sankey(
         node=dict(
@@ -1017,8 +1181,61 @@ def create_detailed_multi_group_sankey(multi_analysis):
     
     return fig
 
+def create_pfasgroups_failure_report(single_analysis):
+    """Generate detailed report of molecules not correctly identified by PFASGroups"""
+    
+    failure_report = {
+        'summary': {
+            'total_groups': len(single_analysis),
+            'groups_with_failures': 0,
+            'total_failures': 0,
+            'no_detection_failures': 0,
+            'wrong_group_failures': 0
+        },
+        'by_group': {},
+        'failure_molecules': []
+    }
+    
+    for group_id, data in single_analysis.items():
+        failures = data['pfasgroups_failures']
+        if failures:
+            failure_report['summary']['groups_with_failures'] += 1
+            failure_report['summary']['total_failures'] += len(failures)
+            
+            no_detection = len([f for f in failures if f['detection_status'] == 'no_detection'])
+            wrong_group = len([f for f in failures if f['detection_status'] == 'wrong_group'])
+            
+            failure_report['summary']['no_detection_failures'] += no_detection
+            failure_report['summary']['wrong_group_failures'] += wrong_group
+            
+            failure_report['by_group'][group_id] = {
+                'group_name': data['group_name'],
+                'total_molecules': data['total_molecules'],
+                'failure_count': len(failures),
+                'failure_rate': len(failures) / data['total_molecules'] * 100,
+                'no_detection_count': no_detection,
+                'wrong_group_count': wrong_group,
+                'failures': failures
+            }
+            
+            # Add to global failure list
+            for failure in failures:
+                failure_report['failure_molecules'].append({
+                    'group_id': group_id,
+                    'group_name': data['group_name'],
+                    **failure
+                })
+    
+    return failure_report
+
 def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
     """Create comprehensive HTML report with embedded visualizations"""
+    
+    # Generate failure analysis
+    failure_report = create_pfasgroups_failure_report(single_analysis)
+    
+    # Generate atlas classification flow
+    atlas_flow_html = create_atlas_classification_flow(single_analysis)
     
     # Calculate comprehensive statistics
     total_single_molecules = sum(data['total_molecules'] for data in single_analysis.values())
@@ -1285,7 +1502,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
             {heatmap_multi_html}
         </div>
 
-        <h2>📈 Functional Group Detection Hierarchy</h2>
+        <h2>📈 PFASGroups Module: Functional Group Detection Hierarchy</h2>
         <div class="visualization-container">
             <div class="chart-description">
                 Sankey diagram revealing the hierarchy of functional group detection in multi-group scenarios.
@@ -1310,6 +1527,69 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
                 Helps identify performance bottlenecks and system efficiency patterns.
             </div>
             {timing_stats_html}
+        </div>
+
+        <h2>⚠️ PFASGroups Detection Failures Analysis</h2>
+        <div class="visualization-container">
+            <div class="chart-description">
+                Detailed analysis of molecules not correctly identified by the PFASGroups module.
+                Includes both complete detection failures and incorrect group assignments.
+            </div>
+            
+            <h3>📈 Failure Summary Statistics</h3>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-number">{failure_report['summary']['total_failures']}</div>
+                    <div class="summary-label">Total Failed<br>Detections</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number">{failure_report['summary']['groups_with_failures']}</div>
+                    <div class="summary-label">Groups with<br>Failures</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number">{failure_report['summary']['no_detection_failures']}</div>
+                    <div class="summary-label">No Detection<br>Failures</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number">{failure_report['summary']['wrong_group_failures']}</div>
+                    <div class="summary-label">Wrong Group<br>Assignments</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>🏷️ PFAS-Atlas Classification Analysis</h2>
+        <div class="visualization-container">
+            <div class="chart-description">
+                Analysis of PFAS-Atlas classification results showing the distribution of molecules across 
+                PFAS-Atlas's native classification system (not converted to PFASGroups terms).
+            </div>
+            
+            <h3>📊 PFAS-Atlas Class Definitions</h3>
+            <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h4>First Class Categories:</h4>
+                <ul>
+                    <li><strong>PFAA precursors:</strong> Precursors to perfluoroalkyl acids</li>
+                    <li><strong>PFAAs:</strong> Perfluoroalkyl acids</li>
+                    <li><strong>Other PFASs:</strong> Other per- and polyfluoroalkyl substances</li>
+                    <li><strong>Not PFAS:</strong> Not identified as PFAS</li>
+                </ul>
+                
+                <h4>Second Class Categories:</h4>
+                <ul>
+                    <li><strong>PFACs:</strong> Perfluoroalkyl compounds</li>
+                    <li><strong>Aromatic PFASs:</strong> Aromatic per- and polyfluoroalkyl substances</li>
+                    <li><strong>Polyfluoroalkyl acids:</strong> Polyfluoroalkyl carboxylic/sulfonic acids</li>
+                </ul>
+            </div>
+            
+            <div style="background: #fffacd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffa500;">
+                <strong>⚠️ Important Note:</strong> PFAS-Atlas classifications represent their native output classes 
+                and are not directly comparable to PFASGroups functional group IDs. The systems use different 
+                classification frameworks and evaluation criteria.
+            </div>
+            
+            <h4>📊 PFAS-Atlas Classification Flow</h4>
+            {atlas_flow_html}
         </div>
 
         <h2>📋 Detailed Performance Comparison Table</h2>
@@ -1381,6 +1661,152 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
     html_content += f"""
             </tbody>
         </table>
+        
+        <h2>⚠️ PFASGroups Detection Failures Analysis</h2>
+        <div class="visualization-container">
+            <div class="chart-description">
+                Detailed analysis of molecules not correctly identified by the PFASGroups module.
+                Includes both complete detection failures and incorrect group assignments.
+            </div>
+            
+            <h3>📈 Failure Summary Statistics</h3>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-number">{failure_report['summary']['total_failures']}</div>
+                    <div class="summary-label">Total Failed<br>Detections</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number">{failure_report['summary']['groups_with_failures']}</div>
+                    <div class="summary-label">Groups with<br>Failures</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number">{failure_report['summary']['no_detection_failures']}</div>
+                    <div class="summary-label">No Detection<br>Failures</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-number">{failure_report['summary']['wrong_group_failures']}</div>
+                    <div class="summary-label">Wrong Group<br>Assignments</div>
+                </div>
+            </div>"""
+    
+    # Generate failure analysis table rows
+    if failure_report['by_group']:
+        html_content += f"""
+            
+            <h3>📝 Detailed Failure Analysis by Functional Group</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Group ID</th>
+                        <th>Group Name</th>
+                        <th>Total Molecules</th>
+                        <th>Failed Detections</th>
+                        <th>Failure Rate</th>
+                        <th>No Detection</th>
+                        <th>Wrong Group</th>
+                    </tr>
+                </thead>
+                <tbody>"""
+        
+        for group_id, failure_data in failure_report['by_group'].items():
+            failure_class = 'performance-poor' if failure_data['failure_rate'] > 10 else 'performance-moderate' if failure_data['failure_rate'] > 5 else 'performance-good'
+            html_content += f"""
+                    <tr>
+                        <td>{group_id}</td>
+                        <td>{failure_data['group_name']}</td>
+                        <td>{failure_data['total_molecules']}</td>
+                        <td>{failure_data['failure_count']}</td>
+                        <td class="{failure_class}">{failure_data['failure_rate']:.1f}%</td>
+                        <td>{failure_data['no_detection_count']}</td>
+                        <td>{failure_data['wrong_group_count']}</td>
+                    </tr>"""
+        
+        html_content += """
+                </tbody>
+            </table>"""
+    
+    # Generate failure molecules table
+    if failure_report['failure_molecules']:
+        html_content += f"""
+            
+            <h3>🧪 Individual Failed Molecules (First 50)</h3>
+            <div style="max-height: 400px; overflow-y: scroll; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #f9f9f9;">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Group ID</th>
+                            <th>Group Name</th>
+                            <th>SMILES</th>
+                            <th>Failure Type</th>
+                            <th>Detected Groups</th>
+                        </tr>
+                    </thead>
+                    <tbody>"""
+        
+        # Show first 50 failures
+        for i, failure in enumerate(failure_report['failure_molecules'][:50]):
+            status_class = 'performance-poor' if failure['detection_status'] == 'no_detection' else 'performance-moderate'
+            html_content += f"""
+                        <tr>
+                            <td>{failure['group_id']}</td>
+                            <td>{failure['group_name']}</td>
+                            <td style="font-family: monospace; font-size: 0.8em; max-width: 300px; word-break: break-all;">{failure['smiles']}</td>
+                            <td class="{status_class}">{failure['detection_status'].replace('_', ' ').title()}</td>
+                            <td>{failure['detected_groups'] if failure['detected_groups'] else 'None'}</td>
+                        </tr>"""
+        
+        if len(failure_report['failure_molecules']) > 50:
+            html_content += f"""
+                        <tr style="background: #f0f0f0;">
+                            <td colspan="5" style="text-align: center; font-style: italic;">
+                                ... and {len(failure_report['failure_molecules']) - 50} more failed detections
+                            </td>
+                        </tr>"""
+        
+        html_content += """
+                    </tbody>
+                </table>
+            </div>"""
+    
+    html_content += """
+        </div>
+        
+        <h2>🏷️ PFAS-Atlas Classification Analysis</h2>
+        <div class="visualization-container">
+            <div class="chart-description">
+                Analysis of PFAS-Atlas classification results showing the distribution of molecules across 
+                PFAS-Atlas's native classification system (not converted to PFASGroups terms).
+            </div>
+            
+            <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h4>PFAS-Atlas Class Definitions:</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h5>First Class Categories:</h5>
+                        <ul style="margin: 0; padding-left: 20px;">
+                            <li><strong>PFAA precursors:</strong> Precursors to perfluoroalkyl acids</li>
+                            <li><strong>PFAAs:</strong> Perfluoroalkyl acids</li>
+                            <li><strong>Other PFASs:</strong> Other per- and polyfluoroalkyl substances</li>
+                            <li><strong>Not PFAS:</strong> Not identified as PFAS</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Second Class Categories:</h5>
+                        <ul style="margin: 0; padding-left: 20px;">
+                            <li><strong>PFACs:</strong> Perfluoroalkyl compounds</li>
+                            <li><strong>Aromatic PFASs:</strong> Aromatic per- and polyfluoroalkyl substances</li>
+                            <li><strong>Polyfluoroalkyl acids:</strong> Polyfluoroalkyl carboxylic/sulfonic acids</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: #fffacd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffa500;">
+                <strong>⚠️ Important Note:</strong> PFAS-Atlas classifications represent their native output classes 
+                and are not directly comparable to PFASGroups functional group IDs. The systems use different 
+                classification frameworks and evaluation criteria.
+            </div>
+        </div>
 
         <div class="key-findings">
             <h3>🔍 Enhanced Key Findings</h3>
@@ -1442,6 +1868,10 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
                 <li><strong>Detailed Timing Statistics:</strong> 
                     <a href="timing_statistics_{timestamp}.png">PNG</a> | 
                     <a href="timing_statistics_{timestamp}.svg">SVG</a>
+                </li>
+                <li><strong>PFAS-Atlas Classification Flow:</strong> 
+                    <a href="atlas_classification_flow_{timestamp}.png">PNG</a> | 
+                    <a href="atlas_classification_flow_{timestamp}.svg">SVG</a>
                 </li>
             </ul>
         </div>

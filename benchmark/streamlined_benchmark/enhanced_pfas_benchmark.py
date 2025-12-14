@@ -396,6 +396,256 @@ class EnhancedPFASBenchmark:
         
         return all_results, output_file
     
+    def get_system_specifications(self):
+        """Collect system specifications for reproducibility"""
+        import platform
+        import psutil
+        import cpuinfo
+        
+        try:
+            cpu_info = cpuinfo.get_cpu_info()
+            cpu_name = cpu_info.get('brand_raw', 'Unknown CPU')
+            cpu_count = psutil.cpu_count(logical=True)
+            cpu_count_physical = psutil.cpu_count(logical=False)
+        except:
+            cpu_name = platform.processor()
+            cpu_count = os.cpu_count()
+            cpu_count_physical = os.cpu_count()
+        
+        memory = psutil.virtual_memory()
+        
+        specs = {
+            'system': platform.system(),
+            'platform': platform.platform(),
+            'architecture': platform.architecture()[0],
+            'python_version': platform.python_version(),
+            'cpu_name': cpu_name,
+            'cpu_cores_logical': cpu_count,
+            'cpu_cores_physical': cpu_count_physical,
+            'total_memory_gb': round(memory.total / (1024**3), 2),
+            'available_memory_gb': round(memory.available / (1024**3), 2)
+        }
+        
+        return specs
+    
+    def run_timing_benchmark(self, max_molecules=200, iterations=10):
+        """Run timing benchmark comparing PFASGroups vs PFAS-Atlas on increasingly large molecules
+        
+        Args:
+            max_molecules: Number of molecules to test
+            iterations: Number of iterations for averaging (default 10)
+        """
+        
+        # Get system specifications
+        system_specs = self.get_system_specifications()
+        
+        print("\n🚀 TIMING PERFORMANCE BENCHMARK")
+        print("=" * 55)
+        print(f"📊 Testing {max_molecules} molecules with carboxylic acid functional groups")
+        print(f"🔄 Running {iterations} iterations for statistical averaging")
+        print("📏 Molecules will vary in size to test scaling performance (up to ~2000 atoms)")
+        print(f"\n💻 System Specifications:")
+        print(f"   • OS: {system_specs['system']} ({system_specs['architecture']})")
+        print(f"   • CPU: {system_specs['cpu_name']}")
+        print(f"   • Cores: {system_specs['cpu_cores_physical']} physical, {system_specs['cpu_cores_logical']} logical")
+        print(f"   • Memory: {system_specs['total_memory_gb']} GB total, {system_specs['available_memory_gb']} GB available")
+        print(f"   • Python: {system_specs['python_version']}")
+        print(f"   • Platform: {system_specs['platform']}")
+        
+        timing_results = []
+        
+        for i in range(max_molecules):
+            try:
+                # Generate molecules of increasing size (chain lengths 3-50 to reach ~2000 atoms)
+                # Use logarithmic scaling for better coverage of large molecules
+                if i < max_molecules * 0.3:  # First 30%: small molecules (3-10 carbons)
+                    chain_length = 3 + (i % 8)
+                elif i < max_molecules * 0.6:  # Next 30%: medium molecules (10-25 carbons)
+                    chain_length = 10 + (i % 16)
+                else:  # Last 40%: large molecules (25-50 carbons for ~2000 atoms)
+                    chain_length = 25 + (i % 26)
+                
+                # Create carboxylic acid functional group specification
+                functional_group_spec = {
+                    'group_smiles': 'C(=O)O',
+                    'n': 1,
+                    'mode': 'attach'
+                }
+                
+                # Generate molecule using generate_random_mol with increased complexity for larger molecules
+                complexity_factor = min(chain_length / 10, 3)  # Scale complexity with size
+                mol = generate_random_mol(
+                    n=chain_length,
+                    functional_groups=functional_group_spec,
+                    perfluorinated=True,
+                    cycle=(i % max(5, int(15/complexity_factor)) == 0),  # More cycles for larger molecules
+                    alkene=(i % max(4, int(12/complexity_factor)) == 0),   # More alkenes
+                    alkyne=(i % max(6, int(18/complexity_factor)) == 0)   # More alkynes
+                )
+                
+                if mol is not None:
+                    smiles = Chem.MolToSmiles(mol)
+                    
+                    # Calculate molecular properties
+                    mol_weight = rdMolDescriptors.CalcExactMolWt(mol)
+                    num_atoms = mol.GetNumAtoms()
+                    num_bonds = mol.GetNumBonds()
+                    
+                    # Run multiple timing iterations for statistical reliability
+                    pfas_times = []
+                    atlas_times = []
+                    pfas_success_count = 0
+                    atlas_success_count = 0
+                    pfas_correct_count = 0  # Count correct functional group identification
+                    atlas_correct_count = 0  # Count correct PFAS classification
+                    detected_groups_list = []
+                    atlas_classifications = []
+                    
+                    for iteration in range(iterations):
+                        # Test with PFASGroups
+                        pfas_result = self.test_with_pfasgroups(smiles)
+                        
+                        # Check if carboxylic acid (group 33) was correctly detected
+                        correctly_detected = 33 in pfas_result.get('detected_groups', [])
+                        
+                        # Only include timing if functional group was correctly detected
+                        if correctly_detected:
+                            pfas_times.append(pfas_result['execution_time'])
+                            pfas_correct_count += 1
+                        
+                        if pfas_result['success']:
+                            pfas_success_count += 1
+                        detected_groups_list.append(pfas_result['detected_groups'])
+                        
+                        # Test with PFAS-Atlas
+                        atlas_result = self.test_with_atlas(smiles)
+                        
+                        # Check if Atlas correctly classified as PFAS (not "Not PFAS")
+                        atlas_correct = atlas_result.get('first_class', '') != 'Not PFAS'
+                        
+                        # Only include timing if correctly classified as PFAS
+                        if atlas_correct:
+                            atlas_times.append(atlas_result['execution_time'])
+                            atlas_correct_count += 1
+                            
+                        if atlas_result['success']:
+                            atlas_success_count += 1
+                        atlas_classifications.append((atlas_result['first_class'], atlas_result['second_class']))
+                    
+                    # Calculate statistics (only for correctly detected/classified molecules)
+                    import numpy as np
+                    pfas_time_avg = np.mean(pfas_times) if pfas_times else 0.0
+                    pfas_time_std = np.std(pfas_times) if len(pfas_times) > 1 else 0.0
+                    atlas_time_avg = np.mean(atlas_times) if atlas_times else 0.0
+                    atlas_time_std = np.std(atlas_times) if len(atlas_times) > 1 else 0.0
+                    
+                    pfas_time_min = min(pfas_times) if pfas_times else 0.0
+                    pfas_time_max = max(pfas_times) if pfas_times else 0.0
+                    atlas_time_min = min(atlas_times) if atlas_times else 0.0
+                    atlas_time_max = max(atlas_times) if atlas_times else 0.0
+                    
+                    # Most common classification results
+                    pfas_success_rate = pfas_success_count / iterations
+                    atlas_success_rate = atlas_success_count / iterations
+                    most_common_groups = max(set(str(g) for g in detected_groups_list), key=lambda x: str(detected_groups_list).count(x)) if detected_groups_list else []
+                    most_common_atlas = max(set(atlas_classifications), key=atlas_classifications.count) if any(atlas_classifications) else (None, None)
+                    
+                    timing_data = {
+                        'molecule_id': i + 1,
+                        'chain_length': chain_length,
+                        'smiles': smiles,
+                        'molecular_weight': mol_weight,
+                        'num_atoms': num_atoms,
+                        'num_bonds': num_bonds,
+                        'iterations': iterations,
+                        'pfasgroups_time_avg': pfas_time_avg,
+                        'pfasgroups_time_std': pfas_time_std,
+                        'pfasgroups_time_min': pfas_time_min,
+                        'pfasgroups_time_max': pfas_time_max,
+                        'atlas_time_avg': atlas_time_avg,
+                        'atlas_time_std': atlas_time_std,
+                        'atlas_time_min': atlas_time_min,
+                        'atlas_time_max': atlas_time_max,
+                        'pfasgroups_success_rate': pfas_success_rate,
+                        'atlas_success_rate': atlas_success_rate,
+                        'pfasgroups_correct_rate': pfas_correct_count / iterations,
+                        'atlas_correct_rate': atlas_correct_count / iterations,
+                        'pfasgroups_detected': eval(most_common_groups) if most_common_groups != '[]' else [],
+                        'atlas_first_class': most_common_atlas[0],
+                        'atlas_second_class': most_common_atlas[1],
+                        'system_specs': system_specs
+                    }
+                    
+                    timing_results.append(timing_data)
+                    
+                    if (i + 1) % 25 == 0:  # Report more frequently for longer tests
+                        recent_results = timing_results[-25:]
+                        avg_pfas_time = sum(r['pfasgroups_time_avg'] for r in recent_results) / len(recent_results) * 1000
+                        avg_atlas_time = sum(r['atlas_time_avg'] for r in recent_results) / len(recent_results) * 1000
+                        avg_atoms = sum(r['num_atoms'] for r in recent_results) / len(recent_results)
+                        print(f"  ✅ Generated {i + 1}/{max_molecules} molecules | Avg times: PFASGroups {avg_pfas_time:.2f}ms, Atlas {avg_atlas_time:.2f}ms | Avg atoms: {avg_atoms:.1f}")
+                        
+            except Exception as e:
+                print(f"Warning: Failed to generate molecule {i + 1}: {e}")
+                continue
+        
+        # Save timing results
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_file = f"pfas_timing_benchmark_{timestamp}.json"
+        
+        with open(output_file, 'w') as f:
+            json.dump(timing_results, f, indent=2, default=str)
+        
+        print(f"\n💾 Timing Benchmark Complete!")
+        print(f"📊 Total molecules tested: {len(timing_results)}")
+        print(f"💾 Results saved: {output_file}")
+        
+        # Quick statistics with improved analysis
+        if timing_results:
+            import numpy as np
+            
+            avg_pfas_times = [r['pfasgroups_time_avg'] * 1000 for r in timing_results]
+            avg_atlas_times = [r['atlas_time_avg'] * 1000 for r in timing_results]
+            
+            pfas_overall_avg = np.mean(avg_pfas_times)
+            pfas_overall_std = np.std(avg_pfas_times)
+            atlas_overall_avg = np.mean(avg_atlas_times)
+            atlas_overall_std = np.std(avg_atlas_times)
+            
+            print(f"\n📈 Comprehensive Timing Summary ({iterations} iterations per molecule):")
+            print(f"   • PFASGroups: {pfas_overall_avg:.2f}±{pfas_overall_std:.2f}ms per molecule")
+            print(f"   • PFAS-Atlas: {atlas_overall_avg:.2f}±{atlas_overall_std:.2f}ms per molecule")
+            print(f"   • Speed ratio: {atlas_overall_avg/pfas_overall_avg:.1f}x (Atlas/PFASGroups)")
+            
+            # Enhanced scaling analysis with multiple size bins based on actual molecular size
+            atom_ranges = [
+                (0, 25, "Very Small"),
+                (26, 50, "Small"), 
+                (51, 100, "Medium"),
+                (101, 200, "Large"),
+                (201, 500, "Very Large"),
+                (501, 2000, "Extremely Large")
+            ]
+            
+            print(f"\n📏 Enhanced Size Scaling Analysis:")
+            for min_atoms, max_atoms, label in atom_ranges:
+                molecules_in_range = [r for r in timing_results if min_atoms <= r['num_atoms'] <= max_atoms]
+                if molecules_in_range:
+                    pfas_avg = np.mean([r['pfasgroups_time_avg'] * 1000 for r in molecules_in_range])
+                    atlas_avg = np.mean([r['atlas_time_avg'] * 1000 for r in molecules_in_range])
+                    atom_avg = np.mean([r['num_atoms'] for r in molecules_in_range])
+                    count = len(molecules_in_range)
+                    
+                    print(f"   {label} ({min_atoms}-{max_atoms} atoms, n={count}, avg={atom_avg:.0f}): PFASGroups {pfas_avg:.2f}ms, Atlas {atlas_avg:.2f}ms")
+            
+            # Identify largest molecules tested
+            largest_molecules = sorted(timing_results, key=lambda x: x['num_atoms'], reverse=True)[:5]
+            print(f"\n🔬 Largest Molecules Tested:")
+            for i, mol in enumerate(largest_molecules, 1):
+                print(f"   {i}. {mol['num_atoms']} atoms, MW={mol['molecular_weight']:.1f}: PFASGroups {mol['pfasgroups_time_avg']*1000:.2f}ms, Atlas {mol['atlas_time_avg']*1000:.2f}ms")
+        
+        return timing_results, output_file
+    
     def run_oecd_benchmark(self):
         """Run benchmark on OECD data using groups 1-28"""
         
@@ -469,18 +719,47 @@ def main():
     
     benchmark = EnhancedPFASBenchmark()
     
-    # Run both benchmarks
-    print("Running Enhanced Functional Groups Benchmark...")
-    enhanced_results, enhanced_file = benchmark.run_enhanced_benchmark()
+    # Ask user what benchmarks to run
+    print("🚀 PFAS Benchmark Suite")
+    print("Available benchmarks:")
+    print("  1. Enhanced Functional Groups Benchmark (comprehensive)")
+    print("  2. OECD Benchmark (real-world data)")
+    print("  3. Timing Performance Benchmark (scaling analysis)")
+    print("  4. All benchmarks")
     
-    print("\nRunning OECD Benchmark...")
-    oecd_results, oecd_file = benchmark.run_oecd_benchmark()
+    choice = input("\nChoose benchmark (1-4) or press Enter for all: ").strip()
     
-    print(f"\n🎯 Next steps:")
-    print(f"   Enhanced analysis: python enhanced_analysis.py {enhanced_file} {oecd_file}")
-    print(f"   Files generated:")
-    print(f"     • {enhanced_file} (functional groups)")
-    print(f"     • {oecd_file} (OECD data)")
+    if choice in ['1', '4', '']:
+        print("\nRunning Enhanced Functional Groups Benchmark...")
+        enhanced_results, enhanced_file = benchmark.run_enhanced_benchmark()
+    else:
+        enhanced_results, enhanced_file = None, None
+    
+    if choice in ['2', '4', '']:
+        print("\nRunning OECD Benchmark...")
+        oecd_results, oecd_file = benchmark.run_oecd_benchmark()
+    else:
+        oecd_results, oecd_file = None, None
+    
+    if choice in ['3', '4', '']:
+        print("\nRunning Timing Performance Benchmark...")
+        timing_results, timing_file = benchmark.run_timing_benchmark(200, 10)  # 200 molecules, 10 iterations
+    else:
+        timing_results, timing_file = None, None
+    
+    print(f"\n🎯 Benchmark Complete! Next steps:")
+    if enhanced_file and oecd_file:
+        print(f"   Enhanced analysis: python enhanced_analysis.py {enhanced_file} {oecd_file}")
+    if timing_file:
+        print(f"   Timing analysis: python analyze_timing.py {timing_file}")
+    
+    print(f"\n📁 Files generated:")
+    if enhanced_file:
+        print(f"     • {enhanced_file} (functional groups)")
+    if oecd_file:
+        print(f"     • {oecd_file} (OECD data)")
+    if timing_file:
+        print(f"     • {timing_file} (timing performance)")
 
 if __name__ == "__main__":
     main()
