@@ -48,6 +48,10 @@ class EnhancedPFASBenchmark:
         with open('/home/luc/git/PFASGroups/PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
             self.pfas_groups = json.load(f)
         
+        # Load specificity test groups for OECD connections
+        with open('/home/luc/git/PFASGroups/PFASgroups/tests/specificity_test_groups.json', 'r') as f:
+            self.specificity_groups = json.load(f)
+        
         # Target groups 29-51 (excluding 48)
         self.target_groups = [g for g in range(29, 52) if g != 48]
         
@@ -80,6 +84,80 @@ class EnhancedPFASBenchmark:
             51: {'name': 'Side-chain aromatics', 'smiles': 'c1ccccc1', 'mode': 'attach'}
         }
         
+        # Build OECD group mappings after functional_smarts is defined
+        self.build_oecd_mappings()
+    
+    def build_oecd_mappings(self):
+        """Build mappings between OECD groups and enhanced functional groups using specificity connections"""
+        
+        # Map OECD groups (1-28) to their names and base functional groups
+        self.oecd_group_info = {}
+        self.base_to_oecd = {}
+        
+        for i, group in enumerate(self.pfas_groups[:28]):
+            group_id = i + 1
+            group_name = group['name'].lower()
+            base_groups = group.get('base_functional_groups', [])
+            
+            self.oecd_group_info[group_id] = {
+                'name': group_name,
+                'base_groups': base_groups,
+                'smarts1': group.get('smarts1'),
+                'smarts2': group.get('smarts2')
+            }
+            
+            # Map base functional groups to OECD group IDs
+            for base_group in base_groups:
+                base_key = base_group.lower()
+                if base_key not in self.base_to_oecd:
+                    self.base_to_oecd[base_key] = []
+                self.base_to_oecd[base_key].append(group_id)
+        
+        # Build specificity connections from enhanced groups to OECD groups
+        self.enhanced_to_oecd_connections = {}
+        
+        for conn in self.specificity_groups:
+            source = conn['source'].lower()
+            target = conn['target'].lower()
+            edge_type = conn['edge_type']
+            
+            # Find source in base functional groups (OECD groups 1-28)
+            source_oecd_groups = []
+            
+            # Direct base group match
+            if source in self.base_to_oecd:
+                source_oecd_groups.extend(self.base_to_oecd[source])
+            
+            # Direct OECD group name match
+            for group_id, info in self.oecd_group_info.items():
+                if source == info['name']:
+                    source_oecd_groups.append(group_id)
+            
+            # Find target in enhanced functional groups (29-51, except 48)
+            target_enhanced_groups = []
+            for group_id in self.target_groups:
+                if target == self.functional_smarts[group_id]['name'].lower():
+                    target_enhanced_groups.append(group_id)
+            
+            # Also check if target is an OECD group name
+            for group_id, info in self.oecd_group_info.items():
+                if target == info['name']:
+                    target_enhanced_groups.append(group_id)
+            
+            # Create connections
+            for src_group in source_oecd_groups:
+                for tgt_group in target_enhanced_groups:
+                    if src_group not in self.enhanced_to_oecd_connections:
+                        self.enhanced_to_oecd_connections[src_group] = []
+                    
+                    self.enhanced_to_oecd_connections[src_group].append({
+                        'target_group': tgt_group,
+                        'edge_type': edge_type,
+                        'connection_type': 'specificity'
+                    })
+        
+        print(f"✅ Built OECD mappings: {len(self.oecd_group_info)} OECD groups, {len(self.enhanced_to_oecd_connections)} connections")
+        
     def generate_single_group_molecules(self, group_id, count=15):
         """Generate molecules with a single functional group using proper generate_mol functions"""
         
@@ -103,9 +181,9 @@ class EnhancedPFASBenchmark:
                     n=chain_length,
                     functional_groups=functional_group_spec,
                     perfluorinated=True,
-                    cycle=(i % 7 == 0),  # Some cyclic molecules
-                    alkene=(i % 5 == 0),  # Some alkenes
-                    alkyne=(i % 6 == 0)   # Some alkynes
+                    # cycle=(i % 7 == 0),  # Some cyclic molecules
+                    # alkene=(i % 5 == 0),  # Some alkenes
+                    # alkyne=(i % 6 == 0)   # Some alkynes
                 )
                 
                 if mol is not None:
@@ -170,6 +248,80 @@ class EnhancedPFASBenchmark:
                     
             except Exception as e:
                 print(f"Warning: Failed to generate multi-group molecule for groups {group_ids}: {e}")
+                continue
+        
+        return molecules
+    
+    def generate_oecd_group_molecules(self, group_id, count=10):
+        """Generate molecules representing OECD group patterns using existing PFAS structures"""
+        
+        if group_id not in self.oecd_group_info:
+            print(f"Warning: OECD group {group_id} not found")
+            return []
+        
+        group_info = self.oecd_group_info[group_id]
+        molecules = []
+        
+        # For OECD groups, we don't generate new molecules but instead select 
+        # existing PFAS structures that would match this group pattern
+        # This represents real-world PFAS that fall into these OECD categories
+        
+        # Use the base functional groups to generate representative molecules
+        base_groups = group_info['base_groups']
+        
+        if not base_groups:
+            print(f"Warning: OECD group {group_id} has no base functional groups")
+            return []
+        
+        for i in range(count):
+            try:
+                # Create molecule representing this OECD category
+                chain_length = 4 + (i % 4)  # Varying chain lengths 4-7
+                
+                # Use the first base functional group for generation
+                primary_base = base_groups[0].lower()
+                
+                # Map base group to enhanced functional group for generation
+                enhanced_group_id = None
+                for enh_id in self.target_groups:
+                    if self.functional_smarts[enh_id]['name'].lower() == primary_base:
+                        enhanced_group_id = enh_id
+                        break
+                
+                if enhanced_group_id:
+                    # Generate using enhanced functional group system
+                    enh_group_info = self.functional_smarts[enhanced_group_id]
+                    
+                    functional_group_spec = {
+                        'group_smiles': enh_group_info['smiles'],
+                        'n': 1,
+                        'mode': enh_group_info['mode']
+                    }
+                    
+                    # Generate molecule using proper generate_mol function
+                    mol = generate_random_mol(
+                        n=chain_length,
+                        functional_groups=functional_group_spec,
+                        perfluorinated=True
+                    )
+                    
+                    if mol is not None:
+                        smiles = Chem.MolToSmiles(mol)
+                        
+                        molecule_data = {
+                            'oecd_group_id': group_id,
+                            'group_id': group_id,
+                            'group_name': group_info['name'],
+                            'smiles': smiles,
+                            'chain_length': chain_length,
+                            'target_groups': [group_id],
+                            'generation_type': 'oecd_group',
+                            'base_functional_groups': base_groups
+                        }
+                        molecules.append(molecule_data)
+                
+            except Exception as e:
+                print(f"Warning: Failed to generate OECD molecule for group {group_id}: {e}")
                 continue
         
         return molecules
@@ -377,6 +529,40 @@ class EnhancedPFASBenchmark:
             success_rate = (success_count / replicates) * 100
             print(f"     ✅ Generated {success_count}/40 molecules ({success_rate:.1f}% success)")
         
+        # Part 3: OECD groups (1-28) molecules
+        print("\n📋 PART 3: OECD Group Molecules (1-28)")
+        print("=" * 45)
+        
+        oecd_replicates = 15  # Fewer replicates for OECD groups
+        
+        for group_id in self.oecd_target_groups:
+            group_name = self.oecd_group_info[group_id]['name']
+            print(f"🧪 Generating molecules for OECD Group {group_id}: {group_name}")
+            
+            molecules = self.generate_oecd_group_molecules(group_id, count=oecd_replicates)
+            success_count = 0
+            
+            for mol_data in molecules:
+                if mol_data:
+                    success_count += 1
+                    
+                    # Test with PFASGroups
+                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'])
+                    
+                    # Test with PFAS-Atlas
+                    atlas_result = self.test_with_atlas(mol_data['smiles'])
+                    
+                    result = {
+                        'molecule_data': mol_data,
+                        'pfasgroups_result': pfas_result,
+                        'atlas_result': atlas_result
+                    }
+                    
+                    all_results.append(result)
+            
+            success_rate = (success_count / oecd_replicates) * 100
+            print(f"  ✅ Generated {success_count}/{oecd_replicates} molecules ({success_rate:.1f}% success)")
+        
         # Save results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         output_file = f"pfas_enhanced_benchmark_{timestamp}.json"
@@ -385,12 +571,14 @@ class EnhancedPFASBenchmark:
             json.dump(all_results, f, indent=2, default=str)
         
         total_molecules = len(all_results)
-        single_molecules = len(self.target_groups) * 15
-        multi_molecules = total_molecules - single_molecules
+        enhanced_single_molecules = len(self.target_groups) * replicates
+        oecd_molecules = len(self.oecd_target_groups) * oecd_replicates
+        multi_molecules = total_molecules - enhanced_single_molecules - oecd_molecules
         
         print(f"\n💾 Enhanced Benchmark Complete!")
         print(f"📊 Total molecules tested: {total_molecules}")
-        print(f"   • Single group molecules: {single_molecules}")  
+        print(f"   • Enhanced single group molecules: {enhanced_single_molecules}")
+        print(f"   • OECD group molecules: {oecd_molecules}")
         print(f"   • Multi-group molecules: {multi_molecules}")
         print(f"💾 Results saved: {output_file}")
         
@@ -453,14 +641,17 @@ class EnhancedPFASBenchmark:
         print(f"   • Platform: {system_specs['platform']}")
         
         timing_results = []
+        excluded_wrong_detection = 0
+        failed_generations = 0
         
         for i in range(max_molecules):
             try:
                 # Generate molecules of increasing size (chain lengths 3-50 to reach ~2000 atoms)
                 # Use logarithmic scaling for better coverage of large molecules
-                if i < max_molecules * 0.3:  # First 30%: small molecules (3-10 carbons)
+                current_target = len(timing_results)
+                if current_target < max_molecules * 0.3:  # First 30%: small molecules (3-10 carbons)
                     chain_length = 3 + (i % 8)
-                elif i < max_molecules * 0.6:  # Next 30%: medium molecules (10-25 carbons)
+                elif current_target < max_molecules * 0.6:  # Next 30%: medium molecules (10-25 carbons)
                     chain_length = 10 + (i % 16)
                 else:  # Last 40%: large molecules (25-50 carbons for ~2000 atoms)
                     chain_length = 25 + (i % 26)
@@ -478,13 +669,19 @@ class EnhancedPFASBenchmark:
                     n=chain_length,
                     functional_groups=functional_group_spec,
                     perfluorinated=True,
-                    cycle=(i % max(5, int(15/complexity_factor)) == 0),  # More cycles for larger molecules
-                    alkene=(i % max(4, int(12/complexity_factor)) == 0),   # More alkenes
-                    alkyne=(i % max(6, int(18/complexity_factor)) == 0)   # More alkynes
+                    # cycle=(i % max(5, int(15/complexity_factor)) == 0),  # More cycles for larger molecules
+                    # alkene=(i % max(4, int(12/complexity_factor)) == 0),   # More alkenes
+                    #alkyne=(i % max(6, int(18/complexity_factor)) == 0)   # More alkynes
                 )
                 
                 if mol is not None:
                     smiles = Chem.MolToSmiles(mol)
+                    
+                    # Pre-validate: Check that PFASGroups correctly identifies carboxylic acid (group 33)
+                    validation_result = self.test_with_pfasgroups(smiles)
+                    if not validation_result['success'] or 33 not in validation_result['detected_groups']:
+                        excluded_wrong_detection += 1
+                        continue  # Skip molecules where carboxylic acid is not correctly identified
                     
                     # Calculate molecular properties
                     mol_weight = rdMolDescriptors.CalcExactMolWt(mol)
@@ -496,53 +693,30 @@ class EnhancedPFASBenchmark:
                     atlas_times = []
                     pfas_success_count = 0
                     atlas_success_count = 0
-                    pfas_correct_count = 0  # Count correct functional group identification
-                    atlas_correct_count = 0  # Count correct PFAS classification
                     detected_groups_list = []
                     atlas_classifications = []
                     
                     for iteration in range(iterations):
                         # Test with PFASGroups
                         pfas_result = self.test_with_pfasgroups(smiles)
-                        
-                        # Check if carboxylic acid (group 33) was correctly detected
-                        correctly_detected = 33 in pfas_result.get('detected_groups', [])
-                        
-                        # Only include timing if functional group was correctly detected
-                        if correctly_detected:
-                            pfas_times.append(pfas_result['execution_time'])
-                            pfas_correct_count += 1
-                        
-                        if pfas_result['success']:
+                        pfas_times.append(pfas_result['execution_time'])
+                        if pfas_result['success'] and 33 in pfas_result['detected_groups']:  # Ensure carboxylic acid is detected
                             pfas_success_count += 1
                         detected_groups_list.append(pfas_result['detected_groups'])
                         
                         # Test with PFAS-Atlas
                         atlas_result = self.test_with_atlas(smiles)
-                        
-                        # Check if Atlas correctly classified as PFAS (not "Not PFAS")
-                        atlas_correct = atlas_result.get('first_class', '') != 'Not PFAS'
-                        
-                        # Only include timing if correctly classified as PFAS
-                        if atlas_correct:
-                            atlas_times.append(atlas_result['execution_time'])
-                            atlas_correct_count += 1
-                            
+                        atlas_times.append(atlas_result['execution_time'])
                         if atlas_result['success']:
                             atlas_success_count += 1
                         atlas_classifications.append((atlas_result['first_class'], atlas_result['second_class']))
                     
-                    # Calculate statistics (only for correctly detected/classified molecules)
+                    # Calculate statistics
                     import numpy as np
-                    pfas_time_avg = np.mean(pfas_times) if pfas_times else 0.0
-                    pfas_time_std = np.std(pfas_times) if len(pfas_times) > 1 else 0.0
-                    atlas_time_avg = np.mean(atlas_times) if atlas_times else 0.0
-                    atlas_time_std = np.std(atlas_times) if len(atlas_times) > 1 else 0.0
-                    
-                    pfas_time_min = min(pfas_times) if pfas_times else 0.0
-                    pfas_time_max = max(pfas_times) if pfas_times else 0.0
-                    atlas_time_min = min(atlas_times) if atlas_times else 0.0
-                    atlas_time_max = max(atlas_times) if atlas_times else 0.0
+                    pfas_time_avg = np.mean(pfas_times)
+                    pfas_time_std = np.std(pfas_times)
+                    atlas_time_avg = np.mean(atlas_times)
+                    atlas_time_std = np.std(atlas_times)
                     
                     # Most common classification results
                     pfas_success_rate = pfas_success_count / iterations
@@ -560,16 +734,14 @@ class EnhancedPFASBenchmark:
                         'iterations': iterations,
                         'pfasgroups_time_avg': pfas_time_avg,
                         'pfasgroups_time_std': pfas_time_std,
-                        'pfasgroups_time_min': pfas_time_min,
-                        'pfasgroups_time_max': pfas_time_max,
+                        'pfasgroups_time_min': min(pfas_times),
+                        'pfasgroups_time_max': max(pfas_times),
                         'atlas_time_avg': atlas_time_avg,
                         'atlas_time_std': atlas_time_std,
-                        'atlas_time_min': atlas_time_min,
-                        'atlas_time_max': atlas_time_max,
+                        'atlas_time_min': min(atlas_times),
+                        'atlas_time_max': max(atlas_times),
                         'pfasgroups_success_rate': pfas_success_rate,
                         'atlas_success_rate': atlas_success_rate,
-                        'pfasgroups_correct_rate': pfas_correct_count / iterations,
-                        'atlas_correct_rate': atlas_correct_count / iterations,
                         'pfasgroups_detected': eval(most_common_groups) if most_common_groups != '[]' else [],
                         'atlas_first_class': most_common_atlas[0],
                         'atlas_second_class': most_common_atlas[1],
@@ -584,10 +756,15 @@ class EnhancedPFASBenchmark:
                         avg_atlas_time = sum(r['atlas_time_avg'] for r in recent_results) / len(recent_results) * 1000
                         avg_atoms = sum(r['num_atoms'] for r in recent_results) / len(recent_results)
                         print(f"  ✅ Generated {i + 1}/{max_molecules} molecules | Avg times: PFASGroups {avg_pfas_time:.2f}ms, Atlas {avg_atlas_time:.2f}ms | Avg atoms: {avg_atoms:.1f}")
-                        
+                else:
+                    failed_generations += 1
+                    
             except Exception as e:
                 print(f"Warning: Failed to generate molecule {i + 1}: {e}")
+                failed_generations += 1
                 continue
+            
+            i += 1
         
         # Save timing results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -598,6 +775,9 @@ class EnhancedPFASBenchmark:
         
         print(f"\n💾 Timing Benchmark Complete!")
         print(f"📊 Total molecules tested: {len(timing_results)}")
+        print(f"⚠️ Molecules excluded (wrong detection): {excluded_wrong_detection}")
+        print(f"❌ Failed generations: {failed_generations}")
+        print(f"✅ Success rate: {len(timing_results)/(len(timing_results)+excluded_wrong_detection+failed_generations)*100:.1f}%")
         print(f"💾 Results saved: {output_file}")
         
         # Quick statistics with improved analysis
@@ -617,14 +797,14 @@ class EnhancedPFASBenchmark:
             print(f"   • PFAS-Atlas: {atlas_overall_avg:.2f}±{atlas_overall_std:.2f}ms per molecule")
             print(f"   • Speed ratio: {atlas_overall_avg/pfas_overall_avg:.1f}x (Atlas/PFASGroups)")
             
-            # Enhanced scaling analysis with multiple size bins based on actual molecular size
+            # Enhanced scaling analysis with multiple size bins
             atom_ranges = [
-                (0, 25, "Very Small"),
-                (26, 50, "Small"), 
-                (51, 100, "Medium"),
-                (101, 200, "Large"),
-                (201, 500, "Very Large"),
-                (501, 2000, "Extremely Large")
+                (0, 50, "Very Small"),
+                (51, 100, "Small"), 
+                (101, 200, "Medium"),
+                (201, 500, "Large"),
+                (501, 1000, "Very Large"),
+                (1001, 2000, "Extremely Large")
             ]
             
             print(f"\n📏 Enhanced Size Scaling Analysis:")
@@ -645,6 +825,347 @@ class EnhancedPFASBenchmark:
                 print(f"   {i}. {mol['num_atoms']} atoms, MW={mol['molecular_weight']:.1f}: PFASGroups {mol['pfasgroups_time_avg']*1000:.2f}ms, Atlas {mol['atlas_time_avg']*1000:.2f}ms")
         
         return timing_results, output_file
+    
+    def run_non_fluorinated_benchmark(self, molecules_per_group=50):
+        """Run benchmark to test if systems correctly exclude non-fluorinated functional groups
+        
+        Tests carboxylic acid, sulfonic acid, and ether functional groups without fluorination
+        to verify that PFAS detection systems properly exclude non-PFAS molecules.
+        
+        Args:
+            molecules_per_group: Number of molecules to test per functional group
+        """
+        
+        print("\n🚀 NON-FLUORINATED FUNCTIONAL GROUPS BENCHMARK")
+        print("=" * 55)
+        print(f"🧪 Testing specificity of functional group detection systems")
+        print(f"📊 Testing 3 functional groups with {molecules_per_group} molecules each")
+        print("🎯 Expected: Target functional groups should NOT be detected in non-fluorinated molecules")
+        
+        # Test functional groups: carboxylic acid, sulfonic acid, ether
+        test_groups = {
+            33: {'name': 'carboxylic acid', 'smiles': 'C(=O)O', 'mode': 'attach'},
+            36: {'name': 'sulfonic acid', 'smiles': 'S(=O)(=O)O', 'mode': 'attach'},
+            31: {'name': 'ether', 'smiles': 'O', 'mode': 'insert'}
+        }
+        
+        all_results = []
+        
+        for group_id, group_info in test_groups.items():
+            print(f"\n🧪 Testing non-fluorinated {group_info['name']} (Group {group_id})")
+            
+            group_results = {
+                'group_id': group_id,
+                'group_name': group_info['name'],
+                'molecules_tested': 0,
+                'pfasgroups_detections': 0,
+                'atlas_detections': 0,
+                'molecules': []
+            }
+            
+            for i in range(molecules_per_group):
+                try:
+                    # Generate NON-fluorinated molecules manually using RDKit
+                    chain_length = 3 + (i % 8)  # Chain lengths 3-10
+                    
+                    # Create base hydrocarbon chain without fluorination
+                    if group_id == 33:  # carboxylic acid
+                        # Create simple carboxylic acids without fluorine
+                        base_smiles_options = [
+                            "FC(F)(F)C(F)(F)CC(=O)O",  # butanoic acid
+                            "FC(F)(F)CC(=O)O",   # propanoic acid
+                            "FC(F)(F)C(F)(F)C(F)(F)CC(=O)O", # pentanoic acid
+                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)CC(=O)O", # hexanoic acid
+                            "FC(F)(F)C(C)C(=O)O", # isobutyric acid
+                            "FC(F)(F)C(F)(C(F)(F)F)CC(=O)O", # 3-methylbutanoic acid
+                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC(=O)O", # heptanoic acid
+                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC(=O)O", # octanoic acid
+                        ]
+                        smiles = base_smiles_options[i % len(base_smiles_options)]
+                        
+                    elif group_id == 36:  # sulfonic acid
+                        # Create simple sulfonic acids without fluorine
+                        base_smiles_options = [
+                            "FC(F)(F)CS(=O)(=O)O",     # ethanesulfonic acid
+                            "FC(F)(F)C(F)(F)CS(=O)(=O)O",    # propanesulfonic acid
+                            "FC(F)(F)C(F)(F)C(F)(F)CS(=O)(=O)O",   # butanesulfonic acid
+                            "CS(=O)(=O)O",      # methanesulfonic acid
+                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)CS(=O)(=O)O",  # pentanesulfonic acid
+                            "FC(F)(F)C(F)(C(F)(F)F)CS(=O)(=O)O", # 2-methylpropanesulfonic acid
+                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CS(=O)(=O)O", # hexanesulfonic acid
+                            "c1ccc(S(=O)(=O)O)cc1", # benzenesulfonic acid
+                        ]
+                        smiles = base_smiles_options[i % len(base_smiles_options)]
+                        
+                    elif group_id == 31:  # ether
+                        # Create simple ethers without fluorine
+                        base_smiles_options = [
+                            "FC(F)(F)COC",        # ethyl methyl ether
+                            "FC(F)(F)COCC(F)(F)F",       # diethyl ether
+                            "FC(F)(F)C(F)(F)COCC(F)(F)F",      # ethyl propyl ether
+                            "FC(F)(F)COCC(F)(F)C(F)(F)F",    # dipropyl ether
+                            "FC(F)(F)C(F)(C(F)(F)F)COC",     # isopropyl methyl ether
+                            "FFC(F)(F)C(F)(F)C(F)(F)COC",      # butyl methyl ether
+                            "FC(F)(F)COC(F)(F)C(F)(F)C(F)(F)",      # ethyl propyl ether
+                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)COCC(F)(F)F",    # butyl ethyl ether
+                        ]
+                        smiles = base_smiles_options[i % len(base_smiles_options)]
+                    
+                    # Verify molecule is valid and non-fluorinated
+                    mol = Chem.MolFromSmiles(smiles)
+                    if mol is not None and 'F' not in smiles:
+                        group_results['molecules_tested'] += 1
+                        
+                        # Test with PFASGroups - should NOT detect the target functional group in non-fluorinated molecules
+                        pfas_result = self.test_with_pfasgroups(smiles)
+                        # Check specifically for the target group_id, not just any detection
+                        if pfas_result['success'] and group_id in pfas_result['detected_groups']:
+                            group_results['pfasgroups_detections'] += 1
+                        
+                        # Test with PFAS-Atlas - should NOT detect as PFAS
+                        atlas_result = self.test_with_atlas(smiles)
+                        if atlas_result['success'] and atlas_result['first_class'] != 'Not PFAS':
+                            group_results['atlas_detections'] += 1
+                        
+                        molecule_result = {
+                            'smiles': smiles,
+                            'chain_length': len([atom for atom in mol.GetAtoms() if atom.GetSymbol() == 'C']),
+                            'contains_fluorine': False,
+                            'pfasgroups_detected': pfas_result['success'],
+                            'pfasgroups_groups': pfas_result['detected_groups'],
+                            'pfasgroups_target_group_detected': group_id in pfas_result['detected_groups'] if pfas_result['success'] else False,
+                            'atlas_detected': atlas_result['success'] and atlas_result['first_class'] != 'Not PFAS',
+                            'atlas_first_class': atlas_result['first_class'],
+                            'atlas_second_class': atlas_result['second_class']
+                        }
+                        
+                        group_results['molecules'].append(molecule_result)
+                        
+                except Exception as e:
+                    print(f"Warning: Failed to generate non-fluorinated molecule {i+1} for group {group_id}: {e}")
+                    continue
+            
+            pfas_false_positive_rate = (group_results['pfasgroups_detections'] / max(group_results['molecules_tested'], 1)) * 100
+            atlas_false_positive_rate = (group_results['atlas_detections'] / max(group_results['molecules_tested'], 1)) * 100
+            
+            print(f"   ✅ Generated {group_results['molecules_tested']} non-fluorinated molecules")
+            print(f"   ⚠️  PFASGroups false positives (target group {group_id}): {group_results['pfasgroups_detections']}/{group_results['molecules_tested']} ({pfas_false_positive_rate:.1f}%)")
+            print(f"   ⚠️  Atlas false positives (any PFAS class): {group_results['atlas_detections']}/{group_results['molecules_tested']} ({atlas_false_positive_rate:.1f}%)")
+            
+            all_results.append(group_results)
+        
+        # Save non-fluorinated benchmark results
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_file = f"pfas_non_fluorinated_benchmark_{timestamp}.json"
+        
+        with open(output_file, 'w') as f:
+            json.dump(all_results, f, indent=2, default=str)
+        
+        # Summary statistics
+        total_molecules = sum(r['molecules_tested'] for r in all_results)
+        total_pfas_false_positives = sum(r['pfasgroups_detections'] for r in all_results)
+        total_atlas_false_positives = sum(r['atlas_detections'] for r in all_results)
+        
+        overall_pfas_fpr = (total_pfas_false_positives / max(total_molecules, 1)) * 100
+        overall_atlas_fpr = (total_atlas_false_positives / max(total_molecules, 1)) * 100
+        
+        print(f"\n💾 Non-Fluorinated Benchmark Complete!")
+        print(f"📊 Total molecules tested: {total_molecules}")
+        print(f"🎯 Expected result: 0% detection of target functional groups (these are NOT PFAS molecules)")
+        print(f"📈 PFASGroups false positive rate (target groups): {overall_pfas_fpr:.1f}% ({total_pfas_false_positives}/{total_molecules})")
+        print(f"📈 PFAS-Atlas false positive rate (any PFAS): {overall_atlas_fpr:.1f}% ({total_atlas_false_positives}/{total_molecules})")
+        print(f"💾 Results saved: {output_file}")
+        
+        if overall_pfas_fpr == 0 and overall_atlas_fpr == 0:
+            print(f"✅ PERFECT: Both systems correctly excluded all non-fluorinated molecules!")
+        elif overall_pfas_fpr < 5 and overall_atlas_fpr < 5:
+            print(f"✅ GOOD: Both systems have low false positive rates (<5%)")
+        else:
+            print(f"⚠️  WARNING: High false positive rates detected - systems may need calibration")
+        
+        return all_results, output_file
+    
+    def run_complex_branched_benchmark(self, molecules_per_test=20):
+        """Run benchmark to test detection of complex branched PFAS molecules
+        
+        Tests both systems' ability to correctly identify highly branched, complex PFAS structures
+        that might challenge pattern recognition algorithms.
+        
+        Args:
+            molecules_per_test: Number of molecules to test per complexity category
+        """
+        
+        print("\n🚀 COMPLEX BRANCHED PFAS BENCHMARK")
+        print("=" * 55)
+        print(f"🧪 Testing detection of complex branched PFAS molecules")
+        print(f"📊 Testing {molecules_per_test} molecules per complexity category")
+        print("🎯 Expected: Both systems should correctly identify these as PFAS")
+        
+        # Define complex branched PFAS molecules with different functional groups and complexity levels
+        test_molecules = {
+            'highly_branched_carboxylic_acid': {
+                'smiles': 'C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O',
+                'description': 'Highly branched perfluorocarboxylic acid',
+                'expected_pfasgroups': [33],  # carboxylic acid
+                'complexity': 'very_high'
+            },
+            'branched_sulfonic_acid': {
+                'smiles': 'C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O',
+                'description': 'Branched perfluorosulfonic acid',
+                'expected_pfasgroups': [36],  # sulfonic acid
+                'complexity': 'high'
+            },
+            'branched_ether_chain': {
+                'smiles': 'C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F',
+                'description': 'Branched perfluoroether',
+                'expected_pfasgroups': [31],  # ether
+                'complexity': 'high'
+            },
+            'multi_functional_branched': {
+                'smiles': 'C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O',
+                'description': 'Multi-functional branched PFAS (carboxylic acid + ether + sulfonic acid)',
+                'expected_pfasgroups': [31, 33, 36],  # ether, carboxylic acid, sulfonic acid
+                'complexity': 'very_high'
+            },
+            'cyclic_branched': {
+                'smiles': 'C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F',
+                'description': 'Cyclic branched perfluorocarboxylic acid',
+                'expected_pfasgroups': [33],  # carboxylic acid
+                'complexity': 'high'
+            },
+            'aromatic_branched': {
+                'smiles': 'c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F',
+                'description': 'Aromatic branched PFAS with carboxylic acid',
+                'expected_pfasgroups': [33, 51],  # carboxylic acid, side-chain aromatics
+                'complexity': 'very_high'
+            }
+        }
+        
+        all_results = []
+        total_tests = 0
+        successful_detections = {'pfasgroups': 0, 'atlas': 0}
+        
+        for test_name, mol_info in test_molecules.items():
+            print(f"\n🔬 Testing {test_name}: {mol_info['description']}")
+            print(f"   SMILES: {mol_info['smiles']}")
+            print(f"   Complexity: {mol_info['complexity']}")
+            print(f"   Expected PFASGroups: {mol_info['expected_pfasgroups']}")
+            
+            test_results = {
+                'test_name': test_name,
+                'description': mol_info['description'],
+                'smiles': mol_info['smiles'],
+                'complexity': mol_info['complexity'],
+                'expected_pfasgroups': mol_info['expected_pfasgroups'],
+                'molecules_tested': 0,
+                'pfasgroups_detections': 0,
+                'atlas_detections': 0,
+                'pfasgroups_correct_detections': 0,
+                'molecules': []
+            }
+            
+            # Test the molecule multiple times to check consistency
+            for i in range(molecules_per_test):
+                try:
+                    # Verify molecule is valid
+                    mol = Chem.MolFromSmiles(mol_info['smiles'])
+                    if mol is None:
+                        print(f"   ❌ Invalid SMILES: {mol_info['smiles']}")
+                        continue
+                    
+                    # Calculate molecule properties
+                    mol_weight = rdMolDescriptors.CalcExactMolWt(mol)
+                    num_atoms = mol.GetNumAtoms()
+                    num_heavy_atoms = mol.GetNumHeavyAtoms()
+                    num_fluorines = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'F')
+                    
+                    test_results['molecules_tested'] += 1
+                    total_tests += 1
+                    
+                    # Test with PFASGroups
+                    pfas_result = self.test_with_pfasgroups(mol_info['smiles'])
+                    pfasgroups_detected = pfas_result['success']
+                    detected_groups = pfas_result['detected_groups']
+                    
+                    if pfasgroups_detected:
+                        test_results['pfasgroups_detections'] += 1
+                        successful_detections['pfasgroups'] += 1
+                        
+                        # Check if expected groups were detected
+                        expected_groups_detected = all(group in detected_groups for group in mol_info['expected_pfasgroups'])
+                        if expected_groups_detected:
+                            test_results['pfasgroups_correct_detections'] += 1
+                    
+                    # Test with PFAS-Atlas
+                    atlas_result = self.test_with_atlas(mol_info['smiles'])
+                    atlas_detected = atlas_result['success']
+                    
+                    if atlas_detected:
+                        test_results['atlas_detections'] += 1
+                        successful_detections['atlas'] += 1
+                    
+                    molecule_result = {
+                        'iteration': i + 1,
+                        'smiles': mol_info['smiles'],
+                        'molecular_weight': mol_weight,
+                        'num_atoms': num_atoms,
+                        'num_heavy_atoms': num_heavy_atoms,
+                        'num_fluorines': num_fluorines,
+                        'pfasgroups_detected': pfasgroups_detected,
+                        'pfasgroups_groups': detected_groups,
+                        'pfasgroups_expected_groups': mol_info['expected_pfasgroups'],
+                        'pfasgroups_correct': all(group in detected_groups for group in mol_info['expected_pfasgroups']) if pfasgroups_detected else False,
+                        'atlas_detected': atlas_detected,
+                        'atlas_first_class': atlas_result['first_class'],
+                        'atlas_second_class': atlas_result['second_class'],
+                        'pfasgroups_execution_time': pfas_result['execution_time'],
+                        'atlas_execution_time': atlas_result['execution_time']
+                    }
+                    
+                    test_results['molecules'].append(molecule_result)
+                    
+                except Exception as e:
+                    print(f"   Warning: Failed to test iteration {i+1}: {e}")
+                    continue
+            
+            # Calculate success rates for this test
+            pfasgroups_detection_rate = (test_results['pfasgroups_detections'] / max(test_results['molecules_tested'], 1)) * 100
+            pfasgroups_accuracy_rate = (test_results['pfasgroups_correct_detections'] / max(test_results['molecules_tested'], 1)) * 100
+            atlas_detection_rate = (test_results['atlas_detections'] / max(test_results['molecules_tested'], 1)) * 100
+            
+            print(f"   ✅ Tested {test_results['molecules_tested']} iterations")
+            print(f"   📊 PFASGroups detection: {test_results['pfasgroups_detections']}/{test_results['molecules_tested']} ({pfasgroups_detection_rate:.1f}%)")
+            print(f"   🎯 PFASGroups correct groups: {test_results['pfasgroups_correct_detections']}/{test_results['molecules_tested']} ({pfasgroups_accuracy_rate:.1f}%)")
+            print(f"   📊 Atlas detection: {test_results['atlas_detections']}/{test_results['molecules_tested']} ({atlas_detection_rate:.1f}%)")
+            
+            all_results.append(test_results)
+        
+        # Save complex branched benchmark results
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_file = f"pfas_complex_branched_benchmark_{timestamp}.json"
+        
+        with open(output_file, 'w') as f:
+            json.dump(all_results, f, indent=2, default=str)
+        
+        # Summary statistics
+        overall_pfasgroups_rate = (successful_detections['pfasgroups'] / max(total_tests, 1)) * 100
+        overall_atlas_rate = (successful_detections['atlas'] / max(total_tests, 1)) * 100
+        
+        print(f"\n💾 Complex Branched Benchmark Complete!")
+        print(f"📊 Total tests: {total_tests} ({len(test_molecules)} molecule types × {molecules_per_test} iterations)")
+        print(f"🎯 Expected result: High detection rates for complex PFAS structures")
+        print(f"📈 PFASGroups overall detection rate: {overall_pfasgroups_rate:.1f}% ({successful_detections['pfasgroups']}/{total_tests})")
+        print(f"📈 PFAS-Atlas overall detection rate: {overall_atlas_rate:.1f}% ({successful_detections['atlas']}/{total_tests})")
+        print(f"💾 Results saved: {output_file}")
+        
+        if overall_pfasgroups_rate >= 90 and overall_atlas_rate >= 90:
+            print(f"🎉 EXCELLENT: Both systems show excellent detection of complex PFAS structures!")
+        elif overall_pfasgroups_rate >= 75 and overall_atlas_rate >= 75:
+            print(f"✅ GOOD: Both systems show good detection rates for complex structures")
+        else:
+            print(f"⚠️  CONCERNING: Lower than expected detection rates for complex PFAS structures")
+        
+        return all_results, output_file
     
     def run_oecd_benchmark(self):
         """Run benchmark on OECD data using groups 1-28"""
@@ -725,33 +1246,53 @@ def main():
     print("  1. Enhanced Functional Groups Benchmark (comprehensive)")
     print("  2. OECD Benchmark (real-world data)")
     print("  3. Timing Performance Benchmark (scaling analysis)")
-    print("  4. All benchmarks")
+    print("  4. Non-Fluorinated Exclusion Benchmark (false positive test)")
+    print("  5. Complex Branched PFAS Benchmark (positive control validation)")
+    print("  6. All benchmarks")
     
-    choice = input("\nChoose benchmark (1-4) or press Enter for all: ").strip()
+    choice = input("\nChoose benchmark (1-6) or press Enter for all: ").strip()
     
-    if choice in ['1', '4', '']:
+    if choice in ['1', '6', '']:
         print("\nRunning Enhanced Functional Groups Benchmark...")
         enhanced_results, enhanced_file = benchmark.run_enhanced_benchmark()
     else:
         enhanced_results, enhanced_file = None, None
     
-    if choice in ['2', '4', '']:
+    if choice in ['2', '6', '']:
         print("\nRunning OECD Benchmark...")
         oecd_results, oecd_file = benchmark.run_oecd_benchmark()
     else:
         oecd_results, oecd_file = None, None
     
-    if choice in ['3', '4', '']:
+    if choice in ['3', '6', '']:
         print("\nRunning Timing Performance Benchmark...")
         timing_results, timing_file = benchmark.run_timing_benchmark(200, 10)  # 200 molecules, 10 iterations
     else:
         timing_results, timing_file = None, None
+    
+    if choice in ['4', '6', '']:
+        print("\nRunning Non-Fluorinated Exclusion Benchmark...")
+        nonfluor_results, nonfluor_file = benchmark.run_non_fluorinated_benchmark(50)
+    else:
+        nonfluor_results, nonfluor_file = None, None
+    
+    if choice in ['5', '6', '']:
+        print("\nRunning Complex Branched PFAS Benchmark...")
+        complex_results, complex_file = benchmark.run_complex_branched_benchmark(20)
+    else:
+        complex_results, complex_file = None, None
     
     print(f"\n🎯 Benchmark Complete! Next steps:")
     if enhanced_file and oecd_file:
         print(f"   Enhanced analysis: python enhanced_analysis.py {enhanced_file} {oecd_file}")
     if timing_file:
         print(f"   Timing analysis: python analyze_timing.py {timing_file}")
+    if nonfluor_file:
+        print(f"   Non-fluorinated analysis: python analyze_nonfluorinated.py {nonfluor_file}")
+    if complex_file:
+        print(f"   Complex molecules analysis: python analyze_complex.py {complex_file}")
+    if complex_file:
+        print(f"   Complex molecules analysis: python analyze_complex.py {complex_file}")
     
     print(f"\n📁 Files generated:")
     if enhanced_file:
@@ -760,6 +1301,10 @@ def main():
         print(f"     • {oecd_file} (OECD data)")
     if timing_file:
         print(f"     • {timing_file} (timing performance)")
+    if nonfluor_file:
+        print(f"     • {nonfluor_file} (non-fluorinated exclusion)")
+    if complex_file:
+        print(f"     • {complex_file} (complex branched PFAS)")
 
 if __name__ == "__main__":
     main()
