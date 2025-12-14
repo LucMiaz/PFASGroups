@@ -5,6 +5,7 @@ Comprehensive comparison between PFASGroups and PFAS-Atlas with larger datasets
 
 import json
 import random
+import time
 from datetime import datetime
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
@@ -25,13 +26,19 @@ except ImportError:
 
 # Try to import PFAS-Atlas
 try:
-    sys.path.append('/home/luc/git/atlas/src')  
-    from pfas_atlas import predict_PFAS_class
+    sys.path.append('/home/luc/git/PFAS-atlas')  
+    from classification_helper.classify_pfas import classify_pfas_molecule
     ATLAS_AVAILABLE = True
     print("✅ PFAS-Atlas available")
 except ImportError:
-    print("❌ PFAS-Atlas not available")
-    ATLAS_AVAILABLE = False
+    try:
+        sys.path.append('/home/luc/git/PFAS-atlas/classification_helper')
+        from classify_pfas import classify_pfas_molecule
+        ATLAS_AVAILABLE = True
+        print("✅ PFAS-Atlas available (fallback import)")
+    except ImportError:
+        print("❌ PFAS-Atlas not available")
+        ATLAS_AVAILABLE = False
 
 class EnhancedPFASBenchmark:
     """Enhanced PFAS benchmark with comprehensive testing"""
@@ -43,6 +50,9 @@ class EnhancedPFASBenchmark:
         
         # Target groups 29-51 (excluding 48)
         self.target_groups = [g for g in range(29, 52) if g != 48]
+        
+        # OECD target groups 1-28
+        self.oecd_target_groups = list(range(1, 29))
         
         # Functional group definitions following test_examples.py format with proper modes
         self.functional_smarts = {
@@ -167,10 +177,12 @@ class EnhancedPFASBenchmark:
     def test_with_pfasgroups(self, smiles):
         """Test molecule with PFASGroups detection"""
         
+        start_time = time.perf_counter()
         pfasgroups_result = {
             'detected_groups': [],
             'success': False,
-            'error': None
+            'error': None,
+            'execution_time': 0.0
         }
         
         if not PFASGROUPS_AVAILABLE:
@@ -197,17 +209,21 @@ class EnhancedPFASBenchmark:
                 
         except Exception as e:
             pfasgroups_result['error'] = str(e)
+        finally:
+            pfasgroups_result['execution_time'] = time.perf_counter() - start_time
         
         return pfasgroups_result
     
     def test_with_atlas(self, smiles):
         """Test molecule with PFAS-Atlas classification"""
         
+        start_time = time.perf_counter()
         atlas_result = {
             'first_class': None,
             'second_class': None, 
             'success': False,
-            'error': None
+            'error': None,
+            'execution_time': 0.0
         }
         
         if not ATLAS_AVAILABLE:
@@ -215,17 +231,21 @@ class EnhancedPFASBenchmark:
             return atlas_result
         
         try:
-            mol = Chem.MolFromSmiles(smiles)
-            if mol is not None:
-                predictions = predict_PFAS_class(mol)
-                
-                if predictions and len(predictions) >= 2:
-                    atlas_result['first_class'] = predictions[0]
-                    atlas_result['second_class'] = predictions[1]
-                    atlas_result['success'] = True
+            # Use the correct PFAS-Atlas function classify_pfas_molecule
+            predictions = classify_pfas_molecule(smiles)
+            
+            if predictions and len(predictions) >= 2:
+                atlas_result['first_class'] = predictions[0]
+                atlas_result['second_class'] = predictions[1]
+                atlas_result['success'] = True
+            elif predictions and len(predictions) >= 1:
+                atlas_result['first_class'] = predictions[0]
+                atlas_result['success'] = True
                     
         except Exception as e:
             atlas_result['error'] = str(e)
+        finally:
+            atlas_result['execution_time'] = time.perf_counter() - start_time
         
         return atlas_result
     
@@ -375,15 +395,92 @@ class EnhancedPFASBenchmark:
         print(f"💾 Results saved: {output_file}")
         
         return all_results, output_file
+    
+    def run_oecd_benchmark(self):
+        """Run benchmark on OECD data using groups 1-28"""
+        
+        print("\n🚀 OECD PFAS BENCHMARK (Groups 1-28)")
+        print("=" * 45)
+        
+        # Load OECD data
+        oecd_file = '/home/luc/git/PFAS-atlas/input_data/OECD_4000/step3_OECD_Class_0812.csv'
+        try:
+            import pandas as pd
+            oecd_data = pd.read_csv(oecd_file)
+            print(f"📊 Loaded {len(oecd_data)} OECD molecules")
+        except Exception as e:
+            print(f"❌ Error loading OECD data: {e}")
+            return [], None
+            
+        all_results = []
+        
+        # Process OECD molecules (limit to 1000 for reasonable runtime)
+        max_molecules = min(1000, len(oecd_data))
+        print(f"🧪 Testing {max_molecules} OECD molecules with PFASGroups (groups 1-28)")
+        
+        for idx, row in oecd_data.head(max_molecules).iterrows():
+            smiles = row['SMILES']
+            first_class = row.get('First_Class', 'Unknown')
+            second_class = row.get('Second_Class', 'Unknown')
+            
+            if pd.isna(smiles) or smiles.strip() == '':
+                continue
+                
+            # Test with PFASGroups
+            pfas_result = self.test_with_pfasgroups(smiles)
+            
+            # Test with PFAS-Atlas
+            atlas_result = self.test_with_atlas(smiles)
+            
+            molecule_data = {
+                'smiles': smiles,
+                'oecd_first_class': first_class,
+                'oecd_second_class': second_class,
+                'generation_type': 'oecd_molecule',
+                'source': 'OECD_4000'
+            }
+            
+            result = {
+                'molecule_data': molecule_data,
+                'pfasgroups_result': pfas_result,
+                'atlas_result': atlas_result
+            }
+            
+            all_results.append(result)
+            
+            if (idx + 1) % 100 == 0:
+                print(f"  ✅ Processed {idx + 1}/{max_molecules} molecules")
+        
+        # Save OECD results
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_file = f"pfas_oecd_benchmark_{timestamp}.json"
+        
+        with open(output_file, 'w') as f:
+            json.dump(all_results, f, indent=2, default=str)
+        
+        print(f"\n💾 OECD Benchmark Complete!")
+        print(f"📊 Total molecules tested: {len(all_results)}")
+        print(f"💾 Results saved: {output_file}")
+        
+        return all_results, output_file
 
 def main():
     """Main function to run enhanced benchmark"""
     
     benchmark = EnhancedPFASBenchmark()
-    results, output_file = benchmark.run_enhanced_benchmark()
     
-    print(f"\n🎯 Next step: Run analysis with:")
-    print(f"   python enhanced_analysis.py {output_file}")
+    # Run both benchmarks
+    print("Running Enhanced Functional Groups Benchmark...")
+    enhanced_results, enhanced_file = benchmark.run_enhanced_benchmark()
+    
+    print("\nRunning OECD Benchmark...")
+    oecd_results, oecd_file = benchmark.run_oecd_benchmark()
+    
+    print(f"\n🎯 Next steps:")
+    print(f"   Enhanced analysis: python enhanced_analysis.py {enhanced_file} {oecd_file}")
+    print(f"   Files generated:")
+    print(f"     • {enhanced_file} (functional groups)")
+    print(f"     • {oecd_file} (OECD data)")
 
 if __name__ == "__main__":
     main()
