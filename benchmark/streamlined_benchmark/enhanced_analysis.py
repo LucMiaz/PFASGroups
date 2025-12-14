@@ -26,16 +26,87 @@ PFAS_ATLAS_CLASSES = {
         "Not PFAS": "Not identified as PFAS"
     },
     "second_class": {
-        "HFEs": "Hydrofluoroethers",
-        "PFAIs": "Perfluoroalkyl iodides", 
-        "PFAenes": "Perfluoroalkenes",
-        "PFSA derivatives": "Perfluorosulfonic acid derivatives",
-        "PolyFCA derivatives": "Polyfluorocarboxylic acid derivatives",
-        "Perfluoroalkanes": "Perfluoroalkanes",
-        "Aromatic PFASs": "Aromatic per- and polyfluoroalkyl substances",
-        "Amide derivatives": "Amide derivatives of PFASs",
-        "others": "Other PFAS classifications",
-        "Not PFAS by current definition": "Not identified as PFAS by current definition"
+        'PFSAs': "Perfluoroalkyl sulfonic acids",
+        'PolyFCAs, cyclic': "Polyfluoroalkyl carboxylic acids (cyclic)",
+        'PASF-based substances, cyclic': "Perfluoroalkane sulfonyl fluoride-based substances (cyclic)",
+        'Perfluoroalkyl-tert-amines, cyclic': "Perfluoroalkyl tertiary amines (cyclic)",
+        'Perfluoroalkylethers': "Perfluoroalkyl ether compounds",
+        'PFALs': "Perfluoroalkyl aldehydes",
+        'Not PFAS by current definition': "Not classified as PFAS under current definitions",
+        'HFOs': "Hydrofluoroolefins",
+        'PFCAs': "Perfluoroalkyl carboxylic acids",
+        'HFCs': "Hydrofluorocarbons",
+        'PolyFAenes, cyclic': "Polyfluoroalkenes (cyclic)",
+        'PFAKs': "Perfluoroalkyl ketones",
+        'PFPEs, cyclic': "Perfluoropolyethers (cyclic)",
+        'PolyFAC derivatives, cyclic': "Polyfluoroalkyl compound derivatives (cyclic)",
+        'HFEs, cyclic': "Hydrofluoroethers (cyclic)",
+        'SFAenes': "Saturated fluoroalkenes",
+        'PFPAs': "Perfluoroalkyl phosphonic acids",
+        'PAECFs': "Perfluoroalkyl ether carboxylic fluorides",
+        'HFCs, cyclic': "Hydrofluorocarbons (cyclic)",
+        'PolyFESAs': "Polyfluoroalkyl ether sulfonic acids",
+        'PolyFEAenes, cyclic': "Polyfluoroalkyl ethylene derivatives (cyclic)",
+        'others, cyclic': "Other PFAS compounds (cyclic)",
+        'Amide derivatives, cyclic': "Perfluoroalkyl amide derivatives (cyclic)",
+        'SFAs': "Saturated fluoroalkyl acids",
+        'PFAK derivatives': "Perfluoroalkyl ketone derivatives",
+        'PolyFEAenes': "Polyfluoroalkyl ethylene derivatives",
+        'PFECAs': "Perfluoroalkyl ether carboxylic acids",
+        'Sulfonyl chloride': "Perfluoroalkyl sulfonyl chlorides",
+        'PolyFEACs, cyclic': "Polyfluoroalkyl ether carboxylic acids (cyclic)",
+        'PASFs, cyclic': "Perfluoroalkane sulfonyl fluorides (cyclic)",
+        'Perfluoroalkanes': "Fully fluorinated alkanes",
+        'PFCA-ester derivatives': "Perfluoroalkyl carboxylic acid ester derivatives",
+        'PACFs': "Perfluoroalkyl carbonyl fluorides",
+        'PolyFSAs': "Polyfluoroalkyl sulfonic acids",
+        'PASFs': "Perfluoroalkane sulfonyl fluorides",
+        'n:2 fluorotelomer-based substances': "n:2 Fluorotelomer-based PFAS",
+        'PolyFACs': "Polyfluoroalkyl compounds",
+        'Perfluoroalkyl-tert-amines': "Perfluoroalkyl tertiary amines",
+        'PolyFAenes': "Polyfluoroalkenes",
+        'n:2 fluorotelomer-based substances, cyclic': "n:2 Fluorotelomer-based PFAS (cyclic)",
+        'PFAS derivatives': "General PFAS derivatives",
+        'PFCA-ester derivatives, cyclic': "Perfluoroalkyl carboxylic acid ester derivatives (cyclic)",
+        'Amide derivatives': "Perfluoroalkyl amide derivatives",
+        'PASF-based substances': "Perfluoroalkane sulfonyl fluoride-based substances",
+        'PFESAs': "Perfluoroalkyl ether sulfonic acids",
+        'n:1 FTOHs': "n:1 Fluorotelomer alcohols",
+        '(Hg,Sn,Ge,Sb,Se,B) PFASs': "Metal-containing PFAS (mercury, tin, germanium, antimony, selenium, boron)",
+        'PFPIAs': "Perfluoroalkyl phosphinic acids",
+        'PAECFs, cyclic': "Perfluoroalkyl ether carboxylic fluorides (cyclic)",
+        'PFdiCAs': "Perfluoroalkyl dicarboxylic acids",
+        'Perfluoroalkylethers, cyclic': "Perfluoroalkyl ether compounds (cyclic)",
+        'PFAK derivatives, cyclic': "Perfluoroalkyl ketone derivatives (cyclic)",
+        'others': "Other PFAS compounds",
+        'Perfluoroalkanes, cyclic': "Fully fluorinated alkanes (cyclic)",
+        'PolyFCAs': "Polyfluoroalkyl carboxylic acids",
+        'PFECAs, cyclic': "Perfluoroalkyl ether carboxylic acids (cyclic)",
+        'PFAenes': "Perfluoroalkenes",
+        'PFAenes, cyclic': "Perfluoroalkenes (cyclic)",
+        'n:1 FTOHs, cyclic': "n:1 Fluorotelomer alcohols (cyclic)",
+        'Acid chloride': "Perfluoroalkyl acid chlorides",
+        'Polyfluoroalkanes, cyclic': "Polyfluoroalkanes (cyclic)",
+        'PFAIs': "Perfluoroalkyl iodides",
+        'PFACs': "Perfluoroalkyl compounds",
+        'Si PFASs': "Silicon-containing PFAS",
+        'Si PFASs, cyclic': "Silicon-containing PFAS (cyclic)",
+        'PFSA derivatives, cyclic': "Perfluoroalkyl sulfonic acid derivatives (cyclic)",
+        'PolyFSA derivatives': "Polyfluoroalkyl sulfonic acid derivatives",
+        'PolyFECAs': "Polyfluoroalkyl ether carboxylic acids",
+        'PFSA derivatives': "Perfluoroalkyl sulfonic acid derivatives",
+        'PolyFEACs': "Polyfluoroalkyl ether carboxylic compounds",
+        'Polyfluoroalkanes': "Polyfluorinated alkanes",
+        'PFSAs, cyclic': "Perfluoroalkyl sulfonic acids (cyclic)",
+        'PACFs, cyclic': "Perfluoroalkyl carbonyl fluorides (cyclic)",
+        'PFCA-anhydrides': "Perfluoroalkyl carboxylic acid anhydrides",
+        'PolyFAC derivatives': "Polyfluoroalkyl compound derivatives",
+        'HFEs': "Hydrofluoroethers",
+        'PFPEs': "Perfluoropolyethers",
+        'PFSIAs': "Perfluoroalkyl sulfinic acids",
+        'PolyFCA derivatives, cyclic': "Polyfluoroalkyl carboxylic acid derivatives (cyclic)",
+        'Aromatic PFASs': "Aromatic per- and polyfluoroalkyl substances",
+        'PolyFCA derivatives': "Polyfluoroalkyl carboxylic acid derivatives"
     }
 }
 
@@ -113,7 +184,8 @@ def analyze_system_comparison(results):
         # Track Atlas classification details
         if atlas_success:
             single_analysis[group_id]['atlas_classifications_detail'].append({
-                'smiles': result['molecule_data']['smiles'],
+                'smiles': result['molecule_data']
+                ['smiles'],
                 'first_class': result['atlas_result']['first_class'],
                 'second_class': result['atlas_result']['second_class']
             })
@@ -602,12 +674,12 @@ def analyze_oecd_benchmark(oecd_results):
         second_class = mol_data.get('oecd_second_class', 'Unknown')
         
         # Update class breakdown
-        analysis['class_breakdown'][first_class]['count'] += 1
+        analysis['class_breakdown'][second_class]['count'] += 1
         
         # PFASGroups analysis
         if pfas_result.get('success', False):
             analysis['pfasgroups_detections'] += 1
-            analysis['class_breakdown'][first_class]['pfas_detected'] += 1
+            analysis['class_breakdown'][second_class]['pfas_detected'] += 1
             
             # Track group detections
             for group_id in pfas_result.get('detected_groups', []):
@@ -616,20 +688,18 @@ def analyze_oecd_benchmark(oecd_results):
             # Track misclassifications
             analysis['misclassifications']['pfasgroups'].append({
                 'smiles': mol_data['smiles'],
-                'expected_class': first_class,
                 'error': pfas_result.get('error', 'No detection')
             })
         
         # PFAS-Atlas analysis
         if atlas_result.get('success', False):
             analysis['atlas_detections'] += 1
-            analysis['class_breakdown'][first_class]['atlas_detected'] += 1
+            analysis['class_breakdown'][second_class]['atlas_detected'] += 1
         else:
             # Track misclassifications
             analysis['misclassifications']['atlas'].append({
                 'smiles': mol_data['smiles'],
-                'expected_class': first_class,
-                'predicted_class': atlas_result.get('first_class', 'None'),
+                'predicted_class': atlas_result.get('second_class', 'None'),
                 'error': atlas_result.get('error', 'No detection')
             })
     
@@ -1890,6 +1960,97 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
     
     return html_content
 
+def create_enhanced_sankey_comparison(single_analysis, multi_analysis):
+    """Create enhanced Sankey diagram showing system comparison"""
+    
+    # Calculate overall statistics
+    total_single = sum(data['total_molecules'] for data in single_analysis.values())
+    pfasgroups_single_success = sum(data['pfasgroups_correct'] for data in single_analysis.values())
+    atlas_single_success = sum(data['atlas_any_detection'] for data in single_analysis.values())
+    
+    total_multi = sum(data['total_molecules'] for data in multi_analysis.values())
+    pfasgroups_multi_success = sum(data['pfasgroups_any_detection'] for data in multi_analysis.values())
+    atlas_multi_success = sum(data['atlas_classifications'] for data in multi_analysis.values())
+    
+    # Create nodes
+    nodes = [
+        # Source nodes
+        "Single Group<br>Molecules", "Multi-Group<br>Molecules",
+        # PFASGroups outcomes
+        "PFASGroups<br>Success", "PFASGroups<br>Failure", 
+        # Atlas outcomes
+        "Atlas<br>Success", "Atlas<br>Failure"
+    ]
+    
+    node_colors = [
+        "rgba(31, 119, 180, 0.8)", "rgba(255, 127, 14, 0.8)",  # Sources
+        "rgba(44, 160, 44, 0.8)", "rgba(214, 39, 40, 0.8)",   # PFASGroups
+        "rgba(148, 103, 189, 0.8)", "rgba(188, 189, 34, 0.8)" # Atlas
+    ]
+    
+    # Create links
+    sources = []
+    targets = []
+    values = []
+    link_colors = []
+    
+    # Single group to PFASGroups
+    sources.extend([0, 0])
+    targets.extend([2, 3])
+    values.extend([pfasgroups_single_success, total_single - pfasgroups_single_success])
+    link_colors.extend(["rgba(44, 160, 44, 0.4)", "rgba(214, 39, 40, 0.4)"])
+    
+    # Single group to Atlas
+    sources.extend([0, 0])
+    targets.extend([4, 5])
+    values.extend([atlas_single_success, total_single - atlas_single_success])
+    link_colors.extend(["rgba(148, 103, 189, 0.4)", "rgba(188, 189, 34, 0.4)"])
+    
+    # Multi-group to PFASGroups
+    sources.extend([1, 1])
+    targets.extend([2, 3])
+    values.extend([pfasgroups_multi_success, total_multi - pfasgroups_multi_success])
+    link_colors.extend(["rgba(44, 160, 44, 0.4)", "rgba(214, 39, 40, 0.4)"])
+    
+    # Multi-group to Atlas
+    sources.extend([1, 1])
+    targets.extend([4, 5])
+    values.extend([atlas_multi_success, total_multi - atlas_multi_success])
+    link_colors.extend(["rgba(148, 103, 189, 0.4)", "rgba(188, 189, 34, 0.4)"])
+    
+    fig = go.Figure(data=[go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=20,
+            line=dict(color="black", width=0.5),
+            label=nodes,
+            color=node_colors
+        ),
+        link=dict(
+            source=sources,
+            target=targets,
+            value=values,
+            color=link_colors
+        )
+    )])
+    
+    pfas_single_rate = (pfasgroups_single_success / total_single * 100) if total_single > 0 else 0
+    atlas_single_rate = (atlas_single_success / total_single * 100) if total_single > 0 else 0
+    pfas_multi_rate = (pfasgroups_multi_success / total_multi * 100) if total_multi > 0 else 0
+    atlas_multi_rate = (atlas_multi_success / total_multi * 100) if total_multi > 0 else 0
+    
+    fig.update_layout(
+        title=f"Enhanced System Comparison: PFASGroups vs PFAS-Atlas<br>" + 
+              f"<sub>Single: PFASGroups {pfas_single_rate:.1f}% vs Atlas {atlas_single_rate:.1f}% | " +
+              f"Multi: PFASGroups {pfas_multi_rate:.1f}% vs Atlas {atlas_multi_rate:.1f}%</sub>",
+        font_size=12,
+        width=1200,
+        height=600
+    )
+    
+    return fig
+
+
 def main():
     """Main enhanced analysis function"""
     
@@ -1961,6 +2122,8 @@ def main():
     print(f"   • enhanced_system_sankey_{timestamp}.png/.svg")
     print(f"   • privilege_hierarchy_sankey_{timestamp}.png/.svg")
 
+
+
 def analyze_combined_results():
     """Analyze both enhanced and OECD benchmark results"""
     
@@ -2018,6 +2181,8 @@ def analyze_combined_results():
     # Combined comparison report with Sankey diagrams
     create_combined_comparison_report(enhanced_results, oecd_results, timestamp)
     
+    create_enhanced_sankey_comparison(single_analysis,multi_analysis)
+
     print("\n✅ COMBINED ANALYSIS COMPLETE!")
     print("📄 Generated reports:")
     print(f"   • {enhanced_filename} (enhanced benchmark)")
