@@ -563,7 +563,7 @@ def create_atlas_classification_flow(single_analysis):
     
     return fig
 
-def create_enhanced_sankey_comparison(single_analysis, multi_analysis):
+def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
     """Create enhanced Sankey diagram showing system comparison"""
     
     # Calculate overall statistics
@@ -575,83 +575,212 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis):
     pfasgroups_multi_success = sum(data['pfasgroups_any_detection'] for data in multi_analysis.values())
     atlas_multi_success = sum(data['atlas_classifications'] for data in multi_analysis.values())
     
-    # Create nodes
-    nodes = [
-        # Source nodes
-        "Single Group<br>Molecules", "Multi-Group<br>Molecules",
-        # PFASGroups outcomes
-        "PFASGroups<br>Success", "PFASGroups<br>Failure", 
-        # Atlas outcomes
-        "Atlas<br>Success", "Atlas<br>Failure"
-    ]
-    
-    node_colors = [
-        "rgba(31, 119, 180, 0.8)", "rgba(255, 127, 14, 0.8)",  # Sources
-        "rgba(44, 160, 44, 0.8)", "rgba(214, 39, 40, 0.8)",   # PFASGroups
-        "rgba(148, 103, 189, 0.8)", "rgba(188, 189, 34, 0.8)" # Atlas
-    ]
-    
     # Create links
-    sources = []
-    targets = []
-    values = []
-    link_colors = []
+    pfas_atlas = {}
+    pfas_pfasgroups = {}
+    pfas_pfasgroups_oecd = {}
+    nodes_set = set()
+    nodes_pfasgroups_set = set()
+    nodes_atlas_set = set()
+    nodes_pfasgroups_oecd_set = set()
     
-    # Single group to PFASGroups
-    sources.extend([0, 0])
-    targets.extend([2, 3])
-    values.extend([pfasgroups_single_success, total_single - pfasgroups_single_success])
-    link_colors.extend(["rgba(44, 160, 44, 0.4)", "rgba(214, 39, 40, 0.4)"])
+    with open('../../PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+        lookup = json.load(f)
+    lookup = {k['id']:k['name'] for k in lookup}
+    reverse_lookup = {v:k for k,v in lookup.items()}
+    for m in results:
+        if m['molecule_data'].get('generation_type') == 'single_group':
+            expected = m['molecule_data']['group_name']
+            atlas = m['atlas_result'].get('second_class','None')
+            pfasgroups_ids = m['pfasgroups_result']['detected_groups']
+            pfasgroups = [lookup[id] for id in pfasgroups_ids if id!=48 and id > 28]
+            pfasgroups = [f"- {reverse_lookup.get(pf)}: {pf}" for pf in pfasgroups]
+            pfasgroups_oecd = [lookup[id] for id in pfasgroups_ids if id<= 28]
+            pfasgroups_oecd = [f"- {reverse_lookup.get(pf)}: {pf}" for pf in pfasgroups_oecd]
+            expected = f"{reverse_lookup.get(expected)}: {expected}"
+            # Collect unique nodes
+            nodes_set.add(expected)
+            nodes_atlas_set.add(atlas)
+            nodes_pfasgroups_set.update(pfasgroups)
+            nodes_pfasgroups_oecd_set.update(pfasgroups_oecd)
+            # Build connection dictionaries
+            pfas_atlas[expected][atlas] = pfas_atlas.setdefault(expected,{}).get(atlas,0)+1
+            for pfg in pfasgroups:
+                pfas_pfasgroups[expected][pfg] = pfas_pfasgroups.setdefault(expected,{}).get(pfg,0)+1
+            for pfg in pfasgroups_oecd:
+                pfas_pfasgroups_oecd[expected][pfg] = pfas_pfasgroups_oecd.setdefault(expected,{}).get(pfg,0)+1
+
+    # Create deduplicated node lists
+    nodes = sorted(list(nodes_set))
+    nodes_atlas = sorted(list(nodes_atlas_set))
+    nodes_pfasgroups = sorted(list(nodes_pfasgroups_set))
+    nodes_pfasgroups_oecd = sorted(list(nodes_pfasgroups_oecd_set))
+
+    # Create nodes for Atlas diagram
+    pfas_atlas_nodes = [
+        # Source nodes
+        *nodes,
+        # Atlas outcomes
+        *nodes_atlas
+    ]
+
+    # Create nodes for PFASGroups diagram
+    pfas_pfasgroups_nodes = [
+        # Source nodes
+        *nodes,
+        # PFASgroups outcomes
+        *nodes_pfasgroups
+    ]
+
+    pfas_pfasgroups_oecd_nodes = [
+        *nodes,
+        *nodes_pfasgroups_oecd
+    ]
     
-    # Single group to Atlas
-    sources.extend([0, 0])
-    targets.extend([4, 5])
-    values.extend([atlas_single_success, total_single - atlas_single_success])
-    link_colors.extend(["rgba(148, 103, 189, 0.4)", "rgba(188, 189, 34, 0.4)"])
+    # Generate color schemes for nodes and links
+    # For PFAS-Atlas nodes: source nodes in blue, target nodes in orange gradient
+    num_source_nodes = len(nodes)
+    num_target_nodes = len(nodes_atlas)
+    node_atlas_colors = (
+        ["rgba(31, 119, 180, 0.8)"] * num_source_nodes +  # Source nodes in blue
+        px.colors.sample_colorscale("Oranges", [0.4 + (i * 0.6 / max(1, num_target_nodes - 1)) for i in range(num_target_nodes)])
+    )
+
+    # For PFASGroups nodes: source nodes in blue, target nodes in green gradient
+    num_pfasgroups_target_nodes = len(nodes_pfasgroups)
+    node_pfasgroups_colors = (
+        ["rgba(31, 119, 180, 0.8)"] * num_source_nodes +  # Source nodes in blue
+        px.colors.sample_colorscale("Greens", [0.4 + (i * 0.6 / max(1, num_pfasgroups_target_nodes - 1)) for i in range(num_pfasgroups_target_nodes)])
+    )
+
+    # For PFASGroups nodes: source nodes in blue, target nodes in green gradient
+    num_pfasgroups_oecd_target_nodes = len(nodes_pfasgroups_oecd)
+    node_pfasgroups_oecd_colors = (
+        ["rgba(31, 119, 180, 0.8)"] * num_source_nodes +  # Source nodes in blue
+        px.colors.sample_colorscale("Greens", [0.4 + (i * 0.6 / max(1, num_pfasgroups_oecd_target_nodes - 1)) for i in range(num_pfasgroups_oecd_target_nodes)])
+    )
     
-    # Multi-group to PFASGroups
-    sources.extend([1, 1])
-    targets.extend([2, 3])
-    values.extend([pfasgroups_multi_success, total_multi - pfasgroups_multi_success])
-    link_colors.extend(["rgba(44, 160, 44, 0.4)", "rgba(214, 39, 40, 0.4)"])
+    # Create links for PFAS-Atlas diagram
+    pfas_atlas_sources = []
+    pfas_atlas_targets = []
+    pfas_atlas_values = []
     
-    # Multi-group to Atlas
-    sources.extend([1, 1])
-    targets.extend([4, 5])
-    values.extend([atlas_multi_success, total_multi - atlas_multi_success])
-    link_colors.extend(["rgba(148, 103, 189, 0.4)", "rgba(188, 189, 34, 0.4)"])
+    for source_name, target_dict in pfas_atlas.items():
+        source_idx = pfas_atlas_nodes.index(source_name)
+        for target_name, count in target_dict.items():
+            target_idx = pfas_atlas_nodes.index(target_name)
+            pfas_atlas_sources.append(source_idx)
+            pfas_atlas_targets.append(target_idx)
+            pfas_atlas_values.append(count)
+
+    # Create links for PFASGroups diagram
+    pfas_pfasgroups_sources = []
+    pfas_pfasgroups_targets = []
+    pfas_pfasgroups_values = []
     
-    fig = go.Figure(data=[go.Sankey(
+    for source_name, target_dict in pfas_pfasgroups.items():
+        source_idx = pfas_pfasgroups_nodes.index(source_name)
+        for target_name, count in target_dict.items():
+            target_idx = pfas_pfasgroups_nodes.index(target_name)
+            pfas_pfasgroups_sources.append(source_idx)
+            pfas_pfasgroups_targets.append(target_idx)
+            pfas_pfasgroups_values.append(count)
+
+    # Create links for PFASGroups _oecd diagram
+    pfas_pfasgroups_oecd_sources = []
+    pfas_pfasgroups_oecd_targets = []
+    pfas_pfasgroups_oecd_values = []
+    
+    for source_name, target_dict in pfas_pfasgroups_oecd.items():
+        source_idx = pfas_pfasgroups_oecd_nodes.index(source_name)
+        for target_name, count in target_dict.items():
+            target_idx = pfas_pfasgroups_oecd_nodes.index(target_name)
+            pfas_pfasgroups_oecd_sources.append(source_idx)
+            pfas_pfasgroups_oecd_targets.append(target_idx)
+            pfas_pfasgroups_oecd_values.append(count)
+    
+
+    # Generate link colors with transparency
+    # PFAS-Atlas links: semi-transparent orange
+    pfas_atlas_link_colors = ["rgba(255, 127, 14, 0.3)"] * len(pfas_atlas_values)
+
+    # PFASGroups links: semi-transparent green
+    pfas_pfasgroups_link_colors = ["rgba(44, 160, 44, 0.3)"] * len(pfas_pfasgroups_values)
+
+    # PFASGroups links: semi-transparent green
+    pfas_pfasgroups_oecd_link_colors = ["rgba(44, 160, 44, 0.3)"] * len(pfas_pfasgroups_oecd_values)
+    
+    fig_atlas = go.Figure(data=[go.Sankey(
         node=dict(
             pad=15,
             thickness=20,
             line=dict(color="black", width=0.5),
-            label=nodes,
-            color=node_colors
+            label=pfas_atlas_nodes,
+            color=node_atlas_colors
         ),
         link=dict(
-            source=sources,
-            target=targets,
-            value=values,
-            color=link_colors
+            source=pfas_atlas_sources,
+            target=pfas_atlas_targets,
+            value=pfas_atlas_values,
+            color=pfas_atlas_link_colors
         )
     )])
     
-    pfas_single_rate = (pfasgroups_single_success / total_single * 100) if total_single > 0 else 0
-    atlas_single_rate = (atlas_single_success / total_single * 100) if total_single > 0 else 0
-    pfas_multi_rate = (pfasgroups_multi_success / total_multi * 100) if total_multi > 0 else 0
-    atlas_multi_rate = (atlas_multi_success / total_multi * 100) if total_multi > 0 else 0
-    
-    fig.update_layout(
-        title=f"Enhanced System Comparison: PFASGroups Module vs PFAS-Atlas<br>" + 
-              f"<sub>PFASGroups Single: {pfas_single_rate:.1f}% vs Atlas {atlas_single_rate:.1f}% | " +
-              f"Multi-Group: {pfas_multi_rate:.1f}% vs Atlas {atlas_multi_rate:.1f}%</sub>",
+    fig_atlas.update_layout(
+        title=f"Single Functional Group Identification: PFAS-Atlas<br>",
         font_size=12,
         width=1200,
         height=600
     )
+
+    fig_pfasgroups = go.Figure(data=[go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=20,
+            line=dict(color="black", width=0.5),
+            label= pfas_pfasgroups_nodes,
+            color=node_pfasgroups_colors
+        ),
+        link=dict(
+            source=pfas_pfasgroups_sources,
+            target=pfas_pfasgroups_targets,
+            value=pfas_pfasgroups_values,
+            color=pfas_pfasgroups_link_colors
+        )
+    )])
     
-    return fig
+    fig_pfasgroups.update_layout(
+        title=f"Single Functional Group Identification: PFASGroups<br>",
+        font_size=12,
+        width=1200,
+        height=600
+    )
+
+    fig_pfasgroups_oecd = go.Figure(data=[go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=20,
+            line=dict(color="black", width=0.5),
+            label= pfas_pfasgroups_oecd_nodes,
+            color=node_pfasgroups_oecd_colors
+        ),
+        link=dict(
+            source=pfas_pfasgroups_oecd_sources,
+            target=pfas_pfasgroups_oecd_targets,
+            value=pfas_pfasgroups_oecd_values,
+            color=pfas_pfasgroups_oecd_link_colors
+        )
+    )])
+    
+    fig_pfasgroups_oecd.update_layout(
+        title=f"Single Functional Group Identification: PFASGroups OECD<br>",
+        font_size=12,
+        width=1200,
+        height=600
+    )
+
+    figs = [fig_atlas, fig_pfasgroups, fig_pfasgroups_oecd]
+    return figs
 
 def analyze_oecd_benchmark(oecd_results):
     """Analyze OECD benchmark results"""
@@ -1298,7 +1427,7 @@ def create_pfasgroups_failure_report(single_analysis):
     
     return failure_report
 
-def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
+def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, results):
     """Create comprehensive HTML report with embedded visualizations"""
     
     # Generate failure analysis
@@ -1326,7 +1455,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
     # Generate visualizations
     heatmap_comparison = create_comparison_heatmap(single_analysis)
     heatmap_multi = create_multi_group_heatmap(multi_analysis)
-    sankey_comparison = create_enhanced_sankey_comparison(single_analysis, multi_analysis)
+    sankey_comparison = create_enhanced_sankey_comparison(single_analysis, multi_analysis, results)
     sankey_privilege = create_detailed_multi_group_sankey(multi_analysis)
     timing_heatmap = create_timing_comparison_heatmap(single_analysis)
     timing_stats = create_timing_statistics_chart(single_analysis)
@@ -1334,7 +1463,9 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
     # Convert to HTML
     heatmap_comparison_html = heatmap_comparison.to_html(include_plotlyjs='cdn', div_id="heatmap-comparison")
     heatmap_multi_html = heatmap_multi.to_html(include_plotlyjs=False, div_id="heatmap-multi")
-    sankey_comparison_html = sankey_comparison.to_html(include_plotlyjs=False, div_id="sankey-comparison")
+    sankey_atlas_html = sankey_comparison[0].to_html(include_plotlyjs=False, div_id="sankey-atlas")
+    sankey_pfasgroups_html = sankey_comparison[1].to_html(include_plotlyjs=False, div_id="sankey-pfasgroups")
+    sankey_pfasgroups_oecd_html = sankey_comparison[2].to_html(include_plotlyjs=False, div_id="sankey-pfasgroups_oecd")
     sankey_privilege_html = sankey_privilege.to_html(include_plotlyjs=False, div_id="sankey-privilege")
     timing_heatmap_html = timing_heatmap.to_html(include_plotlyjs=False, div_id="timing-heatmap")
     timing_stats_html = timing_stats.to_html(include_plotlyjs=False, div_id="timing-stats")
@@ -1344,8 +1475,12 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
     heatmap_comparison.write_image(f"comparison_heatmap_{timestamp}.svg")
     heatmap_multi.write_image(f"multigroup_privilege_heatmap_{timestamp}.png", width=1200, height=600, scale=2)
     heatmap_multi.write_image(f"multigroup_privilege_heatmap_{timestamp}.svg")
-    sankey_comparison.write_image(f"enhanced_system_sankey_{timestamp}.png", width=1200, height=600, scale=2)
-    sankey_comparison.write_image(f"enhanced_system_sankey_{timestamp}.svg")
+    sankey_comparison[0].write_image(f"atlas_sankey_{timestamp}.png", width=1200, height=600, scale=2)
+    sankey_comparison[0].write_image(f"atlas_sankey_{timestamp}.svg")
+    sankey_comparison[1].write_image(f"pfasgroups_sankey_{timestamp}.png", width=1200, height=600, scale=2)
+    sankey_comparison[1].write_image(f"pfasgroups_sankey_{timestamp}.svg")
+    sankey_comparison[2].write_image(f"pfasgroups_oecd_sankey_{timestamp}.png", width=1200, height=600, scale=2)
+    sankey_comparison[2].write_image(f"pfasgroups_oecd_sankey_{timestamp}.svg")
     sankey_privilege.write_image(f"privilege_hierarchy_sankey_{timestamp}.png", width=1000, height=600, scale=2)
     sankey_privilege.write_image(f"privilege_hierarchy_sankey_{timestamp}.svg")
     timing_heatmap.write_image(f"timing_comparison_heatmap_{timestamp}.png", width=1400, height=500, scale=2)
@@ -1557,10 +1692,26 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
         <h2>🔀 Enhanced System Flow Analysis</h2>
         <div class="visualization-container">
             <div class="chart-description">
-                Comprehensive Sankey diagram showing success/failure flows for both single and multi-group molecules 
+                Comprehensive Sankey diagram showing success/failure flows for both single-group molecules 
                 across both detection systems.
             </div>
-            {sankey_comparison_html}
+            {sankey_atlas_html}
+        </div>
+        <h2>🔀 Enhanced System Flow Analysis</h2>
+        <div class="visualization-container">
+            <div class="chart-description">
+                Comprehensive Sankey diagram showing success/failure flows for both single-group molecules 
+                across both detection systems.
+            </div>
+            {sankey_pfasgroups_html}
+        </div>
+        <h2>🔀 Enhanced System Flow Analysis</h2>
+        <div class="visualization-container">
+            <div class="chart-description">
+                Comprehensive Sankey diagram showing success/failure flows for both single-group molecules 
+                across both detection systems.
+            </div>
+            {sankey_pfasgroups_oecd_html}
         </div>
 
         <h2>🎯 Multi-Group Privilege Analysis</h2>
@@ -1960,97 +2111,6 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp):
     
     return html_content
 
-def create_enhanced_sankey_comparison(single_analysis, multi_analysis):
-    """Create enhanced Sankey diagram showing system comparison"""
-    
-    # Calculate overall statistics
-    total_single = sum(data['total_molecules'] for data in single_analysis.values())
-    pfasgroups_single_success = sum(data['pfasgroups_correct'] for data in single_analysis.values())
-    atlas_single_success = sum(data['atlas_any_detection'] for data in single_analysis.values())
-    
-    total_multi = sum(data['total_molecules'] for data in multi_analysis.values())
-    pfasgroups_multi_success = sum(data['pfasgroups_any_detection'] for data in multi_analysis.values())
-    atlas_multi_success = sum(data['atlas_classifications'] for data in multi_analysis.values())
-    
-    # Create nodes
-    nodes = [
-        # Source nodes
-        "Single Group<br>Molecules", "Multi-Group<br>Molecules",
-        # PFASGroups outcomes
-        "PFASGroups<br>Success", "PFASGroups<br>Failure", 
-        # Atlas outcomes
-        "Atlas<br>Success", "Atlas<br>Failure"
-    ]
-    
-    node_colors = [
-        "rgba(31, 119, 180, 0.8)", "rgba(255, 127, 14, 0.8)",  # Sources
-        "rgba(44, 160, 44, 0.8)", "rgba(214, 39, 40, 0.8)",   # PFASGroups
-        "rgba(148, 103, 189, 0.8)", "rgba(188, 189, 34, 0.8)" # Atlas
-    ]
-    
-    # Create links
-    sources = []
-    targets = []
-    values = []
-    link_colors = []
-    
-    # Single group to PFASGroups
-    sources.extend([0, 0])
-    targets.extend([2, 3])
-    values.extend([pfasgroups_single_success, total_single - pfasgroups_single_success])
-    link_colors.extend(["rgba(44, 160, 44, 0.4)", "rgba(214, 39, 40, 0.4)"])
-    
-    # Single group to Atlas
-    sources.extend([0, 0])
-    targets.extend([4, 5])
-    values.extend([atlas_single_success, total_single - atlas_single_success])
-    link_colors.extend(["rgba(148, 103, 189, 0.4)", "rgba(188, 189, 34, 0.4)"])
-    
-    # Multi-group to PFASGroups
-    sources.extend([1, 1])
-    targets.extend([2, 3])
-    values.extend([pfasgroups_multi_success, total_multi - pfasgroups_multi_success])
-    link_colors.extend(["rgba(44, 160, 44, 0.4)", "rgba(214, 39, 40, 0.4)"])
-    
-    # Multi-group to Atlas
-    sources.extend([1, 1])
-    targets.extend([4, 5])
-    values.extend([atlas_multi_success, total_multi - atlas_multi_success])
-    link_colors.extend(["rgba(148, 103, 189, 0.4)", "rgba(188, 189, 34, 0.4)"])
-    
-    fig = go.Figure(data=[go.Sankey(
-        node=dict(
-            pad=15,
-            thickness=20,
-            line=dict(color="black", width=0.5),
-            label=nodes,
-            color=node_colors
-        ),
-        link=dict(
-            source=sources,
-            target=targets,
-            value=values,
-            color=link_colors
-        )
-    )])
-    
-    pfas_single_rate = (pfasgroups_single_success / total_single * 100) if total_single > 0 else 0
-    atlas_single_rate = (atlas_single_success / total_single * 100) if total_single > 0 else 0
-    pfas_multi_rate = (pfasgroups_multi_success / total_multi * 100) if total_multi > 0 else 0
-    atlas_multi_rate = (atlas_multi_success / total_multi * 100) if total_multi > 0 else 0
-    
-    fig.update_layout(
-        title=f"Enhanced System Comparison: PFASGroups vs PFAS-Atlas<br>" + 
-              f"<sub>Single: PFASGroups {pfas_single_rate:.1f}% vs Atlas {atlas_single_rate:.1f}% | " +
-              f"Multi: PFASGroups {pfas_multi_rate:.1f}% vs Atlas {atlas_multi_rate:.1f}%</sub>",
-        font_size=12,
-        width=1200,
-        height=600
-    )
-    
-    return fig
-
-
 def main():
     """Main enhanced analysis function"""
     
@@ -2063,7 +2123,7 @@ def main():
     if not benchmark_files:
         print("❌ No enhanced benchmark results found. Run enhanced_pfas_benchmark.py first.")
         return
-    
+
     latest_file = max(benchmark_files)
     print(f"📊 Using enhanced benchmark file: {latest_file}")
     
@@ -2086,7 +2146,7 @@ def main():
     
     # Create comprehensive HTML report
     print("🌐 Creating enhanced HTML analysis report...")
-    html_content = create_enhanced_html_report(single_analysis, multi_analysis, timestamp)
+    html_content = create_enhanced_html_report(single_analysis, multi_analysis, timestamp, results)
     
     html_filename = f"enhanced_pfas_analysis_{timestamp}.html"
     with open(html_filename, 'w', encoding='utf-8') as f:
@@ -2170,7 +2230,7 @@ def analyze_combined_results():
     print("📊 Creating comprehensive HTML reports...")
     
     # Enhanced analysis report
-    html_enhanced = create_enhanced_html_report(single_analysis, multi_analysis, timestamp)
+    html_enhanced = create_enhanced_html_report(single_analysis, multi_analysis, timestamp, enhanced_results)
     enhanced_filename = f"enhanced_pfas_analysis_{timestamp}.html"
     with open(enhanced_filename, 'w') as f:
         f.write(html_enhanced)
@@ -2181,7 +2241,7 @@ def analyze_combined_results():
     # Combined comparison report with Sankey diagrams
     create_combined_comparison_report(enhanced_results, oecd_results, timestamp)
     
-    create_enhanced_sankey_comparison(single_analysis,multi_analysis)
+    create_enhanced_sankey_comparison(single_analysis,multi_analysis, enhanced_results)
 
     print("\n✅ COMBINED ANALYSIS COMPLETE!")
     print("📄 Generated reports:")

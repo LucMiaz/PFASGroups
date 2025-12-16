@@ -17545,7 +17545,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 3,
       "target_groups": [
@@ -17575,7 +17575,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 4,
       "target_groups": [
@@ -17605,7 +17605,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 5,
       "target_groups": [
@@ -17635,7 +17635,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ncc[nH]1",
       "chain_length": 6,
       "target_groups": [
@@ -17665,7 +17665,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(C(F)(F)F)C(F)(F)F",
       "chain_length": 7,
       "target_groups": [
@@ -17695,7 +17695,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 3,
       "target_groups": [
@@ -17725,7 +17725,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 4,
       "target_groups": [
@@ -17755,7 +17755,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(c1ncc[nH]1)(C(F)(F)F)C(F)(F)F",
       "chain_length": 5,
       "target_groups": [
@@ -17785,7 +17785,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 6,
       "target_groups": [
@@ -17815,7 +17815,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 7,
       "target_groups": [
@@ -17845,7 +17845,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 3,
       "target_groups": [
@@ -17875,7 +17875,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 4,
       "target_groups": [
@@ -17905,7 +17905,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1",
       "chain_length": 5,
       "target_groups": [
@@ -17934,7 +17934,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)c1ncc[nH]1)C(F)(F)C(F)(F)F",
       "chain_length": 6,
       "target_groups": [
@@ -17964,7 +17964,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 7,
       "target_groups": [
@@ -17994,7 +17994,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 3,
       "target_groups": [
@@ -18024,7 +18024,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 4,
       "target_groups": [
@@ -18054,7 +18054,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 5,
       "target_groups": [
@@ -18084,7 +18084,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)C(F)(F)F",
       "chain_length": 6,
       "target_groups": [
@@ -18114,7 +18114,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 7,
       "target_groups": [
@@ -18144,7 +18144,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 3,
       "target_groups": [
@@ -18174,7 +18174,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 4,
       "target_groups": [
@@ -18204,7 +18204,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 5,
       "target_groups": [
@@ -18234,7 +18234,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 6,
       "target_groups": [
@@ -18264,7 +18264,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 7,
       "target_groups": [
@@ -18294,7 +18294,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 3,
       "target_groups": [
@@ -18324,7 +18324,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 4,
       "target_groups": [
@@ -18354,7 +18354,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 5,
       "target_groups": [
@@ -18384,7 +18384,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ncc[nH]1",
       "chain_length": 6,
       "target_groups": [
@@ -18414,7 +18414,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 7,
       "target_groups": [
@@ -18444,7 +18444,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 3,
       "target_groups": [
@@ -18474,7 +18474,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ncc[nH]1",
       "chain_length": 4,
       "target_groups": [
@@ -18504,7 +18504,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ncc[nH]1",
       "chain_length": 5,
       "target_groups": [
@@ -18534,7 +18534,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 6,
       "target_groups": [
@@ -18564,7 +18564,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 7,
       "target_groups": [
@@ -18594,7 +18594,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ncc[nH]1",
       "chain_length": 3,
       "target_groups": [
@@ -18624,7 +18624,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ncc[nH]1",
       "chain_length": 4,
       "target_groups": [
@@ -18654,7 +18654,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 5,
       "target_groups": [
@@ -18684,7 +18684,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)C(F)(F)F",
       "chain_length": 6,
       "target_groups": [
@@ -18714,7 +18714,7 @@
   {
     "molecule_data": {
       "group_id": 44,
-      "group_name": "azole",
+      "group_name": "Heterocyclic azole",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(c1ncc[nH]1)C(F)(F)F",
       "chain_length": 7,
       "target_groups": [
@@ -18744,7 +18744,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 3,
       "target_groups": [
@@ -18773,7 +18773,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 4,
       "target_groups": [
@@ -18803,7 +18803,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(c1ccccn1)(C(F)(F)F)C(F)(F)F",
       "chain_length": 5,
       "target_groups": [
@@ -18833,7 +18833,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(c1ccccn1)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
       "chain_length": 6,
       "target_groups": [
@@ -18863,7 +18863,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)F",
       "chain_length": 7,
       "target_groups": [
@@ -18893,7 +18893,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 3,
       "target_groups": [
@@ -18923,7 +18923,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 4,
       "target_groups": [
@@ -18953,7 +18953,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 5,
       "target_groups": [
@@ -18983,7 +18983,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 6,
       "target_groups": [
@@ -19013,7 +19013,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(c1ccccn1)C(F)(C(F)(F)F)C(F)(F)F",
       "chain_length": 7,
       "target_groups": [
@@ -19043,7 +19043,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 3,
       "target_groups": [
@@ -19073,7 +19073,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 4,
       "target_groups": [
@@ -19103,7 +19103,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 5,
       "target_groups": [
@@ -19133,7 +19133,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 6,
       "target_groups": [
@@ -19163,7 +19163,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 7,
       "target_groups": [
@@ -19193,7 +19193,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 3,
       "target_groups": [
@@ -19222,7 +19222,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 4,
       "target_groups": [
@@ -19252,7 +19252,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 5,
       "target_groups": [
@@ -19282,7 +19282,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 6,
       "target_groups": [
@@ -19312,7 +19312,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 7,
       "target_groups": [
@@ -19342,7 +19342,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 3,
       "target_groups": [
@@ -19372,7 +19372,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 4,
       "target_groups": [
@@ -19402,7 +19402,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 5,
       "target_groups": [
@@ -19432,7 +19432,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)F",
       "chain_length": 6,
       "target_groups": [
@@ -19462,7 +19462,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 7,
       "target_groups": [
@@ -19492,7 +19492,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 3,
       "target_groups": [
@@ -19522,7 +19522,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 4,
       "target_groups": [
@@ -19552,7 +19552,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 5,
       "target_groups": [
@@ -19582,7 +19582,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 6,
       "target_groups": [
@@ -19612,7 +19612,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 7,
       "target_groups": [
@@ -19642,7 +19642,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(c1ccccn1)C(F)(F)F",
       "chain_length": 3,
       "target_groups": [
@@ -19671,7 +19671,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 4,
       "target_groups": [
@@ -19701,7 +19701,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 5,
       "target_groups": [
@@ -19731,7 +19731,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 6,
       "target_groups": [
@@ -19761,7 +19761,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)F",
       "chain_length": 7,
       "target_groups": [
@@ -19791,7 +19791,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 3,
       "target_groups": [
@@ -19821,7 +19821,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)c1ccccn1",
       "chain_length": 4,
       "target_groups": [
@@ -19851,7 +19851,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 5,
       "target_groups": [
@@ -19881,7 +19881,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)c1ccccn1",
       "chain_length": 6,
       "target_groups": [
@@ -19911,7 +19911,7 @@
   {
     "molecule_data": {
       "group_id": 45,
-      "group_name": "azine",
+      "group_name": "Heterocyclic azine",
       "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)c1ccccn1)C(F)(F)C(F)(F)F",
       "chain_length": 7,
       "target_groups": [

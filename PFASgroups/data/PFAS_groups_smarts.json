@@ -194,7 +194,7 @@
     "smarts1":"[#6X3$([#6]=[#6X3])]",
     "smarts2":null,
     "smartsPath":"per",
-    "constraints":{"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
+    "constraints":{"only":["C","F","H"],"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
 },
 {
     "id":19,
