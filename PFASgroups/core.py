@@ -296,8 +296,10 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
     chains = {}
     smartsMatches1 = get_substruct(mol, smarts1)
     if smarts2 is not None:
+        digroup_smarts = (Chem.MolToSmarts(smarts1) != Chem.MolToSmarts(smarts2))
         pairs = {smarts2:[(path,get_substruct(mol,smartsPath)) for path, (smartsPath,_)  in smartsPaths.items()]}
     else:
+        digroup_smarts = False
         pairs = {_smarts2:[(path,get_substruct(mol, smartsPath))] for path, (smartsPath,_smarts2) in smartsPaths.items()}
     def match_intersection(_pair,_setp):
         for path,pmatch in _pair:
@@ -305,13 +307,19 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
                 chains.setdefault(path,[]).append(_setp)
                 return path
         return None
-    for match1 in smartsMatches1:
+    for mi, match1 in enumerate(smartsMatches1):
         for _smarts2, smartsPath in pairs.items():
             smartsMatches2 = get_substruct(mol,_smarts2)
-            for match2 in smartsMatches2:
+            for mj, match2 in enumerate(smartsMatches2):
                 # Fix: Compare SMARTS strings, not object identity, to avoid self-matching
-                if (match1!=match2) or (Chem.MolToSmarts(smarts1) != Chem.MolToSmarts(_smarts2)):# avoid double matching for diacids
-                    path_idx = nx.shortest_path(G, match1, match2, method='dijkstra')
+                # For disulfonic acids, allow same-atom matching when we have identical SMARTS patterns
+                if (match1!=match2) or digroup_smarts is False or (digroup_smarts is True and mi != mj):# avoid double matching for diacids
+                    if match1 == match2:
+                        # Special case: both functional groups on same atom (e.g., disulfonic acids)
+                        # Create a minimal path containing just the shared atom
+                        path_idx = [match1]
+                    else:
+                        path_idx = nx.shortest_path(G, match1, match2, method='dijkstra')
                     setp = set(path_idx)
                     match_intersection(smartsPath,setp)
     chains = {k:sorted(v, key=len, reverse=True) for k,v in chains.items()}
