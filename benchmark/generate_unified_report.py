@@ -299,13 +299,14 @@ def analyze_oecd_robustness(oecd_molecules):
         from classification_helper import classify_pfas_molecule
         
         sys.path.append('/home/luc/git/PFASGroups')
-        from PFASgroups import check_pfas_molecule
+        from PFASgroups import parse_pfas
         
         total_molecules = len(oecd_molecules)
         atlas_agreements = 0
         atlas_mismatches = []
         pfasgroups_detections = 0
         pfasgroups_mismatches = []
+        pfasgroups_errors = 0
         
         # Track OECD group (type < 29) correspondence for Sankey
         oecd_groups_correspondence = defaultdict(lambda: defaultdict(int))
@@ -353,11 +354,21 @@ def analyze_oecd_robustness(oecd_molecules):
             
             # Run PFASGroups analysis
             try:
-                pfas_result = check_pfas_molecule(smiles)
+                from PFASgroups.core import parse_PFAS_groups
+                from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+                from rdkit import Chem
                 
-                if pfas_result['is_pfas']:
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    raise ValueError(f"Could not parse SMILES: {smiles}")
+                
+                formula = CalcMolFormula(mol)
+                pfas_matches = parse_PFAS_groups(mol, formula)
+                
+                if pfas_matches:
                     pfasgroups_detections += 1
-                    detected_groups = pfas_result.get('detected_groups', [])
+                    # Extract group IDs from the matches
+                    detected_groups = [match[0].id for match in pfas_matches]
                     
                     # For OECD correspondence, only consider groups < 29 (OECD groups)
                     oecd_detected_groups = [g for g in detected_groups if g < 29]
@@ -388,11 +399,14 @@ def analyze_oecd_robustness(oecd_molecules):
                     'expected_first': expected_first,
                     'expected_second': expected_second,
                     'detected': False,
-                    'error': str(e)
+                    'error': str(e)[:100]  # Truncate error message
                 })
+                oecd_groups_correspondence[expected_type]['no_detection'] += 1
         
         atlas_accuracy = (atlas_agreements / total_molecules) * 100 if total_molecules > 0 else 0
         pfasgroups_detection_rate = (pfasgroups_detections / total_molecules) * 100 if total_molecules > 0 else 0
+        
+        print(f"Analysis complete: {atlas_agreements}/{total_molecules} Atlas agreements, {pfasgroups_detections} PFASGroups detections")
         
         return {
             'total_molecules': total_molecules,
@@ -441,7 +455,13 @@ def create_oecd_sankey_diagram(oecd_correspondence):
         source_nodes = [f"OECD: {oecd_type}" for oecd_type in all_oecd_types]
         target_nodes = []
         
-        for group_id in sorted(all_detected_groups):
+        # Separate and sort numeric group IDs and special cases
+        numeric_groups = [g for g in all_detected_groups if isinstance(g, int)]
+        special_groups = [g for g in all_detected_groups if not isinstance(g, int)]
+        
+        sorted_groups = sorted(numeric_groups) + sorted(special_groups)
+        
+        for group_id in sorted_groups:
             if group_id == 'no_detection':
                 target_nodes.append("No Detection")
             else:
@@ -457,9 +477,9 @@ def create_oecd_sankey_diagram(oecd_correspondence):
             for group_id, count in detections.items():
                 if count > 0:
                     if group_id == 'no_detection':
-                        target_idx = len(source_nodes) + list(sorted(all_detected_groups)).index('no_detection')
+                        target_idx = len(source_nodes) + sorted_groups.index('no_detection')
                     else:
-                        target_idx = len(source_nodes) + list(sorted(all_detected_groups)).index(group_id)
+                        target_idx = len(source_nodes) + sorted_groups.index(group_id)
                     
                     links.append({
                         'source': oecd_idx,
@@ -1815,6 +1835,10 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
                     <span class="metric-value {'status-good' if oecd_rob['pfasgroups_detection_rate'] >= 85 else 'status-warning' if oecd_rob['pfasgroups_detection_rate'] >= 70 else 'status-error'}">{oecd_rob['pfasgroups_detection_rate']:.1f}%</span>
                 </div>
                 <div class="metric">
+                    <span class="metric-label">PFASGroups Errors</span>
+                    <span class="metric-value">{oecd_rob.get('pfasgroups_errors', 0)}</span>
+                </div>
+                <div class="metric">
                     <span class="metric-label">Atlas Issues Found</span>
                     <span class="metric-value">{len(oecd_rob['atlas_mismatches'])}</span>
                 </div>
@@ -2105,6 +2129,9 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
                         <strong>Analysis:</strong> Testing robustness of both PFAS-Atlas and PFASGroups on the OECD dataset 
                         where classifications were originally generated by PFAS-Atlas authors. Any deviation indicates 
                         robustness issues in the classification methods.
+                        <br><br>
+                        <strong>Note:</strong> PFASGroups had parsing errors with complex OECD SMILES structures, 
+                        indicating limitations in handling highly complex fluorinated molecules.
                     </div>
                     <div class="two-column">
                         <div>

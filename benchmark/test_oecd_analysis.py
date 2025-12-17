@@ -39,8 +39,8 @@ def test_oecd_analysis():
         test_molecules = []
         for i, row in df.head(5).iterrows():
             test_molecules.append({
-                'rdkit_smiles': row['RDKIT_SMILES'],
-                'original_smiles': row['SMILES'], 
+                'rdkit_smiles': row['RDKIT_SMILES'].strip(),
+                'original_smiles': row['SMILES'].strip() if pd.notna(row['SMILES']) else row['RDKIT_SMILES'].strip(), 
                 'first_class': row['First_Class'],
                 'second_class': row['Second_Class'],
                 'type': row['type']
@@ -80,7 +80,9 @@ def test_oecd_analysis():
             
             # Test PFASGroups
             try:
+                print(f"   Testing PFASGroups with: {smiles}")
                 pfas_result = parse_pfas(smiles)
+                print(f"   PFASGroups raw result: {pfas_result}")
                 
                 if pfas_result and len(pfas_result) > 0:
                     pfasgroups_detections += 1
