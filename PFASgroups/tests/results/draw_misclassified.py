@@ -7,6 +7,7 @@ import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import Draw
 import os
+import ast
 
 # Get the directory of this script
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -14,9 +15,32 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 # Load misclassified molecules
 df = pd.read_csv(os.path.join(script_dir, 'misclassified_molecules.csv'))
 
+# Parse group lists from string representation
+def parse_group_list(group_str):
+    """Parse group list from string or list representation"""
+    if pd.isna(group_str):
+        return []
+    if isinstance(group_str, list):
+        return group_str
+    try:
+        # Try to evaluate as Python literal
+        return ast.literal_eval(str(group_str))
+    except:
+        # Fallback: remove brackets and parse
+        cleaned = str(group_str).strip('[]')
+        if not cleaned:
+            return []
+        return [int(x.strip()) for x in cleaned.split(',')]
+
+# Apply parsing to group columns
+df['expected_groups'] = df['expected_groups'].apply(parse_group_list)
+df['detected_groups'] = df['detected_groups'].apply(parse_group_list)
+
 print(f"Total misclassified molecules: {len(df)}")
-print(f"\nBreakdown by origin:")
-print(df['origin'].value_counts())
+print(f"\nBreakdown by failure type:")
+print(df['failure_type'].value_counts())
+print(f"\nBreakdown by origin (top 20):")
+print(df['origin'].value_counts().head(20))
 
 # Function to draw molecules by category
 def draw_molecules_by_category(df, origin_filter, output_file, n_samples=6, mols_per_row=3):
@@ -44,7 +68,9 @@ def draw_molecules_by_category(df, origin_filter, output_file, n_samples=6, mols
         mol = Chem.MolFromSmiles(row['smiles'])
         if mol is not None:
             mols.append(mol)
-            legends.append(f"{row['origin']}\nExpected: {row['expected_groups']}\nDetected: {row['detected_groups']}")
+            expected_str = str(row['expected_groups']) if isinstance(row['expected_groups'], list) else row['expected_groups']
+            detected_str = str(row['detected_groups']) if isinstance(row['detected_groups'], list) else row['detected_groups']
+            legends.append(f"{row['origin']}\nExpected: {expected_str}\nDetected: {detected_str}")
     
     # Draw molecules
     if mols:

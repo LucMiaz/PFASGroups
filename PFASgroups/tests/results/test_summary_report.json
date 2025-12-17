@@ -1,9 +1,9 @@
 {
   "test_metadata": {
-    "timestamp": "2025-12-17T17:20:06.770767",
-    "test_start_time": "2025-12-17T17:18:02.034220",
-    "test_end_time": "2025-12-17T17:20:06.770737",
-    "test_duration_seconds": 124.736517,
+    "timestamp": "2025-12-17T18:20:29.903770",
+    "test_start_time": "2025-12-17T18:18:22.916800",
+    "test_end_time": "2025-12-17T18:20:29.903748",
+    "test_duration_seconds": 126.986948,
     "python_version": "3.14.2 | packaged by conda-forge | (main, Dec  6 2025, 11:17:27) [MSC v.1944 64 bit (AMD64)]",
     "rdkit_available": true,
     "pytest_available": true
@@ -528,15 +528,15 @@
     ]
   },
   "specificity_test_results": {
-    "total_tests": 1842,
-    "detection_rate": 0.98,
-    "specificity_rate": 0.444,
+    "total_tests": 1844,
+    "detection_rate": 0.976,
+    "specificity_rate": 0.449,
     "average_detected_groups_per_test": 3.19,
-    "failed_detection_cases": 36,
-    "failed_specificity_cases": 1025,
+    "failed_detection_cases": 44,
+    "failed_specificity_cases": 1016,
     "specificity_details": {
-      "tests_with_exact_match": 25,
-      "tests_with_multiple_matches": 1817,
+      "tests_with_exact_match": 31,
+      "tests_with_multiple_matches": 1813,
       "tests_with_no_matches": 0
     }
   },
@@ -544,8 +544,8 @@
     "total_tests_run": 1758,
     "total_successful_detections": 1753,
     "overall_accuracy": 0.997,
-    "specificity_rate": 0.444,
-    "detection_rate": 0.98,
+    "specificity_rate": 0.449,
+    "detection_rate": 0.976,
     "test_status": "FAILED"
   }
 }
