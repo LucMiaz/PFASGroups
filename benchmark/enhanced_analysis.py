@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict, Counter
 from datetime import datetime
 import sys
+import os
 
 # PFAS-Atlas class mapping to understand their output classes (discovered from testing)
 PFAS_ATLAS_CLASSES = {
@@ -584,7 +585,7 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
     nodes_atlas_set = set()
     nodes_pfasgroups_oecd_set = set()
     
-    with open('../../PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+    with open('../PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
         lookup = json.load(f)
     lookup = {k['id']:k['name'] for k in lookup}
     reverse_lookup = {v:k for k,v in lookup.items()}
@@ -1191,7 +1192,10 @@ def create_oecd_html_report(oecd_analysis, timestamp):
 </html>
 """
     
-    with open(f"oecd_pfas_analysis_{timestamp}.html", 'w') as f:
+    # Save to html directory if it exists, otherwise current directory
+    html_dir = "html" if os.path.exists("html") else "."
+    html_filename = f"{html_dir}/oecd_pfas_analysis_{timestamp}.html"
+    with open(html_filename, 'w') as f:
         f.write(html_content)
 
 def create_combined_comparison_report(enhanced_results, oecd_results, timestamp):
@@ -1210,10 +1214,10 @@ def create_combined_comparison_report(enhanced_results, oecd_results, timestamp)
     sankey_multi_pfas_html = sankey_multi_pfas.to_html(include_plotlyjs=False, div_id="multi-pfas")
     sankey_multi_atlas_html = sankey_multi_atlas.to_html(include_plotlyjs=False, div_id="multi-atlas")
     
-    # Save individual visualizations
-    sankey_single_atlas.write_image(f"single_group_atlas_sankey_{timestamp}.png", width=1000, height=600, scale=2)
-    sankey_multi_pfas.write_image(f"multi_group_pfasgroups_sankey_{timestamp}.png", width=1200, height=700, scale=2)
-    sankey_multi_atlas.write_image(f"multi_group_atlas_sankey_{timestamp}.png", width=1000, height=600, scale=2)
+    # Save individual visualizations to imgs directory
+    sankey_single_atlas.write_image(f"imgs/sankey_atlas_diagram_{timestamp}.png", width=1000, height=600, scale=2)
+    sankey_multi_pfas.write_image(f"imgs/sankey_pfasgroups_diagram_{timestamp}.png", width=1200, height=700, scale=2)
+    sankey_multi_atlas.write_image(f"imgs/sankey_pfasgroups_oecd_diagram_{timestamp}.png", width=1000, height=600, scale=2)
     
     html_content = f"""
 <!DOCTYPE html>
@@ -1317,7 +1321,10 @@ def create_combined_comparison_report(enhanced_results, oecd_results, timestamp)
 </html>
 """
     
-    with open(f"combined_pfas_analysis_{timestamp}.html", 'w') as f:
+    # Save to html directory if it exists, otherwise current directory
+    html_dir = "html" if os.path.exists("html") else "."
+    html_filename = f"{html_dir}/combined_pfas_analysis_{timestamp}.html"
+    with open(html_filename, 'w') as f:
         f.write(html_content)
 
 def create_detailed_multi_group_sankey(multi_analysis):
@@ -2119,7 +2126,7 @@ def main():
     
     # Find the most recent enhanced benchmark file
     import glob
-    benchmark_files = glob.glob('pfas_enhanced_benchmark_*.json')
+    benchmark_files = glob.glob('data/pfas_enhanced_benchmark_*.json')
     if not benchmark_files:
         print("❌ No enhanced benchmark results found. Run enhanced_pfas_benchmark.py first.")
         return

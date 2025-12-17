@@ -17,6 +17,20 @@ import numpy as np
 from pathlib import Path
 import base64
 from io import BytesIO
+import plotly.graph_objects as go
+import plotly.express as px
+from plotly.subplots import make_subplots
+import shutil
+from collections import defaultdict
+
+# Import the enhanced Sankey diagrams from enhanced_analysis
+try:
+    from enhanced_analysis import create_enhanced_sankey_comparison, analyze_system_comparison
+except ImportError:
+    def create_enhanced_sankey_comparison(*args):
+        return None, None, None
+    def analyze_system_comparison(results):
+        return {}, {}
 
 def find_latest_benchmark_files():
     """Find the most recent benchmark result files."""
@@ -36,9 +50,15 @@ def find_latest_benchmark_files():
         'complex': 'pfas_complex_branched_benchmark_*.json'
     }
     
+    # Check both current directory and data subdirectory
+    search_paths = ['.', 'data']
+    
     for benchmark_type, pattern in patterns.items():
         try:
-            matching_files = list(Path('.').glob(pattern))
+            matching_files = []
+            for search_path in search_paths:
+                matching_files.extend(list(Path(search_path).glob(pattern)))
+            
             if matching_files:
                 # Sort by modification time, get most recent
                 files[benchmark_type] = max(matching_files, key=lambda x: x.stat().st_mtime)
@@ -242,6 +262,241 @@ def analyze_enhanced_benchmark(data):
     }
     
     return summary
+
+def load_oecd_csv_data():
+    """Load OECD CSV data directly for robustness analysis."""
+    oecd_csv_path = '/home/luc/git/PFAS-atlas/input_data/OECD_4000/step3_OECD_Class_0812.csv'
+    
+    try:
+        import pandas as pd
+        df = pd.read_csv(oecd_csv_path)
+        
+        # Convert to list of dictionaries for consistency
+        molecules = []
+        for _, row in df.iterrows():
+            molecules.append({
+                'rdkit_smiles': row['RDKIT_SMILES'],
+                'original_smiles': row['SMILES'], 
+                'first_class': row['First_Class'],
+                'second_class': row['Second_Class'],
+                'type': row['type']
+            })
+        
+        print(f"Loaded {len(molecules)} molecules from OECD CSV")
+        return molecules
+    except Exception as e:
+        print(f"Error loading OECD CSV: {e}")
+        return None
+
+def analyze_oecd_robustness(oecd_molecules):
+    """Analyze robustness of PFAS-Atlas on OECD dataset."""
+    if not oecd_molecules:
+        return None
+        
+    try:
+        # Import required modules
+        sys.path.append('/home/luc/git/PFAS-atlas')
+        from classification_helper import classify_pfas_molecule
+        
+        sys.path.append('/home/luc/git/PFASGroups')
+        from PFASgroups import check_pfas_molecule
+        
+        total_molecules = len(oecd_molecules)
+        atlas_agreements = 0
+        atlas_mismatches = []
+        pfasgroups_detections = 0
+        pfasgroups_mismatches = []
+        
+        # Track OECD group (type < 29) correspondence for Sankey
+        oecd_groups_correspondence = defaultdict(lambda: defaultdict(int))
+        
+        print(f"Running robustness analysis on {total_molecules} OECD molecules...")
+        
+        for i, mol in enumerate(oecd_molecules):
+            if i % 500 == 0:
+                print(f"Progress: {i}/{total_molecules}")
+            
+            smiles = mol['rdkit_smiles']
+            expected_first = mol['first_class']
+            expected_second = mol['second_class']
+            expected_type = mol['type']
+            
+            # Run PFAS-Atlas predictions
+            try:
+                atlas_result = classify_pfas_molecule(smiles)
+                atlas_first = atlas_result[0] if len(atlas_result) > 0 else 'Not detected'
+                atlas_second = atlas_result[1] if len(atlas_result) > 1 else 'Not detected'
+                
+                # Check Atlas robustness (should match exactly)
+                if atlas_first == expected_first and atlas_second == expected_second:
+                    atlas_agreements += 1
+                else:
+                    atlas_mismatches.append({
+                        'index': i,
+                        'smiles': smiles,
+                        'expected_first': expected_first,
+                        'expected_second': expected_second,
+                        'predicted_first': atlas_first,
+                        'predicted_second': atlas_second
+                    })
+                    
+            except Exception as e:
+                atlas_mismatches.append({
+                    'index': i,
+                    'smiles': smiles,
+                    'expected_first': expected_first,
+                    'expected_second': expected_second,
+                    'predicted_first': 'Error',
+                    'predicted_second': 'Error',
+                    'error': str(e)
+                })
+            
+            # Run PFASGroups analysis
+            try:
+                pfas_result = check_pfas_molecule(smiles)
+                
+                if pfas_result['is_pfas']:
+                    pfasgroups_detections += 1
+                    detected_groups = pfas_result.get('detected_groups', [])
+                    
+                    # For OECD correspondence, only consider groups < 29 (OECD groups)
+                    oecd_detected_groups = [g for g in detected_groups if g < 29]
+                    
+                    # Map expected type to detected groups for Sankey
+                    if oecd_detected_groups:
+                        for group in oecd_detected_groups:
+                            oecd_groups_correspondence[expected_type][group] += 1
+                    else:
+                        oecd_groups_correspondence[expected_type]['no_detection'] += 1
+                else:
+                    # No PFAS detection
+                    pfasgroups_mismatches.append({
+                        'index': i,
+                        'smiles': smiles,
+                        'expected_type': expected_type,
+                        'expected_first': expected_first,
+                        'expected_second': expected_second,
+                        'detected': False
+                    })
+                    oecd_groups_correspondence[expected_type]['no_detection'] += 1
+                    
+            except Exception as e:
+                pfasgroups_mismatches.append({
+                    'index': i,
+                    'smiles': smiles,
+                    'expected_type': expected_type,
+                    'expected_first': expected_first,
+                    'expected_second': expected_second,
+                    'detected': False,
+                    'error': str(e)
+                })
+        
+        atlas_accuracy = (atlas_agreements / total_molecules) * 100 if total_molecules > 0 else 0
+        pfasgroups_detection_rate = (pfasgroups_detections / total_molecules) * 100 if total_molecules > 0 else 0
+        
+        return {
+            'total_molecules': total_molecules,
+            'atlas_agreements': atlas_agreements,
+            'atlas_accuracy': atlas_accuracy,
+            'atlas_mismatches': atlas_mismatches[:100],  # Limit for display
+            'pfasgroups_detections': pfasgroups_detections,
+            'pfasgroups_detection_rate': pfasgroups_detection_rate,
+            'pfasgroups_mismatches': pfasgroups_mismatches[:100],  # Limit for display
+            'oecd_groups_correspondence': dict(oecd_groups_correspondence)
+        }
+        
+    except Exception as e:
+        print(f"Error in robustness analysis: {e}")
+        return None
+
+def create_oecd_sankey_diagram(oecd_correspondence):
+    """Create Sankey diagram showing OECD groups vs PFASGroups detections."""
+    if not oecd_correspondence:
+        return None
+        
+    try:
+        # Load PFAS groups for names
+        with open('/home/luc/git/PFASGroups/PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+            pfas_groups_list = json.load(f)
+        pfas_groups_lookup = {group['id']: group['name'] for group in pfas_groups_list}
+        
+        # Build Sankey data
+        source_nodes = []  # OECD types
+        target_nodes = []  # PFASGroups detections
+        links = []
+        
+        all_oecd_types = list(oecd_correspondence.keys())
+        all_detected_groups = set()
+        
+        # Collect all detected groups
+        for oecd_type, detections in oecd_correspondence.items():
+            for group_id in detections.keys():
+                if group_id != 'no_detection' and isinstance(group_id, int) and group_id < 29:
+                    all_detected_groups.add(group_id)
+        
+        # Add 'no_detection' as a special case
+        all_detected_groups.add('no_detection')
+        
+        # Create node lists
+        source_nodes = [f"OECD: {oecd_type}" for oecd_type in all_oecd_types]
+        target_nodes = []
+        
+        for group_id in sorted(all_detected_groups):
+            if group_id == 'no_detection':
+                target_nodes.append("No Detection")
+            else:
+                group_name = pfas_groups_lookup.get(group_id, f"Group {group_id}")
+                target_nodes.append(f"PFASGroups: {group_id} - {group_name}")
+        
+        all_nodes = source_nodes + target_nodes
+        
+        # Create links
+        for oecd_idx, oecd_type in enumerate(all_oecd_types):
+            detections = oecd_correspondence[oecd_type]
+            
+            for group_id, count in detections.items():
+                if count > 0:
+                    if group_id == 'no_detection':
+                        target_idx = len(source_nodes) + list(sorted(all_detected_groups)).index('no_detection')
+                    else:
+                        target_idx = len(source_nodes) + list(sorted(all_detected_groups)).index(group_id)
+                    
+                    links.append({
+                        'source': oecd_idx,
+                        'target': target_idx,
+                        'value': count
+                    })
+        
+        # Create Plotly Sankey diagram
+        fig = go.Figure(data=[go.Sankey(
+            node=dict(
+                pad=15,
+                thickness=20,
+                line=dict(color="black", width=0.5),
+                label=all_nodes,
+                color=["rgba(31, 119, 180, 0.8)" for _ in source_nodes] + 
+                      ["rgba(44, 160, 44, 0.8)" for _ in target_nodes]
+            ),
+            link=dict(
+                source=[link['source'] for link in links],
+                target=[link['target'] for link in links],
+                value=[link['value'] for link in links],
+                color=["rgba(44, 160, 44, 0.3)" for _ in links]
+            )
+        )])
+        
+        fig.update_layout(
+            title_text="OECD Classification vs PFASGroups Detection Flow<br>",
+            font_size=12,
+            height=600,
+            width=1200
+        )
+        
+        return fig.to_html(include_plotlyjs='cdn', div_id="sankey-oecd-correspondence")
+        
+    except Exception as e:
+        print(f"Error creating OECD Sankey diagram: {e}")
+        return None
 
 def analyze_oecd_benchmark(data):
     """Analyze OECD benchmark results with detailed correspondence and misclassification analysis."""
@@ -669,6 +924,204 @@ def create_sankey_alternative_plot(enhanced_data):
     
     return plot_base64
 
+def create_interactive_time_performance_plot(data):
+    """Create interactive time performance plot using Plotly."""
+    if not data:
+        return None
+    
+    # Convert to DataFrame
+    df = pd.DataFrame(data)
+    
+    # Create subplots
+    fig = make_subplots(
+        rows=2, cols=2,
+        subplot_titles=('Execution Time vs Molecule Size', 'Performance Ratio vs Chain Length',
+                       'Time Distribution by Size Category', 'Scaling Performance with Chain Length'),
+        specs=[[{"secondary_y": False}, {"secondary_y": False}],
+               [{"secondary_y": False}, {"secondary_y": False}]]
+    )
+    
+    # Plot 1: Execution time vs number of atoms
+    fig.add_trace(
+        go.Scatter(x=df['num_atoms'], y=df['pfasgroups_time_avg'] * 1000,
+                  mode='markers', name='PFASGroups', opacity=0.7,
+                  marker=dict(color='blue', size=6),
+                  hovertemplate='Atoms: %{x}<br>Time: %{y:.2f} ms<extra></extra>'),
+        row=1, col=1
+    )
+    fig.add_trace(
+        go.Scatter(x=df['num_atoms'], y=df['atlas_time_avg'] * 1000,
+                  mode='markers', name='PFAS-Atlas', opacity=0.7,
+                  marker=dict(color='red', size=6),
+                  hovertemplate='Atoms: %{x}<br>Time: %{y:.2f} ms<extra></extra>'),
+        row=1, col=1
+    )
+    
+    # Plot 2: Performance ratio vs chain length
+    ratio = (df['atlas_time_avg'] / df['pfasgroups_time_avg']).fillna(1)
+    fig.add_trace(
+        go.Scatter(x=df['chain_length'], y=ratio,
+                  mode='markers', name='Performance Ratio', 
+                  marker=dict(color='green', size=6),
+                  hovertemplate='Chain Length: %{x}<br>Ratio: %{y:.2f}<extra></extra>',
+                  showlegend=False),
+        row=1, col=2
+    )
+    fig.add_hline(y=1, line_dash="dash", line_color="black", opacity=0.5, 
+                  annotation_text="Equal Performance", row=1, col=2)
+    
+    # Plot 3: Box plot by size bins
+    df['size_bin'] = pd.cut(df['num_atoms'], bins=6, labels=['XS', 'S', 'M', 'L', 'XL', 'XXL'])
+    
+    for i, bin_name in enumerate(df['size_bin'].cat.categories):
+        pfas_times = df[df['size_bin'] == bin_name]['pfasgroups_time_avg'].values * 1000
+        atlas_times = df[df['size_bin'] == bin_name]['atlas_time_avg'].values * 1000
+        
+        if len(pfas_times) > 0:
+            fig.add_trace(
+                go.Box(y=pfas_times, name=f'PFASGroups-{bin_name}', 
+                      marker_color='lightblue', showlegend=False,
+                      hovertemplate='Size: %s<br>Time: %%{y:.2f} ms<extra></extra>' % bin_name),
+                row=2, col=1
+            )
+        if len(atlas_times) > 0:
+            fig.add_trace(
+                go.Box(y=atlas_times, name=f'Atlas-{bin_name}', 
+                      marker_color='lightcoral', showlegend=False,
+                      hovertemplate='Size: %s<br>Time: %%{y:.2f} ms<extra></extra>' % bin_name),
+                row=2, col=1
+            )
+    
+    # Plot 4: Scaling analysis
+    chain_stats = df.groupby('chain_length').agg({
+        'pfasgroups_time_avg': ['median', 'std'],
+        'atlas_time_avg': ['median', 'std']
+    }).round(4)
+    
+    chain_lengths = chain_stats.index
+    pfas_medians = chain_stats[('pfasgroups_time_avg', 'median')] * 1000
+    pfas_stds = chain_stats[('pfasgroups_time_avg', 'std')] * 1000
+    atlas_medians = chain_stats[('atlas_time_avg', 'median')] * 1000
+    atlas_stds = chain_stats[('atlas_time_avg', 'std')] * 1000
+    
+    fig.add_trace(
+        go.Scatter(x=chain_lengths, y=pfas_medians,
+                  error_y=dict(type='data', array=pfas_stds),
+                  mode='markers+lines', name='PFASGroups Median',
+                  marker=dict(color='blue', symbol='circle'),
+                  hovertemplate='Chain Length: %{x}<br>Median Time: %{y:.2f} ms<extra></extra>',
+                  showlegend=False),
+        row=2, col=2
+    )
+    fig.add_trace(
+        go.Scatter(x=chain_lengths, y=atlas_medians,
+                  error_y=dict(type='data', array=atlas_stds),
+                  mode='markers+lines', name='Atlas Median',
+                  marker=dict(color='red', symbol='square'),
+                  hovertemplate='Chain Length: %{x}<br>Median Time: %{y:.2f} ms<extra></extra>',
+                  showlegend=False),
+        row=2, col=2
+    )
+    
+    # Update layout
+    fig.update_xaxes(title_text="Number of Atoms", row=1, col=1)
+    fig.update_yaxes(title_text="Average Time (ms)", row=1, col=1)
+    fig.update_xaxes(title_text="Chain Length", row=1, col=2)
+    fig.update_yaxes(title_text="Performance Ratio", row=1, col=2)
+    fig.update_xaxes(title_text="Size Category", row=2, col=1)
+    fig.update_yaxes(title_text="Execution Time (ms)", row=2, col=1)
+    fig.update_xaxes(title_text="Chain Length", row=2, col=2)
+    fig.update_yaxes(title_text="Median Time (ms)", row=2, col=2)
+    
+    fig.update_layout(
+        title_text="Time Performance Analysis Across Molecule Sizes",
+        height=800,
+        showlegend=True,
+        hovermode='closest'
+    )
+    
+    return fig.to_html(include_plotlyjs=False, div_id="timing-performance")
+
+def create_interactive_sankey_diagram(enhanced_data):
+    """Create interactive Sankey diagram using Plotly."""
+    if not enhanced_data:
+        return None
+    
+    # Load PFAS groups lookup
+    try:
+        with open('/home/luc/git/PFASGroups/PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+            pfas_groups_list = json.load(f)
+        pfas_groups_lookup = {group['id']: group['name'] for group in pfas_groups_list}
+    except:
+        pfas_groups_lookup = {}
+    
+    # Focus on single-group molecules for cleaner Sankey
+    single_group_molecules = [mol for mol in enhanced_data if mol.get('molecule_data', {}).get('generation_type') == 'single_group']
+    
+    # Create correspondence matrix
+    pfasgroups_to_atlas = {}
+    
+    for mol in single_group_molecules:
+        mol_data = mol.get('molecule_data', {})
+        target_groups = mol_data.get('target_groups', [])
+        atlas_results = mol.get('atlas_results', {})
+        pfasgroups_results = mol.get('pfasgroups_results', {})
+        
+        atlas_first = atlas_results.get('first_class', 'Unknown')
+        pfasgroups_detected = pfasgroups_results.get('detected_groups', [])
+        
+        for target_group in target_groups:
+            group_name = pfas_groups_lookup.get(target_group, f'Group {target_group}')
+            if group_name not in pfasgroups_to_atlas:
+                pfasgroups_to_atlas[group_name] = {}
+            
+            if atlas_first not in pfasgroups_to_atlas[group_name]:
+                pfasgroups_to_atlas[group_name][atlas_first] = 0
+            pfasgroups_to_atlas[group_name][atlas_first] += 1
+    
+    # Prepare data for Sankey
+    source_nodes = list(pfasgroups_to_atlas.keys())
+    target_nodes = list(set([atlas_class for group_dict in pfasgroups_to_atlas.values() for atlas_class in group_dict.keys()]))
+    
+    # Create node mapping
+    all_nodes = source_nodes + target_nodes
+    node_dict = {node: i for i, node in enumerate(all_nodes)}
+    
+    source_indices = []
+    target_indices = []
+    values = []
+    
+    for group_name, atlas_dict in pfasgroups_to_atlas.items():
+        for atlas_class, count in atlas_dict.items():
+            source_indices.append(node_dict[group_name])
+            target_indices.append(node_dict[atlas_class])
+            values.append(count)
+    
+    # Create Sankey diagram
+    fig = go.Figure(data=[go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=20,
+            line=dict(color="black", width=0.5),
+            label=all_nodes,
+            color=["lightblue" if i < len(source_nodes) else "lightcoral" for i in range(len(all_nodes))]
+        ),
+        link=dict(
+            source=source_indices,
+            target=target_indices,
+            value=values,
+            hovertemplate='%{source.label} → %{target.label}<br>Molecules: %{value}<extra></extra>'
+        )
+    )])
+    
+    fig.update_layout(
+        title_text="PFASGroups to PFAS-Atlas Classification Flow",
+        font_size=12,
+        height=600
+    )
+    
+    return fig.to_html(include_plotlyjs=False, div_id="main-sankey")
+
 def analyze_timing_benchmark(data):
     """Analyze timing benchmark results."""
     if not data:
@@ -920,6 +1373,7 @@ def create_unified_visualization(benchmark_results):
 
 def generate_unified_html_report(benchmark_results, plot_base64=None):
     """Generate a comprehensive unified HTML report with all new analyses."""
+    print("🔧 USING ENHANCED REPORT GENERATOR WITH INTERACTIVE PLOTS")
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     html_filename = f"unified_pfas_benchmark_report_{timestamp}.html"
@@ -935,18 +1389,48 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
                 total_molecules_tested += results['total_molecules']
     
     # Generate additional plots
-    timing_plot = None
-    sankey_plot = None
+    timing_plot_html = None
+    sankey_htmls = [None, None, None]  # [atlas, pfasgroups, pfasgroups_oecd]
+    oecd_sankey_html = None  # OECD correspondence Sankey
     
     if benchmark_results.get('timing'):
         timing_data = load_benchmark_data(find_latest_benchmark_files()['timing'])
         if timing_data:
-            timing_plot = create_time_performance_plot(timing_data)
+            timing_plot_html = create_interactive_time_performance_plot(timing_data)
     
     if benchmark_results.get('enhanced'):
         enhanced_data = load_benchmark_data(find_latest_benchmark_files()['enhanced'])
         if enhanced_data:
-            sankey_plot = create_sankey_diagram(enhanced_data)
+            try:
+                # Analyze the enhanced data
+                single_analysis, multi_analysis = analyze_system_comparison(enhanced_data)
+                # Get the three Sankey diagrams
+                sankey_figures = create_enhanced_sankey_comparison(single_analysis, multi_analysis, enhanced_data)
+                if sankey_figures and len(sankey_figures) >= 3:
+                    # Convert figures to interactive HTML
+                    sankey_titles = [
+                        "sankey-atlas",
+                        "sankey-pfasgroups", 
+                        "sankey-pfasgroups-oecd"
+                    ]
+                    for i, fig in enumerate(sankey_figures[:3]):
+                        if fig:
+                            try:
+                                # Generate interactive HTML with unique div IDs
+                                include_js = 'cdn' if i == 0 else False  # Only include Plotly.js once
+                                sankey_htmls[i] = fig.to_html(include_plotlyjs=include_js, div_id=sankey_titles[i])
+                            except Exception as e:
+                                print(f"Warning: Could not convert Sankey diagram {i+1} to HTML: {e}")
+            except Exception as e:
+                print(f"Warning: Could not create enhanced Sankey diagrams: {e}")
+                # Fallback to original single Sankey
+                enhanced_data_fallback = load_benchmark_data(find_latest_benchmark_files()['enhanced'])
+                if enhanced_data_fallback:
+                    sankey_htmls[0] = create_interactive_sankey_diagram(enhanced_data_fallback)
+    
+    # Generate OECD correspondence Sankey if robustness analysis was run
+    if benchmark_results.get('oecd_robustness') and benchmark_results['oecd_robustness'].get('oecd_groups_correspondence'):
+        oecd_sankey_html = create_oecd_sankey_diagram(benchmark_results['oecd_robustness']['oecd_groups_correspondence'])
     
     html_content = f"""
     <!DOCTYPE html>
@@ -1183,8 +1667,21 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
             }}
             
             .tab-content.active {{ display: block; }}
+            
+            .interactive-plot {{
+                width: 100%;
+                height: auto;
+                margin: 20px 0;
+            }}
+            
+            .interactive-plot iframe {{
+                border: none;
+                width: 100%;
+                height: 600px;
+            }}
         </style>
         
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <script>
             function showTab(tabName) {{
                 // Hide all tab contents
@@ -1299,6 +1796,31 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
             </div>
         """
     
+    # OECD Robustness Analysis
+    if benchmark_results.get('oecd_robustness'):
+        oecd_rob = benchmark_results['oecd_robustness']
+        html_content += f"""
+            <div class="card">
+                <h3>🔬 OECD Robustness <span class="benchmark-status status-complete">Complete</span></h3>
+                <div class="metric">
+                    <span class="metric-label">OECD Molecules Analyzed</span>
+                    <span class="metric-value">{oecd_rob['total_molecules']:,}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Atlas Perfect Accuracy</span>
+                    <span class="metric-value {'status-good' if oecd_rob['atlas_accuracy'] >= 95 else 'status-warning' if oecd_rob['atlas_accuracy'] >= 85 else 'status-error'}">{oecd_rob['atlas_accuracy']:.1f}%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">PFASGroups Coverage</span>
+                    <span class="metric-value {'status-good' if oecd_rob['pfasgroups_detection_rate'] >= 85 else 'status-warning' if oecd_rob['pfasgroups_detection_rate'] >= 70 else 'status-error'}">{oecd_rob['pfasgroups_detection_rate']:.1f}%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Atlas Issues Found</span>
+                    <span class="metric-value">{len(oecd_rob['atlas_mismatches'])}</span>
+                </div>
+            </div>
+        """
+    
     # Timing Benchmark
     if benchmark_results.get('timing'):
         timing = benchmark_results['timing']
@@ -1337,20 +1859,42 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
         """
     
     # Add timing performance plot
-    if timing_plot:
+    if timing_plot_html:
         html_content += f"""
             <div class="plot-container">
                 <h3>⚡ Time Performance Analysis</h3>
-                <img src="data:image/png;base64,{timing_plot}" alt="Time Performance Analysis" />
+                <div class="interactive-plot">
+                    {timing_plot_html}
+                </div>
             </div>
         """
     
-    # Add Sankey diagram
-    if sankey_plot:
+    # Add Sankey diagrams
+    sankey_display_titles = [
+        "🔄 PFAS-Atlas Classification Flow",
+        "🔗 PFASGroups Detection Flow", 
+        "🌍 PFASGroups OECD Classification Flow"
+    ]
+    
+    for i, (plot_html, title) in enumerate(zip(sankey_htmls, sankey_display_titles)):
+        if plot_html:
+            html_content += f"""
+            <div class="plot-container">
+                <h3>{title}</h3>
+                <div class="interactive-plot">
+                    {plot_html}
+                </div>
+            </div>
+            """
+    
+    # Add OECD correspondence Sankey diagram
+    if oecd_sankey_html:
         html_content += f"""
             <div class="plot-container">
-                <h3>🔄 Classification Correspondence</h3>
-                <img src="data:image/png;base64,{sankey_plot}" alt="Classification Correspondence Sankey Diagram" />
+                <h3>🔬 OECD Groups vs PFASGroups Detection Correspondence</h3>
+                <div class="interactive-plot">
+                    {oecd_sankey_html}
+                </div>
             </div>
         """
     
@@ -1363,6 +1907,9 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
                     <button class="tab" onclick="showTab('multi-groups')">Multi Groups</button>
                     <button class="tab" onclick="showTab('oecd-analysis')">OECD Analysis</button>
                     <button class="tab" onclick="showTab('misclassifications')">Misclassifications</button>
+                    <button class="tab" onclick="showTab('oecd-robustness')">OECD Robustness</button>
+                    <button class="tab" onclick="showTab('atlas-mismatches')">Atlas Issues</button>
+                    <button class="tab" onclick="showTab('pfasgroups-mismatches')">PFASGroups Issues</button>
                 </div>
     """
     
@@ -1547,6 +2094,131 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
                 </div>
         """
     
+    # Add OECD Robustness Analysis Tab
+    if benchmark_results.get('oecd_robustness'):
+        oecd_rob = benchmark_results['oecd_robustness']
+        
+        html_content += f"""
+                <div id="oecd-robustness" class="tab-content">
+                    <h4>OECD Dataset Robustness Analysis</h4>
+                    <div class="alert alert-info">
+                        <strong>Analysis:</strong> Testing robustness of both PFAS-Atlas and PFASGroups on the OECD dataset 
+                        where classifications were originally generated by PFAS-Atlas authors. Any deviation indicates 
+                        robustness issues in the classification methods.
+                    </div>
+                    <div class="two-column">
+                        <div>
+                            <h5>📊 Summary Statistics</h5>
+                            <div class="metric">
+                                <span class="metric-label">Total OECD Molecules</span>
+                                <span class="metric-value">{oecd_rob['total_molecules']:,}</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">PFAS-Atlas Perfect Accuracy</span>
+                                <span class="metric-value {'status-good' if oecd_rob['atlas_accuracy'] >= 95 else 'status-warning' if oecd_rob['atlas_accuracy'] >= 85 else 'status-error'}">{oecd_rob['atlas_accuracy']:.1f}%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">PFASGroups Detection Rate</span>
+                                <span class="metric-value {'status-good' if oecd_rob['pfasgroups_detection_rate'] >= 85 else 'status-warning' if oecd_rob['pfasgroups_detection_rate'] >= 70 else 'status-error'}">{oecd_rob['pfasgroups_detection_rate']:.1f}%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5>🔍 Issue Analysis</h5>
+                            <div class="metric">
+                                <span class="metric-label">Atlas Agreements</span>
+                                <span class="metric-value">{oecd_rob['atlas_agreements']:,}</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Atlas Mismatches</span>
+                                <span class="metric-value">{len(oecd_rob['atlas_mismatches']):,}</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">PFASGroups Issues</span>
+                                <span class="metric-value">{len(oecd_rob['pfasgroups_mismatches']):,}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        """
+        
+        # Atlas Mismatches Tab
+        html_content += f"""
+                <div id="atlas-mismatches" class="tab-content">
+                    <h4>PFAS-Atlas Robustness Issues (First {len(oecd_rob['atlas_mismatches'])})</h4>
+                    <div class="alert alert-warning">
+                        <strong>Critical:</strong> These molecules show different classifications than expected from the 
+                        OECD dataset, indicating potential robustness issues in PFAS-Atlas method.
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Index</th>
+                            <th>SMILES</th>
+                            <th>Expected First</th>
+                            <th>Expected Second</th>
+                            <th>Predicted First</th>
+                            <th>Predicted Second</th>
+                        </tr>
+        """
+        
+        for mismatch in oecd_rob['atlas_mismatches']:
+            smiles = mismatch.get('smiles', 'N/A')
+            smiles_short = smiles[:50] + ('...' if len(smiles) > 50 else '')
+            
+            html_content += f"""
+                        <tr>
+                            <td>{mismatch.get('index', 'N/A')}</td>
+                            <td title="{smiles}" style="font-family: monospace; font-size: 0.8em;">{smiles_short}</td>
+                            <td>{mismatch.get('expected_first', 'N/A')}</td>
+                            <td>{mismatch.get('expected_second', 'N/A')}</td>
+                            <td>{mismatch.get('predicted_first', 'N/A')}</td>
+                            <td>{mismatch.get('predicted_second', 'N/A')}</td>
+                        </tr>
+            """
+        
+        html_content += """
+                    </table>
+                </div>
+        """
+        
+        # PFASGroups Mismatches Tab
+        html_content += f"""
+                <div id="pfasgroups-mismatches" class="tab-content">
+                    <h4>PFASGroups Detection Issues (First {len(oecd_rob['pfasgroups_mismatches'])})</h4>
+                    <div class="alert alert-info">
+                        <strong>Analysis:</strong> These are PFAS molecules (according to OECD/Atlas) that were not 
+                        detected as PFAS by PFASGroups, indicating potential gaps in detection coverage.
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Index</th>
+                            <th>SMILES</th>
+                            <th>Expected OECD Type</th>
+                            <th>Expected Atlas First</th>
+                            <th>Expected Atlas Second</th>
+                            <th>PFASGroups Detected</th>
+                        </tr>
+        """
+        
+        for mismatch in oecd_rob['pfasgroups_mismatches']:
+            smiles = mismatch.get('smiles', 'N/A')
+            smiles_short = smiles[:50] + ('...' if len(smiles) > 50 else '')
+            
+            html_content += f"""
+                        <tr>
+                            <td>{mismatch.get('index', 'N/A')}</td>
+                            <td title="{smiles}" style="font-family: monospace; font-size: 0.8em;">{smiles_short}</td>
+                            <td>{mismatch.get('expected_type', 'N/A')}</td>
+                            <td>{mismatch.get('expected_first', 'N/A')}</td>
+                            <td>{mismatch.get('expected_second', 'N/A')}</td>
+                            <td>{'❌ No' if not mismatch.get('detected', False) else '✅ Yes'}</td>
+                        </tr>
+            """
+        
+        html_content += """
+                    </table>
+                </div>
+        """
+    
     # Close detailed analysis card
     html_content += """
             </div>
@@ -1594,608 +2266,15 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
     with open(html_filename, 'w') as f:
         f.write(html_content)
     
-    return html_filename
-    """Generate a comprehensive unified HTML report."""
-    
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    html_filename = f"unified_pfas_benchmark_report_{timestamp}.html"
-    
-    # Calculate overall statistics
-    total_molecules_tested = 0
-    benchmarks_run = 0
-    
-    for benchmark_type, results in benchmark_results.items():
-        if results:
-            benchmarks_run += 1
-            if isinstance(results, dict) and 'total_molecules' in results:
-                total_molecules_tested += results['total_molecules']
-    
-    html_content = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Unified PFAS Benchmark Report</title>
-        <style>
-            body {{ 
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-                margin: 0; 
-                padding: 0;
-                background-color: #f5f5f5;
-            }}
-            .header {{ 
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                padding: 30px; 
-                text-align: center;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }}
-            .header h1 {{ margin: 0; font-size: 2.5em; }}
-            .header p {{ margin: 10px 0 0 0; font-size: 1.1em; opacity: 0.9; }}
-            
-            .container {{ max-width: 1200px; margin: 0 auto; padding: 20px; }}
-            
-            .dashboard {{ 
-                display: grid; 
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-                gap: 20px; 
-                margin: 30px 0; 
-            }}
-            
-            .card {{ 
-                background: white; 
-                border-radius: 12px; 
-                padding: 25px; 
-                box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-                transition: transform 0.3s ease;
-            }}
-            .card:hover {{ transform: translateY(-5px); }}
-            
-            .card h3 {{ 
-                margin: 0 0 20px 0; 
-                color: #333; 
-                font-size: 1.3em;
-                border-bottom: 2px solid #f0f0f0;
-                padding-bottom: 10px;
-            }}
-            
-            .metric {{ 
-                display: flex; 
-                justify-content: space-between; 
-                align-items: center;
-                margin: 15px 0; 
-                padding: 12px;
-                background-color: #f8f9fa;
-                border-radius: 8px;
-                border-left: 4px solid #4CAF50;
-            }}
-            .metric.warning {{ border-left-color: #ff9800; }}
-            .metric.error {{ border-left-color: #f44336; }}
-            
-            .metric-label {{ font-weight: 600; color: #555; }}
-            .metric-value {{ 
-                font-weight: bold; 
-                font-size: 1.1em;
-                color: #2196F3;
-            }}
-            
-            .status-good {{ color: #4CAF50; }}
-            .status-warning {{ color: #ff9800; }}
-            .status-error {{ color: #f44336; }}
-            
-            .summary-grid {{
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 15px;
-                margin: 30px 0;
-            }}
-            
-            .summary-item {{
-                text-align: center;
-                padding: 20px;
-                background: white;
-                border-radius: 10px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }}
-            
-            .summary-number {{
-                font-size: 2.5em;
-                font-weight: bold;
-                color: #2196F3;
-                margin: 0;
-            }}
-            
-            .summary-label {{
-                color: #666;
-                font-size: 0.9em;
-                margin: 5px 0 0 0;
-            }}
-            
-            .plot-container {{ 
-                text-align: center; 
-                margin: 30px 0; 
-                background: white;
-                padding: 20px;
-                border-radius: 12px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }}
-            
-            .plot-container img {{ 
-                max-width: 100%; 
-                height: auto; 
-                border-radius: 8px;
-            }}
-            
-            .benchmark-status {{
-                display: inline-block;
-                padding: 5px 12px;
-                border-radius: 20px;
-                font-size: 0.85em;
-                font-weight: bold;
-                text-transform: uppercase;
-            }}
-            
-            .status-complete {{
-                background-color: #e8f5e8;
-                color: #2e7d32;
-            }}
-            
-            .status-missing {{
-                background-color: #fff3e0;
-                color: #f57c00;
-            }}
-            
-            table {{ 
-                width: 100%; 
-                border-collapse: collapse; 
-                margin: 20px 0;
-                background: white;
-                border-radius: 8px;
-                overflow: hidden;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }}
-            
-            th, td {{ 
-                padding: 15px; 
-                text-align: left; 
-                border-bottom: 1px solid #e0e0e0;
-            }}
-            
-            th {{ 
-                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-                font-weight: 600;
-                color: #333;
-            }}
-            
-            tr:hover {{ background-color: #f5f5f5; }}
-            
-            .footer {{
-                background-color: #333;
-                color: white;
-                text-align: center;
-                padding: 20px;
-                margin-top: 40px;
-            }}
-            
-            @media (max-width: 768px) {{
-                .container {{ padding: 10px; }}
-                .dashboard {{ grid-template-columns: 1fr; }}
-                .summary-grid {{ grid-template-columns: repeat(2, 1fr); }}
-            }}
-        </style>
-    </head>
-    <body>
-        <div class="header">
-            <h1>🧪 Unified PFAS Benchmark Report</h1>
-            <p>Comprehensive Analysis Dashboard • Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
-        </div>
-        
-        <div class="container">
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <div class="summary-number">{benchmarks_run}</div>
-                    <div class="summary-label">Benchmarks Run</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-number">{total_molecules_tested:,}</div>
-                    <div class="summary-label">Total Molecules Tested</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-number">2</div>
-                    <div class="summary-label">Systems Evaluated</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-number">{'✅' if benchmarks_run >= 4 else '⚠️'}</div>
-                    <div class="summary-label">Validation Status</div>
-                </div>
-            </div>
-            
-            <div class="dashboard">
-    """
-    
-    # Enhanced Functional Groups Benchmark
-    if benchmark_results['enhanced']:
-        enhanced = benchmark_results['enhanced']
-        html_content += f"""
-                <div class="card">
-                    <h3>🔬 Enhanced Functional Groups</h3>
-                    <span class="benchmark-status status-complete">Complete</span>
-                    <div class="metric">
-                        <span class="metric-label">Functional Groups Tested</span>
-                        <span class="metric-value">{enhanced['total_groups']}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Total Molecules</span>
-                        <span class="metric-value">{enhanced['total_molecules']:,}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">PFASGroups Detection Rate</span>
-                        <span class="metric-value {'status-good' if enhanced['pfasgroups_rate'] >= 90 else 'status-warning' if enhanced['pfasgroups_rate'] >= 70 else 'status-error'}">{enhanced['pfasgroups_rate']:.1f}%</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">PFAS-Atlas Detection Rate</span>
-                        <span class="metric-value {'status-good' if enhanced['atlas_rate'] >= 90 else 'status-warning' if enhanced['atlas_rate'] >= 70 else 'status-error'}">{enhanced['atlas_rate']:.1f}%</span>
-                    </div>
-                </div>
-                
-                <div class="card" style="grid-column: 1 / -1;">
-                    <h3>🧪 Functional Group Detection Results</h3>
-                    <table>
-                        <tr>
-                            <th>Group ID</th>
-                            <th>Group Name</th>
-                            <th>Molecules</th>
-                            <th>PFASGroups Detection</th>
-                            <th>Atlas Detection</th>
-                            <th>PFASGroups Rate</th>
-                            <th>Atlas Rate</th>
-                        </tr>
-        """
-        
-        # Add functional group table rows
-        for group in enhanced.get('groups', []):
-            group_id = group['id']
-            group_name = group['name']
-            molecules = group['molecules']
-            pfas_rate = group['pfasgroups_rate']
-            atlas_rate = group['atlas_rate']
-            pfas_detected = int((pfas_rate / 100) * molecules)
-            atlas_detected = int((atlas_rate / 100) * molecules)
-            
-            html_content += f"""
-                        <tr>
-                            <td>{group_id}</td>
-                            <td>{group_name}</td>
-                            <td>{molecules}</td>
-                            <td>{pfas_detected}</td>
-                            <td>{atlas_detected}</td>
-                            <td class="{'status-good' if pfas_rate >= 90 else 'status-warning' if pfas_rate >= 70 else 'status-error'}">{pfas_rate:.1f}%</td>
-                            <td class="{'status-good' if atlas_rate >= 90 else 'status-warning' if atlas_rate >= 70 else 'status-error'}">{atlas_rate:.1f}%</td>
-                        </tr>
-            """
-        
-        html_content += """
-                    </table>
-                </div>
-        """
-    else:
-        html_content += """
-                <div class="card">
-                    <h3>🔬 Enhanced Functional Groups</h3>
-                    <span class="benchmark-status status-missing">Not Run</span>
-                    <p>Enhanced functional groups benchmark data not available.</p>
-                </div>
-        """
-    
-    # OECD Benchmark
-    if benchmark_results['oecd']:
-        oecd = benchmark_results['oecd']
-        html_content += f"""
-                <div class="card">
-                    <h3>📋 OECD Validation</h3>
-                    <span class="benchmark-status status-complete">Complete</span>
-                    <div class="metric">
-                        <span class="metric-label">OECD Molecules Tested</span>
-                        <span class="metric-value">{oecd['total_molecules']:,}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">PFASGroups Detection Rate</span>
-                        <span class="metric-value {'status-good' if oecd['pfasgroups_rate'] >= 90 else 'status-warning' if oecd['pfasgroups_rate'] >= 70 else 'status-error'}">{oecd['pfasgroups_rate']:.1f}%</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">PFAS-Atlas Detection Rate</span>
-                        <span class="metric-value {'status-good' if oecd['atlas_rate'] >= 90 else 'status-warning' if oecd['atlas_rate'] >= 70 else 'status-error'}">{oecd['atlas_rate']:.1f}%</span>
-                    </div>
-                </div>
-                
-                <div class="card" style="grid-column: 1 / -1;">
-                    <h3>📊 OECD Classification Analysis</h3>
-                    <table>
-                        <tr>
-                            <th>OECD Class</th>
-                            <th>Molecules</th>
-                            <th>PFASGroups Detection</th>
-                            <th>PFAS-Atlas Detection</th>
-                            <th>PFASGroups Rate</th>
-                            <th>Atlas Rate</th>
-                        </tr>
-        """
-        
-        # Add OECD classification table rows
-        for oecd_class, class_data in oecd.get('class_analysis', {}).items():
-            total = class_data['total']
-            pfas_count = class_data['pfasgroups']
-            atlas_count = class_data['atlas']
-            pfas_rate = (pfas_count / total * 100) if total > 0 else 0
-            atlas_rate = (atlas_count / total * 100) if total > 0 else 0
-            
-            html_content += f"""
-                        <tr>
-                            <td>{oecd_class}</td>
-                            <td>{total}</td>
-                            <td>{pfas_count}</td>
-                            <td>{atlas_count}</td>
-                            <td class="{'status-good' if pfas_rate >= 90 else 'status-warning' if pfas_rate >= 70 else 'status-error'}">{pfas_rate:.1f}%</td>
-                            <td class="{'status-good' if atlas_rate >= 90 else 'status-warning' if atlas_rate >= 70 else 'status-error'}">{atlas_rate:.1f}%</td>
-                        </tr>
-            """
-        
-        html_content += """
-                    </table>
-                </div>
-        """
-    else:
-        html_content += """
-                <div class="card">
-                    <h3>📋 OECD Validation</h3>
-                    <span class="benchmark-status status-missing">Not Run</span>
-                    <p>OECD validation benchmark data not available.</p>
-                </div>
-        """
-    
-    # Timing Performance Benchmark
-    if benchmark_results['timing']:
-        timing = benchmark_results['timing']
-        html_content += f"""
-                <div class="card">
-                    <h3>⏱️ Timing Performance</h3>
-                    <span class="benchmark-status status-complete">Complete</span>
-                    <div class="metric">
-                        <span class="metric-label">Molecules Tested</span>
-                        <span class="metric-value">{timing['total_molecules']:,}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Avg PFASGroups Time</span>
-                        <span class="metric-value">{timing['avg_pfasgroups_time']:.3f}s</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Avg PFAS-Atlas Time</span>
-                        <span class="metric-value">{timing['avg_atlas_time']:.3f}s</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Size Range</span>
-                        <span class="metric-value">{timing['size_range']['min_atoms']}-{timing['size_range']['max_atoms']} atoms</span>
-                    </div>
-                </div>
-                
-                <div class="card" style="grid-column: 1 / -1;">
-                    <h3>⏱️ Performance Analysis by Molecule Size</h3>
-                    <table>
-                        <tr>
-                            <th>Size Category</th>
-                            <th>Molecules</th>
-                            <th>PFASGroups Avg Time</th>
-                            <th>PFAS-Atlas Avg Time</th>
-                            <th>PFASGroups Detection</th>
-                            <th>Atlas Detection</th>
-                            <th>Performance Ratio</th>
-                        </tr>
-        """
-        
-        # Add timing analysis table if available
-        if 'size_analysis' in timing:
-            size_data = timing['size_analysis']
-            for size_bin in size_data.index:
-                if pd.notna(size_bin):
-                    count = size_data.loc[size_bin, ('pfasgroups_time_avg', 'count')]
-                    pfas_time = size_data.loc[size_bin, ('pfasgroups_time_avg', 'mean')]
-                    atlas_time = size_data.loc[size_bin, ('atlas_time_avg', 'mean')]
-                    pfas_detected = size_data.loc[size_bin, ('pfasgroups_success_rate', 'mean')] * 100
-                    atlas_detected = size_data.loc[size_bin, ('atlas_success_rate', 'mean')] * 100
-                    
-                    ratio = atlas_time / pfas_time if pfas_time > 0 else 0
-                    ratio_class = 'status-good' if ratio < 1 else 'status-warning' if ratio < 2 else 'status-error'
-                    
-                    html_content += f"""
-                        <tr>
-                            <td>{size_bin}</td>
-                            <td>{count:.0f}</td>
-                            <td>{pfas_time:.4f}s</td>
-                            <td>{atlas_time:.4f}s</td>
-                            <td>{pfas_detected:.1f}%</td>
-                            <td>{atlas_detected:.1f}%</td>
-                            <td class="{ratio_class}">{ratio:.2f}x</td>
-                        </tr>
-                    """
-        
-        html_content += """
-                    </table>
-                    
-                    <h4>🚀 Performance Extremes</h4>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
-        """
-        
-        # Add performance extremes if available
-        if 'performance_extremes' in timing:
-            extremes = timing['performance_extremes']
-            html_content += f"""
-                        <div class="metric">
-                            <span class="metric-label">Fastest PFASGroups</span>
-                            <span class="metric-value">{extremes['fastest_pfasgroups']['time']:.4f}s ({extremes['fastest_pfasgroups']['atoms']} atoms)</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-label">Slowest PFASGroups</span>
-                            <span class="metric-value">{extremes['slowest_pfasgroups']['time']:.4f}s ({extremes['slowest_pfasgroups']['atoms']} atoms)</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-label">Fastest PFAS-Atlas</span>
-                            <span class="metric-value">{extremes['fastest_atlas']['time']:.4f}s ({extremes['fastest_atlas']['atoms']} atoms)</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-label">Slowest PFAS-Atlas</span>
-                            <span class="metric-value">{extremes['slowest_atlas']['time']:.4f}s ({extremes['slowest_atlas']['atoms']} atoms)</span>
-                        </div>
-            """
-        
-        html_content += """
-                    </div>
-                </div>
-        """
-    else:
-        html_content += """
-                <div class="card">
-                    <h3>⏱️ Timing Performance</h3>
-                    <span class="benchmark-status status-missing">Not Run</span>
-                    <p>Timing performance benchmark data not available.</p>
-                </div>
-        """
-    
-    # Non-Fluorinated Specificity
-    if benchmark_results['nonfluorinated']:
-        nonfluor = benchmark_results['nonfluorinated']
-        html_content += f"""
-                <div class="card">
-                    <h3>❌ Specificity Validation</h3>
-                    <span class="benchmark-status status-complete">Complete</span>
-                    <div class="metric">
-                        <span class="metric-label">Non-PFAS Molecules Tested</span>
-                        <span class="metric-value">{nonfluor['total_molecules']:,}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">PFASGroups Specificity</span>
-                        <span class="metric-value {'status-good' if nonfluor['pfasgroups_specificity'] >= 95 else 'status-warning' if nonfluor['pfasgroups_specificity'] >= 85 else 'status-error'}">{nonfluor['pfasgroups_specificity']:.1f}%</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">PFAS-Atlas Specificity</span>
-                        <span class="metric-value {'status-good' if nonfluor['atlas_specificity'] >= 95 else 'status-warning' if nonfluor['atlas_specificity'] >= 85 else 'status-error'}">{nonfluor['atlas_specificity']:.1f}%</span>
-                    </div>
-                </div>
-        """
-    else:
-        html_content += """
-                <div class="card">
-                    <h3>❌ Specificity Validation</h3>
-                    <span class="benchmark-status status-missing">Not Run</span>
-                    <p>Non-fluorinated specificity benchmark data not available.</p>
-                </div>
-        """
-    
-    # Complex Branched Structures
-    if benchmark_results['complex']:
-        complex_data = benchmark_results['complex']
-        html_content += f"""
-                <div class="card">
-                    <h3>🌳 Complex Structures</h3>
-                    <span class="benchmark-status status-complete">Complete</span>
-                    <div class="metric">
-                        <span class="metric-label">Complex Molecules Tested</span>
-                        <span class="metric-value">{complex_data['total_molecules']:,}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Structure Types</span>
-                        <span class="metric-value">{complex_data['test_types']}</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">PFASGroups Accuracy</span>
-                        <span class="metric-value {'status-good' if complex_data['pfasgroups_accuracy'] >= 90 else 'status-warning' if complex_data['pfasgroups_accuracy'] >= 70 else 'status-error'}">{complex_data['pfasgroups_accuracy']:.1f}%</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">PFAS-Atlas Detection</span>
-                        <span class="metric-value {'status-good' if complex_data['atlas_detection_rate'] >= 90 else 'status-warning' if complex_data['atlas_detection_rate'] >= 70 else 'status-error'}">{complex_data['atlas_detection_rate']:.1f}%</span>
-                    </div>
-                </div>
-        """
-    else:
-        html_content += """
-                <div class="card">
-                    <h3>🌳 Complex Structures</h3>
-                    <span class="benchmark-status status-missing">Not Run</span>
-                    <p>Complex branched structures benchmark data not available.</p>
-                </div>
-        """
-    
-    html_content += """
-            </div>
-    """
-    
-    # Add plot if available
-    if plot_base64:
-        html_content += f"""
-            <div class="plot-container">
-                <h2>📊 Comprehensive Analysis Dashboard</h2>
-                <img src="data:image/png;base64,{plot_base64}" alt="Unified Benchmark Analysis">
-            </div>
-        """
-    
-    # Overall Assessment
-    all_good = True
-    issues = []
-    
-    if benchmark_results['enhanced'] and benchmark_results['enhanced']['pfasgroups_rate'] < 90:
-        all_good = False
-        issues.append("Enhanced benchmark detection rates below 90%")
-    
-    if benchmark_results['nonfluorinated'] and benchmark_results['nonfluorinated']['pfasgroups_specificity'] < 95:
-        all_good = False
-        issues.append("Specificity below 95%")
-    
-    if benchmarks_run < 4:
-        all_good = False
-        issues.append(f"Only {benchmarks_run} of 5 benchmarks completed")
-    
-    assessment_class = "status-good" if all_good else "status-warning" if issues else "status-error"
-    assessment_text = "🎉 EXCELLENT - All benchmarks passed with high performance!" if all_good else f"⚠️ ISSUES DETECTED: {'; '.join(issues)}" if issues else "✅ GOOD - Benchmarks completed successfully"
-    
-    html_content += f"""
-            <div class="card" style="grid-column: 1 / -1; text-align: center; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-                <h2>🎯 Overall Assessment</h2>
-                <div class="metric">
-                    <span class="metric-label" style="flex-grow: 1; text-align: center;">System Validation Status</span>
-                </div>
-                <p class="{assessment_class}" style="font-size: 1.2em; font-weight: bold; margin: 20px 0;">{assessment_text}</p>
-                
-                <div style="margin-top: 30px;">
-                    <h3>📋 Benchmark Coverage</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
-                        <div class="{'status-good' if benchmark_results['enhanced'] else 'status-error'}">
-                            {'✅' if benchmark_results['enhanced'] else '❌'} Functional Groups
-                        </div>
-                        <div class="{'status-good' if benchmark_results['oecd'] else 'status-error'}">
-                            {'✅' if benchmark_results['oecd'] else '❌'} OECD Validation
-                        </div>
-                        <div class="{'status-good' if benchmark_results['timing'] else 'status-error'}">
-                            {'✅' if benchmark_results['timing'] else '❌'} Performance Timing
-                        </div>
-                        <div class="{'status-good' if benchmark_results['nonfluorinated'] else 'status-error'}">
-                            {'✅' if benchmark_results['nonfluorinated'] else '❌'} Specificity Test
-                        </div>
-                        <div class="{'status-good' if benchmark_results['complex'] else 'status-error'}">
-                            {'✅' if benchmark_results['complex'] else '❌'} Complex Structures
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>Generated by Enhanced PFAS Benchmark Suite v2.0 • {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
-            <p>PFASGroups vs PFAS-Atlas Comparative Analysis</p>
-        </div>
-    </body>
-    </html>
-    """
-    
-    with open(html_filename, 'w') as f:
-        f.write(html_content)
+    # Organize output files if directories exist
+    try:
+        if os.path.exists('html'):
+            # Move HTML file to html directory
+            import shutil
+            shutil.move(html_filename, f"html/{html_filename}")
+            html_filename = f"html/{html_filename}"
+    except Exception as e:
+        print(f"Warning: Could not organize files: {e}")
     
     return html_filename
 
@@ -2233,6 +2312,14 @@ def main():
         load_benchmark_data(files['complex']) if files['complex'] else None
     )
     
+    # Run OECD robustness analysis on CSV file
+    print("\n🔍 Running OECD robustness analysis...")
+    oecd_molecules = load_oecd_csv_data()
+    if oecd_molecules:
+        benchmark_results['oecd_robustness'] = analyze_oecd_robustness(oecd_molecules)
+        if benchmark_results['oecd_robustness']:
+            print(f"✅ OECD analysis complete: {benchmark_results['oecd_robustness']['atlas_accuracy']:.1f}% Atlas accuracy")
+    
     # Generate unified HTML report
     print("📄 Generating unified HTML report...")
     try:
@@ -2264,6 +2351,10 @@ def main():
         if benchmark_results.get('timing'):
             timing = benchmark_results['timing']
             print(f"   ⚡ Timing Performance: {timing['total_molecules']} molecules, {timing['avg_pfasgroups_time']*1000:.2f}ms vs {timing['avg_atlas_time']*1000:.2f}ms avg")
+        
+        if benchmark_results.get('oecd_robustness'):
+            oecd_rob = benchmark_results['oecd_robustness']
+            print(f"   🔬 OECD Robustness: {oecd_rob['total_molecules']} molecules, {oecd_rob['atlas_accuracy']:.1f}% Atlas accuracy, {oecd_rob['pfasgroups_detection_rate']:.1f}% PFASGroups coverage")
         
         if total_benchmarks >= 4:
             print(f"   🎉 SUCCESS: Comprehensive validation complete!")

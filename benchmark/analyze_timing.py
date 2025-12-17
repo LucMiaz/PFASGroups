@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime
-import sys
+import sys\nimport os
 
 def load_timing_results(filename):
     """Load timing benchmark results from JSON"""
@@ -630,22 +630,24 @@ def main():
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
-    # Save individual plots
+    # Save individual plots to imgs directory if it exists
+    imgs_dir = "imgs" if os.path.exists("imgs") else "."
     scatter_plot = create_timing_scatter_plot(timing_results)
-    scatter_plot.write_image(f"timing_scatter_{timestamp}.png", width=1200, height=700)
-    scatter_plot.write_html(f"timing_scatter_{timestamp}.svg")
+    scatter_plot.write_image(f"{imgs_dir}/timing_scatter_{timestamp}.png", width=1200, height=700)
+    scatter_plot.write_html(f"{imgs_dir}/timing_scatter_{timestamp}.svg")
     
     distribution_plot = create_timing_distribution_plot(timing_results)
-    distribution_plot.write_image(f"timing_distribution_{timestamp}.png", width=1000, height=800)
-    distribution_plot.write_html(f"timing_distribution_{timestamp}.svg")
+    distribution_plot.write_image(f"{imgs_dir}/timing_distribution_{timestamp}.png", width=1000, height=800)
+    distribution_plot.write_html(f"{imgs_dir}/timing_distribution_{timestamp}.svg")
     
     scaling_plot = create_scaling_analysis_plot(timing_results)
-    scaling_plot.write_image(f"timing_scaling_{timestamp}.png", width=1200, height=800)
-    scaling_plot.write_html(f"timing_scaling_{timestamp}.svg")
+    scaling_plot.write_image(f"{imgs_dir}/timing_scaling_{timestamp}.png", width=1200, height=800)
+    scaling_plot.write_html(f"{imgs_dir}/timing_scaling_{timestamp}.svg")
     
     # Create comprehensive HTML report
     html_content = create_timing_html_report(timing_results, stats, timestamp)
-    html_filename = f"timing_analysis_{timestamp}.html"
+    html_dir = "html" if os.path.exists("html") else "."
+    html_filename = f"{html_dir}/timing_analysis_{timestamp}.html"
     
     with open(html_filename, 'w') as f:
         f.write(html_content)

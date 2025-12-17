@@ -283,9 +283,10 @@ def create_visualizations(data, output_prefix="complex_benchmark"):
     
     plt.tight_layout()
     
-    # Save the plot
+    # Save the plot to imgs directory if it exists
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    plot_filename = f"{output_prefix}_analysis_{timestamp}.png"
+    imgs_dir = "imgs" if os.path.exists("imgs") else "."
+    plot_filename = f"{imgs_dir}/{output_prefix}_analysis_{timestamp}.png"
     plt.savefig(plot_filename, dpi=300, bbox_inches='tight')
     print(f"\n📊 Analysis plot saved: {plot_filename}")
     

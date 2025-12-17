@@ -9,9 +9,12 @@ echo ""
 # Check if we're in the right directory
 if [ ! -f "enhanced_pfas_benchmark.py" ]; then
     echo "❌ Error: enhanced_pfas_benchmark.py not found!"
-    echo "   Please run this script from the benchmark/streamlined_benchmark directory"
+    echo "   Please run this script from the benchmark directory"
     exit 1
 fi
+
+# Create output directories
+mkdir -p imgs html data
 
 echo "📋 Running all PFAS benchmarks..."
 echo ""
@@ -74,6 +77,16 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Organize output files
+echo "📁 Organizing output files..."
+# Move data files
+mv pfas_*_benchmark_*.json data/ 2>/dev/null || true
+# Move HTML files
+mv *.html html/ 2>/dev/null || true
+# Move image files
+mv *.png imgs/ 2>/dev/null || true
+mv *.svg imgs/ 2>/dev/null || true
+
 echo ""
 echo "🎉 ALL BENCHMARKS COMPLETED SUCCESSFULLY!"
 echo ""
@@ -84,7 +97,8 @@ echo "   • Timing Performance: Measures execution speed scaling"
 echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 echo "   • Complex Branched: Tests complex molecular structures"
 echo ""
-echo "📄 Unified Report: $(ls unified_pfas_benchmark_report_*.html | tail -1)"
+echo "📄 Unified Report: html/$(ls html/unified_pfas_benchmark_report_*.html | tail -1 | xargs basename)"
 echo "🌐 Open the HTML file in your browser to view detailed results"
+echo "📁 Files organized in: data/ (JSON), html/ (reports), imgs/ (plots)"
 echo ""
 echo "✨ Benchmark Suite Complete!"
