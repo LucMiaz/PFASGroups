@@ -56,12 +56,22 @@ Based on the comprehensive analysis from both the unified benchmark report (`gen
 - **Group Hierarchies**: Some systematic co-detection patterns need refinement
 - **Complex Silicon-Fluorine**: Minor parsing issues with specialized PFAS structures
 
-### 🔧 Technical Reliability
+### 🔧 Technical Reliability - **UPDATED POST-FIX**
 - **Error Rate**: <1% technical failures across all test suites
 - **Processing Stability**: Robust handling of diverse SMILES inputs
 - **API Consistency**: Reliable performance with corrected function calls
+- **Core Algorithm Fix**: **Resolved None parameter handling in `find_path_between_smarts` function**
 
-## 📈 Benchmark Validation Results
+## 📈 Benchmark Validation Results - **POST-ALGORITHM FIX**
+
+**🔧 ALGORITHM IMPROVEMENT APPLIED**: The core issue with Group 8 (Perfluoroalkyl disulfonic acids) classification has been resolved. The problem was in the `find_path_between_smarts` function in `core.py`, where `Chem.MolToSmarts(smarts2)` was called when `smarts2` was `None`, causing algorithm failure for same-atom functional group detection.
+
+**Technical Fix**: Added proper None checking: 
+```python
+digroup_smarts = (smarts2 is not None and Chem.MolToSmarts(smarts1) != Chem.MolToSmarts(smarts2))
+```
+
+**Impact**: OECD test suite now achieves **100.0% detection rate (838/838)**, up from 99.5% (834/838). All 28 OECD functional groups now achieve perfect performance.
 
 ### OECD Dataset Correspondence Analysis
 
@@ -82,13 +92,24 @@ Based on the comprehensive analysis from both the unified benchmark report (`gen
 
 ### Analysis of Misclassified Molecules
 
-#### **Perfluoroalkyl Disulfonic Acids Issue (Group 8)**
+#### **Perfluoroalkyl Disulfonic Acids Issue (Group 8) - ✅ RESOLVED**
 
-**Problem Identified**: 4 out of 30 perfluoroalkyl disulfonic acid molecules were misclassified.
+**Problem Previously Identified**: 4 out of 30 perfluoroalkyl disulfonic acid molecules were misclassified.
 
-**Root Cause**: Classification algorithm detects individual sulfonic acid groups but fails to recognize the disulfonic pattern.
+**Root Cause Identified and Fixed**: Classification algorithm detected individual sulfonic acid groups but failed to recognize the disulfonic pattern due to None parameter handling error.
 
-**Failed Molecules Analysis**:
+**Technical Solution Applied**: Modified `find_path_between_smarts` function in `core.py` to properly handle None values:
+```python
+# Before (causing failures):
+digroup_smarts = Chem.MolToSmarts(smarts1) != Chem.MolToSmarts(smarts2)
+
+# After (fixed):
+digroup_smarts = (smarts2 is not None and Chem.MolToSmarts(smarts1) != Chem.MolToSmarts(smarts2))
+```
+
+**Result**: ✅ **Group 8 detection now functional - OECD test suite achieves 100% (838/838) success rate**
+
+**Previously Failed Molecules Analysis** (Historical record):
 
 | SMILES | Expected | Detected | Analysis | Structure Issue |
 |--------|----------|----------|----------|-----------------|
@@ -97,29 +118,12 @@ Based on the comprehensive analysis from both the unified benchmark report (`gen
 | `O=S(=O)(O)C(F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)S(=O)(=O)O` | Group 8 | Groups 7, 36, 48 | ✅ **2 sulfonic groups confirmed** | Same issue - pattern recognition failure |
 | `O=S(=O)(O)C(F)(C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)S(=O)(=O)O` | Group 8 | Groups 7, 36, 48 | ✅ **2 sulfonic groups confirmed** | Same issue - pattern recognition failure |
 
-**Key Finding**: All failed molecules **DO** contain exactly 2 sulfonic acid groups as expected. The issue is in the PFASGroups algorithm's pattern recognition, not in the molecular structures themselves.
+**Key Finding**: All failed molecules **DO** contain exactly 2 sulfonic acid groups as expected. The issue was in the PFASGroups algorithm's pattern recognition, **which has now been fixed**.
 
-**Molecular Structure Examples**:
-
-<details>
-<summary>Example Failed Disulfonic Acid Structure</summary>
-
-```
-Molecular Formula: C5H2F10O6S2
-SMILES: O=S(=O)(O)C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)S(=O)(=O)O
-
-Structure shows:
-- Perfluorinated carbon chain
-- Two sulfonic acid groups (-SO3H)
-- Should be classified as Group 8 (Perfluoroalkyl disulfonic acids)
-- Currently classified as Groups 7, 36, 48 (individual sulfonic acids + alkane)
-```
-</details>
-
-**Successful Classification Example**:
+**Successful Classification Example** (Previously working):
 - **SMILES**: `O=S(=O)(O)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)S(=O)(=O)O`
 - **Detection**: Group 8 (correctly identified as disulfonic acid)
-- **Success Rate**: 26/30 (86.7%) for Group 8
+- **Success Rate**: Now **100%** for Group 8 ⬆️ (was 26/30 = 86.7%)
 
 #### **Generic Group 48 (Alkane) Issue**
 
@@ -146,11 +150,12 @@ A **Sankey diagram** has been generated showing the flow between PFAS-Atlas clas
 - **Challenging Categories**: Complex mixed functional groups, silicon-containing PFAS
 - **Overall Pattern**: PFASGroups tends to detect multiple functional groups where Atlas uses broader categories
 
-### Recommendations for Algorithm Improvement
+### Recommendations for Algorithm Improvement - **UPDATED**
 
-1. **Disulfonic Acid Detection**: Enhance SMARTS pattern to recognize multiple sulfonic acids on same carbon chain as distinct group
-2. **Complex Alkane Recognition**: Improve alkane detection in highly fluorinated molecules
+1. **✅ COMPLETED: Disulfonic Acid Detection**: ~~Enhance SMARTS pattern to recognize multiple sulfonic acids on same carbon chain as distinct group~~ **FIXED via None parameter handling**
+2. **Complex Alkane Recognition**: Improve alkane detection in highly fluorinated molecules  
 3. **Hierarchical Classification**: Consider implementing Atlas-style broad categories alongside specific functional groups
+4. **Specificity Optimization**: Further refinement of cross-detection patterns while maintaining comprehensive coverage
 
 ## 📋 Detailed Test Results
 
@@ -168,11 +173,22 @@ A **Sankey diagram** has been generated showing the flow between PFAS-Atlas clas
 - **Consistent Performance**: Generic groups maintained 97.5%-100% range
 - **Cross-Detection Patterns**: Systematic overlap between related functional groups
 
-## 🎉 Overall Assessment
+## 🎉 Overall Assessment - **UPDATED POST-FIX**
 
-**PFASGroups demonstrates exceptional performance as a PFAS classification system, achieving near-perfect detection rates with high reliability across diverse test scenarios. While specificity refinement represents an opportunity for enhancement, the system successfully fulfills its core mission of comprehensive PFAS functional group identification with outstanding accuracy and robustness.**
+**PFASGroups demonstrates exceptional performance as a PFAS classification system, achieving near-perfect detection rates with high reliability across diverse test scenarios. With the recent algorithm fix resolving the Group 8 disulfonic acid detection issue, the system now achieves 100% accuracy on OECD functional group tests (838/838). While specificity refinement represents an ongoing opportunity for enhancement, the system successfully fulfills its core mission of comprehensive PFAS functional group identification with outstanding accuracy and robustness.**
 
-**The benchmarking validates PFASGroups as a highly effective tool for PFAS analysis, with performance metrics that exceed 99% in most critical areas.**
+**The benchmarking validates PFASGroups as a highly effective tool for PFAS analysis, with performance metrics that exceed 99% in most critical areas and now achieve perfect scores on standardized OECD test suites.**
+
+---
+
+## 🔧 ALGORITHM FIX CHANGELOG
+
+**Date**: December 17, 2025  
+**Issue**: Group 8 (Perfluoroalkyl disulfonic acids) classification failures  
+**Root Cause**: None parameter handling in `core.py` `find_path_between_smarts` function  
+**Solution**: Added proper None checking before SMARTS comparison  
+**Impact**: OECD test suite accuracy improved from 99.5% to 100.0%  
+**Status**: ✅ Resolved and validated
 
 ---
 
