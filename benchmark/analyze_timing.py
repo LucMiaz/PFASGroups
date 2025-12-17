@@ -9,7 +9,8 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime
-import sys\nimport os
+import sys
+import os
 
 def load_timing_results(filename):
     """Load timing benchmark results from JSON"""
