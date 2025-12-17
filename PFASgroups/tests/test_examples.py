@@ -559,6 +559,14 @@ class TestPFASGroups:
                 for _, row in failed_specificity.head(5).iterrows():  # Show first 5 failures
                     print(f"  Expected: {row['group_ids']}, Detected: {row['detected_groups']}")
             
+            # Export misclassified molecules for visualization
+            try:
+                from export_misclassified import export_misclassified_molecules
+                print("\nExporting misclassified molecules...")
+                export_misclassified_molecules()
+            except Exception as export_error:
+                print(f"Warning: Could not export misclassified molecules: {export_error}")
+            
             # Pass if detection rate > 80% and specificity rate > 60%
             success = detection_rate > 0.8 and specificity_rate > 0.6
             

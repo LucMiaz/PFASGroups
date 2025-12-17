@@ -1,10 +1,18 @@
 {
   "test_metadata": {
+<<<<<<< HEAD
     "timestamp": "2025-12-17T21:58:26.060461",
     "test_start_time": "2025-12-17T21:57:04.560497",
     "test_end_time": "2025-12-17T21:58:26.060455",
     "test_duration_seconds": 81.499958,
     "python_version": "3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 17:57:12) \n[GCC 13.3.0]",
+=======
+    "timestamp": "2025-12-17T18:20:29.903770",
+    "test_start_time": "2025-12-17T18:18:22.916800",
+    "test_end_time": "2025-12-17T18:20:29.903748",
+    "test_duration_seconds": 126.986948,
+    "python_version": "3.14.2 | packaged by conda-forge | (main, Dec  6 2025, 11:17:27) [MSC v.1944 64 bit (AMD64)]",
+>>>>>>> 15b7fada7638aeb4a005e5ad53bbe149a8f3e7b8
     "rdkit_available": true,
     "pytest_available": true
   },
@@ -528,6 +536,7 @@
     ]
   },
   "specificity_test_results": {
+<<<<<<< HEAD
     "total_tests": 1840,
     "detection_rate": 0.918,
     "specificity_rate": 0.445,
@@ -537,15 +546,33 @@
     "specificity_details": {
       "tests_with_exact_match": 22,
       "tests_with_multiple_matches": 1818,
+=======
+    "total_tests": 1844,
+    "detection_rate": 0.976,
+    "specificity_rate": 0.449,
+    "average_detected_groups_per_test": 3.19,
+    "failed_detection_cases": 44,
+    "failed_specificity_cases": 1016,
+    "specificity_details": {
+      "tests_with_exact_match": 31,
+      "tests_with_multiple_matches": 1813,
+>>>>>>> 15b7fada7638aeb4a005e5ad53bbe149a8f3e7b8
       "tests_with_no_matches": 0
     }
   },
   "overall_summary": {
     "total_tests_run": 1758,
+<<<<<<< HEAD
     "total_successful_detections": 1757,
     "overall_accuracy": 0.999,
     "specificity_rate": 0.445,
     "detection_rate": 0.918,
+=======
+    "total_successful_detections": 1753,
+    "overall_accuracy": 0.997,
+    "specificity_rate": 0.449,
+    "detection_rate": 0.976,
+>>>>>>> 15b7fada7638aeb4a005e5ad53bbe149a8f3e7b8
     "test_status": "FAILED"
   }
 }
