@@ -21,3 +21,4 @@ PFASgroups/report/debug_group8_detailed.py
 PFASgroups/report/generate_test_report.py
 PFASgroups/report/show_summary.py
 PFASgroups/report/standalone_report_generator.py
+tests/test_minmaxkl_benchmark.py
