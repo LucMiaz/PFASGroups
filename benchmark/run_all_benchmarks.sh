@@ -1,6 +1,7 @@
 #!/bin/bash
 # Unified PFAS Benchmark Runner (Linux/macOS)
 # Runs all benchmark types and generates unified HTML report
+# Now includes database integration for the review app
 
 echo "🚀 PFAS BENCHMARK SUITE - UNIFIED RUNNER"
 echo "========================================="
@@ -97,8 +98,21 @@ echo "   • Timing Performance: Measures execution speed scaling"
 echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 echo "   • Complex Branched: Tests complex molecular structures"
 echo ""
+echo "📊 Updating Review App Database..."
+if [ -f "enhanced_benchmark_with_db.py" ]; then
+    python enhanced_benchmark_with_db.py
+    echo "✅ Database updated with latest benchmark results"
+else
+    echo "⚠️  Database integration script not found - skipping database update"
+fi
+echo ""
 echo "📄 Unified Report: html/$(ls html/unified_pfas_benchmark_report_*.html | tail -1 | xargs basename)"
 echo "🌐 Open the HTML file in your browser to view detailed results"
 echo "📁 Files organized in: data/ (JSON), html/ (reports), imgs/ (plots)"
+echo ""
+echo "🔬 Review App:"
+echo "   • Run 'cd review-app && ./start-dev.sh' to start the review interface"
+echo "   • Manual validation at http://localhost:3000"
+echo "   • Database file: review-app/database/pfas_benchmark.db"
 echo ""
 echo "✨ Benchmark Suite Complete!"
