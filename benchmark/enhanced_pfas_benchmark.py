@@ -1185,11 +1185,10 @@ class EnhancedPFASBenchmark:
             
         all_results = []
         
-        # Process OECD molecules (limit to 1000 for reasonable runtime)
-        max_molecules = min(1000, len(oecd_data))
-        print(f"🧪 Testing {max_molecules} OECD molecules with PFASGroups (groups 1-28)")
+        # Process OECD molecules
+        print(f"🧪 Testing {len(oecd_data)} OECD molecules with PFASGroups (groups 1-28)")
         
-        for idx, row in oecd_data.head(max_molecules).iterrows():
+        for idx, row in oecd_data.iterrows():
             smiles = row['SMILES']
             first_class = row.get('First_Class', 'Unknown')
             second_class = row.get('Second_Class', 'Unknown')
