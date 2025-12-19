@@ -1219,7 +1219,7 @@ class EnhancedPFASBenchmark:
             all_results.append(result)
             
             if (idx + 1) % 100 == 0:
-                print(f"  ✅ Processed {idx + 1}/{max_molecules} molecules")
+                print(f"  ✅ Processed {idx + 1}/{len(oecd_data)} molecules")
         
         # Save OECD results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
