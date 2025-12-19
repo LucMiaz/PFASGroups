@@ -303,7 +303,7 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
         pairs = {_smarts2:[(path,get_substruct(mol, smartsPath))] for path, (smartsPath,_smarts2) in smartsPaths.items()}
     def match_intersection(_pair,_setp):
         for path,pmatch in _pair:
-            if _setp == _setp.intersection(pmatch):
+            if len(_setp)>0 and _setp == _setp.intersection(pmatch):
                 chains.setdefault(path,[]).append(_setp)
                 return path
         return None
@@ -319,7 +319,10 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
                         # Create a minimal path containing just the shared atom
                         path_idx = [match1]
                     else:
-                        path_idx = nx.shortest_path(G, match1, match2, method='dijkstra')
+                        try:
+                            path_idx = nx.shortest_path(G, match1, match2, method='dijkstra')
+                        except nx.NetworkXNoPath:
+                            path_idx = []
                     setp = set(path_idx)
                     match_intersection(smartsPath,setp)
     chains = {k:sorted(v, key=len, reverse=True) for k,v in chains.items()}
