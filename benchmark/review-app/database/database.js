@@ -1,22 +1,44 @@
-const sqlite3 = require('sqlite3').verbose();
+const initSqlJs = require('sql.js');
+const fs = require('fs');
 const path = require('path');
 
-class Database {
+class DatabaseWrapper {
     constructor() {
-        const dbPath = path.join(__dirname, 'pfas_benchmark.db');
-        this.db = new sqlite3.Database(dbPath, (err) => {
-            if (err) {
-                console.error('Error opening database:', err.message);
+        this.dbPath = path.join(__dirname, 'pfas_benchmark.db');
+        this.db = null;
+        this.isReady = false;
+        this.initPromise = this.initialize();
+    }
+
+    async initialize() {
+        try {
+            const SQL = await initSqlJs();
+            
+            // Check if database file exists
+            if (fs.existsSync(this.dbPath)) {
+                const buffer = fs.readFileSync(this.dbPath);
+                this.db = new SQL.Database(buffer);
+                console.log('Connected to existing SQLite database');
             } else {
-                console.log('Connected to SQLite database');
-                this.initTables();
+                this.db = new SQL.Database();
+                console.log('Created new SQLite database');
             }
-        });
+            
+            this.initTables();
+            this.isReady = true;
+        } catch (err) {
+            console.error('Error opening database:', err.message);
+            throw err;
+        }
+    }
+
+    async waitForReady() {
+        await this.initPromise;
     }
 
     initTables() {
         // Main molecules table
-        this.db.run(`
+        this.db.exec(`
             CREATE TABLE IF NOT EXISTS molecules (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 smiles TEXT NOT NULL,
@@ -35,7 +57,7 @@ class Database {
         `);
 
         // PFASGroups results table
-        this.db.run(`
+        this.db.exec(`
             CREATE TABLE IF NOT EXISTS pfasgroups_results (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 molecule_id INTEGER,
@@ -49,7 +71,7 @@ class Database {
         `);
 
         // PFAS-Atlas results table
-        this.db.run(`
+        this.db.exec(`
             CREATE TABLE IF NOT EXISTS atlas_results (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 molecule_id INTEGER,
@@ -64,7 +86,7 @@ class Database {
         `);
 
         // Manual reviews table
-        this.db.run(`
+        this.db.exec(`
             CREATE TABLE IF NOT EXISTS manual_reviews (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 molecule_id INTEGER,
@@ -81,7 +103,7 @@ class Database {
         `);
 
         // Timing benchmarks table
-        this.db.run(`
+        this.db.exec(`
             CREATE TABLE IF NOT EXISTS timing_benchmarks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 molecule_id INTEGER,
@@ -102,64 +124,92 @@ class Database {
         `);
 
         // Create indexes for better performance
-        this.db.run(`CREATE INDEX IF NOT EXISTS idx_molecules_dataset ON molecules (dataset_type)`);
-        this.db.run(`CREATE INDEX IF NOT EXISTS idx_molecules_smiles ON molecules (smiles)`);
-        this.db.run(`CREATE INDEX IF NOT EXISTS idx_reviews_molecule ON manual_reviews (molecule_id)`);
-        this.db.run(`CREATE INDEX IF NOT EXISTS idx_pfasgroups_molecule ON pfasgroups_results (molecule_id)`);
-        this.db.run(`CREATE INDEX IF NOT EXISTS idx_atlas_molecule ON atlas_results (molecule_id)`);
+        this.db.exec(`CREATE INDEX IF NOT EXISTS idx_molecules_dataset ON molecules (dataset_type)`);
+        this.db.exec(`CREATE INDEX IF NOT EXISTS idx_molecules_smiles ON molecules (smiles)`);
+        this.db.exec(`CREATE INDEX IF NOT EXISTS idx_reviews_molecule ON manual_reviews (molecule_id)`);
+        this.db.exec(`CREATE INDEX IF NOT EXISTS idx_pfasgroups_molecule ON pfasgroups_results (molecule_id)`);
+        this.db.exec(`CREATE INDEX IF NOT EXISTS idx_atlas_molecule ON atlas_results (molecule_id)`);
+        
+        // Save after creating tables
+        this.save();
     }
 
-    // Helper method to run queries with promises
-    run(sql, params = []) {
-        return new Promise((resolve, reject) => {
-            this.db.run(sql, params, function(err) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve({ id: this.lastID, changes: this.changes });
-                }
-            });
-        });
+    save() {
+        if (this.db) {
+            const data = this.db.export();
+            const buffer = Buffer.from(data);
+            fs.writeFileSync(this.dbPath, buffer);
+        }
+    }
+
+    // Helper method to run queries
+    async run(sql, params = []) {
+        await this.waitForReady();
+        try {
+            this.db.run(sql, params);
+            const lastId = this.db.exec("SELECT last_insert_rowid() as id")[0]?.values[0]?.[0] || 0;
+            this.save();
+            return { id: lastId, changes: this.db.getRowsModified() };
+        } catch (err) {
+            throw err;
+        }
     }
 
     // Helper method to get single row
-    get(sql, params = []) {
-        return new Promise((resolve, reject) => {
-            this.db.get(sql, params, (err, row) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(row);
-                }
-            });
-        });
+    async get(sql, params = []) {
+        await this.waitForReady();
+        try {
+            const stmt = this.db.prepare(sql);
+            stmt.bind(params);
+            let row = null;
+            if (stmt.step()) {
+                const columns = stmt.getColumnNames();
+                const values = stmt.get();
+                row = {};
+                columns.forEach((col, idx) => {
+                    row[col] = values[idx];
+                });
+            }
+            stmt.free();
+            return row;
+        } catch (err) {
+            throw err;
+        }
     }
 
     // Helper method to get multiple rows
-    all(sql, params = []) {
-        return new Promise((resolve, reject) => {
-            this.db.all(sql, params, (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(rows);
-                }
-            });
-        });
+    async all(sql, params = []) {
+        await this.waitForReady();
+        try {
+            const stmt = this.db.prepare(sql);
+            stmt.bind(params);
+            const rows = [];
+            while (stmt.step()) {
+                const columns = stmt.getColumnNames();
+                const values = stmt.get();
+                const row = {};
+                columns.forEach((col, idx) => {
+                    row[col] = values[idx];
+                });
+                rows.push(row);
+            }
+            stmt.free();
+            return rows;
+        } catch (err) {
+            throw err;
+        }
     }
 
     // Close database connection
-    close() {
-        return new Promise((resolve, reject) => {
-            this.db.close((err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
-            });
-        });
+    async close() {
+        await this.waitForReady();
+        try {
+            this.save();
+            this.db.close();
+        } catch (err) {
+            throw err;
+        }
     }
 }
 
-module.exports = Database;
+module.exports = DatabaseWrapper;

@@ -7,9 +7,15 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.13.2",
+    "bootstrap": "^5.3.8",
     "react": "^19.2.3",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.3",
-    "react-scripts": "5.0.1",
+    "react-paginate": "^8.3.0",
+    "react-router-dom": "^7.11.0",
+    "react-scripts": "^5.0.1",
+    "react-select": "^5.10.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -35,5 +41,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

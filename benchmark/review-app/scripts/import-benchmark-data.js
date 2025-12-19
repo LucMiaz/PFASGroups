@@ -7,8 +7,15 @@ class DataImporter {
         this.db = new Database();
     }
 
-    async importBenchmarkData(dataDirectory = '../data') {
-        const dataPath = path.join(__dirname, dataDirectory);
+    async importBenchmarkData(dataDirectory = '../../data') {
+        const dataPath = path.isAbsolute(dataDirectory) 
+            ? dataDirectory 
+            : path.join(__dirname, dataDirectory);
+        
+        console.log(`Looking for data in: ${dataPath}`);
+        
+        // Wait for database to be ready
+        await this.db.waitForReady();
         
         try {
             // Get all JSON files in the data directory
@@ -232,7 +239,10 @@ class DataImporter {
 if (require.main === module) {
     const importer = new DataImporter();
     
-    importer.importBenchmarkData()
+    // Look for data in the benchmark/data directory (one level up from review-app)
+    const dataDir = path.join(__dirname, '../../data');
+    
+    importer.importBenchmarkData(dataDir)
         .then(async () => {
             const stats = await importer.getImportStats();
             console.log('\\nImport Statistics:');
