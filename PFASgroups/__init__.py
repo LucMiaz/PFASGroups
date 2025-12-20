@@ -1,6 +1,6 @@
 # PFASgroups package
 from .PFASGroupModel import PFASGroup
-from .core import parse_pfas, parse_PFAS_groups, plot_pfasgroups
+from .core import parse_pfas, parse_PFAS_groups, plot_pfasgroups, generate_pfas_fingerprint
 from .draw_mols import plot_mol, plot_mols
 from .generate_homologues import generate_homologues
 from .fragmentation import generate_degradation_products
