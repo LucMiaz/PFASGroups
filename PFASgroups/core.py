@@ -426,6 +426,208 @@ def parse_pfas(smiles_list):
         results.append(matches)
     return results
 
+@load_PFASGroups()
+def generate_pfas_fingerprint(smiles: Union[str, List[str]], 
+                             selected_groups: Union[List[int], range, None] = None,
+                             representation: str = 'vector',
+                             count_mode: str = 'binary',
+                             pfas_groups=None):
+    """
+    Generate PFAS group fingerprints from SMILES strings.
+    
+    Parameters:
+    -----------
+    smiles : str or list of str
+        SMILES string(s) to generate fingerprints for
+    selected_groups : list of int, range, or None
+        Indices of PFAS groups to include in fingerprint. 
+        If None, all groups are used. Examples: [28, 29, 30], range(28, 52)
+    representation : str, default 'vector'
+        Type of fingerprint representation:
+        - 'vector': Binary/count vector (numpy array)
+        - 'dict': Dictionary mapping group names to counts
+        - 'sparse': Dictionary with only non-zero group counts
+        - 'detailed': Full match information including chain details
+    count_mode : str, default 'binary'
+        How to count matches:
+        - 'binary': 1 if group present, 0 if absent
+        - 'count': Number of matches found
+        - 'max_chain': Maximum chain length for groups with chains
+    pfas_groups : list, optional
+        Custom list of PFAS groups. If None, uses default groups.
+    
+    Returns:
+    --------
+    fingerprints : numpy.ndarray, dict, or list
+        Fingerprint representation(s) based on 'representation' parameter.
+        For single SMILES input, returns single fingerprint.
+        For list input, returns list of fingerprints.
+    group_info : dict
+        Information about the groups used in fingerprinting:
+        - 'group_names': List of group names in fingerprint order
+        - 'group_ids': List of group IDs in fingerprint order
+        - 'selected_indices': Indices of selected groups
+    
+    Examples:
+    ---------
+    >>> # Binary vector for specific groups
+    >>> fp, info = generate_pfas_fingerprint('CC(F)(F)C(=O)O', 
+    ...                                       selected_groups=range(28, 52))
+    
+    >>> # Count-based dictionary representation
+    >>> fp, info = generate_pfas_fingerprint(['CCF', 'CCFF'], 
+    ...                                       representation='dict',
+    ...                                       count_mode='count')
+    
+    >>> # Detailed match information
+    >>> fp, info = generate_pfas_fingerprint('PFOA_SMILES', 
+    ...                                       representation='detailed')
+    """
+    
+    # Handle single SMILES input
+    if isinstance(smiles, str):
+        smiles_list = [smiles]
+        single_input = True
+    else:
+        smiles_list = smiles
+        single_input = False
+    
+    # Determine which groups to use
+    if selected_groups is None:
+        # Use all groups
+        selected_indices = list(range(len(pfas_groups)))
+        selected_pfas_groups = pfas_groups
+    else:
+        # Convert range to list if needed
+        if isinstance(selected_groups, range):
+            selected_indices = list(selected_groups)
+        else:
+            selected_indices = selected_groups
+            
+        # Validate indices
+        max_index = len(pfas_groups) - 1
+        invalid_indices = [i for i in selected_indices if i < 0 or i > max_index]
+        if invalid_indices:
+            raise ValueError(f"Invalid group indices {invalid_indices}. "
+                           f"Valid range is 0-{max_index}")
+        
+        selected_pfas_groups = [pfas_groups[i] for i in selected_indices]
+    
+    # Create group info
+    group_info = {
+        'group_names': [group.name for group in selected_pfas_groups],
+        'group_ids': [group.id for group in selected_pfas_groups],
+        'selected_indices': selected_indices,
+        'total_groups': len(pfas_groups)
+    }
+    
+    fingerprints = []
+    
+    for smiles_str in smiles_list:
+        try:
+            mol = Chem.MolFromSmiles(smiles_str)
+            if mol is None:
+                raise ValueError(f"Invalid SMILES: {smiles_str}")
+            
+            formula = CalcMolFormula(mol)
+            all_matches = parse_PFAS_groups(mol, formula, pfas_groups=pfas_groups)
+            
+            # Create mapping from group ID to match information
+            match_dict = {}
+            for group, n_matches, n_cfchains, chains in all_matches:
+                match_dict[group.id] = {
+                    'group': group,
+                    'n_matches': n_matches,
+                    'n_cfchains': n_cfchains,
+                    'chains': chains
+                }
+            
+            if representation == 'vector':
+                # Create binary or count vector
+                fingerprint = np.zeros(len(selected_pfas_groups), dtype=int)
+                for i, group in enumerate(selected_pfas_groups):
+                    if group.id in match_dict:
+                        match_info = match_dict[group.id]
+                        if count_mode == 'binary':
+                            fingerprint[i] = 1
+                        elif count_mode == 'count':
+                            fingerprint[i] = match_info['n_matches']
+                        elif count_mode == 'max_chain':
+                            if match_info['chains']:
+                                fingerprint[i] = max([chain['length'] for chain in match_info['chains']])
+                            else:
+                                fingerprint[i] = match_info['n_matches'] if match_info['n_matches'] > 0 else 0
+                        else:
+                            raise ValueError(f"Unknown count_mode: {count_mode}")
+                fingerprints.append(fingerprint)
+                
+            elif representation == 'dict':
+                # Create dictionary with all groups (including zeros)
+                fingerprint = {}
+                for group in selected_pfas_groups:
+                    if group.id in match_dict:
+                        match_info = match_dict[group.id]
+                        if count_mode == 'binary':
+                            fingerprint[group.name] = 1
+                        elif count_mode == 'count':
+                            fingerprint[group.name] = match_info['n_matches']
+                        elif count_mode == 'max_chain':
+                            if match_info['chains']:
+                                fingerprint[group.name] = max([chain['length'] for chain in match_info['chains']])
+                            else:
+                                fingerprint[group.name] = match_info['n_matches'] if match_info['n_matches'] > 0 else 0
+                    else:
+                        fingerprint[group.name] = 0
+                fingerprints.append(fingerprint)
+                
+            elif representation == 'sparse':
+                # Create dictionary with only non-zero entries
+                fingerprint = {}
+                for group in selected_pfas_groups:
+                    if group.id in match_dict:
+                        match_info = match_dict[group.id]
+                        value = 0
+                        if count_mode == 'binary':
+                            value = 1
+                        elif count_mode == 'count':
+                            value = match_info['n_matches']
+                        elif count_mode == 'max_chain':
+                            if match_info['chains']:
+                                value = max([chain['length'] for chain in match_info['chains']])
+                            else:
+                                value = match_info['n_matches'] if match_info['n_matches'] > 0 else 0
+                        
+                        if value > 0:
+                            fingerprint[group.name] = value
+                fingerprints.append(fingerprint)
+                
+            elif representation == 'detailed':
+                # Return full match information for selected groups
+                fingerprint = {}
+                for group in selected_pfas_groups:
+                    if group.id in match_dict:
+                        match_info = match_dict[group.id]
+                        fingerprint[group.name] = {
+                            'group_id': group.id,
+                            'n_matches': match_info['n_matches'],
+                            'n_cfchains': match_info['n_cfchains'],
+                            'chains': match_info['chains'],
+                            'smarts1': Chem.MolToSmarts(group.smarts1) if group.smarts1 else None,
+                            'smarts2': Chem.MolToSmarts(group.smarts2) if group.smarts2 else None
+                        }
+                fingerprints.append(fingerprint)
+            else:
+                raise ValueError(f"Unknown representation: {representation}")
+                
+        except Exception as e:
+            raise ValueError(f"Error processing SMILES '{smiles_str}': {str(e)}")
+    
+    # Return single fingerprint for single input, list for multiple inputs
+    if single_input:
+        return fingerprints[0], group_info
+    else:
+        return fingerprints, group_info
+
 def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, **kwargs):
     """
     Plot PFAS group assignments for a list of SMILES strings.
