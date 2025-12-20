@@ -448,6 +448,7 @@ def generate_pfas_fingerprint(smiles: Union[str, List[str]],
         - 'dict': Dictionary mapping group names to counts
         - 'sparse': Dictionary with only non-zero group counts
         - 'detailed': Full match information including chain details
+        - 'int': Convert binary to int using int(x,2)
     count_mode : str, default 'binary'
         How to count matches:
         - 'binary': 1 if group present, 0 if absent
@@ -542,13 +543,13 @@ def generate_pfas_fingerprint(smiles: Union[str, List[str]],
                     'chains': chains
                 }
             
-            if representation == 'vector':
+            if representation == 'vector' or representation == 'int':
                 # Create binary or count vector
                 fingerprint = np.zeros(len(selected_pfas_groups), dtype=int)
                 for i, group in enumerate(selected_pfas_groups):
                     if group.id in match_dict:
                         match_info = match_dict[group.id]
-                        if count_mode == 'binary':
+                        if count_mode == 'binary' or representation == 'int':
                             fingerprint[i] = 1
                         elif count_mode == 'count':
                             fingerprint[i] = match_info['n_matches']
@@ -559,7 +560,10 @@ def generate_pfas_fingerprint(smiles: Union[str, List[str]],
                                 fingerprint[i] = match_info['n_matches'] if match_info['n_matches'] > 0 else 0
                         else:
                             raise ValueError(f"Unknown count_mode: {count_mode}")
-                fingerprints.append(fingerprint)
+                if representation == 'int':
+                    fingerprints.append([int(''.join([str(x) for x in f]),2) for f in fingerprint])
+                else:
+                    fingerprints.append(fingerprint)
                 
             elif representation == 'dict':
                 # Create dictionary with all groups (including zeros)
