@@ -54,8 +54,43 @@ class DataImporter {
     }
 
     async importBenchmarkFile(filePath, datasetType, filename) {
-        const data = JSON.parse(await fs.readFile(filePath, 'utf8'));
+        let data = JSON.parse(await fs.readFile(filePath, 'utf8'));
         const benchmarkDate = this.extractDateFromFilename(filename);
+        
+        // Handle different data structures
+        // Complex branched data has a wrapper object with "molecules" array
+        if (Array.isArray(data) && data.length > 0 && data[0].molecules) {
+            // Flatten the molecules from all test cases
+            const allMolecules = [];
+            for (const testCase of data) {
+                if (testCase.molecules && Array.isArray(testCase.molecules)) {
+                    // Transform the molecules to the expected format
+                    for (const mol of testCase.molecules) {
+                        allMolecules.push({
+                            molecule_data: {
+                                smiles: mol.smiles,
+                                molecular_weight: mol.molecular_weight,
+                                num_atoms: mol.num_atoms
+                            },
+                            pfasgroups_result: {
+                                detected_groups: mol.pfasgroups_groups || [],
+                                success: mol.pfasgroups_detected !== false,
+                                error: null,
+                                execution_time: mol.pfasgroups_execution_time
+                            },
+                            atlas_result: {
+                                first_class: mol.atlas_first_class,
+                                second_class: mol.atlas_second_class,
+                                success: mol.atlas_detected !== false,
+                                error: null,
+                                execution_time: mol.atlas_execution_time
+                            }
+                        });
+                    }
+                }
+            }
+            data = allMolecules;
+        }
         
         for (const record of data) {
             try {
