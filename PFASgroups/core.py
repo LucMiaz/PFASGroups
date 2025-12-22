@@ -358,6 +358,23 @@ def path_between_smarts(mol:Chem.Mol, smarts1,smarts2,**kwargs):
                                     smarts2,
                                     G)
 
+def connected_components(mol, subset):
+    """Find connected components in a molecule."""
+    G = mol_to_nx(mol)
+    G = G.subgraph(subset)
+    components = list(nx.connected_components(G))
+    return components
+
+def find_aryl_components(mol, aryl_smarts):
+    """Find aryl components in a molecule."""
+    matches = mol.GetSubstructMatches(aryl_smarts)
+    subset = [y for x in matches for y in x]
+    if len(subset)==0:
+        return 0,0,0,[]
+    components = connected_components(mol, subset)
+    print('Aryl components found:', components, 'For molecule:', Chem.MolToSmiles(mol))
+    return min([len(x) for x in components]),[len(x) for x in components],len(components),components
+
 # --- Main PFAS group parsing functions ---
 @load_PFASGroups()
 def parse_PFAS_groups(mol, formula, pfas_groups=None):
@@ -379,7 +396,11 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
         for fd,mol in zip(formulas,frags):
             if pf.formula_dict_satisfies_constraints(fd) is True:
                 n_CFchain = []
-                if pf.smarts2 is not None and pf.smarts1 is not None:
+                if pf.smartsPath =='cyclic':
+                    # treat cyclic groups separately
+                    n,n_CFchain,matched1_len, chains = find_aryl_components(mol, pf.smarts1)
+                elif pf.smarts2 is not None and pf.smarts1 is not None:
+                    # treat cases with both smarts1 and smarts2, finding path
                     try:
                         n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
                                                                             pf.smarts1,
@@ -387,6 +408,7 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
                     except ValueError as e:
                         raise e
                 elif pf.smarts1 is not None and len(pf.constraints.keys())==0:
+                    # treat cases with only smarts1, using default smarts2
                     try:
                         n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
                                                                             pf.smarts1,
@@ -394,6 +416,7 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
                     except ValueError as e:
                         raise e
                 elif pf.smarts1 is not None:
+                    # treat cases with only smarts1 as simple substructure match, no path finding
                     try:
                         n = len(mol.GetSubstructMatch(pf.smarts1))
                     except:
@@ -407,10 +430,12 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
                     chains = []
                     matched1_len = 1
                 else:
+                    # teat cases with no smarts1, just formula constraints
                     n=1
                     chains = []
                     matched1_len = 1
                 if n>0 and matched1_len>0:
+                    # add to matches if functional group was found
                     group_matches.append((pf,n,n_CFchain, chains))
     return group_matches
 
