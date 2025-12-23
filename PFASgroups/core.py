@@ -366,11 +366,11 @@ def connected_components(mol, subset):
     return components
 
 @add_smartsPath()
-def get_fluorinated_subgraph(mol, path_smarts):
+def get_fluorinated_subgraph(mol, smartsPaths=None):
     """Get the fluorinated indices by connected components of a molecule based on path SMARTS."""
     subsets = {}
-    for pathName, d in path_smarts.items():
-        path_smarts = d['chain']
+    for pathName, d in smartsPaths.items():
+        path_smarts = d[0] # chain
         matches = mol.GetSubstructMatches(path_smarts)
         subset = [y for x in matches for y in x]
         if len(subset)==0:
@@ -469,7 +469,7 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None, bycomponent=False):
                         for frag in frags:
                             n += len(frag.GetSubstructMatches(pf.smarts1))
                     path_components = fluorinated_components_dict.get(pf.smartsPath,"Perfluoroalkyl")
-                    n,n_CFchain,matched1_len, chains = get_fluorinated_subgraph(mol, pf.smarts1, path_components)
+                    n,n_CFchain,matched1_len, chains = find_alkyl_components(mol, pf.smarts1, path_components)
                 else:
                     # teat cases with no smarts1, just formula constraints
                     n=1
