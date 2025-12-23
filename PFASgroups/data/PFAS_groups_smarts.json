@@ -597,8 +597,8 @@
 },
 {
     "id":55,
-    "name":"Perfluoroaryl compounds",
-    "alias":"Perfluoroaryl compounds",
+    "name":"Polyfluoroaryl compounds",
+    "alias":"Polyfluoroaryl compounds",
     "base_functional_groups":["aromatic"],
     "main_group":"other PFAS",
     "smarts1":"[#6aR$([#6aR][F,#6aR$([#6aR][#9])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]F)]",
