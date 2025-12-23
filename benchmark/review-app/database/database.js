@@ -56,9 +56,23 @@ class DatabaseWrapper {
             )
         `);
 
-        // PFASGroups results table
+        // PFASGroups results table (default flavor: bycomponent=False)
         this.db.exec(`
             CREATE TABLE IF NOT EXISTS pfasgroups_results (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                molecule_id INTEGER,
+                detected_groups TEXT,
+                success BOOLEAN,
+                error_message TEXT,
+                execution_time REAL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (molecule_id) REFERENCES molecules (id)
+            )
+        `);
+
+        // PFASGroups bycomponent results table (bycomponent=True flavor)
+        this.db.exec(`
+            CREATE TABLE IF NOT EXISTS pfasgroups_results_bycomponent (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 molecule_id INTEGER,
                 detected_groups TEXT,
@@ -128,6 +142,7 @@ class DatabaseWrapper {
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_molecules_smiles ON molecules (smiles)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_reviews_molecule ON manual_reviews (molecule_id)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_pfasgroups_molecule ON pfasgroups_results (molecule_id)`);
+        this.db.exec(`CREATE INDEX IF NOT EXISTS idx_pfasgroups_bycomp_molecule ON pfasgroups_results_bycomponent (molecule_id)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_atlas_molecule ON atlas_results (molecule_id)`);
         
         // Save after creating tables

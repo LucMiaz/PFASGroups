@@ -349,10 +349,11 @@ class TestPFASGroups:
                 TEST_SUMMARY_DATA['specificity_results'].to_csv('specificity_test_results.csv', index=False)
     
     def test_oecd_pfas_groups(self):
-        """Test OECD PFAS group detection with synthetic compounds."""
+        """Test OECD PFAS group detection with synthetic compounds using both algorithm flavors."""
         global TEST_SUMMARY_DATA
-        print("Testing OECD PFAS groups...")
+        print("Testing OECD PFAS groups (both flavors)...")
         test_results = []
+        adequation_mismatches = []
         
         for group_id, group_name, template, pathtype in OECD_PFAS_GROUPS:  # Test first 5 groups
             existing_test = []
@@ -366,7 +367,6 @@ class TestPFASGroups:
                                                 perfluorinated=(pathtype == 'Perfluoroalkyl'))
                     except Exception as e:
                         pass
-                        #print(f"Error testing group {group_id}, n={n}: {e}")
                     else:
                         if mol is None:
                             continue
@@ -378,13 +378,28 @@ class TestPFASGroups:
                             r+=1
                         smiles = Chem.MolToSmiles(mol)
                         
-                        # Test classification
+                        # Test classification with both flavors
                         formula = CalcMolFormula(mol)
-                        matches = parse_PFAS_groups(mol, formula)
+                        matches_default = parse_PFAS_groups(mol, formula, bycomponent=False)
+                        matches_bycomponent = parse_PFAS_groups(mol, formula, bycomponent=True)
                         
-                        # Check if target group is detected
-                        detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
-                        is_detected = group_id in detected_groups
+                        # Check if target group is detected in both flavors
+                        detected_groups_default = [match[0].id for match in matches_default if match[0].id not in IGNORE_GROUPS]
+                        detected_groups_bycomponent = [match[0].id for match in matches_bycomponent if match[0].id not in IGNORE_GROUPS]
+                        
+                        is_detected_default = group_id in detected_groups_default
+                        is_detected_bycomponent = group_id in detected_groups_bycomponent
+                        
+                        # Check adequation: both flavors should detect the same groups (though chain lengths may differ)
+                        groups_match = set(detected_groups_default) == set(detected_groups_bycomponent)
+                        if not groups_match:
+                            adequation_mismatches.append({
+                                'group_id': group_id,
+                                'group_name': group_name,
+                                'smiles': smiles,
+                                'default_groups': detected_groups_default,
+                                'bycomponent_groups': detected_groups_bycomponent
+                            })
                         
                         result = {
                             'group_ids': group_id,
@@ -392,30 +407,50 @@ class TestPFASGroups:
                             'chain_length': n,
                             'pathtype': pathtype,
                             'smiles': smiles,
-                            'detected': is_detected,
-                            'all_matches': detected_groups
+                            'detected_default': is_detected_default,
+                            'detected_bycomponent': is_detected_bycomponent,
+                            'detected_both': is_detected_default and is_detected_bycomponent,
+                            'all_matches_default': detected_groups_default,
+                            'all_matches_bycomponent': detected_groups_bycomponent,
+                            'adequation_match': groups_match
                         }
                         test_results.append(result)
                         
                         # Store for summary
                         TEST_SUMMARY_DATA['oecd_results'].append(result)
-                        
         
-        # Verify that at least some groups are detected correctly
+        # Verify that at least some groups are detected correctly in both flavors
         if test_results:
-            detection_rate = sum(result['detected'] for result in test_results) / len(test_results)
-            print(f"OECD detection rate: {detection_rate:.2%}")
+            detection_rate_default = sum(result['detected_default'] for result in test_results) / len(test_results)
+            detection_rate_bycomponent = sum(result['detected_bycomponent'] for result in test_results) / len(test_results)
+            adequation_rate = sum(result['adequation_match'] for result in test_results) / len(test_results)
+            
+            print(f"OECD detection rate (default): {detection_rate_default:.2%}")
+            print(f"OECD detection rate (bycomponent): {detection_rate_bycomponent:.2%}")
+            print(f"OECD adequation rate: {adequation_rate:.2%}")
+            print(f"Adequation mismatches: {len(adequation_mismatches)}")
+            
+            if adequation_mismatches:
+                print("\nSample adequation mismatches:")
+                for mismatch in adequation_mismatches[:5]:
+                    print(f"  Group {mismatch['group_id']}: default={mismatch['default_groups']}, bycomponent={mismatch['bycomponent_groups']}")
+            
             if PYTEST_AVAILABLE:
-                assert detection_rate > 0.5, f"Detection rate too low: {detection_rate:.2%}"
-            assert detection_rate > 0.5, f"Detection rate too low: {detection_rate:.2%}"
+                assert detection_rate_default > 0.5, f"Default detection rate too low: {detection_rate_default:.2%}"
+                assert detection_rate_bycomponent > 0.5, f"Bycomponent detection rate too low: {detection_rate_bycomponent:.2%}"
+                assert adequation_rate > 0.95, f"Adequation rate too low: {adequation_rate:.2%} (expected >95%)"  # Perfect adequation expected
+            assert detection_rate_default > 0.5, f"Default detection rate too low: {detection_rate_default:.2%}"
+            assert detection_rate_bycomponent > 0.5, f"Bycomponent detection rate too low: {detection_rate_bycomponent:.2%}"
+            assert adequation_rate > 0.95, f"Adequation rate too low: {adequation_rate:.2%} (expected >95%)"  # Perfect adequation expected
         else:
             assert False, "No valid test results generated"
     
     def test_generic_pfas_groups(self):
-        """Test generic PFAS group detection with synthetic compounds."""
+        """Test generic PFAS group detection with synthetic compounds using both algorithm flavors."""
         global TEST_SUMMARY_DATA
-        print("Testing generic PFAS groups...")
+        print("Testing generic PFAS groups (both flavors)...")
         test_results = []
+        adequation_mismatches = []
         
         for group_id, group_name, template, insertion_mode in GENERIC_PFAS_GROUPS:  # Test first 5 groups
             for pathtype in ['Perfluoroalkyl', 'Polyfluoroalkyl']:
@@ -446,13 +481,28 @@ class TestPFASGroups:
                                 r+=1
                             smiles = Chem.MolToSmiles(mol)
                             
-                            # Test classification
+                            # Test classification with both flavors
                             formula = CalcMolFormula(mol)
-                            matches = parse_PFAS_groups(mol, formula)
+                            matches_default = parse_PFAS_groups(mol, formula, bycomponent=False)
+                            matches_bycomponent = parse_PFAS_groups(mol, formula, bycomponent=True)
                             
-                            # Check if target group is detected
-                            detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
-                            is_detected = group_id in detected_groups
+                            # Check if target group is detected in both flavors
+                            detected_groups_default = [match[0].id for match in matches_default if match[0].id not in IGNORE_GROUPS]
+                            detected_groups_bycomponent = [match[0].id for match in matches_bycomponent if match[0].id not in IGNORE_GROUPS]
+                            
+                            is_detected_default = group_id in detected_groups_default
+                            is_detected_bycomponent = group_id in detected_groups_bycomponent
+                            
+                            # Check adequation
+                            groups_match = set(detected_groups_default) == set(detected_groups_bycomponent)
+                            if not groups_match:
+                                adequation_mismatches.append({
+                                    'group_id': group_id,
+                                    'group_name': group_name,
+                                    'smiles': smiles,
+                                    'default_groups': detected_groups_default,
+                                    'bycomponent_groups': detected_groups_bycomponent
+                                })
                             
                             result = {
                                 'group_ids': group_id,
@@ -460,8 +510,12 @@ class TestPFASGroups:
                                 'chain_length': n,
                                 'pathtype': pathtype,
                                 'smiles': smiles,
-                                'detected': is_detected,
-                                'all_matches': detected_groups
+                                'detected_default': is_detected_default,
+                                'detected_bycomponent': is_detected_bycomponent,
+                                'detected_both': is_detected_default and is_detected_bycomponent,
+                                'all_matches_default': detected_groups_default,
+                                'all_matches_bycomponent': detected_groups_bycomponent,
+                                'adequation_match': groups_match
                             }
                             test_results.append(result)
                             
@@ -472,9 +526,23 @@ class TestPFASGroups:
         
         # Verify that at least some groups are detected correctly
         if test_results:
-            detection_rate = sum(result['detected'] for result in test_results) / len(test_results)
-            print(f"Generic detection rate: {detection_rate:.2%}")
-            assert detection_rate > 0.3, f"Generic detection rate too low: {detection_rate:.2%}"
+            detection_rate_default = sum(result['detected_default'] for result in test_results) / len(test_results)
+            detection_rate_bycomponent = sum(result['detected_bycomponent'] for result in test_results) / len(test_results)
+            adequation_rate = sum(result['adequation_match'] for result in test_results) / len(test_results)
+            
+            print(f"Generic detection rate (default): {detection_rate_default:.2%}")
+            print(f"Generic detection rate (bycomponent): {detection_rate_bycomponent:.2%}")
+            print(f"Generic adequation rate: {adequation_rate:.2%}")
+            print(f"Adequation mismatches: {len(adequation_mismatches)}")
+            
+            if adequation_mismatches:
+                print("\nSample adequation mismatches:")
+                for mismatch in adequation_mismatches[:5]:
+                    print(f"  Group {mismatch['group_id']}: default={mismatch['default_groups']}, bycomponent={mismatch['bycomponent_groups']}")
+            
+            assert detection_rate_default > 0.3, f"Default detection rate too low: {detection_rate_default:.2%}"
+            assert detection_rate_bycomponent > 0.3, f"Bycomponent detection rate too low: {detection_rate_bycomponent:.2%}"
+            assert adequation_rate > 0.95, f"Adequation rate too low: {adequation_rate:.2%} (expected >95%)"
         else:
             assert False, "No valid test results generated"
 

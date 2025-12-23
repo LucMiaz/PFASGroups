@@ -365,6 +365,31 @@ def connected_components(mol, subset):
     components = list(nx.connected_components(G))
     return components
 
+@add_smartsPath()
+def get_fluorinated_subgraph(mol, path_smarts):
+    """Get the fluorinated indices by connected components of a molecule based on path SMARTS."""
+    subsets = {}
+    for pathName, d in path_smarts.items():
+        path_smarts = d['chain']
+        matches = mol.GetSubstructMatches(path_smarts)
+        subset = [y for x in matches for y in x]
+        if len(subset)==0:
+            subsets[pathName] = []
+            continue
+        components = connected_components(mol, subset)
+        subsets[pathName] = components
+    return subsets
+
+def find_alkyl_components(mol, smarts, components):
+    """Find alkyl components in a molecule."""
+    matches = mol.GetSubstructMatches(smarts)
+    subset = set(y for x in matches for y in x)
+    if len(subset)==0:
+        return 0,0,0,[]
+    # Filter components connected to the smarts
+    relevant_components = [comp for comp in components if len(subset.intersection(comp))>0]
+    return min([len(x) for x in relevant_components]),[len(x) for x in relevant_components],len(relevant_components),relevant_components
+
 def find_aryl_components(mol, aryl_smarts):
     """Find aryl components in a molecule."""
     matches = mol.GetSubstructMatches(aryl_smarts)
@@ -372,13 +397,25 @@ def find_aryl_components(mol, aryl_smarts):
     if len(subset)==0:
         return 0,0,0,[]
     components = connected_components(mol, subset)
-    print('Aryl components found:', components, 'For molecule:', Chem.MolToSmiles(mol))
     return min([len(x) for x in components]),[len(x) for x in components],len(components),components
 
 # --- Main PFAS group parsing functions ---
 @load_PFASGroups()
-def parse_PFAS_groups(mol, formula, pfas_groups=None):
-    """Iterates over PFAS groups and finds the ones that match the molecule."""
+def parse_PFAS_groups(mol, formula, pfas_groups=None, bycomponent=False):
+    """Iterates over PFAS groups and finds the ones that match the molecule.
+    :params mol: RDKit molecule
+    :params formula: Molecular formula as string
+    :params pfas_groups: List of PFASGroup objects (leave None for default)
+    :params bycomponent: Whether to look for fluorinated components or for chains between functional groups (for PFAS groups where smarts1 defined, smarts2 = None)
+    :return: List of tuples (PFASGroup, n_matches, n_CFchains, chains)
+
+    For PFASgroups 
+    1. with smartsPath = 'cyclic', search for connected component matching smarts1
+    2. with smarts1 and smarts2 defined: Find shortest path between each pairs of matches
+    3. with smarts1 defined and smarts2 null, no formula constraints: either a. (if bycomponent is False) use default smarts2, do like 2. for each default pathtype. b. (if bycomponent is True) search for connected components of fluorinated atoms (for each pathType) where smarts1 C match is in the component
+    4. with smarts1 defined and formula constraints: search for substructure matches of smarts1, and for given smartsPath for the PFASgroup, search for connected components of fluorinated atoms where smarts1 C match is in the component
+
+    """
     mol = Chem.AddHs(mol)
     try:
         Chem.SanitizeMol(mol)
@@ -390,6 +427,7 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
         frags = [mol]
         formulas = [n_from_formula(formula)]# formula as a dictionary
     group_matches = []
+    fluorinated_components_dict = get_fluorinated_subgraph(mol)
     for pf in pfas_groups:
         #logger.debug(f"{pf.name}")
         matched1_len = 0
@@ -408,7 +446,8 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
                     except ValueError as e:
                         raise e
                 elif pf.smarts1 is not None and len(pf.constraints.keys())==0:
-                    # treat cases with only smarts1, using default smarts2
+                    # treat cases with only smarts1, using default smarts2 (if looking for chains) else 
+                    # if bycomponent is True, find fluorinated components for each path type
                     try:
                         n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
                                                                             pf.smarts1,
@@ -417,6 +456,8 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
                         raise e
                 elif pf.smarts1 is not None:
                     # treat cases with only smarts1 as simple substructure match, no path finding
+                    # if bycomponent is True, find fluorinated components for relevant path type
+                    #  (given by pf parameter smartsPath)
                     try:
                         n = len(mol.GetSubstructMatch(pf.smarts1))
                     except:
@@ -427,8 +468,8 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
                         n = 0
                         for frag in frags:
                             n += len(frag.GetSubstructMatches(pf.smarts1))
-                    chains = []
-                    matched1_len = 1
+                    path_components = fluorinated_components_dict.get(pf.smartsPath,"Perfluoroalkyl")
+                    n,n_CFchain,matched1_len, chains = get_fluorinated_subgraph(mol, pf.smarts1, path_components)
                 else:
                     # teat cases with no smarts1, just formula constraints
                     n=1
@@ -439,7 +480,7 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None):
                     group_matches.append((pf,n,n_CFchain, chains))
     return group_matches
 
-def parse_pfas(smiles_list):
+def parse_pfas(smiles_list, bycomponent=False):
     """
     Parse a list of SMILES strings and return PFAS group information.
     """
@@ -447,7 +488,7 @@ def parse_pfas(smiles_list):
     for smiles in smiles_list:
         mol = Chem.MolFromSmiles(smiles)
         formula = CalcMolFormula(mol)
-        matches = parse_PFAS_groups(mol, formula)
+        matches = parse_PFAS_groups(mol, formula, bycomponent=bycomponent)
         results.append(matches)
     return results
 
@@ -701,7 +742,7 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
     for i, s in enumerate(smiles):
         mol = Chem.MolFromSmiles(s)
         mol = Chem.AddHs(mol)
-        matches = parse_PFAS_groups(mol, CalcMolFormula(mol))
+        matches = parse_PFAS_groups(mol, CalcMolFormula(mol), bycomponent=kwargs.get('bycomponent',False))
         highlight_atoms = []
         for pf, n, n_cfchains, match_indices in matches:
             for match in match_indices:

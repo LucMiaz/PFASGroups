@@ -6,7 +6,7 @@
     "main_group":"Perfluoroalkyl acids",
     "smarts1":"[#6$([#6](=O)([OH1]))]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"O":2},"only":["C","F","O","H"],"gte":{"F":1},"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
 },
 {
@@ -17,7 +17,7 @@
     "main_group":"Polyfluoroalkyl acids",
     "smarts1":"[#6$([#6](=O)([OH1]))]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Polyfluoroalkyl",
     "constraints":{"eq":{"O":2},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
 },
 {
@@ -28,7 +28,7 @@
     "main_group":"Perfluoroalkyl acids",
     "smarts1":"[#6$([#6](=O)([OH1]))]",
     "smarts2":"[#6$([#6](=O)([OH1]))]",
-    "smartsPath":"per",
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"O":4},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F"],"add":2,"div":2}}}
 },
 {
@@ -39,7 +39,7 @@
     "main_group":"Perfluoroalkyl acids",
     "smarts1":"[#6$([#6](=O)([OH1]))]",
     "smarts2":"[#6$([#6]O[#6])]",
-    "smartsPath":"per",
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"gte":{"O":3},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
 },
 {
@@ -50,7 +50,7 @@
     "main_group":"Polyfluoroalkyl acids",
     "smarts1":"[#6$([#6](=O)([OH1]))]",
     "smarts2":"[#6$([#6]O[#6])]",
-    "smartsPath":"poly",
+    "smartsPath":"Polyfluoroalkyl",
     "constraints":{"gte":{"O":3},"only":["C","F","H","Cl","Br","I","O"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
 },
 {
@@ -61,7 +61,7 @@
     "main_group":"Perfluoroalkyl acids",
     "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"S":1,"O":3},"only":["C","F","H","S","O"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
 },
 {
@@ -72,7 +72,7 @@
     "main_group":"Polyfluoroalkyl acids",
     "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Polyfluoroalkyl",
     "constraints":{"eq":{"S":1,"O":3},"gte":{"F":1},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":-1,"div":2}}}
 },
 {
@@ -83,7 +83,7 @@
     "main_group":"Perfluoroalkyl acids",
     "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
     "smarts2":"[#6$([#6][#16](=O)(=O)[OH1])]",
-    "smartsPath":"per",
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"S":2,"O":6},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
 },
 {
@@ -94,7 +94,7 @@
     "main_group":"Perfluoroalkyl acids",
     "smarts1":"[#6$([#6][#16](=O)(=O)([OH]))]",
     "smarts2":"[#6$([#6]O[#6])]",
-    "smartsPath":"per",
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"S":1},"gte":{"O":4},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
 },
 {
@@ -105,7 +105,7 @@
     "main_group":"Polyfluoroalkyl acids",
     "smarts1":"[#6$([#6][#16](=O)(=O)([OH]))]",
     "smarts2":"[#6$([#6]O[#6])]",
-    "smartsPath":"poly",
+    "smartsPath":"Polyfluoroalkyl",
     "constraints":{"eq":{"S":1},"gte":{"O":4},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":-1,"div":2}}}
 },
 {
@@ -116,7 +116,7 @@
     "main_group":"Perfluoroalkyl acids",
     "smarts1":"[#6$([#6][#16X3](=O)[OH1])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"S":1},"only":["C","F","S","O","H"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
 },
 {
@@ -127,7 +127,7 @@
     "main_group":"Perfluoroalkyl acids",
     "smarts1":"[#6$([#6][#15](=[#8])([#8])[#8])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"P":1,"O":3},"only":["C","F","P","O","H"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
 },
 {
@@ -138,7 +138,7 @@
     "main_group":"Perfluoroalkyl acids",
     "smarts1":"[#6X4$([#6][#15](=[#8])([#8])[#1,#6])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"P":1,"O":2},"only":["C","F","P","O","H"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
 },
 {
@@ -149,7 +149,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[#6X4$([#6;!$([#6]=O)][OH1])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","O"],"add":-1,"div":2}}}
 },		
 {
@@ -160,7 +160,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[C$([#6][C$([CH2]O[H]),C$([CH2][CH2]O[H]),C$([CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H])])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{}
 },
 {
@@ -171,7 +171,7 @@
     "main_group":"other PFAS",
     "smarts1":"[#6$([#6]O[#6])]",
     "smarts2":"[#6$([#6]O[#6])]",
-    "smartsPath":"per",
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"only":["C","F","O"],"gte":{"O":2}, "rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
 },
 {
@@ -182,7 +182,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[#6][#8][#6]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Polyfluoroalkyl",
     "constraints":{"gte":{"O":1},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","H"],"add":-1,"div":2}}}
 },
 {
@@ -193,7 +193,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[#6X3$([#6]=[#6X3])]",
     "smarts2":null,
-    "smartsPath":"per",
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"only":["C","F","H"],"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
 },
 {
@@ -204,7 +204,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[#6X3$([#6]=[#6])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Polyfluoroalkyl",
     "constraints":{"gte":{"F":1}, "lte":{}, "eq":{}, "only":["C","F","H"]}
 },
 {
@@ -215,7 +215,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":null,
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Polyfluoroalkyl",
     "constraints":{"gte":{"F":1}, "lte":{}, "eq":{}, "only":["C","F","H"], "rel":{"C":{"atoms":["F","H"],"add":-1,"div":2}}}
 },
 {
@@ -226,7 +226,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[#6X4$([#6](F)(F))]",
     "smarts2":"[#6X4$([#6][H,I,Br,Cl])]",
-    "smartsPath":"poly",
+    "smartsPath":"Polyfluoroalkyl",
     "constraints":{"gte":{"F":1},"eq":{"O":0,"S":0}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2}}}
 },
 {
@@ -237,7 +237,7 @@
     "main_group":"other PFAS",
     "smarts1":"[#6X4$([#6]a)]",
     "smarts2":null,
-    "smartsPath":"per",
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{}
 },
 {
@@ -248,7 +248,7 @@
     "main_group":"other PFAS",
     "smarts1":null,
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"only":["C","F","H"],"rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
 },
 {
@@ -259,7 +259,7 @@
     "main_group":"other PFAS",
     "smarts1":"[#6$([#6][#7D3])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"only":["C","F","H","N"],"rel":{"C":{"atoms":["F"],"add":-1.5,"div":2}}}
 },
 {
@@ -270,7 +270,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":null,
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"gte":{"I":1}, "rel":{"C":{"atoms":["F","I"],"add":-1,"div":2}}}
 },
 {
@@ -281,7 +281,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[#16$([#16](=O)(=O)[F])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
 },
 {
@@ -292,7 +292,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[#6X4$([#6]C(=O)[#6])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Perfluoroalkyl",
     "constraints":{"only":["C","F","O"],"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
 },
 {
@@ -303,7 +303,7 @@
     "main_group":"Perfluoroalkyl acids precursors",
     "smarts1":"[#6X4$([#6]C(=O)[#6])]",
     "smarts2":null,
-    "smartsPath":null,
+    "smartsPath":"Polyfluoroalkyl",
     "constraints":{"gte":{"O":1,"F":3}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2,"add_atoms":["O"]}}}
 },
 {

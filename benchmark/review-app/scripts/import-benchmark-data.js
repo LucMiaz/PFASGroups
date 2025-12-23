@@ -98,9 +98,14 @@ class DataImporter {
                 const moleculeData = record.molecule_data || record;
                 const moleculeId = await this.insertMolecule(moleculeData, datasetType, benchmarkDate);
                 
-                // Insert PFASGroups result if exists
+                // Insert PFASGroups result if exists (default flavor: bycomponent=False)
                 if (record.pfasgroups_result) {
                     await this.insertPFASGroupsResult(moleculeId, record.pfasgroups_result);
+                }
+                
+                // Insert PFASGroups bycomponent result if exists (bycomponent=True flavor)
+                if (record.pfasgroups_result_bycomponent) {
+                    await this.insertPFASGroupsResultByComponent(moleculeId, record.pfasgroups_result_bycomponent);
                 }
                 
                 // Insert Atlas result if exists
@@ -181,6 +186,20 @@ class DataImporter {
     async insertPFASGroupsResult(moleculeId, result) {
         await this.db.run(`
             INSERT INTO pfasgroups_results (
+                molecule_id, detected_groups, success, error_message, execution_time
+            ) VALUES (?, ?, ?, ?, ?)
+        `, [
+            moleculeId,
+            JSON.stringify(result.detected_groups || []),
+            result.success || false,
+            result.error || null,
+            result.execution_time || null
+        ]);
+    }
+
+    async insertPFASGroupsResultByComponent(moleculeId, result) {
+        await this.db.run(`
+            INSERT INTO pfasgroups_results_bycomponent (
                 molecule_id, detected_groups, success, error_message, execution_time
             ) VALUES (?, ?, ?, ?, ?)
         `, [

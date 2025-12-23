@@ -326,15 +326,21 @@ class EnhancedPFASBenchmark:
         
         return molecules
     
-    def test_with_pfasgroups(self, smiles):
-        """Test molecule with PFASGroups detection"""
+    def test_with_pfasgroups(self, smiles, bycomponent=False):
+        """Test molecule with PFASGroups detection
+        
+        Args:
+            smiles: SMILES string
+            bycomponent: Whether to use bycomponent=True flavor
+        """
         
         start_time = time.perf_counter()
         pfasgroups_result = {
             'detected_groups': [],
             'success': False,
             'error': None,
-            'execution_time': 0.0
+            'execution_time': 0.0,
+            'bycomponent': bycomponent
         }
         
         if not PFASGROUPS_AVAILABLE:
@@ -345,7 +351,7 @@ class EnhancedPFASBenchmark:
             mol = Chem.MolFromSmiles(smiles)
             if mol is not None:
                 formula = rdMolDescriptors.CalcMolFormula(mol)
-                matches = parse_PFAS_groups(mol, formula)
+                matches = parse_PFAS_groups(mol, formula, bycomponent=bycomponent)
                 
                 # Parse the complex tuple structure returned by parse_PFAS_groups
                 group_ids = []
@@ -428,15 +434,17 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups
-                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'])
+                    # Test with PFASGroups (both flavors)
+                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False)
+                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True)
                     
                     # Test with PFAS-Atlas  
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result,
+                        'pfasgroups_result': pfas_result_default,
+                        'pfasgroups_result_bycomponent': pfas_result_bycomponent,
                         'atlas_result': atlas_result
                     }
                     
@@ -482,15 +490,17 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups
-                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'])
+                    # Test with PFASGroups (both flavors)
+                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False)
+                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result,
+                        'pfasgroups_result': pfas_result_default,
+                        'pfasgroups_result_bycomponent': pfas_result_bycomponent,
                         'atlas_result': atlas_result
                     }
                     
@@ -512,15 +522,17 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups
-                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'])
+                    # Test with PFASGroups (both flavors)
+                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False)
+                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result,
+                        'pfasgroups_result': pfas_result_default,
+                        'pfasgroups_result_bycomponent': pfas_result_bycomponent,
                         'atlas_result': atlas_result
                     }
                     
@@ -546,15 +558,17 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups
-                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'])
+                    # Test with PFASGroups (both flavors)
+                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False)
+                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result,
+                        'pfasgroups_result': pfas_result_default,
+                        'pfasgroups_result_bycomponent': pfas_result_bycomponent,
                         'atlas_result': atlas_result
                     }
                     
