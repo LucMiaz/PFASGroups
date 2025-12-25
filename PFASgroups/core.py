@@ -337,7 +337,7 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
         n = 0
         n_CFchain = []
     else:
-        n = min([len(x) for x in chains.values()])#{k:len(chain) for k,chain in chains.items()}
+        n = max([0]+[len(x) for x in chains.values()])#{k:len(chain) for k,chain in chains.items()}
         n_CFchain = [len(x) for x in chains.get('Perfluoroalkyl',[[]])]#{k:[len(x) for x in chain] for k,chain in chains.items()}
     chains = [{'chain':list(chain), 'length':len(chain),'SMARTS':path} for path,all_chains in chains.items() for chain in all_chains]
     return n,n_CFchain, len(smartsMatches1), chains  
@@ -388,7 +388,7 @@ def find_alkyl_components(mol, smarts, components):
         return 0,0,0,[]
     # Filter components connected to the smarts
     relevant_components = [comp for comp in components if len(subset.intersection(comp))>0]
-    return min([len(x) for x in relevant_components]),[len(x) for x in relevant_components],len(relevant_components),relevant_components
+    return max([0]+[len(x) for x in relevant_components]),[len(x) for x in relevant_components],len(relevant_components),relevant_components
 
 def find_aryl_components(mol, aryl_smarts):
     """Find aryl components in a molecule."""
@@ -397,7 +397,7 @@ def find_aryl_components(mol, aryl_smarts):
     if len(subset)==0:
         return 0,0,0,[]
     components = connected_components(mol, subset)
-    return min([len(x) for x in components]),[len(x) for x in components],len(components),components
+    return max([0]+[len(x) for x in components]),[len(x) for x in components],len(components),components
 
 # --- Main PFAS group parsing functions ---
 @load_PFASGroups()

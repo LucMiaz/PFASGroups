@@ -61,11 +61,11 @@ try:
             summary = generate_test_summary()
             # Save detailed results
             if TEST_SUMMARY_DATA['oecd_results']:
-                pd.DataFrame(TEST_SUMMARY_DATA['oecd_results']).to_csv('oecd_test_results.csv', index=False)
+                pd.DataFrame(TEST_SUMMARY_DATA['oecd_results']).to_csv('results/oecd_test_results.csv', index=False)
             if TEST_SUMMARY_DATA['generic_results']:
-                pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('generic_test_results.csv', index=False)
+                pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('results/generic_test_results.csv', index=False)
             if TEST_SUMMARY_DATA['specificity_results'] is not None:
-                TEST_SUMMARY_DATA['specificity_results'].to_csv('specificity_test_results.csv', index=False)
+                TEST_SUMMARY_DATA['specificity_results'].to_csv('results/specificity_test_results.csv', index=False)
         except Exception as e:
             print(f"Warning: Could not generate test summary: {e}")
     
@@ -192,46 +192,50 @@ def generate_test_summary(output_file=f'{tests_folder}/results/test_summary_repo
     if TEST_SUMMARY_DATA['oecd_results']:
         oecd_df = pd.DataFrame(TEST_SUMMARY_DATA['oecd_results'])
         total_oecd = len(oecd_df)
-        detected_oecd = len(oecd_df[oecd_df['detected'] == True])
+        detected_oecd = len(oecd_df[oecd_df['detected_both'] == True])
         oecd_detection_rate = detected_oecd / total_oecd if total_oecd > 0 else 0
         
         # Group-wise analysis
         group_stats = oecd_df.groupby('group_ids').agg({
-            'detected': ['count', 'sum', 'mean'],
+            'detected_default': ['count', 'sum', 'mean'],
+            'detected_bycomponent': ['count', 'sum', 'mean'],
+            'detected_both': ['count', 'sum', 'mean'],
             'group_name': 'first'
         }).round(3)
-        group_stats.columns = ['total_tests', 'successful_detections', 'detection_rate', 'group_name']
+        group_stats.columns = ['total_tests_default', 'successful_detections_default', 'detection_rate_default','total_tests_bycomponent', 'successful_detections_bycomponent', 'detection_rate_bycomponent','total_tests_both', 'successful_detections_both', 'detection_rate_both', 'group_name']
         
         summary['oecd_test_results'] = {
             'total_tests': int(total_oecd),
             'successful_detections': int(detected_oecd),
             'overall_detection_rate': round(oecd_detection_rate, 3),
             'group_wise_results': group_stats.reset_index().to_dict('records'),
-            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate').reset_index().to_dict('records'),
-            'best_performing_groups': group_stats.nlargest(5, 'detection_rate').reset_index().to_dict('records')
+            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate_both').reset_index().to_dict('records'),
+            'best_performing_groups': group_stats.nlargest(5, 'detection_rate_both').reset_index().to_dict('records')
         }
     
     # Analyze generic test results
     if TEST_SUMMARY_DATA['generic_results']:
         generic_df = pd.DataFrame(TEST_SUMMARY_DATA['generic_results'])
         total_generic = len(generic_df)
-        detected_generic = len(generic_df[generic_df['detected'] == True])
+        detected_generic = len(generic_df[generic_df['detected_both'] == True])
         generic_detection_rate = detected_generic / total_generic if total_generic > 0 else 0
         
         # Group-wise analysis
         group_stats = generic_df.groupby('group_ids').agg({
-            'detected': ['count', 'sum', 'mean'],
+            'detected_default': ['count', 'sum', 'mean'],
+            'detected_bycomponent': ['count', 'sum', 'mean'],
+            'detected_both': ['count', 'sum', 'mean'],
             'group_name': 'first'
         }).round(3)
-        group_stats.columns = ['total_tests', 'successful_detections', 'detection_rate', 'group_name']
+        group_stats.columns = ['total_tests_default', 'successful_detections_default', 'detection_rate_default','total_tests_bycomponent', 'successful_detections_bycomponent', 'detection_rate_bycomponent','total_tests_both', 'successful_detections_both', 'detection_rate_both', 'group_name']
         
         summary['generic_test_results'] = {
             'total_tests': int(total_generic),
             'successful_detections': int(detected_generic),
             'overall_detection_rate': round(generic_detection_rate, 3),
             'group_wise_results': group_stats.reset_index().to_dict('records'),
-            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate').reset_index().to_dict('records'),
-            'best_performing_groups': group_stats.nlargest(5, 'detection_rate').reset_index().to_dict('records')
+            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate_both').reset_index().to_dict('records'),
+            'best_performing_groups': group_stats.nlargest(5, 'detection_rate_both').reset_index().to_dict('records')
         }
     
     # Analyze specificity test results
@@ -346,7 +350,7 @@ class TestPFASGroups:
             if TEST_SUMMARY_DATA['generic_results']:
                 pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('generic_test_results.csv', index=False)
             if TEST_SUMMARY_DATA['specificity_results'] is not None:
-                TEST_SUMMARY_DATA['specificity_results'].to_csv('specificity_test_results.csv', index=False)
+                TEST_SUMMARY_DATA['specificity_results'].to_csv('results/specificity_test_results.csv', index=False)
     
     def test_oecd_pfas_groups(self):
         """Test OECD PFAS group detection with synthetic compounds using both algorithm flavors."""
@@ -590,8 +594,8 @@ class TestPFASGroups:
             pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('generic_test_results.csv', index=False)
             print("Generic test details saved to: generic_test_results.csv")
         if TEST_SUMMARY_DATA['specificity_results'] is not None:
-            TEST_SUMMARY_DATA['specificity_results'].to_csv('specificity_test_results.csv', index=False)
-            print("Specificity test details saved to: specificity_test_results.csv")
+            TEST_SUMMARY_DATA['specificity_results'].to_csv('results/specificity_test_results.csv', index=False)
+            print("Specificity test details saved to: results/specificity_test_results.csv")
         
         return overall_result
 
@@ -956,7 +960,7 @@ def create_specificity_test_molecules():
     }).reset_index()
     return specificity_test_molecules
 
-def df_test_pfas_group_specificity(test_molecules=None, output_file=f'{tests_folder}/results/specificity_test_results.csv', verbose=True):
+def df_test_pfas_group_specificity(test_molecules=None, output_file=f'{tests_folder}/results/pfas_group_specificity_test_results_.csv', verbose=True):
     """
     Test the specificity of each PFAS group by using simple, unambiguous test molecules.
     
