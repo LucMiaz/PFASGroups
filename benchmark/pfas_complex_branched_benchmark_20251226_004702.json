@@ -1,0 +1,2995 @@
+[
+  {
+    "test_name": "highly_branched_carboxylic_acid",
+    "description": "Highly branched perfluorocarboxylic acid",
+    "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+    "complexity": "very_high",
+    "expected_pfasgroups": [
+      33
+    ],
+    "molecules_tested": 20,
+    "pfasgroups_detections": 20,
+    "atlas_detections": 20,
+    "pfasgroups_correct_detections": 20,
+    "molecules": [
+      {
+        "iteration": 1,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.0326708590000635,
+        "atlas_execution_time": 0.05782874500073376
+      },
+      {
+        "iteration": 2,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.020273228001315147,
+        "atlas_execution_time": 0.0570866969992494
+      },
+      {
+        "iteration": 3,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.01993620000030205,
+        "atlas_execution_time": 0.05615256999953999
+      },
+      {
+        "iteration": 4,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.019258800999523373,
+        "atlas_execution_time": 0.05679888800113986
+      },
+      {
+        "iteration": 5,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.019816392999928212,
+        "atlas_execution_time": 0.057791392000581254
+      },
+      {
+        "iteration": 6,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.019564476000596187,
+        "atlas_execution_time": 0.06879745999867737
+      },
+      {
+        "iteration": 7,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.02568646000145236,
+        "atlas_execution_time": 0.058351679999759654
+      },
+      {
+        "iteration": 8,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.021219321999524254,
+        "atlas_execution_time": 0.058085534001293126
+      },
+      {
+        "iteration": 9,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.020124284999837982,
+        "atlas_execution_time": 0.055250143001103424
+      },
+      {
+        "iteration": 10,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.02114097599951492,
+        "atlas_execution_time": 0.05977923600039503
+      },
+      {
+        "iteration": 11,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.019734523999431985,
+        "atlas_execution_time": 0.05604049600151484
+      },
+      {
+        "iteration": 12,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.019909110000298824,
+        "atlas_execution_time": 0.0598815180001111
+      },
+      {
+        "iteration": 13,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.020668289000241202,
+        "atlas_execution_time": 0.06295394399967336
+      },
+      {
+        "iteration": 14,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.020895074001600733,
+        "atlas_execution_time": 0.05798232300003292
+      },
+      {
+        "iteration": 15,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.020545334000416915,
+        "atlas_execution_time": 0.05842491899966262
+      },
+      {
+        "iteration": 16,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.021170187999814516,
+        "atlas_execution_time": 0.05804085599993414
+      },
+      {
+        "iteration": 17,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.021494276999874273,
+        "atlas_execution_time": 0.05759068900079001
+      },
+      {
+        "iteration": 18,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.020687815000201226,
+        "atlas_execution_time": 0.054361589000109234
+      },
+      {
+        "iteration": 19,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.021498332998817204,
+        "atlas_execution_time": 0.05959129499933624
+      },
+      {
+        "iteration": 20,
+        "smiles": "C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O",
+        "molecular_weight": 713.9545412120001,
+        "num_atoms": 43,
+        "num_heavy_atoms": 43,
+        "num_fluorines": 27,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          1,
+          2,
+          33
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids",
+        "atlas_second_class": "PolyFCA derivatives",
+        "pfasgroups_execution_time": 0.020842314999754308,
+        "atlas_execution_time": 0.059381851000580355
+      }
+    ]
+  },
+  {
+    "test_name": "branched_sulfonic_acid",
+    "description": "Branched perfluorosulfonic acid",
+    "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+    "complexity": "high",
+    "expected_pfasgroups": [
+      36
+    ],
+    "molecules_tested": 20,
+    "pfasgroups_detections": 20,
+    "atlas_detections": 20,
+    "pfasgroups_correct_detections": 20,
+    "molecules": [
+      {
+        "iteration": 1,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.016803876000267337,
+        "atlas_execution_time": 0.04835063199971046
+      },
+      {
+        "iteration": 2,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.012773500999173848,
+        "atlas_execution_time": 0.043586085999777424
+      },
+      {
+        "iteration": 3,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.013079173000733135,
+        "atlas_execution_time": 0.047712551000586245
+      },
+      {
+        "iteration": 4,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.01289914500011946,
+        "atlas_execution_time": 0.04335445700053242
+      },
+      {
+        "iteration": 5,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.013527952000004007,
+        "atlas_execution_time": 0.042756859000292025
+      },
+      {
+        "iteration": 6,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.012473934999434277,
+        "atlas_execution_time": 0.04302294199987955
+      },
+      {
+        "iteration": 7,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.011997725001492654,
+        "atlas_execution_time": 0.04312646899961692
+      },
+      {
+        "iteration": 8,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.012358546000541537,
+        "atlas_execution_time": 0.04505885499929718
+      },
+      {
+        "iteration": 9,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.01212264999958279,
+        "atlas_execution_time": 0.04483962199992675
+      },
+      {
+        "iteration": 10,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.01248661400131823,
+        "atlas_execution_time": 0.045786059001329704
+      },
+      {
+        "iteration": 11,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.013628568000058294,
+        "atlas_execution_time": 0.05212075199960964
+      },
+      {
+        "iteration": 12,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.013090437998471316,
+        "atlas_execution_time": 0.044897986999785644
+      },
+      {
+        "iteration": 13,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.013120441000864957,
+        "atlas_execution_time": 0.044864081999548944
+      },
+      {
+        "iteration": 14,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.012809722999008955,
+        "atlas_execution_time": 0.04639977899933001
+      },
+      {
+        "iteration": 15,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.012683410001045559,
+        "atlas_execution_time": 0.046000877000551554
+      },
+      {
+        "iteration": 16,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.012790253000275698,
+        "atlas_execution_time": 0.0451577020012337
+      },
+      {
+        "iteration": 17,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.012624768000023323,
+        "atlas_execution_time": 0.046939743999246275
+      },
+      {
+        "iteration": 18,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.013184272000216879,
+        "atlas_execution_time": 0.04584598300061771
+      },
+      {
+        "iteration": 19,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.0125837670002511,
+        "atlas_execution_time": 0.045544675000201096
+      },
+      {
+        "iteration": 20,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 381.95330356399995,
+        "num_atoms": 22,
+        "num_heavy_atoms": 22,
+        "num_fluorines": 12,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          7,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.013723325999308145,
+        "atlas_execution_time": 0.05063182399862853
+      }
+    ]
+  },
+  {
+    "test_name": "branched_ether_chain",
+    "description": "Branched perfluoroether",
+    "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+    "complexity": "high",
+    "expected_pfasgroups": [
+      31
+    ],
+    "molecules_tested": 20,
+    "pfasgroups_detections": 20,
+    "atlas_detections": 20,
+    "pfasgroups_correct_detections": 20,
+    "molecules": [
+      {
+        "iteration": 1,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.023974689000169747,
+        "atlas_execution_time": 0.048964833998979884
+      },
+      {
+        "iteration": 2,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.017536625999127864,
+        "atlas_execution_time": 0.04647016899980372
+      },
+      {
+        "iteration": 3,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.01845095800126728,
+        "atlas_execution_time": 0.04816032899907441
+      },
+      {
+        "iteration": 4,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.0169114520012954,
+        "atlas_execution_time": 0.05135497999981453
+      },
+      {
+        "iteration": 5,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.017515585999717587,
+        "atlas_execution_time": 0.04882459399959771
+      },
+      {
+        "iteration": 6,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.017597508998733247,
+        "atlas_execution_time": 0.04790715499984799
+      },
+      {
+        "iteration": 7,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.017100275999837322,
+        "atlas_execution_time": 0.05048886999975366
+      },
+      {
+        "iteration": 8,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.017771869999705814,
+        "atlas_execution_time": 0.05006117999982962
+      },
+      {
+        "iteration": 9,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.016988552000839263,
+        "atlas_execution_time": 0.050473799999963376
+      },
+      {
+        "iteration": 10,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.017247223000595113,
+        "atlas_execution_time": 0.051505778999853646
+      },
+      {
+        "iteration": 11,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.01749319599912269,
+        "atlas_execution_time": 0.05166329100029543
+      },
+      {
+        "iteration": 12,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.016896509998332476,
+        "atlas_execution_time": 0.06048842800009879
+      },
+      {
+        "iteration": 13,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.02915544899951783,
+        "atlas_execution_time": 0.05381679499987513
+      },
+      {
+        "iteration": 14,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.01687128100093105,
+        "atlas_execution_time": 0.04976982600055635
+      },
+      {
+        "iteration": 15,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.022665217000394478,
+        "atlas_execution_time": 0.04956132900042576
+      },
+      {
+        "iteration": 16,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.01750846799950523,
+        "atlas_execution_time": 0.050105794000046444
+      },
+      {
+        "iteration": 17,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.01778256600118766,
+        "atlas_execution_time": 0.049955098000282305
+      },
+      {
+        "iteration": 18,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.017351005000818986,
+        "atlas_execution_time": 0.049758568000470405
+      },
+      {
+        "iteration": 19,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.017210714000611915,
+        "atlas_execution_time": 0.05274619800002256
+      },
+      {
+        "iteration": 20,
+        "smiles": "C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F",
+        "molecular_weight": 485.97240083200006,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 19,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          17,
+          31,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAA precursors",
+        "atlas_second_class": "HFEs",
+        "pfasgroups_execution_time": 0.017303147000347963,
+        "atlas_execution_time": 0.04998972100111132
+      }
+    ]
+  },
+  {
+    "test_name": "multi_functional_branched",
+    "description": "Multi-functional branched PFAS (carboxylic acid + ether + sulfonic acid)",
+    "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+    "complexity": "very_high",
+    "expected_pfasgroups": [
+      31,
+      33,
+      36
+    ],
+    "molecules_tested": 20,
+    "pfasgroups_detections": 20,
+    "atlas_detections": 20,
+    "pfasgroups_correct_detections": 20,
+    "molecules": [
+      {
+        "iteration": 1,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.025687608000225737,
+        "atlas_execution_time": 0.05075853699963773
+      },
+      {
+        "iteration": 2,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.014625568999690586,
+        "atlas_execution_time": 0.04639540900097927
+      },
+      {
+        "iteration": 3,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.01529720300095505,
+        "atlas_execution_time": 0.04621664600017539
+      },
+      {
+        "iteration": 4,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.015972412998962682,
+        "atlas_execution_time": 0.046255377999841585
+      },
+      {
+        "iteration": 5,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.014828506000412744,
+        "atlas_execution_time": 0.04606217099899368
+      },
+      {
+        "iteration": 6,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.015917634998913854,
+        "atlas_execution_time": 0.04703241999959573
+      },
+      {
+        "iteration": 7,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.015326805998483906,
+        "atlas_execution_time": 0.047038018999955966
+      },
+      {
+        "iteration": 8,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.01581673500004399,
+        "atlas_execution_time": 0.046299236000777455
+      },
+      {
+        "iteration": 9,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.015363259000878315,
+        "atlas_execution_time": 0.048133403000974795
+      },
+      {
+        "iteration": 10,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.015069584000229952,
+        "atlas_execution_time": 0.05083907000152976
+      },
+      {
+        "iteration": 11,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.01572256899999047,
+        "atlas_execution_time": 0.047481845000220346
+      },
+      {
+        "iteration": 12,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.015057354999953532,
+        "atlas_execution_time": 0.0478417009999248
+      },
+      {
+        "iteration": 13,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.015788147999046487,
+        "atlas_execution_time": 0.04607302300064475
+      },
+      {
+        "iteration": 14,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.01523092000024917,
+        "atlas_execution_time": 0.046481675999530125
+      },
+      {
+        "iteration": 15,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.014955675000237534,
+        "atlas_execution_time": 0.047321341999122524
+      },
+      {
+        "iteration": 16,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.014912172000549617,
+        "atlas_execution_time": 0.04808830999900238
+      },
+      {
+        "iteration": 17,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.015855740999541013,
+        "atlas_execution_time": 0.04967732899967814
+      },
+      {
+        "iteration": 18,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.015017088000604417,
+        "atlas_execution_time": 0.04779250599858642
+      },
+      {
+        "iteration": 19,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.014926329000445548,
+        "atlas_execution_time": 0.047636663999583106
+      },
+      {
+        "iteration": 20,
+        "smiles": "C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O",
+        "molecular_weight": 423.94746923599996,
+        "num_atoms": 25,
+        "num_heavy_atoms": 25,
+        "num_fluorines": 11,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          31,
+          33,
+          36,
+          48
+        ],
+        "pfasgroups_expected_groups": [
+          31,
+          33,
+          36
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "PFAAs",
+        "atlas_second_class": "PFSA derivatives",
+        "pfasgroups_execution_time": 0.01556615099980263,
+        "atlas_execution_time": 0.04758965400105808
+      }
+    ]
+  },
+  {
+    "test_name": "cyclic_branched",
+    "description": "Cyclic branched perfluorocarboxylic acid",
+    "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+    "complexity": "high",
+    "expected_pfasgroups": [
+      33
+    ],
+    "molecules_tested": 20,
+    "pfasgroups_detections": 20,
+    "atlas_detections": 20,
+    "pfasgroups_correct_detections": 20,
+    "molecules": [
+      {
+        "iteration": 1,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.025910038999427343,
+        "atlas_execution_time": 0.05317107100017893
+      },
+      {
+        "iteration": 2,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.01698960999965493,
+        "atlas_execution_time": 0.05195722999997088
+      },
+      {
+        "iteration": 3,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.017019285000060336,
+        "atlas_execution_time": 0.05200318400056858
+      },
+      {
+        "iteration": 4,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.017614708000110113,
+        "atlas_execution_time": 0.053950876999806496
+      },
+      {
+        "iteration": 5,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.017595241999515565,
+        "atlas_execution_time": 0.05716410300010466
+      },
+      {
+        "iteration": 6,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.01742947099955927,
+        "atlas_execution_time": 0.05471966400000383
+      },
+      {
+        "iteration": 7,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.017255015000046114,
+        "atlas_execution_time": 0.05302941300033126
+      },
+      {
+        "iteration": 8,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.017145853998954408,
+        "atlas_execution_time": 0.05320153100001335
+      },
+      {
+        "iteration": 9,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.016861105999851134,
+        "atlas_execution_time": 0.05455117399833398
+      },
+      {
+        "iteration": 10,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.01692857099988032,
+        "atlas_execution_time": 0.05771424599879538
+      },
+      {
+        "iteration": 11,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.016972489000181668,
+        "atlas_execution_time": 0.05640028199923108
+      },
+      {
+        "iteration": 12,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.016497123000590364,
+        "atlas_execution_time": 0.05534059099954902
+      },
+      {
+        "iteration": 13,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.017570621001141262,
+        "atlas_execution_time": 0.05416751399934583
+      },
+      {
+        "iteration": 14,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.017017474998283433,
+        "atlas_execution_time": 0.057190014000298106
+      },
+      {
+        "iteration": 15,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.01649295599963807,
+        "atlas_execution_time": 0.05629970599875378
+      },
+      {
+        "iteration": 16,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.01685246900160564,
+        "atlas_execution_time": 0.05604190499980177
+      },
+      {
+        "iteration": 17,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.017001697000523563,
+        "atlas_execution_time": 0.05690328299897374
+      },
+      {
+        "iteration": 18,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.016675177999786683,
+        "atlas_execution_time": 0.055550896999193355
+      },
+      {
+        "iteration": 19,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.020540174999041483,
+        "atlas_execution_time": 0.056614178000018
+      },
+      {
+        "iteration": 20,
+        "smiles": "C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F",
+        "molecular_weight": 471.99558088799995,
+        "num_atoms": 29,
+        "num_heavy_atoms": 29,
+        "num_fluorines": 16,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          33,
+          48,
+          52,
+          53
+        ],
+        "pfasgroups_expected_groups": [
+          33
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
+        "atlas_second_class": "PolyFCA derivatives, cyclic",
+        "pfasgroups_execution_time": 0.01713905100041302,
+        "atlas_execution_time": 0.057749605000935844
+      }
+    ]
+  },
+  {
+    "test_name": "aromatic_branched",
+    "description": "Aromatic branched PFAS with carboxylic acid",
+    "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+    "complexity": "very_high",
+    "expected_pfasgroups": [
+      33,
+      51
+    ],
+    "molecules_tested": 20,
+    "pfasgroups_detections": 20,
+    "atlas_detections": 20,
+    "pfasgroups_correct_detections": 20,
+    "molecules": [
+      {
+        "iteration": 1,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.025435612000364927,
+        "atlas_execution_time": 0.000507907001519925
+      },
+      {
+        "iteration": 2,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.024651534000440734,
+        "atlas_execution_time": 0.0003753399996639928
+      },
+      {
+        "iteration": 3,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.02283610199992836,
+        "atlas_execution_time": 0.0004083380008523818
+      },
+      {
+        "iteration": 4,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.02760401500017906,
+        "atlas_execution_time": 0.00037193700154602993
+      },
+      {
+        "iteration": 5,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.02715855300084513,
+        "atlas_execution_time": 0.0004566999996313825
+      },
+      {
+        "iteration": 6,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.02613763800036395,
+        "atlas_execution_time": 0.0003641280000010738
+      },
+      {
+        "iteration": 7,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.02739038899926527,
+        "atlas_execution_time": 0.0003943619994970504
+      },
+      {
+        "iteration": 8,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.01901948099839501,
+        "atlas_execution_time": 0.0003850799985229969
+      },
+      {
+        "iteration": 9,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.02468121399942902,
+        "atlas_execution_time": 0.00033984999936365057
+      },
+      {
+        "iteration": 10,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.026349972000389243,
+        "atlas_execution_time": 0.00038426200080721173
+      },
+      {
+        "iteration": 11,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.02207815699875937,
+        "atlas_execution_time": 0.0003622940002969699
+      },
+      {
+        "iteration": 12,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.026689025000450783,
+        "atlas_execution_time": 0.0007501319996663369
+      },
+      {
+        "iteration": 13,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.0313776670009247,
+        "atlas_execution_time": 0.0004150039985688636
+      },
+      {
+        "iteration": 14,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.027562407000004896,
+        "atlas_execution_time": 0.0003847089992632391
+      },
+      {
+        "iteration": 15,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.02692312700128241,
+        "atlas_execution_time": 0.00036370300040289294
+      },
+      {
+        "iteration": 16,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.026639694000550662,
+        "atlas_execution_time": 0.0004738489988085348
+      },
+      {
+        "iteration": 17,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.021942923000096926,
+        "atlas_execution_time": 0.00040339699989999644
+      },
+      {
+        "iteration": 18,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.02465697999832628,
+        "atlas_execution_time": 0.0003625699991971487
+      },
+      {
+        "iteration": 19,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.026431013000546955,
+        "atlas_execution_time": 0.00039557399941259064
+      },
+      {
+        "iteration": 20,
+        "smiles": "c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F",
+        "molecular_weight": 443.98312438399995,
+        "num_atoms": 28,
+        "num_heavy_atoms": 28,
+        "num_fluorines": 14,
+        "pfasgroups_detected": true,
+        "pfasgroups_groups": [
+          22,
+          33,
+          51,
+          54,
+          55
+        ],
+        "pfasgroups_expected_groups": [
+          33,
+          51
+        ],
+        "pfasgroups_correct": true,
+        "atlas_detected": true,
+        "atlas_first_class": "Other PFASs",
+        "atlas_second_class": "Aromatic PFASs",
+        "pfasgroups_execution_time": 0.027814928000225336,
+        "atlas_execution_time": 0.000346487999195233
+      }
+    ]
+  }
+]
