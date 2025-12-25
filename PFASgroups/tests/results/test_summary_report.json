@@ -1,17 +1,17 @@
 {
   "test_metadata": {
-    "timestamp": "2025-12-25T07:32:43.806501",
-    "test_start_time": "2025-12-25T07:30:05.465018",
-    "test_end_time": "2025-12-25T07:32:43.806474",
-    "test_duration_seconds": 158.341456,
+    "timestamp": "2025-12-25T13:54:21.621072",
+    "test_start_time": "2025-12-25T13:51:42.734181",
+    "test_end_time": "2025-12-25T13:54:21.621050",
+    "test_duration_seconds": 158.886869,
     "python_version": "3.14.2 | packaged by conda-forge | (main, Dec  6 2025, 11:17:27) [MSC v.1944 64 bit (AMD64)]",
     "rdkit_available": true,
     "pytest_available": true
   },
   "oecd_test_results": {
     "total_tests": 838,
-    "successful_detections": 807,
-    "overall_detection_rate": 0.963,
+    "successful_detections": 808,
+    "overall_detection_rate": 0.964,
     "group_wise_results": [
       {
         "group_ids": 1,
@@ -68,14 +68,14 @@
       {
         "group_ids": 5,
         "total_tests_default": 30,
-        "successful_detections_default": 29,
-        "detection_rate_default": 0.967,
+        "successful_detections_default": 30,
+        "detection_rate_default": 1.0,
         "total_tests_bycomponent": 30,
-        "successful_detections_bycomponent": 29,
-        "detection_rate_bycomponent": 0.967,
+        "successful_detections_bycomponent": 30,
+        "detection_rate_bycomponent": 1.0,
         "total_tests_both": 30,
-        "successful_detections_both": 29,
-        "detection_rate_both": 0.967,
+        "successful_detections_both": 30,
+        "detection_rate_both": 1.0,
         "group_name": "Polyfluoroalkylether carboxylic acid"
       },
       {
@@ -393,19 +393,6 @@
         "group_name": "Perfluoroalkene"
       },
       {
-        "group_ids": 5,
-        "total_tests_default": 30,
-        "successful_detections_default": 29,
-        "detection_rate_default": 0.967,
-        "total_tests_bycomponent": 30,
-        "successful_detections_bycomponent": 29,
-        "detection_rate_bycomponent": 0.967,
-        "total_tests_both": 30,
-        "successful_detections_both": 29,
-        "detection_rate_both": 0.967,
-        "group_name": "Polyfluoroalkylether carboxylic acid"
-      },
-      {
         "group_ids": 1,
         "total_tests_default": 29,
         "successful_detections_default": 29,
@@ -443,6 +430,19 @@
         "successful_detections_both": 30,
         "detection_rate_both": 1.0,
         "group_name": "Perfluoroalkyl dicarboxylic acids"
+      },
+      {
+        "group_ids": 4,
+        "total_tests_default": 30,
+        "successful_detections_default": 30,
+        "detection_rate_default": 1.0,
+        "total_tests_bycomponent": 30,
+        "successful_detections_bycomponent": 30,
+        "detection_rate_bycomponent": 1.0,
+        "total_tests_both": 30,
+        "successful_detections_both": 30,
+        "detection_rate_both": 1.0,
+        "group_name": "Perfluoroalkylether carboxylic acids"
       }
     ],
     "best_performing_groups": [
@@ -499,17 +499,17 @@
         "group_name": "Perfluoroalkylether carboxylic acids"
       },
       {
-        "group_ids": 6,
-        "total_tests_default": 29,
-        "successful_detections_default": 29,
+        "group_ids": 5,
+        "total_tests_default": 30,
+        "successful_detections_default": 30,
         "detection_rate_default": 1.0,
-        "total_tests_bycomponent": 29,
-        "successful_detections_bycomponent": 29,
+        "total_tests_bycomponent": 30,
+        "successful_detections_bycomponent": 30,
         "detection_rate_bycomponent": 1.0,
-        "total_tests_both": 29,
-        "successful_detections_both": 29,
+        "total_tests_both": 30,
+        "successful_detections_both": 30,
         "detection_rate_both": 1.0,
-        "group_name": "Perfluoroalkyl sulfonic acids"
+        "group_name": "Polyfluoroalkylether carboxylic acid"
       }
     ]
   },
@@ -954,24 +954,24 @@
     ]
   },
   "specificity_test_results": {
-    "total_tests": 1843,
-    "detection_rate": 0.564,
-    "specificity_rate": 0.617,
-    "average_detected_groups_per_test": 3.04,
-    "failed_detection_cases": 803,
-    "failed_specificity_cases": 706,
+    "total_tests": 1838,
+    "detection_rate": 0.537,
+    "specificity_rate": 0.638,
+    "average_detected_groups_per_test": 2.98,
+    "failed_detection_cases": 851,
+    "failed_specificity_cases": 666,
     "specificity_details": {
-      "tests_with_exact_match": 26,
-      "tests_with_multiple_matches": 1817,
+      "tests_with_exact_match": 58,
+      "tests_with_multiple_matches": 1780,
       "tests_with_no_matches": 0
     }
   },
   "overall_summary": {
     "total_tests_run": 1758,
-    "total_successful_detections": 1646,
-    "overall_accuracy": 0.936,
-    "specificity_rate": 0.617,
-    "detection_rate": 0.564,
+    "total_successful_detections": 1647,
+    "overall_accuracy": 0.937,
+    "specificity_rate": 0.638,
+    "detection_rate": 0.537,
     "test_status": "FAILED"
   }
 }

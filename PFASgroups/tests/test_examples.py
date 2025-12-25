@@ -346,9 +346,9 @@ class TestPFASGroups:
             summary = generate_test_summary()
             # Save detailed results as well
             if TEST_SUMMARY_DATA['oecd_results']:
-                pd.DataFrame(TEST_SUMMARY_DATA['oecd_results']).to_csv('oecd_test_results.csv', index=False)
+                pd.DataFrame(TEST_SUMMARY_DATA['oecd_results']).to_csv('results/oecd_test_results.csv', index=False)
             if TEST_SUMMARY_DATA['generic_results']:
-                pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('generic_test_results.csv', index=False)
+                pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('results/generic_test_results.csv', index=False)
             if TEST_SUMMARY_DATA['specificity_results'] is not None:
                 TEST_SUMMARY_DATA['specificity_results'].to_csv('results/specificity_test_results.csv', index=False)
     
@@ -588,11 +588,11 @@ class TestPFASGroups:
         
         # Save detailed results
         if TEST_SUMMARY_DATA['oecd_results']:
-            pd.DataFrame(TEST_SUMMARY_DATA['oecd_results']).to_csv('oecd_test_results.csv', index=False)
-            print("OECD test details saved to: oecd_test_results.csv")
+            pd.DataFrame(TEST_SUMMARY_DATA['oecd_results']).to_csv('results/oecd_test_results.csv', index=False)
+            print("OECD test details saved to: results/oecd_test_results.csv")
         if TEST_SUMMARY_DATA['generic_results']:
-            pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('generic_test_results.csv', index=False)
-            print("Generic test details saved to: generic_test_results.csv")
+            pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('results/generic_test_results.csv', index=False)
+            print("Generic test details saved to: results/generic_test_results.csv")
         if TEST_SUMMARY_DATA['specificity_results'] is not None:
             TEST_SUMMARY_DATA['specificity_results'].to_csv('results/specificity_test_results.csv', index=False)
             print("Specificity test details saved to: results/specificity_test_results.csv")
