@@ -14,7 +14,9 @@ import sys
 import os
 
 # Add parent directory to path to import PFASGroups
-sys.path.append('/home/luc/git/PFASGroups')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+sys.path.append(parent_dir)
 
 try:
     from PFASgroups.core import parse_PFAS_groups
@@ -25,14 +27,15 @@ except ImportError:
     PFASGROUPS_AVAILABLE = False
 
 # Try to import PFAS-Atlas
+atlas_dir = os.path.join(os.path.dirname(parent_dir), 'PFAS-atlas')
 try:
-    sys.path.append('/home/luc/git/PFAS-atlas')  
+    sys.path.append(atlas_dir)  
     from classification_helper.classify_pfas import classify_pfas_molecule
     ATLAS_AVAILABLE = True
     print("✅ PFAS-Atlas available")
 except ImportError:
     try:
-        sys.path.append('/home/luc/git/PFAS-atlas/classification_helper')
+        sys.path.append(os.path.join(atlas_dir, 'classification_helper'))
         from classify_pfas import classify_pfas_molecule
         ATLAS_AVAILABLE = True
         print("✅ PFAS-Atlas available (fallback import)")
@@ -45,11 +48,15 @@ class EnhancedPFASBenchmark:
     
     def __init__(self):
         # Load PFAS groups definitions
-        with open('/home/luc/git/PFASGroups/PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        parent_dir = os.path.dirname(script_dir)
+        pfas_groups_path = os.path.join(parent_dir, 'PFASgroups', 'data', 'PFAS_groups_smarts.json')
+        with open(pfas_groups_path, 'r') as f:
             self.pfas_groups = json.load(f)
         
         # Load specificity test groups for OECD connections
-        with open('/home/luc/git/PFASGroups/PFASgroups/tests/specificity_test_groups.json', 'r') as f:
+        specificity_path = os.path.join(parent_dir, 'PFASgroups', 'tests', 'specificity_test_groups.json')
+        with open(specificity_path, 'r') as f:
             self.specificity_groups = json.load(f)
         
         # Target groups 29-51 (excluding 48)
@@ -1188,7 +1195,9 @@ class EnhancedPFASBenchmark:
         print("=" * 45)
         
         # Load OECD data
-        oecd_file = '/home/luc/git/PFAS-atlas/input_data/OECD_4000/step3_OECD_Class_0812.csv'
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        atlas_dir = os.path.join(os.path.dirname(script_dir), 'PFAS-atlas')
+        oecd_file = os.path.join(atlas_dir, 'input_data', 'OECD_4000', 'step3_OECD_Class_0812.csv')
         try:
             import pandas as pd
             oecd_data = pd.read_csv(oecd_file)

@@ -2,6 +2,27 @@ const Database = require('../database/database');
 const fs = require('fs-extra');
 const path = require('path');
 
+/**
+ * DataImporter - Imports benchmark data into the database
+ * 
+ * DEDUPLICATION STRATEGY:
+ * ----------------------
+ * This importer automatically removes duplicates during data import:
+ * 
+ * 1. Benchmark Data (OECD, Enhanced, etc.):
+ *    - Duplicates are identified by matching BOTH:
+ *      a) SMILES string (molecular structure)
+ *      b) All classification results (PFASGroups, PFASGroups_bycomponent, Atlas)
+ *    - Keeps the first occurrence of each unique combination
+ *    - Example: Same molecule with different classifications = kept as separate records
+ * 
+ * 2. Timing Data:
+ *    - Duplicates are identified by SMILES only
+ *    - Keeps the first occurrence of each unique SMILES
+ *    - Timing measurements are averaged across the dataset
+ * 
+ * This ensures data quality while preserving legitimate variations in results.
+ */
 class DataImporter {
     constructor() {
         this.db = new Database();
@@ -92,6 +113,14 @@ class DataImporter {
             data = allMolecules;
         }
         
+        // Deduplicate records based on SMILES and classification results
+        const originalCount = data.length;
+        data = this.deduplicateRecords(data);
+        const duplicatesRemoved = originalCount - data.length;
+        if (duplicatesRemoved > 0) {
+            console.log(`  Removed ${duplicatesRemoved} duplicate(s) from ${filename}`);
+        }
+        
         for (const record of data) {
             try {
                 // Insert molecule data
@@ -125,7 +154,15 @@ class DataImporter {
         const data = JSON.parse(await fs.readFile(filePath, 'utf8'));
         const benchmarkDate = this.extractDateFromFilename(filename);
         
-        for (const record of data) {
+        // Deduplicate timing records based on SMILES
+        const originalCount = data.length;
+        const deduplicatedData = this.deduplicateTimingRecords(data);
+        const duplicatesRemoved = originalCount - deduplicatedData.length;
+        if (duplicatesRemoved > 0) {
+            console.log(`  Removed ${duplicatesRemoved} duplicate(s) from ${filename}`);
+        }
+        
+        for (const record of deduplicatedData) {
             try {
                 // Insert molecule data
                 const moleculeId = await this.insertTimingMolecule(record, benchmarkDate);
@@ -137,7 +174,66 @@ class DataImporter {
             }
         }
         
-        console.log(`✓ Imported ${data.length} timing records from ${filename}`);
+        console.log(`✓ Imported ${deduplicatedData.length} timing records from ${filename}`);
+    }
+
+    /**
+     * Deduplicate records based on SMILES and classification results
+     * Keeps the first occurrence of each unique combination
+     */
+    deduplicateRecords(records) {
+        const seen = new Map();
+        const deduplicated = [];
+        
+        for (const record of records) {
+            const moleculeData = record.molecule_data || record;
+            const smiles = moleculeData.smiles;
+            
+            if (!smiles) {
+                deduplicated.push(record);
+                continue;
+            }
+            
+            // Create a unique key based on SMILES and classification results
+            const pfasgroupsGroups = JSON.stringify((record.pfasgroups_result?.detected_groups || []).sort());
+            const pfasgroupsBycompGroups = JSON.stringify((record.pfasgroups_result_bycomponent?.detected_groups || []).sort());
+            const atlasFirstClass = record.atlas_result?.first_class || '';
+            const atlasSecondClass = record.atlas_result?.second_class || '';
+            
+            const key = `${smiles}|${pfasgroupsGroups}|${pfasgroupsBycompGroups}|${atlasFirstClass}|${atlasSecondClass}`;
+            
+            if (!seen.has(key)) {
+                seen.set(key, true);
+                deduplicated.push(record);
+            }
+        }
+        
+        return deduplicated;
+    }
+
+    /**
+     * Deduplicate timing records based on SMILES only
+     * For timing data, we keep the first occurrence of each SMILES
+     */
+    deduplicateTimingRecords(records) {
+        const seen = new Set();
+        const deduplicated = [];
+        
+        for (const record of records) {
+            const smiles = record.smiles;
+            
+            if (!smiles) {
+                deduplicated.push(record);
+                continue;
+            }
+            
+            if (!seen.has(smiles)) {
+                seen.add(smiles);
+                deduplicated.push(record);
+            }
+        }
+        
+        return deduplicated;
     }
 
     async insertMolecule(moleculeData, datasetType, benchmarkDate) {
