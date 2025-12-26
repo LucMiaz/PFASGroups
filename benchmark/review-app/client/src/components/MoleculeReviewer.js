@@ -3,7 +3,6 @@ import { Card, Button, Form, Row, Col, Alert, Badge, Spinner } from 'react-boots
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
 import MoleculeViewer from './MoleculeViewer';
-import { getGroupName, getShortGroupName } from '../data/pfasGroupNames';
 
 function MoleculeReviewer({ onReviewUpdate }) {
   const [molecules, setMolecules] = useState([]);
@@ -237,45 +236,34 @@ function MoleculeReviewer({ onReviewUpdate }) {
                 {/* Classification Results */}
                 <div className="classification-results">
                   {/* PFASGroups Results */}
-                  <div className={`algorithm-result ${molecule.pfasgroups_error ? 'error' : 'success'}`}>
+                  <div className={`algorithm-result ${molecule.pfasgroups_success ? 'success' : 'error'}`}>
                     <h6>🔬 PFASGroups</h6>
-                    {molecule.pfasgroups_error ? (
-                      <p className="text-danger">Error: {molecule.pfasgroups_error}</p>
-                    ) : (
+                    {molecule.pfasgroups_success ? (
                       <div>
                         <p><strong>Detected Groups:</strong></p>
                         <div>
-                          {molecule.pfasgroups_detected && molecule.pfasgroups_detected.length > 0 ? (
-                            molecule.pfasgroups_detected.map(group => (
-                              <Badge 
-                                key={group} 
-                                bg="secondary" 
-                                className="me-1 mb-1"
-                                title={getGroupName(group)}
-                              >
-                                G{group} - {getShortGroupName(group)}
-                              </Badge>
-                            ))
-                          ) : (
-                            <span className="text-muted">No PFAS groups detected</span>
-                          )}
+                          {molecule.pfasgroups_detected.map(group => (
+                            <Badge key={group} bg="secondary" className="me-1 mb-1">{group}</Badge>
+                          ))}
                         </div>
                         <p><small>Time: {(molecule.pfasgroups_time * 1000).toFixed(2)}ms</small></p>
                       </div>
+                    ) : (
+                      <p className="text-danger">Error: {molecule.pfasgroups_error}</p>
                     )}
                   </div>
 
                   {/* PFAS-Atlas Results */}
-                  <div className={`algorithm-result ${molecule.atlas_error ? 'error' : 'success'}`}>
+                  <div className={`algorithm-result ${molecule.atlas_success ? 'success' : 'error'}`}>
                     <h6>🗺️ PFAS-Atlas</h6>
-                    {molecule.atlas_error ? (
-                      <p className="text-danger">Error: {molecule.atlas_error}</p>
-                    ) : (
+                    {molecule.atlas_success ? (
                       <div>
-                        <p><strong>First Class:</strong> {molecule.atlas_first_class || 'None'}</p>
-                        <p><strong>Second Class:</strong> {molecule.atlas_second_class || 'None'}</p>
+                        <p><strong>First Class:</strong> {molecule.atlas_first_class}</p>
+                        <p><strong>Second Class:</strong> {molecule.atlas_second_class}</p>
                         <p><small>Time: {(molecule.atlas_time * 1000).toFixed(2)}ms</small></p>
                       </div>
+                    ) : (
+                      <p className="text-danger">Error: {molecule.atlas_error}</p>
                     )}
                   </div>
                 </div>

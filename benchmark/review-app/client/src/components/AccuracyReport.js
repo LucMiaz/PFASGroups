@@ -9,6 +9,7 @@ function AccuracyReport() {
   const [loading, setLoading] = useState(true);
   const [exportStatus, setExportStatus] = useState(null);
   const [showEnhancedMetrics, setShowEnhancedMetrics] = useState(true);
+  const [showEnhancedMetrics, setShowEnhancedMetrics] = useState(true);
 
   const datasetOptions = [
     { value: 'all', label: 'All Datasets' },

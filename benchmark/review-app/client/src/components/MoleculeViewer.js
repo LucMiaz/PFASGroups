@@ -4,25 +4,17 @@ function MoleculeViewer({ smiles, width = 300, height = 200 }) {
   const canvasRef = useRef(null);
   const [error, setError] = useState(null);
   const [rdkit, setRdkit] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadRDKit = async () => {
       try {
-        // Check if RDKit is already loaded from CDN (via index.html script tag)
-        if (window.initRDKitModule) {
-          const rdkitInstance = await window.initRDKitModule();
-          setRdkit(rdkitInstance);
-          setLoading(false);
-        } else {
-          // Fallback: RDKit not available
-          setError('RDKit.js not available. Showing SMILES string instead.');
-          setLoading(false);
-        }
+        // Try to load RDKit.js
+        const RDKitModule = await import('@rdkit/rdkit');
+        const rdkitInstance = await RDKitModule.initRDKitModule();
+        setRdkit(rdkitInstance);
       } catch (err) {
         console.error('Error loading RDKit:', err);
         setError('RDKit.js not available. Showing SMILES string instead.');
-        setLoading(false);
       }
     };
 
