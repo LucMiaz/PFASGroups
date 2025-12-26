@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: PFASgroups
-Version: 1.1.0
+Version: 1.2.0
 Summary: A Python module for parsing and visualizing PFAS groups.
 Author: Luc Miaz
 Author-email: Luc Miaz <luc@miaz.ch>
