@@ -1,6 +1,6 @@
 # PFASgroups package
 from .PFASGroupModel import PFASGroup
-from .core import parse_pfas, parse_PFAS_groups, plot_pfasgroups, generate_pfas_fingerprint, get_smartsPaths, get_PFASGroups
+from .core import parse_pfas, parse_PFAS_groups, plot_pfasgroups, generate_pfas_fingerprint, get_smartsPaths, get_PFASGroups, compile_smartsPath, compile_smartsPaths
 from .draw_mols import plot_mol, plot_mols
 from .generate_homologues import generate_homologues
 from .fragmentation import generate_degradation_products
@@ -13,4 +13,4 @@ except ImportError:
     pass
 
 __version__ = "0.1.0"
-__all__ = ['PFASGroup', 'parse_pfas', 'parse_PFAS_groups', 'plot_pfasgroups', 'plot_mol','plot_mols',"generate_pfas_fingerprint", 'get_smartsPaths', 'get_PFASGroups']
+__all__ = ['PFASGroup', 'parse_pfas', 'parse_PFAS_groups', 'plot_pfasgroups', 'plot_mol','plot_mols',"generate_pfas_fingerprint", 'get_smartsPaths', 'get_PFASGroups', 'compile_smartsPath', 'compile_smartsPaths']

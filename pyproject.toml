@@ -21,6 +21,9 @@ dependencies = [
     "svgutils"
 ]
 
+[project.scripts]
+pfasgroups = "PFASgroups.cli:main"
+
 [tool.setuptools]
 packages = ["PFASgroups"]
 

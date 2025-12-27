@@ -804,3 +804,86 @@ def get_smartsPaths(**kwargs):
 @load_PFASGroups()
 def get_PFASGroups(**kwargs):
     return kwargs.get('pfas_groups')
+
+def compile_smartsPath(chain_smarts, end_smarts):
+    """
+    Compile a pair of SMARTS patterns into a ready-to-use path definition.
+    
+    This function preprocesses SMARTS patterns for chain and end groups,
+    preparing them for use in PFAS parsing functions.
+    
+    Parameters
+    ----------
+    chain_smarts : str
+        SMARTS pattern for the repeating chain unit
+    end_smarts : str
+        SMARTS pattern for the terminal group
+    
+    Returns
+    -------
+    list
+        List containing [chain_mol, end_mol] where both are preprocessed RDKit Mol objects
+    
+    Examples
+    --------
+    >>> chain = compile_smartsPath(
+    ...     "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
+    ...     "[C;X4](Cl)(Cl)Cl"
+    ... )
+    >>> paths = {'Perchlorinated': chain}
+    """
+    chain_mol = Chem.MolFromSmarts(chain_smarts)
+    chain_mol.UpdatePropertyCache()
+    Chem.GetSymmSSSR(chain_mol)
+    chain_mol.GetRingInfo().NumRings()
+    
+    end_mol = Chem.MolFromSmarts(end_smarts)
+    end_mol.UpdatePropertyCache()
+    Chem.GetSymmSSSR(end_mol)
+    end_mol.GetRingInfo().NumRings()
+    
+    return [chain_mol, end_mol]
+
+def compile_smartsPaths(paths_dict):
+    """
+    Compile multiple SMARTS path definitions from a dictionary.
+    
+    This function takes a dictionary of path definitions (with 'chain' and 'end' keys)
+    and preprocesses them for use in PFAS parsing functions.
+    
+    Parameters
+    ----------
+    paths_dict : dict
+        Dictionary with structure:
+        {
+            'PathName': {'chain': 'SMARTS', 'end': 'SMARTS'},
+            ...
+        }
+    
+    Returns
+    -------
+    dict
+        Dictionary mapping path names to [chain_mol, end_mol] pairs
+    
+    Examples
+    --------
+    >>> custom_paths = {
+    ...     'Perchlorinated': {
+    ...         'chain': '[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)',
+    ...         'end': '[C;X4](Cl)(Cl)Cl'
+    ...     },
+    ...     'MixedHalo': {
+    ...         'chain': '[C;X4]([F,Cl])([F,Cl])!@!=!#[C;X4]([F,Cl])',
+    ...         'end': '[C;X4]([F,Cl])([F,Cl])[F,Cl]'
+    ...     }
+    ... }
+    >>> compiled = compile_smartsPaths(custom_paths)
+    >>> results = parse_pfas(smiles, smartsPaths=compiled)
+    """
+    compiled = {}
+    for name, patterns in paths_dict.items():
+        if isinstance(patterns, dict) and 'chain' in patterns and 'end' in patterns:
+            compiled[name] = compile_smartsPath(patterns['chain'], patterns['end'])
+        else:
+            raise ValueError(f"Path '{name}' must have 'chain' and 'end' keys")
+    return compiled

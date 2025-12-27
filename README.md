@@ -53,16 +53,54 @@ pfasgroups list-groups
 
 Use custom pathtype definitions and PFAS groups:
 
+```python
+# Load custom files entirely
+from PFASgroups import get_smartsPaths, get_PFASGroups, parse_pfas
+
+custom_paths = get_smartsPaths(filename='my_fpaths.json')
+custom_groups = get_PFASGroups(filename='my_groups.json')
+
+results = parse_pfas(
+    ["C(C(F)(F)F)F"],
+    smartsPaths=custom_paths,
+    pfas_groups=custom_groups
+)
+```
+
+```python
+# Or extend defaults with your custom groups
+from PFASgroups import get_PFASGroups, PFASGroup, parse_pfas, compile_smartsPath, get_smartsPaths
+
+# Add custom PFAS groups
+groups = get_PFASGroups()  # Get defaults
+groups.append(PFASGroup(
+    id=999,
+    name="My Custom Group",
+    smarts1="[C](F)(F)F",
+    smarts2="[N+](=O)[O-]",
+    smartsPath="Perfluoroalkyl",
+    constraints={"nF": [3, None]}
+))
+
+results = parse_pfas(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
+
+# Add custom path types (e.g., chlorinated analogs)
+paths = get_smartsPaths()
+paths['Perchlorinated'] = compile_smartsPath(
+    "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # chain pattern
+    "[C;X4](Cl)(Cl)Cl"                     # end pattern
+)
+
+results = parse_pfas(["ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"], smartsPaths=paths)
+```
+
 ```bash
 # Via command line
 pfasgroups parse --groups-file my_custom_groups.json "C(C(F)(F)F)F"
 
-# Via environment variable
-export PFASGROUPS_GROUPS="/path/to/custom_groups.json"
-
-# Via Python API
-from PFASgroups import set_default_config
-set_default_config(groups_file='custom_groups.json')
+# List available groups and paths
+pfasgroups list-groups
+pfasgroups list-paths
 ```
 
 ## Documentation

@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from .core import parse_pfas, generate_pfas_fingerprint
+from .core import parse_pfas, generate_pfas_fingerprint, get_smartsPaths, get_PFASGroups
 from rdkit import Chem
 
 
@@ -35,6 +35,14 @@ Examples:
   
   # Generate fingerprints with custom groups
   pfasgroups fingerprint --input smiles.txt --groups 28-52 --format dict
+  
+  # List available groups
+  pfasgroups list-groups
+  
+  # List available path types
+  pfasgroups list-paths
+  
+Note: Use get_smartsPaths() and get_PFASGroups() in Python to extend defaults.
         """
     )
     
@@ -129,7 +137,7 @@ Examples:
     # List groups command
     list_parser = subparsers.add_parser(
         'list-groups',
-        help='List available PFAS groups'
+        help='List available PFAS groups (use in Python to extend with get_PFASGroups)'
     )
     list_parser.add_argument(
         '-o', '--output',
@@ -137,6 +145,23 @@ Examples:
         help='Output file (default: stdout)'
     )
     list_parser.add_argument(
+        '--pretty',
+        action='store_true',
+        default=True,
+        help='Pretty-print JSON output'
+    )
+    
+    # List paths command
+    list_paths_parser = subparsers.add_parser(
+        'list-paths',
+        help='List available path types (use in Python to extend with get_smartsPaths)'
+    )
+    list_paths_parser.add_argument(
+        '-o', '--output',
+        type=str,
+        help='Output file (default: stdout)'
+    )
+    list_paths_parser.add_argument(
         '--pretty',
         action='store_true',
         default=True,
@@ -177,12 +202,12 @@ def parse_group_selection(groups_str: str) -> list:
 
 def cmd_parse(args):
     """Execute parse command."""
-    # Set custom configuration if provided
-    if args.fpaths_file or args.groups_file:
-        set_default_config(
-            fpaths_file=args.fpaths_file,
-            groups_file=args.groups_file
-        )
+    # Load custom configuration if provided
+    kwargs = {}
+    if args.fpaths_file:
+        kwargs['smartsPaths'] = get_smartsPaths(filename=args.fpaths_file)
+    if args.groups_file:
+        kwargs['pfas_groups'] = get_PFASGroups(filename=args.groups_file)
     
     # Get SMILES from command line or file
     if args.input:
@@ -194,7 +219,7 @@ def cmd_parse(args):
         sys.exit(1)
     
     # Parse PFAS
-    results = parse_pfas(smiles_list, bycomponent=args.bycomponent)
+    results = parse_pfas(smiles_list, bycomponent=args.bycomponent, **kwargs)
     
     # Convert results to JSON-serializable format
     output_data = []
@@ -229,12 +254,12 @@ def cmd_parse(args):
 
 def cmd_fingerprint(args):
     """Execute fingerprint command."""
-    # Set custom configuration if provided
-    if args.fpaths_file or args.groups_file:
-        set_default_config(
-            fpaths_file=args.fpaths_file,
-            groups_file=args.groups_file
-        )
+    # Load custom configuration if provided
+    kwargs = {}
+    if args.fpaths_file:
+        kwargs['smartsPaths'] = get_smartsPaths(filename=args.fpaths_file)
+    if args.groups_file:
+        kwargs['pfas_groups'] = get_PFASGroups(filename=args.groups_file)
     
     # Get SMILES from command line or file
     if args.input:
@@ -255,7 +280,8 @@ def cmd_fingerprint(args):
         smiles_list,
         selected_groups=selected_groups,
         representation=args.format,
-        count_mode=args.count_mode
+        count_mode=args.count_mode,
+        **kwargs
     )
     
     # Prepare output
@@ -294,16 +320,11 @@ def cmd_fingerprint(args):
 
 def cmd_list_groups(args):
     """Execute list-groups command."""
-    # Set custom configuration if provided
-    if args.fpaths_file or args.groups_file:
-        set_default_config(
-            fpaths_file=args.fpaths_file,
-            groups_file=args.groups_file
-        )
-    
-    # Load groups
-    config = get_config()
-    groups = config.load_pfas_groups()
+    # Load groups (custom or default)
+    if args.groups_file:
+        groups = get_PFASGroups(filename=args.groups_file)
+    else:
+        groups = get_PFASGroups()
     
     # Create output
     groups_list = []
@@ -319,7 +340,8 @@ def cmd_list_groups(args):
     
     output_data = {
         'total_groups': len(groups),
-        'groups': groups_list
+        'groups': groups_list,
+        'note': 'Use get_PFASGroups() in Python to load and extend these groups'
     }
     
     # Output results
@@ -334,24 +356,65 @@ def cmd_list_groups(args):
         print(output_json)
 
 
+def cmd_list_paths(args):
+    """Execute list-paths command."""
+    # Load paths (custom or default)
+    if args.fpaths_file:
+        paths = get_smartsPaths(filename=args.fpaths_file)
+    else:
+        paths = get_smartsPaths()
+    
+    # Create output - convert RDKit mols to SMARTS strings for display
+    paths_list = []
+    for name, (chain_mol, end_mol) in paths.items():
+        paths_list.append({
+            'name': name,
+            'chain_smarts': Chem.MolToSmarts(chain_mol),
+            'end_smarts': Chem.MolToSmarts(end_mol)
+        })
+    
+    output_data = {
+        'total_paths': len(paths),
+        'paths': paths_list,
+        'note': 'Use get_smartsPaths() in Python to load and extend these paths'
+    }
+    
+    # Output results
+    indent = 2 if args.pretty else None
+    output_json = json.dumps(output_data, indent=indent)
+    
+    if args.output:
+        with open(args.output, 'w') as f:
+            f.write(output_json)
+        print(f"Paths list written to {args.output}")
+    else:
+        print(output_json)
+
+
 def cmd_validate_config(args):
     """Execute validate-config command."""
     try:
-        config = get_config(
-            fpaths_file=args.fpaths_file,
-            groups_file=args.groups_file
-        )
-        
-        # Try to load both files
         print("Validating configuration files...")
         
-        fpaths = config.load_fpaths()
-        print(f"✓ fpaths.json loaded successfully from: {config.fpaths_file}")
-        print(f"  Found {len(fpaths)} path types: {', '.join(fpaths.keys())}")
+        # Validate fpaths if provided
+        if args.fpaths_file:
+            paths = get_smartsPaths(filename=args.fpaths_file)
+            print(f"✓ fpaths.json loaded successfully from: {args.fpaths_file}")
+            print(f"  Found {len(paths)} path types")
         
-        groups = config.load_pfas_groups()
-        print(f"✓ PFAS_groups_smarts.json loaded successfully from: {config.groups_file}")
-        print(f"  Found {len(groups)} PFAS groups")
+        # Validate groups if provided
+        if args.groups_file:
+            groups = get_PFASGroups(filename=args.groups_file)
+            print(f"✓ PFAS_groups_smarts.json loaded successfully from: {args.groups_file}")
+            print(f"  Found {len(groups)} PFAS groups")
+        
+        if not args.fpaths_file and not args.groups_file:
+            # Validate defaults
+            paths = get_smartsPaths()
+            groups = get_PFASGroups()
+            print(f"✓ Default configuration loaded successfully")
+            print(f"  Path types: {len(paths)}")
+            print(f"  PFAS groups: {len(groups)}")
         
         print("\nConfiguration is valid!")
         
@@ -376,6 +439,8 @@ def main():
         cmd_fingerprint(args)
     elif args.command == 'list-groups':
         cmd_list_groups(args)
+    elif args.command == 'list-paths':
+        cmd_list_paths(args)
     elif args.command == 'validate-config':
         cmd_validate_config(args)
     else:
