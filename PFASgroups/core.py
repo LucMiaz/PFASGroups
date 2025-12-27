@@ -401,7 +401,7 @@ def find_aryl_components(mol, aryl_smarts):
 
 # --- Main PFAS group parsing functions ---
 @load_PFASGroups()
-def parse_PFAS_groups(mol, formula, pfas_groups=None, bycomponent=False):
+def parse_PFAS_groups(mol, pfas_groups=None, bycomponent=False, **kwargs):
     """Iterates over PFAS groups and finds the ones that match the molecule.
     :params mol: RDKit molecule
     :params formula: Molecular formula as string
@@ -417,6 +417,7 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None, bycomponent=False):
 
     """
     mol = Chem.AddHs(mol)
+    formula = kwargs.get("formula",CalcMolFormula(mol))
     try:
         Chem.SanitizeMol(mol)
     except Chem.AtomValenceException:
@@ -488,7 +489,7 @@ def parse_pfas(smiles_list, bycomponent=False):
     for smiles in smiles_list:
         mol = Chem.MolFromSmiles(smiles)
         formula = CalcMolFormula(mol)
-        matches = parse_PFAS_groups(mol, formula, bycomponent=bycomponent)
+        matches = parse_PFAS_groups(mol, formula=formula, bycomponent=bycomponent)
         results.append(matches)
     return results
 
@@ -597,7 +598,7 @@ def generate_pfas_fingerprint(smiles: Union[str, List[str]],
                 raise ValueError(f"Invalid SMILES: {smiles_str}")
             
             formula = CalcMolFormula(mol)
-            all_matches = parse_PFAS_groups(mol, formula, pfas_groups=pfas_groups)
+            all_matches = parse_PFAS_groups(mol, formula=formula, pfas_groups=pfas_groups)
             
             # Create mapping from group ID to match information
             match_dict = {}
