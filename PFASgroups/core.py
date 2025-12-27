@@ -488,7 +488,7 @@ def parse_PFAS_groups(mol, bycomponent=False, **kwargs):
                     group_matches.append((pf,n,n_CFchain, chains))
     return group_matches
 
-def parse_pfas(smiles_list, bycomponent=False):
+def parse_pfas(smiles_list, bycomponent=False, **kwargs):
     """
     Parse a list of SMILES strings and return PFAS group information.
     """
@@ -496,7 +496,7 @@ def parse_pfas(smiles_list, bycomponent=False):
     for smiles in smiles_list:
         mol = Chem.MolFromSmiles(smiles)
         formula = CalcMolFormula(mol)
-        matches = parse_PFAS_groups(mol, formula=formula, bycomponent=bycomponent)
+        matches = parse_PFAS_groups(mol, formula=formula, bycomponent=bycomponent, **kwargs)
         results.append(matches)
     return results
 
