@@ -2,7 +2,7 @@
 Simplified test to check JavaScript implementation directly using file import.
 """
 from rdkit import Chem
-from PFASgroups.core import parse_PFAS_groups
+from PFASgroups.core import parse_groups_in_mol
 import json
 
 # Test molecules
@@ -45,7 +45,7 @@ def test_python_both_flavors():
         
         # Test bycomponent=False
         print(f"\n--- Testing bycomponent=False ---")
-        result_default = parse_PFAS_groups(mol, formula, bycomponent=False)
+        result_default = parse_groups_in_mol(mol, formula, bycomponent=False)
         groups_default = result_default.get('detected_groups', [])
         print(f"Detected groups: {[g['id'] for g in groups_default]}")
         for group in groups_default:
@@ -54,7 +54,7 @@ def test_python_both_flavors():
         
         # Test bycomponent=True
         print(f"\n--- Testing bycomponent=True ---")
-        result_bycomp = parse_PFAS_groups(mol, formula, bycomponent=True)
+        result_bycomp = parse_groups_in_mol(mol, formula, bycomponent=True)
         groups_bycomp = result_bycomp.get('detected_groups', [])
         print(f"Detected groups: {[g['id'] for g in groups_bycomp]}")
         for group in groups_bycomp:

@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from .core import parse_pfas, generate_pfas_fingerprint, get_smartsPaths, get_PFASGroups
+from .core import parse_smiles, generate_fingerprint, get_smartsPaths, get_PFASGroups
 from rdkit import Chem
 
 
@@ -219,7 +219,7 @@ def cmd_parse(args):
         sys.exit(1)
     
     # Parse PFAS
-    results = parse_pfas(smiles_list, bycomponent=args.bycomponent, **kwargs)
+    results = parse_smiles(smiles_list, bycomponent=args.bycomponent, **kwargs)
     
     # Convert results to JSON-serializable format
     output_data = []
@@ -276,7 +276,7 @@ def cmd_fingerprint(args):
         selected_groups = parse_group_selection(args.groups)
     
     # Generate fingerprints
-    fps, group_info = generate_pfas_fingerprint(
+    fps, group_info = generate_fingerprint(
         smiles_list,
         selected_groups=selected_groups,
         representation=args.format,

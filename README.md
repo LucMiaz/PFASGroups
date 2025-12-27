@@ -26,14 +26,14 @@ After installation, the `pfasgroups` command will be available in your terminal.
 ### Python API
 
 ```python
-from PFASgroups import parse_pfas, generate_pfas_fingerprint
+from PFASgroups import parse_smiles, generate_fingerprint
 
 # Parse PFAS structures
 smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
-results = parse_pfas(smiles_list)
+results = parse_smiles(smiles_list)
 
 # Generate fingerprints
-fingerprints, group_info = generate_pfas_fingerprint(smiles_list)
+fingerprints, group_info = generate_fingerprint(smiles_list)
 ```
 
 ### Command Line
@@ -55,12 +55,12 @@ Use custom pathtype definitions and PFAS groups:
 
 ```python
 # Load custom files entirely
-from PFASgroups import get_smartsPaths, get_PFASGroups, parse_pfas
+from PFASgroups import get_smartsPaths, get_PFASGroups, parse_smiles
 
 custom_paths = get_smartsPaths(filename='my_fpaths.json')
 custom_groups = get_PFASGroups(filename='my_groups.json')
 
-results = parse_pfas(
+results = parse_smiles(
     ["C(C(F)(F)F)F"],
     smartsPaths=custom_paths,
     pfas_groups=custom_groups
@@ -69,7 +69,7 @@ results = parse_pfas(
 
 ```python
 # Or extend defaults with your custom groups
-from PFASgroups import get_PFASGroups, PFASGroup, parse_pfas, compile_smartsPath, get_smartsPaths
+from PFASgroups import get_PFASGroups, PFASGroup, parse_smiles, compile_smartsPath, get_smartsPaths
 
 # Add custom PFAS groups
 groups = get_PFASGroups()  # Get defaults
@@ -82,7 +82,7 @@ groups.append(PFASGroup(
     constraints={"nF": [3, None]}
 ))
 
-results = parse_pfas(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
+results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
 
 # Add custom path types (e.g., chlorinated analogs)
 paths = get_smartsPaths()
@@ -91,7 +91,7 @@ paths['Perchlorinated'] = compile_smartsPath(
     "[C;X4](Cl)(Cl)Cl"                     # end pattern
 )
 
-results = parse_pfas(["ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"], smartsPaths=paths)
+results = parse_smiles(["ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"], smartsPaths=paths)
 ```
 
 ```bash

@@ -403,7 +403,7 @@ def find_aryl_components(mol, aryl_smarts):
 
 # --- Main PFAS group parsing functions ---
 @load_PFASGroups()
-def parse_PFAS_groups(mol, bycomponent=False, **kwargs):
+def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
     """Iterates over PFAS groups and finds the ones that match the molecule.
     :params mol: RDKit molecule
     :params formula: Molecular formula as string
@@ -488,20 +488,72 @@ def parse_PFAS_groups(mol, bycomponent=False, **kwargs):
                     group_matches.append((pf,n,n_CFchain, chains))
     return group_matches
 
-def parse_pfas(smiles_list, bycomponent=False, **kwargs):
+def parse_smiles(smiles, bycomponent=False, **kwargs):
     """
-    Parse a list of SMILES strings and return PFAS group information.
+    Parse SMILES string(s) and return PFAS group information.
+    
+    Parameters:
+    -----------
+    smiles : str or list of str
+        Single SMILES string or list of SMILES strings
+    bycomponent : bool
+        Whether to use component-based analysis
+    **kwargs : dict
+        Additional parameters (pfas_groups, smartsPaths, etc.)
+    
+    Returns:
+    --------
+    list or list of lists
+        If single SMILES: list of matches
+        If list of SMILES: list of lists of matches
     """
-    results = []
-    for smiles in smiles_list:
+    # Handle both single string and list inputs
+    if isinstance(smiles, str):
         mol = Chem.MolFromSmiles(smiles)
         formula = CalcMolFormula(mol)
-        matches = parse_PFAS_groups(mol, formula=formula, bycomponent=bycomponent, **kwargs)
-        results.append(matches)
-    return results
+        return parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
+    else:
+        results = []
+        for smi in smiles:
+            mol = Chem.MolFromSmiles(smi)
+            formula = CalcMolFormula(mol)
+            matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
+            results.append(matches)
+        return results
+
+def parse_mol(mols, bycomponent=False, **kwargs):
+    """
+    Parse RDKit molecule(s) and return PFAS group information.
+    
+    Parameters:
+    -----------
+    mols : rdkit.Chem.Mol or list of rdkit.Chem.Mol
+        Single RDKit molecule or list of molecules
+    bycomponent : bool
+        Whether to use component-based analysis
+    **kwargs : dict
+        Additional parameters (pfas_groups, smartsPaths, etc.)
+    
+    Returns:
+    --------
+    list or list of lists
+        If single molecule: list of matches
+        If list of molecules: list of lists of matches
+    """
+    # Handle both single molecule and list inputs
+    if isinstance(mols, Chem.Mol):
+        formula = CalcMolFormula(mols)
+        return parse_groups_in_mol(mols, formula=formula, bycomponent=bycomponent, **kwargs)
+    else:
+        results = []
+        for mol in mols:
+            formula = CalcMolFormula(mol)
+            matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
+            results.append(matches)
+        return results
 
 @load_PFASGroups()
-def generate_pfas_fingerprint(smiles: Union[str, List[str]], 
+def generate_fingerprint(smiles: Union[str, List[str]], 
                              selected_groups: Union[List[int], range, None] = None,
                              representation: str = 'vector',
                              count_mode: str = 'binary',
@@ -605,7 +657,7 @@ def generate_pfas_fingerprint(smiles: Union[str, List[str]],
                 raise ValueError(f"Invalid SMILES: {smiles_str}")
             
             formula = CalcMolFormula(mol)
-            all_matches = parse_PFAS_groups(mol, formula=formula, pfas_groups=pfas_groups)
+            all_matches = parse_groups_in_mol(mol, formula=formula, pfas_groups=pfas_groups)
             
             # Create mapping from group ID to match information
             match_dict = {}
@@ -750,7 +802,7 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
     for i, s in enumerate(smiles):
         mol = Chem.MolFromSmiles(s)
         mol = Chem.AddHs(mol)
-        matches = parse_PFAS_groups(mol, CalcMolFormula(mol), bycomponent=kwargs.get('bycomponent',False))
+        matches = parse_groups_in_mol(mol, CalcMolFormula(mol), bycomponent=kwargs.get('bycomponent',False))
         highlight_atoms = []
         for pf, n, n_cfchains, match_indices in matches:
             for match in match_indices:
@@ -878,7 +930,7 @@ def compile_smartsPaths(paths_dict):
     ...     }
     ... }
     >>> compiled = compile_smartsPaths(custom_paths)
-    >>> results = parse_pfas(smiles, smartsPaths=compiled)
+    >>> results = parse_smiles(smiles, smartsPaths=compiled)
     """
     compiled = {}
     for name, patterns in paths_dict.items():

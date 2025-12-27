@@ -6,7 +6,7 @@ from PFASgroups import (
     compile_smartsPaths, 
     get_smartsPaths, 
     get_PFASGroups,
-    parse_pfas,
+    parse_smiles,
     PFASGroup
 )
 
@@ -69,7 +69,7 @@ groups.append(PFASGroup(
 
 # Test with a chlorinated compound
 test_smiles = ["ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"]
-results = parse_pfas(test_smiles, smartsPaths=default_paths, pfas_groups=groups)
+results = parse_smiles(test_smiles, smartsPaths=default_paths, pfas_groups=groups)
 
 print(f"   Test SMILES: {test_smiles[0]}")
 print(f"   Found {len(results[0])} matches:")

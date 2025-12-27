@@ -28,15 +28,15 @@ tests_folder = os.path.dirname(os.path.abspath(__file__))
 data_folder =  os.path.join(os.path.dirname(tests_folder),'data')
 # Handle imports - try relative first, then absolute
 try:
-    from ..core import parse_PFAS_groups
+    from ..core import parse_groups_in_mol
     from ..generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
 except ImportError:
     try:
-        from .core import parse_PFAS_groups
+        from .core import parse_groups_in_mol
         from .generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
     except ImportError:
         try:
-            from PFASgroups.core import parse_PFAS_groups
+            from PFASgroups.core import parse_groups_in_mol
             from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
         except ImportError as e:
             print(f"Error importing PFASgroups modules: {e}")
@@ -384,8 +384,8 @@ class TestPFASGroups:
                         
                         # Test classification with both flavors
                         formula = CalcMolFormula(mol)
-                        matches_default = parse_PFAS_groups(mol, formula, bycomponent=False)
-                        matches_bycomponent = parse_PFAS_groups(mol, formula, bycomponent=True)
+                        matches_default = parse_groups_in_mol(mol, formula, bycomponent=False)
+                        matches_bycomponent = parse_groups_in_mol(mol, formula, bycomponent=True)
                         
                         # Check if target group is detected in both flavors
                         detected_groups_default = [match[0].id for match in matches_default if match[0].id not in IGNORE_GROUPS]
@@ -487,8 +487,8 @@ class TestPFASGroups:
                             
                             # Test classification with both flavors
                             formula = CalcMolFormula(mol)
-                            matches_default = parse_PFAS_groups(mol, formula, bycomponent=False)
-                            matches_bycomponent = parse_PFAS_groups(mol, formula, bycomponent=True)
+                            matches_default = parse_groups_in_mol(mol, formula, bycomponent=False)
+                            matches_bycomponent = parse_groups_in_mol(mol, formula, bycomponent=True)
                             
                             # Check if target group is detected in both flavors
                             detected_groups_default = [match[0].id for match in matches_default if match[0].id not in IGNORE_GROUPS]
@@ -997,7 +997,7 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file=f'{tests_fol
                 continue
             smiles = Chem.MolToSmiles(mol)
             formula = CalcMolFormula(mol)
-            matches = parse_PFAS_groups(mol, formula)
+            matches = parse_groups_in_mol(mol, formula)
             # Extract detected group IDs
             # For specificity testing, we don't need to filter by pathtype since we're testing specific molecules
             # The pathtype filtering was causing issues with dual-SMARTS groups where no chains are found
@@ -1239,7 +1239,7 @@ def validate_test_compounds(input_file, output_file=None):
                 continue
                 
             formula = CalcMolFormula(mol)
-            matches = parse_PFAS_groups(mol, formula)
+            matches = parse_groups_in_mol(mol, formula)
             
             # Check if the expected group is detected
             detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
@@ -1295,7 +1295,7 @@ def test_pfoa_like_compounds():
             mol = Chem.MolFromSmiles(smiles)
             Chem.AddHs(mol)
             formula = CalcMolFormula(mol)
-            matches = parse_PFAS_groups(mol, formula)
+            matches = parse_groups_in_mol(mol, formula)
             
             # Should detect group 1 (Perfluoroalkyl carboxylic acids)
             detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]

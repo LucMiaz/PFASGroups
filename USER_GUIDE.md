@@ -40,14 +40,14 @@ pip install -e .
 ### Python API
 
 ```python
-from PFASgroups import parse_pfas, generate_pfas_fingerprint
+from PFASgroups import parse_smiles, generate_fingerprint
 
 # Parse PFAS structures
 smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
-results = parse_pfas(smiles_list)
+results = parse_smiles(smiles_list)
 
 # Generate fingerprints
-fingerprints, group_info = generate_pfas_fingerprint(smiles_list)
+fingerprints, group_info = generate_fingerprint(smiles_list)
 print(fingerprints)
 ```
 
@@ -70,11 +70,11 @@ pfasgroups fingerprint "C(C(F)(F)F)F" --format dict
 Parse SMILES strings to identify PFAS groups:
 
 ```python
-from PFASgroups import parse_pfas
+from PFASgroups import parse_smiles
 
 # Single or multiple SMILES
 smiles = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
-results = parse_pfas(smiles)
+results = parse_smiles(smiles)
 
 # Results contain: (PFASGroup, n_matches, n_CFchain, chains)
 for i, smiles_str in enumerate(smiles):
@@ -88,7 +88,7 @@ for i, smiles_str in enumerate(smiles):
 Use component-based analysis for certain PFAS groups:
 
 ```python
-results = parse_pfas(smiles, bycomponent=True)
+results = parse_smiles(smiles, bycomponent=True)
 ```
 
 ### Working with RDKit Molecules Directly
@@ -96,14 +96,14 @@ results = parse_pfas(smiles, bycomponent=True)
 You can also parse individual molecules directly:
 
 ```python
-from PFASgroups import parse_PFAS_groups
+from PFASgroups import parse_groups_in_mol
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 
 mol = Chem.MolFromSmiles("C(C(F)(F)F)F")
 # optional: provide molecular formula (otherwise it will be calculated using the CalcMolFormula as below)
 formula = CalcMolFormula(mol)
-results = parse_PFAS_groups(mol, formula=formula)
+results = parse_groups_in_mol(mol, formula=formula)
 ```
 
 ### Fingerprint Generation
@@ -111,29 +111,29 @@ results = parse_PFAS_groups(mol, formula=formula)
 Generate PFAS group fingerprints for machine learning:
 
 ```python
-from PFASgroups import generate_pfas_fingerprint
+from PFASgroups import generate_fingerprint
 
 smiles = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
 
 # Binary vector (default)
-fps, info = generate_pfas_fingerprint(smiles)
+fps, info = generate_fingerprint(smiles)
 print(fps)  # numpy array
 
 # Dictionary format
-fps, info = generate_pfas_fingerprint(smiles, representation='dict')
+fps, info = generate_fingerprint(smiles, representation='dict')
 print(fps)  # [{'group_name': count, ...}, ...]
 
 # Sparse (only non-zero)
-fps, info = generate_pfas_fingerprint(smiles, representation='sparse')
+fps, info = generate_fingerprint(smiles, representation='sparse')
 
 # Count-based instead of binary
-fps, info = generate_pfas_fingerprint(
+fps, info = generate_fingerprint(
     smiles, 
     count_mode='count'  # 'binary', 'count', or 'max_chain'
 )
 
 # Select specific groups
-fps, info = generate_pfas_fingerprint(
+fps, info = generate_fingerprint(
     smiles,
     selected_groups=range(28, 52)  # or [28, 29, 30, ...]
 )
@@ -144,7 +144,7 @@ fps, info = generate_pfas_fingerprint(
 Plot PFAS groups on molecular structures:
 
 ```python
-from PFASgroups import parse_PFAS_groups, plot_pfasgroups
+from PFASgroups import parse_groups_in_mol, plot_pfasgroups
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 
@@ -153,7 +153,7 @@ mol = Chem.MolFromSmiles(smiles)
 formula = CalcMolFormula(mol)
 
 # Parse groups
-matches = parse_PFAS_groups(mol, formula=formula)
+matches = parse_groups_in_mol(mol, formula=formula)
 
 # Plot
 plot_pfasgroups([(smiles, matches)])
@@ -200,7 +200,7 @@ Use the built-in helper functions to load configuration. These functions allow y
 #### Loading Custom Files
 
 ```python
-from PFASgroups import get_smartsPaths, get_PFASGroups, parse_pfas
+from PFASgroups import get_smartsPaths, get_PFASGroups, parse_smiles
 
 # Load custom path definitions from file
 custom_paths = get_smartsPaths()
@@ -211,7 +211,7 @@ custom_groups = get_PFASGroups()
 
 
 # Use custom configuration
-results = parse_pfas(
+results = parse_smiles(
     ["C(C(F)(F)F)F"],
     smartsPaths=custom_paths,
     pfas_groups=custom_groups
@@ -223,7 +223,7 @@ results = parse_pfas(
 Fetch the defaults and add your custom definitions:
 
 ```python
-from PFASgroups import get_smartsPaths, get_PFASGroups, parse_pfas, PFASGroup, compile_smartsPath
+from PFASgroups import get_smartsPaths, get_PFASGroups, parse_smiles, PFASGroup, compile_smartsPath
 
 # Get default paths
 paths = get_smartsPaths()
@@ -246,7 +246,7 @@ groups.append(PFASGroup(
 ))
 
 # Use extended configuration
-results = parse_pfas(
+results = parse_smiles(
     ["C(C(F)(F)F)F"],
     smartsPaths=paths,
     pfas_groups=groups
@@ -258,7 +258,7 @@ results = parse_pfas(
 Fetch defaults and filter to only what you need:
 
 ```python
-from PFASgroups import get_PFASGroups, parse_pfas
+from PFASgroups import get_PFASGroups, parse_smiles
 
 # Get all default groups
 all_groups = get_PFASGroups()
@@ -270,7 +270,7 @@ perfluoro_groups = [
 ]
 
 # Use filtered configuration
-results = parse_pfas(
+results = parse_smiles(
     ["FC(F)(F)C(F)(F)C(=O)O"],
     pfas_groups=perfluoro_groups
 )
@@ -284,7 +284,7 @@ specific_groups = [g for g in all_groups if 28 <= g.id <= 52]
 Load and construct custom groups manually:
 
 ```python
-from PFASgroups import PFASGroup, parse_pfas
+from PFASgroups import PFASGroup, parse_smiles
 import json
 
 # Load custom PFAS groups from file
@@ -294,7 +294,7 @@ with open('path/to/custom_groups.json', 'r') as f:
 custom_groups = [PFASGroup(**x) for x in custom_groups_data]
 
 # Use with parsing
-results = parse_pfas(
+results = parse_smiles(
     ["C(C(F)(F)F)F"],
     pfas_groups=custom_groups
 )
@@ -513,7 +513,7 @@ Process multiple files efficiently:
 
 ```python
 import pandas as pd
-from PFASgroups import generate_pfas_fingerprint
+from PFASgroups import generate_fingerprint
 
 # Read SMILES from CSV
 df = pd.read_csv('compounds.csv')
@@ -525,7 +525,7 @@ all_fps = []
 
 for i in range(0, len(smiles_list), batch_size):
     batch = smiles_list[i:i+batch_size]
-    fps, info = generate_pfas_fingerprint(batch, representation='sparse')
+    fps, info = generate_fingerprint(batch, representation='sparse')
     all_fps.extend(fps)
 
 # Save results
@@ -538,14 +538,14 @@ df.to_csv('compounds_with_fps.csv', index=False)
 ```python
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from PFASgroups import generate_pfas_fingerprint
+from PFASgroups import generate_fingerprint
 
 # Training data
 train_smiles = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O", ...]
 train_labels = [1, 0, ...]  # Your labels
 
 # Generate features
-X_train, info = generate_pfas_fingerprint(
+X_train, info = generate_fingerprint(
     train_smiles,
     representation='vector',
     count_mode='binary'
@@ -557,7 +557,7 @@ clf.fit(X_train, train_labels)
 
 # Predict on new data
 test_smiles = ["FC(F)C(F)(F)F", ...]
-X_test, _ = generate_pfas_fingerprint(
+X_test, _ = generate_fingerprint(
     test_smiles,
     selected_groups=info['selected_indices'],
     representation='vector',
@@ -571,7 +571,7 @@ predictions = clf.predict(X_test)
 Create custom groups tailored to your screening needs:
 
 ```python
-from PFASgroups import PFASGroup, parse_pfas
+from PFASgroups import PFASGroup, parse_smiles
 import json
 
 # Define screening criteria for short-chain PFAS only
@@ -591,7 +591,7 @@ groups = [PFASGroup(**g) for g in custom_groups]
 compounds = ["FC(F)(F)C(F)(F)C(=O)O",  # C3 - will match
              "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"]  # C8 - won't match
 
-results = parse_pfas(compounds, pfas_groups=groups)
+results = parse_smiles(compounds, pfas_groups=groups)
 
 for smiles, matches in zip(compounds, results):
     if matches:
@@ -606,7 +606,7 @@ for smiles, matches in zip(compounds, results):
 
 ### Core Functions
 
-#### `parse_pfas(smiles_list, bycomponent=False, **kwargs)`
+#### `parse_smiles(smiles_list, bycomponent=False, **kwargs)`
 
 Parse SMILES strings and identify PFAS groups.
 
@@ -623,10 +623,10 @@ Parse SMILES strings and identify PFAS groups.
 **Example:**
 ```python
 # With custom groups
-results = parse_pfas(smiles_list, pfas_groups=custom_groups)
+results = parse_smiles(smiles_list, pfas_groups=custom_groups)
 ```
 
-#### `parse_PFAS_groups(mol, bycomponent=False, **kwargs)`
+#### `parse_groups_in_mol(mol, bycomponent=False, **kwargs)`
 
 Parse a single RDKit molecule and identify PFAS groups.
 
@@ -641,7 +641,7 @@ Parse a single RDKit molecule and identify PFAS groups.
 **Returns:**
 - `list`: List of (PFASGroup, n_matches, n_CFchain, chains) tuples
 
-#### `generate_pfas_fingerprint(smiles, selected_groups=None, representation='vector', count_mode='binary', pfas_groups=None, **kwargs)`
+#### `generate_fingerprint(smiles, selected_groups=None, representation='vector', count_mode='binary', pfas_groups=None, **kwargs)`
 
 Generate PFAS fingerprints.
 
@@ -691,7 +691,7 @@ custom.GetRingInfo().NumRings()
 paths['MyPath'] = [custom, custom]
 
 # Use in parsing
-results = parse_pfas(smiles, smartsPaths=paths)
+results = parse_smiles(smiles, smartsPaths=paths)
 ```
 
 #### `get_PFASGroups(filename=None, **kwargs)`
@@ -736,7 +736,7 @@ groups = get_PFASGroups()
 short_chain = [g for g in groups if g.id in range(28, 40)]
 
 # Use in parsing
-results = parse_pfas(smiles, pfas_groups=groups)
+results = parse_smiles(smiles, pfas_groups=groups)
 ```
 
 #### `compile_smartsPath(chain_smarts, end_smarts)`
@@ -755,7 +755,7 @@ This function preprocesses SMARTS patterns for chain and end groups, preparing t
 **Examples:**
 
 ```python
-from PFASgroups import compile_smartsPath, get_smartsPaths, parse_pfas
+from PFASgroups import compile_smartsPath, get_smartsPaths, parse_smiles
 
 # Get defaults and add a custom path
 paths = get_smartsPaths()
@@ -767,7 +767,7 @@ paths['Perchlorinated'] = compile_smartsPath(
 )
 
 # Use in parsing
-results = parse_pfas(smiles, smartsPaths=paths)
+results = parse_smiles(smiles, smartsPaths=paths)
 ```
 
 #### `compile_smartsPaths(paths_dict)`
@@ -791,7 +791,7 @@ This function takes a dictionary of path definitions and preprocesses all of the
 **Examples:**
 
 ```python
-from PFASgroups import compile_smartsPaths, get_smartsPaths, parse_pfas
+from PFASgroups import compile_smartsPaths, get_smartsPaths, parse_smiles
 
 # Define multiple custom paths
 custom_paths = {
@@ -813,7 +813,7 @@ paths = get_smartsPaths()
 paths.update(compiled_paths)
 
 # Use in parsing
-results = parse_pfas(smiles, smartsPaths=paths)
+results = parse_smiles(smiles, smartsPaths=paths)
 ```
 
 ### Classes
@@ -837,7 +837,7 @@ Represents a PFAS group definition.
 ### Example 1: Basic Analysis
 
 ```python
-from PFASgroups import parse_pfas
+from PFASgroups import parse_smiles
 
 smiles = [
     "C(C(F)(F)F)F",                    # Perfluoropropane
@@ -845,7 +845,7 @@ smiles = [
     "FC(F)C(F)(F)C(F)(F)C(=O)O"       # Mixed perfluoro/polyfluoro
 ]
 
-results = parse_pfas(smiles)
+results = parse_smiles(smiles)
 
 for i, smi in enumerate(smiles):
     print(f"\n{smi}:")
@@ -859,7 +859,7 @@ for i, smi in enumerate(smiles):
 ### Example 2: Custom Screening Workflow
 
 ```python
-from PFASgroups import get_PFASGroups, parse_pfas
+from PFASgroups import get_PFASGroups, parse_smiles
 import json
 
 # Load default groups
@@ -870,7 +870,7 @@ perfluoro_groups = [g for g in all_groups if 'Perfluoro' in g.smartsPath]
 
 # Screen compounds
 compounds = ["FC(F)(F)C(F)(F)C(=O)O", "CCCCCC"]
-results = parse_pfas(compounds, pfas_groups=perfluoro_groups)
+results = parse_smiles(compounds, pfas_groups=perfluoro_groups)
 
 print(f"Found {sum(len(r) for r in results)} perfluorinated groups")
 ```
@@ -878,7 +878,7 @@ print(f"Found {sum(len(r) for r in results)} perfluorinated groups")
 ### Example 3: Extending Default Configuration
 
 ```python
-from PFASgroups import get_PFASGroups, get_smartsPaths, parse_pfas, PFASGroup
+from PFASgroups import get_PFASGroups, get_smartsPaths, parse_smiles, PFASGroup
 from rdkit import Chem
 
 # Scenario: Add organization-specific PFAS groups to defaults
@@ -916,7 +916,7 @@ compounds = [
     "FC(F)(F)C(F)(F)C(=O)O"   # Will match default groups
 ]
 
-results = parse_pfas(
+results = parse_smiles(
     compounds,
     smartsPaths=default_paths,
     pfas_groups=default_groups
@@ -931,7 +931,7 @@ for smiles, matches in zip(compounds, results):
 ### Example 4: Creating Simple Custom PFAS Groups
 
 ```python
-from PFASgroups import get_PFASGroups, parse_pfas, PFASGroup
+from PFASgroups import get_PFASGroups, parse_smiles, PFASGroup
 
 # Load defaults
 groups = get_PFASGroups()
@@ -984,7 +984,7 @@ test_smiles = [
     "FC(F)(F)C(F)(F)CCO"           # Fluorotelomer alcohol
 ]
 
-results = parse_pfas(test_smiles, pfas_groups=groups)
+results = parse_smiles(test_smiles, pfas_groups=groups)
 
 for smiles, matches in zip(test_smiles, results):
     print(f"\n{smiles}:")
@@ -996,7 +996,7 @@ for smiles, matches in zip(test_smiles, results):
 ### Example 5: Creating Custom Path Types (Chlorinated Analogs)
 
 ```python
-from PFASgroups import get_smartsPaths, get_PFASGroups, parse_pfas, PFASGroup, compile_smartsPath, compile_smartsPaths
+from PFASgroups import get_smartsPaths, get_PFASGroups, parse_smiles, PFASGroup, compile_smartsPath, compile_smartsPaths
 
 # Method 1: Using compile_smartsPath for individual paths
 paths = get_smartsPaths()
@@ -1070,7 +1070,7 @@ test_chlorinated = [
     "BrC(Br)(Br)C(Br)(Br)C(=O)O"      # Perbrominated acid
 ]
 
-results = parse_pfas(
+results = parse_smiles(
     test_chlorinated,
     smartsPaths=paths,
     pfas_groups=groups
@@ -1145,11 +1145,11 @@ Make sure you're passing the parameters correctly:
 ```python
 # Correct
 custom_groups = get_PFASGroups(filename='custom.json')
-results = parse_pfas(smiles, pfas_groups=custom_groups)
+results = parse_smiles(smiles, pfas_groups=custom_groups)
 
 # Also correct
 custom_paths = get_smartsPaths(filename='custom_fpaths.json')
-results = parse_pfas(smiles, smartsPaths=custom_paths)
+results = parse_smiles(smiles, smartsPaths=custom_paths)
 ```
 
 ---

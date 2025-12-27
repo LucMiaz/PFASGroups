@@ -299,7 +299,7 @@ def analyze_oecd_robustness(oecd_molecules):
         from classification_helper import classify_pfas_molecule
         
         sys.path.append('/home/luc/git/PFASGroups')
-        from PFASgroups import parse_pfas
+        from PFASgroups import parse_smiles
         
         total_molecules = len(oecd_molecules)
         atlas_agreements = 0
@@ -354,7 +354,7 @@ def analyze_oecd_robustness(oecd_molecules):
             
             # Run PFASGroups analysis
             try:
-                from PFASgroups.core import parse_PFAS_groups
+                from PFASgroups.core import parse_groups_in_mol
                 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
                 from rdkit import Chem
                 
@@ -363,7 +363,7 @@ def analyze_oecd_robustness(oecd_molecules):
                     raise ValueError(f"Could not parse SMILES: {smiles}")
                 
                 formula = CalcMolFormula(mol)
-                pfas_matches = parse_PFAS_groups(mol, formula)
+                pfas_matches = parse_groups_in_mol(mol, formula)
                 
                 if pfas_matches:
                     pfasgroups_detections += 1

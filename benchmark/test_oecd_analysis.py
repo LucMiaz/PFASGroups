@@ -19,8 +19,8 @@ except ImportError as e:
     sys.exit(1)
 
 try:
-    from PFASgroups import parse_pfas
-    print("✅ Successfully imported PFASGroups parse_pfas")
+    from PFASgroups import parse_smiles
+    print("✅ Successfully imported PFASGroups parse_smiles")
 except ImportError as e:
     print(f"❌ Failed to import PFASGroups: {e}")
     sys.exit(1)
@@ -81,7 +81,7 @@ def test_oecd_analysis():
             # Test PFASGroups
             try:
                 print(f"   Testing PFASGroups with: {smiles}")
-                pfas_result = parse_pfas(smiles)
+                pfas_result = parse_smiles(smiles)
                 print(f"   PFASGroups raw result: {pfas_result}")
                 
                 if pfas_result and len(pfas_result) > 0:

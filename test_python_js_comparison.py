@@ -10,7 +10,7 @@ import os
 
 # Add parent directory to path to import PFASgroups
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from PFASgroups.core import parse_PFAS_groups
+from PFASgroups.core import parse_groups_in_mol
 
 # Test molecules covering different PFAS group types
 TEST_MOLECULES = [
@@ -150,7 +150,7 @@ def test_molecule(smiles, name, bycomponent=False):
             return None, None
         
         formula = Chem.rdMolDescriptors.CalcMolFormula(mol)
-        py_result = parse_PFAS_groups(mol, formula, bycomponent=bycomponent)
+        py_result = parse_groups_in_mol(mol, formula, bycomponent=bycomponent)
     except Exception as e:
         print(f"⚠️  Python analysis failed: {e}")
         return None, None

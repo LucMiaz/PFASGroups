@@ -19,7 +19,7 @@ parent_dir = os.path.dirname(script_dir)
 sys.path.append(parent_dir)
 
 try:
-    from PFASgroups.core import parse_PFAS_groups
+    from PFASgroups.core import parse_groups_in_mol
     from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_groups
     PFASGROUPS_AVAILABLE = True
 except ImportError:
@@ -358,9 +358,9 @@ class EnhancedPFASBenchmark:
             mol = Chem.MolFromSmiles(smiles)
             if mol is not None:
                 formula = rdMolDescriptors.CalcMolFormula(mol)
-                matches = parse_PFAS_groups(mol, formula=formula, bycomponent=bycomponent)
+                matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent)
                 
-                # Parse the complex tuple structure returned by parse_PFAS_groups
+                # Parse the complex tuple structure returned by parse_groups_in_mol
                 group_ids = []
                 if isinstance(matches, list) and matches:
                     for match_tuple in matches:
