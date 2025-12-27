@@ -4,7 +4,11 @@ A Python module for parsing and visualizing PFAS (Per- and Polyfluoroalkyl Subst
 
 ## Features
 - Parse SMILES strings to identify PFAS groups
+- Generate PFAS fingerprints for machine learning applications
 - Assign and visualize PFAS groupings
+- **NEW:** Command-line interface for easy access
+- **NEW:** Support for custom PFAS group definitions
+- **NEW:** Flexible configuration via files, environment variables, or API
 - Includes test cases and example data
 
 ## Installation
@@ -15,15 +19,65 @@ Clone the repository and install dependencies:
 pip install -e .
 ```
 
-## Usage
+After installation, the `pfasgroups` command will be available in your terminal.
+
+## Quick Start
+
+### Python API
 
 ```python
-from PFASgroups import parse_pfas, parse_PFAS_groups, plot_pfasgroups
+from PFASgroups import parse_pfas, generate_pfas_fingerprint
 
-# Example usage
-groups = parse_PFAS_groups(["C(C(F)(F)F)F", ...])
-plot_pfasgroups(groups)
+# Parse PFAS structures
+smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
+results = parse_pfas(smiles_list)
+
+# Generate fingerprints
+fingerprints, group_info = generate_pfas_fingerprint(smiles_list)
 ```
+
+### Command Line
+
+```bash
+# Parse SMILES strings
+pfasgroups parse "C(C(F)(F)F)F" "FC(F)(F)C(F)(F)C(=O)O"
+
+# Generate fingerprints
+pfasgroups fingerprint "C(C(F)(F)F)F" --format dict
+
+# List available PFAS groups
+pfasgroups list-groups
+```
+
+## Custom Configuration
+
+Use custom pathtype definitions and PFAS groups:
+
+```bash
+# Via command line
+pfasgroups parse --groups-file my_custom_groups.json "C(C(F)(F)F)F"
+
+# Via environment variable
+export PFASGROUPS_GROUPS="/path/to/custom_groups.json"
+
+# Via Python API
+from PFASgroups import set_default_config
+set_default_config(groups_file='custom_groups.json')
+```
+
+## Documentation
+
+- **[USER_GUIDE.md](USER_GUIDE.md)** - Complete documentation with examples
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Quick reference for common tasks
+
+## Usage Examples
+
+See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
+- Basic PFAS parsing and analysis
+- Fingerprint generation for machine learning
+- Custom configuration files
+- Batch processing
+- Integration with pandas and scikit-learn
 
 ## Licence
 <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.

@@ -44,11 +44,11 @@ def load_PFASGroups():
     return inner
 
 # --- Add SMARTS paths to function ---
-def add_smartsPath(names =PATH_NAMES):
+def add_smartsPath(names =PATH_NAMES, filename = FPATHS_FILE):
     """Yields SMARTS for chains"""
     paths = {}
     pathsEnd = {}
-    with open(FPATHS_FILE,'r') as f:
+    with open(filename,'r') as f:
         fpaths = json.load(f) 
     for n in names:
         s = fpaths[n]['chain']
@@ -64,7 +64,7 @@ def add_smartsPath(names =PATH_NAMES):
         paths[n] = [smol,emol]
     def inner(func):
         def wrapper(*args,**kwargs):
-            kwargs["smartsPaths"] = paths
+            kwargs["smartsPaths"] = kwargs.get("smartsPaths",paths)
             return func(*args, **kwargs)
         return wrapper
     return inner
@@ -289,11 +289,12 @@ def get_substruct(_mol:Chem.Mol,struct:Chem.Mol):
     return set([x[0] for x in _mol.GetSubstructMatches(struct)])
 
 @add_smartsPath()
-def find_path_between_smarts(mol,smarts1,smarts2,G, smartsPaths):
+def find_path_between_smarts(mol,smarts1,smarts2,G, **kwargs):
     """Iterates over substructures matched by smarts1 and smarts2 and finds fluorinated paths between them.
     Fluorinated atoms are defined by the SMARTS yield by the decorator add_smartsPath.
     if smarts2 is None, uses SMARTS corresponding to smartsPath."""
     chains = {}
+    smartsPaths = kwargs.get('smartsPaths')
     smartsMatches1 = get_substruct(mol, smarts1)
     if smarts2 is not None:
         digroup_smarts = (Chem.MolToSmarts(smarts1) != Chem.MolToSmarts(smarts2))
@@ -356,7 +357,7 @@ def path_between_smarts(mol:Chem.Mol, smarts1,smarts2,**kwargs):
     return find_path_between_smarts(mol,
                                     smarts1,
                                     smarts2,
-                                    G)
+                                    G, **kwargs)
 
 def connected_components(mol, subset):
     """Find connected components in a molecule."""
@@ -366,9 +367,10 @@ def connected_components(mol, subset):
     return components
 
 @add_smartsPath()
-def get_fluorinated_subgraph(mol, smartsPaths=None):
+def get_fluorinated_subgraph(mol, **kwargs):
     """Get the fluorinated indices by connected components of a molecule based on path SMARTS."""
     subsets = {}
+    smartsPaths = kwargs.get('smartsPaths')
     for pathName, d in smartsPaths.items():
         path_smarts = d[0] # chain
         matches = mol.GetSubstructMatches(path_smarts)
@@ -401,7 +403,7 @@ def find_aryl_components(mol, aryl_smarts):
 
 # --- Main PFAS group parsing functions ---
 @load_PFASGroups()
-def parse_PFAS_groups(mol, formula, pfas_groups=None, bycomponent=False):
+def parse_PFAS_groups(mol, bycomponent=False, **kwargs):
     """Iterates over PFAS groups and finds the ones that match the molecule.
     :params mol: RDKit molecule
     :params formula: Molecular formula as string
@@ -416,7 +418,9 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None, bycomponent=False):
     4. with smarts1 defined and formula constraints: search for substructure matches of smarts1, and for given smartsPath for the PFASgroup, search for connected components of fluorinated atoms where smarts1 C match is in the component
 
     """
+    pfas_groups = kwargs.get('pfas_groups')
     mol = Chem.AddHs(mol)
+    formula = kwargs.get("formula", CalcMolFormula(mol))
     try:
         Chem.SanitizeMol(mol)
     except Chem.AtomValenceException:
@@ -427,7 +431,7 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None, bycomponent=False):
         frags = [mol]
         formulas = [n_from_formula(formula)]# formula as a dictionary
     group_matches = []
-    fluorinated_components_dict = get_fluorinated_subgraph(mol)
+    fluorinated_components_dict = get_fluorinated_subgraph(mol, **kwargs)
     for pf in pfas_groups:
         #logger.debug(f"{pf.name}")
         matched1_len = 0
@@ -442,18 +446,22 @@ def parse_PFAS_groups(mol, formula, pfas_groups=None, bycomponent=False):
                     try:
                         n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
                                                                             pf.smarts1,
-                                                                            pf.smarts2)
+                                                                            pf.smarts2, **kwargs)
                     except ValueError as e:
                         raise e
                 elif pf.smarts1 is not None and len(pf.constraints.keys())==0:
                     # treat cases with only smarts1, using default smarts2 (if looking for chains) else 
                     # if bycomponent is True, find fluorinated components for each path type
-                    try:
-                        n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
-                                                                            pf.smarts1,
-                                                                            None)
-                    except ValueError as e:
-                        raise e
+                    if bycomponent is True:
+                        n, n_CFchain,matched1_len, chains = find_alkyl_components(mol, pf.smarts1, path_components)
+                    else:
+                        
+                        try:
+                            n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
+                                                                                pf.smarts1,
+                                                                                None, **kwargs)
+                        except ValueError as e:
+                            raise e
                 elif pf.smarts1 is not None:
                     # treat cases with only smarts1 as simple substructure match, no path finding
                     # if bycomponent is True, find fluorinated components for relevant path type
@@ -497,7 +505,7 @@ def generate_pfas_fingerprint(smiles: Union[str, List[str]],
                              selected_groups: Union[List[int], range, None] = None,
                              representation: str = 'vector',
                              count_mode: str = 'binary',
-                             pfas_groups=None):
+                             **kwargs):
     """
     Generate PFAS group fingerprints from SMILES strings.
     
@@ -550,7 +558,7 @@ def generate_pfas_fingerprint(smiles: Union[str, List[str]],
     >>> fp, info = generate_pfas_fingerprint('PFOA_SMILES', 
     ...                                       representation='detailed')
     """
-    
+    pfas_groups = kwargs.get('pfas_groups')
     # Handle single SMILES input
     if isinstance(smiles, str):
         smiles_list = [smiles]
@@ -788,3 +796,11 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
     if display:
         grid.show()
     return grid, width, height
+
+@add_smartsPath()
+def get_smartsPaths(**kwargs):
+    return kwargs.get('smartsPaths')
+
+@load_PFASGroups()
+def get_PFASGroups(**kwargs):
+    return kwargs.get('pfas_groups')
