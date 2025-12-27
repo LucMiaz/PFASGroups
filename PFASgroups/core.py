@@ -496,7 +496,7 @@ def parse_pfas(smiles_list, bycomponent=False):
     for smiles in smiles_list:
         mol = Chem.MolFromSmiles(smiles)
         formula = CalcMolFormula(mol)
-        matches = parse_PFAS_groups(mol, formula, bycomponent=bycomponent)
+        matches = parse_PFAS_groups(mol, formula=formula, bycomponent=bycomponent)
         results.append(matches)
     return results
 
@@ -605,7 +605,7 @@ def generate_pfas_fingerprint(smiles: Union[str, List[str]],
                 raise ValueError(f"Invalid SMILES: {smiles_str}")
             
             formula = CalcMolFormula(mol)
-            all_matches = parse_PFAS_groups(mol, formula, pfas_groups=pfas_groups)
+            all_matches = parse_PFAS_groups(mol, formula=formula, pfas_groups=pfas_groups)
             
             # Create mapping from group ID to match information
             match_dict = {}

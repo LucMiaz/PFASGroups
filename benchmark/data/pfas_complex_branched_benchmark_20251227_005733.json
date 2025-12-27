@@ -32,8 +32,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.03281581900000674,
-        "atlas_execution_time": 0.058629446999930224
+        "pfasgroups_execution_time": 0.02798054599952593,
+        "atlas_execution_time": 0.06408775399995648
       },
       {
         "iteration": 2,
@@ -55,8 +55,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.020857002999946417,
-        "atlas_execution_time": 0.0571469720002824
+        "pfasgroups_execution_time": 0.019724959999621205,
+        "atlas_execution_time": 0.05500058400048147
       },
       {
         "iteration": 3,
@@ -78,8 +78,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.02034569499983263,
-        "atlas_execution_time": 0.05559312700006558
+        "pfasgroups_execution_time": 0.020641621999857307,
+        "atlas_execution_time": 0.0545088239996403
       },
       {
         "iteration": 4,
@@ -101,8 +101,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.02036421100001462,
-        "atlas_execution_time": 0.05579575999990993
+        "pfasgroups_execution_time": 0.02062883399958082,
+        "atlas_execution_time": 0.05835793400001421
       },
       {
         "iteration": 5,
@@ -124,8 +124,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.023991478999960236,
-        "atlas_execution_time": 0.06310307100011414
+        "pfasgroups_execution_time": 0.021079253000607423,
+        "atlas_execution_time": 0.05728838699997141
       },
       {
         "iteration": 6,
@@ -147,8 +147,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.02031125500025155,
-        "atlas_execution_time": 0.06412695899962273
+        "pfasgroups_execution_time": 0.020410775999152975,
+        "atlas_execution_time": 0.06108196300010604
       },
       {
         "iteration": 7,
@@ -170,8 +170,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.025936574000297696,
-        "atlas_execution_time": 0.05981594700006099
+        "pfasgroups_execution_time": 0.02159671499975957,
+        "atlas_execution_time": 0.05588425400037522
       },
       {
         "iteration": 8,
@@ -193,8 +193,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.02142246699986572,
-        "atlas_execution_time": 0.05584542799988412
+        "pfasgroups_execution_time": 0.022133491999738908,
+        "atlas_execution_time": 0.06531254200035619
       },
       {
         "iteration": 9,
@@ -216,8 +216,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.02058788500016817,
-        "atlas_execution_time": 0.05481499699999404
+        "pfasgroups_execution_time": 0.02058911000040098,
+        "atlas_execution_time": 0.06549767399974371
       },
       {
         "iteration": 10,
@@ -239,8 +239,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.020810663999782264,
-        "atlas_execution_time": 0.056178192000061244
+        "pfasgroups_execution_time": 0.02133940800013079,
+        "atlas_execution_time": 0.056787900000017544
       },
       {
         "iteration": 11,
@@ -262,8 +262,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.02099899099994218,
-        "atlas_execution_time": 0.056683652000174334
+        "pfasgroups_execution_time": 0.02192127000034816,
+        "atlas_execution_time": 0.05512850300056016
       },
       {
         "iteration": 12,
@@ -285,8 +285,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.020895264000046154,
-        "atlas_execution_time": 0.057696898999893165
+        "pfasgroups_execution_time": 0.02063054900008865,
+        "atlas_execution_time": 0.058426079000128084
       },
       {
         "iteration": 13,
@@ -308,8 +308,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.021472114000061993,
-        "atlas_execution_time": 0.05722711299995353
+        "pfasgroups_execution_time": 0.02096392699968419,
+        "atlas_execution_time": 0.057724449000488676
       },
       {
         "iteration": 14,
@@ -331,8 +331,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.021675964000223757,
-        "atlas_execution_time": 0.05492109899978459
+        "pfasgroups_execution_time": 0.02133206100006646,
+        "atlas_execution_time": 0.05582673299977614
       },
       {
         "iteration": 15,
@@ -354,8 +354,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.02231572899972889,
-        "atlas_execution_time": 0.05453188899991801
+        "pfasgroups_execution_time": 0.021110266999130545,
+        "atlas_execution_time": 0.059178655999858165
       },
       {
         "iteration": 16,
@@ -377,8 +377,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.021994564000124228,
-        "atlas_execution_time": 0.05870802999970692
+        "pfasgroups_execution_time": 0.02186178200008726,
+        "atlas_execution_time": 0.056574795999949856
       },
       {
         "iteration": 17,
@@ -400,8 +400,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.021814962000007654,
-        "atlas_execution_time": 0.05857154300019829
+        "pfasgroups_execution_time": 0.020679060000475147,
+        "atlas_execution_time": 0.055676723000033235
       },
       {
         "iteration": 18,
@@ -423,8 +423,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.021440425000037067,
-        "atlas_execution_time": 0.058515437000096426
+        "pfasgroups_execution_time": 0.020148470999629353,
+        "atlas_execution_time": 0.05572164699970017
       },
       {
         "iteration": 19,
@@ -446,8 +446,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.022606258999985585,
-        "atlas_execution_time": 0.05603830099971674
+        "pfasgroups_execution_time": 0.020674502000474604,
+        "atlas_execution_time": 0.05964585099991382
       },
       {
         "iteration": 20,
@@ -469,8 +469,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids",
         "atlas_second_class": "PolyFCA derivatives",
-        "pfasgroups_execution_time": 0.023099323000224103,
-        "atlas_execution_time": 0.058222877999924094
+        "pfasgroups_execution_time": 0.019867191999765055,
+        "atlas_execution_time": 0.05798735799999122
       }
     ]
   },
@@ -507,8 +507,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.01397047799991924,
-        "atlas_execution_time": 0.04176889900008973
+        "pfasgroups_execution_time": 0.013343184999939695,
+        "atlas_execution_time": 0.051165962000595755
       },
       {
         "iteration": 2,
@@ -530,8 +530,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.01332476100014901,
-        "atlas_execution_time": 0.0434130720000212
+        "pfasgroups_execution_time": 0.012725773999591183,
+        "atlas_execution_time": 0.04906122700049309
       },
       {
         "iteration": 3,
@@ -553,8 +553,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.012639456000215432,
-        "atlas_execution_time": 0.0424090179999439
+        "pfasgroups_execution_time": 0.013002277999476064,
+        "atlas_execution_time": 0.04209832399919833
       },
       {
         "iteration": 4,
@@ -576,8 +576,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.013709874000142008,
-        "atlas_execution_time": 0.0448363129999052
+        "pfasgroups_execution_time": 0.011938295000618382,
+        "atlas_execution_time": 0.042014673000267067
       },
       {
         "iteration": 5,
@@ -599,8 +599,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.013030084000092756,
-        "atlas_execution_time": 0.04321585599973332
+        "pfasgroups_execution_time": 0.01268795299984049,
+        "atlas_execution_time": 0.04298830799962161
       },
       {
         "iteration": 6,
@@ -622,8 +622,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.013335554000150296,
-        "atlas_execution_time": 0.04279784699974698
+        "pfasgroups_execution_time": 0.012169075000201701,
+        "atlas_execution_time": 0.04210679199968581
       },
       {
         "iteration": 7,
@@ -645,8 +645,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.012297646999741119,
-        "atlas_execution_time": 0.044138601000213384
+        "pfasgroups_execution_time": 0.01181239400011691,
+        "atlas_execution_time": 0.04222092399959365
       },
       {
         "iteration": 8,
@@ -668,8 +668,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.014003808999859757,
-        "atlas_execution_time": 0.04430549600010636
+        "pfasgroups_execution_time": 0.012408573999891814,
+        "atlas_execution_time": 0.04300412300017342
       },
       {
         "iteration": 9,
@@ -691,8 +691,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.012873593000222172,
-        "atlas_execution_time": 0.04292738300000565
+        "pfasgroups_execution_time": 0.012466273000427464,
+        "atlas_execution_time": 0.042458618000637216
       },
       {
         "iteration": 10,
@@ -714,8 +714,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.012773759000083373,
-        "atlas_execution_time": 0.047236939999947936
+        "pfasgroups_execution_time": 0.012308762000429851,
+        "atlas_execution_time": 0.04540496899971913
       },
       {
         "iteration": 11,
@@ -737,8 +737,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.012686541000221041,
-        "atlas_execution_time": 0.045860924999942654
+        "pfasgroups_execution_time": 0.013311810999766749,
+        "atlas_execution_time": 0.04442450199985615
       },
       {
         "iteration": 12,
@@ -760,8 +760,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.013670052000179567,
-        "atlas_execution_time": 0.0466996269997253
+        "pfasgroups_execution_time": 0.012265295999895898,
+        "atlas_execution_time": 0.0434212350000962
       },
       {
         "iteration": 13,
@@ -783,8 +783,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.014179706000049919,
-        "atlas_execution_time": 0.047457046000090486
+        "pfasgroups_execution_time": 0.012666384999647562,
+        "atlas_execution_time": 0.04297117199985223
       },
       {
         "iteration": 14,
@@ -806,8 +806,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.01338226300003953,
-        "atlas_execution_time": 0.04455723699993541
+        "pfasgroups_execution_time": 0.01235477099999116,
+        "atlas_execution_time": 0.042836853000153496
       },
       {
         "iteration": 15,
@@ -829,8 +829,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.014195072000347864,
-        "atlas_execution_time": 0.048963481999635405
+        "pfasgroups_execution_time": 0.012027137999211845,
+        "atlas_execution_time": 0.04321493899988127
       },
       {
         "iteration": 16,
@@ -852,8 +852,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.012969355000223004,
-        "atlas_execution_time": 0.04412949600009597
+        "pfasgroups_execution_time": 0.014798429999245855,
+        "atlas_execution_time": 0.04485299499992834
       },
       {
         "iteration": 17,
@@ -875,8 +875,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.012648730999899271,
-        "atlas_execution_time": 0.04379141199979131
+        "pfasgroups_execution_time": 0.013434884000162128,
+        "atlas_execution_time": 0.04694717300026241
       },
       {
         "iteration": 18,
@@ -898,8 +898,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.012457541000003403,
-        "atlas_execution_time": 0.044144402999791055
+        "pfasgroups_execution_time": 0.012458931999390188,
+        "atlas_execution_time": 0.04334102000029816
       },
       {
         "iteration": 19,
@@ -921,8 +921,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.01400531100034641,
-        "atlas_execution_time": 0.04798185499976171
+        "pfasgroups_execution_time": 0.013932346000729012,
+        "atlas_execution_time": 0.044974731000365864
       },
       {
         "iteration": 20,
@@ -944,8 +944,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.013014830999964033,
-        "atlas_execution_time": 0.04417234299990014
+        "pfasgroups_execution_time": 0.013337721999960195,
+        "atlas_execution_time": 0.04737269500037655
       }
     ]
   },
@@ -982,8 +982,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.02555045799999789,
-        "atlas_execution_time": 0.04714371099998971
+        "pfasgroups_execution_time": 0.021994957000060822,
+        "atlas_execution_time": 0.052527720000398403
       },
       {
         "iteration": 2,
@@ -1005,8 +1005,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.018668659000013577,
-        "atlas_execution_time": 0.04706012299993745
+        "pfasgroups_execution_time": 0.01788908399976208,
+        "atlas_execution_time": 0.04884390400002303
       },
       {
         "iteration": 3,
@@ -1028,8 +1028,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.01747058000000834,
-        "atlas_execution_time": 0.04567113500024789
+        "pfasgroups_execution_time": 0.01678100099979929,
+        "atlas_execution_time": 0.04749399599950266
       },
       {
         "iteration": 4,
@@ -1051,8 +1051,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.017148319000170886,
-        "atlas_execution_time": 0.04724299500003326
+        "pfasgroups_execution_time": 0.016604871999334136,
+        "atlas_execution_time": 0.049093830999481725
       },
       {
         "iteration": 5,
@@ -1074,8 +1074,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.018307513000308973,
-        "atlas_execution_time": 0.04619048799986558
+        "pfasgroups_execution_time": 0.01728266300051473,
+        "atlas_execution_time": 0.04683257600026991
       },
       {
         "iteration": 6,
@@ -1097,8 +1097,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.017394241000147304,
-        "atlas_execution_time": 0.04619924100006756
+        "pfasgroups_execution_time": 0.017200879000483837,
+        "atlas_execution_time": 0.04668742500052758
       },
       {
         "iteration": 7,
@@ -1120,8 +1120,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.01742954400015151,
-        "atlas_execution_time": 0.0475759860000835
+        "pfasgroups_execution_time": 0.017999198000325123,
+        "atlas_execution_time": 0.04734589399959077
       },
       {
         "iteration": 8,
@@ -1143,8 +1143,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.018119975999979943,
-        "atlas_execution_time": 0.0481073920000199
+        "pfasgroups_execution_time": 0.01723825999943074,
+        "atlas_execution_time": 0.04923394399975223
       },
       {
         "iteration": 9,
@@ -1166,8 +1166,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.01808367300009195,
-        "atlas_execution_time": 0.04989322700021148
+        "pfasgroups_execution_time": 0.01735120399916923,
+        "atlas_execution_time": 0.049500815000101284
       },
       {
         "iteration": 10,
@@ -1189,8 +1189,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.018664752999939083,
-        "atlas_execution_time": 0.04803112199988391
+        "pfasgroups_execution_time": 0.017099781999604602,
+        "atlas_execution_time": 0.04876964599952771
       },
       {
         "iteration": 11,
@@ -1212,8 +1212,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.03371588900017741,
-        "atlas_execution_time": 0.05748768299963558
+        "pfasgroups_execution_time": 0.017610983999475138,
+        "atlas_execution_time": 0.05296299600013299
       },
       {
         "iteration": 12,
@@ -1235,8 +1235,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.017834660000062286,
-        "atlas_execution_time": 0.057560040000225854
+        "pfasgroups_execution_time": 0.01747777299988229,
+        "atlas_execution_time": 0.04894960599995102
       },
       {
         "iteration": 13,
@@ -1258,8 +1258,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.0182643560001452,
-        "atlas_execution_time": 0.048539055999754055
+        "pfasgroups_execution_time": 0.017137503999947512,
+        "atlas_execution_time": 0.05149827799959894
       },
       {
         "iteration": 14,
@@ -1281,8 +1281,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.017959476000214636,
-        "atlas_execution_time": 0.05026926399978038
+        "pfasgroups_execution_time": 0.017512955999336555,
+        "atlas_execution_time": 0.054357388999960676
       },
       {
         "iteration": 15,
@@ -1304,8 +1304,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.017704152000078466,
-        "atlas_execution_time": 0.04990850900003352
+        "pfasgroups_execution_time": 0.01736730799984798,
+        "atlas_execution_time": 0.05314530399937212
       },
       {
         "iteration": 16,
@@ -1327,8 +1327,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.01785084099992673,
-        "atlas_execution_time": 0.04972857999973712
+        "pfasgroups_execution_time": 0.017491648000032,
+        "atlas_execution_time": 0.05010447699987708
       },
       {
         "iteration": 17,
@@ -1350,8 +1350,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.017696031000014045,
-        "atlas_execution_time": 0.04764601599981688
+        "pfasgroups_execution_time": 0.017483739999988757,
+        "atlas_execution_time": 0.05168005199993786
       },
       {
         "iteration": 18,
@@ -1373,8 +1373,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.018575011999928392,
-        "atlas_execution_time": 0.05218812200018874
+        "pfasgroups_execution_time": 0.018181741000262264,
+        "atlas_execution_time": 0.051504953000403475
       },
       {
         "iteration": 19,
@@ -1396,8 +1396,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.017591560000255413,
-        "atlas_execution_time": 0.0634767040000952
+        "pfasgroups_execution_time": 0.017027760000019043,
+        "atlas_execution_time": 0.04926386100032687
       },
       {
         "iteration": 20,
@@ -1419,8 +1419,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAA precursors",
         "atlas_second_class": "HFEs",
-        "pfasgroups_execution_time": 0.02757756300024994,
-        "atlas_execution_time": 0.04902068100000179
+        "pfasgroups_execution_time": 0.01767963500060432,
+        "atlas_execution_time": 0.050635952000448015
       }
     ]
   },
@@ -1462,8 +1462,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.01871769800027323,
-        "atlas_execution_time": 0.05074816100022872
+        "pfasgroups_execution_time": 0.021996086000399373,
+        "atlas_execution_time": 0.048552769000707485
       },
       {
         "iteration": 2,
@@ -1488,8 +1488,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.016416279000168288,
-        "atlas_execution_time": 0.04535791900025288
+        "pfasgroups_execution_time": 0.015810564999810595,
+        "atlas_execution_time": 0.043950503999440116
       },
       {
         "iteration": 3,
@@ -1514,8 +1514,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015310161999877892,
-        "atlas_execution_time": 0.048171984999953565
+        "pfasgroups_execution_time": 0.015094856999894546,
+        "atlas_execution_time": 0.044161884000459395
       },
       {
         "iteration": 4,
@@ -1540,8 +1540,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.01577441999961593,
-        "atlas_execution_time": 0.04598756699988371
+        "pfasgroups_execution_time": 0.014874038999550976,
+        "atlas_execution_time": 0.04466590200081555
       },
       {
         "iteration": 5,
@@ -1566,8 +1566,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015980189999936556,
-        "atlas_execution_time": 0.0451156419999279
+        "pfasgroups_execution_time": 0.0157964929994705,
+        "atlas_execution_time": 0.04469642600088264
       },
       {
         "iteration": 6,
@@ -1592,8 +1592,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015651951000108966,
-        "atlas_execution_time": 0.04458661599983316
+        "pfasgroups_execution_time": 0.01568327099994349,
+        "atlas_execution_time": 0.04624679100015783
       },
       {
         "iteration": 7,
@@ -1618,8 +1618,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015016399000160163,
-        "atlas_execution_time": 0.04633617099989351
+        "pfasgroups_execution_time": 0.015227986999889254,
+        "atlas_execution_time": 0.044937519999621145
       },
       {
         "iteration": 8,
@@ -1644,8 +1644,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.01523143499980506,
-        "atlas_execution_time": 0.045242997000059404
+        "pfasgroups_execution_time": 0.015164668000579695,
+        "atlas_execution_time": 0.04643428799954563
       },
       {
         "iteration": 9,
@@ -1670,8 +1670,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015495346000079735,
-        "atlas_execution_time": 0.04511706499988577
+        "pfasgroups_execution_time": 0.015400018000036653,
+        "atlas_execution_time": 0.04481872700034728
       },
       {
         "iteration": 10,
@@ -1696,8 +1696,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015477193000151601,
-        "atlas_execution_time": 0.04659977300025275
+        "pfasgroups_execution_time": 0.015658944000279007,
+        "atlas_execution_time": 0.0535427710001386
       },
       {
         "iteration": 11,
@@ -1722,8 +1722,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015709122999851388,
-        "atlas_execution_time": 0.04672960400012016
+        "pfasgroups_execution_time": 0.01514238599975215,
+        "atlas_execution_time": 0.04541386400069314
       },
       {
         "iteration": 12,
@@ -1748,8 +1748,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015522460999818577,
-        "atlas_execution_time": 0.04953584699978819
+        "pfasgroups_execution_time": 0.015329353000197443,
+        "atlas_execution_time": 0.04611598099927505
       },
       {
         "iteration": 13,
@@ -1774,8 +1774,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015166007000061654,
-        "atlas_execution_time": 0.04920148099972721
+        "pfasgroups_execution_time": 0.01561248699999851,
+        "atlas_execution_time": 0.047335258000202884
       },
       {
         "iteration": 14,
@@ -1800,8 +1800,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015570329999718524,
-        "atlas_execution_time": 0.047637727999699564
+        "pfasgroups_execution_time": 0.015345245000389696,
+        "atlas_execution_time": 0.051917351000156486
       },
       {
         "iteration": 15,
@@ -1826,8 +1826,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015609247000156756,
-        "atlas_execution_time": 0.04897693600014463
+        "pfasgroups_execution_time": 0.015192804999969667,
+        "atlas_execution_time": 0.04546298300010676
       },
       {
         "iteration": 16,
@@ -1852,8 +1852,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015250325999659253,
-        "atlas_execution_time": 0.04716997600007744
+        "pfasgroups_execution_time": 0.015215127999908873,
+        "atlas_execution_time": 0.04504480000014155
       },
       {
         "iteration": 17,
@@ -1878,8 +1878,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015650949000246328,
-        "atlas_execution_time": 0.046846717999869725
+        "pfasgroups_execution_time": 0.015971662000083597,
+        "atlas_execution_time": 0.049839536999570555
       },
       {
         "iteration": 18,
@@ -1904,8 +1904,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015497840000080032,
-        "atlas_execution_time": 0.047104236999985005
+        "pfasgroups_execution_time": 0.015186947999609401,
+        "atlas_execution_time": 0.04847245400014799
       },
       {
         "iteration": 19,
@@ -1930,8 +1930,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015695854999648873,
-        "atlas_execution_time": 0.04983979600001476
+        "pfasgroups_execution_time": 0.015245878999849083,
+        "atlas_execution_time": 0.050074188000508
       },
       {
         "iteration": 20,
@@ -1956,8 +1956,8 @@
         "atlas_detected": true,
         "atlas_first_class": "PFAAs",
         "atlas_second_class": "PFSA derivatives",
-        "pfasgroups_execution_time": 0.015598742999827664,
-        "atlas_execution_time": 0.04670636199989531
+        "pfasgroups_execution_time": 0.015234860000418848,
+        "atlas_execution_time": 0.04767471399918577
       }
     ]
   },
@@ -1995,8 +1995,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.026644728000064788,
-        "atlas_execution_time": 0.05417507399988608
+        "pfasgroups_execution_time": 0.026330708999921626,
+        "atlas_execution_time": 0.05305593899993255
       },
       {
         "iteration": 2,
@@ -2019,8 +2019,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.018548175999967498,
-        "atlas_execution_time": 0.052811671999734244
+        "pfasgroups_execution_time": 0.017616703000385314,
+        "atlas_execution_time": 0.05146711899942602
       },
       {
         "iteration": 3,
@@ -2043,8 +2043,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.017875624000225798,
-        "atlas_execution_time": 0.05421084799991149
+        "pfasgroups_execution_time": 0.017491429000074277,
+        "atlas_execution_time": 0.05219644499993592
       },
       {
         "iteration": 4,
@@ -2067,8 +2067,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.017545163999784563,
-        "atlas_execution_time": 0.051980876000015996
+        "pfasgroups_execution_time": 0.01726132800013147,
+        "atlas_execution_time": 0.05308696999964013
       },
       {
         "iteration": 5,
@@ -2091,8 +2091,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.01709539799958293,
-        "atlas_execution_time": 0.05296395200002735
+        "pfasgroups_execution_time": 0.018013345000326808,
+        "atlas_execution_time": 0.05617760300083319
       },
       {
         "iteration": 6,
@@ -2115,8 +2115,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.01775165900016873,
-        "atlas_execution_time": 0.05532537199997023
+        "pfasgroups_execution_time": 0.017746783999427862,
+        "atlas_execution_time": 0.0541935889996239
       },
       {
         "iteration": 7,
@@ -2139,8 +2139,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.017772495999906823,
-        "atlas_execution_time": 0.056491288999950484
+        "pfasgroups_execution_time": 0.01725589299985586,
+        "atlas_execution_time": 0.05473572499977308
       },
       {
         "iteration": 8,
@@ -2163,8 +2163,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.017314603999693645,
-        "atlas_execution_time": 0.05445668500033207
+        "pfasgroups_execution_time": 0.017243218999283272,
+        "atlas_execution_time": 0.05241631300032168
       },
       {
         "iteration": 9,
@@ -2187,8 +2187,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.01751461600042603,
-        "atlas_execution_time": 0.053493060000164405
+        "pfasgroups_execution_time": 0.01682292200075608,
+        "atlas_execution_time": 0.05341638999925635
       },
       {
         "iteration": 10,
@@ -2211,8 +2211,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.017188732999784406,
-        "atlas_execution_time": 0.054238669000369555
+        "pfasgroups_execution_time": 0.018301182999493903,
+        "atlas_execution_time": 0.05424879099973623
       },
       {
         "iteration": 11,
@@ -2235,8 +2235,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.01790830800018739,
-        "atlas_execution_time": 0.053270222999799444
+        "pfasgroups_execution_time": 0.016974411999399308,
+        "atlas_execution_time": 0.05723491800017655
       },
       {
         "iteration": 12,
@@ -2259,8 +2259,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.018084993999764265,
-        "atlas_execution_time": 0.0542015910000373
+        "pfasgroups_execution_time": 0.01711452599920449,
+        "atlas_execution_time": 0.05284923999988678
       },
       {
         "iteration": 13,
@@ -2283,8 +2283,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.01793350099978852,
-        "atlas_execution_time": 0.05767738900021868
+        "pfasgroups_execution_time": 0.017887063999296515,
+        "atlas_execution_time": 0.05543426100030047
       },
       {
         "iteration": 14,
@@ -2307,8 +2307,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.01737774299999728,
-        "atlas_execution_time": 0.05830731799960631
+        "pfasgroups_execution_time": 0.016912895999666944,
+        "atlas_execution_time": 0.05443671500052005
       },
       {
         "iteration": 15,
@@ -2331,8 +2331,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.017268263999994815,
-        "atlas_execution_time": 0.05590996199998699
+        "pfasgroups_execution_time": 0.017589537000276323,
+        "atlas_execution_time": 0.05650610400061851
       },
       {
         "iteration": 16,
@@ -2355,8 +2355,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.01801660199998878,
-        "atlas_execution_time": 0.05896703999997044
+        "pfasgroups_execution_time": 0.01759610800036171,
+        "atlas_execution_time": 0.05525032200057467
       },
       {
         "iteration": 17,
@@ -2379,8 +2379,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.01741774100037219,
-        "atlas_execution_time": 0.05586092600015036
+        "pfasgroups_execution_time": 0.016872183000486984,
+        "atlas_execution_time": 0.053735892000077
       },
       {
         "iteration": 18,
@@ -2403,8 +2403,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.017724192000059702,
-        "atlas_execution_time": 0.055360865000238846
+        "pfasgroups_execution_time": 0.016758820999712043,
+        "atlas_execution_time": 0.05460342900005344
       },
       {
         "iteration": 19,
@@ -2427,8 +2427,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.018444785000156116,
-        "atlas_execution_time": 0.055257911999888165
+        "pfasgroups_execution_time": 0.018045076999442244,
+        "atlas_execution_time": 0.06032614700052363
       },
       {
         "iteration": 20,
@@ -2451,8 +2451,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Polyfluoroalkyl acids, cyclic",
         "atlas_second_class": "PolyFCA derivatives, cyclic",
-        "pfasgroups_execution_time": 0.017210827999861067,
-        "atlas_execution_time": 0.055818880000060744
+        "pfasgroups_execution_time": 0.017482881999967503,
+        "atlas_execution_time": 0.054206838999562024
       }
     ]
   },
@@ -2493,8 +2493,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.019665398000142886,
-        "atlas_execution_time": 0.00036280900030760677
+        "pfasgroups_execution_time": 0.02579024799979379,
+        "atlas_execution_time": 0.000484372000755684
       },
       {
         "iteration": 2,
@@ -2519,8 +2519,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.022221105999960855,
-        "atlas_execution_time": 0.00033218699991266476
+        "pfasgroups_execution_time": 0.026060316000439343,
+        "atlas_execution_time": 0.0003765539995583822
       },
       {
         "iteration": 3,
@@ -2545,8 +2545,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.026971130999754678,
-        "atlas_execution_time": 0.0003518870003063057
+        "pfasgroups_execution_time": 0.02191083300022001,
+        "atlas_execution_time": 0.00040716399962548167
       },
       {
         "iteration": 4,
@@ -2571,8 +2571,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.02274458700003379,
-        "atlas_execution_time": 0.0003810140001405671
+        "pfasgroups_execution_time": 0.022673864999887883,
+        "atlas_execution_time": 0.0004578950001814519
       },
       {
         "iteration": 5,
@@ -2597,8 +2597,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.020661601000028895,
-        "atlas_execution_time": 0.00044108699967182474
+        "pfasgroups_execution_time": 0.02894842499972583,
+        "atlas_execution_time": 0.00034621999930095626
       },
       {
         "iteration": 6,
@@ -2623,8 +2623,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.024588453999967896,
-        "atlas_execution_time": 0.0004161900001236063
+        "pfasgroups_execution_time": 0.028873319000012998,
+        "atlas_execution_time": 0.00042543699964880943
       },
       {
         "iteration": 7,
@@ -2649,8 +2649,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.02531465299989577,
-        "atlas_execution_time": 0.0003429139997024322
+        "pfasgroups_execution_time": 0.03192403699995339,
+        "atlas_execution_time": 0.0006749630001650075
       },
       {
         "iteration": 8,
@@ -2675,8 +2675,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.02106669700015118,
-        "atlas_execution_time": 0.00040339499992114725
+        "pfasgroups_execution_time": 0.03354392300025211,
+        "atlas_execution_time": 0.0008039330004976364
       },
       {
         "iteration": 9,
@@ -2701,8 +2701,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.02456144799998583,
-        "atlas_execution_time": 0.00035088200002064696
+        "pfasgroups_execution_time": 0.028574630000548495,
+        "atlas_execution_time": 0.00039433399979316164
       },
       {
         "iteration": 10,
@@ -2727,8 +2727,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.025772339000013744,
-        "atlas_execution_time": 0.0003688469996632193
+        "pfasgroups_execution_time": 0.026237440999466344,
+        "atlas_execution_time": 0.0003073329999097041
       },
       {
         "iteration": 11,
@@ -2753,8 +2753,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.025635463000071468,
-        "atlas_execution_time": 0.0003644949997578806
+        "pfasgroups_execution_time": 0.028521696999632695,
+        "atlas_execution_time": 0.0003324770004837774
       },
       {
         "iteration": 12,
@@ -2779,8 +2779,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.020755473999997776,
-        "atlas_execution_time": 0.00037002399994889856
+        "pfasgroups_execution_time": 0.026206528000329854,
+        "atlas_execution_time": 0.00038615699941146886
       },
       {
         "iteration": 13,
@@ -2805,8 +2805,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.023762613000144484,
-        "atlas_execution_time": 0.0003178959996148478
+        "pfasgroups_execution_time": 0.023887739999736368,
+        "atlas_execution_time": 0.0003465409999989788
       },
       {
         "iteration": 14,
@@ -2831,8 +2831,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.027989706999960617,
-        "atlas_execution_time": 0.00036532000012812205
+        "pfasgroups_execution_time": 0.026033596999695874,
+        "atlas_execution_time": 0.00041619199964770814
       },
       {
         "iteration": 15,
@@ -2857,8 +2857,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.028795134000120015,
-        "atlas_execution_time": 0.0003733540002031077
+        "pfasgroups_execution_time": 0.026704019000135304,
+        "atlas_execution_time": 0.0003544850005710032
       },
       {
         "iteration": 16,
@@ -2883,8 +2883,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.03256494500010376,
-        "atlas_execution_time": 0.0007665539997105952
+        "pfasgroups_execution_time": 0.026904686000307265,
+        "atlas_execution_time": 0.0007799569993949262
       },
       {
         "iteration": 17,
@@ -2909,8 +2909,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.03514733600013642,
-        "atlas_execution_time": 0.0006418530001610634
+        "pfasgroups_execution_time": 0.029369758000029833,
+        "atlas_execution_time": 0.0003628679996836581
       },
       {
         "iteration": 18,
@@ -2935,8 +2935,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.02702138799986642,
-        "atlas_execution_time": 0.0002889679999498185
+        "pfasgroups_execution_time": 0.028855876000307035,
+        "atlas_execution_time": 0.0005981210006211768
       },
       {
         "iteration": 19,
@@ -2961,8 +2961,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.023075352999967436,
-        "atlas_execution_time": 0.0003714389999913692
+        "pfasgroups_execution_time": 0.02931480100050976,
+        "atlas_execution_time": 0.0003608389997680206
       },
       {
         "iteration": 20,
@@ -2987,8 +2987,8 @@
         "atlas_detected": true,
         "atlas_first_class": "Other PFASs",
         "atlas_second_class": "Aromatic PFASs",
-        "pfasgroups_execution_time": 0.02804438500015749,
-        "atlas_execution_time": 0.000497220999932324
+        "pfasgroups_execution_time": 0.023067868999532948,
+        "atlas_execution_time": 0.0004407939995871857
       }
     ]
   }

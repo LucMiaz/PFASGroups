@@ -358,7 +358,7 @@ class EnhancedPFASBenchmark:
             mol = Chem.MolFromSmiles(smiles)
             if mol is not None:
                 formula = rdMolDescriptors.CalcMolFormula(mol)
-                matches = parse_PFAS_groups(mol, formula, bycomponent=bycomponent)
+                matches = parse_PFAS_groups(mol, formula=formula, bycomponent=bycomponent)
                 
                 # Parse the complex tuple structure returned by parse_PFAS_groups
                 group_ids = []
