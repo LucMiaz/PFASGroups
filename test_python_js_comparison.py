@@ -57,7 +57,7 @@ def normalize_group_result(group_data):
         'id': group_data.get('id'),
         'name': group_data.get('name'),
         'matchCount': group_data.get('matchCount', group_data.get('match_count', 0)),
-        'nCFchain': group_data.get('nCFchain', group_data.get('n_CFchain', 0)),
+        'nCFchain': group_data.get('nCFchain', group_data.get('chain_lengths', 0)),
     }
 
 def compare_results(python_result, js_result, molecule_name, flavor):

@@ -336,12 +336,12 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, **kwargs):
     
     if len(chains.keys())==0:
         n = 0
-        n_CFchain = []
+        chain_lengths = []
     else:
         n = max([0]+[len(x) for x in chains.values()])#{k:len(chain) for k,chain in chains.items()}
-        n_CFchain = [len(x) for x in chains.get('Perfluoroalkyl',[[]])]#{k:[len(x) for x in chain] for k,chain in chains.items()}
-    chains = [{'chain':list(chain), 'length':len(chain),'SMARTS':path} for path,all_chains in chains.items() for chain in all_chains]
-    return n,n_CFchain, len(smartsMatches1), chains  
+        chain_lengths = [len(x) for x in chains.get('Perfluoroalkyl',[[]])]#{k:[len(x) for x in chain] for k,chain in chains.items()}
+    matched_chains = [{'chain':list(chain), 'length':len(chain),'SMARTS':path} for path,all_chains in chains.items() for chain in all_chains]
+    return n, chain_lengths, len(smartsMatches1), matched_chains  
 
 
 def path_between_smarts(mol:Chem.Mol, smarts1,smarts2,**kwargs):
@@ -387,30 +387,51 @@ def find_alkyl_components(mol, smarts, components):
     matches = mol.GetSubstructMatches(smarts)
     subset = set(y for x in matches for y in x)
     if len(subset)==0:
-        return 0,0,0,[]
+        return 0, [], 0, []
     # Filter components connected to the smarts
     relevant_components = [comp for comp in components if len(subset.intersection(comp))>0]
-    return max([0]+[len(x) for x in relevant_components]),[len(x) for x in relevant_components],len(relevant_components),relevant_components
+    chain_lengths = [len(x) for x in relevant_components]
+    # Convert components to dictionary format
+    matched_chains = [{'chain': list(comp), 'length': len(comp), 'SMARTS': 'alkyl'} for comp in relevant_components]
+    return max([0]+[len(x) for x in relevant_components]), chain_lengths, len(relevant_components), matched_chains
 
 def find_aryl_components(mol, aryl_smarts):
     """Find aryl components in a molecule."""
     matches = mol.GetSubstructMatches(aryl_smarts)
     subset = [y for x in matches for y in x]
     if len(subset)==0:
-        return 0,0,0,[]
+        return 0, [], 0, []
     components = connected_components(mol, subset)
-    return max([0]+[len(x) for x in components]),[len(x) for x in components],len(components),components
+    chain_lengths = [len(x) for x in components]
+    # Convert components to the same format as other functions return
+    matched_chains = [{'chain': list(comp), 'length': len(comp), 'SMARTS': 'cyclic'} for comp in components]
+    return max([0]+[len(x) for x in components]), chain_lengths, len(components), matched_chains
 
 # --- Main PFAS group parsing functions ---
 @load_PFASGroups()
 def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
     """Iterates over PFAS groups and finds the ones that match the molecule.
-    :params mol: RDKit molecule
-    :params formula: Molecular formula as string
-    :params pfas_groups: List of PFASGroup objects (leave None for default)
-    :params bycomponent: Whether to look for fluorinated components or for chains between functional groups (for PFAS groups where smarts1 defined, smarts2 = None)
-    :return: List of tuples (PFASGroup, n_matches, n_CFchains, chains)
-
+    
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        RDKit molecule object
+    bycomponent : bool, optional
+        Whether to look for fluorinated components or for chains between functional groups
+    **kwargs : dict
+        Additional parameters (formula, pfas_groups, smartsPaths, etc.)
+    
+    Returns
+    -------
+    list of tuples
+        List of (PFASGroup, match_count, chain_lengths, matched_chains) tuples where:
+        - PFASGroup: The matched PFAS group object
+        - match_count: Number of times this group pattern was matched (int)
+        - chain_lengths: List of carbon chain lengths found (list of int)
+        - matched_chains: Detailed information about matched chains (list of dicts)
+    
+    Notes
+    -----
     For PFASgroups 
     1. with smartsPath = 'cyclic', search for connected component matching smarts1
     2. with smarts1 and smarts2 defined: Find shortest path between each pairs of matches
@@ -437,14 +458,14 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
         matched1_len = 0
         for fd,mol in zip(formulas,frags):
             if pf.formula_dict_satisfies_constraints(fd) is True:
-                n_CFchain = []
+                chain_lengths = []
                 if pf.smartsPath =='cyclic':
                     # treat cyclic groups separately
-                    n,n_CFchain,matched1_len, chains = find_aryl_components(mol, pf.smarts1)
+                    match_count, chain_lengths, matched1_len, matched_chains = find_aryl_components(mol, pf.smarts1)
                 elif pf.smarts2 is not None and pf.smarts1 is not None:
                     # treat cases with both smarts1 and smarts2, finding path
                     try:
-                        n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
+                        match_count, chain_lengths, matched1_len, matched_chains = path_between_smarts(mol,
                                                                             pf.smarts1,
                                                                             pf.smarts2, **kwargs)
                     except ValueError as e:
@@ -453,11 +474,11 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                     # treat cases with only smarts1, using default smarts2 (if looking for chains) else 
                     # if bycomponent is True, find fluorinated components for each path type
                     if bycomponent is True:
-                        n, n_CFchain,matched1_len, chains = find_alkyl_components(mol, pf.smarts1, path_components)
+                        match_count, chain_lengths, matched1_len, matched_chains = find_alkyl_components(mol, pf.smarts1, path_components)
                     else:
                         
                         try:
-                            n,n_CFchain,matched1_len, chains = path_between_smarts(mol,
+                            match_count, chain_lengths, matched1_len, matched_chains = path_between_smarts(mol,
                                                                                 pf.smarts1,
                                                                                 None, **kwargs)
                         except ValueError as e:
@@ -477,18 +498,18 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                         for frag in frags:
                             n += len(frag.GetSubstructMatches(pf.smarts1))
                     path_components = fluorinated_components_dict.get(pf.smartsPath,"Perfluoroalkyl")
-                    n,n_CFchain,matched1_len, chains = find_alkyl_components(mol, pf.smarts1, path_components)
+                    match_count, chain_lengths, matched1_len, matched_chains = find_alkyl_components(mol, pf.smarts1, path_components)
                 else:
                     # teat cases with no smarts1, just formula constraints
-                    n=1
-                    chains = []
+                    match_count = 1
+                    matched_chains = []
                     matched1_len = 1
-                if n>0 and matched1_len>0:
+                if match_count > 0 and matched1_len > 0:
                     # add to matches if functional group was found
-                    group_matches.append((pf,n,n_CFchain, chains))
+                    group_matches.append((pf, match_count, chain_lengths, matched_chains))
     return group_matches
 
-def parse_smiles(smiles, bycomponent=False, **kwargs):
+def parse_smiles(smiles, bycomponent=False, output_format='list', **kwargs):
     """
     Parse SMILES string(s) and return PFAS group information.
     
@@ -498,30 +519,63 @@ def parse_smiles(smiles, bycomponent=False, **kwargs):
         Single SMILES string or list of SMILES strings
     bycomponent : bool
         Whether to use component-based analysis
+    output_format : str, default 'list'
+        Output format: 'list' (default), 'dataframe', or 'csv'
+        - 'list': Returns nested lists of tuples (default behavior)
+        - 'dataframe': Returns pandas DataFrame with one row per match
+        - 'csv': Returns CSV string
     **kwargs : dict
         Additional parameters (pfas_groups, smartsPaths, etc.)
     
     Returns:
     --------
-    list or list of lists
-        If single SMILES: list of matches
-        If list of SMILES: list of lists of matches
+    list, pandas.DataFrame, or str
+        Depends on output_format parameter
     """
-    # Handle both single string and list inputs
-    if isinstance(smiles, str):
-        mol = Chem.MolFromSmiles(smiles)
+    # Convert single input to list for uniform processing
+    single_input = isinstance(smiles, str)
+    smiles_list = [smiles] if single_input else smiles
+    
+    # Parse all SMILES
+    results = []
+    for smi in smiles_list:
+        mol = Chem.MolFromSmiles(smi)
         formula = CalcMolFormula(mol)
-        return parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
+        matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
+        results.append(matches)
+    
+    # Format output based on requested format
+    if output_format == 'list':
+        return results[0] if single_input else results
+    elif output_format in ['dataframe', 'csv']:
+        import pandas as pd
+        rows = []
+        for smi, matches in zip(smiles_list, results):
+            if not matches:
+                rows.append({
+                    'smiles': smi,
+                    'group_id': None,
+                    'group_name': None,
+                    'match_count': 0,
+                    'chain_lengths': None,
+                    'num_chains': 0
+                })
+            else:
+                for group, match_count, chain_lengths, matched_chains in matches:
+                    rows.append({
+                        'smiles': smi,
+                        'group_id': group.id,
+                        'group_name': group.name,
+                        'match_count': match_count,
+                        'chain_lengths': chain_lengths,
+                        'num_chains': len(matched_chains)
+                    })
+        df = pd.DataFrame(rows)
+        return df.to_csv(index=False) if output_format == 'csv' else df
     else:
-        results = []
-        for smi in smiles:
-            mol = Chem.MolFromSmiles(smi)
-            formula = CalcMolFormula(mol)
-            matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
-            results.append(matches)
-        return results
+        raise ValueError(f"Invalid output_format: {output_format}. Must be 'list', 'dataframe', or 'csv'")
 
-def parse_mol(mols, bycomponent=False, **kwargs):
+def parse_mol(mols, bycomponent=False, output_format='list', **kwargs):
     """
     Parse RDKit molecule(s) and return PFAS group information.
     
@@ -531,26 +585,61 @@ def parse_mol(mols, bycomponent=False, **kwargs):
         Single RDKit molecule or list of molecules
     bycomponent : bool
         Whether to use component-based analysis
+    output_format : str, default 'list'
+        Output format: 'list' (default), 'dataframe', or 'csv'
+        - 'list': Returns nested lists of tuples (default behavior)
+        - 'dataframe': Returns pandas DataFrame with one row per match
+        - 'csv': Returns CSV string
     **kwargs : dict
         Additional parameters (pfas_groups, smartsPaths, etc.)
     
     Returns:
     --------
-    list or list of lists
-        If single molecule: list of matches
-        If list of molecules: list of lists of matches
+    list, pandas.DataFrame, or str
+        Depends on output_format parameter
     """
-    # Handle both single molecule and list inputs
-    if isinstance(mols, Chem.Mol):
-        formula = CalcMolFormula(mols)
-        return parse_groups_in_mol(mols, formula=formula, bycomponent=bycomponent, **kwargs)
+    # Convert single input to list for uniform processing
+    single_input = isinstance(mols, Chem.Mol)
+    mols_list = [mols] if single_input else mols
+    
+    # Parse all molecules
+    results = []
+    for mol in mols_list:
+        formula = CalcMolFormula(mol)
+        matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
+        results.append(matches)
+    
+    # Format output based on requested format
+    if output_format == 'list':
+        return results[0] if single_input else results
+    elif output_format in ['dataframe', 'csv']:
+        import pandas as pd
+        rows = []
+        for mol, matches in zip(mols_list, results):
+            smi = Chem.MolToSmiles(mol)
+            if not matches:
+                rows.append({
+                    'smiles': smi,
+                    'group_id': None,
+                    'group_name': None,
+                    'match_count': 0,
+                    'chain_lengths': None,
+                    'num_chains': 0
+                })
+            else:
+                for group, match_count, chain_lengths, matched_chains in matches:
+                    rows.append({
+                        'smiles': smi,
+                        'group_id': group.id,
+                        'group_name': group.name,
+                        'match_count': match_count,
+                        'chain_lengths': chain_lengths,
+                        'num_chains': len(matched_chains)
+                    })
+        df = pd.DataFrame(rows)
+        return df.to_csv(index=False) if output_format == 'csv' else df
     else:
-        results = []
-        for mol in mols:
-            formula = CalcMolFormula(mol)
-            matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
-            results.append(matches)
-        return results
+        raise ValueError(f"Invalid output_format: {output_format}. Must be 'list', 'dataframe', or 'csv'")
 
 @load_PFASGroups()
 def generate_fingerprint(smiles: Union[str, List[str]], 
@@ -661,12 +750,12 @@ def generate_fingerprint(smiles: Union[str, List[str]],
             
             # Create mapping from group ID to match information
             match_dict = {}
-            for group, n_matches, n_cfchains, chains in all_matches:
+            for group, match_count, chain_lengths, matched_chains in all_matches:
                 match_dict[group.id] = {
                     'group': group,
-                    'n_matches': n_matches,
-                    'n_cfchains': n_cfchains,
-                    'chains': chains
+                    'match_count': match_count,
+                    'chain_lengths': chain_lengths,
+                    'matched_chains': matched_chains
                 }
             
             if representation == 'vector' or representation == 'int':
@@ -678,12 +767,12 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                         if count_mode == 'binary' or representation == 'int':
                             fingerprint[i] = 1
                         elif count_mode == 'count':
-                            fingerprint[i] = match_info['n_matches']
+                            fingerprint[i] = match_info['match_count']
                         elif count_mode == 'max_chain':
-                            if match_info['chains']:
-                                fingerprint[i] = max([chain['length'] for chain in match_info['chains']])
+                            if match_info['matched_chains']:
+                                fingerprint[i] = max([chain['length'] for chain in match_info['matched_chains']])
                             else:
-                                fingerprint[i] = match_info['n_matches'] if match_info['n_matches'] > 0 else 0
+                                fingerprint[i] = match_info['match_count'] if match_info['match_count'] > 0 else 0
                         else:
                             raise ValueError(f"Unknown count_mode: {count_mode}")
                 if representation == 'int':
@@ -700,12 +789,12 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                         if count_mode == 'binary':
                             fingerprint[group.name] = 1
                         elif count_mode == 'count':
-                            fingerprint[group.name] = match_info['n_matches']
+                            fingerprint[group.name] = match_info['match_count']
                         elif count_mode == 'max_chain':
-                            if match_info['chains']:
-                                fingerprint[group.name] = max([chain['length'] for chain in match_info['chains']])
+                            if match_info['matched_chains']:
+                                fingerprint[group.name] = max([chain['length'] for chain in match_info['matched_chains']])
                             else:
-                                fingerprint[group.name] = match_info['n_matches'] if match_info['n_matches'] > 0 else 0
+                                fingerprint[group.name] = match_info['match_count'] if match_info['match_count'] > 0 else 0
                     else:
                         fingerprint[group.name] = 0
                 fingerprints.append(fingerprint)

@@ -73,10 +73,10 @@ results = parse_smiles(test_smiles, smartsPaths=default_paths, pfas_groups=group
 
 print(f"   Test SMILES: {test_smiles[0]}")
 print(f"   Found {len(results[0])} matches:")
-for group, n_matches, n_CFchain, _ in results[0]:
+for group, match_count, chain_lengths, _ in results[0]:
     if group.id == 3000:
         print(f"   ✓ Matched: {group.name}")
-        print(f"     Chain length: {n_CFchain}")
+        print(f"     Chain length: {chain_lengths}")
 
 # Test 5: Error handling
 print("\n5. Testing error handling")

@@ -76,7 +76,7 @@ from PFASgroups import parse_smiles
 smiles = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
 results = parse_smiles(smiles)
 
-# Results contain: (PFASGroup, n_matches, n_CFchain, chains)
+# Results contain: (PFASGroup, match_count, chain_lengths, matched_chains)
 for i, smiles_str in enumerate(smiles):
     print(f"\nAnalyzing: {smiles_str}")
     for group, n_matches, n_CFchain, chains in results[i]:

@@ -50,7 +50,7 @@ def test_python_both_flavors():
         print(f"Detected groups: {[g['id'] for g in groups_default]}")
         for group in groups_default:
             print(f"  Group {group['id']}: {group['name']}")
-            print(f"    match_count: {group.get('match_count', 0)}, n_CFchain: {group.get('n_CFchain', [])}")
+            print(f"    match_count: {group.get('match_count', 0)}, chain_lengths: {group.get('chain_lengths', [])}")
         
         # Test bycomponent=True
         print(f"\n--- Testing bycomponent=True ---")
@@ -59,7 +59,7 @@ def test_python_both_flavors():
         print(f"Detected groups: {[g['id'] for g in groups_bycomp]}")
         for group in groups_bycomp:
             print(f"  Group {group['id']}: {group['name']}")
-            print(f"    match_count: {group.get('match_count', 0)}, n_CFchain: {group.get('n_CFchain', [])}")
+            print(f"    match_count: {group.get('match_count', 0)}, chain_lengths: {group.get('chain_lengths', [])}")
         
         # Check adequation
         ids_default = set(g['id'] for g in groups_default)

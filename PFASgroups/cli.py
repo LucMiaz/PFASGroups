@@ -86,9 +86,15 @@ Note: Use get_smartsPaths() and get_PFASGroups() in Python to extend defaults.
         help='Use component-based analysis'
     )
     parse_parser.add_argument(
+        '--format',
+        choices=['json', 'csv'],
+        default='json',
+        help='Output format (default: json)'
+    )
+    parse_parser.add_argument(
         '--pretty',
         action='store_true',
-        help='Pretty-print JSON output'
+        help='Pretty-print JSON output (only for JSON format)'
     )
     
     # Fingerprint command
@@ -129,9 +135,15 @@ Note: Use get_smartsPaths() and get_PFASGroups() in Python to extend defaults.
         help='How to count matches (default: binary)'
     )
     fp_parser.add_argument(
+        '--output-format',
+        choices=['json', 'csv'],
+        default='json',
+        help='Output file format (default: json)'
+    )
+    fp_parser.add_argument(
         '--pretty',
         action='store_true',
-        help='Pretty-print JSON output'
+        help='Pretty-print JSON output (only for JSON format)'
     )
     
     # List groups command
@@ -218,38 +230,60 @@ def cmd_parse(args):
         print("Error: Provide SMILES as arguments or use --input", file=sys.stderr)
         sys.exit(1)
     
-    # Parse PFAS
-    results = parse_smiles(smiles_list, bycomponent=args.bycomponent, **kwargs)
-    
-    # Convert results to JSON-serializable format
-    output_data = []
-    for i, (smiles, matches) in enumerate(zip(smiles_list, results)):
-        result_entry = {
-            'smiles': smiles,
-            'groups': []
-        }
-        
-        for group, n_matches, n_CFchain, chains in matches:
-            result_entry['groups'].append({
-                'name': group.name,
-                'id': group.id,
-                'n_matches': n_matches,
-                'n_CFchain': n_CFchain,
-                'chains_count': len(chains)
-            })
-        
-        output_data.append(result_entry)
-    
-    # Output results
-    indent = 2 if args.pretty else None
-    output_json = json.dumps(output_data, indent=indent)
-    
-    if args.output:
-        with open(args.output, 'w') as f:
-            f.write(output_json)
-        print(f"Results written to {args.output}")
+    # Determine output format
+    if args.format == 'csv':
+        output_format = 'csv'
+    elif args.format == 'json':
+        output_format = 'list'
     else:
-        print(output_json)
+        output_format = 'list'
+    
+    # Parse PFAS with specified output format
+    if args.format == 'csv':
+        # Use CSV output format from parse_smiles
+        result = parse_smiles(smiles_list, bycomponent=args.bycomponent, 
+                            output_format='csv', **kwargs)
+        
+        if args.output:
+            with open(args.output, 'w', encoding='utf-8') as f:
+                f.write(result)
+            print(f"Results written to {args.output}")
+        else:
+            print(result, end='')
+    else:
+        # Use list output format and convert to JSON
+        results = parse_smiles(smiles_list, bycomponent=args.bycomponent, 
+                             output_format='list', **kwargs)
+        
+        # Convert to JSON format
+        output_data = []
+        for smiles, matches in zip(smiles_list, results):
+            result_entry = {
+                'smiles': smiles,
+                'groups': []
+            }
+            
+            for group, match_count, chain_lengths, matched_chains in matches:
+                result_entry['groups'].append({
+                    'name': group.name,
+                    'id': group.id,
+                    'match_count': match_count,
+                    'chain_lengths': chain_lengths,
+                    'num_chains': len(matched_chains)
+                })
+            
+            output_data.append(result_entry)
+        
+        # Output JSON
+        indent = 2 if args.pretty else None
+        output_json = json.dumps(output_data, indent=indent)
+        
+        if args.output:
+            with open(args.output, 'w') as f:
+                f.write(output_json)
+            print(f"Results written to {args.output}")
+        else:
+            print(output_json)
 
 
 def cmd_fingerprint(args):
@@ -306,7 +340,48 @@ def cmd_fingerprint(args):
     # Add SMILES to output for reference
     output_data['smiles'] = smiles_list
     
-    # Output results
+    # Output based on requested format
+    if args.output_format == 'csv':
+        # CSV output for fingerprints
+        csv_rows = []
+        if args.format == 'vector':
+            # For vector representation, create columns for each group
+            import numpy as np
+            fps_list = fps if isinstance(fps, list) else [fps]
+            for i, (smiles, fp) in enumerate(zip(smiles_list, fps_list)):
+                row = {'smiles': smiles}
+                fp_array = fp.tolist() if isinstance(fp, np.ndarray) else fp
+                for j, val in enumerate(fp_array):
+                    group_idx = group_info['selected_indices'][j] if 'selected_indices' in group_info else j
+                    group_name = group_info['group_names'][group_idx] if group_idx < len(group_info['group_names']) else f'group_{group_idx}'
+                    row[f'{group_name}'] = val
+                csv_rows.append(row)
+        elif args.format == 'dict':
+            # For dict representation
+            fps_list = fps if isinstance(fps, list) else [fps]
+            for smiles, fp_dict in zip(smiles_list, fps_list):
+                row = {'smiles': smiles}
+                row.update(fp_dict)
+                csv_rows.append(row)
+        else:
+            print(f"Warning: CSV output not optimized for '{args.format}' representation, using JSON", file=sys.stderr)
+            args.output_format = 'json'
+        
+        if args.output_format == 'csv':
+            fieldnames = list(csv_rows[0].keys()) if csv_rows else ['smiles']
+            if args.output:
+                with open(args.output, 'w', newline='', encoding='utf-8') as f:
+                    writer = csv.DictWriter(f, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(csv_rows)
+                print(f"Results written to {args.output}")
+            else:
+                writer = csv.DictWriter(sys.stdout, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(csv_rows)
+            return
+    
+    # JSON output (default or fallback)
     indent = 2 if args.pretty else None
     output_json = json.dumps(output_data, indent=indent)
     
