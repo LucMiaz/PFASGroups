@@ -1,0 +1,29 @@
+{
+  "summary": {
+    "total_molecules": 200,
+    "pfasgroups_avg_time": 72.83098841050094,
+    "pfasgroups_std_time": 68.55699036089715,
+    "atlas_avg_time": 55.83294512150246,
+    "atlas_std_time": 9.267693470405538,
+    "speed_ratio": 0.766609740441918,
+    "iterations": 10,
+    "timestamp": "20251229_153548"
+  },
+  "system_specs": {
+    "system": "Linux",
+    "platform": "Linux-6.14.0-37-generic-x86_64-with-glibc2.39",
+    "architecture": "64bit",
+    "python_version": "3.9.23",
+    "cpu_name": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
+    "cpu_cores_logical": 8,
+    "cpu_cores_physical": 4,
+    "total_memory_gb": 15.5,
+    "available_memory_gb": 9.83
+  },
+  "figures": [
+    "timing_scatter_20251229_153548.png",
+    "timing_distribution_20251229_153548.png",
+    "timing_scaling_20251229_153548.png"
+  ],
+  "html_report": "html/timing_analysis_20251229_153548.html"
+}
