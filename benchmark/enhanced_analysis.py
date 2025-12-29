@@ -1478,22 +1478,22 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
     timing_stats_html = timing_stats.to_html(include_plotlyjs=False, div_id="timing-stats")
     
     # Save individual visualizations
-    heatmap_comparison.write_image(f"comparison_heatmap_{timestamp}.png", width=1400, height=500, scale=2)
-    heatmap_comparison.write_image(f"comparison_heatmap_{timestamp}.svg")
-    heatmap_multi.write_image(f"multigroup_privilege_heatmap_{timestamp}.png", width=1200, height=600, scale=2)
-    heatmap_multi.write_image(f"multigroup_privilege_heatmap_{timestamp}.svg")
-    sankey_comparison[0].write_image(f"atlas_sankey_{timestamp}.png", width=1200, height=600, scale=2)
-    sankey_comparison[0].write_image(f"atlas_sankey_{timestamp}.svg")
-    sankey_comparison[1].write_image(f"pfasgroups_sankey_{timestamp}.png", width=1200, height=600, scale=2)
-    sankey_comparison[1].write_image(f"pfasgroups_sankey_{timestamp}.svg")
-    sankey_comparison[2].write_image(f"pfasgroups_oecd_sankey_{timestamp}.png", width=1200, height=600, scale=2)
-    sankey_comparison[2].write_image(f"pfasgroups_oecd_sankey_{timestamp}.svg")
-    sankey_privilege.write_image(f"privilege_hierarchy_sankey_{timestamp}.png", width=1000, height=600, scale=2)
-    sankey_privilege.write_image(f"privilege_hierarchy_sankey_{timestamp}.svg")
-    timing_heatmap.write_image(f"timing_comparison_heatmap_{timestamp}.png", width=1400, height=500, scale=2)
-    timing_heatmap.write_image(f"timing_comparison_heatmap_{timestamp}.svg")
-    timing_stats.write_image(f"timing_statistics_{timestamp}.png", width=1200, height=800, scale=2)
-    timing_stats.write_image(f"timing_statistics_{timestamp}.svg")
+    heatmap_comparison.write_image(f"imgs/comparison_heatmap_{timestamp}.png", width=1400, height=500, scale=2)
+    heatmap_comparison.write_image(f"imgs/comparison_heatmap_{timestamp}.svg")
+    heatmap_multi.write_image(f"imgs/multigroup_privilege_heatmap_{timestamp}.png", width=1200, height=600, scale=2)
+    heatmap_multi.write_image(f"imgs/multigroup_privilege_heatmap_{timestamp}.svg")
+    sankey_comparison[0].write_image(f"imgs/atlas_sankey_{timestamp}.png", width=1200, height=600, scale=2)
+    sankey_comparison[0].write_image(f"imgs/atlas_sankey_{timestamp}.svg")
+    sankey_comparison[1].write_image(f"imgs/pfasgroups_sankey_{timestamp}.png", width=1200, height=600, scale=2)
+    sankey_comparison[1].write_image(f"imgs/pfasgroups_sankey_{timestamp}.svg")
+    sankey_comparison[2].write_image(f"imgs/pfasgroups_oecd_sankey_{timestamp}.png", width=1200, height=600, scale=2)
+    sankey_comparison[2].write_image(f"imgs/pfasgroups_oecd_sankey_{timestamp}.svg")
+    sankey_privilege.write_image(f"imgs/privilege_hierarchy_sankey_{timestamp}.png", width=1000, height=600, scale=2)
+    sankey_privilege.write_image(f"imgs/privilege_hierarchy_sankey_{timestamp}.svg")
+    timing_heatmap.write_image(f"imgs/timing_comparison_heatmap_{timestamp}.png", width=1400, height=500, scale=2)
+    timing_heatmap.write_image(f"imgs/timing_comparison_heatmap_{timestamp}.svg")
+    timing_stats.write_image(f"imgs/timing_statistics_{timestamp}.png", width=1200, height=800, scale=2)
+    timing_stats.write_image(f"imgs/timing_statistics_{timestamp}.svg")
     
     html_content = f"""
 <!DOCTYPE html>
@@ -2074,32 +2074,32 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
             <p>All visualizations have been exported in multiple formats for use in presentations and publications:</p>
             <ul>
                 <li><strong>Performance Comparison Heatmap:</strong> 
-                    <a href="comparison_heatmap_{timestamp}.png">PNG</a> | 
-                    <a href="comparison_heatmap_{timestamp}.svg">SVG</a>
+                    <a href="imgs/comparison_heatmap_{timestamp}.png">PNG</a> | 
+                    <a href="imgs/comparison_heatmap_{timestamp}.svg">SVG</a>
                 </li>
                 <li><strong>Multi-Group Privilege Heatmap:</strong> 
-                    <a href="multigroup_privilege_heatmap_{timestamp}.png">PNG</a> | 
-                    <a href="multigroup_privilege_heatmap_{timestamp}.svg">SVG</a>
+                    <a href="imgs/multigroup_privilege_heatmap_{timestamp}.png">PNG</a> | 
+                    <a href="imgs/multigroup_privilege_heatmap_{timestamp}.svg">SVG</a>
                 </li>
                 <li><strong>Enhanced System Sankey:</strong> 
-                    <a href="enhanced_system_sankey_{timestamp}.png">PNG</a> | 
-                    <a href="enhanced_system_sankey_{timestamp}.svg">SVG</a>
+                    <a href="imgs/enhanced_system_sankey_{timestamp}.png">PNG</a> | 
+                    <a href="imgs/enhanced_system_sankey_{timestamp}.svg">SVG</a>
                 </li>
                 <li><strong>Privilege Hierarchy Sankey:</strong> 
-                    <a href="privilege_hierarchy_sankey_{timestamp}.png">PNG</a> | 
-                    <a href="privilege_hierarchy_sankey_{timestamp}.svg">SVG</a>
+                    <a href="imgs/privilege_hierarchy_sankey_{timestamp}.png">PNG</a> | 
+                    <a href="imgs/privilege_hierarchy_sankey_{timestamp}.svg">SVG</a>
                 </li>
                 <li><strong>Timing Comparison Heatmap:</strong> 
-                    <a href="timing_comparison_heatmap_{timestamp}.png">PNG</a> | 
-                    <a href="timing_comparison_heatmap_{timestamp}.svg">SVG</a>
+                    <a href="imgs/timing_comparison_heatmap_{timestamp}.png">PNG</a> | 
+                    <a href="imgs/timing_comparison_heatmap_{timestamp}.svg">SVG</a>
                 </li>
                 <li><strong>Detailed Timing Statistics:</strong> 
-                    <a href="timing_statistics_{timestamp}.png">PNG</a> | 
-                    <a href="timing_statistics_{timestamp}.svg">SVG</a>
+                    <a href="imgs/timing_statistics_{timestamp}.png">PNG</a> | 
+                    <a href="imgs/timing_statistics_{timestamp}.svg">SVG</a>
                 </li>
                 <li><strong>PFAS-Atlas Classification Flow:</strong> 
-                    <a href="atlas_classification_flow_{timestamp}.png">PNG</a> | 
-                    <a href="atlas_classification_flow_{timestamp}.svg">SVG</a>
+                    <a href="imgs/atlas_classification_flow_{timestamp}.png">PNG</a> | 
+                    <a href="imgs/atlas_classification_flow_{timestamp}.svg">SVG</a>
                 </li>
             </ul>
         </div>
@@ -2184,10 +2184,10 @@ def main():
     
     print(f"\n📁 Generated Files:")
     print(f"   • {html_filename} (comprehensive analysis)")
-    print(f"   • comparison_heatmap_{timestamp}.png/.svg")
-    print(f"   • multigroup_privilege_heatmap_{timestamp}.png/.svg") 
-    print(f"   • enhanced_system_sankey_{timestamp}.png/.svg")
-    print(f"   • privilege_hierarchy_sankey_{timestamp}.png/.svg")
+    print(f"   • imgs/comparison_heatmap_{timestamp}.png/.svg")
+    print(f"   • imgs/multigroup_privilege_heatmap_{timestamp}.png/.svg") 
+    print(f"   • imgs/enhanced_system_sankey_{timestamp}.png/.svg")
+    print(f"   • imgs/privilege_hierarchy_sankey_{timestamp}.png/.svg")
 
 
 

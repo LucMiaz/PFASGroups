@@ -586,7 +586,7 @@ class EnhancedPFASBenchmark:
         
         # Save results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"pfas_enhanced_benchmark_{timestamp}.json"
+        output_file = f"data/pfas_enhanced_benchmark_{timestamp}.json"
         
         with open(output_file, 'w') as f:
             json.dump(all_results, f, indent=2, default=str)
@@ -789,7 +789,7 @@ class EnhancedPFASBenchmark:
         
         # Save timing results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"pfas_timing_benchmark_{timestamp}.json"
+        output_file = f"data/pfas_timing_benchmark_{timestamp}.json"
         
         with open(output_file, 'w') as f:
             json.dump(timing_results, f, indent=2, default=str)
@@ -989,7 +989,7 @@ class EnhancedPFASBenchmark:
         
         # Save non-fluorinated benchmark results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"pfas_non_fluorinated_benchmark_{timestamp}.json"
+        output_file = f"data/pfas_non_fluorinated_benchmark_{timestamp}.json"
         
         with open(output_file, 'w') as f:
             json.dump(all_results, f, indent=2, default=str)
@@ -1175,7 +1175,7 @@ class EnhancedPFASBenchmark:
         
         # Save complex branched benchmark results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"pfas_complex_branched_benchmark_{timestamp}.json"
+        output_file = f"data/pfas_complex_branched_benchmark_{timestamp}.json"
         
         with open(output_file, 'w') as f:
             json.dump(all_results, f, indent=2, default=str)
@@ -1208,7 +1208,7 @@ class EnhancedPFASBenchmark:
         
         # Load OECD data
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        atlas_dir = os.path.join(os.path.dirname(script_dir), 'PFAS-atlas')
+        atlas_dir = os.path.join(os.path.dirname(os.path.dirname(script_dir)), 'PFAS-atlas')
         oecd_file = os.path.join(atlas_dir, 'input_data', 'OECD_4000', 'step3_OECD_Class_0812.csv')
         try:
             import pandas as pd
@@ -1258,7 +1258,7 @@ class EnhancedPFASBenchmark:
         
         # Save OECD results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"pfas_oecd_benchmark_{timestamp}.json"
+        output_file = f"data/pfas_oecd_benchmark_{timestamp}.json"
         
         with open(output_file, 'w') as f:
             json.dump(all_results, f, indent=2, default=str)

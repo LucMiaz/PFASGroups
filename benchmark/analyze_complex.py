@@ -14,6 +14,7 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 from pathlib import Path
+import os
 
 def load_benchmark_data(filename):
     """Load benchmark data from JSON file."""
