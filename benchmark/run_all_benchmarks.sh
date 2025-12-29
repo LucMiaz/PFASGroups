@@ -98,21 +98,123 @@ echo "   • Timing Performance: Measures execution speed scaling"
 echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 echo "   • Complex Branched: Tests complex molecular structures"
 echo ""
-echo "📊 Updating Review App Database..."
-if [ -f "enhanced_benchmark_with_db.py" ]; then
-    python enhanced_benchmark_with_db.py
-    echo "✅ Database updated with latest benchmark results"
+
+# Run analysis scripts
+echo "📊 Running Analysis Scripts..."
+echo ""
+
+# Timing Analysis
+echo "⏱️  Analyzing timing performance..."
+TIMING_FILE=$(ls data/pfas_timing_benchmark_*.json | tail -1)
+if [ -f "$TIMING_FILE" ]; then
+    python analyze_timing.py "$TIMING_FILE"
+    if [ $? -eq 0 ]; then
+        echo "✅ Timing analysis completed"
+    else
+        echo "⚠️  Timing analysis failed"
+    fi
 else
-    echo "⚠️  Database integration script not found - skipping database update"
+    echo "⚠️  No timing benchmark file found"
 fi
+echo ""
+
+# Complex Branched Analysis
+echo "🧬 Analyzing complex branched structures..."
+COMPLEX_FILE=$(ls data/pfas_complex_branched_benchmark_*.json | tail -1)
+if [ -f "$COMPLEX_FILE" ]; then
+    python analyze_complex.py "$COMPLEX_FILE"
+    if [ $? -eq 0 ]; then
+        echo "✅ Complex branched analysis completed"
+    else
+        echo "⚠️  Complex branched analysis failed"
+    fi
+else
+    echo "⚠️  No complex branched benchmark file found"
+fi
+echo ""
+
+# Enhanced Analysis
+echo "🔬 Analyzing enhanced functional groups and OECD..."
+ENHANCED_FILE=$(ls data/pfas_enhanced_benchmark_*.json | tail -1)
+OECD_FILE=$(ls data/pfas_oecd_benchmark_*.json | tail -1)
+if [ -f "$ENHANCED_FILE" ] && [ -f "$OECD_FILE" ]; then
+    python enhanced_analysis.py "$ENHANCED_FILE" "$OECD_FILE"
+    if [ $? -eq 0 ]; then
+        echo "✅ Enhanced analysis completed"
+    else
+        echo "⚠️  Enhanced analysis failed"
+    fi
+else
+    echo "⚠️  Missing enhanced or OECD benchmark files"
+fi
+echo ""
+
+# Organize analysis results
+echo "📁 Organizing analysis results..."
+mkdir -p review-app/analysis_reports/figures
+# Move analysis JSON files to analysis_reports directory
+mv *_analysis.json review-app/analysis_reports/ 2>/dev/null || true
+# Move figure files
+mv timing_*.png review-app/analysis_reports/figures/ 2>/dev/null || true
+mv timing_*.svg review-app/analysis_reports/figures/ 2>/dev/null || true
+mv complex_*.png review-app/analysis_reports/figures/ 2>/dev/null || true
+mv complex_*.svg review-app/analysis_reports/figures/ 2>/dev/null || true
+mv enhanced_*.png review-app/analysis_reports/figures/ 2>/dev/null || true
+mv enhanced_*.svg review-app/analysis_reports/figures/ 2>/dev/null || true
+echo "✅ Analysis results organized"
+echo ""
+
+# Import data to database
+echo "💾 Importing data to Review App database..."
+cd review-app
+
+# Check if database exists and backup if needed
+if [ -f "database/pfas_benchmark.db" ]; then
+    echo "📦 Backing up existing database..."
+    BACKUP_NAME="database/pfas_benchmark.db.backup_$(date +%Y%m%d_%H%M%S)"
+    cp database/pfas_benchmark.db "$BACKUP_NAME"
+    echo "✅ Backup created: $BACKUP_NAME"
+    
+    # Clear existing data
+    echo "🗑️  Clearing old data from database..."
+    node -e "const db = require('./database/database'); const d = new db(); d.waitForReady().then(() => { return Promise.all([d.run('DELETE FROM manual_reviews'), d.run('DELETE FROM pfasgroups_results'), d.run('DELETE FROM pfasgroups_results_bycomponent'), d.run('DELETE FROM atlas_results'), d.run('DELETE FROM molecules')]); }).then(() => { console.log('✅ Database cleared'); process.exit(0); });"
+fi
+
+# Import benchmark data
+echo "📥 Importing benchmark data..."
+node scripts/import-benchmark-data.js
+if [ $? -eq 0 ]; then
+    echo "✅ Data imported successfully"
+    
+    # Calculate molecular formulas
+    echo "🧪 Calculating molecular formulas..."
+    python scripts/calculate-formulas.py
+    if [ $? -eq 0 ]; then
+        echo "✅ Molecular formulas calculated"
+    else
+        echo "⚠️  Formula calculation failed (non-critical)"
+    fi
+else
+    echo "❌ Data import failed"
+    cd ..
+    exit 1
+fi
+
+cd ..
+echo ""
+
+echo "📊 Database Update Complete!"
+echo "   • Database: review-app/database/pfas_benchmark.db"
+echo "   • Analysis reports: review-app/analysis_reports/"
 echo ""
 echo "📄 Unified Report: html/$(ls html/unified_pfas_benchmark_report_*.html | tail -1 | xargs basename)"
 echo "🌐 Open the HTML file in your browser to view detailed results"
 echo "📁 Files organized in: data/ (JSON), html/ (reports), imgs/ (plots)"
 echo ""
 echo "🔬 Review App:"
-echo "   • Run 'cd review-app && ./start-dev.sh' to start the review interface"
-echo "   • Manual validation at http://localhost:3000"
-echo "   • Database file: review-app/database/pfas_benchmark.db"
+echo "   • Navigate to: cd review-app"
+echo "   • Start server: node server.js"
+echo "   • Open browser: http://localhost:5000"
+echo "   • View Analysis Reports tab for timing, complex, and enhanced analysis"
 echo ""
 echo "✨ Benchmark Suite Complete!"
