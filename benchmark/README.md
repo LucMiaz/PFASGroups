@@ -42,8 +42,34 @@ python scripts/calculate-formulas.py
 
 ### Step 4: Generate Analysis Reports
 
+**Prerequisites:**
+```powershell
+# Install required package for image generation
+pip install kaleido
+```
+
+**Windows PowerShell:**
 ```powershell
 cd c:\Users\luc\git\PFASGroups\benchmark
+
+# Get latest benchmark files (PowerShell doesn't expand globs like bash)
+$timingFile = Get-ChildItem data\pfas_timing_benchmark_*.json | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName
+$complexFile = Get-ChildItem data\pfas_complex_branched_benchmark_*.json | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName
+$enhancedFile = Get-ChildItem data\pfas_enhanced_benchmark_*.json | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName
+$oecdFile = Get-ChildItem data\pfas_oecd_benchmark_*.json | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName
+
+# Generate analyses
+python analyze_timing.py $timingFile
+python analyze_complex.py $complexFile
+python enhanced_analysis.py $enhancedFile $oecdFile
+
+# Or use the helper script:
+.\generate-analysis-reports.ps1
+```
+
+**Linux/macOS Bash:**
+```bash
+cd /home/luc/git/PFASGroups/benchmark
 
 # Generate timing analysis
 python analyze_timing.py data/pfas_timing_benchmark_*.json
@@ -53,10 +79,19 @@ python analyze_complex.py data/pfas_complex_branched_benchmark_*.json
 
 # Generate enhanced analysis
 python enhanced_analysis.py data/pfas_enhanced_benchmark_*.json data/pfas_oecd_benchmark_*.json
+```
 
-# Create analysis_reports directory and copy results
-New-Item -ItemType Directory -Force -Path review-app/analysis_reports
-Copy-Item *.json review-app/analysis_reports/
+**Move files to review-app:**
+```powershell
+# Windows
+New-Item -ItemType Directory -Force -Path review-app\analysis_reports\figures
+Move-Item *_analysis.json review-app\analysis_reports\ -Force
+Move-Item *.png,*.svg review-app\analysis_reports\figures\ -Force
+
+# Linux
+mkdir -p review-app/analysis_reports/figures
+mv *_analysis.json review-app/analysis_reports/
+mv *.png *.svg review-app/analysis_reports/figures/
 ```
 
 ### Step 5: Restart Server

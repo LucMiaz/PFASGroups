@@ -650,12 +650,38 @@ def main():
     html_dir = "html" if os.path.exists("html") else "."
     html_filename = f"{html_dir}/timing_analysis_{timestamp}.html"
     
-    with open(html_filename, 'w') as f:
+    with open(html_filename, 'w', encoding='utf-8') as f:
         f.write(html_content)
+    
+    # Create JSON report for review app
+    json_report = {
+        "summary": {
+            "total_molecules": len(timing_results),
+            "pfasgroups_avg_time": stats['pfasgroups_avg_time'],
+            "pfasgroups_std_time": stats['pfasgroups_std_time'],
+            "atlas_avg_time": stats['atlas_avg_time'],
+            "atlas_std_time": stats['atlas_std_time'],
+            "speed_ratio": stats['speed_ratio'],
+            "iterations": timing_results[0].get('iterations', 1),
+            "timestamp": timestamp
+        },
+        "system_specs": timing_results[0].get('system_specs', {}),
+        "figures": [
+            f"timing_scatter_{timestamp}.png",
+            f"timing_distribution_{timestamp}.png",
+            f"timing_scaling_{timestamp}.png"
+        ],
+        "html_report": html_filename
+    }
+    
+    json_filename = "timing_analysis.json"
+    with open(json_filename, 'w', encoding='utf-8') as f:
+        json.dump(json_report, f, indent=2)
     
     print(f"\n✅ Timing Analysis Complete!")
     print(f"📁 Generated Files:")
     print(f"   • {html_filename} (comprehensive analysis)")
+    print(f"   • {json_filename} (review app data)")
     print(f"   • timing_scatter_{timestamp}.png/.svg")
     print(f"   • timing_distribution_{timestamp}.png/.svg") 
     print(f"   • timing_scaling_{timestamp}.png/.svg")
