@@ -3,7 +3,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
+const https = require('https');
 const Database = require('./database/database');
+const ExcelJS = require('exceljs');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,6 +39,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Serve analysis reports static files (images, HTML)
+app.use('/analysis-reports', express.static(path.join(__dirname, 'analysis_reports')));
 
 // API Routes
 
@@ -467,10 +472,55 @@ function convertToCSV(data) {
     return csvContent;
 }
 
+// Helper function to fetch molecule image from PubChem service
+async function fetchMoleculeImage(smiles) {
+    return new Promise((resolve, reject) => {
+        const encodedSmiles = encodeURIComponent(smiles);
+        // Use PubChem's depiction service - more reliable with valid certificates
+        const url = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/${encodedSmiles}/PNG?image_size=300x300`;
+        
+        https.get(url, (response) => {
+            // Follow redirects
+            if (response.statusCode === 301 || response.statusCode === 302) {
+                https.get(response.headers.location, (redirectResponse) => {
+                    if (redirectResponse.statusCode !== 200) {
+                        reject(new Error(`Failed to fetch image: ${redirectResponse.statusCode}`));
+                        return;
+                    }
+                    
+                    const chunks = [];
+                    redirectResponse.on('data', (chunk) => chunks.push(chunk));
+                    redirectResponse.on('end', () => {
+                        const imageData = Buffer.concat(chunks);
+                        resolve(imageData);
+                    });
+                }).on('error', (error) => {
+                    reject(error);
+                });
+                return;
+            }
+            
+            if (response.statusCode !== 200) {
+                reject(new Error(`Failed to fetch image: ${response.statusCode}`));
+                return;
+            }
+            
+            const chunks = [];
+            response.on('data', (chunk) => chunks.push(chunk));
+            response.on('end', () => {
+                const imageData = Buffer.concat(chunks);
+                resolve(imageData);
+            });
+        }).on('error', (error) => {
+            reject(error);
+        });
+    });
+}
+
 // Analysis Reports API endpoints
 app.get('/api/analysis-reports', async (req, res) => {
     try {
-        const reportsDir = path.join(__dirname, '../analysis_reports');
+        const reportsDir = path.join(__dirname, 'analysis_reports');
         
         // Try to load reports from files
         const reports = {
@@ -537,7 +587,7 @@ app.get('/api/analysis-reports', async (req, res) => {
 app.post('/api/analysis-reports/description', async (req, res) => {
     try {
         const { reportType, description } = req.body;
-        const reportsDir = path.join(__dirname, '../analysis_reports');
+        const reportsDir = path.join(__dirname, 'analysis_reports');
         
         // Create directory if it doesn't exist
         if (!fs.existsSync(reportsDir)) {
@@ -557,7 +607,7 @@ app.post('/api/analysis-reports/description', async (req, res) => {
 app.get('/api/analysis-reports/export/:reportType', async (req, res) => {
     try {
         const { reportType } = req.params;
-        const reportsDir = path.join(__dirname, '../analysis_reports');
+        const reportsDir = path.join(__dirname, 'analysis_reports');
         
         // Load description
         const descPath = path.join(reportsDir, `${reportType}_description.md`);
@@ -606,6 +656,276 @@ app.get('/api/analysis-reports/export/:reportType', async (req, res) => {
     } catch (error) {
         console.error('Error exporting report:', error);
         res.status(500).json({ error: 'Failed to export report' });
+    }
+});
+
+// Export data to Excel with images
+app.get('/api/export/excel', async (req, res) => {
+    try {
+        const dataset = req.query.dataset || 'all';
+        
+        // Query all molecules with their results and reviews
+        let whereClause = '';
+        let params = [];
+        
+        if (dataset !== 'all') {
+            whereClause = 'WHERE m.dataset_type = ?';
+            params = [dataset];
+        }
+        
+        const molecules = await db.all(`
+            SELECT 
+                m.id,
+                m.smiles,
+                m.molecular_formula,
+                m.dataset_type,
+                m.group_name,
+                m.target_groups,
+                pg.detected_groups as pfasgroups_detected,
+                pg.success as pfasgroups_success,
+                pg.execution_time as pfasgroups_time,
+                pg.error_message as pfasgroups_error,
+                pgbc.detected_groups as pfasgroups_bycomponent_detected,
+                ar.first_class as atlas_first_class,
+                ar.second_class as atlas_second_class,
+                ar.success as atlas_success,
+                ar.execution_time as atlas_time,
+                ar.error_message as atlas_error,
+                mr.pfasgroups_correct,
+                mr.atlas_correct,
+                mr.reviewer_notes,
+                mr.reviewer_name,
+                mr.review_date,
+                mr.is_pfas as manual_is_pfas,
+                mr.correct_groups as manual_correct_groups,
+                mr.correct_classification as manual_correct_classification
+            FROM molecules m
+            LEFT JOIN pfasgroups_results pg ON m.id = pg.molecule_id
+            LEFT JOIN pfasgroups_results_bycomponent pgbc ON m.id = pgbc.molecule_id
+            LEFT JOIN atlas_results ar ON m.id = ar.molecule_id
+            LEFT JOIN manual_reviews mr ON m.id = mr.molecule_id
+            ${whereClause}
+            ORDER BY m.id ASC
+        `, params);
+        
+        // Create workbook
+        const workbook = new ExcelJS.Workbook();
+        workbook.creator = 'PFAS Benchmark Reviewer';
+        workbook.created = new Date();
+        
+        // Add Summary Sheet
+        const summarySheet = workbook.addWorksheet('Summary');
+        summarySheet.columns = [
+            { header: 'Metric', key: 'metric', width: 30 },
+            { header: 'Value', key: 'value', width: 20 }
+        ];
+        
+        const totalMolecules = molecules.length;
+        const reviewedCount = molecules.filter(m => m.pfasgroups_correct !== null).length;
+        const pfasgroupsCorrect = molecules.filter(m => m.pfasgroups_correct === 1).length;
+        const atlasCorrect = molecules.filter(m => m.atlas_correct === 1).length;
+        const pfasgroupsAccuracy = reviewedCount > 0 ? (pfasgroupsCorrect / reviewedCount * 100).toFixed(2) : 'N/A';
+        const atlasAccuracy = reviewedCount > 0 ? (atlasCorrect / reviewedCount * 100).toFixed(2) : 'N/A';
+        
+        summarySheet.addRows([
+            { metric: 'Dataset', value: dataset },
+            { metric: 'Total Molecules', value: totalMolecules },
+            { metric: 'Reviewed Molecules', value: reviewedCount },
+            { metric: 'PFASGroups Correct', value: pfasgroupsCorrect },
+            { metric: 'PFASGroups Accuracy', value: pfasgroupsAccuracy + '%' },
+            { metric: 'PFAS-Atlas Correct', value: atlasCorrect },
+            { metric: 'PFAS-Atlas Accuracy', value: atlasAccuracy + '%' },
+            { metric: 'Export Date', value: new Date().toISOString() }
+        ]);
+        
+        summarySheet.getRow(1).font = { bold: true };
+        summarySheet.getColumn('metric').font = { bold: true };
+        
+        // Add Data Sheet with images
+        const dataSheet = workbook.addWorksheet('Molecules');
+        dataSheet.columns = [
+            { header: 'ID', key: 'id', width: 8 },
+            { header: 'SMILES', key: 'smiles', width: 50 },
+            { header: 'Molecular Formula', key: 'formula', width: 25 },
+            { header: 'Structure', key: 'structure', width: 30 },
+            { header: 'Dataset', key: 'dataset', width: 20 },
+            { header: 'Manual PFAS Classification', key: 'expected_pfas', width: 25 },
+            { header: 'PFASGroups Detected', key: 'pfasgroups_detected', width: 40 },
+            { header: 'PFASGroups Success', key: 'pfasgroups_success', width: 18 },
+            { header: 'PFASGroups Time (ms)', key: 'pfasgroups_time', width: 20 },
+            { header: 'Atlas First Class', key: 'atlas_first', width: 20 },
+            { header: 'Atlas Second Class', key: 'atlas_second', width: 20 },
+            { header: 'Atlas Success', key: 'atlas_success', width: 15 },
+            { header: 'Atlas Time (ms)', key: 'atlas_time', width: 18 },
+            { header: 'Reviewed', key: 'reviewed', width: 12 },
+            { header: 'PFASGroups Correct', key: 'pfasgroups_correct', width: 20 },
+            { header: 'Atlas Correct', key: 'atlas_correct', width: 15 },
+            { header: 'Reviewer Notes', key: 'notes', width: 40 },
+            { header: 'Reviewer', key: 'reviewer', width: 20 },
+            { header: 'Review Date', key: 'review_date', width: 20 }
+        ];
+        
+        // Style header row
+        dataSheet.getRow(1).font = { bold: true };
+        dataSheet.getRow(1).fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFE0E0E0' }
+        };
+        
+        // Add data rows
+        for (let i = 0; i < molecules.length; i++) {
+            const mol = molecules[i];
+            
+            // Parse JSON fields
+            const pfasgroupsDetected = mol.pfasgroups_detected ? 
+                enrichGroupData(JSON.parse(mol.pfasgroups_detected)).map(g => g.name).join(', ') : '';
+            
+            const rowData = {
+                id: mol.id,
+                smiles: mol.smiles,
+                formula: mol.molecular_formula || '',
+                structure: '', // Placeholder for image
+                dataset: mol.dataset_type,
+                expected_pfas: mol.manual_is_pfas !== null ? (mol.manual_is_pfas ? 'Yes' : 'No') : 'N/A',
+                pfasgroups_detected: pfasgroupsDetected,
+                pfasgroups_success: mol.pfasgroups_success ? 'Success' : 'Failed',
+                pfasgroups_time: mol.pfasgroups_time ? mol.pfasgroups_time.toFixed(2) : '',
+                atlas_first: mol.atlas_first_class || '',
+                atlas_second: mol.atlas_second_class || '',
+                atlas_success: mol.atlas_success ? 'Success' : 'Failed',
+                atlas_time: mol.atlas_time ? mol.atlas_time.toFixed(2) : '',
+                reviewed: mol.pfasgroups_correct !== null ? 'Yes' : 'No',
+                pfasgroups_correct: mol.pfasgroups_correct === 1 ? 'Correct' : mol.pfasgroups_correct === 0 ? 'Incorrect' : '',
+                atlas_correct: mol.atlas_correct === 1 ? 'Correct' : mol.atlas_correct === 0 ? 'Incorrect' : '',
+                notes: mol.reviewer_notes || '',
+                reviewer: mol.reviewer_name || '',
+                review_date: mol.review_date || ''
+            };
+            
+            const row = dataSheet.addRow(rowData);
+            
+            // Set row height for image
+            row.height = 100;
+            
+            // Try to add molecule image
+            try {
+                // First try local file
+                const imagePath = path.join(__dirname, 'molecule_images', `${mol.id}.png`);
+                let imageId;
+                
+                if (fs.existsSync(imagePath)) {
+                    imageId = workbook.addImage({
+                        filename: imagePath,
+                        extension: 'png',
+                    });
+                } else if (mol.smiles) {
+                    // Fetch image from PubChem service
+                    try {
+                        const imageData = await fetchMoleculeImage(mol.smiles);
+                        imageId = workbook.addImage({
+                            buffer: imageData,
+                            extension: 'png',
+                        });
+                    } catch (fetchError) {
+                        console.log(`Could not fetch image for molecule ${mol.id}: ${fetchError.message}`);
+                    }
+                }
+                
+                if (imageId !== undefined) {
+                    dataSheet.addImage(imageId, {
+                        tl: { col: 3, row: i + 1 },
+                        ext: { width: 180, height: 90 }
+                    });
+                }
+            } catch (imgError) {
+                console.log(`Error adding image for molecule ${mol.id}: ${imgError.message}`);
+            }
+        }
+        
+        // Add conditional formatting for success/failure
+        dataSheet.eachRow((row, rowNumber) => {
+            if (rowNumber > 1) { // Skip header
+                // PFASGroups Success
+                const pgSuccessCell = row.getCell('pfasgroups_success');
+                if (pgSuccessCell.value === 'Success') {
+                    pgSuccessCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFD4EDDA' }
+                    };
+                } else if (pgSuccessCell.value === 'Failed') {
+                    pgSuccessCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFF8D7DA' }
+                    };
+                }
+                
+                // Atlas Success
+                const atlasSuccessCell = row.getCell('atlas_success');
+                if (atlasSuccessCell.value === 'Success') {
+                    atlasSuccessCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFD4EDDA' }
+                    };
+                } else if (atlasSuccessCell.value === 'Failed') {
+                    atlasSuccessCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFF8D7DA' }
+                    };
+                }
+                
+                // Review status
+                const pgCorrectCell = row.getCell('pfasgroups_correct');
+                if (pgCorrectCell.value === 'Correct') {
+                    pgCorrectCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFD4EDDA' }
+                    };
+                    pgCorrectCell.font = { color: { argb: 'FF155724' } };
+                } else if (pgCorrectCell.value === 'Incorrect') {
+                    pgCorrectCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFF8D7DA' }
+                    };
+                    pgCorrectCell.font = { color: { argb: 'FF721C24' } };
+                }
+                
+                const atlasCorrectCell = row.getCell('atlas_correct');
+                if (atlasCorrectCell.value === 'Correct') {
+                    atlasCorrectCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFD4EDDA' }
+                    };
+                    atlasCorrectCell.font = { color: { argb: 'FF155724' } };
+                } else if (atlasCorrectCell.value === 'Incorrect') {
+                    atlasCorrectCell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFF8D7DA' }
+                    };
+                    atlasCorrectCell.font = { color: { argb: 'FF721C24' } };
+                }
+            }
+        });
+        
+        // Generate Excel file
+        const buffer = await workbook.xlsx.writeBuffer();
+        
+        const filename = `pfas_benchmark_${dataset}_${new Date().toISOString().split('T')[0]}.xlsx`;
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.send(buffer);
+        
+    } catch (error) {
+        console.error('Error exporting to Excel:', error);
+        res.status(500).json({ error: 'Failed to export to Excel' });
     }
 });
 

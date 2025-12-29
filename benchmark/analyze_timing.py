@@ -18,7 +18,7 @@ def load_timing_results(filename):
     with open(filename, 'r') as f:
         results = json.load(f)
     
-    print(f"📊 Loaded {len(results)} timing benchmark results")
+    print(f"Loaded {len(results)} timing benchmark results")
     return results
 
 def analyze_timing_performance(timing_results):
@@ -67,7 +67,7 @@ def analyze_timing_performance(timing_results):
         'system_specs': system_specs
     }
     
-    print(f"\n📈 Timing Performance Analysis:")
+    print(f"\nTiming Performance Analysis:")
     print(f"   • Total molecules tested: {stats['total_molecules']}")
     print(f"   • Iterations per molecule: {stats['iterations_per_molecule']}")
     if iterations > 1:
@@ -83,7 +83,7 @@ def analyze_timing_performance(timing_results):
     
     # Print system specifications if available
     if system_specs:
-        print(f"\n💻 System Specifications:")
+        print(f"\nSystem Specifications:")
         print(f"   • OS: {system_specs.get('system', 'Unknown')} ({system_specs.get('architecture', 'Unknown')})")
         print(f"   • CPU: {system_specs.get('cpu_name', 'Unknown')}")
         print(f"   • Cores: {system_specs.get('cpu_cores_physical', 'Unknown')} physical, {system_specs.get('cpu_cores_logical', 'Unknown')} logical")
@@ -618,37 +618,38 @@ def main():
         sys.exit(1)
     
     filename = sys.argv[1]
-    print(f"🕒 TIMING PERFORMANCE ANALYSIS")
+    print(f"TIMING PERFORMANCE ANALYSIS")
     print(f"=" * 50)
-    print(f"📊 Loading results from: {filename}")
+    print(f"Loading results from: {filename}")
     
     # Load and analyze results
     timing_results = load_timing_results(filename)
     stats = analyze_timing_performance(timing_results)
     
     # Generate visualizations
-    print(f"\n📊 Creating performance visualizations...")
+    print(f"\nCreating performance visualizations...")
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
-    # Save individual plots to imgs directory if it exists
-    imgs_dir = "imgs" if os.path.exists("imgs") else "."
+    # Determine output directories
+    reports_dir = "review-app/analysis_reports" if os.path.exists("review-app/analysis_reports") else "."
+    
+    # Save plots to reports directory
     scatter_plot = create_timing_scatter_plot(timing_results)
-    scatter_plot.write_image(f"{imgs_dir}/timing_scatter_{timestamp}.png", width=1200, height=700)
-    scatter_plot.write_html(f"{imgs_dir}/timing_scatter_{timestamp}.svg")
+    scatter_plot.write_image(f"{reports_dir}/timing_scatter_{timestamp}.png", width=1200, height=700)
+    scatter_plot.write_html(f"{reports_dir}/timing_scatter_{timestamp}.svg")
     
     distribution_plot = create_timing_distribution_plot(timing_results)
-    distribution_plot.write_image(f"{imgs_dir}/timing_distribution_{timestamp}.png", width=1000, height=800)
-    distribution_plot.write_html(f"{imgs_dir}/timing_distribution_{timestamp}.svg")
+    distribution_plot.write_image(f"{reports_dir}/timing_distribution_{timestamp}.png", width=1000, height=800)
+    distribution_plot.write_html(f"{reports_dir}/timing_distribution_{timestamp}.svg")
     
     scaling_plot = create_scaling_analysis_plot(timing_results)
-    scaling_plot.write_image(f"{imgs_dir}/timing_scaling_{timestamp}.png", width=1200, height=800)
-    scaling_plot.write_html(f"{imgs_dir}/timing_scaling_{timestamp}.svg")
+    scaling_plot.write_image(f"{reports_dir}/timing_scaling_{timestamp}.png", width=1200, height=800)
+    scaling_plot.write_html(f"{reports_dir}/timing_scaling_{timestamp}.svg")
     
     # Create comprehensive HTML report
     html_content = create_timing_html_report(timing_results, stats, timestamp)
-    html_dir = "html" if os.path.exists("html") else "."
-    html_filename = f"{html_dir}/timing_analysis_{timestamp}.html"
+    html_filename = f"{reports_dir}/timing_analysis_{timestamp}.html"
     
     with open(html_filename, 'w', encoding='utf-8') as f:
         f.write(html_content)
@@ -667,19 +668,31 @@ def main():
         },
         "system_specs": timing_results[0].get('system_specs', {}),
         "figures": [
-            f"timing_scatter_{timestamp}.png",
-            f"timing_distribution_{timestamp}.png",
-            f"timing_scaling_{timestamp}.png"
+            {
+                "title": "Timing Scatter Plot",
+                "url": f"/analysis-reports/timing_scatter_{timestamp}.png",
+                "description": "Scatter plot showing execution times vs molecular properties"
+            },
+            {
+                "title": "Timing Distribution",
+                "url": f"/analysis-reports/timing_distribution_{timestamp}.png",
+                "description": "Distribution of execution times for both systems"
+            },
+            {
+                "title": "Scaling Analysis",
+                "url": f"/analysis-reports/timing_scaling_{timestamp}.png",
+                "description": "Performance scaling with molecular complexity"
+            }
         ],
-        "html_report": html_filename
+        "html_report": f"/analysis-reports/timing_analysis_{timestamp}.html"
     }
     
-    json_filename = "timing_analysis.json"
+    json_filename = f"{reports_dir}/timing_analysis.json"
     with open(json_filename, 'w', encoding='utf-8') as f:
         json.dump(json_report, f, indent=2)
     
-    print(f"\n✅ Timing Analysis Complete!")
-    print(f"📁 Generated Files:")
+    print(f"\nTiming Analysis Complete!")
+    print(f"Generated Files:")
     print(f"   • {html_filename} (comprehensive analysis)")
     print(f"   • {json_filename} (review app data)")
     print(f"   • timing_scatter_{timestamp}.png/.svg")
@@ -687,7 +700,7 @@ def main():
     print(f"   • timing_scaling_{timestamp}.png/.svg")
     
     # Performance recommendations
-    print(f"\n🎯 Performance Recommendations:")
+    print(f"\nPerformance Recommendations:")
     if stats['speed_ratio'] > 2:
         print(f"   • PFAS-Atlas is significantly slower ({stats['speed_ratio']:.1f}x) - consider optimizing for large datasets")
     elif stats['speed_ratio'] > 1.5:
