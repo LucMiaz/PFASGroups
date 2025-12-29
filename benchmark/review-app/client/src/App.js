@@ -4,6 +4,7 @@ import { Container, Navbar, Nav } from 'react-bootstrap';
 import MoleculeReviewer from './components/MoleculeReviewer';
 import Dashboard from './components/Dashboard';
 import AccuracyReport from './components/AccuracyReport';
+import AnalysisReports from './components/AnalysisReports';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -38,6 +39,7 @@ function App() {
                 <Nav.Link as={Link} to="/">Dashboard</Nav.Link>
                 <Nav.Link as={Link} to="/review">Review Molecules</Nav.Link>
                 <Nav.Link as={Link} to="/accuracy">Accuracy Report</Nav.Link>
+                <Nav.Link as={Link} to="/analysis">Analysis Reports</Nav.Link>
               </Nav>
               {stats && (
                 <Navbar.Text>
@@ -53,6 +55,7 @@ function App() {
             <Route path="/" element={<Dashboard stats={stats} />} />
             <Route path="/review" element={<MoleculeReviewer onReviewUpdate={fetchStats} />} />
             <Route path="/accuracy" element={<AccuracyReport />} />
+            <Route path="/analysis" element={<AnalysisReports />} />
           </Routes>
         </Container>
       </div>

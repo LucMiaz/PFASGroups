@@ -42,6 +42,7 @@ class DatabaseWrapper {
             CREATE TABLE IF NOT EXISTS molecules (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 smiles TEXT NOT NULL,
+                molecular_formula TEXT,
                 molecular_weight REAL,
                 num_atoms INTEGER,
                 num_bonds INTEGER,
@@ -144,6 +145,13 @@ class DatabaseWrapper {
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_pfasgroups_molecule ON pfasgroups_results (molecule_id)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_pfasgroups_bycomp_molecule ON pfasgroups_results_bycomponent (molecule_id)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_atlas_molecule ON atlas_results (molecule_id)`);
+        
+        // Add molecular_formula column if it doesn't exist (migration)
+        try {
+            this.db.exec(`ALTER TABLE molecules ADD COLUMN molecular_formula TEXT`);
+        } catch (e) {
+            // Column already exists, ignore error
+        }
         
         // Save after creating tables
         this.save();

@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const fs = require('fs');
 const Database = require('./database/database');
 
 const app = express();
@@ -9,6 +10,25 @@ const PORT = process.env.PORT || 5000;
 
 // Initialize database
 const db = new Database();
+
+// Load PFAS groups mapping
+let pfasGroupsMap = {};
+try {
+    const groupsData = JSON.parse(fs.readFileSync(path.join(__dirname, 'pfas_groups_map.json'), 'utf8'));
+    pfasGroupsMap = Object.fromEntries(groupsData.map(g => [g.id, g.name]));
+    console.log(`Loaded ${Object.keys(pfasGroupsMap).length} PFAS groups`);
+} catch (error) {
+    console.error('Warning: Could not load PFAS groups map:', error.message);
+}
+
+// Helper function to convert group IDs to names
+function enrichGroupData(groupIds) {
+    if (!Array.isArray(groupIds)) return [];
+    return groupIds.map(id => ({
+        id: id,
+        name: pfasGroupsMap[id] || `Group ${id}`
+    }));
+}
 
 // Middleware
 app.use(cors());
@@ -122,12 +142,12 @@ app.get('/api/molecules', async (req, res) => {
         const totalCount = totalCountResult.total;
         const totalPages = Math.ceil(totalCount / limit);
 
-        // Parse JSON fields
+        // Parse JSON fields and enrich with group names
         const processedMolecules = molecules.map(mol => ({
             ...mol,
             target_groups: mol.target_groups ? JSON.parse(mol.target_groups) : [],
-            pfasgroups_detected: mol.pfasgroups_detected ? JSON.parse(mol.pfasgroups_detected) : [],
-            pfasgroups_bycomponent_detected: mol.pfasgroups_bycomponent_detected ? JSON.parse(mol.pfasgroups_bycomponent_detected) : [],
+            pfasgroups_detected: enrichGroupData(mol.pfasgroups_detected ? JSON.parse(mol.pfasgroups_detected) : []),
+            pfasgroups_bycomponent_detected: enrichGroupData(mol.pfasgroups_bycomponent_detected ? JSON.parse(mol.pfasgroups_bycomponent_detected) : []),
             manual_correct_groups: mol.manual_correct_groups ? JSON.parse(mol.manual_correct_groups) : null,
             has_flavor_mismatch: mol.pfasgroups_detected !== mol.pfasgroups_bycomponent_detected
         }));
@@ -280,7 +300,7 @@ app.get('/api/export/reviews', async (req, res) => {
         const processedReviews = reviews.map(review => ({
             ...review,
             target_groups: review.target_groups ? JSON.parse(review.target_groups) : [],
-            pfasgroups_detected: review.pfasgroups_detected ? JSON.parse(review.pfasgroups_detected) : [],
+            pfasgroups_detected: enrichGroupData(review.pfasgroups_detected ? JSON.parse(review.pfasgroups_detected) : []),
             correct_groups: review.correct_groups ? JSON.parse(review.correct_groups) : null
         }));
 
@@ -446,6 +466,148 @@ function convertToCSV(data) {
     
     return csvContent;
 }
+
+// Analysis Reports API endpoints
+app.get('/api/analysis-reports', async (req, res) => {
+    try {
+        const reportsDir = path.join(__dirname, '../analysis_reports');
+        
+        // Try to load reports from files
+        const reports = {
+            timing: null,
+            complex: null,
+            enhanced: null
+        };
+        
+        const descriptions = {
+            timing: '',
+            complex: '',
+            enhanced: ''
+        };
+        
+        // Try to load timing report
+        try {
+            const timingPath = path.join(reportsDir, 'timing_analysis.json');
+            if (fs.existsSync(timingPath)) {
+                reports.timing = JSON.parse(fs.readFileSync(timingPath, 'utf8'));
+            }
+            const timingDescPath = path.join(reportsDir, 'timing_description.md');
+            if (fs.existsSync(timingDescPath)) {
+                descriptions.timing = fs.readFileSync(timingDescPath, 'utf8');
+            }
+        } catch (err) {
+            console.error('Error loading timing report:', err);
+        }
+        
+        // Try to load complex report
+        try {
+            const complexPath = path.join(reportsDir, 'complex_analysis.json');
+            if (fs.existsSync(complexPath)) {
+                reports.complex = JSON.parse(fs.readFileSync(complexPath, 'utf8'));
+            }
+            const complexDescPath = path.join(reportsDir, 'complex_description.md');
+            if (fs.existsSync(complexDescPath)) {
+                descriptions.complex = fs.readFileSync(complexDescPath, 'utf8');
+            }
+        } catch (err) {
+            console.error('Error loading complex report:', err);
+        }
+        
+        // Try to load enhanced report
+        try {
+            const enhancedPath = path.join(reportsDir, 'enhanced_analysis.json');
+            if (fs.existsSync(enhancedPath)) {
+                reports.enhanced = JSON.parse(fs.readFileSync(enhancedPath, 'utf8'));
+            }
+            const enhancedDescPath = path.join(reportsDir, 'enhanced_description.md');
+            if (fs.existsSync(enhancedDescPath)) {
+                descriptions.enhanced = fs.readFileSync(enhancedDescPath, 'utf8');
+            }
+        } catch (err) {
+            console.error('Error loading enhanced report:', err);
+        }
+        
+        res.json({ reports, descriptions });
+    } catch (error) {
+        console.error('Error fetching analysis reports:', error);
+        res.status(500).json({ error: 'Failed to fetch analysis reports' });
+    }
+});
+
+app.post('/api/analysis-reports/description', async (req, res) => {
+    try {
+        const { reportType, description } = req.body;
+        const reportsDir = path.join(__dirname, '../analysis_reports');
+        
+        // Create directory if it doesn't exist
+        if (!fs.existsSync(reportsDir)) {
+            fs.mkdirSync(reportsDir, { recursive: true });
+        }
+        
+        const descPath = path.join(reportsDir, `${reportType}_description.md`);
+        fs.writeFileSync(descPath, description, 'utf8');
+        
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error saving description:', error);
+        res.status(500).json({ error: 'Failed to save description' });
+    }
+});
+
+app.get('/api/analysis-reports/export/:reportType', async (req, res) => {
+    try {
+        const { reportType } = req.params;
+        const reportsDir = path.join(__dirname, '../analysis_reports');
+        
+        // Load description
+        const descPath = path.join(reportsDir, `${reportType}_description.md`);
+        let markdown = '';
+        if (fs.existsSync(descPath)) {
+            markdown = fs.readFileSync(descPath, 'utf8');
+        }
+        
+        // Load report data
+        const reportPath = path.join(reportsDir, `${reportType}_analysis.json`);
+        if (fs.existsSync(reportPath)) {
+            const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+            
+            // Add figures section
+            if (report.figures && report.figures.length > 0) {
+                markdown += '\n\n## Figures\n\n';
+                report.figures.forEach((fig, idx) => {
+                    markdown += `\n### ${fig.title}\n\n`;
+                    
+                    // Save figure files
+                    const figDir = path.join(reportsDir, 'figures');
+                    if (!fs.existsSync(figDir)) {
+                        fs.mkdirSync(figDir, { recursive: true });
+                    }
+                    
+                    const svgPath = path.join(figDir, `${reportType}_fig${idx+1}.svg`);
+                    const pngPath = path.join(figDir, `${reportType}_fig${idx+1}.png`);
+                    
+                    // Write SVG
+                    if (fig.format === 'svg') {
+                        fs.writeFileSync(svgPath, fig.data, 'utf8');
+                        markdown += `![${fig.title}](figures/${reportType}_fig${idx+1}.svg)\n\n`;
+                    } else if (fig.format === 'png') {
+                        // Assume base64 encoded
+                        const base64Data = fig.data.replace(/^data:image\/png;base64,/, '');
+                        fs.writeFileSync(pngPath, base64Data, 'base64');
+                        markdown += `![${fig.title}](figures/${reportType}_fig${idx+1}.png)\n\n`;
+                    }
+                });
+            }
+        }
+        
+        res.setHeader('Content-Type', 'text/markdown');
+        res.setHeader('Content-Disposition', `attachment; filename="${reportType}_report.md"`);
+        res.send(markdown);
+    } catch (error) {
+        console.error('Error exporting report:', error);
+        res.status(500).json({ error: 'Failed to export report' });
+    }
+});
 
 // Catch all handler for React routing
 app.get('*', (req, res) => {

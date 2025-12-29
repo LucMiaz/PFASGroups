@@ -893,42 +893,54 @@ class EnhancedPFASBenchmark:
                     if group_id == 33:  # carboxylic acid
                         # Create simple carboxylic acids without fluorine
                         base_smiles_options = [
-                            "FC(F)(F)C(F)(F)CC(=O)O",  # butanoic acid
-                            "FC(F)(F)CC(=O)O",   # propanoic acid
-                            "FC(F)(F)C(F)(F)C(F)(F)CC(=O)O", # pentanoic acid
-                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)CC(=O)O", # hexanoic acid
-                            "FC(F)(F)C(C)C(=O)O", # isobutyric acid
-                            "FC(F)(F)C(F)(C(F)(F)F)CC(=O)O", # 3-methylbutanoic acid
-                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC(=O)O", # heptanoic acid
-                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC(=O)O", # octanoic acid
+                            "CCCC(=O)O",  # butanoic acid
+                            "CCC(=O)O",   # propanoic acid
+                            "CCCCC(=O)O", # pentanoic acid
+                            "CCCCCC(=O)O", # hexanoic acid
+                            "CC(C)C(=O)O", # isobutyric acid
+                            "CC(C)CC(=O)O", # 3-methylbutanoic acid
+                            "CCCCCCC(=O)O", # heptanoic acid
+                            "CCCCCCCC(=O)O", # octanoic acid
+                            "CC(=O)O", # acetic acid
+                            "CCCCCCCCC(=O)O", # nonanoic acid
+                            "CCCCCCCCCC(=O)O", # decanoic acid
+                            "c1ccccc1C(=O)O", # benzoic acid
                         ]
                         smiles = base_smiles_options[i % len(base_smiles_options)]
                         
                     elif group_id == 36:  # sulfonic acid
                         # Create simple sulfonic acids without fluorine
                         base_smiles_options = [
-                            "FC(F)(F)CS(=O)(=O)O",     # ethanesulfonic acid
-                            "FC(F)(F)C(F)(F)CS(=O)(=O)O",    # propanesulfonic acid
-                            "FC(F)(F)C(F)(F)C(F)(F)CS(=O)(=O)O",   # butanesulfonic acid
+                            "CCS(=O)(=O)O",     # ethanesulfonic acid
+                            "CCCS(=O)(=O)O",    # propanesulfonic acid
+                            "CCCCS(=O)(=O)O",   # butanesulfonic acid
                             "CS(=O)(=O)O",      # methanesulfonic acid
-                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)CS(=O)(=O)O",  # pentanesulfonic acid
-                            "FC(F)(F)C(F)(C(F)(F)F)CS(=O)(=O)O", # 2-methylpropanesulfonic acid
-                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CS(=O)(=O)O", # hexanesulfonic acid
+                            "CCCCCS(=O)(=O)O",  # pentanesulfonic acid
+                            "CC(C)CS(=O)(=O)O", # 2-methylpropanesulfonic acid
+                            "CCCCCCS(=O)(=O)O", # hexanesulfonic acid
                             "c1ccc(S(=O)(=O)O)cc1", # benzenesulfonic acid
+                            "CCCCCCCS(=O)(=O)O", # heptanesulfonic acid
+                            "CCCCCCCCS(=O)(=O)O", # octanesulfonic acid
+                            "c1ccc(C)c(S(=O)(=O)O)c1", # toluenesulfonic acid
+                            "c1cc(S(=O)(=O)O)ccc1C", # p-toluenesulfonic acid
                         ]
                         smiles = base_smiles_options[i % len(base_smiles_options)]
                         
                     elif group_id == 31:  # ether
                         # Create simple ethers without fluorine
                         base_smiles_options = [
-                            "FC(F)(F)COC",        # ethyl methyl ether
-                            "FC(F)(F)COCC(F)(F)F",       # diethyl ether
-                            "FC(F)(F)C(F)(F)COCC(F)(F)F",      # ethyl propyl ether
-                            "FC(F)(F)COCC(F)(F)C(F)(F)F",    # dipropyl ether
-                            "FC(F)(F)C(F)(C(F)(F)F)COC",     # isopropyl methyl ether
-                            "FFC(F)(F)C(F)(F)C(F)(F)COC",      # butyl methyl ether
-                            "FC(F)(F)COC(F)(F)C(F)(F)C(F)(F)",      # ethyl propyl ether
-                            "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)COCC(F)(F)F",    # butyl ethyl ether
+                            "CCOC",        # ethyl methyl ether
+                            "CCOCC",       # diethyl ether
+                            "CCCOCC",      # ethyl propyl ether
+                            "CCCOCCCC",    # dipropyl ether
+                            "CC(C)OC",     # isopropyl methyl ether
+                            "CCCCOC",      # butyl methyl ether
+                            "CCOCCC",      # ethyl propyl ether
+                            "CCCCOCC",    # butyl ethyl ether
+                            "CCCCOCCCC", # dibutyl ether
+                            "CCCCCOC", # pentyl methyl ether
+                            "c1ccccc1OC", # anisole (methoxybenzene)
+                            "CCCCCCOC", # hexyl methyl ether
                         ]
                         smiles = base_smiles_options[i % len(base_smiles_options)]
                     
@@ -1300,7 +1312,7 @@ def main():
     
     if choice in ['5', '6', '']:
         print("\nRunning Complex Branched PFAS Benchmark...")
-        complex_results, complex_file = benchmark.run_complex_branched_benchmark(20)
+        complex_results, complex_file = benchmark.run_complex_branched_benchmark(50)
     else:
         complex_results, complex_file = None, None
     

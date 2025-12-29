@@ -16,8 +16,7 @@ function MoleculeReviewer({ onReviewUpdate }) {
     prioritizeMisclassified: true
   });
   const [reviewData, setReviewData] = useState({});
-  const [pendingReviews, setPendingReviews] = useState([]);
-  const [batchSubmitStatus, setBatchSubmitStatus] = useState(null);
+  const [submitStatus, setSubmitStatus] = useState({});
 
   const datasetOptions = [
     { value: 'all', label: 'All Datasets' },
@@ -89,69 +88,45 @@ function MoleculeReviewer({ onReviewUpdate }) {
         [field]: value
       }
     }));
-    // Mark this molecule as having pending changes
-    setPendingReviews(prev => {
-      if (!prev.includes(moleculeId)) {
-        return [...prev, moleculeId];
-      }
-      return prev;
-    });
   };
 
-  const submitAllReviews = async () => {
-    if (pendingReviews.length === 0) return;
-    
-    setBatchSubmitStatus('submitting');
+  const submitReview = async (moleculeId) => {
+    setSubmitStatus(prev => ({ ...prev, [moleculeId]: 'submitting' }));
     
     try {
-      const reviewsToSubmit = pendingReviews.map(moleculeId => ({
-        moleculeId,
-        pfasgroupsCorrect: reviewData[moleculeId]?.pfasgroupsCorrect,
-        atlasCorrect: reviewData[moleculeId]?.atlasCorrect,
-        reviewerNotes: reviewData[moleculeId]?.reviewerNotes,
-        reviewerName: 'Manual Reviewer',
-        isPfas: reviewData[moleculeId]?.isPfas,
-        correctGroups: reviewData[moleculeId]?.correctGroups,
-        correctClassification: reviewData[moleculeId]?.correctClassification
-      }));
-
-      // Submit all reviews in parallel
-      const results = await Promise.all(
-        reviewsToSubmit.map(review =>
-          fetch('/api/review', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(review)
-          })
-        )
-      );
-
-      const allSuccessful = results.every(r => r.ok);
+      const reviewDataForMolecule = reviewData[moleculeId];
       
-      if (allSuccessful) {
-        setBatchSubmitStatus('success');
-        setPendingReviews([]);
+      const response = await fetch('/api/review', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          moleculeId,
+          pfasgroupsCorrect: reviewDataForMolecule.pfasgroupsCorrect,
+          atlasCorrect: reviewDataForMolecule.atlasCorrect,
+          reviewerNotes: reviewDataForMolecule.reviewerNotes,
+          reviewerName: 'Manual Reviewer', // Could be made configurable
+          isPfas: reviewDataForMolecule.isPfas,
+          correctGroups: reviewDataForMolecule.correctGroups,
+          correctClassification: reviewDataForMolecule.correctClassification
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitStatus(prev => ({ ...prev, [moleculeId]: 'success' }));
         onReviewUpdate && onReviewUpdate();
         
-        // Refresh molecules to show updated review status
-        await fetchMolecules();
-        
-        // Clear success message after 3 seconds
+        // Clear success message after 2 seconds
         setTimeout(() => {
-          setBatchSubmitStatus(null);
-        }, 3000);
+          setSubmitStatus(prev => ({ ...prev, [moleculeId]: null }));
+        }, 2000);
       } else {
-        setBatchSubmitStatus('error');
-        setTimeout(() => {
-          setBatchSubmitStatus(null);
-        }, 3000);
+        setSubmitStatus(prev => ({ ...prev, [moleculeId]: 'error' }));
       }
     } catch (error) {
-      console.error('Error submitting reviews:', error);
-      setBatchSubmitStatus('error');
-      setTimeout(() => {
-        setBatchSubmitStatus(null);
-      }, 3000);
+      console.error('Error submitting review:', error);
+      setSubmitStatus(prev => ({ ...prev, [moleculeId]: 'error' }));
     }
   };
 
@@ -245,6 +220,7 @@ function MoleculeReviewer({ onReviewUpdate }) {
                     )}
                   </div>
                   <p><strong>SMILES:</strong> <code>{molecule.smiles}</code></p>
+                  {molecule.molecular_formula && <p><strong>Formula:</strong> <code>{molecule.molecular_formula}</code></p>}
                   <p><strong>Dataset:</strong> <Badge bg="info">{molecule.dataset_type.toUpperCase()}</Badge></p>
                   {molecule.group_name && <p><strong>Group:</strong> {molecule.group_name}</p>}
                   {molecule.molecular_weight && <p><strong>MW:</strong> {molecule.molecular_weight.toFixed(2)}</p>}
@@ -268,7 +244,14 @@ function MoleculeReviewer({ onReviewUpdate }) {
                         <p><strong>Detected Groups:</strong></p>
                         <div>
                           {molecule.pfasgroups_detected.map(group => (
-                            <Badge key={group} bg="secondary" className="me-1 mb-1">{group}</Badge>
+                            <Badge 
+                              key={group.id} 
+                              bg="secondary" 
+                              className="me-1 mb-1"
+                              title={`ID: ${group.id}`}
+                            >
+                              {group.name}
+                            </Badge>
                           ))}
                         </div>
                         <p><small>Time: {(molecule.pfasgroups_time * 1000).toFixed(2)}ms</small></p>
@@ -366,17 +349,30 @@ function MoleculeReviewer({ onReviewUpdate }) {
                     />
                   </Form.Group>
 
-                  {/* Pending Review Indicator */}
-                  {pendingReviews.includes(molecule.id) && (
-                    <Alert variant="warning" className="mb-0 py-2">
-                      <small>✏️ Unsaved changes - click "Save All Reviews" below</small>
-                    </Alert>
-                  )}
-                  {molecule.review_date && !pendingReviews.includes(molecule.id) && (
-                    <Alert variant="success" className="mb-0 py-2">
-                      <small>✅ Review saved on {new Date(molecule.review_date).toLocaleDateString()}</small>
-                    </Alert>
-                  )}
+                  {/* Submit Review */}
+                  <div className="d-flex justify-content-between align-items-center">
+                    <Button
+                      variant="primary"
+                      onClick={() => submitReview(molecule.id)}
+                      disabled={submitStatus[molecule.id] === 'submitting'}
+                    >
+                      {submitStatus[molecule.id] === 'submitting' ? (
+                        <>
+                          <Spinner as="span" animation="border" size="sm" className="me-2" />
+                          Submitting...
+                        </>
+                      ) : (
+                        'Submit Review'
+                      )}
+                    </Button>
+
+                    {submitStatus[molecule.id] === 'success' && (
+                      <Alert variant="success" className="mb-0 py-1">Review saved!</Alert>
+                    )}
+                    {submitStatus[molecule.id] === 'error' && (
+                      <Alert variant="danger" className="mb-0 py-1">Error saving review</Alert>
+                    )}
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -397,46 +393,6 @@ function MoleculeReviewer({ onReviewUpdate }) {
             nextLabel="Next →"
             forcePage={currentPage - 1}
           />
-        </div>
-      )}
-
-      {/* Sticky Batch Save Button */}
-      {pendingReviews.length > 0 && (
-        <div className="batch-save-container">
-          <Card className="batch-save-card">
-            <Card.Body className="d-flex justify-content-between align-items-center py-2">
-              <div>
-                <strong>{pendingReviews.length}</strong> unsaved review{pendingReviews.length !== 1 ? 's' : ''}
-              </div>
-              <div className="d-flex align-items-center gap-3">
-                {batchSubmitStatus === 'success' && (
-                  <Alert variant="success" className="mb-0 py-1 px-2 me-2">
-                    ✅ All reviews saved!
-                  </Alert>
-                )}
-                {batchSubmitStatus === 'error' && (
-                  <Alert variant="danger" className="mb-0 py-1 px-2 me-2">
-                    ❌ Error saving some reviews
-                  </Alert>
-                )}
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onClick={submitAllReviews}
-                  disabled={batchSubmitStatus === 'submitting'}
-                >
-                  {batchSubmitStatus === 'submitting' ? (
-                    <>
-                      <Spinner as="span" animation="border" size="sm" className="me-2" />
-                      Saving {pendingReviews.length} review{pendingReviews.length !== 1 ? 's' : ''}...
-                    </>
-                  ) : (
-                    <>💾 Save All Reviews</>
-                  )}
-                </Button>
-              </div>
-            </Card.Body>
-          </Card>
         </div>
       )}
     </div>

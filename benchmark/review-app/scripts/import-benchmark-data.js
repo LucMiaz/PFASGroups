@@ -1,6 +1,7 @@
 const Database = require('../database/database');
 const fs = require('fs-extra');
 const path = require('path');
+const { execSync } = require('child_process');
 
 /**
  * DataImporter - Imports benchmark data into the database
@@ -47,6 +48,13 @@ class DataImporter {
             
             for (const file of jsonFiles) {
                 const filePath = path.join(dataPath, file);
+                
+                // Skip analysis/summary files
+                if (file.includes('validation') || file.includes('analysis') || file.includes('summary')) {
+                    console.log(`Skipping analysis file: ${file}`);
+                    continue;
+                }
+                
                 console.log(`Importing ${file}...`);
                 
                 // Determine dataset type from filename
@@ -125,6 +133,13 @@ class DataImporter {
             try {
                 // Insert molecule data
                 const moleculeData = record.molecule_data || record;
+                
+                // Calculate molecular formula if not present (skip for now - too slow)
+                // Can be calculated on-demand or batch-processed later
+                if (!moleculeData.molecular_formula && moleculeData.smiles) {
+                    moleculeData.molecular_formula = null; // Placeholder
+                }
+                
                 const moleculeId = await this.insertMolecule(moleculeData, datasetType, benchmarkDate);
                 
                 // Insert PFASGroups result if exists (default flavor: bycomponent=False)
@@ -154,16 +169,17 @@ class DataImporter {
         const data = JSON.parse(await fs.readFile(filePath, 'utf8'));
         const benchmarkDate = this.extractDateFromFilename(filename);
         
-        // Deduplicate timing records based on SMILES
-        const originalCount = data.length;
-        const deduplicatedData = this.deduplicateTimingRecords(data);
-        const duplicatesRemoved = originalCount - deduplicatedData.length;
-        if (duplicatesRemoved > 0) {
-            console.log(`  Removed ${duplicatesRemoved} duplicate(s) from ${filename}`);
-        }
+        // DON'T deduplicate timing records - we want to keep triplicates for statistical analysis
+        console.log(`  Keeping all ${data.length} timing records (triplicates preserved for analysis)`);
         
-        for (const record of deduplicatedData) {
+        for (const record of data) {
             try {
+                // Calculate molecular formula if not present (skip for now - too slow)
+                // Can be calculated on-demand or batch-processed later
+                if (!record.molecular_formula && record.smiles) {
+                    record.molecular_formula = null; // Placeholder
+                }
+                
                 // Insert molecule data
                 const moleculeId = await this.insertTimingMolecule(record, benchmarkDate);
                 
@@ -174,7 +190,7 @@ class DataImporter {
             }
         }
         
-        console.log(`✓ Imported ${deduplicatedData.length} timing records from ${filename}`);
+        console.log(`✓ Imported ${data.length} timing records from ${filename}`);
     }
 
     /**
@@ -239,12 +255,14 @@ class DataImporter {
     async insertMolecule(moleculeData, datasetType, benchmarkDate) {
         const result = await this.db.run(`
             INSERT INTO molecules (
-                smiles, molecular_weight, num_atoms, num_bonds, 
+                smiles, molecular_formula, molecular_weight, num_atoms, num_bonds, 
                 chain_length, target_groups, generation_type, 
                 group_id, group_name, dataset_type, benchmark_date
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, [
             moleculeData.smiles,
+            moleculeData.molecular_formula || null,
             moleculeData.molecular_weight || null,
             moleculeData.num_atoms || null,
             moleculeData.num_bonds || null,
@@ -263,11 +281,12 @@ class DataImporter {
     async insertTimingMolecule(record, benchmarkDate) {
         const result = await this.db.run(`
             INSERT INTO molecules (
-                smiles, molecular_weight, num_atoms, num_bonds, 
+                smiles, molecular_formula, molecular_weight, num_atoms, num_bonds, 
                 chain_length, dataset_type, benchmark_date
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `, [
             record.smiles,
+            record.molecular_formula || null,
             record.molecular_weight || null,
             record.num_atoms || null,
             record.num_bonds || null,
@@ -378,6 +397,34 @@ class DataImporter {
         stats.reviews = reviewCount.count;
         
         return stats;
+    }
+
+    /**
+     * Calculate molecular formula from SMILES using RDKit
+     */
+    calculateMolecularFormula(smiles) {
+        try {
+            const pythonCode = `
+from rdkit import Chem
+from rdkit.Chem import Descriptors
+
+mol = Chem.MolFromSmiles('${smiles.replace(/'/g, "\\'")}')
+if mol:
+    print(Descriptors.rdMolDescriptors.CalcMolFormula(mol))
+else:
+    print('')
+`;
+            
+            const result = execSync(`python -c "${pythonCode.replace(/"/g, '\\"')}"`, {
+                encoding: 'utf8',
+                timeout: 5000,
+                windowsHide: true
+            }).trim();
+            
+            return result || null;
+        } catch (error) {
+            return null;
+        }
     }
 
     async close() {

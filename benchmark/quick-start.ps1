@@ -20,7 +20,7 @@ Write-Host ""
 
 # Check if benchmark data exists
 Write-Host "🔍 Checking for benchmark data..." -ForegroundColor Yellow
-$dataFiles = Get-ChildItem -Path "data" -Filter "pfas*.json" -ErrorAction SilentlyContinue
+$dataFiles = @(Get-ChildItem -Path "data" -Filter "pfas*.json" -ErrorAction SilentlyContinue)
 if ($dataFiles.Count -eq 0) {
     Write-Host ""
     Write-Host "⚠️  No benchmark data files found!" -ForegroundColor Yellow
@@ -61,7 +61,7 @@ if ($dataFiles.Count -eq 0) {
             Write-Host "✅ Benchmark data generation completed!" -ForegroundColor Green
             
             # Re-check for data files
-            $dataFiles = Get-ChildItem -Path "data" -Filter "pfas*.json" -ErrorAction SilentlyContinue
+            $dataFiles = @(Get-ChildItem -Path "data" -Filter "pfas*.json" -ErrorAction SilentlyContinue)
             Write-Host "✓ Generated $($dataFiles.Count) benchmark data file(s)" -ForegroundColor Green
         } else {
             Write-Host ""
@@ -83,7 +83,7 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "✅ Setup completed successfully!" -ForegroundColor Green
     
     # Import benchmark data if any files exist
-    $dataFiles = Get-ChildItem -Path "data" -Filter "pfas*.json" -ErrorAction SilentlyContinue
+    $dataFiles = @(Get-ChildItem -Path "data" -Filter "pfas*.json" -ErrorAction SilentlyContinue)
     if ($dataFiles.Count -gt 0) {
         Write-Host ""
         Write-Host "2️⃣ Importing benchmark data..." -ForegroundColor Green
