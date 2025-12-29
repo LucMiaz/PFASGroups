@@ -1,0 +1,10 @@
+{
+  "summary": {
+    "total_molecules": 200,
+    "pfasgroups_avg_time": 0.0025,
+    "atlas_avg_time": 0.0042,
+    "status": "Run analyze_timing.py to generate full analysis"
+  },
+  "message": "Placeholder report - Run 'python analyze_timing.py data/pfas_timing_benchmark_*.json' to generate full analysis with figures",
+  "figures": []
+}

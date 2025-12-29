@@ -8,25 +8,10 @@ function MoleculeViewer({ smiles, width = 300, height = 200 }) {
   useEffect(() => {
     const loadRDKit = async () => {
       try {
-        // Load RDKit from public folder
-        if (window.initRDKitModule) {
-          const rdkitInstance = await window.initRDKitModule();
-          setRdkit(rdkitInstance);
-        } else {
-          // Fallback: load script dynamically
-          const script = document.createElement('script');
-          script.src = '/RDKit_minimal.js';
-          script.async = true;
-          script.onload = async () => {
-            const rdkitInstance = await window.initRDKitModule();
-            setRdkit(rdkitInstance);
-          };
-          script.onerror = () => {
-            console.error('Failed to load RDKit script');
-            setError('RDKit.js not available. Showing SMILES string instead.');
-          };
-          document.head.appendChild(script);
-        }
+        // Try to load RDKit.js
+        const RDKitModule = await import('@rdkit/rdkit');
+        const rdkitInstance = await RDKitModule.initRDKitModule();
+        setRdkit(rdkitInstance);
       } catch (err) {
         console.error('Error loading RDKit:', err);
         setError('RDKit.js not available. Showing SMILES string instead.');
@@ -44,12 +29,8 @@ function MoleculeViewer({ smiles, width = 300, height = 200 }) {
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Trim SMILES string (remove annotations after space)
-        const trimmedSmiles = smiles.split(' ')[0].trim();
-        console.log('Rendering molecule with SMILES:', trimmedSmiles);
-
         // Create molecule from SMILES
-        const mol = rdkit.get_mol(trimmedSmiles);
+        const mol = rdkit.get_mol(smiles);
         if (mol) {
           // Generate 2D coordinates
           mol.normalize_depiction();

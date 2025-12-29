@@ -220,7 +220,6 @@ function MoleculeReviewer({ onReviewUpdate }) {
                     )}
                   </div>
                   <p><strong>SMILES:</strong> <code>{molecule.smiles}</code></p>
-                  {molecule.molecular_formula && <p><strong>Formula:</strong> <code>{molecule.molecular_formula}</code></p>}
                   <p><strong>Dataset:</strong> <Badge bg="info">{molecule.dataset_type.toUpperCase()}</Badge></p>
                   {molecule.group_name && <p><strong>Group:</strong> {molecule.group_name}</p>}
                   {molecule.molecular_weight && <p><strong>MW:</strong> {molecule.molecular_weight.toFixed(2)}</p>}
@@ -244,14 +243,7 @@ function MoleculeReviewer({ onReviewUpdate }) {
                         <p><strong>Detected Groups:</strong></p>
                         <div>
                           {molecule.pfasgroups_detected.map(group => (
-                            <Badge 
-                              key={group.id} 
-                              bg="secondary" 
-                              className="me-1 mb-1"
-                              title={`ID: ${group.id}`}
-                            >
-                              {group.name}
-                            </Badge>
+                            <Badge key={group} bg="secondary" className="me-1 mb-1">{group}</Badge>
                           ))}
                         </div>
                         <p><small>Time: {(molecule.pfasgroups_time * 1000).toFixed(2)}ms</small></p>
