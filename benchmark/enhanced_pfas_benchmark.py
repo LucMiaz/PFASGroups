@@ -59,8 +59,8 @@ class EnhancedPFASBenchmark:
         with open(specificity_path, 'r') as f:
             self.specificity_groups = json.load(f)
         
-        # Target groups 29-51 (excluding 48)
-        self.target_groups = [g for g in range(29, 52) if g != 48]
+        # Target groups 29-57 (excluding 48)
+        self.target_groups = [g for g in range(29, 58) if g != 48]
         
         # OECD target groups 1-28
         self.oecd_target_groups = list(range(1, 29))
@@ -88,7 +88,14 @@ class EnhancedPFASBenchmark:
             47: {'name': 'amine', 'smiles': 'N', 'mode': 'insert'},
             49: {'name': 'alkene', 'smiles': 'C(F)=C(F)', 'mode': 'insert'},
             50: {'name': 'alkyne', 'smiles': 'C#C', 'mode': 'insert'},
-            51: {'name': 'Side-chain aromatics', 'smiles': 'c1ccccc1', 'mode': 'attach'}
+            51: {'name': 'Side-chain aromatics', 'smiles': 'c1ccccc1', 'mode': 'attach'},
+            52: {'name': 'Perfluoro cyclic compounds', 'smiles': 'C1(F)C(F)C(F)C(F)C(F)C1(F)', 'mode': 'attach'},
+            53: {'name': 'Polyfluoro cyclic compounds', 'smiles': 'C1(F)C(F)C(H)C(F)C(F)C1(F)', 'mode': 'attach'},
+            54: {'name': 'Perfluoroaryl compounds', 'smiles': 'c1c(F)c(F)c(F)c(F)c1F', 'mode': 'attach'},
+            55: {'name': 'Polyfluoroaryl compounds', 'smiles': 'c1c(F)c(F)ccc1F', 'mode': 'attach'},
+            56: {'name': 'Peroxydes', 'smiles': 'OO', 'mode': 'insert'},
+            57: {'name': 'Benzoyl peroxydes', 'smiles': 'C(=O)OOC(=O)', 'mode': 'attach'}
+
         }
         
         # Build OECD group mappings after functional_smarts is defined
