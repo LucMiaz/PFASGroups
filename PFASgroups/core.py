@@ -408,6 +408,7 @@ def find_aryl_components(mol, aryl_smarts):
     return max([0]+[len(x) for x in components]), chain_lengths, len(components), matched_chains
 
 # --- Main PFAS group parsing functions ---
+@add_smartsPath()
 @load_PFASGroups()
 def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
     """Iterates over PFAS groups and finds the ones that match the molecule.
@@ -481,6 +482,66 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                             match_count, chain_lengths, matched1_len, matched_chains = path_between_smarts(mol,
                                                                                 pf.smarts1,
                                                                                 None, **kwargs)
+                            
+                            # For groups with no constraints and smarts2=null, verify that smarts1 matches
+                            # are within 1-2 bonds of a fluorinated terminal atom
+                            # This prevents matching non-fluorinated functional groups that are >2 bonds
+                            # away from the fluorinated region (since chain SMARTS allow $(CF) and $(CCF))
+                            if match_count > 0 and matched_chains:
+                                smartsPaths = kwargs.get('smartsPaths')
+                                # Get smarts1 matches
+                                smarts1_matches = get_substruct(mol, pf.smarts1)
+                                # Filter matched_chains where smarts1 atoms are ≤2 bonds from an END atom
+                                valid_chains = []
+                                for chain_info in matched_chains:
+                                    path_type = chain_info['SMARTS']
+                                    chain_atoms = set(chain_info['chain'])
+                                    # Get the end SMARTS for this path type
+                                    if smartsPaths and path_type in smartsPaths:
+                                        end_smarts = smartsPaths[path_type][1]  # [chain, end]
+                                        end_matches = get_substruct(mol, end_smarts)
+                                        # Get smarts1 atoms that are in this chain
+                                        smarts1_in_chain = chain_atoms.intersection(smarts1_matches)
+                                        # Check if any smarts1 atom is within 2 bonds of an END atom
+                                        chain_is_valid = False
+                                        for s1_atom in smarts1_in_chain:
+                                            # Check if smarts1 atom itself is an END
+                                            if s1_atom in end_matches:
+                                                chain_is_valid = True
+                                                break
+                                            # Otherwise, check the actual molecular bond distance to nearest END atom
+                                            # (not position in chain array, since path can jump around in molecule)
+                                            G = mol_to_nx(mol)
+                                            for end_atom in end_matches:
+                                                if end_atom in chain_atoms:
+                                                    try:
+                                                        # Get shortest path distance in molecular graph
+                                                        path = nx.shortest_path(G, s1_atom, end_atom)
+                                                        distance = len(path) - 1  # Number of bonds
+                                                        if distance <= 2:
+                                                            chain_is_valid = True
+                                                            break
+                                                    except nx.NetworkXNoPath:
+                                                        continue
+                                            if chain_is_valid:
+                                                break
+                                        
+                                        if chain_is_valid:
+                                            valid_chains.append(chain_info)
+                                
+                                # Update results with only valid chains
+                                if valid_chains:
+                                    matched_chains = valid_chains
+                                    match_count = len(valid_chains)
+                                    chain_lengths = [c['length'] for c in valid_chains]
+                                    matched1_len = len(set([atom for c in valid_chains for atom in c['chain']]).intersection(smarts1_matches))
+                                else:
+                                    # No valid chains - smarts1 matches are >2 bonds from fluorinated terminals
+                                    matched_chains = []
+                                    match_count = 0
+                                    chain_lengths = []
+                                    matched1_len = 0
+                                
                         except ValueError as e:
                             raise e
                 elif pf.smarts1 is not None:
