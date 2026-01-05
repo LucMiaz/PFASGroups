@@ -9,6 +9,7 @@ function AccuracyReport() {
   const [loading, setLoading] = useState(true);
   const [exportStatus, setExportStatus] = useState(null);
   const [showEnhancedMetrics, setShowEnhancedMetrics] = useState(true);
+  const [showEnhancedMetrics, setShowEnhancedMetrics] = useState(true);
 
   const datasetOptions = [
     { value: 'all', label: 'All Datasets' },
@@ -70,33 +71,6 @@ function AccuracyReport() {
     setTimeout(() => setExportStatus(null), 3000);
   };
 
-  const exportToExcel = async () => {
-    setExportStatus('exporting');
-    try {
-      const params = selectedDataset !== 'all' ? `?dataset=${selectedDataset}` : '';
-      const response = await fetch(`/api/export/excel${params}`);
-      
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        const filename = `pfas_benchmark_${selectedDataset}_${new Date().toISOString().split('T')[0]}.xlsx`;
-        a.download = filename;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        setExportStatus('success');
-      } else {
-        setExportStatus('error');
-      }
-    } catch (error) {
-      console.error('Error exporting to Excel:', error);
-      setExportStatus('error');
-    }
-
-    setTimeout(() => setExportStatus(null), 3000);
-  };
-
   const calculateOverallAccuracy = () => {
     if (!accuracyData.length) return { pfasgroups: 0, atlas: 0, total: 0 };
 
@@ -125,7 +99,7 @@ function AccuracyReport() {
       <Card className="mb-4">
         <Card.Body>
           <Row>
-            <Col md={3}>
+            <Col md={4}>
               <h6>Dataset Filter</h6>
               <Select
                 value={datasetOptions.find(opt => opt.value === selectedDataset)}
@@ -133,7 +107,7 @@ function AccuracyReport() {
                 options={datasetOptions}
               />
             </Col>
-            <Col md={2}>
+            <Col md={4}>
               <h6>View Options</h6>
               <Form.Check
                 type="switch"
@@ -143,7 +117,7 @@ function AccuracyReport() {
                 onChange={(e) => setShowEnhancedMetrics(e.target.checked)}
               />
             </Col>
-            <Col md={3}>
+            <Col md={4}>
               <h6>Export Reviews</h6>
               <div className="d-flex gap-2">
                 <Button 
@@ -173,21 +147,6 @@ function AccuracyReport() {
                   Export failed. Please try again.
                 </Alert>
               )}
-            </Col>
-            <Col md={4}>
-              <h6>Export to Excel</h6>
-              <Button 
-                variant="success" 
-                size="sm"
-                onClick={exportToExcel}
-                disabled={exportStatus === 'exporting'}
-                className="w-100"
-              >
-                📊 Export Complete Dataset to Excel
-              </Button>
-              <small className="text-muted d-block mt-1">
-                Includes structure images, formulas, and all classification data
-              </small>
             </Col>
           </Row>
         </Card.Body>

@@ -38,7 +38,7 @@ result = parse_mol(mol)
 
 # List of molecules
 mols = [Chem.MolFromSmiles(s) for s in ['FC(F)(F)C(F)(F)C(=O)O', 'C(C(F)(F)F)F']]
-results = parse_mol(mols)
+results = parse_mols(mols)
 ```
 
 ## Files Updated

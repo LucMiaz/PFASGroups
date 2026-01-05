@@ -9,6 +9,7 @@ import networkx as nx
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from .PFASGroupModel import PFASGroup
+from .PFASDefinitionModel import PFASDefinition
 from typing import Union, List, Dict
 from PIL import Image
 from io import BytesIO
@@ -26,6 +27,7 @@ MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(MODULE_DIR, 'data')
 FPATHS_FILE = os.path.join(DATA_DIR, 'fpaths.json')
 PFAS_GROUPS_FILE = os.path.join(DATA_DIR, 'PFAS_groups_smarts.json')
+PFAS_DEFINITIONS_FILE = os.path.join(DATA_DIR, 'PFAS_definitions_smarts.json')
 
 
 # --- Load PFAS groups from PFAS_groups_smarts.json ---
@@ -39,6 +41,20 @@ def load_PFASGroups():
     def inner(func):
         def wrapper(*args,**kwargs):
             kwargs['pfas_groups'] = kwargs.get('pfas_groups',pfg)
+            return func(*args, **kwargs)
+        return wrapper
+    return inner
+
+def load_PFASDefinitions():
+    """
+    Adds default PFAS definitions to function
+    """
+    with open(PFAS_DEFINITIONS_FILE,'r') as f:
+        pfg = json.load(f)
+    pfg = [PFASDefinition(**x) for x in pfg]
+    def inner(func):
+        def wrapper(*args,**kwargs):
+            kwargs['pfas_definitions'] = kwargs.get('pfas_definitions',pfg)
             return func(*args, **kwargs)
         return wrapper
     return inner
@@ -294,6 +310,8 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, **kwargs):
     Fluorinated atoms are defined by the SMARTS yield by the decorator add_smartsPath.
     if smarts2 is None, uses SMARTS corresponding to smartsPath."""
     chains = {}
+    # Extract shortest_path_method from kwargs (default to 'dijkstra' if not provided)
+    shortest_path_method = kwargs.pop('shortest_path_method', 'dijkstra')
     smartsPaths = kwargs.get('smartsPaths')
     smartsMatches1 = get_substruct(mol, smarts1)
     if smarts2 is not None:
@@ -321,7 +339,7 @@ def find_path_between_smarts(mol,smarts1,smarts2,G, **kwargs):
                         path_idx = [match1]
                     else:
                         try:
-                            path_idx = nx.shortest_path(G, match1, match2, method='dijkstra')
+                            path_idx = nx.shortest_path(G, match1, match2, method=shortest_path_method)
                         except nx.NetworkXNoPath:
                             path_idx = []
                     setp = set(path_idx)
@@ -407,6 +425,31 @@ def find_aryl_components(mol, aryl_smarts):
     matched_chains = [{'chain': list(comp), 'length': len(comp), 'SMARTS': 'cyclic'} for comp in components]
     return max([0]+[len(x) for x in components]), chain_lengths, len(components), matched_chains
 
+
+@load_PFASDefinitions()
+def parse_definitions_in_mol(mol, **kwargs):
+    mol = Chem.AddHs(mol)
+    formula = kwargs.get("formula", CalcMolFormula(mol))
+    try:
+        Chem.SanitizeMol(mol)
+    except Chem.AtomValenceException:
+        #logger.debug("failed sanitisation, fragmenting")
+        frags = fragment_until_valence_is_correct(mol, [])
+    else:
+        frags = [mol]
+    definition_matches = []
+    pfas_definitions = kwargs.get('pfas_definitions')
+    for pdef in pfas_definitions:
+        matched = False
+        for mol in frags:
+            if pdef.applies_to_molecule(mol_or_smiles=mol, **kwargs) is True:
+                matched = True
+                break
+        if matched is True:
+            definition_matches.append(pdef)
+    return definition_matches
+
+
 # --- Main PFAS group parsing functions ---
 @add_smartsPath()
 @load_PFASGroups()
@@ -452,6 +495,8 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
     else:
         frags = [mol]
         formulas = [n_from_formula(formula)]# formula as a dictionary
+    
+    # PFAS groups
     group_matches = []
     fluorinated_components_dict = get_fluorinated_subgraph(mol, **kwargs)
     for pf in pfas_groups:
@@ -516,6 +561,7 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                                                 if end_atom in chain_atoms:
                                                     try:
                                                         # Get shortest path distance in molecular graph
+                                                        # Uses Breadth-First Search by default (unweighted graph)
                                                         path = nx.shortest_path(G, s1_atom, end_atom)
                                                         distance = len(path) - 1  # Number of bonds
                                                         if distance <= 2:
@@ -568,6 +614,7 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                 if match_count > 0 and matched1_len > 0:
                     # add to matches if functional group was found
                     group_matches.append((pf, match_count, chain_lengths, matched_chains))
+    
     return group_matches
 
 def parse_smiles(smiles, bycomponent=False, output_format='list', **kwargs):
@@ -596,53 +643,21 @@ def parse_smiles(smiles, bycomponent=False, output_format='list', **kwargs):
     # Convert single input to list for uniform processing
     single_input = isinstance(smiles, str)
     smiles_list = [smiles] if single_input else smiles
-    
-    # Parse all SMILES
-    results = []
-    for smi in smiles_list:
-        mol = Chem.MolFromSmiles(smi)
-        formula = CalcMolFormula(mol)
-        matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
-        results.append(matches)
-    
-    # Format output based on requested format
-    if output_format == 'list':
-        return results[0] if single_input else results
-    elif output_format in ['dataframe', 'csv']:
-        import pandas as pd
-        rows = []
-        for smi, matches in zip(smiles_list, results):
-            if not matches:
-                rows.append({
-                    'smiles': smi,
-                    'group_id': None,
-                    'group_name': None,
-                    'match_count': 0,
-                    'chain_lengths': None,
-                    'num_chains': 0
-                })
-            else:
-                for group, match_count, chain_lengths, matched_chains in matches:
-                    rows.append({
-                        'smiles': smi,
-                        'group_id': group.id,
-                        'group_name': group.name,
-                        'match_count': match_count,
-                        'chain_lengths': chain_lengths,
-                        'num_chains': len(matched_chains)
-                    })
-        df = pd.DataFrame(rows)
-        return df.to_csv(index=False) if output_format == 'csv' else df
-    else:
-        raise ValueError(f"Invalid output_format: {output_format}. Must be 'list', 'dataframe', or 'csv'")
+    mol_list = [Chem.MolFromSmiles(smi) for smi in smiles_list]
+    # Parse all molecules
+    return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, **kwargs)
 
-def parse_mol(mols, bycomponent=False, output_format='list', **kwargs):
+def parse_mol(mol, **kwargs):
+    """Wrapper for parse_mols to handle single molecule input."""
+    return parse_mol([mol], **kwargs)[0]
+
+def parse_mols(mols, bycomponent=False, output_format='list', include_PFAS_definitions=True, **kwargs):
     """
     Parse RDKit molecule(s) and return PFAS group information.
     
     Parameters:
     -----------
-    mols : rdkit.Chem.Mol or list of rdkit.Chem.Mol
+    mols : list of rdkit.Chem.Mol
         Single RDKit molecule or list of molecules
     bycomponent : bool
         Whether to use component-based analysis
@@ -659,54 +674,76 @@ def parse_mol(mols, bycomponent=False, output_format='list', **kwargs):
     list, pandas.DataFrame, or str
         Depends on output_format parameter
     """
-    # Convert single input to list for uniform processing
-    single_input = isinstance(mols, Chem.Mol)
-    mols_list = [mols] if single_input else mols
     
     # Parse all molecules
-    results = []
-    for mol in mols_list:
+    results = {}
+    for mol in mols:
         formula = CalcMolFormula(mol)
         matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
-        results.append(matches)
-    
-    # Format output based on requested format
-    if output_format == 'list':
-        return results[0] if single_input else results
-    elif output_format in ['dataframe', 'csv']:
-        import pandas as pd
-        rows = []
-        for mol, matches in zip(mols_list, results):
-            smi = Chem.MolToSmiles(mol)
-            if not matches:
-                rows.append({
-                    'smiles': smi,
-                    'group_id': None,
-                    'group_name': None,
-                    'match_count': 0,
-                    'chain_lengths': None,
-                    'num_chains': 0
-                })
-            else:
-                for group, match_count, chain_lengths, matched_chains in matches:
-                    rows.append({
-                        'smiles': smi,
-                        'group_id': group.id,
+        inchikey = Chem.MolToInchiKey(mol)
+        inchi = Chem.MolToInchi(mol)
+        smi = Chem.MolToSmiles(mol)
+        results.setdefault(inchikey,{}).update({"smiles": smi,
+                        "inchikey": inchikey,
+                        "inchi": inchi,
+                        "formula": formula})
+        results[inchikey].setdefault('matches',[]).extend([{'match_id': f"G{group.id}",
+                        'id': group.id,
                         'group_name': group.name,
                         'match_count': match_count,
                         'chain_lengths': chain_lengths,
-                        'num_chains': len(matched_chains)
+                        'num_chains': len(matched_chains),
+                        'chains': matched_chains,
+                        'chain_types': [x for x in set([c['SMARTS'] for c in matched_chains])],
+                        'type':'PFASgroup'} for group, match_count, chain_lengths, matched_chains in matches])
+    if include_PFAS_definitions is True:
+        for i, mol in enumerate(mols):
+            formula = CalcMolFormula(mol)
+            definitions = parse_definitions_in_mol(mol, formula=formula, **kwargs)
+            results.setdefault(inchikey,{
+                        "smiles": Chem.MolToSmiles(mol),
+                        "inchikey": Chem.MolToInchiKey(mol),
+                        "inchi": Chem.MolToInchi(mol),
+                        "formula": formula}).setdefault("matches",[]).extend([
+                            {'match_id': f"D{definition.id}",
+                            'id': definition.id,
+                            'definition_name': definition.name,
+                            'type':'PFASdefinition'} for definition in definitions])
+    # Convert results to list format
+    results = [r for r in results.values()]
+    # Format output based on requested format
+    if output_format in ['dataframe', 'csv']:
+        import pandas as pd
+        rows = []
+        for entry in results:
+            for match in entry['matches']:
+                if match['type'] == 'PFASgroup':
+                    rows.append({
+                        'smiles': smi,
+                        'match_id': match['match_id'],
+                        'match_name': match['group_name'],
+                        'match_count': match['match_count'],
+                        'chain_lengths': match['chain_lengths'],
+                        'num_chains': match['num_chains'],
+                        'match_type': match['type']
+                    })
+                elif match['type'] == 'PFASdefinition':
+                    rows.append({
+                        'smiles': smi,
+                        'match_id': match['match_id'],
+                        'match_name': match['definition_name'],
+                        'match_type': match['type']
                     })
         df = pd.DataFrame(rows)
         return df.to_csv(index=False) if output_format == 'csv' else df
-    else:
-        raise ValueError(f"Invalid output_format: {output_format}. Must be 'list', 'dataframe', or 'csv'")
+    return results
 
 @load_PFASGroups()
 def generate_fingerprint(smiles: Union[str, List[str]], 
                              selected_groups: Union[List[int], range, None] = None,
                              representation: str = 'vector',
                              count_mode: str = 'binary',
+                             include_PFAS_definitions=False,
                              **kwargs):
     """
     Generate PFAS group fingerprints from SMILES strings.
@@ -807,7 +844,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                 raise ValueError(f"Invalid SMILES: {smiles_str}")
             
             formula = CalcMolFormula(mol)
-            all_matches = parse_groups_in_mol(mol, formula=formula, pfas_groups=pfas_groups)
+            all_matches = parse_groups_in_mol(mol, formula=formula, pfas_groups=pfas_groups,include_PFAS_definitions=include_PFAS_definitions, **kwargs)
             
             # Create mapping from group ID to match information
             match_dict = {}
@@ -1006,6 +1043,10 @@ def get_smartsPaths(**kwargs):
 @load_PFASGroups()
 def get_PFASGroups(**kwargs):
     return kwargs.get('pfas_groups')
+
+@load_PFASDefinitions()
+def get_PFASDefinitions(**kwargs):
+    return kwargs.get('pfas_definitions')
 
 def compile_smartsPath(chain_smarts, end_smarts):
     """

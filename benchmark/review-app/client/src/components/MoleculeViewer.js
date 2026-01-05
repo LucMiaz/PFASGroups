@@ -8,9 +8,9 @@ function MoleculeViewer({ smiles, width = 300, height = 200 }) {
   useEffect(() => {
     const loadRDKit = async () => {
       try {
-        // Try to load RDKit.js with the correct API
-        const initRDKitModule = await import('@rdkit/rdkit');
-        const rdkitInstance = await initRDKitModule.default();
+        // Try to load RDKit.js
+        const RDKitModule = await import('@rdkit/rdkit');
+        const rdkitInstance = await RDKitModule.initRDKitModule();
         setRdkit(rdkitInstance);
       } catch (err) {
         console.error('Error loading RDKit:', err);

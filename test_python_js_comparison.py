@@ -67,10 +67,16 @@ def compare_results(python_result, js_result, molecule_name, flavor):
     print(f"{'='*80}")
     
     # Extract groups from Python result
+    # python_result is a list of tuples: (PFASGroup, match_count, chain_lengths, matched_chains)
     py_groups = {}
-    if python_result and 'detected_groups' in python_result:
-        for group in python_result['detected_groups']:
-            py_groups[group['id']] = normalize_group_result(group)
+    if python_result:
+        for group, match_count, chain_lengths, matched_chains in python_result:
+            py_groups[group.id] = {
+                'id': group.id,
+                'name': group.name,
+                'matchCount': match_count,
+                'nCFchain': chain_lengths,
+            }
     
     # Extract groups from JS result
     js_groups = {}
@@ -150,7 +156,7 @@ def test_molecule(smiles, name, bycomponent=False):
             return None, None
         
         formula = Chem.rdMolDescriptors.CalcMolFormula(mol)
-        py_result = parse_groups_in_mol(mol, formula, bycomponent=bycomponent)
+        py_result = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent)
     except Exception as e:
         print(f"⚠️  Python analysis failed: {e}")
         return None, None

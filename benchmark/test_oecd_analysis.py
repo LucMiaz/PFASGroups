@@ -81,16 +81,19 @@ def test_oecd_analysis():
             # Test PFASGroups
             try:
                 print(f"   Testing PFASGroups with: {smiles}")
-                pfas_result = parse_smiles(smiles)
+                pfas_result = parse_smiles(smiles, include_PFAS_definitions=True)
                 print(f"   PFASGroups raw result: {pfas_result}")
                 
                 if pfas_result and len(pfas_result) > 0:
                     pfasgroups_detections += 1
-                    # Extract group IDs from the result
+                    # Extract group IDs from the result - new format returns list of dicts
+                    # Each dict has 'matches' key with list of match dictionaries
                     detected_groups = []
-                    for group_dict in pfas_result:
-                        if isinstance(group_dict, dict) and 'id' in group_dict:
-                            detected_groups.append(group_dict['id'])
+                    for mol_result in pfas_result:
+                        if isinstance(mol_result, dict) and 'matches' in mol_result:
+                            for match in mol_result['matches']:
+                                if match.get('type') == 'PFASgroup':
+                                    detected_groups.append(match['id'])
                     
                     oecd_detected_groups = [g for g in detected_groups if g < 29]
                     

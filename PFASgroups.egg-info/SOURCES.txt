@@ -1,6 +1,7 @@
 README.md
 pyproject.toml
 setup.cfg
+PFASgroups/PFASDefinitionModel.py
 PFASgroups/PFASGroupModel.py
 PFASgroups/__init__.py
 PFASgroups/cli.py
@@ -15,6 +16,7 @@ PFASgroups.egg-info/dependency_links.txt
 PFASgroups.egg-info/entry_points.txt
 PFASgroups.egg-info/requires.txt
 PFASgroups.egg-info/top_level.txt
+PFASgroups/data/PFAS_definitions_smarts.json
 PFASgroups/data/PFAS_groups_smarts.json
 PFASgroups/data/fpaths.json
 PFASgroups/report/automated_test_runner.py

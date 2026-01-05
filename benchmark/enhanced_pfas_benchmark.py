@@ -19,7 +19,7 @@ parent_dir = os.path.dirname(script_dir)
 sys.path.append(parent_dir)
 
 try:
-    from PFASgroups.core import parse_groups_in_mol
+    from PFASgroups.core import parse_mol
     from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_groups
     PFASGROUPS_AVAILABLE = True
 except ImportError:
@@ -340,21 +340,25 @@ class EnhancedPFASBenchmark:
         
         return molecules
     
-    def test_with_pfasgroups(self, smiles, bycomponent=False):
+    def test_with_pfasgroups(self, smiles, bycomponent=False, include_PFAS_definitions=True):
         """Test molecule with PFASGroups detection
         
         Args:
             smiles: SMILES string
             bycomponent: Whether to use bycomponent=True flavor
+            include_PFAS_definitions: Whether to include PFAS definitions (True for accuracy, False for specificity)
         """
         
         start_time = time.perf_counter()
         pfasgroups_result = {
             'detected_groups': [],
+            'detected_definitions': [],
+            'matches': [],
             'success': False,
             'error': None,
             'execution_time': 0.0,
-            'bycomponent': bycomponent
+            'bycomponent': bycomponent,
+            'include_definitions': include_PFAS_definitions
         }
         
         if not PFASGROUPS_AVAILABLE:
@@ -364,20 +368,40 @@ class EnhancedPFASBenchmark:
         try:
             mol = Chem.MolFromSmiles(smiles)
             if mol is not None:
-                formula = rdMolDescriptors.CalcMolFormula(mol)
-                matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent)
+                # Use parse_mol which returns dict with new format
+                results = parse_mol(mol, bycomponent=bycomponent, include_PFAS_definitions=include_PFAS_definitions)
                 
-                # Parse the complex tuple structure returned by parse_groups_in_mol
+                # Extract groups and definitions from the new dictionary format
+                # results is a dict with 'matches' key containing list of match dicts
                 group_ids = []
-                if isinstance(matches, list) and matches:
-                    for match_tuple in matches:
-                        if isinstance(match_tuple, tuple) and len(match_tuple) > 0:
-                            pfas_group = match_tuple[0]
-                            if hasattr(pfas_group, 'id'):
-                                group_ids.append(pfas_group.id)
+                definition_ids = []
+                all_matches = []
+                
+                if isinstance(results, dict) and 'matches' in results:
+                    for match in results['matches']:
+                        if match.get('type') == 'PFASgroup':
+                            group_ids.append(match['id'])
+                            all_matches.append({
+                                'type': 'group',
+                                'id': match['id'],
+                                'match_id': match.get('match_id'),
+                                'name': match.get('group_name'),
+                                'match_count': match.get('match_count'),
+                                'chain_lengths': match.get('chain_lengths')
+                            })
+                        elif match.get('type') == 'PFASdefinition':
+                            definition_ids.append(match['id'])
+                            all_matches.append({
+                                'type': 'definition',
+                                'id': match['id'],
+                                'match_id': match.get('match_id'),
+                                'name': match.get('definition_name')
+                            })
                 
                 pfasgroups_result['detected_groups'] = group_ids
-                pfasgroups_result['success'] = len(group_ids) > 0
+                pfasgroups_result['detected_definitions'] = definition_ids
+                pfasgroups_result['matches'] = all_matches
+                pfasgroups_result['success'] = len(group_ids) > 0 or len(definition_ids) > 0
                 
         except Exception as e:
             pfasgroups_result['error'] = str(e)
@@ -504,9 +528,9 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups (both flavors)
-                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False)
-                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True)
+                    # Test with PFASGroups (both flavors) - accuracy test
+                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False, include_PFAS_definitions=True)
+                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True, include_PFAS_definitions=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
@@ -536,9 +560,9 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups (both flavors)
-                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False)
-                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True)
+                    # Test with PFASGroups (both flavors) - accuracy test
+                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False, include_PFAS_definitions=True)
+                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True, include_PFAS_definitions=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
@@ -572,9 +596,9 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups (both flavors)
-                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False)
-                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True)
+                    # Test with PFASGroups (both flavors) - accuracy test
+                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False, include_PFAS_definitions=True)
+                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True, include_PFAS_definitions=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
@@ -706,7 +730,7 @@ class EnhancedPFASBenchmark:
                     smiles = Chem.MolToSmiles(mol)
                     
                     # Pre-validate: Check that PFASGroups correctly identifies carboxylic acid (group 33)
-                    validation_result = self.test_with_pfasgroups(smiles)
+                    validation_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
                     if not validation_result['success'] or 33 not in validation_result['detected_groups']:
                         excluded_wrong_detection += 1
                         continue  # Skip molecules where carboxylic acid is not correctly identified
@@ -725,8 +749,8 @@ class EnhancedPFASBenchmark:
                     atlas_classifications = []
                     
                     for iteration in range(iterations):
-                        # Test with PFASGroups
-                        pfas_result = self.test_with_pfasgroups(smiles)
+                        # Test with PFASGroups - accuracy test
+                        pfas_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
                         pfas_times.append(pfas_result['execution_time'])
                         if pfas_result['success'] and 33 in pfas_result['detected_groups']:  # Ensure carboxylic acid is detected
                             pfas_success_count += 1
@@ -954,20 +978,32 @@ class EnhancedPFASBenchmark:
                     # Verify molecule is valid and non-fluorinated
                     mol = Chem.MolFromSmiles(smiles)
                     if mol is not None and 'F' not in smiles:
-                        group_results['molecules_tested'] += 1
                         
-                        # Test with PFASGroups - should NOT detect the target functional group in non-fluorinated molecules
-                        pfas_result = self.test_with_pfasgroups(smiles)
-                        # Check specifically for the target group_id, not just any detection
+                        test_results['molecules_tested'] += 1
+                        
+                        # Test with PFASGroups - specificity test (should NOT detect target group)
+                        pfas_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=False)
+                        
+                        # Check if target functional group was incorrectly detected
                         if pfas_result['success'] and group_id in pfas_result['detected_groups']:
-                            group_results['pfasgroups_detections'] += 1
+                            test_results['pfasgroups_detections'] += 1
                         
                         # Test with PFAS-Atlas - should NOT detect as PFAS
                         atlas_result = self.test_with_atlas(smiles)
-                        if atlas_result['success'] and atlas_result['first_class'] != 'Not PFAS':
-                            group_results['atlas_detections'] += 1
                         
-                        molecule_result = {
+                        if atlas_result['success']:
+                            test_results['atlas_detections'] += 1
+                        
+                        test_results['molecules'].append({
+                            'smiles': smiles,
+                            'pfasgroups_detected': pfas_result['success'],
+                            'pfasgroups_detected_groups': pfas_result['detected_groups'],
+                            'pfasgroups_target_group_detected': group_id in pfas_result['detected_groups'],
+                            'atlas_detected': atlas_result['success'],
+                            'atlas_first_class': atlas_result.get('first_class'),
+                            'atlas_second_class': atlas_result.get('second_class')
+                        })
+                        group_results['molecules'].append({
                             'smiles': smiles,
                             'chain_length': len([atom for atom in mol.GetAtoms() if atom.GetSymbol() == 'C']),
                             'contains_fluorine': False,
@@ -977,9 +1013,7 @@ class EnhancedPFASBenchmark:
                             'atlas_detected': atlas_result['success'] and atlas_result['first_class'] != 'Not PFAS',
                             'atlas_first_class': atlas_result['first_class'],
                             'atlas_second_class': atlas_result['second_class']
-                        }
-                        
-                        group_results['molecules'].append(molecule_result)
+                        })
                         
                 except Exception as e:
                     print(f"Warning: Failed to generate non-fluorinated molecule {i+1} for group {group_id}: {e}")
@@ -1122,8 +1156,8 @@ class EnhancedPFASBenchmark:
                     test_results['molecules_tested'] += 1
                     total_tests += 1
                     
-                    # Test with PFASGroups
-                    pfas_result = self.test_with_pfasgroups(mol_info['smiles'])
+                    # Test with PFASGroups - accuracy test
+                    pfas_result = self.test_with_pfasgroups(mol_info['smiles'], include_PFAS_definitions=True)
                     pfasgroups_detected = pfas_result['success']
                     detected_groups = pfas_result['detected_groups']
                     
@@ -1238,8 +1272,8 @@ class EnhancedPFASBenchmark:
             if pd.isna(smiles) or smiles.strip() == '':
                 continue
                 
-            # Test with PFASGroups
-            pfas_result = self.test_with_pfasgroups(smiles)
+            # Test with PFASGroups - accuracy test
+            pfas_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
             
             # Test with PFAS-Atlas
             atlas_result = self.test_with_atlas(smiles)

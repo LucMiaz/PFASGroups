@@ -69,14 +69,17 @@ groups.append(PFASGroup(
 
 # Test with a chlorinated compound
 test_smiles = ["ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"]
-results = parse_smiles(test_smiles, smartsPaths=default_paths, pfas_groups=groups)
+results = parse_smiles(test_smiles, smartsPaths=default_paths, pfas_groups=groups, include_PFAS_definitions=False)
 
 print(f"   Test SMILES: {test_smiles[0]}")
-print(f"   Found {len(results[0])} matches:")
-for group, match_count, chain_lengths, _ in results[0]:
-    if group.id == 3000:
-        print(f"   ✓ Matched: {group.name}")
-        print(f"     Chain length: {chain_lengths}")
+print(f"   Results structure: {results}")
+if results and len(results) > 0:
+    matches = results[0].get('matches', [])
+    print(f"   Found {len(matches)} matches:")
+    for match in matches:
+        if match.get('id') == 3000 and match.get('type') == 'PFASgroup':
+            print(f"   ✓ Matched: {match['group_name']}")
+            print(f"     Chain length: {match['chain_lengths']}")
 
 # Test 5: Error handling
 print("\n5. Testing error handling")

@@ -4,7 +4,7 @@
     "alias":"PFCAs",
     "base_functional_groups":["carboxylic acid"],
     "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1]))]",
+    "smarts1":"[#6$([#6][#6](=O)([OH1,O-]))]",
     "smarts2":null,
     "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"O":2},"only":["C","F","O","H"],"gte":{"F":1},"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
@@ -15,7 +15,7 @@
     "alias":"PolyFCAs",
     "base_functional_groups":["carboxylic acid"],
     "main_group":"Polyfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1]))]",
+    "smarts1":"[#6$([#6][#6](=O)([OH1,O-]))]",
     "smarts2":null,
     "smartsPath":"Polyfluoroalkyl",
     "constraints":{"eq":{"O":2},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
@@ -26,8 +26,8 @@
     "alias":"PFdiCAs",
     "base_functional_groups":["carboxylic acid"],
     "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1]))]",
-    "smarts2":"[#6$([#6][#6](=O)([OH1]))]",
+    "smarts1":"[#6$([#6][#6](=O)([OH1,O-]))]",
+    "smarts2":"[#6$([#6][#6](=O)([OH1,O-]))]",
     "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"O":4},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F"],"add":2,"div":2}}}
 },
@@ -37,7 +37,7 @@
     "alias":"PFECAs",
     "base_functional_groups":["carboxylic acid","ether"],
     "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1]))]",
+    "smarts1":"[#6$([#6][#6](=O)([OH1,O-]))]",
     "smarts2":null,
     "smartsPath":"Perfluoroalkyl",
     "constraints":{"gte":{"O":3},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
@@ -48,7 +48,7 @@
     "alias":"PolyFECAs",
     "base_functional_groups":["carboxylic acid","ether"],
     "main_group":"Polyfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1]))]",
+    "smarts1":"[#6$([#6][#6](=O)([OH1,O-]))]",
     "smarts2":null,
     "smartsPath":"Polyfluoroalkyl",
     "constraints":{"gte":{"O":3},"only":["C","F","H","Cl","Br","I","O"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
@@ -59,7 +59,7 @@
     "alias":"PFSAs",
     "base_functional_groups":["sulfonic acid"],
     "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
+    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1,O-])]",
     "smarts2":null,
     "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"S":1,"O":3},"only":["C","F","H","S","O"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
@@ -70,7 +70,7 @@
     "alias":"PolyFSAs",
     "base_functional_groups":["sulfonic acid"],
     "main_group":"Polyfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
+    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1,O-])]",
     "smarts2":null,
     "smartsPath":"Polyfluoroalkyl",
     "constraints":{"eq":{"S":1,"O":3},"gte":{"F":1},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":-1,"div":2}}}
@@ -81,8 +81,8 @@
     "alias":"PFdiSAs",
     "base_functional_groups":["sulfonic acid"],
     "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1])]",
-    "smarts2":"[#6$([#6][#16](=O)(=O)[OH1])]",
+    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1,O-])]",
+    "smarts2":"[#6$([#6][#16](=O)(=O)[OH1,O-])]",
     "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"S":2,"O":6},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
 },
@@ -114,7 +114,7 @@
     "alias":"PFSiAs",
     "base_functional_groups":["sulfinic acid"],
     "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16X3](=O)[OH1])]",
+    "smarts1":"[#6$([#6][#16X3](=O)[OH1,O-])]",
     "smarts2":null,
     "smartsPath":"Perfluoroalkyl",
     "constraints":{"eq":{"S":1},"only":["C","F","S","O","H"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
@@ -147,7 +147,7 @@
     "alias":"Perfluoroalkyl alcohols",
     "base_functional_groups":["alcohol"],
     "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[#6X4$([#6;!$([#6]=O)][OH1])]",
+    "smarts1":"[#6X4$([#6;!$([#6]=O)][OH1,O-])]",
     "smarts2":null,
     "smartsPath":"Perfluoroalkyl",
     "constraints":{"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","O"],"add":-1,"div":2}}}
@@ -158,10 +158,10 @@
     "alias":"fluorotelomer alcohols",
     "base_functional_groups":["alcohol"],
     "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[C$([#6][C$([CH2]O[H]),C$([CH2][CH2]O[H]),C$([CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2]O[H])])]",
-    "smarts2":null,
+    "smarts1":"[C$([#6][C$([CH2][OH1,O-]),C$([CH2][CH2][OH1,O-]),C$([CH2][CH2][CH2][OH1,O-]),C$([CH2][CH2][CH2][CH2][OH1,O-]),C$([CH2][CH2][CH2][CH2][CH2][OH1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][OH1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,O-])])]",
+    "smarts2":"C(F)(F)F",
     "smartsPath":"Perfluoroalkyl",
-    "constraints":{}
+    "constraints":{"eq":{"O":1}}
 },
 {
     "id":16,
@@ -312,7 +312,7 @@
     "id":29,
     "base_functional_groups":["alcohol"],
     "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6;!$([#6]=O)][OH1])]",
+    "smarts1":"[#6$([#6;!$([#6]=O)][OH1,O-])]",
     "smarts2":null,
     "smartsPath":null,
     "constraints":{}
@@ -323,7 +323,7 @@
     "id":30,
     "base_functional_groups":["ketone"],
     "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6][#6](=O)[#6])]",
+    "smarts1":"[#6$([#6]C(=O)[#6])]",
     "smarts2":null,
     "smartsPath":null,
     "constraints":{}
@@ -356,7 +356,7 @@
     "id":33,
     "base_functional_groups":["carboxylic acid"],
     "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#6](=O)[OH1])]",
+    "smarts1":"[$(*[#6](=O)[OH1,O-])]",
     "smarts2":null,
     "smartsPath":null,
     "constraints":{}
@@ -389,7 +389,7 @@
     "id":36,
     "base_functional_groups":["sulfonic acid"],
     "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#16](=O)(=O)[O,OH1])]",
+    "smarts1":"[$(*[#16](=O)(=O)[O-,OH1])]",
     "smarts2":null,
     "smartsPath":null,
     "constraints":{}
@@ -400,7 +400,7 @@
     "id":37,
     "base_functional_groups":["sulfenic acid"],
     "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#16X2][OH1])]",
+    "smarts1":"[$(*[#16X2][OH1,O-])]",
     "smarts2":null,
     "smartsPath":null,
     "constraints":{}

@@ -45,25 +45,25 @@ def test_python_both_flavors():
         
         # Test bycomponent=False
         print(f"\n--- Testing bycomponent=False ---")
-        result_default = parse_groups_in_mol(mol, formula, bycomponent=False)
-        groups_default = result_default.get('detected_groups', [])
-        print(f"Detected groups: {[g['id'] for g in groups_default]}")
-        for group in groups_default:
-            print(f"  Group {group['id']}: {group['name']}")
-            print(f"    match_count: {group.get('match_count', 0)}, chain_lengths: {group.get('chain_lengths', [])}")
+        result_default = parse_groups_in_mol(mol, formula=formula, bycomponent=False)
+        # result_default is a list of tuples: (PFASGroup, match_count, chain_lengths, matched_chains)
+        print(f"Detected groups: {[group.id for group, _, _, _ in result_default]}")
+        for group, match_count, chain_lengths, matched_chains in result_default:
+            print(f"  Group {group.id}: {group.name}")
+            print(f"    match_count: {match_count}, chain_lengths: {chain_lengths}")
         
         # Test bycomponent=True
         print(f"\n--- Testing bycomponent=True ---")
-        result_bycomp = parse_groups_in_mol(mol, formula, bycomponent=True)
-        groups_bycomp = result_bycomp.get('detected_groups', [])
-        print(f"Detected groups: {[g['id'] for g in groups_bycomp]}")
-        for group in groups_bycomp:
-            print(f"  Group {group['id']}: {group['name']}")
-            print(f"    match_count: {group.get('match_count', 0)}, chain_lengths: {group.get('chain_lengths', [])}")
+        result_bycomp = parse_groups_in_mol(mol, formula=formula, bycomponent=True)
+        # result_bycomp is a list of tuples: (PFASGroup, match_count, chain_lengths, matched_chains)
+        print(f"Detected groups: {[group.id for group, _, _, _ in result_bycomp]}")
+        for group, match_count, chain_lengths, matched_chains in result_bycomp:
+            print(f"  Group {group.id}: {group.name}")
+            print(f"    match_count: {match_count}, chain_lengths: {chain_lengths}")
         
         # Check adequation
-        ids_default = set(g['id'] for g in groups_default)
-        ids_bycomp = set(g['id'] for g in groups_bycomp)
+        ids_default = set(group.id for group, _, _, _ in result_default)
+        ids_bycomp = set(group.id for group, _, _, _ in result_bycomp)
         
         if ids_default == ids_bycomp:
             print(f"\n✅ Perfect adequation - both flavors detect the same groups")
