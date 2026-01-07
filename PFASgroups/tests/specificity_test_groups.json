@@ -41,7 +41,7 @@
     {"source": "alkene", "target": "Hydrofluoroolefins", "edge_type": "both"},
     {"source": "alkene", "target": "ethene", "edge_type": "both"},
     {"source": "alkane", "target": "Semi-fluorinated alkanes", "edge_type": "both"},
-    {"source": "Hydrofluorocarbons", "target": "alkane", "edge_type": "per"},
+    {"target": "Hydrofluorocarbons", "source": "alkane", "edge_type": "per"},
     {"source": "alkane", "target": "Perfluoroalkane", "edge_type": "per"},
     {"source": "alkane", "target": "Perfluoroalkyl carboxylic acids", "edge_type": "oneway"},
     {"source": "alkane", "target": "Polyfluoroalkyl carboxylic acid", "edge_type": "oneway"},

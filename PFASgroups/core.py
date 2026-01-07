@@ -520,6 +520,7 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                     # treat cases with only smarts1, using default smarts2 (if looking for chains) else 
                     # if bycomponent is True, find fluorinated components for each path type
                     if bycomponent is True:
+                        path_components = fluorinated_components_dict.get(pf.smartsPath, fluorinated_components_dict.get("Polyfluoroalkyl", []))
                         match_count, chain_lengths, matched1_len, matched_chains = find_alkyl_components(mol, pf.smarts1, path_components)
                     else:
                         
@@ -529,14 +530,14 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                                                                                 None, **kwargs)
                             
                             # For groups with no constraints and smarts2=null, verify that smarts1 matches
-                            # are within 1-2 bonds of a fluorinated terminal atom
-                            # This prevents matching non-fluorinated functional groups that are >2 bonds
+                            # are within max_dist_from_CF bonds of a fluorinated terminal atom
+                            # This prevents matching non-fluorinated functional groups that are >max_dist_from_CF bonds
                             # away from the fluorinated region (since chain SMARTS allow $(CF) and $(CCF))
                             if match_count > 0 and matched_chains:
                                 smartsPaths = kwargs.get('smartsPaths')
                                 # Get smarts1 matches
                                 smarts1_matches = get_substruct(mol, pf.smarts1)
-                                # Filter matched_chains where smarts1 atoms are ≤2 bonds from an END atom
+                                # Filter matched_chains where smarts1 atoms are ≤max_dist_from_CF bonds from an END atom
                                 valid_chains = []
                                 for chain_info in matched_chains:
                                     path_type = chain_info['SMARTS']
@@ -547,7 +548,7 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                                         end_matches = get_substruct(mol, end_smarts)
                                         # Get smarts1 atoms that are in this chain
                                         smarts1_in_chain = chain_atoms.intersection(smarts1_matches)
-                                        # Check if any smarts1 atom is within 2 bonds of an END atom
+                                        # Check if any smarts1 atom is within max_dist_from_CF bonds of an END atom
                                         chain_is_valid = False
                                         for s1_atom in smarts1_in_chain:
                                             # Check if smarts1 atom itself is an END
@@ -582,7 +583,7 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                                     chain_lengths = [c['length'] for c in valid_chains]
                                     matched1_len = len(set([atom for c in valid_chains for atom in c['chain']]).intersection(smarts1_matches))
                                 else:
-                                    # No valid chains - smarts1 matches are >2 bonds from fluorinated terminals
+                                    # No valid chains - smarts1 matches are >max_dist_from_CF bonds from fluorinated terminals
                                     matched_chains = []
                                     match_count = 0
                                     chain_lengths = []
@@ -604,7 +605,7 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                         n = 0
                         for frag in frags:
                             n += len(frag.GetSubstructMatches(pf.smarts1))
-                    path_components = fluorinated_components_dict.get(pf.smartsPath,"Perfluoroalkyl")
+                    path_components = fluorinated_components_dict.get(pf.smartsPath, fluorinated_components_dict.get("Perfluoroalkyl", []))
                     match_count, chain_lengths, matched1_len, matched_chains = find_alkyl_components(mol, pf.smarts1, path_components)
                 else:
                     # teat cases with no smarts1, just formula constraints
@@ -651,7 +652,7 @@ def parse_mol(mol, **kwargs):
     """Wrapper for parse_mols to handle single molecule input."""
     return parse_mols([mol], **kwargs)[0]
 
-def parse_mols(mols, bycomponent=False, output_format='list', include_PFAS_definitions=True, **kwargs):
+def parse_mols(mols, output_format='list', include_PFAS_definitions=True, **kwargs):
     """
     Parse RDKit molecule(s) and return PFAS group information.
     
@@ -679,6 +680,7 @@ def parse_mols(mols, bycomponent=False, output_format='list', include_PFAS_defin
     results = {}
     for mol in mols:
         formula = CalcMolFormula(mol)
+        bycomponent = kwargs.pop('bycomponent', False)
         matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
         inchikey = Chem.MolToInchiKey(mol)
         inchi = Chem.MolToInchi(mol)

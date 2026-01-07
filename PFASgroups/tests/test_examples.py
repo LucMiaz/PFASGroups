@@ -384,8 +384,8 @@ class TestPFASGroups:
                         
                         # Test classification with both flavors
                         formula = CalcMolFormula(mol)
-                        matches_default = parse_groups_in_mol(mol, formula, bycomponent=False)
-                        matches_bycomponent = parse_groups_in_mol(mol, formula, bycomponent=True)
+                        matches_default = parse_groups_in_mol(mol, formula=formula, bycomponent=False)
+                        matches_bycomponent = parse_groups_in_mol(mol, formula=formula, bycomponent=True)
                         
                         # Check if target group is detected in both flavors
                         detected_groups_default = [match[0].id for match in matches_default if match[0].id not in IGNORE_GROUPS]
@@ -487,8 +487,8 @@ class TestPFASGroups:
                             
                             # Test classification with both flavors
                             formula = CalcMolFormula(mol)
-                            matches_default = parse_groups_in_mol(mol, formula, bycomponent=False)
-                            matches_bycomponent = parse_groups_in_mol(mol, formula, bycomponent=True)
+                            matches_default = parse_groups_in_mol(mol, formula=formula, bycomponent=False)
+                            matches_bycomponent = parse_groups_in_mol(mol, formula=formula, bycomponent=True)
                             
                             # Check if target group is detected in both flavors
                             detected_groups_default = [match[0].id for match in matches_default if match[0].id not in IGNORE_GROUPS]
@@ -997,7 +997,7 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file=f'{tests_fol
                 continue
             smiles = Chem.MolToSmiles(mol)
             formula = CalcMolFormula(mol)
-            matches = parse_groups_in_mol(mol, formula)
+            matches = parse_groups_in_mol(mol, formula=formula)
             # Extract detected group IDs
             # For specificity testing, we don't need to filter by pathtype since we're testing specific molecules
             # The pathtype filtering was causing issues with dual-SMARTS groups where no chains are found
@@ -1239,7 +1239,7 @@ def validate_test_compounds(input_file, output_file=None):
                 continue
                 
             formula = CalcMolFormula(mol)
-            matches = parse_groups_in_mol(mol, formula)
+            matches = parse_groups_in_mol(mol, formula=formula)
             
             # Check if the expected group is detected
             detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
@@ -1295,7 +1295,7 @@ def test_pfoa_like_compounds():
             mol = Chem.MolFromSmiles(smiles)
             Chem.AddHs(mol)
             formula = CalcMolFormula(mol)
-            matches = parse_groups_in_mol(mol, formula)
+            matches = parse_groups_in_mol(mol, formula=formula)
             
             # Should detect group 1 (Perfluoroalkyl carboxylic acids)
             detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
