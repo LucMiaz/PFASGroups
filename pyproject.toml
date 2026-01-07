@@ -5,21 +5,60 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "PFASgroups"
 version = "1.2.2"
-description = "A Python module for parsing and visualizing PFAS groups."
+description = "A comprehensive cheminformatics package for automated detection, classification, and analysis of per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 55 PFAS group classifications (28 OECD-defined groups and 27 generic categories) with fluorinated chain length determination."
 authors = [
+    { name = "Luc Miaz", email = "luc@miaz.ch" }
+]
+maintainers = [
     { name = "Luc Miaz", email = "luc@miaz.ch" }
 ]
 readme = "README.md"
 requires-python = ">=3.7"
-license = {text = "CC-BY-NC-4.0"}
+license = { text = "CC-BY-NC-4.0" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+keywords = [
+    "PFAS",
+    "per- and polyfluoroalkyl substances",
+    "chemical classification",
+    "cheminformatics",
+    "environmental chemistry",
+    "molecular structure",
+]
+
 dependencies = [
     "rdkit",
     "numpy",
     "pandas",
     "networkx",
     "tqdm",
-    "svgutils"
+    "svgutils",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+
+[project.urls]
+Homepage = "https://github.com/lucmiaz/PFASGroups"
+Repository = "https://github.com/lucmiaz/PFASGroups"
+Documentation = "https://pfasgroups.readthedocs.io"
+"Bug Tracker" = "https://github.com/lucmiaz/PFASGroups/issues"
 
 [project.scripts]
 pfasgroups = "PFASgroups.cli:main"
@@ -29,3 +68,7 @@ packages = ["PFASgroups"]
 
 [tool.setuptools.package-data]
 PFASgroups = ["data/*.json", "data/*.txt"]
+
+# Custom metadata
+[tool.pfasgroups]
+acknowledgements = "This work was supported by the European Union's Horizon 2020 research and innovation programme under grant agreement No 101036756 (ZeroPM - Work Package 2). Developed at the Department of Environmental Science, Stockholm University, Sweden."

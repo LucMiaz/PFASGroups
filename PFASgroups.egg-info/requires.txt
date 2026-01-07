@@ -4,3 +4,7 @@ pandas
 networkx
 tqdm
 svgutils
+
+[dev]
+pytest
+pytest-cov

@@ -1,15 +1,24 @@
 # PFASgroups
 
-A Python module for parsing and visualizing PFAS (Per- and Polyfluoroalkyl Substances) groups.
+A comprehensive cheminformatics package for automated detection, classification, and analysis of per- and polyfluoroalkyl substances (PFAS) in chemical databases.
 
-## Features
-- Parse SMILES strings to identify PFAS groups
-- Generate PFAS fingerprints for machine learning applications
-- Assign and visualize PFAS groupings
-- **NEW:** Command-line interface for easy access
-- **NEW:** Support for custom PFAS group definitions
-- **NEW:** Flexible configuration via files, environment variables, or API
-- Includes test cases and example data
+## Overview
+
+PFASgroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
+
+## Key Features
+
+### Core Capabilities
+- **PFAS Group Identification**: Automated detection of 55 functional groups (28 OECD-defined groups and 27 generic categories)
+- **Chain Length Analysis**: Quantification of per- and polyfluorinated alkyl chains with CF₂ unit counting
+- **Customizable Definitions**: Easy extension to additional PFAS groups and halogenated chemical classes via JSON configuration
+
+### Additional Tools
+- **Homologue Series Generation**: Iterative chain shortening to explore theoretical chemical space
+- **Fingerprint Generation**: PFAS fingerprints for machine learning applications
+- **Visualization**: Assign and visualize PFAS groupings
+- **Multiple Interfaces**: Python API, command-line tool, and browser-based JavaScript version (RDKitJS)
+- **Batch Processing**: Efficient analysis of large chemical databases
 
 ## Installation
 

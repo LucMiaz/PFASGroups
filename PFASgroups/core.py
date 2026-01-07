@@ -649,7 +649,7 @@ def parse_smiles(smiles, bycomponent=False, output_format='list', **kwargs):
 
 def parse_mol(mol, **kwargs):
     """Wrapper for parse_mols to handle single molecule input."""
-    return parse_mol([mol], **kwargs)[0]
+    return parse_mols([mol], **kwargs)[0]
 
 def parse_mols(mols, bycomponent=False, output_format='list', include_PFAS_definitions=True, **kwargs):
     """
@@ -699,10 +699,12 @@ def parse_mols(mols, bycomponent=False, output_format='list', include_PFAS_defin
     if include_PFAS_definitions is True:
         for i, mol in enumerate(mols):
             formula = CalcMolFormula(mol)
-            definitions = parse_definitions_in_mol(mol, formula=formula, **kwargs)
+            formula_dict = n_from_formula(formula)
+            definitions = parse_definitions_in_mol(mol, formula=formula_dict, **kwargs)
+            inchikey = Chem.MolToInchiKey(mol)
             results.setdefault(inchikey,{
                         "smiles": Chem.MolToSmiles(mol),
-                        "inchikey": Chem.MolToInchiKey(mol),
+                        "inchikey": inchikey,
                         "inchi": Chem.MolToInchi(mol),
                         "formula": formula}).setdefault("matches",[]).extend([
                             {'match_id': f"D{definition.id}",
