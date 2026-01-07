@@ -353,7 +353,8 @@ Define PFAS groups:
     "constraints": {
       "nF": [3, null],
       "nC": [2, null]
-    }
+    },
+    "max_dist_from_CF": 2
   }
 ]
 ```
@@ -365,6 +366,9 @@ Define PFAS groups:
 - `smarts2`: SMARTS pattern for functional group 2 (optional)
 - `smartsPath`: Pathtype name from fpaths.json or "cyclic"
 - `constraints`: Chemical formula constraints (min, max or null)
+- `max_dist_from_CF`: Maximum bond distance from a fluorinated carbon terminal (optional, default: 2). 
+  This parameter applies only to functional groups without formula constraints when `bycomponent=False`. 
+  It limits how far a matched functional group atom can be from a fluorinated carbon end group.
 
 ---
 

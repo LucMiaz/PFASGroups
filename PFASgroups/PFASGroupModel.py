@@ -7,6 +7,7 @@ class PFASGroup():
         self.smarts1 = smarts1
         self.smarts2 = smarts2
         self.smartsPath = smartsPath
+        self.max_dist_from_CF = kwargs.get('max_dist_from_CF', 0)
         if self.smarts1 !="" and self.smarts1 is not None:
             self.smarts1 = Chem.MolFromSmarts(self.smarts1)
             self.smarts1.UpdatePropertyCache()

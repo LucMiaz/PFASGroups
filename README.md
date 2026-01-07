@@ -84,6 +84,20 @@ groups.append(PFASGroup(
 
 results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
 
+# Custom max_dist_from_CF parameter
+# For functional groups without formula constraints, when bycomponent=False,
+# the max_dist_from_CF parameter limits the maximum bond distance between
+# a functional group match and a fluorinated carbon terminal atom (default: 0)
+groups.append(PFASGroup(
+    id=998,
+    name="Extended Distance Group",
+    smarts1="[#6$([#6][OH1])]",
+    smarts2=None,
+    smartsPath=None,
+    constraints={},
+    max_dist_from_CF=3  # Allow up to 3 bonds from fluorinated carbon
+))
+
 # Add custom path types (e.g., chlorinated analogs)
 paths = get_smartsPaths()
 paths['Perchlorinated'] = compile_smartsPath(

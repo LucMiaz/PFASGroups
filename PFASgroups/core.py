@@ -564,7 +564,7 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                                                         # Uses Breadth-First Search by default (unweighted graph)
                                                         path = nx.shortest_path(G, s1_atom, end_atom)
                                                         distance = len(path) - 1  # Number of bonds
-                                                        if distance <= 2:
+                                                        if distance <= pf.max_dist_from_CF:
                                                             chain_is_valid = True
                                                             break
                                                     except nx.NetworkXNoPath:
