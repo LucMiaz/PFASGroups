@@ -94,7 +94,7 @@ groups.append(PFASGroup(
 results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
 
 # Custom max_dist_from_CF parameter
-# For functional groups without formula constraints, when bycomponent=False,
+# For functional groups without formula constraints, when bycomponent=True,
 # the max_dist_from_CF parameter limits the maximum bond distance between
 # a functional group match and a fluorinated carbon terminal atom (default: 0)
 groups.append(PFASGroup(

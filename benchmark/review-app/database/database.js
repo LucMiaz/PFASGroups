@@ -63,6 +63,7 @@ class DatabaseWrapper {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 molecule_id INTEGER,
                 detected_groups TEXT,
+                detected_definitions TEXT,
                 success BOOLEAN,
                 error_message TEXT,
                 execution_time REAL,
@@ -77,6 +78,7 @@ class DatabaseWrapper {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 molecule_id INTEGER,
                 detected_groups TEXT,
+                detected_definitions TEXT,
                 success BOOLEAN,
                 error_message TEXT,
                 execution_time REAL,
@@ -149,6 +151,20 @@ class DatabaseWrapper {
         // Add molecular_formula column if it doesn't exist (migration)
         try {
             this.db.exec(`ALTER TABLE molecules ADD COLUMN molecular_formula TEXT`);
+        } catch (e) {
+            // Column already exists, ignore error
+        }
+        
+        // Add detected_definitions column to pfasgroups_results if it doesn't exist (migration)
+        try {
+            this.db.exec(`ALTER TABLE pfasgroups_results ADD COLUMN detected_definitions TEXT`);
+        } catch (e) {
+            // Column already exists, ignore error
+        }
+        
+        // Add detected_definitions column to pfasgroups_results_bycomponent if it doesn't exist (migration)
+        try {
+            this.db.exec(`ALTER TABLE pfasgroups_results_bycomponent ADD COLUMN detected_definitions TEXT`);
         } catch (e) {
             // Column already exists, ignore error
         }

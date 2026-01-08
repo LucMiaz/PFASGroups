@@ -99,10 +99,12 @@ app.get('/api/molecules', async (req, res) => {
             SELECT 
                 m.*,
                 pg.detected_groups as pfasgroups_detected,
+                pg.detected_definitions as pfasgroups_detected_definitions,
                 pg.success as pfasgroups_success,
                 pg.execution_time as pfasgroups_time,
                 pg.error_message as pfasgroups_error,
                 pgbc.detected_groups as pfasgroups_bycomponent_detected,
+                pgbc.detected_definitions as pfasgroups_bycomponent_detected_definitions,
                 pgbc.success as pfasgroups_bycomponent_success,
                 pgbc.execution_time as pfasgroups_bycomponent_time,
                 pgbc.error_message as pfasgroups_bycomponent_error,
@@ -152,7 +154,9 @@ app.get('/api/molecules', async (req, res) => {
             ...mol,
             target_groups: mol.target_groups ? JSON.parse(mol.target_groups) : [],
             pfasgroups_detected: enrichGroupData(mol.pfasgroups_detected ? JSON.parse(mol.pfasgroups_detected) : []),
+            pfasgroups_detected_definitions: mol.pfasgroups_detected_definitions ? JSON.parse(mol.pfasgroups_detected_definitions) : [],
             pfasgroups_bycomponent_detected: enrichGroupData(mol.pfasgroups_bycomponent_detected ? JSON.parse(mol.pfasgroups_bycomponent_detected) : []),
+            pfasgroups_bycomponent_detected_definitions: mol.pfasgroups_bycomponent_detected_definitions ? JSON.parse(mol.pfasgroups_bycomponent_detected_definitions) : [],
             manual_correct_groups: mol.manual_correct_groups ? JSON.parse(mol.manual_correct_groups) : null,
             has_flavor_mismatch: mol.pfasgroups_detected !== mol.pfasgroups_bycomponent_detected
         }));
@@ -285,6 +289,7 @@ app.get('/api/export/reviews', async (req, res) => {
                 m.group_name,
                 m.target_groups,
                 pg.detected_groups as pfasgroups_detected,
+                pg.detected_definitions as pfasgroups_detected_definitions,
                 ar.first_class as atlas_first_class,
                 ar.second_class as atlas_second_class,
                 mr.pfasgroups_correct,
@@ -306,6 +311,7 @@ app.get('/api/export/reviews', async (req, res) => {
             ...review,
             target_groups: review.target_groups ? JSON.parse(review.target_groups) : [],
             pfasgroups_detected: enrichGroupData(review.pfasgroups_detected ? JSON.parse(review.pfasgroups_detected) : []),
+            pfasgroups_detected_definitions: review.pfasgroups_detected_definitions ? JSON.parse(review.pfasgroups_detected_definitions) : [],
             correct_groups: review.correct_groups ? JSON.parse(review.correct_groups) : null
         }));
 
@@ -682,10 +688,12 @@ app.get('/api/export/excel', async (req, res) => {
                 m.group_name,
                 m.target_groups,
                 pg.detected_groups as pfasgroups_detected,
+                pg.detected_definitions as pfasgroups_detected_definitions,
                 pg.success as pfasgroups_success,
                 pg.execution_time as pfasgroups_time,
                 pg.error_message as pfasgroups_error,
                 pgbc.detected_groups as pfasgroups_bycomponent_detected,
+                pgbc.detected_definitions as pfasgroups_bycomponent_detected_definitions,
                 ar.first_class as atlas_first_class,
                 ar.second_class as atlas_second_class,
                 ar.success as atlas_success,

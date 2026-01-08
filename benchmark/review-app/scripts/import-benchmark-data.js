@@ -301,11 +301,12 @@ class DataImporter {
     async insertPFASGroupsResult(moleculeId, result) {
         await this.db.run(`
             INSERT INTO pfasgroups_results (
-                molecule_id, detected_groups, success, error_message, execution_time
-            ) VALUES (?, ?, ?, ?, ?)
+                molecule_id, detected_groups, detected_definitions, success, error_message, execution_time
+            ) VALUES (?, ?, ?, ?, ?, ?)
         `, [
             moleculeId,
             JSON.stringify(result.detected_groups || []),
+            JSON.stringify(result.detected_definitions || []),
             result.success || false,
             result.error || null,
             result.execution_time || null
@@ -315,11 +316,12 @@ class DataImporter {
     async insertPFASGroupsResultByComponent(moleculeId, result) {
         await this.db.run(`
             INSERT INTO pfasgroups_results_bycomponent (
-                molecule_id, detected_groups, success, error_message, execution_time
-            ) VALUES (?, ?, ?, ?, ?)
+                molecule_id, detected_groups, detected_definitions, success, error_message, execution_time
+            ) VALUES (?, ?, ?, ?, ?, ?)
         `, [
             moleculeId,
             JSON.stringify(result.detected_groups || []),
+            JSON.stringify(result.detected_definitions || []),
             result.success || false,
             result.error || null,
             result.execution_time || null

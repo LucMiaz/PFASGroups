@@ -246,6 +246,16 @@ function MoleculeReviewer({ onReviewUpdate }) {
                             <Badge key={group} bg="secondary" className="me-1 mb-1">{group}</Badge>
                           ))}
                         </div>
+                        {molecule.pfasgroups_detected_definitions && molecule.pfasgroups_detected_definitions.length > 0 && (
+                          <>
+                            <p className="mt-2"><strong>Detected PFAS Definitions:</strong></p>
+                            <div>
+                              {molecule.pfasgroups_detected_definitions.map((defId, idx) => (
+                                <Badge key={idx} bg="info" className="me-1 mb-1">D{defId}</Badge>
+                              ))}
+                            </div>
+                          </>
+                        )}
                         <p><small>Time: {(molecule.pfasgroups_time * 1000).toFixed(2)}ms</small></p>
                       </div>
                     ) : (

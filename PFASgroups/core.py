@@ -377,30 +377,61 @@ def path_between_smarts(mol:Chem.Mol, smarts1,smarts2,**kwargs):
                                     smarts2,
                                     G, **kwargs)
 
-def connected_components(mol, subset):
-    """Find connected components in a molecule."""
-    G = mol_to_nx(mol)
-    G = G.subgraph(subset)
-    components = list(nx.connected_components(G))
-    return components
 
-@add_smartsPath()
-def get_fluorinated_subgraph(mol, **kwargs):
-    """Get the fluorinated indices by connected components of a molecule based on path SMARTS."""
-    subsets = {}
-    smartsPaths = kwargs.get('smartsPaths')
-    for pathName, d in smartsPaths.items():
-        path_smarts = d[0] # chain
-        matches = mol.GetSubstructMatches(path_smarts)
-        subset = [y for x in matches for y in x]
-        if len(subset)==0:
-            subsets[pathName] = []
-            continue
-        components = connected_components(mol, subset)
-        subsets[pathName] = components
-    return subsets
 
-def find_alkyl_components(mol, smarts, components):
+class Components:
+    """Class to hold components information."""
+    @add_smartsPath()
+    def __init__(self, mol,**kwargs):
+        self.mol = mol
+        self.G = mol_to_nx(mol)
+        self.smartsPaths = kwargs.get('smartsPaths')
+        self.components = self.get_fluorinated_subgraph()
+        self.extended_components = {k:{0:v} for k,v in self.components.items()}
+        self.levels = {0}
+    def __len__(self):
+        return len(self.components)
+    def get(self, pathType, distance=0, default = []):
+        if distance not in self.levels:
+            self.extend_components(distance)
+        return self.extend_components.get(pathType, {}).get(distance, default)
+    def max_length(self):
+        return max([len(x) for x in self.components]) if len(self.components)>0 else 0
+    def lengths(self):
+        return [len(x) for x in self.components]
+    def connected_components(self,mol, subset):
+        """Find connected components in a molecule."""
+        G = self.G.subgraph(subset)
+        components = list(nx.connected_components(G))
+        return components
+    def get_fluorinated_subgraph(self, **kwargs):
+        """Get the fluorinated indices by connected components of a molecule based on path SMARTS."""
+        subsets = {}
+        for pathName, d in self.smartsPaths.items():
+            path_smarts = d[0] # chain
+            matches = self.mol.GetSubstructMatches(path_smarts)
+            subset = [y for x in matches for y in x]
+            if len(subset)==0:
+                subsets[pathName]= []
+                continue
+            components = self.connected_components(subset)
+            subsets[pathName] = components
+        return subsets
+    def extend_components(self, max_dist):
+        """Extend a component in a graph by a maximum distance."""
+        if max_dist>0:
+            for pathType, components in self.components.items():
+                extended_components = []
+                for component in components:
+                    extended = component.copy()
+                    for node in component:
+                        lengths = nx.single_source_shortest_path_length(G, node, cutoff=max_dist)
+                        extended.update([n for n,d in lengths.items() if d<=max_dist])
+                    extended_components.append(extended)
+                self.extended_components.setdefault(pathType, {})[max_dist] = extended_components
+
+
+def find_alkyl_components(mol, smarts, components, **kwargs):
     """Find alkyl components in a molecule."""
     matches = mol.GetSubstructMatches(smarts)
     subset = set(y for x in matches for y in x)
@@ -498,7 +529,7 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
     
     # PFAS groups
     group_matches = []
-    fluorinated_components_dict = get_fluorinated_subgraph(mol, **kwargs)
+    fluorinated_components_dict = Components(mol, **kwargs)
     for pf in pfas_groups:
         #logger.debug(f"{pf.name}")
         matched1_len = 0
@@ -520,75 +551,14 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                     # treat cases with only smarts1, using default smarts2 (if looking for chains) else 
                     # if bycomponent is True, find fluorinated components for each path type
                     if bycomponent is True:
-                        path_components = fluorinated_components_dict.get(pf.smartsPath, fluorinated_components_dict.get("Polyfluoroalkyl", []))
+                        path_components = fluorinated_components_dict.get(pf.smartsPath, max_dist = pf.max_dist_from_CF, default = fluorinated_components_dict.get("Polyfluoroalkyl", max_dist = pf.max_dist_from_CF, default=[]))
                         match_count, chain_lengths, matched1_len, matched_chains = find_alkyl_components(mol, pf.smarts1, path_components)
                     else:
-                        
+                        # use default smarts2 for the path type
                         try:
                             match_count, chain_lengths, matched1_len, matched_chains = path_between_smarts(mol,
                                                                                 pf.smarts1,
                                                                                 None, **kwargs)
-                            
-                            # For groups with no constraints and smarts2=null, verify that smarts1 matches
-                            # are within max_dist_from_CF bonds of a fluorinated terminal atom
-                            # This prevents matching non-fluorinated functional groups that are >max_dist_from_CF bonds
-                            # away from the fluorinated region (since chain SMARTS allow $(CF) and $(CCF))
-                            if match_count > 0 and matched_chains:
-                                smartsPaths = kwargs.get('smartsPaths')
-                                # Get smarts1 matches
-                                smarts1_matches = get_substruct(mol, pf.smarts1)
-                                # Filter matched_chains where smarts1 atoms are ≤max_dist_from_CF bonds from an END atom
-                                valid_chains = []
-                                for chain_info in matched_chains:
-                                    path_type = chain_info['SMARTS']
-                                    chain_atoms = set(chain_info['chain'])
-                                    # Get the end SMARTS for this path type
-                                    if smartsPaths and path_type in smartsPaths:
-                                        end_smarts = smartsPaths[path_type][1]  # [chain, end]
-                                        end_matches = get_substruct(mol, end_smarts)
-                                        # Get smarts1 atoms that are in this chain
-                                        smarts1_in_chain = chain_atoms.intersection(smarts1_matches)
-                                        # Check if any smarts1 atom is within max_dist_from_CF bonds of an END atom
-                                        chain_is_valid = False
-                                        for s1_atom in smarts1_in_chain:
-                                            # Check if smarts1 atom itself is an END
-                                            if s1_atom in end_matches:
-                                                chain_is_valid = True
-                                                break
-                                            # Otherwise, check the actual molecular bond distance to nearest END atom
-                                            # (not position in chain array, since path can jump around in molecule)
-                                            G = mol_to_nx(mol)
-                                            for end_atom in end_matches:
-                                                if end_atom in chain_atoms:
-                                                    try:
-                                                        # Get shortest path distance in molecular graph
-                                                        # Uses Breadth-First Search by default (unweighted graph)
-                                                        path = nx.shortest_path(G, s1_atom, end_atom)
-                                                        distance = len(path) - 1  # Number of bonds
-                                                        if distance <= pf.max_dist_from_CF:
-                                                            chain_is_valid = True
-                                                            break
-                                                    except nx.NetworkXNoPath:
-                                                        continue
-                                            if chain_is_valid:
-                                                break
-                                        
-                                        if chain_is_valid:
-                                            valid_chains.append(chain_info)
-                                
-                                # Update results with only valid chains
-                                if valid_chains:
-                                    matched_chains = valid_chains
-                                    match_count = len(valid_chains)
-                                    chain_lengths = [c['length'] for c in valid_chains]
-                                    matched1_len = len(set([atom for c in valid_chains for atom in c['chain']]).intersection(smarts1_matches))
-                                else:
-                                    # No valid chains - smarts1 matches are >max_dist_from_CF bonds from fluorinated terminals
-                                    matched_chains = []
-                                    match_count = 0
-                                    chain_lengths = []
-                                    matched1_len = 0
-                                
                         except ValueError as e:
                             raise e
                 elif pf.smarts1 is not None:
@@ -605,7 +575,7 @@ def parse_groups_in_mol(mol, bycomponent=False, **kwargs):
                         n = 0
                         for frag in frags:
                             n += len(frag.GetSubstructMatches(pf.smarts1))
-                    path_components = fluorinated_components_dict.get(pf.smartsPath, fluorinated_components_dict.get("Perfluoroalkyl", []))
+                    path_components = fluorinated_components_dict.get(pf.smartsPath, max_dist = pf.max_dist_from_CF, default = fluorinated_components_dict.get("Perfluoroalkyl", max_dist = pf.max_dist_from_CF, default = []))
                     match_count, chain_lengths, matched1_len, matched_chains = find_alkyl_components(mol, pf.smarts1, path_components)
                 else:
                     # teat cases with no smarts1, just formula constraints

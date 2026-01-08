@@ -276,7 +276,7 @@ group = PFASGroup(
 - `smarts2` (Mol): Secondary SMARTS pattern (optional)
 - `smartsPath` (str): Pathway type ('Perfluoroalkyl', 'Polyfluoroalkyl', 'cyclic', or None)
 - `constraints` (dict): Molecular formula constraints
-- `max_dist_from_CF` (int): Maximum bond distance from fluorinated carbon terminal (applies to groups without formula constraints when `bycomponent=False`)
+- `max_dist_from_CF` (int): Maximum bond distance from fluorinated carbon terminal (applies to groups without formula constraints when `bycomponent=True`)
 
 **Constraint Types:**
 - `eq`: Exact element count (e.g., `{"O": 2}`)
