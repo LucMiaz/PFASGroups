@@ -1,7 +1,17 @@
 """
 Molecule generation utilities for PFASgroups.
 
-This module provides functions to generate random PFAS-like molecules and attach functional groups.
+This module provides functions to generate random PFAS-like molecules by:
+- Creating carbon chain backbones (linear, cyclic, with multiple bonds)
+- Fluorinating the chains (full or partial fluorination)
+- Attaching functional groups (carboxylic acids, sulfonic acids, etc.)
+
+Typical workflow:
+1. generate_random_carbon_chain() - Create backbone
+2. fluorinate_mol() - Add fluorine atoms
+3. append_functional_groups() - Add functional groups
+
+Or use generate_random_mol() which combines all steps.
 """
 
 import numpy as np
@@ -14,8 +24,44 @@ from itertools import product, groupby
 np.random.seed(2025)  # For reproducibility
 
 def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False):
-    """
-    Generate a random carbon chain molecule with n carbons.
+    """Generate a random carbon chain with n carbons and optional unsaturation.
+    
+    Creates molecular backbones by randomly connecting carbon atoms with
+    single, double, or triple bonds based on specified probabilities.
+    
+    Parameters
+    ----------
+    n : int
+        Number of carbon atoms in the chain
+    cycle : bool, default=False
+        If True, starts with benzene ring instead of linear chain
+    alkene : bool, default=False
+        If True, allows C=C double bonds (50% probability per bond)
+    alkyne : bool, default=False
+        If True, allows C≡C triple bonds (50% probability per bond if no double bond)
+    
+    Returns
+    -------
+    rdkit.Chem.Mol
+        RDKit molecule object with hydrogen atoms implicit
+    
+    Examples
+    --------
+    >>> # Linear saturated chain (C5H12)
+    >>> mol = generate_random_carbon_chain(5)
+    
+    >>> # Chain with possible double bonds
+    >>> mol = generate_random_carbon_chain(6, alkene=True)
+    
+    >>> # Aromatic/cyclic starting point
+    >>> mol = generate_random_carbon_chain(8, cycle=True)
+    
+    Notes
+    -----
+    - Carbons are added one at a time with random attachment points
+    - Valence rules are enforced (max 4 bonds per carbon)
+    - Double/triple bonds are added probabilistically during construction
+    - Final molecule is sanitized to ensure valid chemistry
     """
     if cycle:
         _smiles = 'c1ccccc1'
@@ -45,7 +91,40 @@ def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False):
     return m2
 
 def get_attachment(mol, m, atom_symbols = ['C'], neighbors_symbols = {'C':['F','H']}):
-    """Find the first atom in the main molecule to attach the functional group"""
+    """Find attachment points in a molecule for adding functional groups.
+    
+    Searches for atoms that meet criteria for functional group attachment,
+    typically carbon atoms with F or H neighbors that can be replaced.
+    
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        Molecule to search for attachment points
+    m : int
+        Number of attachment points to return (randomly selected)
+    atom_symbols : list of str, default=['C']
+        Atom types to consider as attachment points (e.g., ['C'], ['C', 'N'])
+    neighbors_symbols : dict, default={'C': ['F', 'H']}
+        For each atom type, which neighbor types are valid for replacement
+    
+    Returns
+    -------
+    list of tuple
+        List of (atom_index, neighbor_index) tuples indicating where functional
+        groups can be attached. Length is min(m, available_candidates).
+    
+    Examples
+    --------
+    >>> mol = Chem.MolFromSmiles("FC(F)C(F)F")
+    >>> sites = get_attachment(mol, m=2, atom_symbols=['C'], neighbors_symbols={'C': ['F']})
+    >>> # Returns 2 random (C_idx, F_neighbor_idx) pairs
+    
+    Notes
+    -----
+    - Removes duplicate bonds (a,b) and (b,a) from candidates
+    - Random selection without replacement if more candidates than m
+    - Used internally by append_functional_group for automatic site selection
+    """
     candidates = []
     for atom in mol.GetAtoms():
         # Check if the atom is 4 bonds and has H or F neighbors
@@ -77,8 +156,31 @@ def append_functional_group(mol, group_smiles, insertion = 'attach', m=1, atom_i
 
 
 def attach_mol(mol, submol, atom_index):
-    """Insert a submolecule into a molecule at a specific atom index on mol
-    attach at index 0 on submol."""
+    """Attach a submolecule to a main molecule at a specific atom.
+    
+    Removes a random F or H neighbor from the attachment atom and bonds
+    the submolecule at that position.
+    
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        Main molecule
+    submol : rdkit.Chem.Mol
+        Submolecule to attach (functional group)
+    atom_index : int
+        Index of atom in main molecule to attach to
+    
+    Returns
+    -------
+    rdkit.Chem.Mol
+        Modified molecule with submolecule attached
+    
+    Notes
+    -----
+    - Attaches submolecule at its atom index 0
+    - Randomly selects F or H neighbor of attachment atom to replace
+    - Creates single bond between main molecule and submolecule
+    """
     rwm = Chem.RWMol(mol)
     submol_index = rwm.GetNumAtoms() # index of the first atom in the submol
     rwm.InsertMol(submol)
@@ -96,7 +198,34 @@ def attach_mol(mol, submol, atom_index):
 
 
 def insert_mol(mol, group_mol, atom_index, neighbor_index):
-    """Insert a submolecule into a molecule between two bonded atoms."""
+    """Insert a submolecule between two bonded atoms.
+    
+    Breaks the bond between two atoms and inserts the functional group,
+    creating new bonds from the functional group to each original atom.
+    
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        Main molecule
+    group_mol : rdkit.Chem.Mol
+        Functional group to insert
+    atom_index : int
+        Index of first atom in bond to break
+    neighbor_index : int
+        Index of second atom in bond to break
+    
+    Returns
+    -------
+    rdkit.Chem.Mol
+        Modified molecule with functional group inserted
+    
+    Notes
+    -----
+    - Bonds first atom of functional group to atom_index
+    - Bonds last atom of functional group (with available valence) to neighbor_index
+    - Original bond is removed before insertion
+    - Useful for adding linkers or bridging groups
+    """
     rwm = Chem.RWMol(mol)
     submol_index = rwm.GetNumAtoms() # index of the first atom in the submol
     rwm.BeginBatchEdit() # start a batch
@@ -249,10 +378,42 @@ def append_functional_group(mol, group_smiles, insertion = 'attach', m=1, atom_i
     return mol
 
 def fluorinate_mol(mol, perfluorinated=True, p=0.3, phigh=1):
-    """
-    Fluorinate a molecule by replacing hydrogens with fluorines.
-    p is the lowest probability of replacing a H with a F
-    phigh is the highest probability of replacing a H with a F, by default it is 1 and will be computed as nb of H / nb of H+F, this is one at the beginning, unless phigh is set below 1
+    """Fluorinate a molecule by replacing hydrogen atoms with fluorine.
+    
+    Converts H atoms to F atoms based on perfluorination setting and
+    probability parameters that adapt during fluorination.
+    
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        Molecule to fluorinate (H atoms added automatically)
+    perfluorinated : bool, default=True
+        If True, replaces all H with F. If False, uses probabilistic replacement.
+    p : float, default=0.3
+        Minimum probability of H→F replacement (when polyfluorinated)
+    phigh : float, default=1
+        Maximum probability of H→F replacement. Actual maximum is min(phigh, 1-nF/nH)
+        where nF is current F count and nH is total initial H count.
+    
+    Returns
+    -------
+    rdkit.Chem.Mol
+        Fluorinated molecule
+    
+    Examples
+    --------
+    >>> mol = Chem.MolFromSmiles("CCCC")
+    >>> # Fully fluorinated (C4F10)
+    >>> perfluoro = fluorinate_mol(mol, perfluorinated=True)
+    >>> # Partially fluorinated (probabilistic)
+    >>> polyfluoro = fluorinate_mol(mol, perfluorinated=False, p=0.5)
+    
+    Notes
+    -----
+    - Explicit H atoms are added before fluorination
+    - For perfluorinated=False, probability adapts as fluorination progresses
+    - Probability formula: max(p, min(phigh, 1 - nF/nH))
+    - H atoms are processed in random order
     """
     mol = Chem.AddHs(mol)
     rwm = Chem.RWMol(mol)
@@ -274,9 +435,46 @@ def fluorinate_mol(mol, perfluorinated=True, p=0.3, phigh=1):
 
 
 def append_functional_groups(mol, functional_groups:list, **kwargs):
-    """Append a functional group to a molecule.
-    Args: insertion: 'attach' to attach to a specific atom, 'insert' place between two bonded atoms, replacing their bond.
-    functional_groups as dictionary to include options 'n'= number of occurrence, 'mode'= mode of insertion ('attach' or 'insert') and 'neighbours'=type of neighbours atoms
+    """Append multiple functional groups to a molecule with complex specifications.
+    
+    Handles functional groups with variable occurrence counts, composite groups
+    (multiple items), and different insertion modes.
+    
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        Base molecule
+    functional_groups : list of dict
+        List of functional group specifications, each with:
+        - 'group_smiles' (str): SMILES of functional group
+        - 'n' (int or str): Number of occurrences. String format "[min,max]" for random count
+        - 'mode' (str): 'attach' or 'insert'
+        - 'neighbours' (list): Neighbor atom types for attachment
+        - 'items' (list, optional): Sub-components with their own 'smiles' and 'n'
+    **kwargs : dict
+        Additional parameters:
+        - chain_n (int): Carbon chain length (used to cap maximum functional group count)
+    
+    Returns
+    -------
+    rdkit.Chem.Mol
+        Molecule with all functional groups attached
+    
+    Examples
+    --------
+    >>> mol = Chem.MolFromSmiles("FC(F)C(F)C(F)F")
+    >>> groups = [
+    ...     {'group_smiles': 'C(=O)O', 'n': 1, 'mode': 'attach'},
+    ...     {'group_smiles': 'O', 'n': '[1,3]', 'mode': 'insert'}
+    ... ]
+    >>> mol = append_functional_groups(mol, groups, chain_n=4)
+    
+    Notes
+    -----
+    - Attachment sites are pre-computed for all groups to avoid conflicts
+    - Groups with 'items' have their SMILES concatenated (e.g., polyethylene oxide)
+    - Random counts are drawn once at the start and constrained by chain_n
+    - Each group is added sequentially with intermediate sanitization
     """
     total_m = {'attach':0,'insert':0}
     for i,params in enumerate(functional_groups):
@@ -313,8 +511,57 @@ def append_functional_groups(mol, functional_groups:list, **kwargs):
     return mol
 
 def generate_random_mol(n, functional_groups, perfluorinated=True, cycle=False, alkene=False, alkyne=False, **kwargs):
-    """Generate a random molecule with n carbon atoms.
-    pass functional_groups as dictionary to include options 'n'= number of occurence, 'mode'= mode of insertion ('attach' or 'insert') and 'neighbours'=type of neighbours atoms"""
+    """Generate a random PFAS-like molecule with functional groups.
+    
+    Complete pipeline combining chain generation, fluorination, and functional
+    group attachment to create synthetic PFAS molecules.
+    
+    Parameters
+    ----------
+    n : int
+        Number of carbon atoms in the base chain
+    functional_groups : dict, str, or list
+        Functional group specifications:
+        - dict: Single group with 'group_smiles', 'n', 'mode', 'neighbours'
+        - str: SMILES string (uses defaults: m=kwargs['m'] or 1, mode='attach')
+        - list: Multiple groups (dicts or strings)
+    perfluorinated : bool, default=True
+        If True, fully fluorinate. If False, partial fluorination.
+    cycle : bool, default=False
+        Start with cyclic structure (benzene)
+    alkene : bool, default=False
+        Allow C=C double bonds
+    alkyne : bool, default=False
+        Allow C≡C triple bonds
+    **kwargs : dict
+        Additional parameters passed to fluorination and functional group attachment
+    
+    Returns
+    -------
+    rdkit.Chem.Mol
+        Complete PFAS-like molecule
+    
+    Examples
+    --------
+    >>> # Perfluoroalkyl carboxylic acid (PFAA)
+    >>> mol = generate_random_mol(8, "C(=O)O", perfluorinated=True)
+    
+    >>> # Complex molecule with multiple functional groups
+    >>> groups = [
+    ...     {'group_smiles': 'C(=O)O', 'n': 1, 'mode': 'attach'},
+    ...     {'group_smiles': 'S(=O)(=O)O', 'n': '[0,2]', 'mode': 'insert'}
+    ... ]
+    >>> mol = generate_random_mol(10, groups, perfluorinated=False, alkene=True)
+    
+    Notes
+    -----
+    Pipeline order:
+    1. Generate carbon chain backbone
+    2. Fluorinate the chain
+    3. Attach functional groups
+    
+    This is the primary high-level function for PFAS molecule generation.
+    """
     if isinstance(functional_groups, dict):
         functional_groups = [functional_groups]
     elif isinstance(functional_groups, str) :

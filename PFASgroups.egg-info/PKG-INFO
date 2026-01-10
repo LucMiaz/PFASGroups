@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: PFASgroups
-Version: 1.2.2
+Version: 2.0.1
 Summary: A comprehensive cheminformatics package for automated detection, classification, and analysis of per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 55 PFAS group classifications (28 OECD-defined groups and 27 generic categories) with fluorinated chain length determination.
 Author: Luc Miaz
 Author-email: Luc Miaz <luc@miaz.ch>
@@ -44,15 +44,52 @@ A comprehensive cheminformatics package for automated detection, classification,
 
 PFASgroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
 
+## Recent Updates
+
+### Version 2.0 (January 2026) - Comprehensive Graph Metrics
+
+Major enhancement adding comprehensive NetworkX graph theory metrics for detailed component analysis:
+
+**New Features:**
+- **Component-Level Metrics**: Each fluorinated component now includes 15+ graph metrics:
+  - `diameter` and `radius` - Graph eccentricity bounds
+  - `center`, `periphery`, `barycenter` - Structural node sets
+  - `effective_graph_resistance` - Sum of resistance distances
+  - Distance metrics from functional groups to structural features
+- **Summary Statistics**: Aggregated metrics across all components per PFAS group
+- **Enhanced Database Models**: New `Components` model stores individual component data with all metrics
+- **Improved Analysis**: Better understanding of molecular topology, branching, and functional group positioning
+
+**Breaking Changes:**
+- `parse_mols` output now includes additional summary metric fields (`mean_diameter`, `mean_radius`, etc.)
+- Database schema changes require migration (see `DATABASE_MIGRATION_GUIDE.md`)
+
+**Metrics Explained:**
+- `eccentricity` (0-1): Measures branching (1.0 = linear, 0.0 = highly branched)
+- `smarts_centrality` (0-1): Functional group position (1.0 = central, 0.0 = peripheral)
+- `diameter`: Maximum distance between any two atoms in component
+- `radius`: Minimum eccentricity across component nodes
+- `barycenter`: Nodes minimizing total distance to all other nodes
+- `center`: Nodes with minimum eccentricity
+- `periphery`: Nodes with maximum eccentricity
+
+See `COMPREHENSIVE_METRICS_SUMMARY.md` for complete documentation.
+
+### Version 1.x - Component-Based Analysis
+
+- Replaced chain-finding with connected component analysis
+- Added support for branched and cyclic structures
+- Improved SMARTS pattern matching for diverse PFAS classes
+
 ## Key Features
 
 ### Core Capabilities
 - **PFAS Group Identification**: Automated detection of 55 functional groups (28 OECD-defined groups and 27 generic categories)
-- **Chain Length Analysis**: Quantification of per- and polyfluorinated alkyl chains with CF₂ unit counting
+- **Component Length Analysis**: Quantification of per- and polyfluorinated alkyl components with CF₂ unit counting
 - **Customizable Definitions**: Easy extension to additional PFAS groups and halogenated chemical classes via JSON configuration
 
 ### Additional Tools
-- **Homologue Series Generation**: Iterative chain shortening to explore theoretical chemical space
+- **Homologue Series Generation**: Iterative component shortening to explore theoretical chemical space
 - **Fingerprint Generation**: PFAS fingerprints for machine learning applications
 - **Visualization**: Assign and visualize PFAS groupings
 - **Multiple Interfaces**: Python API, command-line tool, and browser-based JavaScript version (RDKitJS)
@@ -132,7 +169,7 @@ groups.append(PFASGroup(
 results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
 
 # Custom max_dist_from_CF parameter
-# For functional groups without formula constraints, when bycomponent=False,
+# For functional groups without formula constraints, when bycomponent=True,
 # the max_dist_from_CF parameter limits the maximum bond distance between
 # a functional group match and a fluorinated carbon terminal atom (default: 0)
 groups.append(PFASGroup(
@@ -148,7 +185,7 @@ groups.append(PFASGroup(
 # Add custom path types (e.g., chlorinated analogs)
 paths = get_smartsPaths()
 paths['Perchlorinated'] = compile_smartsPath(
-    "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # chain pattern
+    "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # component pattern
     "[C;X4](Cl)(Cl)Cl"                     # end pattern
 )
 

@@ -24,6 +24,9 @@ Examples:
   # Parse SMILES from command line
   pfasgroups parse "C(C(F)(F)F)F" "FC(F)(F)C(F)(F)C(=O)O"
   
+  # Parse with component metrics
+  pfasgroups parse --bycomponent "FC(F)(F)C(F)(F)C(=O)O" --pretty
+  
   # Parse SMILES from file
   pfasgroups parse --input smiles.txt --output results.json
   
@@ -83,7 +86,7 @@ Note: Use get_smartsPaths() and get_PFASGroups() in Python to extend defaults.
     parse_parser.add_argument(
         '--bycomponent',
         action='store_true',
-        help='Use component-based analysis'
+        help='Use component-based analysis (provides comprehensive metrics including component_fraction, branching, eccentricity)'
     )
     parse_parser.add_argument(
         '--format',

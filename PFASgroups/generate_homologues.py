@@ -7,9 +7,46 @@ from itertools import product, groupby
 
 @add_smarts(name = 'repeating')
 def find_chain(mol,pathsmarts,endsmarts, repeating = 'C(F)(F)'):
-    """Iterates over substructures matched by smarts1 and smarts2 and finds fluorinated paths between them.
-    Fluorinated atoms are defined by the SMARTS yield by the decorator add_smartsPath.
-    if smarts2 is None, uses SMARTS corresponding to smartsPath."""
+    """Find fluorinated chains with repeating units between terminal groups.
+    
+    Identifies shortest paths between matching end groups that consist entirely
+    of fluorinated atoms, then isolates the repeating unit sections within those chains.
+    
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        Molecule to search for chains
+    pathsmarts : rdkit.Chem.Mol
+        SMARTS pattern defining fluorinated path atoms
+    endsmarts : rdkit.Chem.Mol
+        SMARTS pattern defining chain terminal groups
+    repeating : str, default='C(F)(F)'
+        SMARTS pattern for repeating unit (e.g., -CF2- for perfluoroalkyl)
+    
+    Returns
+    -------
+    list of dict
+        Each chain dictionary contains:
+        - 'chain' (set): All atom indices in the complete chain
+        - 'start' (int): Atom index of one terminal group
+        - 'end' (int): Atom index of other terminal group
+        - 'belly' (set): Atom indices of repeating unit sections
+        - 'consecutive_parts' (list): Lists of consecutive repeating unit atoms
+    
+    Notes
+    -----
+    - Uses shortest path algorithm to find connections between terminals
+    - Filters to only fully fluorinated paths (all atoms match pathsmarts)
+    - Removes chains that are subsets of longer chains
+    - Chains sorted by length (longest first)
+    - Consecutive parts allow systematic removal of CF2 units
+    
+    Examples
+    --------
+    >>> # Find perfluoroalkyl chains in PFOA
+    >>> chains = find_chain(pfoa_mol, perfluoro_smarts, end_smarts, 'C(F)(F)')
+    >>> print(f"Found {len(chains)} chains with belly units: {chains[0]['belly']}")
+    """
     chains = []
     try:
         G = mol_to_nx(mol)
@@ -48,10 +85,79 @@ def find_chain(mol,pathsmarts,endsmarts, repeating = 'C(F)(F)'):
 
 @add_smartsPath()
 def generate_homologues(mol, smartsPathName = 'Perfluoroalkyl', smartsPaths=None, repeating = 'C(F)F', base_repeating = ['C']):
-    """finds path, then cuts iteratively the repeating part in the chain
-    for perfluoroalkyl use smartsPathName = 'Perfluoroalkyl' and repeating = 'C(F)F',
-    for polyfluoroalkyl use smartsPathName = 'Polyfluoroalkyl' and repeating='C([F,H,I,Br,Cl])[F,H,I,Br,Cl]'
-    for other non-fluorinated, define a new set of SMARTS for paths"""
+    """Generate homologous series by systematically removing repeating units from fluorinated chains.
+    
+    Finds fluorinated chains with repeating units (e.g., -CF2-) and generates all possible
+    shorter homologues by removing combinations of these units while maintaining connectivity.
+    
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        Parent molecule to generate homologues from
+    smartsPathName : str, default='Perfluoroalkyl'
+        Type of fluorinated chain to search for:
+        - 'Perfluoroalkyl': Fully fluorinated chains (-CF2-CF2-)
+        - 'Polyfluoroalkyl': Partially fluorinated chains
+        - Custom: User-defined in smartsPaths
+    smartsPaths : dict, optional
+        Dictionary of {name: (path_smarts, end_smarts)} patterns.
+        Provided by @add_smartsPath decorator if not specified.
+    repeating : str, default='C(F)F'
+        SMARTS pattern for repeating unit to remove:
+        - 'C(F)F' for perfluoroalkyl (-CF2-)
+        - 'C([F,H,I,Br,Cl])[F,H,I,Br,Cl]' for polyfluoroalkyl
+    base_repeating : list of str, default=['C']
+        Elements in repeating unit that form the backbone (not removed as neighbors)
+    
+    Returns
+    -------
+    dict
+        Homologues organized as {InChIKey: {formula: mol}}
+        Each unique molecule is stored by its InChIKey with its molecular formula
+    
+    Examples
+    --------
+    >>> from rdkit import Chem
+    >>> # Generate C2-C7 homologues from C8 PFOA
+    >>> pfoa = Chem.MolFromSmiles(\"C(=O)O\" + \"C(F)(F)\" * 7 + \"F\")
+    >>> homologues = generate_homologues(pfoa, repeating='C(F)F')
+    >>> print(f\"Generated {len(homologues)} unique homologues\")
+    
+    >>> # For polyfluoroalkyl chains
+    >>> homologues = generate_homologues(
+    ...     mol, 
+    ...     smartsPathName='Polyfluoroalkyl',
+    ...     repeating='C([F,H])[F,H]'
+    ... )
+    
+    Algorithm
+    ---------
+    1. Find fluorinated chains with terminal groups
+    2. Identify consecutive sections of repeating units
+    3. Generate all possible sub-chains (partial removals)
+    4. Remove atoms for each combination using remove_atoms()
+    5. Collect unique products by InChIKey
+    
+    Notes
+    -----
+    - Maintains molecular connectivity when removing units
+    - Removes entire repeating unit + attached F/Cl/Br/I atoms
+    - Filters atoms with <3 non-removable neighbors (prevents over-branching removal)
+    - Generates all possible chain lengths from original down to shortest
+    - Useful for degradation product prediction and homologous series enumeration
+    
+    Raises
+    ------
+    ValueError
+        If removal causes molecular fragmentation (indicates issue with chain detection)
+    Exception
+        If atom removal fails (prints diagnostic information)
+    
+    See Also
+    --------
+    find_chain : Identifies chains before homologue generation
+    remove_atoms : Performs the actual atom removal with connectivity preservation
+    """
     path,endSmarts = smartsPaths[smartsPathName]
     removable = [x for x in set(re.findall(r'[A-Z][a-z]?',repeating)) if x not in base_repeating]
     subchains = lambda x: [x[0:i] for i in range(1,len(x)+1)]

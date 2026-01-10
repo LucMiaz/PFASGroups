@@ -1,6 +1,45 @@
 from rdkit import Chem
 from typing import List, Dict, Optional, Union
+
 class PFASDefinition:
+    """Model class representing a PFAS definition based on structural criteria.
+    
+    A PFAS definition identifies molecules using SMARTS patterns and/or fluorine ratio thresholds.
+    Unlike PFASGroup which focuses on specific functional groups, PFASDefinition provides
+    broader chemical definitions (e.g., "contains at least one perfluoroalkyl moiety").
+    
+    Attributes
+    ----------
+    id : int
+        Unique identifier for this PFAS definition
+    name : str
+        Human-readable name (e.g., "Per- and polyfluoroalkyl substances")
+    description : str
+        Detailed description of what this definition represents
+    fluorineRatio : Optional[float]
+        Minimum ratio of fluorine atoms required (None if not applicable)
+    smarts_strings : List[str]
+        Original SMARTS pattern strings for structural matching
+    smarts_patterns : List[Chem.Mol]
+        Compiled SMARTS molecule objects for efficient matching
+    includeHydrogen : bool
+        Whether to include hydrogen atoms in fluorine ratio calculations
+    requireBoth : bool
+        If True, requires both SMARTS match AND fluorine ratio.
+        If False, requires SMARTS match OR fluorine ratio.
+    
+    Examples
+    --------
+    >>> # Definition requiring perfluoroalkyl chain OR high fluorine ratio
+    >>> pfas_def = PFASDefinition(
+    ...     id=1,
+    ...     name="PFAS (OECD definition)",
+    ...     smarts=["[CX4][CX4]([F])([F])[F]"],
+    ...     fluorineRatio=0.4,
+    ...     description="Contains perfluoroalkyl moiety with ≥2 carbons",
+    ...     requireBoth=False
+    ... )
+    """
     def __init__(self, id: int, name: str, smarts: List[str], fluorineRatio: Optional[float], description: str, **kwargs):
         self.id = id
         self.name = name
@@ -29,18 +68,51 @@ class PFASDefinition:
                   mol_or_smiles: Union[Chem.Mol, str], 
                   formula: Optional[Dict[str, int]] = None,
                   **kwargs) -> bool:
-        """
-        Check if this PFAS definition applies to a molecule.
+        """Check if this PFAS definition applies to a given molecule.
         
-        Args:
-            mol_or_smiles: RDKit molecule or SMILES string
-            formula: Optional pre-computed formula dict
-            include_hydrogen: Whether to include H atoms in fluorine ratio calculation
-            require_both: If True, requires both SMARTS match AND fluorine ratio.
-                         If False (default), requires SMARTS match OR fluorine ratio.
+        This method evaluates whether a molecule meets the structural and/or compositional
+        criteria defined by this PFASDefinition. The evaluation logic depends on the
+        requireBoth flag:
         
-        Returns:
-            True if the definition applies, False otherwise
+        - If requireBoth=False (default): Returns True if EITHER SMARTS matches OR
+          fluorine ratio is met (logical OR)
+        - If requireBoth=True: Returns True only if BOTH SMARTS matches AND fluorine
+          ratio are met (logical AND)
+        
+        Parameters
+        ----------
+        mol_or_smiles : Union[Chem.Mol, str]
+            Input molecule as RDKit Mol object or SMILES string
+        formula : Optional[Dict[str, int]], default=None
+            Pre-computed molecular formula as {element: count} dictionary.
+            If None, will be computed from the molecule.
+        **kwargs : dict
+            Additional parameters:
+            - include_hydrogen (bool): Whether to include H in fluorine ratio calculation.
+              Defaults to self.includeHydrogen
+            - require_both (bool): Override the instance's requireBoth setting
+        
+        Returns
+        -------
+        bool
+            True if the molecule meets the definition criteria, False otherwise
+        
+        Examples
+        --------
+        >>> pfas_def = PFASDefinition(
+        ...     id=1, name="Test", smarts=["[CX4]F"],
+        ...     fluorineRatio=0.3, description="Test"
+        ... )
+        >>> pfas_def.applies_to_molecule("FC(F)(F)C(F)(F)F")  # PFOA-like
+        True
+        >>> pfas_def.applies_to_molecule("CCCCCC")  # No fluorine
+        False
+        
+        Notes
+        -----
+        - SMARTS patterns are checked using substructure matching (HasSubstructMatch)
+        - Fluorine ratio is calculated as: F_count / total_atom_count
+        - Invalid SMILES strings return False
         """
         # Convert SMILES to Mol if needed
         if isinstance(mol_or_smiles, str):
@@ -76,7 +148,20 @@ class PFASDefinition:
             return smarts_match or ratio_match
     
     def _compute_formula(self, mol: Chem.Mol, include_hydrogen: bool) -> Dict[str, int]:
-        """Compute molecular formula as a dictionary."""
+        """Compute molecular formula as element count dictionary.
+        
+        Parameters
+        ----------
+        mol : Chem.Mol
+            RDKit molecule object
+        include_hydrogen : bool
+            If True, add explicit hydrogens before counting
+        
+        Returns
+        -------
+        Dict[str, int]
+            Dictionary mapping element symbols to their counts, e.g. {'C': 8, 'F': 17, 'O': 2}
+        """
         formula = {}
         
         # Add hydrogens if needed
@@ -90,7 +175,26 @@ class PFASDefinition:
         return formula
     
     def _check_fluorine_ratio(self, formula: Dict[str, int], include_hydrogen: bool) -> bool:
-        """Check if fluorine ratio meets the threshold."""
+        """Check if the fluorine ratio in a molecular formula meets the threshold.
+        
+        Parameters
+        ----------
+        formula : Dict[str, int]
+            Molecular formula as {element: count} dictionary
+        include_hydrogen : bool
+            If True, includes hydrogen atoms in total atom count.
+            If False, excludes hydrogen from total (heavy atoms only)
+        
+        Returns
+        -------
+        bool
+            True if (F_count / total_atoms) >= self.fluorineRatio, False otherwise
+        
+        Notes
+        -----
+        - Returns False if total_atoms is 0
+        - Formula with no fluorine (F_count=0) will fail unless fluorineRatio=0
+        """
         f_count = formula.get('F', 0)
         
         if include_hydrogen:

@@ -59,8 +59,8 @@ class EnhancedPFASBenchmark:
         with open(specificity_path, 'r') as f:
             self.specificity_groups = json.load(f)
         
-        # Target groups 29-57 (excluding 48)
-        self.target_groups = [g for g in range(29, 58) if g != 48]
+        # Target groups 29-59 (excluding 49, 50 which are smartsPath-only groups)
+        self.target_groups = [g for g in range(29, 60) if g not in [49, 50]]
         
         # OECD target groups 1-28
         self.oecd_target_groups = list(range(1, 29))
@@ -79,22 +79,23 @@ class EnhancedPFASBenchmark:
             38: {'name': 'sulfinic acid', 'smiles': 'S(=O)O[H]', 'mode': 'attach'},
             39: {'name': 'phosphonic acid', 'smiles': 'P(=O)(O)O', 'mode': 'attach'},
             40: {'name': 'phosphinic acid', 'smiles': 'P(=O)O', 'mode': 'attach'},
-            41: {'name': 'ethene', 'smiles': 'C(F)=C(F)', 'mode': 'insert'},
-            42: {'name': 'iodide', 'smiles': 'C(F)I', 'mode': 'insert'},
-            43: {'name': 'sulfonamide', 'smiles': 'S(=O)(=O)N', 'mode': 'insert'},
-            44: {'name': 'Heterocyclic azole', 'smiles': 'c1ncc[nH]1', 'mode': 'attach'},
-            45: {'name': 'Heterocyclic azine', 'smiles': 'c1ncccc1', 'mode': 'attach'},
-            46: {'name': 'benzodioxole', 'smiles': 'c1ccc2OC(F)(F)Oc2c1', 'mode': 'attach'},
-            47: {'name': 'amine', 'smiles': 'N', 'mode': 'insert'},
-            49: {'name': 'alkene', 'smiles': 'C(F)=C(F)', 'mode': 'insert'},
-            50: {'name': 'alkyne', 'smiles': 'C#C', 'mode': 'insert'},
-            51: {'name': 'Side-chain aromatics', 'smiles': 'c1ccccc1', 'mode': 'attach'},
-            52: {'name': 'Perfluoro cyclic compounds', 'smiles': 'C1(F)C(F)C(F)C(F)C(F)C1(F)', 'mode': 'attach'},
-            53: {'name': 'Polyfluoro cyclic compounds', 'smiles': 'C1(F)C(F)C(H)C(F)C(F)C1(F)', 'mode': 'attach'},
-            54: {'name': 'Perfluoroaryl compounds', 'smiles': 'c1c(F)c(F)c(F)c(F)c1F', 'mode': 'attach'},
-            55: {'name': 'Polyfluoroaryl compounds', 'smiles': 'c1c(F)c(F)ccc1F', 'mode': 'attach'},
-            56: {'name': 'Peroxydes', 'smiles': 'OO', 'mode': 'insert'},
-            57: {'name': 'Benzoyl peroxydes', 'smiles': 'C(=O)OOC(=O)', 'mode': 'attach'}
+            41: {'name': 'chloride', 'smiles': 'Cl', 'mode': 'attach'},
+            42: {'name': 'bromide', 'smiles': 'Br', 'mode': 'attach'},
+            43: {'name': 'iodide', 'smiles': 'I', 'mode': 'attach'},
+            44: {'name': 'sulfonamide', 'smiles': 'S(=O)(=O)N', 'mode': 'insert'},
+            45: {'name': 'Heterocyclic azole', 'smiles': 'c1ncc[nH]1', 'mode': 'attach'},
+            46: {'name': 'Heterocyclic azine', 'smiles': 'c1ncccc1', 'mode': 'attach'},
+            47: {'name': 'benzodioxole', 'smiles': 'c1ccc2OC(F)(F)Oc2c1', 'mode': 'attach'},
+            48: {'name': 'amine', 'smiles': 'N', 'mode': 'insert'},
+            51: {'name': 'alkene', 'smiles': 'C(F)=C(F)', 'mode': 'insert'},
+            52: {'name': 'alkyne', 'smiles': 'C#C', 'mode': 'insert'},
+            53: {'name': 'Side-chain aromatics', 'smiles': 'c1ccccc1', 'mode': 'attach'},
+            54: {'name': 'Perfluoro cyclic compounds', 'smiles': 'C1(F)C(F)C(F)C(F)C(F)C1(F)', 'mode': 'attach'},
+            55: {'name': 'Polyfluoro cyclic compounds', 'smiles': 'C1(F)C(F)C(H)C(F)C(F)C1(F)', 'mode': 'attach'},
+            56: {'name': 'Perfluoroaryl compounds', 'smiles': 'c1c(F)c(F)c(F)c(F)c1F', 'mode': 'attach'},
+            57: {'name': 'Polyfluoroaryl compounds', 'smiles': 'c1c(F)c(F)ccc1F', 'mode': 'attach'},
+            58: {'name': 'Peroxydes', 'smiles': 'OO', 'mode': 'insert'},
+            59: {'name': 'Benzoyl peroxydes', 'smiles': 'C(=O)OOC(=O)', 'mode': 'attach'}
 
         }
         
@@ -340,12 +341,11 @@ class EnhancedPFASBenchmark:
         
         return molecules
     
-    def test_with_pfasgroups(self, smiles, bycomponent=False, include_PFAS_definitions=True):
+    def test_with_pfasgroups(self, smiles, include_PFAS_definitions=True):
         """Test molecule with PFASGroups detection
         
         Args:
             smiles: SMILES string
-            bycomponent: Whether to use bycomponent=True flavor
             include_PFAS_definitions: Whether to include PFAS definitions (True for accuracy, False for specificity)
         """
         
@@ -357,7 +357,6 @@ class EnhancedPFASBenchmark:
             'success': False,
             'error': None,
             'execution_time': 0.0,
-            'bycomponent': bycomponent,
             'include_definitions': include_PFAS_definitions
         }
         
@@ -369,7 +368,7 @@ class EnhancedPFASBenchmark:
             mol = Chem.MolFromSmiles(smiles)
             if mol is not None:
                 # Use parse_mol which returns dict with new format
-                results = parse_mol(mol, bycomponent=bycomponent, include_PFAS_definitions=include_PFAS_definitions)
+                results = parse_mol(mol, include_PFAS_definitions=include_PFAS_definitions)
                 
                 # Extract groups and definitions from the new dictionary format
                 # results is a dict with 'matches' key containing list of match dicts
@@ -387,7 +386,13 @@ class EnhancedPFASBenchmark:
                                 'match_id': match.get('match_id'),
                                 'name': match.get('group_name'),
                                 'match_count': match.get('match_count'),
-                                'chain_lengths': match.get('chain_lengths')
+                                'components_sizes': match.get('components_sizes', []),
+                                'num_components': match.get('num_components', 0),
+                                'components_types': match.get('components_types', []),
+                                # Summary metrics
+                                'mean_eccentricity': match.get('mean_eccentricity', 0.0),
+                                'mean_diameter': match.get('mean_diameter', float('nan')),
+                                'mean_radius': match.get('mean_radius', float('nan'))
                             })
                         elif match.get('type') == 'PFASdefinition':
                             definition_ids.append(match['id'])
@@ -472,17 +477,15 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups (both flavors)
-                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False)
-                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True)
+                    # Test with PFASGroups
+                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'])
                     
                     # Test with PFAS-Atlas  
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result_default,
-                        'pfasgroups_result_bycomponent': pfas_result_bycomponent,
+                        'pfasgroups_result': pfas_result,
                         'atlas_result': atlas_result
                     }
                     
@@ -528,17 +531,15 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups (both flavors) - accuracy test
-                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False, include_PFAS_definitions=True)
-                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True, include_PFAS_definitions=True)
+                    # Test with PFASGroups - accuracy test
+                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'], include_PFAS_definitions=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result_default,
-                        'pfasgroups_result_bycomponent': pfas_result_bycomponent,
+                        'pfasgroups_result': pfas_result,
                         'atlas_result': atlas_result
                     }
                     
@@ -560,17 +561,15 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups (both flavors) - accuracy test
-                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False, include_PFAS_definitions=True)
-                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True, include_PFAS_definitions=True)
+                    # Test with PFASGroups - accuracy test
+                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'], include_PFAS_definitions=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result_default,
-                        'pfasgroups_result_bycomponent': pfas_result_bycomponent,
+                        'pfasgroups_result': pfas_result,
                         'atlas_result': atlas_result
                     }
                     
@@ -596,17 +595,15 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups (both flavors) - accuracy test
-                    pfas_result_default = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=False, include_PFAS_definitions=True)
-                    pfas_result_bycomponent = self.test_with_pfasgroups(mol_data['smiles'], bycomponent=True, include_PFAS_definitions=True)
+                    # Test with PFASGroups - accuracy test
+                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'], include_PFAS_definitions=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result_default,
-                        'pfasgroups_result_bycomponent': pfas_result_bycomponent,
+                        'pfasgroups_result': pfas_result,
                         'atlas_result': atlas_result
                     }
                     

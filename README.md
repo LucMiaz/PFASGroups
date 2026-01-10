@@ -6,15 +6,59 @@ A comprehensive cheminformatics package for automated detection, classification,
 
 PFASgroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
 
+## Recent Updates
+
+### Version 2.0 (January 2026) - Comprehensive Graph Metrics
+
+Major enhancement adding comprehensive NetworkX graph theory metrics for detailed component analysis:
+
+**New Features:**
+- **Component-Level Metrics**: Each fluorinated component now includes 15+ graph metrics:
+  - `diameter` and `radius` - Graph eccentricity bounds
+  - `center`, `periphery`, `barycenter` - Structural node sets
+  - `effective_graph_resistance` - Sum of resistance distances
+  - `component_fraction` - Fraction of molecule covered by component (includes all attached H, F, Cl, Br, I)
+  - Distance metrics from functional groups to structural features
+- **Molecular Coverage Metrics**: New fraction-based metrics quantify fluorination extent:
+  - `mean_component_fraction` - Average coverage per component
+  - `total_components_fraction` - Total coverage by union of all components (accounts for overlaps)
+- **Summary Statistics**: Aggregated metrics across all components per PFAS group
+- **Enhanced Database Models**: New `Components` model stores individual component data with all metrics
+- **Improved Analysis**: Better understanding of molecular topology, branching, functional group positioning, and fluorination extent
+
+**Breaking Changes:**
+- `parse_mols` output now includes additional summary metric fields (`mean_diameter`, `mean_radius`, etc.)
+- Database schema changes require migration (see `DATABASE_MIGRATION_GUIDE.md`)
+
+**Metrics Explained:**
+- `branching` (0-1): Measures linearity (1.0 = linear, 0.0 = highly branched) - renamed from "eccentricity"
+- `mean_eccentricity`, `median_eccentricity`: Graph-theoretic eccentricity statistics for component nodes
+- `smarts_centrality` (0-1): Functional group position (1.0 = central, 0.0 = peripheral)
+- `component_fraction` (0-1): Fraction of total molecule atoms in this component (includes all attached atoms)
+- `total_components_fraction` (0-1): Fraction of molecule covered by union of all components
+- `diameter`: Maximum distance between any two atoms in component
+- `radius`: Minimum eccentricity across component nodes
+- `barycenter`: Nodes minimizing total distance to all other nodes
+- `center`: Nodes with minimum eccentricity
+- `periphery`: Nodes with maximum eccentricity
+
+See `COMPREHENSIVE_METRICS_SUMMARY.md` for complete documentation.
+
+### Version 1.x - Component-Based Analysis
+
+- Replaced chain-finding with connected component analysis
+- Added support for branched and cyclic structures
+- Improved SMARTS pattern matching for diverse PFAS classes
+
 ## Key Features
 
 ### Core Capabilities
 - **PFAS Group Identification**: Automated detection of 55 functional groups (28 OECD-defined groups and 27 generic categories)
-- **Chain Length Analysis**: Quantification of per- and polyfluorinated alkyl chains with CF₂ unit counting
+- **Component Length Analysis**: Quantification of per- and polyfluorinated alkyl components with CF₂ unit counting
 - **Customizable Definitions**: Easy extension to additional PFAS groups and halogenated chemical classes via JSON configuration
 
 ### Additional Tools
-- **Homologue Series Generation**: Iterative chain shortening to explore theoretical chemical space
+- **Homologue Series Generation**: Iterative component shortening to explore theoretical chemical space
 - **Fingerprint Generation**: PFAS fingerprints for machine learning applications
 - **Visualization**: Assign and visualize PFAS groupings
 - **Multiple Interfaces**: Python API, command-line tool, and browser-based JavaScript version (RDKitJS)
@@ -110,7 +154,7 @@ groups.append(PFASGroup(
 # Add custom path types (e.g., chlorinated analogs)
 paths = get_smartsPaths()
 paths['Perchlorinated'] = compile_smartsPath(
-    "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # chain pattern
+    "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # component pattern
     "[C;X4](Cl)(Cl)Cl"                     # end pattern
 )
 

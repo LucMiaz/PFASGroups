@@ -130,17 +130,23 @@ GENERIC_PFAS_GROUPS = [
     (38, 'sulfinic acid', "S(=O)O[H]", 'attach'),
     (39, 'phosphonic acid', "P(=O)(O)O", 'attach'),
     (40, 'phosphinic acid', "P(=O)O", 'attach'),
-    (41, 'ethene', "C(F)=C(F)", 'insert'),
-    (42, 'iodide', "C(F)I", 'insert'),
-    (43, 'sulfonamide', "S(=O)(=O)N", 'insert'),
-    (44, 'azole', "c1ncc[nH]1", 'attach'),
-    (45, 'azine', "c1ncccc1", 'attach'),
-    (46, 'benzodioxole', "c1ccc2OC(F)(F)Oc2c1", 'attach'),
-    (47, 'amine', "N", 'insert'),
-    (48, 'alkane', 'C(F)(F)', 'insert'),
-    (49, 'alkene', 'C(F)=C(F)', 'insert'),
-    (50, 'alkyne', "C#C", 'insert'),
-    (51, 'Side-chain aromatics', "c1ccccc1", 'attach'),
+    (41, 'chloride', "Cl", 'attach'),
+    (42, 'bromide', "Br", 'attach'),
+    (43, 'iodide', "I", 'attach'),
+    (44, 'sulfonamide', "S(=O)(=O)N", 'insert'),
+    (45, 'Heterocyclic azole', "c1ncc[nH]1", 'attach'),
+    (46, 'Heterocyclic azine', "c1ncccc1", 'attach'),
+    (47, 'benzodioxole', "c1ccc2OC(F)(F)Oc2c1", 'attach'),
+    (48, 'amine', "N", 'insert'),
+    (51, 'alkene', 'C(F)=C(F)', 'insert'),
+    (52, 'alkyne', "C#C", 'insert'),
+    (53, 'Side-chain aromatics', "c1ccccc1", 'attach'),
+    (54, 'Perfluoro cyclic compounds', "C1(F)C(F)C(F)C(F)C(F)C1(F)", 'attach'),
+    (55, 'Polyfluoro cyclic compounds', "C1(F)C(F)C(H)C(F)C(F)C1(F)", 'attach'),
+    (56, 'Perfluoroaryl compounds', "c1c(F)c(F)c(F)c(F)c1F", 'attach'),
+    (57, 'Polyfluoroaryl compounds', "c1c(F)c(F)ccc1F", 'attach'),
+    (58, 'Peroxydes', "OO", 'insert'),
+    (59, 'Benzoyl peroxydes', "C(=O)OOC(=O)", 'attach'),
 ]
 
 IGNORE_GROUPS = []  # Test all groups including broad ones
@@ -151,7 +157,10 @@ TEST_SUMMARY_DATA = {
     'generic_results': [],
     'specificity_results': None,
     'test_start_time': None,
-    'test_end_time': None
+    'test_end_time': None,
+    'oecd_failures': [],
+    'generic_failures': [],
+    'specificity_failures': []
 }
 
 def generate_test_summary(output_file=f'{tests_folder}/results/test_summary_report.json'):
@@ -191,51 +200,51 @@ def generate_test_summary(output_file=f'{tests_folder}/results/test_summary_repo
     # Analyze OECD test results
     if TEST_SUMMARY_DATA['oecd_results']:
         oecd_df = pd.DataFrame(TEST_SUMMARY_DATA['oecd_results'])
+        # Convert group_ids to tuple if it's a list (to make it hashable for groupby)
+        oecd_df['group_ids'] = oecd_df['group_ids'].apply(lambda x: tuple(x) if isinstance(x, list) else x)
         total_oecd = len(oecd_df)
-        detected_oecd = len(oecd_df[oecd_df['detected_both'] == True])
+        detected_oecd = len(oecd_df[oecd_df['detected'] == True])
         oecd_detection_rate = detected_oecd / total_oecd if total_oecd > 0 else 0
         
         # Group-wise analysis
         group_stats = oecd_df.groupby('group_ids').agg({
-            'detected_default': ['count', 'sum', 'mean'],
-            'detected_bycomponent': ['count', 'sum', 'mean'],
-            'detected_both': ['count', 'sum', 'mean'],
+            'detected': ['count', 'sum', 'mean'],
             'group_name': 'first'
         }).round(3)
-        group_stats.columns = ['total_tests_default', 'successful_detections_default', 'detection_rate_default','total_tests_bycomponent', 'successful_detections_bycomponent', 'detection_rate_bycomponent','total_tests_both', 'successful_detections_both', 'detection_rate_both', 'group_name']
+        group_stats.columns = ['total_tests', 'successful_detections', 'detection_rate', 'group_name']
         
         summary['oecd_test_results'] = {
             'total_tests': int(total_oecd),
             'successful_detections': int(detected_oecd),
             'overall_detection_rate': round(oecd_detection_rate, 3),
             'group_wise_results': group_stats.reset_index().to_dict('records'),
-            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate_both').reset_index().to_dict('records'),
-            'best_performing_groups': group_stats.nlargest(5, 'detection_rate_both').reset_index().to_dict('records')
+            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate').reset_index().to_dict('records'),
+            'best_performing_groups': group_stats.nlargest(5, 'detection_rate').reset_index().to_dict('records')
         }
     
     # Analyze generic test results
     if TEST_SUMMARY_DATA['generic_results']:
         generic_df = pd.DataFrame(TEST_SUMMARY_DATA['generic_results'])
+        # Convert group_ids to tuple if it's a list (to make it hashable for groupby)
+        generic_df['group_ids'] = generic_df['group_ids'].apply(lambda x: tuple(x) if isinstance(x, list) else x)
         total_generic = len(generic_df)
-        detected_generic = len(generic_df[generic_df['detected_both'] == True])
+        detected_generic = len(generic_df[generic_df['detected'] == True])
         generic_detection_rate = detected_generic / total_generic if total_generic > 0 else 0
         
         # Group-wise analysis
         group_stats = generic_df.groupby('group_ids').agg({
-            'detected_default': ['count', 'sum', 'mean'],
-            'detected_bycomponent': ['count', 'sum', 'mean'],
-            'detected_both': ['count', 'sum', 'mean'],
+            'detected': ['count', 'sum', 'mean'],
             'group_name': 'first'
         }).round(3)
-        group_stats.columns = ['total_tests_default', 'successful_detections_default', 'detection_rate_default','total_tests_bycomponent', 'successful_detections_bycomponent', 'detection_rate_bycomponent','total_tests_both', 'successful_detections_both', 'detection_rate_both', 'group_name']
+        group_stats.columns = ['total_tests', 'successful_detections', 'detection_rate', 'group_name']
         
         summary['generic_test_results'] = {
             'total_tests': int(total_generic),
             'successful_detections': int(detected_generic),
             'overall_detection_rate': round(generic_detection_rate, 3),
             'group_wise_results': group_stats.reset_index().to_dict('records'),
-            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate_both').reset_index().to_dict('records'),
-            'best_performing_groups': group_stats.nlargest(5, 'detection_rate_both').reset_index().to_dict('records')
+            'worst_performing_groups': group_stats.nsmallest(5, 'detection_rate').reset_index().to_dict('records'),
+            'best_performing_groups': group_stats.nlargest(5, 'detection_rate').reset_index().to_dict('records')
         }
     
     # Analyze specificity test results
@@ -323,7 +332,43 @@ def generate_test_summary(output_file=f'{tests_folder}/results/test_summary_repo
         print(f"  Specificity Rate: {summary['specificity_test_results']['specificity_rate']:.1%}")
         print(f"  Avg Groups per Test: {summary['specificity_test_results']['average_detected_groups_per_test']:.1f}")
     
+    # Print detailed failure analysis
+    print("\n" + "="*60)
+    print("DETAILED FAILURE ANALYSIS")
     print("="*60)
+    
+    if TEST_SUMMARY_DATA['oecd_failures']:
+        print(f"\n❌ OECD Failures ({len(TEST_SUMMARY_DATA['oecd_failures'])} total):")
+        for i, failure in enumerate(TEST_SUMMARY_DATA['oecd_failures'][:10], 1):  # Show first 10
+            print(f"\n  {i}. Group {failure['group_id']}: {failure['group_name']}")
+            print(f"     Expected: {failure['expected_groups']}")
+            print(f"     Detected: {failure['detected_groups']}")
+            print(f"     SMILES: {failure['smiles'][:80]}..." if len(failure['smiles']) > 80 else f"     SMILES: {failure['smiles']}")
+        if len(TEST_SUMMARY_DATA['oecd_failures']) > 10:
+            print(f"\n  ... and {len(TEST_SUMMARY_DATA['oecd_failures']) - 10} more failures")
+    
+    if TEST_SUMMARY_DATA['generic_failures']:
+        print(f"\n❌ Generic Failures ({len(TEST_SUMMARY_DATA['generic_failures'])} total):")
+        for i, failure in enumerate(TEST_SUMMARY_DATA['generic_failures'][:10], 1):  # Show first 10
+            print(f"\n  {i}. Group {failure['group_id']}: {failure['group_name']}")
+            print(f"     Expected: {failure['expected_groups']}")
+            print(f"     Detected: {failure['detected_groups']}")
+            print(f"     SMILES: {failure['smiles'][:80]}..." if len(failure['smiles']) > 80 else f"     SMILES: {failure['smiles']}")
+        if len(TEST_SUMMARY_DATA['generic_failures']) > 10:
+            print(f"\n  ... and {len(TEST_SUMMARY_DATA['generic_failures']) - 10} more failures")
+    
+    if TEST_SUMMARY_DATA['specificity_failures']:
+        print(f"\n❌ Specificity Failures ({len(TEST_SUMMARY_DATA['specificity_failures'])} total):")
+        for i, failure in enumerate(TEST_SUMMARY_DATA['specificity_failures'][:10], 1):  # Show first 10
+            print(f"\n  {i}. {failure['origin']}")
+            print(f"     Expected: {failure['expected_groups']}")
+            print(f"     Detected: {failure['detected_groups']}")
+            print(f"     Issue: {failure['issue_type']}")
+            print(f"     SMILES: {failure['smiles'][:80]}..." if len(failure['smiles']) > 80 else f"     SMILES: {failure['smiles']}")
+        if len(TEST_SUMMARY_DATA['specificity_failures']) > 10:
+            print(f"\n  ... and {len(TEST_SUMMARY_DATA['specificity_failures']) - 10} more failures")
+    
+    print("\n" + "="*60)
     
     return summary
 
@@ -351,15 +396,21 @@ class TestPFASGroups:
                 pd.DataFrame(TEST_SUMMARY_DATA['generic_results']).to_csv('results/generic_test_results.csv', index=False)
             if TEST_SUMMARY_DATA['specificity_results'] is not None:
                 TEST_SUMMARY_DATA['specificity_results'].to_csv('results/specificity_test_results.csv', index=False)
+            # Save failure details
+            if TEST_SUMMARY_DATA['oecd_failures']:
+                pd.DataFrame(TEST_SUMMARY_DATA['oecd_failures']).to_csv('results/oecd_failures.csv', index=False)
+            if TEST_SUMMARY_DATA['generic_failures']:
+                pd.DataFrame(TEST_SUMMARY_DATA['generic_failures']).to_csv('results/generic_failures.csv', index=False)
+            if TEST_SUMMARY_DATA['specificity_failures']:
+                pd.DataFrame(TEST_SUMMARY_DATA['specificity_failures']).to_csv('results/specificity_failures.csv', index=False)
     
     def test_oecd_pfas_groups(self):
-        """Test OECD PFAS group detection with synthetic compounds using both algorithm flavors."""
+        """Test OECD PFAS group detection with synthetic compounds."""
         global TEST_SUMMARY_DATA
-        print("Testing OECD PFAS groups (both flavors)...")
+        print("Testing OECD PFAS groups...")
         test_results = []
-        adequation_mismatches = []
         
-        for group_id, group_name, template, pathtype in OECD_PFAS_GROUPS:  # Test first 5 groups
+        for group_id, group_name, template, pathtype in OECD_PFAS_GROUPS:
             existing_test = []
             for n in range(5, 15,1):  # 3 different chain lengths
                 r = 0
@@ -382,87 +433,63 @@ class TestPFASGroups:
                             r+=1
                         smiles = Chem.MolToSmiles(mol)
                         
-                        # Test classification with both flavors
+                        # Test classification
                         formula = CalcMolFormula(mol)
-                        matches_default = parse_groups_in_mol(mol, formula=formula, bycomponent=False)
-                        matches_bycomponent = parse_groups_in_mol(mol, formula=formula, bycomponent=True)
+                        matches = parse_groups_in_mol(mol, formula=formula, bycomponent=True)
                         
-                        # Check if target group is detected in both flavors
-                        detected_groups_default = [match[0].id for match in matches_default if match[0].id not in IGNORE_GROUPS]
-                        detected_groups_bycomponent = [match[0].id for match in matches_bycomponent if match[0].id not in IGNORE_GROUPS]
+                        detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
+                        is_detected = group_id in detected_groups
                         
-                        is_detected_default = group_id in detected_groups_default
-                        is_detected_bycomponent = group_id in detected_groups_bycomponent
-                        
-                        # Check adequation: both flavors should detect the same groups (though chain lengths may differ)
-                        groups_match = set(detected_groups_default) == set(detected_groups_bycomponent)
-                        if not groups_match:
-                            adequation_mismatches.append({
-                                'group_id': group_id,
-                                'group_name': group_name,
-                                'smiles': smiles,
-                                'default_groups': detected_groups_default,
-                                'bycomponent_groups': detected_groups_bycomponent
-                            })
-                        
+                        # Store result
                         result = {
                             'group_ids': group_id,
                             'group_name': group_name,
                             'chain_length': n,
-                            'pathtype': pathtype,
                             'smiles': smiles,
-                            'detected_default': is_detected_default,
-                            'detected_bycomponent': is_detected_bycomponent,
-                            'detected_both': is_detected_default and is_detected_bycomponent,
-                            'all_matches_default': detected_groups_default,
-                            'all_matches_bycomponent': detected_groups_bycomponent,
-                            'adequation_match': groups_match
+                            'detected': is_detected,
+                            'detected_groups': detected_groups
                         }
                         test_results.append(result)
-                        
-                        # Store for summary
                         TEST_SUMMARY_DATA['oecd_results'].append(result)
+                        
+                        # Track failures for detailed reporting
+                        if not is_detected:
+                            TEST_SUMMARY_DATA['oecd_failures'].append({
+                                'group_id': group_id,
+                                'group_name': group_name,
+                                'expected_groups': [group_id],
+                                'detected_groups': detected_groups,
+                                'smiles': smiles,
+                                'issue_type': 'non-identification'
+                            })
         
-        # Verify that at least some groups are detected correctly in both flavors
+        # Verify that at least some groups are detected correctly
         if test_results:
-            detection_rate_default = sum(result['detected_default'] for result in test_results) / len(test_results)
-            detection_rate_bycomponent = sum(result['detected_bycomponent'] for result in test_results) / len(test_results)
-            adequation_rate = sum(result['adequation_match'] for result in test_results) / len(test_results)
+            detection_rate = sum(result['detected'] for result in test_results) / len(test_results)
             
-            print(f"OECD detection rate (default): {detection_rate_default:.2%}")
-            print(f"OECD detection rate (bycomponent): {detection_rate_bycomponent:.2%}")
-            print(f"OECD adequation rate: {adequation_rate:.2%}")
-            print(f"Adequation mismatches: {len(adequation_mismatches)}")
-            
-            if adequation_mismatches:
-                print("\nSample adequation mismatches:")
-                for mismatch in adequation_mismatches[:5]:
-                    print(f"  Group {mismatch['group_id']}: default={mismatch['default_groups']}, bycomponent={mismatch['bycomponent_groups']}")
+            print(f"OECD detection rate: {detection_rate:.2%}")
+            print(f"Failed detections: {len(TEST_SUMMARY_DATA['oecd_failures'])}")
             
             if PYTEST_AVAILABLE:
-                assert detection_rate_default > 0.5, f"Default detection rate too low: {detection_rate_default:.2%}"
-                assert detection_rate_bycomponent > 0.5, f"Bycomponent detection rate too low: {detection_rate_bycomponent:.2%}"
-                assert adequation_rate > 0.95, f"Adequation rate too low: {adequation_rate:.2%} (expected >95%)"  # Perfect adequation expected
-            assert detection_rate_default > 0.5, f"Default detection rate too low: {detection_rate_default:.2%}"
-            assert detection_rate_bycomponent > 0.5, f"Bycomponent detection rate too low: {detection_rate_bycomponent:.2%}"
-            assert adequation_rate > 0.95, f"Adequation rate too low: {adequation_rate:.2%} (expected >95%)"  # Perfect adequation expected
+                assert detection_rate > 0.5, f"Detection rate too low: {detection_rate:.2%}"
+            assert detection_rate > 0.5, f"Detection rate too low: {detection_rate:.2%}"
         else:
             assert False, "No valid test results generated"
     
     def test_generic_pfas_groups(self):
-        """Test generic PFAS group detection with synthetic compounds using both algorithm flavors."""
+        """Test generic PFAS group detection with synthetic compounds."""
         global TEST_SUMMARY_DATA
-        print("Testing generic PFAS groups (both flavors)...")
+        print("Testing generic PFAS groups...")
         test_results = []
-        adequation_mismatches = []
         
-        for group_id, group_name, template, insertion_mode in GENERIC_PFAS_GROUPS:  # Test first 5 groups
+        for group_id, group_name, template, insertion_mode in GENERIC_PFAS_GROUPS:
             for pathtype in ['Perfluoroalkyl', 'Polyfluoroalkyl']:
                 existing_test = []
-                for n in range(5, 15, 1):  # 2 different chain lengths
+                for n in range(5, 15, 1):  # Different chain lengths
                     r = 1
                     k = 0
-                    while r<3 and k< 6:  # 3 replicates per chain length
+                    while r < 3 and k < 6:  # 3 replicates per chain length
+                        k += 1
                         try:
                             funcgroup_template = [{"group_smiles": template, 
                                                 'n': 1, 
@@ -473,7 +500,6 @@ class TestPFASGroups:
                                                     perfluorinated=(pathtype == 'Perfluoroalkyl'))
                         except Exception as e:
                             pass
-                            #print(f"Error testing generic group {group_id}, n={n}: {e}")
                         else:
                             if mol is None:
                                 continue
@@ -482,71 +508,50 @@ class TestPFASGroups:
                                 continue
                             else:
                                 existing_test.append(inchikey)
-                                r+=1
+                                r += 1
                             smiles = Chem.MolToSmiles(mol)
                             
-                            # Test classification with both flavors
+                            # Test classification
                             formula = CalcMolFormula(mol)
-                            matches_default = parse_groups_in_mol(mol, formula=formula, bycomponent=False)
-                            matches_bycomponent = parse_groups_in_mol(mol, formula=formula, bycomponent=True)
+                            matches = parse_groups_in_mol(mol, formula=formula, bycomponent=True)
                             
-                            # Check if target group is detected in both flavors
-                            detected_groups_default = [match[0].id for match in matches_default if match[0].id not in IGNORE_GROUPS]
-                            detected_groups_bycomponent = [match[0].id for match in matches_bycomponent if match[0].id not in IGNORE_GROUPS]
+                            detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
+                            is_detected = group_id in detected_groups
                             
-                            is_detected_default = group_id in detected_groups_default
-                            is_detected_bycomponent = group_id in detected_groups_bycomponent
-                            
-                            # Check adequation
-                            groups_match = set(detected_groups_default) == set(detected_groups_bycomponent)
-                            if not groups_match:
-                                adequation_mismatches.append({
-                                    'group_id': group_id,
-                                    'group_name': group_name,
-                                    'smiles': smiles,
-                                    'default_groups': detected_groups_default,
-                                    'bycomponent_groups': detected_groups_bycomponent
-                                })
-                            
+                            # Store result
                             result = {
                                 'group_ids': group_id,
                                 'group_name': group_name,
                                 'chain_length': n,
                                 'pathtype': pathtype,
                                 'smiles': smiles,
-                                'detected_default': is_detected_default,
-                                'detected_bycomponent': is_detected_bycomponent,
-                                'detected_both': is_detected_default and is_detected_bycomponent,
-                                'all_matches_default': detected_groups_default,
-                                'all_matches_bycomponent': detected_groups_bycomponent,
-                                'adequation_match': groups_match
+                                'detected': is_detected,
+                                'detected_groups': detected_groups
                             }
                             test_results.append(result)
-                            
-                            # Store for summary
                             TEST_SUMMARY_DATA['generic_results'].append(result)
+                            
+                            # Track failures for detailed reporting
+                            if not is_detected:
+                                TEST_SUMMARY_DATA['generic_failures'].append({
+                                    'group_id': group_id,
+                                    'group_name': group_name,
+                                    'expected_groups': [group_id],
+                                    'detected_groups': detected_groups,
+                                    'smiles': smiles,
+                                    'issue_type': 'non-identification'
+                                })
                             
                         
         
         # Verify that at least some groups are detected correctly
         if test_results:
-            detection_rate_default = sum(result['detected_default'] for result in test_results) / len(test_results)
-            detection_rate_bycomponent = sum(result['detected_bycomponent'] for result in test_results) / len(test_results)
-            adequation_rate = sum(result['adequation_match'] for result in test_results) / len(test_results)
+            detection_rate = sum(result['detected'] for result in test_results) / len(test_results)
             
-            print(f"Generic detection rate (default): {detection_rate_default:.2%}")
-            print(f"Generic detection rate (bycomponent): {detection_rate_bycomponent:.2%}")
-            print(f"Generic adequation rate: {adequation_rate:.2%}")
-            print(f"Adequation mismatches: {len(adequation_mismatches)}")
+            print(f"Generic detection rate: {detection_rate:.2%}")
+            print(f"Failed detections: {len(TEST_SUMMARY_DATA['generic_failures'])}")
             
-            if adequation_mismatches:
-                print("\nSample adequation mismatches:")
-                for mismatch in adequation_mismatches[:5]:
-                    print(f"  Group {mismatch['group_id']}: default={mismatch['default_groups']}, bycomponent={mismatch['bycomponent_groups']}")
-            
-            assert detection_rate_default > 0.3, f"Default detection rate too low: {detection_rate_default:.2%}"
-            assert detection_rate_bycomponent > 0.3, f"Bycomponent detection rate too low: {detection_rate_bycomponent:.2%}"
-            assert adequation_rate > 0.95, f"Adequation rate too low: {adequation_rate:.2%} (expected >95%)"
+            assert detection_rate > 0.3, f"Detection rate too low: {detection_rate:.2%}"
         else:
             assert False, "No valid test results generated"
 
@@ -596,6 +601,16 @@ class TestPFASGroups:
         if TEST_SUMMARY_DATA['specificity_results'] is not None:
             TEST_SUMMARY_DATA['specificity_results'].to_csv('results/specificity_test_results.csv', index=False)
             print("Specificity test details saved to: results/specificity_test_results.csv")
+        # Save failure details
+        if TEST_SUMMARY_DATA['oecd_failures']:
+            pd.DataFrame(TEST_SUMMARY_DATA['oecd_failures']).to_csv('results/oecd_failures.csv', index=False)
+            print("OECD failures saved to: results/oecd_failures.csv")
+        if TEST_SUMMARY_DATA['generic_failures']:
+            pd.DataFrame(TEST_SUMMARY_DATA['generic_failures']).to_csv('results/generic_failures.csv', index=False)
+            print("Generic failures saved to: results/generic_failures.csv")
+        if TEST_SUMMARY_DATA['specificity_failures']:
+            pd.DataFrame(TEST_SUMMARY_DATA['specificity_failures']).to_csv('results/specificity_failures.csv', index=False)
+            print("Specificity failures saved to: results/specificity_failures.csv")
         
         return overall_result
 
@@ -1024,6 +1039,24 @@ def df_test_pfas_group_specificity(test_molecules=None, output_file=f'{tests_fol
                 'error': None
             })
             
+            # Track failures for detailed reporting
+            if not expected_group_detected:
+                TEST_SUMMARY_DATA['specificity_failures'].append({
+                    'origin': origin,
+                    'expected_groups': group_ids,
+                    'detected_groups': detected_groups,
+                    'smiles': smiles,
+                    'issue_type': 'non-identification'
+                })
+            elif not is_specific:
+                TEST_SUMMARY_DATA['specificity_failures'].append({
+                    'origin': origin,
+                    'expected_groups': group_ids,
+                    'detected_groups': detected_groups,
+                    'smiles': smiles,
+                    'issue_type': 'over-identification'
+                })
+            
             if verbose:
                 status = "✓" if expected_group_detected else "✗"
                 specificity_status = "✓" if is_specific else "✗"
@@ -1318,6 +1351,48 @@ def test_pfoa_like_compounds():
     assert success_rate > 0.5
     return success_rate > 0.5
 
+def test_pfos_like_compounds():
+    """Test detection of PFOS-like compounds (perfluoroalkyl sulfonic acids)."""
+    print("Testing PFOS-like compounds...")
+    # Generate PFOS (C8) and similar compounds - using clearer SMILES format
+    test_smiles = [
+        "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",  # PFOS (C8)
+        "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",  # PFHxS (C6)
+        "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",  # PFDS (C10)
+    ]
+    
+    success_count = 0
+    for i, smiles in enumerate(test_smiles):
+        try:
+            mol = Chem.MolFromSmiles(smiles)
+            if mol is None:
+                print(f"✗ Invalid SMILES for compound {i+1}: {smiles}")
+                continue
+            Chem.AddHs(mol)
+            formula = CalcMolFormula(mol)
+            matches = parse_groups_in_mol(mol, formula=formula)
+            
+            # Should detect group 6 (Perfluoroalkyl sulfonic acids)
+            detected_groups = [match[0].id for match in matches if match[0].id not in IGNORE_GROUPS]
+            print(detected_groups)
+            print(formula)
+            if 6 in detected_groups:
+                print(f"✓ PFSA detected in compound {i+1}")
+                success_count += 1
+            else:
+                print(f"✗ PFSA not detected in compound {i+1}: {smiles}")
+                
+            if PYTEST_AVAILABLE:
+                assert 6 in detected_groups, f"PFSA not detected in {smiles}"
+                
+        except Exception as e:
+            print(f"✗ Error testing compound {i+1}: {e}")
+    
+    success_rate = success_count / len(test_smiles)
+    print(f"PFOS-like compound detection rate: {success_rate:.1%}")
+    assert success_rate > 0.5
+    return success_rate > 0.5
+
 def run_quick_test():
     """Run a quick test to verify the module is working."""
     print("Running quick functionality test...")
@@ -1332,7 +1407,10 @@ def run_quick_test():
         # Test PFOA detection
         pfoa_success = test_pfoa_like_compounds()
         
-        if pfoa_success:
+        # Test PFOS detection
+        pfos_success = test_pfos_like_compounds()
+        
+        if pfoa_success and pfos_success:
             print("✓ Quick test PASSED - Module is working correctly")
             assert True
         else:

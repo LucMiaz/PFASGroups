@@ -1,631 +1,1422 @@
-[{
-    "id":1,
-    "name":"Perfluoroalkyl carboxylic acids",
-    "alias":"PFCAs",
-    "base_functional_groups":["carboxylic acid"],
-    "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"eq":{"O":2},"only":["C","F","O","H"],"gte":{"F":1},"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
-},
-{
-    "id":2,
-    "name":"Polyfluoroalkyl carboxylic acid",
-    "alias":"PolyFCAs",
-    "base_functional_groups":["carboxylic acid"],
-    "main_group":"Polyfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
-    "smarts2":null,
-    "smartsPath":"Polyfluoroalkyl",
-    "constraints":{"eq":{"O":2},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
-},
-{
-    "id":3,
-    "name":"Perfluoroalkyl dicarboxylic acids",
-    "alias":"PFdiCAs",
-    "base_functional_groups":["carboxylic acid"],
-    "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
-    "smarts2":"[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"eq":{"O":4},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F"],"add":2,"div":2}}}
-},
-{
-    "id":4,
-    "name":"Perfluoroalkylether carboxylic acids",
-    "alias":"PFECAs",
-    "base_functional_groups":["carboxylic acid","ether"],
-    "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"gte":{"O":3},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F"],"add":0.5,"div":2}}}
-},
-{
-    "id":5,
-    "name":"Polyfluoroalkylether carboxylic acid",
-    "alias":"PolyFECAs",
-    "base_functional_groups":["carboxylic acid","ether"],
-    "main_group":"Polyfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
-    "smarts2":null,
-    "smartsPath":"Polyfluoroalkyl",
-    "constraints":{"gte":{"O":3},"only":["C","F","H","Cl","Br","I","O"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":0,"div":2}}}
-},
-{
-    "id":6,
-    "name":"Perfluoroalkyl sulfonic acids",
-    "alias":"PFSAs",
-    "base_functional_groups":["sulfonic acid"],
-    "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"eq":{"S":1,"O":3},"only":["C","F","H","S","O"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
-},
-{
-    "id":7,
-    "name":"Polyfluoroalkyl sulfonic acid",
-    "alias":"PolyFSAs",
-    "base_functional_groups":["sulfonic acid"],
-    "main_group":"Polyfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]",
-    "smarts2":null,
-    "smartsPath":"Polyfluoroalkyl",
-    "constraints":{"eq":{"S":1,"O":3},"gte":{"F":1},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":-1,"div":2}}}
-},
-{
-    "id":8,
-    "name":"Perfluoroalkyl disulfonic acids",
-    "alias":"PFdiSAs",
-    "base_functional_groups":["sulfonic acid"],
-    "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]",
-    "smarts2":"[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]",
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"eq":{"S":2,"O":6},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
-},
-{
-    "id":9,
-    "name":"Perfluoroalkylether sulfonic acids",
-    "alias":"PFESAs",
-    "base_functional_groups":["sulfonic acid","ether"],
-    "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16](=O)(=O)([OH]))]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"eq":{"S":1},"gte":{"O":4},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
-},
-{
-    "id":10,
-    "name":"Polyfluoroalkylether sulfonic acid",
-    "alias":"PolyFESAs",
-    "base_functional_groups":["sulfonic acid","ether"],
-    "main_group":"Polyfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16](=O)(=O)([OH]))]",
-    "smarts2":null,
-    "smartsPath":"Polyfluoroalkyl",
-    "constraints":{"eq":{"S":1},"gte":{"O":4},"only":["C","F","H","Cl","Br","I","S","O"],"rel":{"C":{"atoms":["F","H","Cl","Br","I"],"add":-1,"div":2}}}
-},
-{
-    "id":11,
-    "name":"Perfluoroalkyl sulfinic acids",
-    "alias":"PFSiAs",
-    "base_functional_groups":["sulfinic acid"],
-    "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#16X3](=O)[OH1,Oh1,O-])]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"eq":{"S":1},"only":["C","F","S","O","H"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
-},
-{
-    "id":12,
-    "name":"Perfluoroalkyl phosphonic acids",
-    "alias":"PFPAs",
-    "base_functional_groups":["phosphonic acid"],
-    "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6$([#6][#15](=[#8])([#8])[#8])]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"eq":{"P":1,"O":3},"only":["C","F","P","O","H"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
-},
-{
-    "id":13,
-    "name":"Perfluoroalkyl phosphinic acids",
-    "alias":"PFPiAs",
-    "base_functional_groups":["phosphinic acid"],
-    "main_group":"Perfluoroalkyl acids",
-    "smarts1":"[#6X4$([#6][#15](=[#8])([#8])[#1,#6])]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"eq":{"P":1,"O":2},"only":["C","F","P","O","H"],"rel":{"C":{"atoms":["F"],"add":-0.5,"div":2}}}
-},
-{
-    "id":14,
-    "name":"Perfluoroalkyl alcohols",
-    "alias":"Perfluoroalkyl alcohols",
-    "base_functional_groups":["alcohol"],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[#6X4$([#6;!$([#6]=O)][OH1,Oh1,O-])]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","O"],"add":-1,"div":2}}}
-},		
-{
-    "id":15,
-    "name":"fluorotelomer alcohols",
-    "alias":"fluorotelomer alcohols",
-    "base_functional_groups":["alcohol"],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[C$([#6][C$([CH2][OH1,Oh1,O-]),C$([CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-])])]",
-    "smarts2":"C(F)(F)F",
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"eq":{"O":1}}
-},
-{
-    "id":16,
-    "name":"Perfluoropolyethers",
-    "alias":"PFPEs",
-    "base_functional_groups":["ether"],
-    "main_group":"other PFAS",
-    "smarts1":"[#6$([#6]O[#6])]",
-    "smarts2":"[#6$([#6]O[#6])]",
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"only":["C","F","O"],"gte":{"O":2}, "rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
-},
-{
-    "id":17,
-    "name":"Hydrofluoroethers",
-    "alias":"HFEs",
-    "base_functional_groups":["ether"],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[#6][#8][#6]",
-    "smarts2":null,
-    "smartsPath":"Polyfluoroalkyl",
-    "constraints":{"gte":{"O":1},"only":["C","F","O","H"],"rel":{"C":{"atoms":["F","H"],"add":-1,"div":2}}}
-},
-{
-    "id":18,
-    "name":"Perfluoroalkene",
-    "alias":"Perfluoroalkene",
-    "base_functional_groups":[],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[#6X3$([#6]=[#6X3])]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"only":["C","F","H"],"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
-},
-{
-    "id":19,
-    "name":"Hydrofluoroolefins",
-    "alias":"HFOs",
-    "base_functional_groups":[],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[#6X4$([#6][#6X3]=[#6X3])]",
-    "smarts2":null,
-    "smartsPath":"Polyfluoroalkyl",
-    "constraints":{"gte":{"F":1}, "lte":{}, "eq":{}, "only":["C","F","H"]}
-},
-{
-    "id":20,
-    "name":"Hydrofluorocarbons",
-    "alias":"HFCs",
-    "base_functional_groups":[],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":null,
-    "smarts2":null,
-    "smartsPath":"Polyfluoroalkyl",
-    "constraints":{"gte":{"F":1}, "lte":{}, "eq":{}, "only":["C","F","H"], "rel":{"C":{"atoms":["F","H"],"add":-1,"div":2}}}
-},
-{
-    "id":21,
-    "name":"Semi-fluorinated alkanes",
-    "alias":"SFAs",
-    "base_functional_groups":[],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[#6X4$([#6](F)(F))]",
-    "smarts2":"[#6X4$([#6][H,I,Br,Cl])]",
-    "smartsPath":"Polyfluoroalkyl",
-    "constraints":{"gte":{"F":1},"eq":{"O":0,"S":0}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2}}}
-},
-{
-    "id":22,
-    "name":"Side-chain fluorinated aromatics",
-    "alias":"Side-chain fluorinated aromatics",
-    "base_functional_groups":[],
-    "main_group":"other PFAS",
-    "smarts1":"[#6X4$([#6]a)]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{}
-},
-{
-    "id":23,
-    "name":"Perfluoroalkane",
-    "alias":"Perfluoroalkane",
-    "base_functional_groups":[],
-    "main_group":"other PFAS",
-    "smarts1":null,
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"only":["C","F","H"],"rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
-},
-{
-    "id":24,
-    "name":"Perfluoroalkyl-tert-amines",
-    "alias":"Perfluoroalkyl-tert-amines",
-    "base_functional_groups":["amine"],
-    "main_group":"other PFAS",
-    "smarts1":"[#6$([#6][#7D3])]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"only":["C","F","H","N"],"rel":{"C":{"atoms":["F"],"add":-1.5,"div":2}}}
-},
-{
-    "id":25,
-    "name":"Perfluoroalkyl iodides",
-    "alias":"PFAIs",
-    "base_functional_groups":["iodide"],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":null,
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"gte":{"I":1}, "rel":{"C":{"atoms":["F","I"],"add":-1,"div":2}}}
-},
-{
-    "id":26,
-    "name":"Perfluoroalkane sulfonyl fluorides",
-    "alias":"PASFs",
-    "base_functional_groups":"",
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[#6$([#6][#16](=O)(=O)[F])]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"rel":{"C":{"atoms":["F"],"add":-1,"div":2}}}
-},
-{
-    "id":27,
-    "name":"Perfluoroalkyl ketones",
-    "alias":"Perfluoroalkyl ketones",
-    "base_functional_groups":["ketone"],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[#6X4$([#6]C(=O)[#6])]",
-    "smarts2":null,
-    "smartsPath":"Perfluoroalkyl",
-    "constraints":{"only":["C","F","O"],"rel":{"C":{"atoms":["F"],"add":0,"div":2}}}
-},
-{
-    "id":28,
-    "name":"Semi-fluoroalkyl ketones",
-    "alias":"Semi-fluoroalkyl ketones",
-    "base_functional_groups":["ketone"],
-    "main_group":"Perfluoroalkyl acids precursors",
-    "smarts1":"[#6X4$([#6]C(=O)[#6])]",
-    "smarts2":null,
-    "smartsPath":"Polyfluoroalkyl",
-    "constraints":{"gte":{"O":1,"F":3}, "rel":{"C":{"atoms":["Cl","I","Br","F","H"],"add":-1,"div":2,"add_atoms":["O"]}}}
-},
-{
-    "name":"alcohol",
-    "alias":"alcohol",
-    "id":29,
-    "base_functional_groups":["alcohol"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6;!$([#6]=O)][OH1,Oh1,O-])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"ketone",
-    "alias":"ketones",
-    "id":30,
-    "base_functional_groups":["ketone"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6]C(=O)[#6])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"ether",
-    "alias":"ether",
-    "id":31,
-    "base_functional_groups":[],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6]([#8X2H0][#6;!$(C=O)])[#1,!$(C=O)]);#6!$([#6](=O))]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"ester",
-    "alias":"ester",
-    "id":32,
-    "base_functional_groups":["ester"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6X4$([#6][#6](=O)O[#6]),#6X4$([#6]O[#6](=O)[#6])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"carboxylic acid",
-    "alias":"carboxylic acid",
-    "id":33,
-    "base_functional_groups":["carboxylic acid"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#6](=O)[OH1,Oh1,O-])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"amide",
-    "alias":"amide",
-    "id":34,
-    "base_functional_groups":["amide"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[$([#6][#6]([#7H0,#7H1,#7h1,#7H2])=[#8]),$([#6]~[#7H0,#7H1,#7h1,#7H2][#6X3]=[#8])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"acyl halide",
-    "alias":"acyl halide",
-    "id":35,
-    "base_functional_groups":["acyl halide"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6][#6](=O)[#9,#17,#35,#53])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"sulfonic acid",
-    "alias":"sulfonic acid",
-    "id":36,
-    "base_functional_groups":["sulfonic acid"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#16](=O)(=O)[O-,OH1,Oh1])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"sulfenic acid",
-    "alias":"sulfenic acid",
-    "id":37,
-    "base_functional_groups":["sulfenic acid"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#16X2][OH1,Oh1,O-])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"sulfinic acid",
-    "alias":"sulfinic acid",
-    "id":38,
-    "base_functional_groups":["sulfinic acid"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#16X3](=O)[O])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"phosphonic acid",
-    "alias":"phosphonic acid",
-    "id":39,
-    "base_functional_groups":["phosphonic acid"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6][#15]([#8])(=[#8])[#8])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"phosphinic acid",
-    "alias":"phosphinic acid",
-    "id":40,
-    "base_functional_groups":["phosphinic acid"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6][#15](=[#8])([#8])[#1;!$([#8])])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name" : "ethene",
-    "alias":"ethene",
-    "id":41,
-    "base_functional_groups":["ethene"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6X3]([F,#6$([#6][#6]F),#6$([#6][#6][#6]F)])=[#6X3][F,#6$([#6][#6]F),#6$([#6][#6][#6]F)])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{"gte":{"F":2}}
-},
-{
-    "name":"iodide",
-    "alias":"iodide",
-    "id":42,
-    "base_functional_groups":["iodide"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6][#6](F)[#53])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"sulfonamide",
-    "alias":"sulfonamide",
-    "id":43,
-    "base_functional_groups":["sulfonamide"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#16]([#7])(=[#8])=[#8]),$(*[#7][#16](=[#8])=[#8])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"Heterocyclic azole",
-    "alias":"heterocyclic azole",
-    "id":44,
-    "base_functional_groups":["azole"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#7r5,$([#6r5,#8r5,#16r5]:[#7r5]),$([#6r5,#8r5,#16r5]:[#6r5,#8r5,#16r5]:[#7r5])])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{},
-    "definition":"Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American Heritage® Dictionary of the English Language, 5th Edition)"
-},
-{
-    "name":"Heterocyclic azine",
-    "alias":"heterocyclic azine",
-    "id":45,
-    "base_functional_groups":["azine"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[$(*[#7r6,$([#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6])])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{},
-    "definition":"A six-membered heterocyclic compound, such as pyridine, that contains one or more atoms of nitrogen with a ring structure resembling that of benzene. (The American Heritage® Dictionary of the English Language, 5th Edition)"
-},
-{
-    "name":"benzodioxole",
-    "alias":"benzodioxole",
-    "id":46,
-    "base_functional_groups":["benzodioxole"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[$([#6]1[#6][#6]([#6]2[#6]([#6]1)[#8][#6][#8]2))]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{"gte":{"F":2}},
-    "definition":"Fluorinated Benzodioxole. Generic SMARTS was [$([#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1),$([#6r6,#7r6,#8r6,#16r6]~[#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1)]"
-},
-{
-    "name":"amine",
-    "alias":"amine",
-    "id":47,
-    "base_functional_groups":["amine"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6;!$([#6]=O)][N;!$(*[#6]=O)])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"alkane",
-    "alias":"alkane",
-    "id":48,
-    "base_functional_groups":["aliphatic"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[C$([CX4](F)(F)([F,!$(*[#9])])[CX4](F)([F,C,O,S,N,Si,P,B,Se,Te])[F,C,O,S,N,Si,P,B,Se,Te])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"alkene",
-    "alias":"alkene",
-    "id":49,
-    "base_functional_groups":["alkene"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6][#6X3]=[#6])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "name":"alkyne",
-    "alias":"alkyne",
-    "id":50,
-    "base_functional_groups":["alkyne"],
-    "main_group":"other perfluorinated compound",
-    "smarts1":"[#6$([#6][#6]#[#6])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "id":51,
-    "name":"Side-chain aromatics",
-    "alias":"Side-chain aromatics",
-    "base_functional_groups":["aromatic"],
-    "main_group":"other PFAS",
-    "smarts1":"[#6X4$([#6]a)]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "id":52,
-    "name":"Perfluoro cyclic compounds",
-    "alias":"Perfluoro cyclic compounds",
-    "base_functional_groups":["aromatic"],
-    "main_group":"other PFAS",
-    "smarts1":"[#6R$([#6R](F)[F,#6R$([#6](F)F)])]",
-    "smarts2":null,
-    "smartsPath":"cyclic",
-    "constraints":{}
-},
-{
-    "id":53,
-    "name":"Polyfluoro cyclic compounds",
-    "alias":"Polyfluoro cyclic compounds",
-    "base_functional_groups":["aromatic"],
-    "main_group":"other PFAS",
-    "smarts1":"[#6R$([#6R]([#9,#17,#35,#53])[F,#6R$([#6]([#9,#17,#35,#53])F)])]",
-    "smarts2":null,
-    "smartsPath":"cyclic",
-    "constraints":{}
-},
-{
-    "id":54,
-    "name":"Perfluoroaryl compounds",
-    "alias":"Perfluoroaryl compounds",
-    "base_functional_groups":["aromatic"],
-    "main_group":"other PFAS",
-    "smarts1":"[#6aR$([#6aR][F,#6aR$([#6a]F)])]",
-    "smarts2":null,
-    "smartsPath":"cyclic",
-    "constraints":{}
-},
-{
-    "id":55,
-    "name":"Polyfluoroaryl compounds",
-    "alias":"Polyfluoroaryl compounds",
-    "base_functional_groups":["aromatic"],
-    "main_group":"other PFAS",
-    "smarts1":"[#6aR$([#6aR][F,#6aR$([#6aR][#9])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]F)]",
-    "smarts2":null,
-    "smartsPath":"cyclic",
-    "constraints":{}
-},
-{
-    "id":56,
-    "name":"Peroxydes",
-    "alias":"Peroxydes",
-    "base_functional_groups":["oxy"],
-    "main_group":"other PFAS",
-    "smarts1":"[#6X4$([#6][#8][#8])]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-},
-{
-    "id":57,
-    "name":"Benzoyl peroxydes",
-    "alias":"Benzoyl peroxydes",
-    "base_functional_groups":["oxy"],
-    "main_group":"other PFAS",
-    "smarts1":"[#6X4$([#6][#6](=[#8])[#8][#8][#6](=[#8]))]",
-    "smarts2":null,
-    "smartsPath":null,
-    "constraints":{}
-}
+[
+    {
+        "id": 1,
+        "name": "Perfluoroalkyl carboxylic acids",
+        "alias": "PFCAs",
+        "base_functional_groups": [
+            "carboxylic acid"
+        ],
+        "main_group": "Perfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "O": 2
+            },
+            "only": [
+                "C",
+                "F",
+                "O",
+                "H"
+            ],
+            "gte": {
+                "F": 1
+            },
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": 0.5,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 2,
+        "name": "Polyfluoroalkyl carboxylic acid",
+        "alias": "PolyFCAs",
+        "base_functional_groups": [
+            "carboxylic acid"
+        ],
+        "main_group": "Polyfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
+        "smarts2": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "O": 2
+            },
+            "only": [
+                "C",
+                "F",
+                "O",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F",
+                        "H",
+                        "Cl",
+                        "Br",
+                        "I"
+                    ],
+                    "add": 0,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 3,
+        "name": "Perfluoroalkyl dicarboxylic acids",
+        "alias": "PFdiCAs",
+        "base_functional_groups": [
+            "carboxylic acid"
+        ],
+        "main_group": "Perfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
+        "smarts2": "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "O": 4
+            },
+            "only": [
+                "C",
+                "F",
+                "O",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": 2,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 4,
+        "name": "Perfluoroalkylether carboxylic acids",
+        "alias": "PFECAs",
+        "base_functional_groups": [
+            "carboxylic acid",
+            "ether"
+        ],
+        "main_group": "Perfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "gte": {
+                "O": 3
+            },
+            "only": [
+                "C",
+                "F",
+                "O",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": 0.5,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 5,
+        "name": "Polyfluoroalkylether carboxylic acid",
+        "alias": "PolyFECAs",
+        "base_functional_groups": [
+            "carboxylic acid",
+            "ether"
+        ],
+        "main_group": "Polyfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]",
+        "smarts2": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "constraints": {
+            "gte": {
+                "O": 3
+            },
+            "only": [
+                "C",
+                "F",
+                "H",
+                "Cl",
+                "Br",
+                "I",
+                "O"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F",
+                        "H",
+                        "Cl",
+                        "Br",
+                        "I"
+                    ],
+                    "add": 0,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 6,
+        "name": "Perfluoroalkyl sulfonic acids",
+        "alias": "PFSAs",
+        "base_functional_groups": [
+            "sulfonic acid"
+        ],
+        "main_group": "Perfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "S": 1,
+                "O": 3
+            },
+            "only": [
+                "C",
+                "F",
+                "H",
+                "S",
+                "O"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": -0.5,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 7,
+        "name": "Polyfluoroalkyl sulfonic acid",
+        "alias": "PolyFSAs",
+        "base_functional_groups": [
+            "sulfonic acid"
+        ],
+        "main_group": "Polyfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]",
+        "smarts2": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "S": 1,
+                "O": 3
+            },
+            "gte": {
+                "F": 1
+            },
+            "only": [
+                "C",
+                "F",
+                "H",
+                "Cl",
+                "Br",
+                "I",
+                "S",
+                "O"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F",
+                        "H",
+                        "Cl",
+                        "Br",
+                        "I"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 8,
+        "name": "Perfluoroalkyl disulfonic acids",
+        "alias": "PFdiSAs",
+        "base_functional_groups": [
+            "sulfonic acid"
+        ],
+        "main_group": "Perfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]",
+        "smarts2": "[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]",
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "S": 2,
+                "O": 6
+            },
+            "only": [
+                "C",
+                "F",
+                "H",
+                "Cl",
+                "Br",
+                "I",
+                "S",
+                "O"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": 0,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 9,
+        "name": "Perfluoroalkylether sulfonic acids",
+        "alias": "PFESAs",
+        "base_functional_groups": [
+            "sulfonic acid",
+            "ether"
+        ],
+        "main_group": "Perfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#16](=O)(=O)([OH]))]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "S": 1
+            },
+            "gte": {
+                "O": 4
+            },
+            "only": [
+                "C",
+                "F",
+                "H",
+                "Cl",
+                "Br",
+                "I",
+                "S",
+                "O"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": -0.5,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 10,
+        "name": "Polyfluoroalkylether sulfonic acid",
+        "alias": "PolyFESAs",
+        "base_functional_groups": [
+            "sulfonic acid",
+            "ether"
+        ],
+        "main_group": "Polyfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#16](=O)(=O)([OH]))]",
+        "smarts2": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "S": 1
+            },
+            "gte": {
+                "O": 4
+            },
+            "only": [
+                "C",
+                "F",
+                "H",
+                "Cl",
+                "Br",
+                "I",
+                "S",
+                "O"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F",
+                        "H",
+                        "Cl",
+                        "Br",
+                        "I"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 11,
+        "name": "Perfluoroalkyl sulfinic acids",
+        "alias": "PFSiAs",
+        "base_functional_groups": [
+            "sulfinic acid"
+        ],
+        "main_group": "Perfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#16X3](=O)[OH1,Oh1,O-])]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "S": 1
+            },
+            "only": [
+                "C",
+                "F",
+                "S",
+                "O",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": -0.5,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 12,
+        "name": "Perfluoroalkyl phosphonic acids",
+        "alias": "PFPAs",
+        "base_functional_groups": [
+            "phosphonic acid"
+        ],
+        "main_group": "Perfluoroalkyl acids",
+        "smarts1": "[#6$([#6][#15](=[#8])([#8])[#8])]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "P": 1,
+                "O": 3
+            },
+            "only": [
+                "C",
+                "F",
+                "P",
+                "O",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": -0.5,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 13,
+        "name": "Perfluoroalkyl phosphinic acids",
+        "alias": "PFPiAs",
+        "base_functional_groups": [
+            "phosphinic acid"
+        ],
+        "main_group": "Perfluoroalkyl acids",
+        "smarts1": "[#6X4$([#6][#15](=[#8])([#8])[#1,#6])]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "P": 1,
+                "O": 2
+            },
+            "only": [
+                "C",
+                "F",
+                "P",
+                "O",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": -0.5,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 14,
+        "name": "Perfluoroalkyl alcohols",
+        "alias": "Perfluoroalkyl alcohols",
+        "base_functional_groups": [
+            "alcohol"
+        ],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": "[#6X4$([#6;!$([#6]=O)][OH1,Oh1,O-])]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "only": [
+                "C",
+                "F",
+                "O",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F",
+                        "O"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 15,
+        "name": "fluorotelomer alcohols",
+        "alias": "fluorotelomer alcohols",
+        "base_functional_groups": [
+            "alcohol"
+        ],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": "[C$([#6][C$([CH2][OH1,Oh1,O-]),C$([CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-])])]",
+        "smarts2": "C(F)(F)F",
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "eq": {
+                "O": 1
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 16,
+        "name": "Perfluoropolyethers",
+        "alias": "PFPEs",
+        "base_functional_groups": [
+            "ether"
+        ],
+        "main_group": "other PFAS",
+        "smarts1": "[#6$([#6]O[#6])]",
+        "smarts2": "[#6$([#6]O[#6])]",
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "only": [
+                "C",
+                "F",
+                "O"
+            ],
+            "gte": {
+                "O": 2
+            },
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 17,
+        "name": "Hydrofluoroethers",
+        "alias": "HFEs",
+        "base_functional_groups": [
+            "ether"
+        ],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": "[#6][#8][#6]",
+        "smarts2": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "constraints": {
+            "gte": {
+                "O": 1
+            },
+            "only": [
+                "C",
+                "F",
+                "O",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F",
+                        "H"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 18,
+        "name": "Perfluoroalkene",
+        "alias": "Perfluoroalkene",
+        "base_functional_groups": [],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": "[#6X3$([#6]=[#6X3])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "constraints": {
+            "only": [
+                "C",
+                "F",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": 0,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 19,
+        "name": "Hydrofluoroolefins",
+        "alias": "HFOs",
+        "base_functional_groups": [],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": "[#6X4$([#6X3]=[#6X3])]",
+        "smarts2": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "max_dist_from_CF": 1,
+        "constraints": {
+            "gte": {
+                "F": 1
+            },
+            "lte": {},
+            "eq": {},
+            "only": [
+                "C",
+                "F",
+                "H"
+            ]
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 20,
+        "name": "Hydrofluorocarbons",
+        "alias": "HFCs",
+        "base_functional_groups": [],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": null,
+        "smarts2": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "constraints": {
+            "gte": {
+                "F": 1
+            },
+            "lte": {},
+            "eq": {},
+            "only": [
+                "C",
+                "F",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F",
+                        "H"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 21,
+        "name": "Semi-fluorinated alkanes",
+        "alias": "SFAs",
+        "base_functional_groups": [],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": "[#6X4$([#6](F)(F))]",
+        "smarts2": "[#6X4$([#6][H,I,Br,Cl])]",
+        "smartsPath": "Polyfluoroalkyl",
+        "constraints": {
+            "gte": {
+                "F": 1
+            },
+            "eq": {
+                "O": 0,
+                "S": 0
+            },
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "Cl",
+                        "I",
+                        "Br",
+                        "F",
+                        "H"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 22,
+        "name": "Side-chain fluorinated aromatics",
+        "alias": "Side-chain fluorinated aromatics",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smarts1": "[#6X4$([#6]a)]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 23,
+        "name": "Perfluoroalkane",
+        "alias": "Perfluoroalkane",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smarts1": null,
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "only": [
+                "C",
+                "F",
+                "H"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 24,
+        "name": "Perfluoroalkyl-tert-amines",
+        "alias": "Perfluoroalkyl-tert-amines",
+        "base_functional_groups": [
+            "amine"
+        ],
+        "main_group": "other PFAS",
+        "smarts1": "[#6$([#6][#7D3])]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "only": [
+                "C",
+                "F",
+                "H",
+                "N"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": -1.5,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 25,
+        "name": "Perfluoroalkyl iodides",
+        "alias": "PFAIs",
+        "base_functional_groups": [
+            "iodide"
+        ],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": null,
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "gte": {
+                "I": 1
+            },
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F",
+                        "I"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 26,
+        "name": "Perfluoroalkane sulfonyl fluorides",
+        "alias": "PASFs",
+        "base_functional_groups": "",
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": "[#6$([#16](=O)(=O)[F])]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "max_dist_from_CF": 1,
+        "constraints": {
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": -1,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 27,
+        "name": "Perfluoroalkyl ketones",
+        "alias": "Perfluoroalkyl ketones",
+        "base_functional_groups": [
+            "ketone"
+        ],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": "[#6X4$([#6]C(=O)[#6])]",
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {
+            "only": [
+                "C",
+                "F",
+                "O"
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F"
+                    ],
+                    "add": 0,
+                    "div": 2
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 28,
+        "name": "Semi-fluoroalkyl ketones",
+        "alias": "Semi-fluoroalkyl ketones",
+        "base_functional_groups": [
+            "ketone"
+        ],
+        "main_group": "Perfluoroalkyl acids precursors",
+        "smarts1": "[#6X4$([#6]C(=O)[#6])]",
+        "smarts2": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "constraints": {
+            "gte": {
+                "O": 1,
+                "F": 3
+            },
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "Cl",
+                        "I",
+                        "Br",
+                        "F",
+                        "H"
+                    ],
+                    "add": -1,
+                    "div": 2,
+                    "add_atoms": [
+                        "O"
+                    ]
+                }
+            }
+        },
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "alcohol",
+        "alias": "alcohol",
+        "id": 29,
+        "base_functional_groups": [
+            "alcohol"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6;!$([#6]=O)][OH1,Oh1,O-])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "ketone",
+        "alias": "ketones",
+        "id": 30,
+        "base_functional_groups": [
+            "ketone"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6]C(=O)[#6])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "ether",
+        "alias": "ether",
+        "id": 31,
+        "base_functional_groups": [],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6]([#8X2H0][#6;!$(C=O)])[#1,!$(C=O)]);#6!$([#6](=O))]",
+        "smarts2": null,
+        "smartsPath": null,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "ester",
+        "alias": "ester",
+        "id": 32,
+        "base_functional_groups": [
+            "ester"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6X4$([#6](=O)O[#6]),#6X4$([#6]O[#6](=O)[#6])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "carboxylic acid",
+        "alias": "carboxylic acid",
+        "id": 33,
+        "base_functional_groups": [
+            "carboxylic acid"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[$([#6](=O)[OH1,Oh1,O-])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "amide",
+        "alias": "amide",
+        "id": 34,
+        "base_functional_groups": [
+            "amide"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[$([#6]([#7H0,#7H1,#7h1,#7H2])=[#8]),$([#6]~[#7H0,#7H1,#7h1,#7H2][#6X3]=[#8])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "acyl halide",
+        "alias": "acyl halide",
+        "id": 35,
+        "base_functional_groups": [
+            "acyl halide"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6](=O)[#9,#17,#35,#53])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "sulfonic acid",
+        "alias": "sulfonic acid",
+        "id": 36,
+        "base_functional_groups": [
+            "sulfonic acid"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[$([#16](=O)(=O)[O-,OH1,Oh1])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "sulfenic acid",
+        "alias": "sulfenic acid",
+        "id": 37,
+        "base_functional_groups": [
+            "sulfenic acid"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[$([#16X2][OH1,Oh1,O-])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "sulfinic acid",
+        "alias": "sulfinic acid",
+        "id": 38,
+        "base_functional_groups": [
+            "sulfinic acid"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[$([#16X3](=O)[O])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "phosphonic acid",
+        "alias": "phosphonic acid",
+        "id": 39,
+        "base_functional_groups": [
+            "phosphonic acid"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#15]([#8])(=[#8])[#8])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "phosphinic acid",
+        "alias": "phosphinic acid",
+        "id": 40,
+        "base_functional_groups": [
+            "phosphinic acid"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#15](=[#8])([#8])[#1;!$([#8])])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "chloride",
+        "alias": "chloride",
+        "id": 41,
+        "base_functional_groups": [
+            "halide"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6][#17])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "bromide",
+        "alias": "bromide",
+        "id": 42,
+        "base_functional_groups": [
+            "halide"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6][#35])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "iodide",
+        "alias": "iodide",
+        "id": 43,
+        "base_functional_groups": [
+            "halide"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6](F)[#53])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "sulfonamide",
+        "alias": "sulfonamide",
+        "id": 44,
+        "base_functional_groups": [
+            "sulfonamide"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[$(*[#16]([#7])(=[#8])=[#8]),$(*[#7][#16](=[#8])=[#8])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "Heterocyclic azole",
+        "alias": "heterocyclic azole",
+        "id": 45,
+        "base_functional_groups": [
+            "azole"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[$(*[#7r5,$([#6r5,#8r5,#16r5]:[#7r5]),$([#6r5,#8r5,#16r5]:[#6r5,#8r5,#16r5]:[#7r5])])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "definition": "Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American Heritage\u00c2\u00ae Dictionary of the English Language, 5th Edition)",
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "Heterocyclic azine",
+        "alias": "heterocyclic azine",
+        "id": 46,
+        "base_functional_groups": [
+            "azine"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[$(*[#7r6,$([#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6])])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "definition": "A six-membered heterocyclic compound, such as pyridine, that contains one or more atoms of nitrogen with a ring structure resembling that of benzene. (The American Heritage\u00c2\u00ae Dictionary of the English Language, 5th Edition)",
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "benzodioxole",
+        "alias": "benzodioxole",
+        "id": 47,
+        "base_functional_groups": [
+            "benzodioxole"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[$([#6]1[#6][#6]([#6]2[#6]([#6]1)[#8][#6][#8]2))]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {
+            "gte": {
+                "F": 2
+            }
+        },
+        "definition": "Fluorinated Benzodioxole. Generic SMARTS was [$([#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1),$([#6r6,#7r6,#8r6,#16r6]~[#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1)]",
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "amine",
+        "alias": "amine",
+        "id": 48,
+        "base_functional_groups": [
+            "amine"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6;!$([#6]=O)][N;!$(*[#6]=O)])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "perfluoroalkyl",
+        "alias": "perfluoroalkyl",
+        "id": 49,
+        "base_functional_groups": [
+            "aliphatic"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": null,
+        "smarts2": null,
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "polyfluoroalkyl",
+        "alias": "polyfluoroalkyl",
+        "id": 50,
+        "base_functional_groups": [
+            "aliphatic"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": null,
+        "smarts2": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "alkene",
+        "alias": "alkene",
+        "id": 51,
+        "base_functional_groups": [
+            "alkene"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6X3]=[#6])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "name": "alkyne",
+        "alias": "alkyne",
+        "id": 52,
+        "base_functional_groups": [
+            "alkyne"
+        ],
+        "main_group": "other perfluorinated compound",
+        "smarts1": "[#6$([#6]#[#6])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "max_dist_from_CF": 1,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 53,
+        "name": "Side-chain aromatics",
+        "alias": "Side-chain aromatics",
+        "base_functional_groups": [
+            "aromatic"
+        ],
+        "main_group": "other PFAS",
+        "smarts1": "[#6X4$([#6]a)]",
+        "smarts2": null,
+        "smartsPath": null,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 54,
+        "name": "Perfluoro cyclic compounds",
+        "alias": "Perfluoro cyclic compounds",
+        "base_functional_groups": [
+            "aromatic"
+        ],
+        "main_group": "other PFAS",
+        "smarts1": "[#6R$([#6R](F)[F,#6R$([#6](F)F)])]",
+        "smarts2": null,
+        "smartsPath": "cyclic",
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 55,
+        "name": "Polyfluoro cyclic compounds",
+        "alias": "Polyfluoro cyclic compounds",
+        "base_functional_groups": [
+            "aromatic"
+        ],
+        "main_group": "other PFAS",
+        "smarts1": "[#6R$([#6R]([#9,#17,#35,#53])[F,#6R$([#6]([#9,#17,#35,#53])F)])]",
+        "smarts2": null,
+        "smartsPath": "cyclic",
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 56,
+        "name": "Perfluoroaryl compounds",
+        "alias": "Perfluoroaryl compounds",
+        "base_functional_groups": [
+            "aromatic"
+        ],
+        "main_group": "other PFAS",
+        "smarts1": "[#6aR$([#6aR][F,#6aR$([#6a]F)])]",
+        "smarts2": null,
+        "smartsPath": "cyclic",
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 57,
+        "name": "Polyfluoroaryl compounds",
+        "alias": "Polyfluoroaryl compounds",
+        "base_functional_groups": [
+            "aromatic"
+        ],
+        "main_group": "other PFAS",
+        "smarts1": "[#6aR$([#6aR][F,#6aR$([#6aR][#9])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]F)]",
+        "smarts2": null,
+        "smartsPath": "cyclic",
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 58,
+        "name": "Peroxydes",
+        "alias": "Peroxydes",
+        "base_functional_groups": [
+            "oxy"
+        ],
+        "main_group": "other PFAS",
+        "smarts1": "[#6X4$([#6][#8][#8])]",
+        "smarts2": null,
+        "smartsPath": null,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    },
+    {
+        "id": 59,
+        "name": "Benzoyl peroxydes",
+        "alias": "Benzoyl peroxydes",
+        "base_functional_groups": [
+            "oxy"
+        ],
+        "main_group": "other PFAS",
+        "smarts1": "[#6X4$([#6][#6](=[#8])[#8][#8][#6](=[#8]))]",
+        "smarts2": null,
+        "smartsPath": null,
+        "constraints": {},
+        "smarts1_size": null,
+        "smarts2_size": null
+    }
 ]
