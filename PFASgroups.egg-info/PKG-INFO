@@ -55,18 +55,25 @@ Major enhancement adding comprehensive NetworkX graph theory metrics for detaile
   - `diameter` and `radius` - Graph eccentricity bounds
   - `center`, `periphery`, `barycenter` - Structural node sets
   - `effective_graph_resistance` - Sum of resistance distances
+  - `component_fraction` - Fraction of molecule covered by component (includes all attached H, F, Cl, Br, I)
   - Distance metrics from functional groups to structural features
+- **Molecular Coverage Metrics**: New fraction-based metrics quantify fluorination extent:
+  - `mean_component_fraction` - Average coverage per component
+  - `total_components_fraction` - Total coverage by union of all components (accounts for overlaps)
 - **Summary Statistics**: Aggregated metrics across all components per PFAS group
 - **Enhanced Database Models**: New `Components` model stores individual component data with all metrics
-- **Improved Analysis**: Better understanding of molecular topology, branching, and functional group positioning
+- **Improved Analysis**: Better understanding of molecular topology, branching, functional group positioning, and fluorination extent
 
 **Breaking Changes:**
 - `parse_mols` output now includes additional summary metric fields (`mean_diameter`, `mean_radius`, etc.)
 - Database schema changes require migration (see `DATABASE_MIGRATION_GUIDE.md`)
 
 **Metrics Explained:**
-- `eccentricity` (0-1): Measures branching (1.0 = linear, 0.0 = highly branched)
+- `branching` (0-1): Measures linearity (1.0 = linear, 0.0 = highly branched) - renamed from "eccentricity"
+- `mean_eccentricity`, `median_eccentricity`: Graph-theoretic eccentricity statistics for component nodes
 - `smarts_centrality` (0-1): Functional group position (1.0 = central, 0.0 = peripheral)
+- `component_fraction` (0-1): Fraction of total molecule atoms in this component (includes all attached atoms)
+- `total_components_fraction` (0-1): Fraction of molecule covered by union of all components
 - `diameter`: Maximum distance between any two atoms in component
 - `radius`: Minimum eccentricity across component nodes
 - `barycenter`: Nodes minimizing total distance to all other nodes
