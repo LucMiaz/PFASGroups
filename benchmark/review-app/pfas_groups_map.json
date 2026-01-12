@@ -1,222 +1,297 @@
 [
   {
     "id": 1,
-    "name": "Perfluoroalkyl carboxylic acids"
+    "name": "Perfluoroalkyl carboxylic acids",
+    "alias": "PFCAs"
   },
   {
     "id": 2,
-    "name": "Polyfluoroalkyl carboxylic acid"
+    "name": "Polyfluoroalkyl carboxylic acid",
+    "alias": "PolyFCAs"
   },
   {
     "id": 3,
-    "name": "Perfluoroalkyl dicarboxylic acids"
+    "name": "Perfluoroalkyl dicarboxylic acids",
+    "alias": "PFdiCAs"
   },
   {
     "id": 4,
-    "name": "Perfluoroalkylether carboxylic acids"
+    "name": "Perfluoroalkylether carboxylic acids",
+    "alias": "PFECAs"
   },
   {
     "id": 5,
-    "name": "Polyfluoroalkylether carboxylic acid"
+    "name": "Polyfluoroalkylether carboxylic acid",
+    "alias": "PolyFECAs"
   },
   {
     "id": 6,
-    "name": "Perfluoroalkyl sulfonic acids"
+    "name": "Perfluoroalkyl sulfonic acids",
+    "alias": "PFSAs"
   },
   {
     "id": 7,
-    "name": "Polyfluoroalkyl sulfonic acid"
+    "name": "Polyfluoroalkyl sulfonic acid",
+    "alias": "PolyFSAs"
   },
   {
     "id": 8,
-    "name": "Perfluoroalkyl disulfonic acids"
+    "name": "Perfluoroalkyl disulfonic acids",
+    "alias": "PFdiSAs"
   },
   {
     "id": 9,
-    "name": "Perfluoroalkylether sulfonic acids"
+    "name": "Perfluoroalkylether sulfonic acids",
+    "alias": "PFESAs"
   },
   {
     "id": 10,
-    "name": "Polyfluoroalkylether sulfonic acid"
+    "name": "Polyfluoroalkylether sulfonic acid",
+    "alias": "PolyFESAs"
   },
   {
     "id": 11,
-    "name": "Perfluoroalkyl sulfinic acids"
+    "name": "Perfluoroalkyl sulfinic acids",
+    "alias": "PFSiAs"
   },
   {
     "id": 12,
-    "name": "Perfluoroalkyl phosphonic acids"
+    "name": "Perfluoroalkyl phosphonic acids",
+    "alias": "PFPAs"
   },
   {
     "id": 13,
-    "name": "Perfluoroalkyl phosphinic acids"
+    "name": "Perfluoroalkyl phosphinic acids",
+    "alias": "PFPiAs"
   },
   {
     "id": 14,
-    "name": "Perfluoroalkyl alcohols"
+    "name": "Perfluoroalkyl alcohols",
+    "alias": "Perfluoroalkyl alcohols"
   },
   {
     "id": 15,
-    "name": "fluorotelomer alcohols"
+    "name": "fluorotelomer alcohols",
+    "alias": "fluorotelomer alcohols"
   },
   {
     "id": 16,
-    "name": "Perfluoropolyethers"
+    "name": "Perfluoropolyethers",
+    "alias": "PFPEs"
   },
   {
     "id": 17,
-    "name": "Hydrofluoroethers"
+    "name": "Hydrofluoroethers",
+    "alias": "HFEs"
   },
   {
     "id": 18,
-    "name": "Perfluoroalkene"
+    "name": "Perfluoroalkene",
+    "alias": "Perfluoroalkene"
   },
   {
     "id": 19,
-    "name": "Hydrofluoroolefins"
+    "name": "Hydrofluoroolefins",
+    "alias": "HFOs"
   },
   {
     "id": 20,
-    "name": "Hydrofluorocarbons"
+    "name": "Hydrofluorocarbons",
+    "alias": "HFCs"
   },
   {
     "id": 21,
-    "name": "Semi-fluorinated alkanes"
+    "name": "Semi-fluorinated alkanes",
+    "alias": "SFAs"
   },
   {
     "id": 22,
-    "name": "Side-chain fluorinated aromatics"
+    "name": "Side-chain fluorinated aromatics",
+    "alias": "Side-chain fluorinated aromatics"
   },
   {
     "id": 23,
-    "name": "Perfluoroalkane"
+    "name": "Perfluoroalkane",
+    "alias": "Perfluoroalkane"
   },
   {
     "id": 24,
-    "name": "Perfluoroalkyl-tert-amines"
+    "name": "Perfluoroalkyl-tert-amines",
+    "alias": "Perfluoroalkyl-tert-amines"
   },
   {
     "id": 25,
-    "name": "Perfluoroalkyl iodides"
+    "name": "Perfluoroalkyl iodides",
+    "alias": "PFAIs"
   },
   {
     "id": 26,
-    "name": "Perfluoroalkane sulfonyl fluorides"
+    "name": "Perfluoroalkane sulfonyl fluorides",
+    "alias": "PASFs"
   },
   {
     "id": 27,
-    "name": "Perfluoroalkyl ketones"
+    "name": "Perfluoroalkyl ketones",
+    "alias": "Perfluoroalkyl ketones"
   },
   {
     "id": 28,
-    "name": "Semi-fluoroalkyl ketones"
+    "name": "Semi-fluoroalkyl ketones",
+    "alias": "Semi-fluoroalkyl ketones"
   },
   {
     "id": 29,
-    "name": "alcohol"
+    "name": "alcohol",
+    "alias": "alcohol"
   },
   {
     "id": 30,
-    "name": "ketone"
+    "name": "ketone",
+    "alias": "ketones"
   },
   {
     "id": 31,
-    "name": "ether"
+    "name": "ether",
+    "alias": "ether"
   },
   {
     "id": 32,
-    "name": "ester"
+    "name": "ester",
+    "alias": "ester"
   },
   {
     "id": 33,
-    "name": "carboxylic acid"
+    "name": "carboxylic acid",
+    "alias": "carboxylic acid"
   },
   {
     "id": 34,
-    "name": "amide"
+    "name": "amide",
+    "alias": "amide"
   },
   {
     "id": 35,
-    "name": "acyl halide"
+    "name": "acyl halide",
+    "alias": "acyl halide"
   },
   {
     "id": 36,
-    "name": "sulfonic acid"
+    "name": "sulfonic acid",
+    "alias": "sulfonic acid"
   },
   {
     "id": 37,
-    "name": "sulfenic acid"
+    "name": "sulfenic acid",
+    "alias": "sulfenic acid"
   },
   {
     "id": 38,
-    "name": "sulfinic acid"
+    "name": "sulfinic acid",
+    "alias": "sulfinic acid"
   },
   {
     "id": 39,
-    "name": "phosphonic acid"
+    "name": "phosphonic acid",
+    "alias": "phosphonic acid"
   },
   {
     "id": 40,
-    "name": "phosphinic acid"
+    "name": "phosphinic acid",
+    "alias": "phosphinic acid"
   },
   {
     "id": 41,
-    "name": "ethene"
+    "name": "chloride",
+    "alias": "chloride"
   },
   {
     "id": 42,
-    "name": "iodide"
+    "name": "bromide",
+    "alias": "bromide"
   },
   {
     "id": 43,
-    "name": "sulfonamide"
+    "name": "iodide",
+    "alias": "iodide"
   },
   {
     "id": 44,
-    "name": "Heterocyclic azole"
+    "name": "sulfonamide",
+    "alias": "sulfonamide"
   },
   {
     "id": 45,
-    "name": "Heterocyclic azine"
+    "name": "Heterocyclic azole",
+    "alias": "heterocyclic azole"
   },
   {
     "id": 46,
-    "name": "benzodioxole"
+    "name": "Heterocyclic azine",
+    "alias": "heterocyclic azine"
   },
   {
     "id": 47,
-    "name": "amine"
+    "name": "benzodioxole",
+    "alias": "benzodioxole"
   },
   {
     "id": 48,
-    "name": "alkane"
+    "name": "amine",
+    "alias": "amine"
   },
   {
     "id": 49,
-    "name": "alkene"
+    "name": "perfluoroalkyl",
+    "alias": "perfluoroalkyl"
   },
   {
     "id": 50,
-    "name": "alkyne"
+    "name": "polyfluoroalkyl",
+    "alias": "polyfluoroalkyl"
   },
   {
     "id": 51,
-    "name": "Side-chain aromatics"
+    "name": "alkene",
+    "alias": "alkene"
   },
   {
     "id": 52,
-    "name": "Perfluoro cyclic compounds"
+    "name": "alkyne",
+    "alias": "alkyne"
   },
   {
     "id": 53,
-    "name": "Polyfluoro cyclic compounds"
+    "name": "Side-chain aromatics",
+    "alias": "Side-chain aromatics"
   },
   {
     "id": 54,
-    "name": "Perfluoroaryl compounds"
+    "name": "Perfluoro cyclic compounds",
+    "alias": "Perfluoro cyclic compounds"
   },
   {
     "id": 55,
-    "name": "Polyfluoroaryl compounds"
+    "name": "Polyfluoro cyclic compounds",
+    "alias": "Polyfluoro cyclic compounds"
+  },
+  {
+    "id": 56,
+    "name": "Perfluoroaryl compounds",
+    "alias": "Perfluoroaryl compounds"
+  },
+  {
+    "id": 57,
+    "name": "Polyfluoroaryl compounds",
+    "alias": "Polyfluoroaryl compounds"
+  },
+  {
+    "id": 58,
+    "name": "Peroxydes",
+    "alias": "Peroxydes"
+  },
+  {
+    "id": 59,
+    "name": "Benzoyl peroxydes",
+    "alias": "Benzoyl peroxydes"
   }
 ]
