@@ -964,6 +964,10 @@ def load_componentsSolver(**kwargs):
     def inner(func):
         def wrapper(*args,**kwargs):
             mol = args[0]
+            # Add hydrogens to molecule before creating ComponentsSolver
+            # This ensures atom indices are consistent throughout the analysis
+            mol = Chem.AddHs(mol)
+            args[0] = mol
             with ComponentsSolver(mol) as fluorinated_components_dict:
                 kwargs['fluorinated_components_dict'] = kwargs.get('fluorinated_components_dict',fluorinated_components_dict)
                 return func(*args, **kwargs)
@@ -1345,6 +1349,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True, **kwar
     # Parse all molecules
     results = {}
     for mol in mols:
+        # Add hydrogens to ensure consistent atom indexing
+        mol_with_h = Chem.AddHs(mol)
         formula = CalcMolFormula(mol)
         bycomponent = kwargs.pop('bycomponent', False)
         matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
@@ -1370,7 +1376,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True, **kwar
                 
                 # Calculate total fraction covered by union of all carbon atoms in components
                 union_carbon_atoms = set()
-                total_carbons = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')
+                # Use molecule with hydrogens for consistent atom indexing
+                total_carbons = sum(1 for atom in mol_with_h.GetAtoms() if atom.GetSymbol() == 'C')
                 extra_carbons_count = 0
                 
                 for comp_dict in matched_components:
@@ -1379,13 +1386,13 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True, **kwar
                     
                     # Add carbon atoms from component
                     for atom_idx in component:
-                        if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
+                        if mol_with_h.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
                             union_carbon_atoms.add(atom_idx)
                     
                     # Add carbon atoms from SMARTS matches
                     if smarts_matches is not None:
                         for atom_idx in smarts_matches:
-                            if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
+                            if mol_with_h.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
                                 union_carbon_atoms.add(atom_idx)
                     
                     # Add extra carbons from functional groups
