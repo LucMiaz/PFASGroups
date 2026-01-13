@@ -967,7 +967,9 @@ def load_componentsSolver(**kwargs):
             # Add hydrogens to molecule before creating ComponentsSolver
             # This ensures atom indices are consistent throughout the analysis
             mol = Chem.AddHs(mol)
+            args = list(args)  # Convert to mutable list
             args[0] = mol
+            args = tuple(args)  # Convert back to tuple
             with ComponentsSolver(mol) as fluorinated_components_dict:
                 kwargs['fluorinated_components_dict'] = kwargs.get('fluorinated_components_dict',fluorinated_components_dict)
                 return func(*args, **kwargs)

@@ -55,7 +55,7 @@ class EnhancedPFASBenchmark:
             self.pfas_groups = json.load(f)
         
         # Load specificity test groups for OECD connections
-        specificity_path = os.path.join(parent_dir, 'PFASgroups', 'tests', 'specificity_test_groups.json')
+        specificity_path = os.path.join(parent_dir, 'tests', 'specificity_test_groups.json')
         with open(specificity_path, 'r') as f:
             self.specificity_groups = json.load(f)
         

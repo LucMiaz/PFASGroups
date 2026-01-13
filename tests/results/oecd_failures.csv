@@ -1,0 +1,74 @@
+group_id,group_name,expected_groups,detected_groups,smiles,issue_type
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])([H])C(F)(F)C([H])(F)C(F)=CC(F)(F)C([H])([H])F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(F)(C=C(F)C(F)(F)C([H])(F)F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C=C(F)C([H])(C([H])(F)F)C(F)(F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C(F)(F)C(F)=CC([H])(F)C(F)(F)C(F)(F)C(F)(F)C([H])([H])F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(F)=CC([H])(F)C(F)(C([H])(F)F)C(F)(F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C(F)(F)C(F)=CC([H])(C(F)(F)C([H])([H])F)C(F)(F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(F)=CC(F)(C(F)(F)F)C(F)(C([H])([H])F)C(F)(F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C(F)(F)C(F)=CC(C([H])(F)F)(C(F)(F)F)C(F)(C([H])([H])F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])([H])C(F)(F)C([H])(F)C(F)(C=C(F)C([H])([H])C([H])([H])F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C(F)(F)C(F)=CC([H])(F)C([H])(F)C(F)(C(F)(F)C([H])([H])F)C(F)(F)C([H])([H])F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(F)(C(F)=CC([H])(C([H])(F)F)C(F)(F)F)C([H])(F)C(F)(F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])([H])C([H])(C([H])(F)F)C([H])(C=C(F)C(F)(F)C([H])(F)F)C([H])(F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(F)=CC(C([H])(F)F)(C([H])(F)C([H])(F)F)C(F)(C([H])(F)F)C(F)(F)C([H])([H])F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C(F)(F)C(F)=CC([H])(C([H])(F)F)C([H])(F)C(F)(F)C(F)(F)C(F)(C([H])(F)F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C([H])(F)C(F)=CC(F)(C([H])(F)F)C(C([H])([H])F)(C([H])(F)F)C([H])(F)C([H])([H])F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])([H])C(F)(C(F)(F)F)C([H])(C([H])([H])F)C(F)(C=C(F)C(F)(F)C([H])(F)F)C([H])(F)C([H])([H])F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(C(F)(F)F)(C([H])(F)C(F)(F)F)C(C=C(F)C([H])(F)C([H])(F)F)(C([H])(F)F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(C([H])(F)F)(C([H])(F)C=C(F)C([H])(C([H])(F)F)C([H])(F)F)C([H])(C([H])(F)F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C(F)(F)C(F)=CC([H])([H])C(C(F)(F)F)(C([H])(F)C([H])([H])[H])C(C([H])(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(F)=CC([H])(F)C(F)(F)C([H])(C(F)(F)C([H])(F)F)C(C([H])([H])F)(C([H])(F)F)C(F)(F)C([H])([H])F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])([H])C(C([H])([H])F)(C([H])(F)C(F)=CC(F)(C(F)(F)C([H])(F)F)C(F)(F)C([H])(F)F)C(F)(F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C([H])(F)C([H])(F)C(C([H])(F)C([H])([H])F)(C([H])(F)C(F)(F)C=C(F)C(F)(F)C([H])(F)F)C(F)(F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C(F)(F)C(F)=CC(C([H])([H])F)(C([H])(F)F)C(F)(F)C([H])(C([H])([H])C([H])(F)C(F)(F)F)C(F)(C([H])(F)F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C([H])(C(F)=CC(C([H])([H])C([H])(F)F)(C(F)(F)C([H])(F)C([H])(F)F)C(F)(C([H])([H])F)C([H])(F)F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C([H])(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C([H])([H])F)C(F)(C(F)(F)C=C(F)C(F)(F)C([H])(F)F)C([H])(F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])([H])C(C([H])([H])F)(C([H])(F)F)C(F)(C(F)(C=C(F)C(F)(F)C(F)(F)F)C([H])(F)C(F)(F)F)C([H])(C([H])(F)F)C([H])(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(C([H])(F)F)(C(F)(F)F)C(F)(C=C(F)C([H])(F)C([H])(F)C(F)(F)C([H])(F)C([H])(F)F)C([H])(F)C([H])(F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(F)=CC([H])([H])C(C([H])(F)C([H])(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C([H])([H])F)C(C([H])([H])F)(C(F)(F)F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])([H])C(F)=CC(F)(C([H])([H])F)C(C([H])(F)F)(C(F)(F)F)C([H])(C(F)(F)C([H])([H])F)C(F)(F)C([H])(C([H])(F)F)C(F)(F)C(F)(F)F,non-identification
+19,Hydrofluoroolefins,[19],"[49, 50, 51]",[H]C([H])(F)C(F)(F)C(C=C(F)C(F)(C([H])([H])F)C(F)(C([H])([H])F)C([H])(C([H])(F)C(F)(F)F)C(F)(F)C([H])(F)F)(C([H])([H])F)C([H])(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C(F)(c1ccccc1)C(F)(C(F)(F)F)C([H])(F)C(F)(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C(F)(F)C(C([H])(F)F)(C(F)(F)F)C([H])([H])C([H])(F)c1ccccc1,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C(F)(F)C([H])([H])C(C(F)(F)F)(C([H])(F)c1ccccc1)C([H])(F)C([H])(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C([H])(F)C([H])([H])C(C(F)(F)F)(C([H])(F)c1ccccc1)C([H])([H])C(F)(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C(F)(F)C([H])(F)C(C([H])(F)F)(C(F)(F)F)C([H])(F)C([H])(F)C([H])(F)c1ccccc1,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C([H])(F)C(F)(C(F)(F)C([H])(F)F)C(C([H])(F)F)(C([H])(F)c1ccccc1)C(F)(F)C([H])(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C(F)(F)C([H])(F)C(F)(F)C(C(F)(F)F)(C([H])(F)C([H])(F)F)C(F)(F)C([H])(F)c1ccccc1,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C([H])(F)C(F)(C([H])(F)F)C(F)(C([H])(F)F)C(C([H])([H])F)(C([H])(F)F)C([H])(c1ccccc1)C([H])(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C([H])(F)C(F)(C([H])(F)C(C([H])([H])F)(C([H])(F)c1ccccc1)C(F)(C([H])(F)F)C([H])(F)F)C(F)(F)C(F)(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C([H])(F)C(F)(C(F)(F)C(F)(C([H])(F)F)C([H])(F)F)C([H])(C([H])([H])c1ccccc1)C(C([H])([H])F)(C([H])(F)F)C(F)(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C([H])(F)C(C([H])(F)F)(C([H])(F)F)C(C([H])([H])C(F)(F)C([H])(F)c1ccccc1)(C([H])(F)C([H])(F)F)C(F)(F)C(F)(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C([H])(F)C([H])([H])C(C([H])([H])C(c1ccccc1)(C([H])(F)F)C(F)(F)F)(C([H])(F)C(F)(F)C([H])(F)F)C(C([H])([H])F)(C([H])(F)F)C([H])(F)F,non-identification
+22,Side-chain fluorinated aromatics,[22],"[49, 50, 53]",[H]C([H])(F)C(F)(C([H])(F)c1ccccc1)C([H])(F)C([H])(F)C(C([H])(F)F)(C([H])(C([H])(F)F)C(F)(F)F)C([H])(C([H])(F)F)C(F)(F)C([H])(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F,non-identification
+26,Perfluoroalkane sulfonyl fluorides,[26],"[49, 50]",O=S(=O)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F,non-identification

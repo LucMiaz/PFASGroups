@@ -92,7 +92,7 @@ def analyze_enhanced_benchmark(data):
     
     # Load specificity connections for OECD analysis
     try:
-        with open('/home/luc/git/PFASGroups/PFASgroups/tests/specificity_test_groups.json', 'r') as f:
+        with open('/home/luc/git/PFASGroups/tests/specificity_test_groups.json', 'r') as f:
             specificity_groups = json.load(f)
     except:
         specificity_groups = []
