@@ -95,7 +95,7 @@ class PFASGroup():
         self.smarts2_extra_atoms = self._count_smarts_extra_atoms(self.smarts2, self.smarts2_str, self.smarts2_size)
     
     def _count_smarts_extra_atoms(self, smarts_mol, smarts_str, manual_size=None):
-        """Count number of extra atoms in functional group beyond what's captured by component expansion.
+        """Count number of extra carbon atoms in functional group beyond what's captured by component.
         
         Parameters
         ----------
@@ -104,48 +104,35 @@ class PFASGroup():
         smarts_str : str or None
             Original SMARTS string before compilation
         manual_size : int or None
-            Manually specified total atom count for the SMARTS pattern (from JSON).
-            If provided, returns manual_size - 1 (to exclude the matched atom).
+            Manually specified number of carbon atoms in the SMARTS pattern (from JSON).
+            If provided, returns manual_size - 1 (to exclude the matched carbon atom).
             
         Returns
         -------
         int
-            Estimated number of extra atoms (O, S, N, P) not captured by get_full_component_atoms
+            Number of extra carbon atoms beyond the matched atom
         
         Notes
         -----
-        The component fraction calculation already includes:
-        1. Carbon backbone atoms (in component)
-        2. H, F, Cl, Br, I neighbors (via get_full_component_atoms)
-        3. SMARTS matched atoms (in smarts_matches)
-        
-        This counts additional heteroatoms (O, S, N, P) in functional groups that are
-        NOT captured by the above, mainly because get_full_component_atoms only expands
-        to halogen/hydrogen neighbors.
+        The component fraction calculation is now based on carbon atoms only:
+        1. Carbon atoms in component
+        2. Carbon atoms in SMARTS matches
+        3. Additional carbon atoms from SMARTS (this return value)
         
         If manual_size is provided in the JSON (smarts1_size or smarts2_size), it represents
-        the total number of atoms in the functional group, so we subtract 1 for the matched atom.
+        the total number of CARBON atoms in the functional group, so we subtract 1 for the matched carbon.
+        
+        For automatic counting (when manual_size is None), this returns 0 since we now focus only
+        on carbons and they are already counted in the component and SMARTS matches.
         """
-        # Use manual size if provided (subtract 1 for the matched atom itself)
+        # Use manual size if provided (subtract 1 for the matched carbon atom itself)
         if manual_size is not None:
             return max(0, manual_size - 1)
         
-        if smarts_mol is None or smarts_str is None:
-            return 0
-        
-        # Count O, S, N, P patterns in the SMARTS string
-        # These represent functional group atoms not captured by halogen expansion
-        extra = 0
-        
-        # Count explicit O, S, N, P references
-        extra += smarts_str.count('=O')  # Carbonyl, sulfone oxygens
-        extra += smarts_str.count('[O')  # Explicit oxygen atoms  
-        extra += smarts_str.count('[#8]')  # Oxygen by atomic number
-        extra += smarts_str.count('[#16]')  # Sulfur
-        extra += smarts_str.count('[#15]')  # Phosphorus
-        extra += smarts_str.count('[#7]')  # Nitrogen (not in amines already captured)
-        
-        return extra
+        # Since we now focus on carbon atoms only, and carbons are already counted
+        # in the component and SMARTS matches, we don't need to add extra atoms
+        # when manual_size is not provided
+        return 0
     
     def __str__(self):
         return self.name

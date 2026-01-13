@@ -33,7 +33,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -71,7 +71,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -105,8 +105,8 @@
                 }
             }
         },
-        "smarts1_size": null,
-        "smarts2_size": null
+        "smarts1_size": 2,
+        "smarts2_size": 2
     },
     {
         "id": 4,
@@ -140,7 +140,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -182,7 +182,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -218,7 +218,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -264,7 +264,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -303,8 +303,8 @@
                 }
             }
         },
-        "smarts1_size": null,
-        "smarts2_size": null
+        "smarts1_size": 1,
+        "smarts2_size": 1
     },
     {
         "id": 9,
@@ -345,7 +345,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -391,7 +391,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -426,7 +426,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -462,7 +462,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -498,7 +498,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -530,7 +530,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -549,7 +549,7 @@
                 "O": 1
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 3,
         "smarts2_size": null
     },
     {
@@ -582,8 +582,8 @@
                 }
             }
         },
-        "smarts1_size": null,
-        "smarts2_size": null
+        "smarts1_size": 2,
+        "smarts2_size": 2
     },
     {
         "id": 17,
@@ -617,7 +617,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -645,7 +645,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -670,7 +670,7 @@
                 "H"
             ]
         },
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -738,7 +738,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -751,7 +751,7 @@
         "smarts2": null,
         "smartsPath": "Perfluoroalkyl",
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -810,7 +810,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -848,10 +848,10 @@
         "alias": "PASFs",
         "base_functional_groups": "",
         "main_group": "Perfluoroalkyl acids precursors",
-        "smarts1": "[#6$([#16](=O)(=O)[F])]",
+        "smarts1": "[#6$([#6][#16](=O)(=O)[F])]",
         "smarts2": null,
         "smartsPath": "Perfluoroalkyl",
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {
             "rel": {
                 "C": {
@@ -863,7 +863,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -893,7 +893,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -929,7 +929,7 @@
                 }
             }
         },
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -942,9 +942,10 @@
         "main_group": "other perfluorinated compound",
         "smarts1": "[#6$([#6;!$([#6]=O)][OH1,Oh1,O-])]",
         "smarts2": null,
-        "smartsPath": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -959,7 +960,7 @@
         "smarts2": null,
         "smartsPath": null,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -970,9 +971,10 @@
         "main_group": "other perfluorinated compound",
         "smarts1": "[#6$([#6]([#8X2H0][#6;!$(C=O)])[#1,!$(C=O)]);#6!$([#6](=O))]",
         "smarts2": null,
-        "smartsPath": null,
+        "smartsPath": "Polyfluoroalkyl",
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -986,9 +988,9 @@
         "smarts1": "[#6X4$([#6](=O)O[#6]),#6X4$([#6]O[#6](=O)[#6])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -1002,9 +1004,9 @@
         "smarts1": "[$([#6](=O)[OH1,Oh1,O-])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1018,9 +1020,9 @@
         "smarts1": "[$([#6]([#7H0,#7H1,#7h1,#7H2])=[#8]),$([#6]~[#7H0,#7H1,#7h1,#7H2][#6X3]=[#8])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1034,9 +1036,9 @@
         "smarts1": "[#6$([#6](=O)[#9,#17,#35,#53])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1047,12 +1049,12 @@
             "sulfonic acid"
         ],
         "main_group": "other perfluorinated compound",
-        "smarts1": "[$([#16](=O)(=O)[O-,OH1,Oh1])]",
+        "smarts1": "[#6$([#6][#16](=O)(=O)[O-,OH1,Oh1])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1063,12 +1065,12 @@
             "sulfenic acid"
         ],
         "main_group": "other perfluorinated compound",
-        "smarts1": "[$([#16X2][OH1,Oh1,O-])]",
+        "smarts1": "[#6$([#6][#16X2][OH1,Oh1,O-])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1079,12 +1081,12 @@
             "sulfinic acid"
         ],
         "main_group": "other perfluorinated compound",
-        "smarts1": "[$([#16X3](=O)[O])]",
+        "smarts1": "[#6$([#6][#16X3](=O)[O])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1095,12 +1097,12 @@
             "phosphonic acid"
         ],
         "main_group": "other perfluorinated compound",
-        "smarts1": "[#6$([#15]([#8])(=[#8])[#8])]",
+        "smarts1": "[#6$([#6][#15]([#8])(=[#8])[#8])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1111,12 +1113,12 @@
             "phosphinic acid"
         ],
         "main_group": "other perfluorinated compound",
-        "smarts1": "[#6$([#15](=[#8])([#8])[#1;!$([#8])])]",
+        "smarts1": "[#6$([#6][#15](=[#8])([#8])[#1;!$([#8])])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1132,7 +1134,7 @@
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1148,7 +1150,7 @@
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1164,7 +1166,7 @@
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1175,11 +1177,11 @@
             "sulfonamide"
         ],
         "main_group": "other perfluorinated compound",
-        "smarts1": "[$(*[#16]([#7])(=[#8])=[#8]),$(*[#7][#16](=[#8])=[#8])]",
+        "smarts1": "[$([#16]([#7])(=[#8])=[#8]),$(*[#7][#16](=[#8])=[#8])]",
         "smarts2": null,
         "smartsPath": null,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1192,8 +1194,8 @@
         "main_group": "other perfluorinated compound",
         "smarts1": "[$(*[#7r5,$([#6r5,#8r5,#16r5]:[#7r5]),$([#6r5,#8r5,#16r5]:[#6r5,#8r5,#16r5]:[#7r5])])]",
         "smarts2": null,
-        "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "smartsPath": "Polyfluoroalkyl",
+        "max_dist_from_CF": 0,
         "constraints": {},
         "definition": "Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American Heritage\u00c2\u00ae Dictionary of the English Language, 5th Edition)",
         "smarts1_size": null,
@@ -1210,7 +1212,7 @@
         "smarts1": "[$(*[#7r6,$([#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6])])]",
         "smarts2": null,
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "constraints": {},
         "definition": "A six-membered heterocyclic compound, such as pyridine, that contains one or more atoms of nitrogen with a ring structure resembling that of benzene. (The American Heritage\u00c2\u00ae Dictionary of the English Language, 5th Edition)",
         "smarts1_size": null,
@@ -1249,7 +1251,7 @@
         "smarts2": null,
         "smartsPath": null,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1295,7 +1297,7 @@
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -1311,7 +1313,7 @@
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 2,
         "smarts2_size": null
     },
     {
@@ -1326,7 +1328,7 @@
         "smarts2": null,
         "smartsPath": null,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 7,
         "smarts2_size": null
     },
     {
@@ -1401,7 +1403,7 @@
         "smarts2": null,
         "smartsPath": null,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 1,
         "smarts2_size": null
     },
     {
@@ -1416,7 +1418,7 @@
         "smarts2": null,
         "smartsPath": null,
         "constraints": {},
-        "smarts1_size": null,
+        "smarts1_size": 3,
         "smarts2_size": null
     }
 ]

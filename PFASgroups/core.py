@@ -397,6 +397,7 @@ class ComponentsSolver:
         self.smartsPaths = kwargs.get('smartsPaths')
         self.mol = mol
         self.mol_size = mol.GetNumAtoms()  # Total atoms in molecule for fraction calculation
+        self.total_carbons = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')  # Total carbon atoms
         self.G = mol_to_nx(mol)
         self.components = self.get_fluorinated_subgraph()
         self.extended_components = {k:{0:v} for k,v in self.components.items()}
@@ -484,7 +485,7 @@ class ComponentsSolver:
         return full_component
     
     def get_total_components_fraction(self, matched_components_list):
-        """Calculate the fraction of the molecule covered by the union of all components.
+        """Calculate the fraction of carbon atoms in the molecule covered by the union of all components.
         
         Parameters
         ----------
@@ -494,27 +495,42 @@ class ComponentsSolver:
         Returns
         -------
         float
-            Fraction of molecule covered by the union of all components (0.0 to 1.0)
+            Fraction of carbon atoms covered by the union of all components (0.0 to 1.0)
         """
-        if len(matched_components_list) == 0:
+        if len(matched_components_list) == 0 or self.total_carbons == 0:
             return 0.0
         
-        # Union all full components
-        union_atoms = set()
+        # Union all carbon atoms from components and SMARTS matches
+        union_carbon_atoms = set()
         for comp_dict in matched_components_list:
             component = set(comp_dict.get('component', []))
             smarts_matches = comp_dict.get('smarts_matches')
             
-            # Get full component with all attached atoms
-            full_comp = self.get_full_component_atoms(component)
-            union_atoms = union_atoms.union(full_comp)
+            # Add carbon atoms from component
+            for atom_idx in component:
+                if self.mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
+                    union_carbon_atoms.add(atom_idx)
             
-            # Add SMARTS-matched atoms if present
+            # Add carbon atoms from SMARTS matches
             if smarts_matches is not None:
-                union_atoms = union_atoms.union(smarts_matches)
+                for atom_idx in smarts_matches:
+                    if self.mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
+                        union_carbon_atoms.add(atom_idx)
         
-        # Calculate fraction
-        total_fraction = len(union_atoms) / self.mol_size if self.mol_size > 0 else 0.0
+        # Add extra carbons from functional groups
+        # This accounts for carbons in functional groups that are not matched by SMARTS
+        # For example, in -COOH, if SMARTS matches the adjacent carbon, we need to add
+        # the carbonyl carbon from smarts_extra_atoms
+        extra_carbons_count = 0
+        for comp_dict in matched_components_list:
+            # Get smarts_extra_atoms from pfas_group if available
+            if 'smarts_extra_atoms' in comp_dict:
+                extra_carbons_count += comp_dict['smarts_extra_atoms']
+        
+        # Total = union of matched carbons + extra functional group carbons
+        # Cap at total_carbons to avoid exceeding 1.0
+        total_carbon_count = min(len(union_carbon_atoms) + extra_carbons_count, self.total_carbons)
+        total_fraction = total_carbon_count / self.total_carbons
         return total_fraction
     
     def _precompute_component_metrics(self):
@@ -878,24 +894,33 @@ class ComponentsSolver:
             mean_eccentricity = 0.0
             median_eccentricity = 0.0
         
-        # Calculate component fraction using full component size (including H, F, halogens)
-        # Get full component with all attached atoms
-        full_component = self.get_full_component_atoms(component)
-        # Add SMARTS-matched atoms if present
+        # Calculate component fraction based on carbon atoms only
+        # Count carbon atoms in component
+        component_carbons = sum(1 for atom_idx in component if self.mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C')
+        
+        # Count carbon atoms in SMARTS matches that are NOT already in the component
+        smarts_carbons_not_in_component = 0
         if smarts_matches is not None:
-            full_component = full_component.union(smarts_matches)
-        component_full_size = len(full_component)
+            for atom_idx in smarts_matches:
+                if self.mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C' and atom_idx not in component:
+                    smarts_carbons_not_in_component += 1
         
-        # Add precomputed SMARTS extra atoms to get better estimate of actual coverage
-        estimated_full_size = component_full_size + smarts_extra_atoms
+        # smarts_extra_atoms represents additional carbons in the functional group beyond the matched carbon
+        # For example, if smarts1_size=2, it means the functional group has 2 carbons total:
+        # - 1 matched carbon (counted either in component_carbons or smarts_carbons_not_in_component)
+        # - 1 extra carbon (from smarts_extra_atoms = smarts1_size - 1 = 2 - 1 = 1)
+        # So we always add smarts_extra_atoms regardless of whether matched carbon is in component
         
-        component_fraction = estimated_full_size / self.mol_size if self.mol_size > 0 else 0.0
+        total_carbons_in_component = component_carbons + smarts_carbons_not_in_component + smarts_extra_atoms
+        
+        component_fraction = total_carbons_in_component / self.total_carbons if self.total_carbons > 0 else 0.0
         
         result = {
             'component': list(component), 
             'size': len(component), 
             'component_fraction': component_fraction,  # Fraction of molecule covered by component
             'smarts_matches': list(smarts_matches) if smarts_matches is not None else None,  # Store for union calculation
+            'smarts_extra_atoms': smarts_extra_atoms,  # Extra carbons from functional group
             'SMARTS': smarts_type,
             # Basic metrics
             'branching': basic_metrics['branching'],
@@ -1056,15 +1081,11 @@ def find_alkyl_components(mol, smarts, components, pathType=None, max_dist=0, co
         else:
             # Provide fallback with basic metrics only
             basic_metrics = calculate_component_metrics(G, comp, subset)
-            # Calculate full component size including attached atoms
-            full_comp = set(comp)
-            for atom_idx in comp:
-                atom = mol.GetAtomWithIdx(atom_idx)
-                for neighbor in atom.GetNeighbors():
-                    full_comp.add(neighbor.GetIdx())
-            # Add SMARTS matches
-            full_comp = full_comp.union(subset)
-            component_fraction = len(full_comp) / mol.GetNumAtoms() if mol.GetNumAtoms() > 0 else 0.0
+            # Calculate component fraction based on carbon atoms
+            total_carbons = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')
+            comp_carbons = sum(1 for atom_idx in comp if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C')
+            smarts_carbons = sum(1 for atom_idx in subset if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C')
+            component_fraction = (comp_carbons + smarts_carbons) / total_carbons if total_carbons > 0 else 0.0
             
             matched_components.append({
                 'component': list(comp), 
@@ -1347,26 +1368,34 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True, **kwar
                 mean_median_eccentricity = sum([c['median_eccentricity'] for c in matched_components])/len(matched_components)
                 mean_component_fraction = sum([c['component_fraction'] for c in matched_components])/len(matched_components)
                 
-                # Calculate total fraction covered by union of all components
-                # Need to compute union of all full component atoms
-                union_atoms = set()
+                # Calculate total fraction covered by union of all carbon atoms in components
+                union_carbon_atoms = set()
+                total_carbons = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')
+                extra_carbons_count = 0
+                
                 for comp_dict in matched_components:
                     component = set(comp_dict.get('component', []))
                     smarts_matches = comp_dict.get('smarts_matches')
                     
-                    # Get all atoms including attached H, F, halogens
-                    full_comp = set(component)
+                    # Add carbon atoms from component
                     for atom_idx in component:
-                        atom = mol.GetAtomWithIdx(atom_idx)
-                        for neighbor in atom.GetNeighbors():
-                            full_comp.add(neighbor.GetIdx())
-                    union_atoms = union_atoms.union(full_comp)
+                        if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
+                            union_carbon_atoms.add(atom_idx)
                     
-                    # Add SMARTS-matched atoms if present
+                    # Add carbon atoms from SMARTS matches
                     if smarts_matches is not None:
-                        union_atoms = union_atoms.union(set(smarts_matches))
+                        for atom_idx in smarts_matches:
+                            if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
+                                union_carbon_atoms.add(atom_idx)
+                    
+                    # Add extra carbons from functional groups
+                    if 'smarts_extra_atoms' in comp_dict:
+                        extra_carbons_count += comp_dict['smarts_extra_atoms']
                 
-                total_components_fraction = len(union_atoms) / mol.GetNumAtoms() if mol.GetNumAtoms() > 0 else 0.0
+                # Total = union of matched carbons + extra functional group carbons
+                # Cap at total_carbons to avoid exceeding 1.0
+                total_carbon_count = min(len(union_carbon_atoms) + extra_carbons_count, total_carbons)
+                total_components_fraction = total_carbon_count / total_carbons if total_carbons > 0 else 0.0
                 
                 # Graph structure metrics summaries
                 diameters = [c['diameter'] for c in matched_components if not (isinstance(c['diameter'], float) and (c['diameter'] != c['diameter'] or c['diameter'] == float('inf')))]

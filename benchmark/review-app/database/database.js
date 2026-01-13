@@ -8,6 +8,8 @@ class DatabaseWrapper {
         this.db = null;
         this.isReady = false;
         this.initPromise = this.initialize();
+        this.saveTimeout = null;
+        this.isSaving = false;
     }
 
     async initialize() {
@@ -174,11 +176,72 @@ class DatabaseWrapper {
     }
 
     save() {
-        if (this.db) {
-            const data = this.db.export();
-            const buffer = Buffer.from(data);
-            fs.writeFileSync(this.dbPath, buffer);
+        if (!this.db) return;
+        
+        // Debounce saves to avoid too frequent writes
+        if (this.saveTimeout) {
+            clearTimeout(this.saveTimeout);
         }
+        
+        this.saveTimeout = setTimeout(() => {
+            if (this.isSaving) {
+                console.log('Save already in progress, skipping...');
+                return;
+            }
+            
+            this.isSaving = true;
+            
+            try {
+                const data = this.db.export();
+                const buffer = Buffer.from(data);
+                
+                // Write to a temporary file first
+                const tempPath = this.dbPath + '.tmp';
+                fs.writeFileSync(tempPath, buffer);
+                
+                // Then rename it (atomic operation on most systems)
+                if (fs.existsSync(this.dbPath)) {
+                    // On Windows, we need to remove the target first
+                    const backupPath = this.dbPath + '.backup';
+                    if (fs.existsSync(backupPath)) {
+                        try {
+                            fs.unlinkSync(backupPath);
+                        } catch (e) {
+                            // Ignore if backup can't be removed
+                        }
+                    }
+                    try {
+                        fs.renameSync(this.dbPath, backupPath);
+                    } catch (e) {
+                        console.warn('Could not create backup:', e.message);
+                    }
+                }
+                fs.renameSync(tempPath, this.dbPath);
+                
+                // Clean up old backup
+                const backupPath = this.dbPath + '.backup';
+                if (fs.existsSync(backupPath)) {
+                    try {
+                        fs.unlinkSync(backupPath);
+                    } catch (e) {
+                        // Ignore if backup can't be removed
+                    }
+                }
+            } catch (err) {
+                console.error('Error saving database:', err.message);
+                // Try to recover from temp file if it exists
+                const tempPath = this.dbPath + '.tmp';
+                if (fs.existsSync(tempPath)) {
+                    try {
+                        fs.unlinkSync(tempPath);
+                    } catch (e) {
+                        // Ignore
+                    }
+                }
+            } finally {
+                this.isSaving = false;
+            }
+        }, 100); // Debounce by 100ms
     }
 
     // Helper method to run queries
@@ -187,7 +250,10 @@ class DatabaseWrapper {
         try {
             this.db.run(sql, params);
             const lastId = this.db.exec("SELECT last_insert_rowid() as id")[0]?.values[0]?.[0] || 0;
-            this.save();
+            
+            // Save asynchronously to avoid blocking
+            setImmediate(() => this.save());
+            
             return { id: lastId, changes: this.db.getRowsModified() };
         } catch (err) {
             throw err;
@@ -243,9 +309,30 @@ class DatabaseWrapper {
     async close() {
         await this.waitForReady();
         try {
-            this.save();
-            this.db.close();
+            // Clear any pending save timeout
+            if (this.saveTimeout) {
+                clearTimeout(this.saveTimeout);
+            }
+            
+            // Wait for any ongoing save to complete
+            while (this.isSaving) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+            
+            // Do final save synchronously
+            if (this.db) {
+                try {
+                    const data = this.db.export();
+                    const buffer = Buffer.from(data);
+                    fs.writeFileSync(this.dbPath, buffer);
+                    console.log('Database saved on close');
+                } catch (err) {
+                    console.error('Error saving database on close:', err.message);
+                }
+                this.db.close();
+            }
         } catch (err) {
+            console.error('Error closing database:', err.message);
             throw err;
         }
     }
