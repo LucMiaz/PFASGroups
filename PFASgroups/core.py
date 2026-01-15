@@ -20,7 +20,7 @@ from itertools import product, groupby
 import svgutils.transform as sg
 from .draw_mols import draw_images, plot_mols
 
-PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl','Polyfluoro','Polyfluorobr']
+PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl']
 
 # --- Load SMARTS paths from fpaths.json ---
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -60,12 +60,12 @@ def load_PFASDefinitions():
     return inner
 
 # --- Add SMARTS paths to function ---
-def add_smartsPath(names =PATH_NAMES, filename = FPATHS_FILE):
+def add_smartsPath(filename = FPATHS_FILE):
     """Yields SMARTS for chains"""
     paths = {}
-    pathsEnd = {}
     with open(filename,'r') as f:
-        fpaths = json.load(f) 
+        fpaths = json.load(f)
+    names = fpaths.keys()
     for n in names:
         s = fpaths[n]['chain']
         e = fpaths[n]['end']
@@ -1042,8 +1042,7 @@ def calculate_component_metrics(G, component, smarts_matches):
     
     return {'branching': branching, 'smarts_centrality': smarts_centrality}
 
-
-def find_alkyl_components(mol, smarts, components, pathType=None, max_dist=0, component_solver=None, **kwargs):
+def find_alkyl_components(mol, smarts, components, pathType, component_solver, max_dist=0, **kwargs):
     """Find alkyl components in a molecule with comprehensive metrics.
     
     When max_dist > 0:
@@ -1055,64 +1054,37 @@ def find_alkyl_components(mol, smarts, components, pathType=None, max_dist=0, co
     if len(subset)==0:
         return 0, [], 0, []
     
-    # Get molecular graph for metrics calculation
-    G = kwargs.get('G', mol_to_nx(mol))
+    if pathType is not None:
+        pathTypes = [pathType]
+    else:
+        pathTypes = component_solver.smartsPaths.keys()
     
     # Filter components connected to the smarts and get augmented versions
-    final_components = []
-    for i, comp in enumerate(components):
-        if len(subset.intersection(comp)) > 0:
-            # Get augmented component (handles max_dist > 0 automatically)
-            if component_solver is not None and pathType is not None:
-                augmented = component_solver.get_augmented_component(
-                    pathType, max_dist, i, subset
-                )
-            else:
-                augmented = comp
-            final_components.append(augmented)
-    
-    if len(final_components) == 0:
-        return 0, [], 0, []
-    
-    component_sizes = [len(x) for x in final_components]
-    
-    # Convert components to dictionary format with comprehensive metrics
     pfas_group = kwargs.get('pfas_group', None)
     matched_components = []
-    for comp in final_components:
-        if component_solver is not None:
-            matched_components.append(
-                component_solver.get_matched_component_dict(comp, subset, 'alkyl', pfas_group)
-            )
-        else:
-            # Provide fallback with basic metrics only
-            basic_metrics = calculate_component_metrics(G, comp, subset)
-            # Calculate component fraction based on carbon atoms
-            total_carbons = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')
-            comp_carbons = sum(1 for atom_idx in comp if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C')
-            smarts_carbons = sum(1 for atom_idx in subset if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C')
-            component_fraction = (comp_carbons + smarts_carbons) / total_carbons if total_carbons > 0 else 0.0
-            
-            matched_components.append({
-                'component': list(comp), 
-                'size': len(comp),
-                'component_fraction': component_fraction,
-                'smarts_matches': list(subset),
-                'SMARTS': 'alkyl',
-                'branching': basic_metrics['branching'],
-                'smarts_centrality': basic_metrics['smarts_centrality'],
-                'diameter': float('nan'),
-                'radius': float('nan'),
-                'effective_graph_resistance': float('nan'),
-                'eccentricity_values': {},
-                'mean_eccentricity': 0.0,
-                'median_eccentricity': 0.0,
-                'center': [],
-                'periphery': [],
-                'barycenter': []
-            })
+    for _pathType in pathTypes:
+        extended_components = component_solver.get(_pathType, max_dist, [])
+        for i, comp in enumerate(extended_components):
+            # Check if this component is connected to SMARTS matches
+            augmented = component_solver.get_augmented_component(
+                    _pathType, max_dist, i, subset
+                )
+            if len(subset.intersection(augmented)) > 0:
+                matched_components.append(
+                component_solver.get_matched_component_dict(comp, subset, _pathType, pfas_group)
+                )
     
-    return max([0]+[len(x) for x in final_components]), component_sizes, len(final_components), matched_components
+    if len(matched_components) == 0:
+        return 0, [], 0, []
+    
+    # Get all component sizes from all path types
+    all_components = list(set([comp for comps in matched_components for comp in comps]))
+    component_sizes = [len(x) for x in all_components]
+    
+    # Convert components to dictionary format with comprehensive metrics
+    
+    
+    return max([0] + component_sizes), component_sizes, len(all_components), matched_components
 
 def find_aryl_components(mol, aryl_smarts, component_solver=None, **kwargs):
     """Find aryl components in a molecule with comprehensive metrics."""
@@ -1719,6 +1691,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
     else:
         return fingerprints, group_info
 
+@add_smartsPath()
 def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, **kwargs):
     """
     Plot PFAS group assignments for a list of SMILES strings.
@@ -1742,9 +1715,10 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
     if isinstance(smiles, str):
         smiles = [smiles]
     imgs = []
+    path_names = list(kwargs.get('smartsPaths',{'Perfluoroalkyl':'Perfluoroalkyl','Polyfluoroalkyl':'Polyfluoroalkyl'}).keys())
     for i, s in enumerate(paths):
         if isinstance(s, int):
-            paths[i] = PATH_NAMES[s]
+            paths[i] = path_names[s]
     def draw_subfig(legend, atoms=[]):
         if svg is True:
             d2d = Draw.MolDraw2DSVG(subwidth, subheight)
