@@ -1,13 +1,13 @@
 {
   "summary": {
     "total_molecules": 200,
-    "pfasgroups_avg_time": 89.39476934649429,
-    "pfasgroups_std_time": 88.54808091901431,
-    "atlas_avg_time": 53.53678282900364,
-    "atlas_std_time": 11.487941860411677,
-    "speed_ratio": 0.5988804850706083,
+    "pfasgroups_avg_time": 65.22986776102425,
+    "pfasgroups_std_time": 65.40152545285095,
+    "atlas_avg_time": 55.255259665002995,
+    "atlas_std_time": 11.96930469265634,
+    "speed_ratio": 0.8470852626504752,
     "iterations": 10,
-    "timestamp": "20260114_011842"
+    "timestamp": "20260116_225641"
   },
   "system_specs": {
     "system": "Linux",
@@ -18,24 +18,24 @@
     "cpu_cores_logical": 8,
     "cpu_cores_physical": 4,
     "total_memory_gb": 15.5,
-    "available_memory_gb": 8.23
+    "available_memory_gb": 7.94
   },
   "figures": [
     {
       "title": "Timing Scatter Plot",
-      "url": "/analysis-reports/timing_scatter_20260114_011842.png",
+      "url": "/analysis-reports/timing_scatter_20260116_225641.png",
       "description": "Scatter plot showing execution times vs molecular properties"
     },
     {
       "title": "Timing Distribution",
-      "url": "/analysis-reports/timing_distribution_20260114_011842.png",
+      "url": "/analysis-reports/timing_distribution_20260116_225641.png",
       "description": "Distribution of execution times for both systems"
     },
     {
       "title": "Scaling Analysis",
-      "url": "/analysis-reports/timing_scaling_20260114_011842.png",
+      "url": "/analysis-reports/timing_scaling_20260116_225641.png",
       "description": "Performance scaling with molecular complexity"
     }
   ],
-  "html_report": "/analysis-reports/timing_analysis_20260114_011842.html"
+  "html_report": "/analysis-reports/timing_analysis_20260116_225641.html"
 }

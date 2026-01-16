@@ -594,7 +594,7 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
             expected = m['molecule_data']['group_name']
             atlas = m['atlas_result'].get('second_class','None')
             pfasgroups_ids = m['pfasgroups_result']['detected_groups']
-            pfasgroups = [lookup[id] for id in pfasgroups_ids if id!=48 and id > 28]
+            pfasgroups = [lookup[id] for id in pfasgroups_ids if id!=49 and id!=50 and id > 28]
             pfasgroups = [f"- {reverse_lookup.get(pf)}: {pf}" for pf in pfasgroups]
             pfasgroups_oecd = [lookup[id] for id in pfasgroups_ids if id<= 28]
             pfasgroups_oecd = [f"- {reverse_lookup.get(pf)}: {pf}" for pf in pfasgroups_oecd]
@@ -1647,7 +1647,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
                 Large-scale systematic evaluation with {total_single_molecules + total_multi_molecules} molecules<br>
                 Analysis Date: {datetime.now().strftime('%B %d, %Y at %H:%M')}
             </p>
-            <p>Target: PFAS functional groups 29-51 (excluding group 48) | Enhanced dataset sizes | Detailed privilege analysis</p>
+            <p>Target: PFAS functional groups 29-59 (excluding groups 49 and 50 which are smartsPath-only) | Enhanced dataset sizes | Detailed privilege analysis</p>
         </div>
 
         <div class="summary-grid">

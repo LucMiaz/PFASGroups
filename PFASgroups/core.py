@@ -1097,7 +1097,6 @@ def find_aryl_components(mol, aryl_smarts, component_solver=None, **kwargs):
     component_sizes = [len(x) for x in components]
     
     # Get molecular graph for metrics calculation
-    G = component_solver.G
     subset_set = set(subset)
     pfas_group = kwargs.get('pfas_group', None)
     

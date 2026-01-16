@@ -90,12 +90,12 @@ class EnhancedPFASBenchmark:
             51: {'name': 'alkene', 'smiles': 'C(F)=C(F)', 'mode': 'insert'},
             52: {'name': 'alkyne', 'smiles': 'C#C', 'mode': 'insert'},
             53: {'name': 'Side-chain aromatics', 'smiles': 'c1ccccc1', 'mode': 'attach'},
-            54: {'name': 'Perfluoro cyclic compounds', 'smiles': 'C1(F)C(F)C(F)C(F)C(F)C1(F)', 'mode': 'attach'},
-            55: {'name': 'Polyfluoro cyclic compounds', 'smiles': 'C1(F)C(F)C(H)C(F)C(F)C1(F)', 'mode': 'attach'},
+            54: {'name': 'Perfluoro cyclic compounds', 'smiles': 'C1(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)(F)', 'mode': 'attach'},
+            55: {'name': 'Polyfluoro cyclic compounds', 'smiles': 'C1(F)C(F)(F)(F)C(H)C(F)C(F)(F)C1(F)', 'mode': 'attach'},
             56: {'name': 'Perfluoroaryl compounds', 'smiles': 'c1c(F)c(F)c(F)c(F)c1F', 'mode': 'attach'},
             57: {'name': 'Polyfluoroaryl compounds', 'smiles': 'c1c(F)c(F)ccc1F', 'mode': 'attach'},
             58: {'name': 'Peroxydes', 'smiles': 'OO', 'mode': 'insert'},
-            59: {'name': 'Benzoyl peroxydes', 'smiles': 'C(=O)OOC(=O)', 'mode': 'attach'}
+            59: {'name': 'Benzoyl peroxydes', 'smiles': 'C(=O)OOC(=O)', 'mode': 'insert'}
 
         }
         
