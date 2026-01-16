@@ -52,6 +52,12 @@ function MoleculeReviewer({ onReviewUpdate }) {
       const response = await fetch(`/api/molecules?${params}`);
       const data = await response.json();
       
+      // Debug: Log first molecule to check structure
+      if (data.molecules && data.molecules.length > 0) {
+        console.log('First molecule data:', data.molecules[0]);
+        console.log('First molecule pfasgroups_detected:', data.molecules[0].pfasgroups_detected);
+      }
+      
       setMolecules(data.molecules);
       setTotalPages(data.pagination.totalPages);
       
@@ -242,9 +248,26 @@ function MoleculeReviewer({ onReviewUpdate }) {
                       <div>
                         <p><strong>Detected Groups:</strong></p>
                         <div>
-                          {molecule.pfasgroups_detected.map(group => (
-                            <Badge key={group} bg="secondary" className="me-1 mb-1">{group}</Badge>
-                          ))}
+                          {molecule.pfasgroups_detected && molecule.pfasgroups_detected.map(group => {
+                            // Handle both enriched objects {id, name, matchedPathTypeFull} and simple strings/numbers
+                            const groupKey = typeof group === 'object' ? group.id : group;
+                            const groupName = typeof group === 'object' ? group.name : group;
+                            const tooltip = typeof group === 'object' && group.matchedPathTypeFull 
+                              ? `Matched smartsPath: ${group.matchedPathTypeFull}`
+                              : '';
+                            
+                            return (
+                              <Badge 
+                                key={groupKey} 
+                                bg="secondary" 
+                                className="me-1 mb-1"
+                                title={tooltip}
+                                style={{ cursor: tooltip ? 'help' : 'default' }}
+                              >
+                                {groupName}
+                              </Badge>
+                            );
+                          })}
                         </div>
                         {molecule.pfasgroups_detected_definitions && molecule.pfasgroups_detected_definitions.length > 0 && (
                           <>

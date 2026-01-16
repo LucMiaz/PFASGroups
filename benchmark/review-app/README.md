@@ -78,10 +78,11 @@ review-app/
 ### Tables
 
 - **molecules**: Core molecular data (SMILES, properties, dataset info)
-- **pfasgroups_results**: PFASGroups algorithm results
+- **pfasgroups_results**: PFASGroups algorithm results (includes matched path types)
 - **atlas_results**: PFAS-Atlas algorithm results  
 - **manual_reviews**: Human reviewer validations
-- **timing_benchmarks**: Performance timing data
+
+Note: Timing benchmark data is analyzed separately using Python scripts that read JSON files directly.
 
 ### Key Fields
 

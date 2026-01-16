@@ -13,7 +13,7 @@ const { execSync } = require('child_process');
  * 1. Benchmark Data (OECD, Enhanced, etc.):
  *    - Duplicates are identified by matching BOTH:
  *      a) SMILES string (molecular structure)
- *      b) All classification results (PFASGroups, PFASGroups_bycomponent, Atlas)
+ *      b) All classification results (PFASGroups, Atlas)
  *    - Keeps the first occurrence of each unique combination
  *    - Example: Same molecule with different classifications = kept as separate records
  * 
@@ -142,14 +142,9 @@ class DataImporter {
                 
                 const moleculeId = await this.insertMolecule(moleculeData, datasetType, benchmarkDate);
                 
-                // Insert PFASGroups result if exists (default flavor: bycomponent=False)
+                // Insert PFASGroups result if exists
                 if (record.pfasgroups_result) {
                     await this.insertPFASGroupsResult(moleculeId, record.pfasgroups_result);
-                }
-                
-                // Insert PFASGroups bycomponent result if exists (bycomponent=True flavor)
-                if (record.pfasgroups_result_bycomponent) {
-                    await this.insertPFASGroupsResultByComponent(moleculeId, record.pfasgroups_result_bycomponent);
                 }
                 
                 // Insert Atlas result if exists
@@ -183,8 +178,8 @@ class DataImporter {
                 // Insert molecule data
                 const moleculeId = await this.insertTimingMolecule(record, benchmarkDate);
                 
-                // Insert timing benchmark data
-                await this.insertTimingBenchmark(moleculeId, record, benchmarkDate);
+                // Note: Timing benchmark data is analyzed separately via Python scripts,
+                // not stored in database
             } catch (error) {
                 console.error(`Error importing timing record in ${filename}:`, error);
             }
@@ -212,11 +207,10 @@ class DataImporter {
             
             // Create a unique key based on SMILES and classification results
             const pfasgroupsGroups = JSON.stringify((record.pfasgroups_result?.detected_groups || []).sort());
-            const pfasgroupsBycompGroups = JSON.stringify((record.pfasgroups_result_bycomponent?.detected_groups || []).sort());
             const atlasFirstClass = record.atlas_result?.first_class || '';
             const atlasSecondClass = record.atlas_result?.second_class || '';
             
-            const key = `${smiles}|${pfasgroupsGroups}|${pfasgroupsBycompGroups}|${atlasFirstClass}|${atlasSecondClass}`;
+            const key = `${smiles}|${pfasgroupsGroups}|${atlasFirstClass}|${atlasSecondClass}`;
             
             if (!seen.has(key)) {
                 seen.set(key, true);
@@ -298,30 +292,44 @@ class DataImporter {
         return result.id;
     }
 
-    async insertPFASGroupsResult(moleculeId, result) {
-        await this.db.run(`
-            INSERT INTO pfasgroups_results (
-                molecule_id, detected_groups, detected_definitions, success, error_message, execution_time
-            ) VALUES (?, ?, ?, ?, ?, ?)
-        `, [
-            moleculeId,
-            JSON.stringify(result.detected_groups || []),
-            JSON.stringify(result.detected_definitions || []),
-            result.success || false,
-            result.error || null,
-            result.execution_time || null
-        ]);
+    /**
+     * Extract matched path types from matches data
+     * Returns a map of groupId -> pathType (e.g., "Perfluoroalkyl", "Polyfluoroalkyl")
+     */
+    extractMatchedPathTypes(matches, detectedGroups) {
+        const pathTypesMap = {};
+        
+        if (!matches || !Array.isArray(matches)) {
+            return pathTypesMap;
+        }
+        
+        // Process only group matches (not definition matches)
+        for (const match of matches) {
+            if (match.type === 'group' && match.id && match.components_types) {
+                // Take the first component type as the representative path type
+                // (most groups only have one component type per match)
+                if (Array.isArray(match.components_types) && match.components_types.length > 0) {
+                    pathTypesMap[match.id] = match.components_types[0];
+                }
+            }
+        }
+        
+        return pathTypesMap;
     }
 
-    async insertPFASGroupsResultByComponent(moleculeId, result) {
+    async insertPFASGroupsResult(moleculeId, result) {
+        // Extract matched path types from matches data
+        const matchedPathTypes = this.extractMatchedPathTypes(result.matches, result.detected_groups);
+        
         await this.db.run(`
-            INSERT INTO pfasgroups_results_bycomponent (
-                molecule_id, detected_groups, detected_definitions, success, error_message, execution_time
-            ) VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO pfasgroups_results (
+                molecule_id, detected_groups, detected_definitions, matched_path_types, success, error_message, execution_time
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
         `, [
             moleculeId,
             JSON.stringify(result.detected_groups || []),
             JSON.stringify(result.detected_definitions || []),
+            JSON.stringify(matchedPathTypes),
             result.success || false,
             result.error || null,
             result.execution_time || null
@@ -340,31 +348,6 @@ class DataImporter {
             result.success || false,
             result.error || null,
             result.execution_time || null
-        ]);
-    }
-
-    async insertTimingBenchmark(moleculeId, record, benchmarkDate) {
-        await this.db.run(`
-            INSERT INTO timing_benchmarks (
-                molecule_id, iterations, 
-                pfasgroups_time_avg, pfasgroups_time_std, pfasgroups_time_min, pfasgroups_time_max,
-                atlas_time_avg, atlas_time_std, atlas_time_min, atlas_time_max,
-                pfasgroups_success_rate, atlas_success_rate, benchmark_date
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [
-            moleculeId,
-            record.iterations || 1,
-            record.pfasgroups_time_avg || record.pfasgroups_time || null,
-            record.pfasgroups_time_std || null,
-            record.pfasgroups_time_min || null,
-            record.pfasgroups_time_max || null,
-            record.atlas_time_avg || record.atlas_time || null,
-            record.atlas_time_std || null,
-            record.atlas_time_min || null,
-            record.atlas_time_max || null,
-            record.pfasgroups_success_rate || null,
-            record.atlas_success_rate || null,
-            benchmarkDate
         ]);
     }
 

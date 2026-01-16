@@ -66,21 +66,7 @@ class DatabaseWrapper {
                 molecule_id INTEGER,
                 detected_groups TEXT,
                 detected_definitions TEXT,
-                success BOOLEAN,
-                error_message TEXT,
-                execution_time REAL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (molecule_id) REFERENCES molecules (id)
-            )
-        `);
-
-        // PFASGroups bycomponent results table (bycomponent=True flavor)
-        this.db.exec(`
-            CREATE TABLE IF NOT EXISTS pfasgroups_results_bycomponent (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                molecule_id INTEGER,
-                detected_groups TEXT,
-                detected_definitions TEXT,
+                matched_path_types TEXT,
                 success BOOLEAN,
                 error_message TEXT,
                 execution_time REAL,
@@ -121,33 +107,11 @@ class DatabaseWrapper {
             )
         `);
 
-        // Timing benchmarks table
-        this.db.exec(`
-            CREATE TABLE IF NOT EXISTS timing_benchmarks (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                molecule_id INTEGER,
-                iterations INTEGER,
-                pfasgroups_time_avg REAL,
-                pfasgroups_time_std REAL,
-                pfasgroups_time_min REAL,
-                pfasgroups_time_max REAL,
-                atlas_time_avg REAL,
-                atlas_time_std REAL,
-                atlas_time_min REAL,
-                atlas_time_max REAL,
-                pfasgroups_success_rate REAL,
-                atlas_success_rate REAL,
-                benchmark_date TEXT,
-                FOREIGN KEY (molecule_id) REFERENCES molecules (id)
-            )
-        `);
-
         // Create indexes for better performance
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_molecules_dataset ON molecules (dataset_type)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_molecules_smiles ON molecules (smiles)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_reviews_molecule ON manual_reviews (molecule_id)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_pfasgroups_molecule ON pfasgroups_results (molecule_id)`);
-        this.db.exec(`CREATE INDEX IF NOT EXISTS idx_pfasgroups_bycomp_molecule ON pfasgroups_results_bycomponent (molecule_id)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_atlas_molecule ON atlas_results (molecule_id)`);
         
         // Add molecular_formula column if it doesn't exist (migration)
@@ -164,11 +128,19 @@ class DatabaseWrapper {
             // Column already exists, ignore error
         }
         
-        // Add detected_definitions column to pfasgroups_results_bycomponent if it doesn't exist (migration)
+        // Add matched_path_types column to pfasgroups_results if it doesn't exist (migration)
         try {
-            this.db.exec(`ALTER TABLE pfasgroups_results_bycomponent ADD COLUMN detected_definitions TEXT`);
+            this.db.exec(`ALTER TABLE pfasgroups_results ADD COLUMN matched_path_types TEXT`);
         } catch (e) {
             // Column already exists, ignore error
+        }
+        
+        // Drop obsolete tables if they exist
+        try {
+            this.db.exec(`DROP TABLE IF EXISTS pfasgroups_results_bycomponent`);
+            this.db.exec(`DROP TABLE IF EXISTS timing_benchmarks`);
+        } catch (e) {
+            // Ignore any errors
         }
         
         // Save after creating tables

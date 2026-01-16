@@ -15,21 +15,39 @@ const db = new Database();
 
 // Load PFAS groups mapping
 let pfasGroupsMap = {};
+let pfasGroupsData = [];
 try {
-    const groupsData = JSON.parse(fs.readFileSync(path.join(__dirname, 'pfas_groups_map.json'), 'utf8'));
-    pfasGroupsMap = Object.fromEntries(groupsData.map(g => [g.id, g.name]));
+    pfasGroupsData = JSON.parse(fs.readFileSync(path.join(__dirname, 'pfas_groups_map.json'), 'utf8'));
+    pfasGroupsMap = Object.fromEntries(pfasGroupsData.map(g => [g.id, { name: g.name, alias: g.alias }]));
     console.log(`Loaded ${Object.keys(pfasGroupsMap).length} PFAS groups`);
 } catch (error) {
     console.error('Warning: Could not load PFAS groups map:', error.message);
 }
 
-// Helper function to convert group IDs to names
-function enrichGroupData(groupIds) {
+// Helper function to convert group IDs to names with path type information
+function enrichGroupData(groupIds, matchedPathTypes = {}) {
     if (!Array.isArray(groupIds)) return [];
-    return groupIds.map(id => ({
-        id: id,
-        name: pfasGroupsMap[id] || `Group ${id}`
-    }));
+    return groupIds.map(id => {
+        const groupInfo = pfasGroupsMap[id] || { name: `Group ${id}`, alias: `Group ${id}` };
+        const pathType = matchedPathTypes[id] || null;
+        
+        // Map path types to abbreviations
+        const pathTypeAbbrev = {
+            'Perfluoroalkyl': 'per',
+            'Polyfluoroalkyl': 'poly',
+            'Perfluoro': 'per',
+            'Polyfluoro': 'poly',
+            'cyclic': 'cyc'
+        };
+        
+        return {
+            id: id,
+            name: groupInfo.name,
+            alias: groupInfo.alias,
+            matchedPathType: pathType ? (pathTypeAbbrev[pathType] || pathType) : null,
+            matchedPathTypeFull: pathType
+        };
+    });
 }
 
 // Middleware
@@ -37,8 +55,16 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, 'client/build')));
+// Serve static files from React build with no-cache for HTML
+app.use(express.static(path.join(__dirname, 'client/build'), {
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.html')) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.setHeader('Pragma', 'no-cache');
+            res.setHeader('Expires', '0');
+        }
+    }
+}));
 
 // Serve analysis reports static files (images, HTML)
 app.use('/analysis-reports', express.static(path.join(__dirname, 'analysis_reports')));
@@ -79,35 +105,29 @@ app.get('/api/molecules', async (req, res) => {
 
         const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
 
-        // Build ORDER BY clause to prioritize misclassified unreviewed entries and flavor mismatches
+        // Build ORDER BY clause to prioritize misclassified unreviewed entries
         let orderClause = 'ORDER BY m.id ASC';
         if (prioritizeMisclassified) {
             orderClause = `ORDER BY 
                 CASE 
-                    WHEN mr.id IS NULL AND (pg.detected_groups != pgbc.detected_groups) THEN 1  -- Unreviewed with flavor mismatch (highest priority)
-                    WHEN mr.id IS NULL AND (pg.success = 0 OR ar.success = 0) THEN 2            -- Unreviewed misclassified
-                    WHEN mr.id IS NULL THEN 3                                                     -- Other unreviewed
-                    WHEN pg.detected_groups != pgbc.detected_groups THEN 4                       -- Reviewed with flavor mismatch
-                    WHEN mr.pfasgroups_correct = 0 OR mr.atlas_correct = 0 THEN 5                -- Reviewed misclassified
-                    ELSE 6                                                                        -- Reviewed correct (lowest priority)
+                    WHEN mr.id IS NULL AND (pg.success = 0 OR ar.success = 0) THEN 1            -- Unreviewed misclassified (highest priority)
+                    WHEN mr.id IS NULL THEN 2                                                     -- Other unreviewed
+                    WHEN mr.pfasgroups_correct = 0 OR mr.atlas_correct = 0 THEN 3                -- Reviewed misclassified
+                    ELSE 4                                                                        -- Reviewed correct (lowest priority)
                 END,
                 m.id ASC`;
         }
 
-        // Get molecules with results including bycomponent flavor
+        // Get molecules with results
         const molecules = await db.all(`
             SELECT 
                 m.*,
                 pg.detected_groups as pfasgroups_detected,
                 pg.detected_definitions as pfasgroups_detected_definitions,
+                pg.matched_path_types as pfasgroups_matched_path_types,
                 pg.success as pfasgroups_success,
                 pg.execution_time as pfasgroups_time,
                 pg.error_message as pfasgroups_error,
-                pgbc.detected_groups as pfasgroups_bycomponent_detected,
-                pgbc.detected_definitions as pfasgroups_bycomponent_detected_definitions,
-                pgbc.success as pfasgroups_bycomponent_success,
-                pgbc.execution_time as pfasgroups_bycomponent_time,
-                pgbc.error_message as pfasgroups_bycomponent_error,
                 ar.first_class as atlas_first_class,
                 ar.second_class as atlas_second_class,
                 ar.success as atlas_success,
@@ -121,16 +141,13 @@ app.get('/api/molecules', async (req, res) => {
                 mr.correct_groups as manual_correct_groups,
                 mr.correct_classification as manual_correct_classification,
                 CASE 
-                    WHEN mr.id IS NULL AND (pg.detected_groups != pgbc.detected_groups) THEN 'flavor_mismatch_unreviewed'
                     WHEN mr.id IS NULL AND (pg.success = 0 OR ar.success = 0) THEN 'misclassified_unreviewed'
                     WHEN mr.id IS NULL THEN 'unreviewed'
-                    WHEN pg.detected_groups != pgbc.detected_groups THEN 'flavor_mismatch_reviewed'
                     WHEN mr.pfasgroups_correct = 0 OR mr.atlas_correct = 0 THEN 'misclassified_reviewed'
                     ELSE 'reviewed_correct'
                 END as priority_category
             FROM molecules m
             LEFT JOIN pfasgroups_results pg ON m.id = pg.molecule_id
-            LEFT JOIN pfasgroups_results_bycomponent pgbc ON m.id = pgbc.molecule_id
             LEFT JOIN atlas_results ar ON m.id = ar.molecule_id
             LEFT JOIN manual_reviews mr ON m.id = mr.molecule_id
             ${whereClause}
@@ -150,16 +167,17 @@ app.get('/api/molecules', async (req, res) => {
         const totalPages = Math.ceil(totalCount / limit);
 
         // Parse JSON fields and enrich with group names
-        const processedMolecules = molecules.map(mol => ({
-            ...mol,
-            target_groups: mol.target_groups ? JSON.parse(mol.target_groups) : [],
-            pfasgroups_detected: enrichGroupData(mol.pfasgroups_detected ? JSON.parse(mol.pfasgroups_detected) : []),
-            pfasgroups_detected_definitions: mol.pfasgroups_detected_definitions ? JSON.parse(mol.pfasgroups_detected_definitions) : [],
-            pfasgroups_bycomponent_detected: enrichGroupData(mol.pfasgroups_bycomponent_detected ? JSON.parse(mol.pfasgroups_bycomponent_detected) : []),
-            pfasgroups_bycomponent_detected_definitions: mol.pfasgroups_bycomponent_detected_definitions ? JSON.parse(mol.pfasgroups_bycomponent_detected_definitions) : [],
-            manual_correct_groups: mol.manual_correct_groups ? JSON.parse(mol.manual_correct_groups) : null,
-            has_flavor_mismatch: mol.pfasgroups_detected !== mol.pfasgroups_bycomponent_detected
-        }));
+        const processedMolecules = molecules.map(mol => {
+            const matchedPathTypes = mol.pfasgroups_matched_path_types ? JSON.parse(mol.pfasgroups_matched_path_types) : {};
+            
+            return {
+                ...mol,
+                target_groups: mol.target_groups ? JSON.parse(mol.target_groups) : [],
+                pfasgroups_detected: enrichGroupData(mol.pfasgroups_detected ? JSON.parse(mol.pfasgroups_detected) : [], matchedPathTypes),
+                pfasgroups_detected_definitions: mol.pfasgroups_detected_definitions ? JSON.parse(mol.pfasgroups_detected_definitions) : [],
+                manual_correct_groups: mol.manual_correct_groups ? JSON.parse(mol.manual_correct_groups) : null
+            };
+        });
 
         res.json({
             molecules: processedMolecules,
@@ -692,8 +710,6 @@ app.get('/api/export/excel', async (req, res) => {
                 pg.success as pfasgroups_success,
                 pg.execution_time as pfasgroups_time,
                 pg.error_message as pfasgroups_error,
-                pgbc.detected_groups as pfasgroups_bycomponent_detected,
-                pgbc.detected_definitions as pfasgroups_bycomponent_detected_definitions,
                 ar.first_class as atlas_first_class,
                 ar.second_class as atlas_second_class,
                 ar.success as atlas_success,
@@ -709,7 +725,6 @@ app.get('/api/export/excel', async (req, res) => {
                 mr.correct_classification as manual_correct_classification
             FROM molecules m
             LEFT JOIN pfasgroups_results pg ON m.id = pg.molecule_id
-            LEFT JOIN pfasgroups_results_bycomponent pgbc ON m.id = pgbc.molecule_id
             LEFT JOIN atlas_results ar ON m.id = ar.molecule_id
             LEFT JOIN manual_reviews mr ON m.id = mr.molecule_id
             ${whereClause}
