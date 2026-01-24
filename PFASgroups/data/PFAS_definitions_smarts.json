@@ -46,7 +46,7 @@
             "F[#6](F)(F)[#6](F)",
             "F[#6](F)[#6](F)(F)",
             "F[#6](F)(F)[#6]~[#6](F)(F)",
-            "[#6](F)(F)[#5,#7,#8,#14,#15,#16][#6]"
+            "[#6](F)(F)[#5,#7,#8,#14,#15,#16][#6](F)(F)"
         ],
         "fluorineRatio": 0.3,
         "description": "Custom structural patterns or F ratio ≥ 0.3"
