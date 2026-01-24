@@ -1,5 +1,6 @@
 from rdkit import Chem
 import numpy as np
+import re
 
 class PFASGroup():
     """Model class representing a specific PFAS functional group with structural patterns.
@@ -14,12 +15,9 @@ class PFASGroup():
         Unique identifier for this PFAS group
     name : str
         Human-readable group name (e.g., "Perfluoroalkyl carboxylic acid")
-    smarts1 : Chem.Mol or None
-        Primary SMARTS pattern (compiled RDKit molecule) for functional group detection.
+    smarts : Chem.Mol or None
+        SMARTS patterns (compiled RDKit molecule) for functional group detection.
         None if group is defined by smartsPath alone.
-    smarts2 : Chem.Mol or None
-        Secondary SMARTS pattern for groups requiring two functional groups.
-        None if only one functional group is needed.
     smartsPath : str or None
         Type of fluorinated component to search:
         - 'Perfluoroalkyl': Fully fluorinated carbon chains
@@ -45,8 +43,7 @@ class PFASGroup():
     >>> pfaa = PFASGroup(
     ...     id=1,
     ...     name="Perfluoroalkyl carboxylic acid",
-    ...     smarts1="C(=O)O",  # Carboxylic acid group
-    ...     smarts2=None,
+    ...     smarts={"C(=O)O":1},  # Carboxylic acid group
     ...     smartsPath="Perfluoroalkyl",
     ...     constraints={"only": ["C", "F", "O", "H"]},
     ...     max_dist_from_CF=0
@@ -58,55 +55,40 @@ class PFASGroup():
     - Constraints are validated when checking if a molecule belongs to this group
     - max_dist_from_CF allows finding functional groups connected via non-fluorinated linkers
     """
-    def __init__(self, id, name, smarts1, smarts2, smartsPath, constraints,**kwargs):
+    def __init__(self, id, name, smarts, smartsPath, constraints,**kwargs):
         self.id = id
         self.name = name
         # Save original SMARTS strings for atom counting
-        self.smarts1_str = smarts1 if smarts1 and smarts1 != "" else None
-        self.smarts2_str = smarts2 if smarts2 and smarts2 != "" else None
-        # Get manual SMARTS sizes if provided in JSON
-        self.smarts1_size = kwargs.get('smarts1_size', None)
-        self.smarts2_size = kwargs.get('smarts2_size', None)
-        self.smarts1 = smarts1
-        self.smarts2 = smarts2
+        if smarts and len(smarts) > 0:
+            self.smarts_str, self.smarts_count = zip(*smarts.items())
+        else:
+            self.smarts_str = None
+            self.smarts_count = None
+        self.smarts = [] if self.smarts_str else None
         self.smartsPath = smartsPath
         self.max_dist_from_CF = kwargs.get('max_dist_from_CF', 0)
-        if self.smarts1 !="" and self.smarts1 is not None:
-            try:
-                self.smarts1 = Chem.MolFromSmarts(self.smarts1)
-                self.smarts1.UpdatePropertyCache()
-                Chem.GetSymmSSSR(self.smarts1)
-                self.smarts1.GetRingInfo().NumRings()
-                if self.smarts2 !="" and self.smarts2 is not None:
-                    self.smarts2 = Chem.MolFromSmarts(self.smarts2)
-                    self.smarts2.UpdatePropertyCache()
-                    Chem.GetSymmSSSR(self.smarts2)
-                    self.smarts2.GetRingInfo().NumRings()
-                else:
-                    self.smarts2 = None
-            except:
-                raise ValueError(f"Invalid SMARTS pattern(s) for PFASGroup '{self.name}' (ID: {self.id})")
-        else:
-            self.smarts1 = None
-            self.smarts2 = None
+        if self.smarts_str is not None:
+            for smarts_pattern in self.smarts_str:
+                if smarts_pattern and smarts_pattern != "":
+                    try:
+                        smarts_mol = Chem.MolFromSmarts(smarts_pattern)
+                        smarts_mol.UpdatePropertyCache()
+                        Chem.GetSymmSSSR(smarts_mol)
+                        smarts_mol.GetRingInfo().NumRings()
+                        self.smarts.append(smarts_mol)
+                    except:
+                        raise ValueError(f"Invalid SMARTS pattern(s) for PFASGroup '{self.name}' (ID: {self.id})")
         self.constraints = constraints
         # Precompute number of extra atoms in SMARTS patterns (beyond matched atom and H/F/Cl/Br/I)
-        self.smarts1_extra_atoms = self._count_smarts_extra_atoms(self.smarts1, self.smarts1_str, self.smarts1_size)
-        self.smarts2_extra_atoms = self._count_smarts_extra_atoms(self.smarts2, self.smarts2_str, self.smarts2_size)
+        self.smarts_extra_atoms = self._count_smarts_extra_atoms(self.smarts_str)
     
-    def _count_smarts_extra_atoms(self, smarts_mol, smarts_str, manual_size=None):
+    def _count_smarts_extra_atoms(self, smarts_str):
         """Count number of extra carbon atoms in functional group beyond what's captured by component.
         
         Parameters
         ----------
-        smarts_mol : Chem.Mol or None
-            Compiled SMARTS pattern
         smarts_str : str or None
             Original SMARTS string before compilation
-        manual_size : int or None
-            Manually specified number of carbon atoms in the SMARTS pattern (from JSON).
-            If provided, returns manual_size - 1 (to exclude the matched carbon atom).
-            
         Returns
         -------
         int
@@ -119,20 +101,13 @@ class PFASGroup():
         2. Carbon atoms in SMARTS matches
         3. Additional carbon atoms from SMARTS (this return value)
         
-        If manual_size is provided in the JSON (smarts1_size or smarts2_size), it represents
-        the total number of CARBON atoms in the functional group, so we subtract 1 for the matched carbon.
         
         For automatic counting (when manual_size is None), this returns 0 since we now focus only
         on carbons and they are already counted in the component and SMARTS matches.
         """
-        # Use manual size if provided (subtract 1 for the matched carbon atom itself)
-        if manual_size is not None:
-            return max(0, manual_size - 1)
-        
-        # Since we now focus on carbon atoms only, and carbons are already counted
-        # in the component and SMARTS matches, we don't need to add extra atoms
-        # when manual_size is not provided
-        return 0
+        PAT_c = re.compile(r'((C(?![adeflmnorsu]))|((?<![TAS])c)|(\#6))')  # Match 'C' not followed by a letter, or c not preceded by T,A,S or #6
+        return [max(0,len(PAT_c.findall(s))-1) for s in smarts_str] if smarts_str is not None else None
+
     
     def __str__(self):
         return self.name

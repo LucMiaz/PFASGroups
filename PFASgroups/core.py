@@ -390,6 +390,98 @@ def components_between_smarts(mol: Chem.Mol, smarts1, smarts2, component_solver,
     """
     return find_components_between_smarts(mol, smarts1, smarts2, component_solver, **kwargs)
 
+@add_smartsPath()
+def find_components_with_all_smarts(mol, smarts_list, smarts_counts, component_solver, **kwargs):
+    """Find fluorinated components containing all required SMARTS patterns with minimum counts.
+    
+    This function handles groups that require multiple SMARTS patterns to match simultaneously,
+    such as diacids (which need 2 copies of the carboxylic acid SMARTS) or groups with 
+    multiple different functional groups.
+    
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        Molecule to search
+    smarts_list : list of rdkit.Chem.Mol
+        List of compiled SMARTS patterns to match
+    smarts_counts : tuple of int
+        Minimum count required for each SMARTS pattern (e.g., (2,) for diacids, (1, 1) for two different groups)
+    component_solver : ComponentsSolver
+        Component solver instance
+    **kwargs : dict
+        Additional parameters including max_dist, smartsPaths, etc.
+        
+    Returns
+    -------
+    tuple
+        (max_component_length, component_lengths, total_matches, matched_components_list)
+    """
+    if not smarts_list or len(smarts_list) == 0:
+        return 0, [], 0, []
+    
+    # Get all matches for each SMARTS pattern
+    all_matches_by_smarts = []
+    for smarts in smarts_list:
+        matches = get_substruct(mol, smarts)
+        if len(matches) == 0:
+            return 0, [], 0, []  # If any required SMARTS is missing, no match
+        all_matches_by_smarts.append(matches)
+    
+    # Combine all matched atoms for component searching
+    all_smarts_matches = set()
+    for matches in all_matches_by_smarts:
+        all_smarts_matches.update(matches)
+    
+    # Get all component types
+    max_dist = kwargs.get('max_dist', 0)
+    components_by_type = {}
+    smartsPaths = kwargs.get('smartsPaths', {})
+    
+    for path_type in smartsPaths.keys():
+        components_by_type[path_type] = component_solver.get(path_type, max_dist=max_dist, default=[])
+    
+    matched_components = {}
+    
+    # Find components that contain sufficient copies of each SMARTS
+    for path_type, components in components_by_type.items():
+        for i, comp in enumerate(components):
+            # Check if this component has enough matches for each SMARTS pattern
+            satisfies_all = True
+            for smarts_idx, (matches, required_count) in enumerate(zip(all_matches_by_smarts, smarts_counts)):
+                # Count how many matches of this SMARTS are in the component
+                matches_in_comp = sum(1 for match in matches if match in comp)
+                if matches_in_comp < required_count:
+                    satisfies_all = False
+                    break
+            
+            if satisfies_all:
+                # Get augmented component (handles max_dist > 0 automatically)
+                augmented = component_solver.get_augmented_component(
+                    path_type, max_dist, i, all_smarts_matches
+                )
+                matched_components.setdefault(path_type, []).append(augmented)
+    
+    if len(matched_components.keys()) == 0:
+        n = 0
+        component_lengths = []
+    else:
+        n = max([0] + [len(comp) for comps in matched_components.values() for comp in comps])
+        component_lengths = [len(comp) for comp in matched_components.get('Perfluoroalkyl', [])]
+    
+    # Get molecular graph for metrics calculation
+    G = kwargs.get('G', mol_to_nx(mol))
+    pfas_group = kwargs.get('pfas_group', None)
+    
+    # Add comprehensive metrics to matched components
+    matched_components_list = []
+    for path_type, comps in matched_components.items():
+        for comp in comps:
+            matched_components_list.append(
+                component_solver.get_matched_component_dict(comp, all_matches_by_smarts[0], path_type, pfas_group)
+            )
+    
+    return n, component_lengths, len(all_matches_by_smarts[0]), matched_components_list
+
 class ComponentsSolver:
     """Class to hold components information with comprehensive graph metrics."""
     @add_smartsPath()
@@ -872,12 +964,10 @@ class ComponentsSolver:
         # Get precomputed SMARTS extra atoms count if pfas_group is available
         smarts_extra_atoms = 0
         if pfas_group is not None and smarts_matches is not None and len(smarts_matches) > 0:
-            if pfas_group.smarts2 is not None:
-                # For groups with two SMARTS, add both
-                smarts_extra_atoms = pfas_group.smarts1_extra_atoms + pfas_group.smarts2_extra_atoms
-            else:
-                # For single SMARTS groups, multiply by number of matches
-                smarts_extra_atoms = pfas_group.smarts1_extra_atoms * len(smarts_matches)
+            if pfas_group.smarts_extra_atoms is not None:
+                # Sum the extra atoms from all SMARTS patterns
+                # For groups with multiple matches, we count each match
+                smarts_extra_atoms = sum(pfas_group.smarts_extra_atoms) * len(smarts_matches)
         
         # Calculate mean and median eccentricity from eccentricity_values
         eccentricity_values = comp_metrics.get('eccentricity_values', {})
@@ -906,9 +996,8 @@ class ComponentsSolver:
                     smarts_carbons_not_in_component += 1
         
         # smarts_extra_atoms represents additional carbons in the functional group beyond the matched carbon
-        # For example, if smarts1_size=2, it means the functional group has 2 carbons total:
-        # - 1 matched carbon (counted either in component_carbons or smarts_carbons_not_in_component)
-        # - 1 extra carbon (from smarts_extra_atoms = smarts1_size - 1 = 2 - 1 = 1)
+        # For each SMARTS pattern, extra_atoms indicates carbons beyond the primary matched atom
+        # These are summed across all SMARTS matches to get the total extra carbons
         # So we always add smarts_extra_atoms regardless of whether matched carbon is in component
         
         total_carbons_in_component = component_carbons + smarts_carbons_not_in_component + smarts_extra_atoms
@@ -1170,10 +1259,10 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
     Notes
     -----
     For PFASgroups 
-    1. with smartsPath = 'cyclic', search for connected component matching smarts1
-    2. with smarts1 and smarts2 defined: Find components containing both smarts1 and smarts2 matches
-    3. with smarts1 defined and smarts2 null: Search for connected components of fluorinated atoms (for each pathType) where smarts1 match is in the component
-    4. with smarts1 defined and formula constraints: search for substructure matches of smarts1, and for given smartsPath for the PFASgroup, search for connected components of fluorinated atoms where smarts1 match is in the component
+    1. with smartsPath = 'cyclic', search for connected component matching first smarts
+    2. with multiple smarts patterns or counts > 1: Find components containing all required SMARTS matches with minimum counts
+    3. with single smarts pattern: Search for connected components of fluorinated atoms (for each pathType) where smarts match is in the component
+    4. with smarts defined and formula constraints: search for substructure matches of smarts, and for given smartsPath for the PFASgroup, search for connected components of fluorinated atoms where smarts match is in the component
 
     """
     mol = Chem.AddHs(mol)
@@ -1204,41 +1293,49 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                 if pf.smartsPath =='cyclic':
                     # treat cyclic groups separately
                     kwargs['pfas_group'] = pf
-                    match_count, component_sizes, matched1_len, matched_components = find_aryl_components(mol, pf.smarts1, component_solver=fluorinated_components_dict, **kwargs)
-                elif pf.smarts2 is not None and pf.smarts1 is not None:
-                    # treat cases with both smarts1 and smarts2, finding components containing both
-                    try:
-                        kwargs['pfas_group'] = pf
-                        match_count, component_sizes, matched1_len, matched_components = components_between_smarts(mol,
-                                                                            pf.smarts1,
-                                                                            pf.smarts2,
-                                                                            fluorinated_components_dict, **kwargs)
-                    except ValueError as e:
-                        raise e
-                elif pf.smarts1 is not None:
-                    # treat cases with only smarts1, find fluorinated components containing smarts1 matches
-                    if pf.smartsPath is None:
-                        # If no smartsPath specified, check all available component types
-                        all_components = []
-                        max_dist_val = pf.max_dist_from_CF if pf.max_dist_from_CF is not None else 0
-                        for path_type in kwargs.get('smartsPaths',{'Perfluoroalkyl','Polyfluoroalkyl'}).keys():
-                            path_comps = fluorinated_components_dict.get(path_type, max_dist = max_dist_val, default=[])
-                            all_components.extend(path_comps)
-                        path_components = all_components
-                        used_pathType = None  # Mixed types, can't use get_augmented_component properly
-                    else:
-                        max_dist_val = pf.max_dist_from_CF if pf.max_dist_from_CF is not None else 0
-                        path_components = fluorinated_components_dict.get(pf.smartsPath, max_dist = max_dist_val, default = fluorinated_components_dict.get("Polyfluoroalkyl", max_dist = max_dist_val, default=[]))
-                        used_pathType = pf.smartsPath
-                    kwargs['max_dist'] = pf.max_dist_from_CF if pf.max_dist_from_CF is not None else 0
+                    # Use first SMARTS pattern for cyclic
+                    match_count, component_sizes, matched1_len, matched_components = find_aryl_components(mol, pf.smarts[0] if pf.smarts else None, component_solver=fluorinated_components_dict, **kwargs)
+                elif pf.smarts is not None and len(pf.smarts) > 0:
+                    # Handle groups with SMARTS patterns
                     kwargs['pfas_group'] = pf
-                    match_count, component_sizes, matched1_len, matched_components = find_alkyl_components(
-                        mol, pf.smarts1, path_components,
-                        pathType=used_pathType,
-                        component_solver=fluorinated_components_dict,
-                        **kwargs)
+                    
+                    # Check if we need to match multiple SMARTS simultaneously
+                    # (e.g., diacids need 2 copies of the same SMARTS)
+                    has_multi_count = any(count > 1 for count in pf.smarts_count)
+                    has_multiple_smarts = len(pf.smarts) > 1
+                    
+                    if has_multiple_smarts or has_multi_count:
+                        # Multiple SMARTS or multiple copies required
+                        # Use components_between_smarts to find components containing all required patterns
+                        try:
+                            match_count, component_sizes, matched1_len, matched_components = find_components_with_all_smarts(
+                                mol, pf.smarts, pf.smarts_count, fluorinated_components_dict, **kwargs
+                            )
+                        except ValueError as e:
+                            raise e
+                    else:
+                        # Single SMARTS with count=1
+                        if pf.smartsPath is None:
+                            # If no smartsPath specified, check all available component types
+                            all_components = []
+                            max_dist_val = pf.max_dist_from_CF if pf.max_dist_from_CF is not None else 0
+                            for path_type in kwargs.get('smartsPaths',{'Perfluoroalkyl','Polyfluoroalkyl'}).keys():
+                                path_comps = fluorinated_components_dict.get(path_type, max_dist = max_dist_val, default=[])
+                                all_components.extend(path_comps)
+                            path_components = all_components
+                            used_pathType = None  # Mixed types, can't use get_augmented_component properly
+                        else:
+                            max_dist_val = pf.max_dist_from_CF if pf.max_dist_from_CF is not None else 0
+                            path_components = fluorinated_components_dict.get(pf.smartsPath, max_dist = max_dist_val, default = fluorinated_components_dict.get("Polyfluoroalkyl", max_dist = max_dist_val, default=[]))
+                            used_pathType = pf.smartsPath
+                        kwargs['max_dist'] = pf.max_dist_from_CF if pf.max_dist_from_CF is not None else 0
+                        match_count, component_sizes, matched1_len, matched_components = find_alkyl_components(
+                            mol, pf.smarts[0], path_components,
+                            pathType=used_pathType,
+                            component_solver=fluorinated_components_dict,
+                            **kwargs)
                 elif pf.smartsPath is not None:
-                    # treat cases with only smartsPath defined (no smarts1), find all components of that path type
+                    # treat cases with only smartsPath defined (no SMARTS patterns), find all components of that path type
                     max_dist_val = pf.max_dist_from_CF if pf.max_dist_from_CF is not None else 0
                     path_components = fluorinated_components_dict.get(pf.smartsPath, max_dist = max_dist_val, default = fluorinated_components_dict.get("Polyfluoroalkyl", max_dist = max_dist_val, default=[]))
                     match_count = len(path_components)
@@ -1251,7 +1348,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                             fluorinated_components_dict.get_matched_component_dict(comp, None, pf.smartsPath, pf)
                         )
                 else:
-                    # treat cases with no smarts1, just formula constraints
+                    # treat cases with no SMARTS patterns, just formula constraints
                     match_count = 1
                     matched_components = []
                     matched1_len = 1
@@ -1488,7 +1585,6 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                              selected_groups: Union[List[int], range, None] = None,
                              representation: str = 'vector',
                              count_mode: str = 'binary',
-                             include_PFAS_definitions=False,
                              **kwargs):
     """
     Generate PFAS group fingerprints from SMILES strings.
@@ -1511,7 +1607,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
         How to count matches:
         - 'binary': 1 if group present, 0 if absent
         - 'count': Number of matches found
-        - 'max_chain': Maximum chain length for groups with chains
+        - 'max_component': Maximum component size for groups with components
     pfas_groups : list, optional
         Custom list of PFAS groups. If None, uses default groups.
     
@@ -1589,16 +1685,16 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                 raise ValueError(f"Invalid SMILES: {smiles_str}")
             
             formula = CalcMolFormula(mol)
-            all_matches = parse_groups_in_mol(mol, formula=formula, pfas_groups=pfas_groups,include_PFAS_definitions=include_PFAS_definitions, **kwargs)
+            all_matches = parse_groups_in_mol(mol, formula=formula, pfas_groups=pfas_groups,include_PFAS_definitions=False, **kwargs)
             
             # Create mapping from group ID to match information
             match_dict = {}
-            for group, match_count, chain_lengths, matched_chains in all_matches:
+            for group, match_count, component_sizes, matched_components in all_matches:
                 match_dict[group.id] = {
                     'group': group,
                     'match_count': match_count,
-                    'chain_lengths': chain_lengths,
-                    'matched_chains': matched_chains
+                    'component_sizes': component_sizes,
+                    'matched_components': matched_components
                 }
             
             if representation == 'vector' or representation == 'int':
@@ -1611,9 +1707,9 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                             fingerprint[i] = 1
                         elif count_mode == 'count':
                             fingerprint[i] = match_info['match_count']
-                        elif count_mode == 'max_chain':
-                            if match_info['matched_chains']:
-                                fingerprint[i] = max([chain['length'] for chain in match_info['matched_chains']])
+                        elif count_mode == 'max_component':
+                            if match_info['matched_components']:
+                                fingerprint[i] = max([comp['size'] for comp in match_info['matched_components']])
                             else:
                                 fingerprint[i] = match_info['match_count'] if match_info['match_count'] > 0 else 0
                         else:
@@ -1633,9 +1729,9 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                             fingerprint[group.name] = 1
                         elif count_mode == 'count':
                             fingerprint[group.name] = match_info['match_count']
-                        elif count_mode == 'max_chain':
-                            if match_info['matched_chains']:
-                                fingerprint[group.name] = max([chain['length'] for chain in match_info['matched_chains']])
+                        elif count_mode == 'max_component':
+                            if match_info['matched_components']:
+                                fingerprint[group.name] = max([comp['size'] for comp in match_info['matched_components']])
                             else:
                                 fingerprint[group.name] = match_info['match_count'] if match_info['match_count'] > 0 else 0
                     else:
@@ -1652,12 +1748,12 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                         if count_mode == 'binary':
                             value = 1
                         elif count_mode == 'count':
-                            value = match_info['n_matches']
-                        elif count_mode == 'max_chain':
-                            if match_info['chains']:
-                                value = max([chain['length'] for chain in match_info['chains']])
+                            value = match_info['match_count']
+                        elif count_mode == 'max_component':
+                            if match_info['matched_components']:
+                                value = max([comp['size'] for comp in match_info['matched_components']])
                             else:
-                                value = match_info['n_matches'] if match_info['n_matches'] > 0 else 0
+                                value = match_info['match_count'] if match_info['match_count'] > 0 else 0
                         
                         if value > 0:
                             fingerprint[group.name] = value
@@ -1671,11 +1767,10 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                         match_info = match_dict[group.id]
                         fingerprint[group.name] = {
                             'group_id': group.id,
-                            'n_matches': match_info['n_matches'],
-                            'n_cfchains': match_info['n_cfchains'],
-                            'chains': match_info['chains'],
-                            'smarts1': Chem.MolToSmarts(group.smarts1) if group.smarts1 else None,
-                            'smarts2': Chem.MolToSmarts(group.smarts2) if group.smarts2 else None
+                            'match_count': match_info['match_count'],
+                            'component_sizes': match_info['component_sizes'],
+                            'matched_components': match_info['matched_components'],
+                            'smarts1': [Chem.MolToSmarts(x) for x in group.smarts if x is not None],
                         }
                 fingerprints.append(fingerprint)
             else:

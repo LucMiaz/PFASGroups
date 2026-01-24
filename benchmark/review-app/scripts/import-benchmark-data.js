@@ -294,7 +294,7 @@ class DataImporter {
 
     /**
      * Extract matched path types from matches data
-     * Returns a map of groupId -> pathType (e.g., "Perfluoroalkyl", "Polyfluoroalkyl")
+     * Returns a map of groupId -> pathTypes (e.g., "Perfluoroalkyl", "Polyfluoroalkyl", or "Perfluoroalkyl,Polyfluoroalkyl")
      */
     extractMatchedPathTypes(matches, detectedGroups) {
         const pathTypesMap = {};
@@ -306,10 +306,9 @@ class DataImporter {
         // Process only group matches (not definition matches)
         for (const match of matches) {
             if (match.type === 'group' && match.id && match.components_types) {
-                // Take the first component type as the representative path type
-                // (most groups only have one component type per match)
+                // Store all component types joined by comma (can be multiple per match)
                 if (Array.isArray(match.components_types) && match.components_types.length > 0) {
-                    pathTypesMap[match.id] = match.components_types[0];
+                    pathTypesMap[match.id] = match.components_types.join(',');
                 }
             }
         }
