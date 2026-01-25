@@ -462,7 +462,7 @@ class PFASGroup():
         matched_components = []
         for comp in components:
             matched_components.append(
-                component_solver.get_matched_component_dict(comp, subset_set, 'cyclic', self.pfas_group)
+                component_solver.get_matched_component_dict(comp, subset_set, 'cyclic', self)
             )
         
         return max([0]+[len(x) for x in components]), component_sizes, len(components), matched_components
