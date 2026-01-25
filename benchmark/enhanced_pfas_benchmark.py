@@ -1107,7 +1107,7 @@ class EnhancedPFASBenchmark:
             'aromatic_branched': {
                 'smiles': 'c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F',
                 'description': 'Aromatic branched PFAS with carboxylic acid',
-                'expected_pfasgroups': [33, 51],  # carboxylic acid, side-chain aromatics
+                'expected_pfasgroups': [22, 33, 49, 50, 53, 56, 57],  # carboxylic acid, side-chain aromatics, aromatic groups, alkyl groups
                 'complexity': 'very_high'
             }
         }
