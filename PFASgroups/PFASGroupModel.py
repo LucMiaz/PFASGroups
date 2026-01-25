@@ -335,12 +335,15 @@ class PFASGroup():
         - Each SMARTS pattern is searched independently; matches from all patterns are combined.
         """
         self.all_matches = []
+        self.subset = set()
         if self.smarts is not None:
             for smarts_mol,min_count in zip(self.smarts, self.smarts_count):
                 matches = mol.GetSubstructMatches(smarts_mol)
                 if len(matches) < min_count:
                     return False
-                self.all_matches.append(set(matches))
+                if len(matches)>0:
+                    self.all_matches.append(set(matches))
+                    self.subset.union({y for x in matches for y in x if len(x)>0})
         return True
     def component_satisfies_all_smarts(self, component):
         """Check if a fluorinated component matches all SMARTS patterns of this PFAS group.
@@ -362,8 +365,12 @@ class PFASGroup():
         """
         atom_count = 0
         for i, (matches, min_count) in enumerate(zip(self.all_matches,self.smarts_count)):
-            found = len(set(matches).intersection(set(component)))
-            if found <min_count:
+            # Count how many SMARTS matches have overlap with this component
+            # matches is a set of tuples, each tuple represents one SMARTS match
+            component_set = set(component)
+            found = sum(1 for match_tuple in matches if any(atom_idx in component_set for atom_idx in match_tuple))
+            
+            if found < min_count:
                 self.component_specific_extra_atoms.append(0)
                 return False
             atom_count += found * self.smarts_extra_atoms[i]
@@ -407,12 +414,6 @@ class PFASGroup():
         else:
             # Get components for the specified path type, fallback to Polyfluoroalkyl if not found
             components = component_solver.get(self.smartsPath, max_dist = self.max_dist_from_CF, default = component_solver.get("Polyfluoroalkyl", max_dist = self.max_dist_from_CF, default=[]))
-
-        # find each component that matches all SMARTS
-        matched_components = []
-        for comp in components:
-            if self.component_satisfies_all_smarts(comp):
-                matched_components.append(comp)
         
         if self.smartsPath is not None:
             smartsPaths = [self.smartsPath]
@@ -425,13 +426,13 @@ class PFASGroup():
             extended_components = component_solver.get(_smartsPath, self.max_dist_from_CF, [])
             for i, comp in enumerate(extended_components):
                 # Check if this component is connected to SMARTS matches
-                augmented = component_solver.get_augmented_component(
-                        _smartsPath, self.max_dist_from_CF, i, self.all_matches[i]
+                if self.component_satisfies_all_smarts(comp):
+                    augmented = component_solver.get_augmented_component(
+                        _smartsPath, self.max_dist_from_CF, i, self.subset
                     )
-                if len(self.all_matches[i].intersection(augmented)) > 0:
                     augmented_matched_components.append(
-                    component_solver.get_matched_component_dict(comp, self.all_matches[i], _smartsPath, self, comp_id = i)
-                    )
+                        component_solver.get_matched_component_dict(comp, self.subset, _smartsPath, self, comp_id = i)
+                        )
         
         if len(augmented_matched_components) == 0:
             return 0, [], 0, []

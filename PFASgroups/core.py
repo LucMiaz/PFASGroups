@@ -4,6 +4,7 @@ import networkx as nx
 import re
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+from typing import Union, List, Dict
 PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl']
 # --- Load SMARTS paths from fpaths.json ---
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))

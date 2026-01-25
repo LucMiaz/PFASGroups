@@ -19,25 +19,16 @@ print("="*70)
 for group_data in groups_data[:10]:
     group = PFASGroup(**group_data)
     print(f"\nGroup {group.id}: {group.name}")
+    if not group.smarts or len(group.smarts) == 0:
+        print("  No SMARTS patterns defined.")
+        continue
+    for i in range(len(group.smarts)):
+        smarts_mol = group.smarts[i]
+        num_atoms = smarts_mol.GetNumAtoms()
+        min_count = group.smarts_count[i]
+        smarts_pattern = group.smarts_str[i]
+        print(f"  SMARTS {i+1}: {smarts_pattern}")
+        print(f"    Total atoms: {num_atoms}")
+        print(f"    Minimum required matches: {min_count}")
     
-    if group.smarts1 is not None:
-        num_atoms1 = group.smarts1.GetNumAtoms()
-        print(f"  smarts1: {group_data['smarts1']}")
-        print(f"    Total atoms: {num_atoms1}")
-        print(f"    Extra atoms (total - 1): {group.smarts1_extra_atoms}")
-    else:
-        print(f"  smarts1: None")
-        print(f"    Extra atoms: {group.smarts1_extra_atoms}")
-    
-    if group.smarts2 is not None:
-        num_atoms2 = group.smarts2.GetNumAtoms()
-        print(f"  smarts2: {group_data['smarts2']}")
-        print(f"    Total atoms: {num_atoms2}")
-        print(f"    Extra atoms (total - 1): {group.smarts2_extra_atoms}")
-    elif group_data.get('smarts2'):
-        print(f"  smarts2: {group_data['smarts2']} (not compiled)")
-    else:
-        print(f"  smarts2: None")
-        print(f"    Extra atoms: {group.smarts2_extra_atoms}")
-
 print("\n" + "="*70)
