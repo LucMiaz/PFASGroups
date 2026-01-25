@@ -1101,7 +1101,7 @@ class EnhancedPFASBenchmark:
             'cyclic_branched': {
                 'smiles': 'C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F',
                 'description': 'Cyclic branched perfluorocarboxylic acid',
-                'expected_pfasgroups': [33],  # carboxylic acid
+                'expected_pfasgroups': [49, 50, 54, 55],  # perfluoroalkyl, polyfluoroalkyl, Perfluoro cyclic, Polyfluoro cyclic
                 'complexity': 'high'
             },
             'aromatic_branched': {

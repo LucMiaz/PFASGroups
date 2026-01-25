@@ -401,13 +401,12 @@ class PFASGroup():
         if not self.find_matched_atoms(mol):
             return 0, [], 0, []
         if self.smartsPath is None:
-            # If no smartsPath specified, check all available component types
-            # When no specific smartsPath is defined, search across all available component types
-            # (e.g., Perfluoroalkyl, Polyfluoroalkyl) and combine results
+            # If no smartsPath specified, only check alkyl components (not cyclic)
+            # This ensures functional groups like carboxylic acid (group 33) are only
+            # detected when attached to perfluoroalkyl or polyfluoroalkyl chains,
+            # not when attached directly to cyclic structures
             all_components = []
-            # Iterate through all available smartsPath types (default to Perfluoroalkyl and Polyfluoroalkyl)
-            for path_type in kwargs.get('smartsPaths',{'Perfluoroalkyl','Polyfluoroalkyl'}).keys():
-                # Retrieve components for this path type with the specified max distance
+            for path_type in ['Perfluoroalkyl', 'Polyfluoroalkyl']:
                 path_comps = component_solver.get(path_type, max_dist = self.max_dist_from_CF, default=[])
                 all_components.extend(path_comps)
             components = all_components
