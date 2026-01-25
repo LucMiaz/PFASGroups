@@ -1,0 +1,492 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Guide &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Command Line Interface" href="cli.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" />
+ 
+<link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parsing-smiles-strings">Parsing SMILES Strings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-rdkit-molecules">Working with RDKit Molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#component-based-analysis">Component-Based Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output-formats">Output Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fingerprint-generation">Fingerprint Generation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#binary-fingerprints">Binary Fingerprints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#count-based-fingerprints">Count-Based Fingerprints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chain-length-fingerprints">Chain Length Fingerprints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selecting-specific-groups">Selecting Specific Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#representation-formats">Representation Formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#machine-learning-integration">Machine Learning Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#homologue-series-generation">Homologue Series Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualization">Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-plotting">Basic Plotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-output">Customizing Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#batch-processing">Batch Processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#processing-large-datasets">Processing Large Datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-dataframe-output">Using DataFrame Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-pfas-definitions">Working with PFAS Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-topics">Advanced Topics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#custom-shortest-path-method">Custom Shortest Path Method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#including-pfas-definitions">Including PFAS Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-tips">Performance Tips</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">Core Module (core.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/visualization.html">Visualization Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/generation.html">Molecule Generation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/generic_groups.html">Generic Classification Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/pathway_types.html">Pathway Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">User Guide</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/lucmiaz/PFASGroups/blob/main/source/user_guide.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="user-guide">
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading"></a></h1>
+<p>This comprehensive guide covers all aspects of using PFASgroups for PFAS analysis.</p>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<section id="parsing-smiles-strings">
+<h3>Parsing SMILES Strings<a class="headerlink" href="#parsing-smiles-strings" title="Link to this heading"></a></h3>
+<p>The primary function for PFAS analysis is <code class="docutils literal notranslate"><span class="pre">parse_smiles</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Single SMILES</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+
+<span class="c1"># Multiple SMILES as a list</span>
+<span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span>      <span class="c1"># PFOA</span>
+    <span class="s2">&quot;FC(F)(F)C(F)(F)S(=O)(=O)O&quot;</span><span class="p">,</span>  <span class="c1"># PFHxS</span>
+    <span class="s2">&quot;C(C(F)(F)F)F&quot;</span>                 <span class="c1"># HFC</span>
+<span class="p">]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="working-with-rdkit-molecules">
+<h3>Working with RDKit Molecules<a class="headerlink" href="#working-with-rdkit-molecules" title="Link to this heading"></a></h3>
+<p>You can also parse RDKit molecule objects directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_groups_in_mol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem.rdMolDescriptors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalcMolFormula</span>
+
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+<span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_groups_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="component-based-analysis">
+<h3>Component-Based Analysis<a class="headerlink" href="#component-based-analysis" title="Link to this heading"></a></h3>
+<p>For cyclic or complex structures, use component-based analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard chain-based analysis</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Component-based analysis (better for cyclic structures)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">bycomponent=True</span></code> option finds connected components of fluorinated atoms
+rather than chains between functional groups. This is particularly useful for:</p>
+<ul class="simple">
+<li><p>Cyclic PFAS compounds</p></li>
+<li><p>Highly branched structures</p></li>
+<li><p>Compounds with multiple fluorinated regions</p></li>
+</ul>
+</section>
+<section id="output-formats">
+<h3>Output Formats<a class="headerlink" href="#output-formats" title="Link to this heading"></a></h3>
+<p>PFASgroups supports multiple output formats:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Default: list of tuples</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>
+
+<span class="c1"># Pandas DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>  <span class="c1"># [&#39;smiles&#39;, &#39;group_id&#39;, &#39;group_name&#39;, &#39;match_count&#39;, ...]</span>
+
+<span class="c1"># CSV string</span>
+<span class="n">csv_str</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="fingerprint-generation">
+<h2>Fingerprint Generation<a class="headerlink" href="#fingerprint-generation" title="Link to this heading"></a></h2>
+<section id="binary-fingerprints">
+<h3>Binary Fingerprints<a class="headerlink" href="#binary-fingerprints" title="Link to this heading"></a></h3>
+<p>Generate binary fingerprints for presence/absence of PFAS groups:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_fingerprint</span>
+
+<span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span> <span class="s2">&quot;C(C(F)(F)F)F&quot;</span><span class="p">]</span>
+
+<span class="c1"># Binary vector (default)</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fps</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (2, 55)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>       <span class="c1"># Group information</span>
+</pre></div>
+</div>
+</section>
+<section id="count-based-fingerprints">
+<h3>Count-Based Fingerprints<a class="headerlink" href="#count-based-fingerprints" title="Link to this heading"></a></h3>
+<p>Count the number of matches for each group:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">count_mode</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="chain-length-fingerprints">
+<h3>Chain Length Fingerprints<a class="headerlink" href="#chain-length-fingerprints" title="Link to this heading"></a></h3>
+<p>Use maximum chain length as the fingerprint value:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">count_mode</span><span class="o">=</span><span class="s1">&#39;max_chain&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="selecting-specific-groups">
+<h3>Selecting Specific Groups<a class="headerlink" href="#selecting-specific-groups" title="Link to this heading"></a></h3>
+<p>Generate fingerprints for specific groups only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># By ID range</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">selected_groups</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">))</span>
+
+<span class="c1"># By specific IDs</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">selected_groups</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">22</span><span class="p">])</span>
+
+<span class="c1"># Generic groups only</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">selected_groups</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">58</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="representation-formats">
+<h3>Representation Formats<a class="headerlink" href="#representation-formats" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NumPy vector (default)</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">representation</span><span class="o">=</span><span class="s1">&#39;vector&#39;</span><span class="p">)</span>
+
+<span class="c1"># Dictionary format</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">representation</span><span class="o">=</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+<span class="c1"># Returns: [{&#39;PFCAs&#39;: 1, &#39;carboxylic acid&#39;: 1}, ...]</span>
+
+<span class="c1"># Sparse format (only non-zero)</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">representation</span><span class="o">=</span><span class="s1">&#39;sparse&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="machine-learning-integration">
+<h3>Machine Learning Integration<a class="headerlink" href="#machine-learning-integration" title="Link to this heading"></a></h3>
+<p>Example with scikit-learn:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_fingerprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Generate fingerprints</span>
+<span class="n">smiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span> <span class="s2">&quot;C(C(F)(F)F)F&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>  <span class="c1"># Your labels</span>
+
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+
+<span class="c1"># Train classifier</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">fps</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="homologue-series-generation">
+<h2>Homologue Series Generation<a class="headerlink" href="#homologue-series-generation" title="Link to this heading"></a></h2>
+<p>Generate shorter-chain analogues by iteratively removing CF₂ moieties:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_homologues</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="c1"># Start with PFOA (C8)</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate homologues</span>
+<span class="n">homologues</span> <span class="o">=</span> <span class="n">generate_homologues</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="o">=</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">)</span>
+
+<span class="c1"># Returns shorter chain analogues:</span>
+<span class="c1"># PFOA (C8) → PFHpA (C7) → PFHxA (C6) → PFPeA (C5) → PFBA (C4)</span>
+<span class="k">for</span> <span class="n">inchikey</span><span class="p">,</span> <span class="n">formulas</span> <span class="ow">in</span> <span class="n">homologues</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">formula</span><span class="p">,</span> <span class="n">h_mol</span> <span class="ow">in</span> <span class="n">formulas</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">formula</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">h_mol</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For polyfluoroalkyl compounds:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">homologues</span> <span class="o">=</span> <span class="n">generate_homologues</span><span class="p">(</span>
+    <span class="n">mol</span><span class="p">,</span>
+    <span class="n">smartsPathName</span><span class="o">=</span><span class="s1">&#39;Polyfluoroalkyl&#39;</span><span class="p">,</span>
+    <span class="n">repeating</span><span class="o">=</span><span class="s1">&#39;C([F,H,I,Br,Cl])[F,H,I,Br,Cl]&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h2>
+<section id="basic-plotting">
+<h3>Basic Plotting<a class="headerlink" href="#basic-plotting" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_pfasgroups</span>
+
+<span class="c1"># Simple plot</span>
+<span class="n">plot_pfasgroups</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+
+<span class="c1"># Multiple molecules</span>
+<span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span> <span class="s2">&quot;FC(F)(F)C(F)(F)S(=O)(=O)O&quot;</span><span class="p">]</span>
+<span class="n">plot_pfasgroups</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="customizing-output">
+<h3>Customizing Output<a class="headerlink" href="#customizing-output" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># SVG output</span>
+<span class="n">plot_pfasgroups</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">svg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;output.svg&quot;</span><span class="p">)</span>
+
+<span class="c1"># Customize dimensions</span>
+<span class="n">plot_pfasgroups</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">subwidth</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">subheight</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+
+<span class="c1"># Grid layout</span>
+<span class="n">plot_pfasgroups</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Show atom indices</span>
+<span class="n">plot_pfasgroups</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">addAtomIndices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Show bond indices</span>
+<span class="n">plot_pfasgroups</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">addBondIndices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="batch-processing">
+<h2>Batch Processing<a class="headerlink" href="#batch-processing" title="Link to this heading"></a></h2>
+<section id="processing-large-datasets">
+<h3>Processing Large Datasets<a class="headerlink" href="#processing-large-datasets" title="Link to this heading"></a></h3>
+<p>For large datasets, use batch processing with progress bars:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># Load data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;molecules.csv&quot;</span><span class="p">)</span>
+<span class="n">smiles_list</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;smiles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># Process in batches</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">all_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">)):</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">smiles_list</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">batch_size</span><span class="p">]</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+    <span class="n">all_results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-dataframe-output">
+<h3>Using DataFrame Output<a class="headerlink" href="#using-dataframe-output" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Direct DataFrame output</span>
+<span class="n">df_results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+
+<span class="c1"># Save to CSV</span>
+<span class="n">df_results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;pfas_analysis_results.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Filter by group</span>
+<span class="n">pfcas</span> <span class="o">=</span> <span class="n">df_results</span><span class="p">[</span><span class="n">df_results</span><span class="p">[</span><span class="s1">&#39;group_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Perfluoroalkyl carboxylic acids&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="working-with-pfas-definitions">
+<h2>Working with PFAS Definitions<a class="headerlink" href="#working-with-pfas-definitions" title="Link to this heading"></a></h2>
+<p>PFAS definitions provide broader classification criteria:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_PFASDefinitions</span><span class="p">,</span> <span class="n">PFASDefinition</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="c1"># Get default definitions</span>
+<span class="n">definitions</span> <span class="o">=</span> <span class="n">get_PFASDefinitions</span><span class="p">()</span>
+
+<span class="c1"># Check if a molecule matches a definition</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">defn</span> <span class="ow">in</span> <span class="n">definitions</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">defn</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matches: </span><span class="si">{</span><span class="n">defn</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Description: </span><span class="si">{</span><span class="n">defn</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<p>PFASgroups handles common errors gracefully:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Invalid SMILES are handled</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;valid_smiles&quot;</span><span class="p">,</span> <span class="s2">&quot;invalid##smiles&quot;</span><span class="p">,</span> <span class="s2">&quot;another_valid&quot;</span><span class="p">])</span>
+<span class="c1"># Invalid SMILES return empty results</span>
+
+<span class="c1"># Molecules with valence errors are fragmented</span>
+<span class="c1"># The algorithm attempts to correct valence issues automatically</span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-topics">
+<h2>Advanced Topics<a class="headerlink" href="#advanced-topics" title="Link to this heading"></a></h2>
+<section id="custom-shortest-path-method">
+<h3>Custom Shortest Path Method<a class="headerlink" href="#custom-shortest-path-method" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span>
+    <span class="n">smiles_list</span><span class="p">,</span>
+    <span class="n">shortest_path_method</span><span class="o">=</span><span class="s1">&#39;dijkstra&#39;</span>  <span class="c1"># or other NetworkX methods</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="including-pfas-definitions">
+<h3>Including PFAS Definitions<a class="headerlink" href="#including-pfas-definitions" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_mols</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_mols</span><span class="p">(</span>
+    <span class="n">mol_list</span><span class="p">,</span>
+    <span class="n">include_PFAS_definitions</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Include broader PFAS definitions</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-tips">
+<h3>Performance Tips<a class="headerlink" href="#performance-tips" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Pre-compile SMARTS patterns</strong>: When using custom groups, patterns are cached after first use</p></li>
+<li><p><strong>Batch processing</strong>: Process molecules in batches rather than one at a time</p></li>
+<li><p><strong>Use RDKit molecules</strong>: If you already have RDKit Mol objects, use <code class="docutils literal notranslate"><span class="pre">parse_groups_in_mol</span></code> directly</p></li>
+<li><p><strong>Select specific groups</strong>: Use <code class="docutils literal notranslate"><span class="pre">selected_groups</span></code> to limit analysis to relevant groups</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cli.html" class="btn btn-neutral float-right" title="Command Line Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

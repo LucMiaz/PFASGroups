@@ -1,0 +1,543 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generic Classification Groups &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pathway Types" href="pathway_types.html" />
+    <link rel="prev" title="OECD-Defined Groups" href="oecd_groups.html" />
+ 
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/core.html">Core Module (core.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/visualization.html">Visualization Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/generation.html">Molecule Generation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Generic Classification Groups</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#perfluoroalkyl-generic-groups">Perfluoroalkyl Generic Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#group-29-perfluoroalkyl">Group 29: Perfluoroalkyl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-30-perfluoroalkyl-with-acid">Group 30: Perfluoroalkyl with Acid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-31-perfluoroalkyl-with-ester">Group 31: Perfluoroalkyl with Ester</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-32-perfluoroalkyl-with-alcohol">Group 32: Perfluoroalkyl with Alcohol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-33-perfluoroalkyl-with-ether">Group 33: Perfluoroalkyl with Ether</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#polyfluoroalkyl-generic-groups">Polyfluoroalkyl Generic Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#group-34-polyfluoroalkyl">Group 34: Polyfluoroalkyl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-35-polyfluoroalkyl-with-acid">Group 35: Polyfluoroalkyl with Acid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-36-polyfluoroalkyl-with-ester">Group 36: Polyfluoroalkyl with Ester</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-37-polyfluoroalkyl-with-alcohol">Group 37: Polyfluoroalkyl with Alcohol</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#branched-and-polyfluoro-groups">Branched and Polyfluoro Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#group-38-polyfluoro-branched">Group 38: Polyfluoro (Branched)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-39-45-polyfluoro-functional-groups">Group 39-45: Polyfluoro Functional Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#brominated-groups">Brominated Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#group-46-polyfluorobr">Group 46: Polyfluorobr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-47-52-polyfluorobr-functional-groups">Group 47-52: Polyfluorobr Functional Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cyclic-and-special-structures">Cyclic and Special Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#group-53-perfluorocyclic">Group 53: Perfluorocyclic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-54-fluoroaromatic">Group 54: Fluoroaromatic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-55-57-additional-special-groups">Group 55-57: Additional Special Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-in-code">Usage in Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hierarchical-classification">Hierarchical Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pathway_types.html">Pathway Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Generic Classification Groups</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/lucmiaz/PFASGroups/blob/main/source/pfas_groups/generic_groups.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="generic-classification-groups">
+<h1>Generic Classification Groups<a class="headerlink" href="#generic-classification-groups" title="Link to this heading"></a></h1>
+<p>This section documents the 27 generic PFAS classification groups (IDs 29-57)
+that extend beyond the OECD-defined groups to provide comprehensive classification.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The generic groups capture broader structural patterns that may not fit into
+specific OECD categories but are still important for PFAS classification. These
+groups are organized by:</p>
+<ul class="simple">
+<li><p><strong>Perfluoroalkyl structures</strong> (complete fluorination)</p></li>
+<li><p><strong>Polyfluoroalkyl structures</strong> (partial fluorination)</p></li>
+<li><p><strong>Branched and cyclic patterns</strong></p></li>
+<li><p><strong>Other halogenated compounds</strong></p></li>
+</ul>
+</section>
+<section id="perfluoroalkyl-generic-groups">
+<h2>Perfluoroalkyl Generic Groups<a class="headerlink" href="#perfluoroalkyl-generic-groups" title="Link to this heading"></a></h2>
+<section id="group-29-perfluoroalkyl">
+<h3>Group 29: Perfluoroalkyl<a class="headerlink" href="#group-29-perfluoroalkyl" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 29
+Name: Perfluoroalkyl
+Description: Generic perfluoroalkyl chain
+Pathway: Perfluoroalkyl
+SMARTS: None (matches any perfluoroalkyl pathway)
+Constraints: None
+</pre></div>
+</div>
+<p>Matches any compound with a perfluorinated alkyl chain (CₙF₂ₙ₊₁-).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Generic perfluoroalkyl compound</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)N&quot;</span><span class="p">])</span>
+<span class="c1"># Matches: Perfluoroalkyl (Group 29) if no specific OECD group applies</span>
+</pre></div>
+</div>
+</section>
+<section id="group-30-perfluoroalkyl-with-acid">
+<h3>Group 30: Perfluoroalkyl with Acid<a class="headerlink" href="#group-30-perfluoroalkyl-with-acid" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 30
+Name: Perfluoroalkyl-acid
+Description: Perfluoroalkyl with generic acid group
+Pathway: Perfluoroalkyl
+SMARTS: [C,S,P](=O)[O;H1]
+Constraints: None
+</pre></div>
+</div>
+<p>Matches perfluoroalkyl compounds with any acid functional group.</p>
+</section>
+<section id="group-31-perfluoroalkyl-with-ester">
+<h3>Group 31: Perfluoroalkyl with Ester<a class="headerlink" href="#group-31-perfluoroalkyl-with-ester" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 31
+Name: Perfluoroalkyl-ester
+Description: Perfluoroalkyl with ester linkage
+Pathway: Perfluoroalkyl
+SMARTS: C(=O)O[C,c]
+Constraints: None
+</pre></div>
+</div>
+</section>
+<section id="group-32-perfluoroalkyl-with-alcohol">
+<h3>Group 32: Perfluoroalkyl with Alcohol<a class="headerlink" href="#group-32-perfluoroalkyl-with-alcohol" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 32
+Name: Perfluoroalkyl-OH
+Description: Perfluoroalkyl with alcohol group
+Pathway: Perfluoroalkyl
+SMARTS: [O;H1][C;X4]
+Constraints: eq: {O: 1}
+</pre></div>
+</div>
+</section>
+<section id="group-33-perfluoroalkyl-with-ether">
+<h3>Group 33: Perfluoroalkyl with Ether<a class="headerlink" href="#group-33-perfluoroalkyl-with-ether" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 33
+Name: Perfluoroalkyl-ether
+Description: Perfluoroalkyl with ether linkage
+Pathway: Perfluoroalkyl
+SMARTS: [C;X4](F)(F)[O;X2][C;X4]
+Constraints: None
+</pre></div>
+</div>
+</section>
+</section>
+<section id="polyfluoroalkyl-generic-groups">
+<h2>Polyfluoroalkyl Generic Groups<a class="headerlink" href="#polyfluoroalkyl-generic-groups" title="Link to this heading"></a></h2>
+<section id="group-34-polyfluoroalkyl">
+<h3>Group 34: Polyfluoroalkyl<a class="headerlink" href="#group-34-polyfluoroalkyl" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 34
+Name: Polyfluoroalkyl
+Description: Generic polyfluoroalkyl chain
+Pathway: Polyfluoroalkyl
+SMARTS: None (matches any polyfluoroalkyl pathway)
+Constraints: None
+</pre></div>
+</div>
+<p>Matches any compound with a partially fluorinated alkyl chain containing both
+C-F and C-H bonds.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Polyfluoroalkyl compound</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(F)HCC&quot;</span><span class="p">])</span>
+<span class="c1"># Matches: Polyfluoroalkyl (Group 34)</span>
+</pre></div>
+</div>
+</section>
+<section id="group-35-polyfluoroalkyl-with-acid">
+<h3>Group 35: Polyfluoroalkyl with Acid<a class="headerlink" href="#group-35-polyfluoroalkyl-with-acid" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 35
+Name: Polyfluoroalkyl-acid
+Description: Polyfluoroalkyl with generic acid group
+Pathway: Polyfluoroalkyl
+SMARTS: [C,S,P](=O)[O;H1]
+Constraints: None
+</pre></div>
+</div>
+</section>
+<section id="group-36-polyfluoroalkyl-with-ester">
+<h3>Group 36: Polyfluoroalkyl with Ester<a class="headerlink" href="#group-36-polyfluoroalkyl-with-ester" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 36
+Name: Polyfluoroalkyl-ester
+Description: Polyfluoroalkyl with ester linkage
+Pathway: Polyfluoroalkyl
+SMARTS: C(=O)O[C,c]
+Constraints: None
+</pre></div>
+</div>
+</section>
+<section id="group-37-polyfluoroalkyl-with-alcohol">
+<h3>Group 37: Polyfluoroalkyl with Alcohol<a class="headerlink" href="#group-37-polyfluoroalkyl-with-alcohol" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 37
+Name: Polyfluoroalkyl-OH
+Description: Polyfluoroalkyl with alcohol group
+Pathway: Polyfluoroalkyl
+SMARTS: [O;H1][C;X4]
+Constraints: eq: {O: 1}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="branched-and-polyfluoro-groups">
+<h2>Branched and Polyfluoro Groups<a class="headerlink" href="#branched-and-polyfluoro-groups" title="Link to this heading"></a></h2>
+<section id="group-38-polyfluoro-branched">
+<h3>Group 38: Polyfluoro (Branched)<a class="headerlink" href="#group-38-polyfluoro-branched" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 38
+Name: Polyfluoro
+Description: Generic polyfluorinated compound (branched)
+Pathway: Polyfluoro
+SMARTS: None
+Constraints: None
+</pre></div>
+</div>
+<p>Matches compounds with branched fluorinated structures.</p>
+</section>
+<section id="group-39-45-polyfluoro-functional-groups">
+<h3>Group 39-45: Polyfluoro Functional Groups<a class="headerlink" href="#group-39-45-polyfluoro-functional-groups" title="Link to this heading"></a></h3>
+<p>These groups combine the Polyfluoro pathway with various functional groups:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 25.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>ID</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>39</p></td>
+<td><p>Polyfluoro-acid</p></td>
+<td><p>Polyfluoro with acid group</p></td>
+</tr>
+<tr class="row-odd"><td><p>40</p></td>
+<td><p>Polyfluoro-ester</p></td>
+<td><p>Polyfluoro with ester linkage</p></td>
+</tr>
+<tr class="row-even"><td><p>41</p></td>
+<td><p>Polyfluoro-OH</p></td>
+<td><p>Polyfluoro with alcohol group</p></td>
+</tr>
+<tr class="row-odd"><td><p>42</p></td>
+<td><p>Polyfluoro-ether</p></td>
+<td><p>Polyfluoro with ether linkage</p></td>
+</tr>
+<tr class="row-even"><td><p>43</p></td>
+<td><p>Polyfluoro-amine</p></td>
+<td><p>Polyfluoro with amine group</p></td>
+</tr>
+<tr class="row-odd"><td><p>44</p></td>
+<td><p>Polyfluoro-halide</p></td>
+<td><p>Polyfluoro with halide substituent</p></td>
+</tr>
+<tr class="row-even"><td><p>45</p></td>
+<td><p>Polyfluoro-silane</p></td>
+<td><p>Polyfluoro with silane group</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="brominated-groups">
+<h2>Brominated Groups<a class="headerlink" href="#brominated-groups" title="Link to this heading"></a></h2>
+<section id="group-46-polyfluorobr">
+<h3>Group 46: Polyfluorobr<a class="headerlink" href="#group-46-polyfluorobr" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 46
+Name: Polyfluorobr
+Description: Brominated polyfluorinated compound
+Pathway: Polyfluorobr
+SMARTS: None
+Constraints: None
+</pre></div>
+</div>
+<p>Matches brominated polyfluorinated compounds.</p>
+</section>
+<section id="group-47-52-polyfluorobr-functional-groups">
+<h3>Group 47-52: Polyfluorobr Functional Groups<a class="headerlink" href="#group-47-52-polyfluorobr-functional-groups" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 25.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>ID</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>47</p></td>
+<td><p>Polyfluorobr-acid</p></td>
+<td><p>Brominated polyfluoro with acid</p></td>
+</tr>
+<tr class="row-odd"><td><p>48</p></td>
+<td><p>Polyfluorobr-ester</p></td>
+<td><p>Brominated polyfluoro with ester</p></td>
+</tr>
+<tr class="row-even"><td><p>49</p></td>
+<td><p>Polyfluorobr-OH</p></td>
+<td><p>Brominated polyfluoro with alcohol</p></td>
+</tr>
+<tr class="row-odd"><td><p>50</p></td>
+<td><p>Polyfluorobr-ether</p></td>
+<td><p>Brominated polyfluoro with ether</p></td>
+</tr>
+<tr class="row-even"><td><p>51</p></td>
+<td><p>Polyfluorobr-amine</p></td>
+<td><p>Brominated polyfluoro with amine</p></td>
+</tr>
+<tr class="row-odd"><td><p>52</p></td>
+<td><p>Polyfluorobr-halide</p></td>
+<td><p>Brominated polyfluoro with additional halide</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cyclic-and-special-structures">
+<h2>Cyclic and Special Structures<a class="headerlink" href="#cyclic-and-special-structures" title="Link to this heading"></a></h2>
+<section id="group-53-perfluorocyclic">
+<h3>Group 53: Perfluorocyclic<a class="headerlink" href="#group-53-perfluorocyclic" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 53
+Name: Perfluorocyclic
+Description: Perfluorinated cyclic structure
+Pathway: cyclic
+SMARTS: [C;R](F)(F)[C;R](F)(F)
+Constraints: None
+</pre></div>
+</div>
+<p>Matches perfluorinated cyclic structures.</p>
+</section>
+<section id="group-54-fluoroaromatic">
+<h3>Group 54: Fluoroaromatic<a class="headerlink" href="#group-54-fluoroaromatic" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: 54
+Name: Fluoroaromatic
+Description: Fluorinated aromatic ring
+Pathway: None
+SMARTS: [c]F
+Constraints: None
+</pre></div>
+</div>
+<p>Matches compounds with fluorinated aromatic rings.</p>
+</section>
+<section id="group-55-57-additional-special-groups">
+<h3>Group 55-57: Additional Special Groups<a class="headerlink" href="#group-55-57-additional-special-groups" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 25.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>ID</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>55</p></td>
+<td><p>Semifluorinated</p></td>
+<td><p>Semifluorinated alkyl chains</p></td>
+</tr>
+<tr class="row-odd"><td><p>56</p></td>
+<td><p>Side-chain fluorinated polymer</p></td>
+<td><p>Fluorinated polymer side chains</p></td>
+</tr>
+<tr class="row-even"><td><p>57</p></td>
+<td><p>Other fluorinated</p></td>
+<td><p>Other fluorinated compounds not matching above categories</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="usage-in-code">
+<h2>Usage in Code<a class="headerlink" href="#usage-in-code" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span><span class="p">,</span> <span class="n">get_PFASGroups</span><span class="p">,</span> <span class="n">generate_fingerprint</span>
+
+<span class="c1"># Get all generic groups (IDs 29-57)</span>
+<span class="n">generic_groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">get_PFASGroups</span><span class="p">()</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">id</span> <span class="o">&gt;=</span> <span class="mi">29</span><span class="p">]</span>
+
+<span class="c1"># Parse with all groups (OECD + generic)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+
+<span class="c1"># Separate OECD and generic matches</span>
+<span class="k">for</span> <span class="n">mol_results</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="n">oecd</span> <span class="o">=</span> <span class="p">[(</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">mol_results</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">id</span> <span class="o">&lt;=</span> <span class="mi">28</span><span class="p">]</span>
+    <span class="n">generic</span> <span class="o">=</span> <span class="p">[(</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">mol_results</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mi">28</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OECD: </span><span class="si">{</span><span class="n">oecd</span><span class="si">}</span><span class="s2">, Generic: </span><span class="si">{</span><span class="n">generic</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate fingerprint with only generic groups</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">selected_groups</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">58</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="hierarchical-classification">
+<h2>Hierarchical Classification<a class="headerlink" href="#hierarchical-classification" title="Link to this heading"></a></h2>
+<p>Generic groups often provide broader classification when specific OECD groups
+don’t apply:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Most specific → Least specific
+
+PFOA → PFCA (OECD) → Perfluoroalkyl-acid → Perfluoroalkyl
+
+6:2 FTOH → FTOH (OECD) → Polyfluoroalkyl-OH → Polyfluoroalkyl
+</pre></div>
+</div>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># This matches PFCA (specific) and Perfluoroalkyl-acid (generic)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">])</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="c1"># groups = [&#39;PFCA&#39;, &#39;Perfluoroalkyl-acid&#39;, &#39;Perfluoroalkyl&#39;]</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="oecd_groups.html"><span class="doc">OECD-Defined Groups</span></a> - OECD-defined groups</p></li>
+<li><p><a class="reference internal" href="pathway_types.html"><span class="doc">Pathway Types</span></a> - Pathway type definitions</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="oecd_groups.html" class="btn btn-neutral float-left" title="OECD-Defined Groups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pathway_types.html" class="btn btn-neutral float-right" title="Pathway Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

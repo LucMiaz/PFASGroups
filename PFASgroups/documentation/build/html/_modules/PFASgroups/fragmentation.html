@@ -1,0 +1,698 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PFASgroups.fragmentation &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+ 
+<link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/core.html">Core Module (core.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/visualization.html">Visualization Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/generation.html">Molecule Generation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pfas_groups/oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pfas_groups/generic_groups.html">Generic Classification Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pfas_groups/pathway_types.html">Pathway Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">PFASgroups.fragmentation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for PFASgroups.fragmentation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Fragmentation utilities for PFASgroups.</span>
+
+<span class="sd">This module provides functions for fragmenting molecules based on bond dissociation energies.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem.rdMolDescriptors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalcMolFormula</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem.Descriptors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExactMolWt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span><span class="p">,</span> <span class="n">product</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+
+<div class="viewcode-block" id="keysToInt">
+<a class="viewcode-back" href="../../api/fragmentation.html#PFASgroups.fragmentation.keysToInt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">keysToInt</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert string keys to integers in a dictionary&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+
+
+<div class="viewcode-block" id="yield_scheme">
+<a class="viewcode-back" href="../../api/fragmentation.html#PFASgroups.fragmentation.yield_scheme">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">yield_scheme</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yields SMARTS for chains&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;BDE&#39;</span><span class="p">:</span>
+        <span class="c1"># For standalone use, we would need to provide the bond dissociation energy data</span>
+        <span class="c1"># This is a simplified version that creates a basic BDE dictionary</span>
+        <span class="c1"># In a full implementation, this would load from a data file</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="p">{</span><span class="mi">6</span><span class="p">:</span> <span class="mi">346</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">414</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">485</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">339</span><span class="p">,</span> <span class="mi">35</span><span class="p">:</span> <span class="mi">285</span><span class="p">},</span>  <span class="c1"># Carbon bonds</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="mi">6</span><span class="p">:</span> <span class="mi">414</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">436</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">568</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">431</span><span class="p">,</span> <span class="mi">35</span><span class="p">:</span> <span class="mi">366</span><span class="p">},</span>  <span class="c1"># Hydrogen bonds  </span>
+            <span class="mi">9</span><span class="p">:</span> <span class="p">{</span><span class="mi">6</span><span class="p">:</span> <span class="mi">485</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">568</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">159</span><span class="p">},</span>  <span class="c1"># Fluorine bonds</span>
+            <span class="mi">17</span><span class="p">:</span> <span class="p">{</span><span class="mi">6</span><span class="p">:</span> <span class="mi">339</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">431</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mi">243</span><span class="p">},</span> <span class="c1"># Chlorine bonds</span>
+            <span class="mi">35</span><span class="p">:</span> <span class="p">{</span><span class="mi">6</span><span class="p">:</span> <span class="mi">285</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">366</span><span class="p">,</span> <span class="mi">35</span><span class="p">:</span> <span class="mi">193</span><span class="p">},</span> <span class="c1"># Bromine bonds</span>
+        <span class="p">}</span>
+        <span class="c1"># Make symmetric</span>
+        <span class="k">for</span> <span class="n">atom1</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">atom2</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">atom1</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">atom2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="n">atom2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">atom2</span><span class="p">][</span><span class="n">atom1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">atom1</span><span class="p">][</span><span class="n">atom2</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Yield Scheme not implemented for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;bondWeights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">inner</span></div>
+
+
+<div class="viewcode-block" id="get_fragments">
+<a class="viewcode-back" href="../../api/fragmentation.html#PFASgroups.fragmentation.get_fragments">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_fragments</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fragment a molecule by breaking specified bonds&quot;&quot;&quot;</span>
+    <span class="n">frags</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">all</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="k">as</span> <span class="n">rwmol</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">b_idx</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">rwmol</span><span class="o">.</span><span class="n">GetBondWithIdx</span><span class="p">(</span><span class="n">b_idx</span><span class="p">)</span>
+                <span class="n">rwmol</span><span class="o">.</span><span class="n">RemoveBond</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span> <span class="n">b</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">())</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="n">frags</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">Chem</span><span class="o">.</span><span class="n">GetMolFrags</span><span class="p">(</span><span class="n">rwmol</span><span class="p">,</span> <span class="n">asMols</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">b_idx</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="k">as</span> <span class="n">rwmol</span><span class="p">:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">rwmol</span><span class="o">.</span><span class="n">GetBondWithIdx</span><span class="p">(</span><span class="n">b_idx</span><span class="p">)</span>
+                <span class="n">rwmol</span><span class="o">.</span><span class="n">RemoveBond</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span> <span class="n">b</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">())</span>
+            <span class="n">frags</span> <span class="o">=</span> <span class="n">frags</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">Chem</span><span class="o">.</span><span class="n">GetMolFrags</span><span class="p">(</span><span class="n">rwmol</span><span class="p">,</span> <span class="n">asMols</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">frags</span></div>
+
+
+<div class="viewcode-block" id="generate_fragments">
+<a class="viewcode-back" href="../../api/fragmentation.html#PFASgroups.fragmentation.generate_fragments">[docs]</a>
+<span class="nd">@yield_scheme</span><span class="p">(</span><span class="s1">&#39;BDE&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_fragments</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bondWeights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nb_breakingpoints</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Break molecule on weakest bonds using BDE&quot;&quot;&quot;</span>
+    <span class="n">bonds</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">strengths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bond</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">()):</span>
+        <span class="n">node1</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtom</span><span class="p">()</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">()</span>
+        <span class="n">node2</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtom</span><span class="p">()</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">bondWeights</span><span class="p">[</span><span class="n">node1</span><span class="p">][</span><span class="n">node2</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">bondWeights</span><span class="p">[</span><span class="n">node2</span><span class="p">][</span><span class="n">node1</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="mi">300</span>  <span class="c1"># Default bond strength</span>
+        <span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    
+    <span class="c1"># Invert strengths for probability calculation (weaker bonds more likely to break)</span>
+    <span class="n">inv_strengths</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="o">/</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strengths</span><span class="p">]</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">inv_strengths</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">inv_strengths</span><span class="p">)</span>
+    
+    <span class="n">fragments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">breaking_points_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bonds</span><span class="p">)),</span> 
+                                         <span class="n">size</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">nb_breakingpoints</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bonds</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> 
+                                         <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">prob</span><span class="p">)</span>
+    <span class="n">frags</span> <span class="o">=</span> <span class="n">get_fragments</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="p">[</span><span class="n">bonds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">breaking_points_idx</span><span class="p">])</span>
+    <span class="n">fragments</span> <span class="o">+=</span> <span class="n">frags</span>
+    <span class="k">return</span> <span class="n">fragments</span></div>
+
+
+<div class="viewcode-block" id="fragment">
+<a class="viewcode-back" href="../../api/fragmentation.html#PFASgroups.fragmentation.fragment">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fragment</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bde_dict</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">nb_breakingpoints</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fragment a molecule into smaller fragments by breaking the weakest bonds.</span>
+<span class="sd">    mol: rdkit.Chem.Mol object</span>
+<span class="sd">    bde_dict: dictionary with bond dissociation energies&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input mol must be an rdkit.Chem.Mol object&quot;</span><span class="p">)</span>
+    
+    <span class="n">fragments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">process_fragments</span> <span class="o">=</span> <span class="p">[</span><span class="n">mol</span><span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_depth</span><span class="p">):</span>
+        <span class="n">next_fragments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">process_fragments</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">frag</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">frags</span> <span class="o">=</span> <span class="n">generate_fragments</span><span class="p">(</span><span class="n">frag</span><span class="p">,</span> <span class="n">bondWeights</span><span class="o">=</span><span class="n">bde_dict</span><span class="p">,</span> <span class="n">nb_breakingpoints</span><span class="o">=</span><span class="n">nb_breakingpoints</span><span class="p">)</span>
+                <span class="n">fragments</span> <span class="o">=</span> <span class="n">fragments</span> <span class="o">+</span> <span class="n">frags</span>
+                <span class="n">next_fragments</span> <span class="o">=</span> <span class="n">next_fragments</span> <span class="o">+</span> <span class="n">frags</span>
+        <span class="n">process_fragments</span> <span class="o">=</span> <span class="n">next_fragments</span>
+    
+    <span class="n">fragments_d</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">inchi_key</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">frag</span><span class="p">)</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">frag</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">inchi_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fragments_d</span><span class="p">:</span>
+                <span class="n">fragments_d</span><span class="p">[</span><span class="n">inchi_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">formula</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fragments_d</span><span class="p">[</span><span class="n">inchi_key</span><span class="p">]:</span>
+                <span class="n">fragments_d</span><span class="p">[</span><span class="n">inchi_key</span><span class="p">][</span><span class="n">formula</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;mol&#39;</span><span class="p">:</span> <span class="n">frag</span><span class="p">}</span>
+            <span class="n">fragments_d</span><span class="p">[</span><span class="n">inchi_key</span><span class="p">][</span><span class="n">formula</span><span class="p">][</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="c1"># Skip problematic fragments</span>
+            <span class="k">continue</span>
+    
+    <span class="k">return</span> <span class="n">fragments_d</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fragment_to_distribution</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bde_dict</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">nb_breakingpoints</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fragment a molecule into smaller fragments and return mass spectrum-like distribution.</span>
+<span class="sd">    mol: rdkit.Chem.Mol object</span>
+<span class="sd">    bde_dict: dictionary with bond dissociation energies&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input mol must be an rdkit.Chem.Mol object&quot;</span><span class="p">)</span>
+    
+    <span class="n">fragments</span> <span class="o">=</span> <span class="n">fragment</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bde_dict</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">nb_breakingpoints</span><span class="o">=</span><span class="n">nb_breakingpoints</span><span class="p">)</span>
+    <span class="n">intensities</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">fragments</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">molw</span> <span class="o">=</span> <span class="n">ExactMolWt</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mol&#39;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">molw</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">intensities</span><span class="p">:</span>
+                    <span class="n">intensities</span><span class="p">[</span><span class="n">molw</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">intensities</span><span class="p">[</span><span class="n">molw</span><span class="p">]</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">continue</span>
+    
+    <span class="n">mz</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">intensities</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">intensity</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">intensities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">intensity_distribution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span>
+        <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">mz</span><span class="p">)</span>
+        <span class="n">mz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mz</span><span class="p">)[</span><span class="n">sorted_indices</span><span class="p">]</span>
+        <span class="n">intensity_distribution</span> <span class="o">=</span> <span class="n">intensity_distribution</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">mz</span><span class="p">,</span> <span class="n">intensity_distribution</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">find_fluorinated_chains</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="o">=</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find fluorinated chains in a molecule using SMARTS patterns.</span>
+<span class="sd">    Returns atom indices that are part of fluorinated chains.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Load SMARTS paths from fpaths.json</span>
+    <span class="n">MODULE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MODULE_DIR</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+    <span class="n">FPATHS_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;fpaths.json&#39;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">FPATHS_FILE</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">fpaths</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="c1"># Fallback SMARTS patterns if file not found</span>
+        <span class="n">fpaths</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">:</span> <span class="s1">&#39;[#6]([#9])([#9])[#6]([#9])([#9])&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Perfluoroalkyl_end&#39;</span><span class="p">:</span> <span class="s1">&#39;[#6]([#9])([#9])([#6,#9,#17,#35,#53])&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Polyfluoroalkyl&#39;</span><span class="p">:</span> <span class="s1">&#39;[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Polyfluoroalkyl_end&#39;</span><span class="p">:</span> <span class="s1">&#39;[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])([#6,#9,#1,#17,#35,#53])&#39;</span>
+        <span class="p">}</span>
+    
+    <span class="c1"># Get SMARTS patterns</span>
+    <span class="n">path_smarts</span> <span class="o">=</span> <span class="n">fpaths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">smartsPathName</span><span class="p">)</span>
+    <span class="n">end_smarts</span> <span class="o">=</span> <span class="n">fpaths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">smartsPathName</span> <span class="o">+</span> <span class="s1">&#39;_end&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path_smarts</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">end_smarts</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
+    
+    <span class="c1"># Convert SMARTS to molecules</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">path_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">path_smarts</span><span class="p">)</span>
+        <span class="n">end_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">end_smarts</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path_mol</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">end_mol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
+    
+    <span class="c1"># Find all atoms that are part of fluorinated chains</span>
+    <span class="n">fluorinated_atoms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    
+    <span class="c1"># Get all matches for path and end patterns</span>
+    <span class="n">path_matches</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">path_mol</span><span class="p">)</span>
+    <span class="n">end_matches</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">end_mol</span><span class="p">)</span>
+    
+    <span class="c1"># Add all atoms from path matches</span>
+    <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">path_matches</span><span class="p">:</span>
+        <span class="n">fluorinated_atoms</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+    
+    <span class="c1"># Add all atoms from end matches</span>
+    <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">end_matches</span><span class="p">:</span>
+        <span class="n">fluorinated_atoms</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">fluorinated_atoms</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_non_fluorinated_bonds</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fluorinated_atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="o">=</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get bond indices that are not part of the fluorinated chain.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol: RDKit molecule object</span>
+<span class="sd">        fluorinated_atoms: Set of atom indices that are part of fluorinated chains</span>
+<span class="sd">        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        List of bond indices that are not in the fluorinated chain</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">fluorinated_atoms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fluorinated_atoms</span> <span class="o">=</span> <span class="n">find_fluorinated_chains</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="p">)</span>
+    
+    <span class="n">non_fluorinated_bonds</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">():</span>
+        <span class="n">begin_idx</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">()</span>
+        <span class="n">end_idx</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">()</span>
+        
+        <span class="c1"># If both atoms are in the fluorinated chain, keep the bond intact</span>
+        <span class="k">if</span> <span class="n">begin_idx</span> <span class="ow">in</span> <span class="n">fluorinated_atoms</span> <span class="ow">and</span> <span class="n">end_idx</span> <span class="ow">in</span> <span class="n">fluorinated_atoms</span><span class="p">:</span>
+            <span class="k">continue</span>
+        
+        <span class="c1"># If bond connects fluorinated chain to other parts, it can be broken</span>
+        <span class="c1"># If bond is between non-fluorinated atoms, it can be broken</span>
+        <span class="n">non_fluorinated_bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">())</span>
+    
+    <span class="k">return</span> <span class="n">non_fluorinated_bonds</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_bonds_connected_to_fluorinated_path</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fluorinated_atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="o">=</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get bond indices that are connected to (but not part of) the fluorinated path.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol: RDKit molecule object</span>
+<span class="sd">        fluorinated_atoms: Set of atom indices that are part of fluorinated chains</span>
+<span class="sd">        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        List of bond indices that are connected to but not part of the fluorinated chain</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">fluorinated_atoms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fluorinated_atoms</span> <span class="o">=</span> <span class="n">find_fluorinated_chains</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="p">)</span>
+    
+    <span class="n">connected_bonds</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">():</span>
+        <span class="n">begin_idx</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">()</span>
+        <span class="n">end_idx</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">()</span>
+        
+        <span class="c1"># Skip bonds that are entirely within the fluorinated chain</span>
+        <span class="k">if</span> <span class="n">begin_idx</span> <span class="ow">in</span> <span class="n">fluorinated_atoms</span> <span class="ow">and</span> <span class="n">end_idx</span> <span class="ow">in</span> <span class="n">fluorinated_atoms</span><span class="p">:</span>
+            <span class="k">continue</span>
+        
+        <span class="c1"># Only include bonds where exactly one atom is in the fluorinated chain</span>
+        <span class="c1"># This ensures we&#39;re breaking bonds that connect the fluorinated path to other parts</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">begin_idx</span> <span class="ow">in</span> <span class="n">fluorinated_atoms</span> <span class="ow">and</span> <span class="n">end_idx</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fluorinated_atoms</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="p">(</span><span class="n">begin_idx</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fluorinated_atoms</span> <span class="ow">and</span> <span class="n">end_idx</span> <span class="ow">in</span> <span class="n">fluorinated_atoms</span><span class="p">):</span>
+            <span class="n">connected_bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">())</span>
+    
+    <span class="k">return</span> <span class="n">connected_bonds</span>
+
+
+<div class="viewcode-block" id="generate_degradation_products">
+<a class="viewcode-back" href="../../api/fragmentation.html#PFASgroups.fragmentation.generate_degradation_products">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_degradation_products</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="o">=</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">,</span> <span class="n">max_breaks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+                                <span class="n">min_fragment_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">include_original</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate degradation products by breaking bonds that are connected to but not part of the fluorinated chain.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol: RDKit molecule object</span>
+<span class="sd">        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains</span>
+<span class="sd">        max_breaks: Maximum number of bonds to break simultaneously</span>
+<span class="sd">        min_fragment_size: Minimum number of atoms in a fragment to keep it</span>
+<span class="sd">        include_original: Whether to include the original molecule in results</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary with InChI keys mapping to fragment information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input mol must be an rdkit.Chem.Mol object&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Find fluorinated chain atoms</span>
+    <span class="n">fluorinated_atoms</span> <span class="o">=</span> <span class="n">find_fluorinated_chains</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="p">)</span>
+    
+    <span class="c1"># Get bonds that can be broken (connected to but not part of fluorinated chain)</span>
+    <span class="n">breakable_bonds</span> <span class="o">=</span> <span class="n">get_bonds_connected_to_fluorinated_path</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fluorinated_atoms</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">breakable_bonds</span><span class="p">:</span>
+        <span class="c1"># No breakable bonds found, return original molecule</span>
+        <span class="k">if</span> <span class="n">include_original</span><span class="p">:</span>
+            <span class="n">inchi_key</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">inchi_key</span><span class="p">:</span> <span class="p">{</span><span class="n">formula</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mol&#39;</span><span class="p">:</span> <span class="n">mol</span><span class="p">,</span> <span class="s1">&#39;n_breaks&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;broken_bonds&#39;</span><span class="p">:</span> <span class="p">[]}}}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+    
+    <span class="n">degradation_products</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="c1"># Include original molecule if requested</span>
+    <span class="k">if</span> <span class="n">include_original</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">inchi_key</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="n">degradation_products</span><span class="p">[</span><span class="n">inchi_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">formula</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mol&#39;</span><span class="p">:</span> <span class="n">mol</span><span class="p">,</span> <span class="s1">&#39;n_breaks&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;broken_bonds&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+            <span class="p">}</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    
+    <span class="c1"># Generate all possible combinations of bond breaks</span>
+    <span class="k">for</span> <span class="n">n_breaks</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_breaks</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">breakable_bonds</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">bond_combination</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">breakable_bonds</span><span class="p">,</span> <span class="n">n_breaks</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Break the bonds</span>
+                <span class="n">rwmol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                
+                <span class="c1"># Sort bonds in descending order to avoid index shifting issues</span>
+                <span class="n">sorted_bonds</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">bond_combination</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
+                <span class="k">for</span> <span class="n">bond_idx</span> <span class="ow">in</span> <span class="n">sorted_bonds</span><span class="p">:</span>
+                    <span class="n">bond</span> <span class="o">=</span> <span class="n">rwmol</span><span class="o">.</span><span class="n">GetBondWithIdx</span><span class="p">(</span><span class="n">bond_idx</span><span class="p">)</span>
+                    <span class="n">rwmol</span><span class="o">.</span><span class="n">RemoveBond</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">())</span>
+                
+                <span class="c1"># Get fragments</span>
+                <span class="n">fragments</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">GetMolFrags</span><span class="p">(</span><span class="n">rwmol</span><span class="p">,</span> <span class="n">asMols</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sanitizeFrags</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
+                <span class="c1"># Process each fragment</span>
+                <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
+                    <span class="c1"># Skip fragments that are too small</span>
+                    <span class="k">if</span> <span class="n">frag</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">min_fragment_size</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">inchi_key</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">frag</span><span class="p">)</span>
+                        <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">frag</span><span class="p">)</span>
+                        
+                        <span class="k">if</span> <span class="n">inchi_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">degradation_products</span><span class="p">:</span>
+                            <span class="n">degradation_products</span><span class="p">[</span><span class="n">inchi_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                        
+                        <span class="k">if</span> <span class="n">formula</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">degradation_products</span><span class="p">[</span><span class="n">inchi_key</span><span class="p">]:</span>
+                            <span class="n">degradation_products</span><span class="p">[</span><span class="n">inchi_key</span><span class="p">][</span><span class="n">formula</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                                <span class="s1">&#39;mol&#39;</span><span class="p">:</span> <span class="n">frag</span><span class="p">,</span> 
+                                <span class="s1">&#39;n_breaks&#39;</span><span class="p">:</span> <span class="n">n_breaks</span><span class="p">,</span> 
+                                <span class="s1">&#39;broken_bonds&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">bond_combination</span><span class="p">)</span>
+                            <span class="p">}</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="c1"># Skip problematic fragments</span>
+                        <span class="k">continue</span>
+                        
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1"># Skip problematic bond breaking combinations</span>
+                <span class="k">continue</span>
+    
+    <span class="k">return</span> <span class="n">degradation_products</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_systematic_degradation_products</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="o">=</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">,</span> 
+                                           <span class="n">preserve_fluorinated_chain</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                           <span class="n">min_fragment_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+                                           <span class="n">max_combinations</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate systematic degradation products by exploring all possible bond breaking patterns.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol: RDKit molecule object</span>
+<span class="sd">        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains</span>
+<span class="sd">        preserve_fluorinated_chain: If True, only break bonds connected to (not part of) fluorinated chain</span>
+<span class="sd">        min_fragment_size: Minimum number of atoms in a fragment to keep it</span>
+<span class="sd">        max_combinations: Maximum number of bond combinations to explore</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary with degradation products organized by number of breaks</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input mol must be an rdkit.Chem.Mol object&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Find fluorinated chain atoms</span>
+    <span class="n">fluorinated_atoms</span> <span class="o">=</span> <span class="n">find_fluorinated_chains</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="p">)</span>
+    
+    <span class="c1"># Get all bonds in the molecule</span>
+    <span class="n">all_bonds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">GetNumBonds</span><span class="p">()))</span>
+    
+    <span class="k">if</span> <span class="n">preserve_fluorinated_chain</span><span class="p">:</span>
+        <span class="c1"># Only consider bonds connected to but not part of the fluorinated chain</span>
+        <span class="n">breakable_bonds</span> <span class="o">=</span> <span class="n">get_bonds_connected_to_fluorinated_path</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fluorinated_atoms</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Consider all bonds</span>
+        <span class="n">breakable_bonds</span> <span class="o">=</span> <span class="n">all_bonds</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">breakable_bonds</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;0_breaks&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span> <span class="p">{</span><span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span> <span class="n">mol</span><span class="p">}}}</span>
+    
+    <span class="n">degradation_products</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">combinations_explored</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1"># Explore different numbers of breaks</span>
+    <span class="k">for</span> <span class="n">n_breaks</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">breakable_bonds</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">degradation_products</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_breaks</span><span class="si">}</span><span class="s2">_breaks&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="k">if</span> <span class="n">n_breaks</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Original molecule</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">inchi_key</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                <span class="n">degradation_products</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_breaks</span><span class="si">}</span><span class="s2">_breaks&quot;</span><span class="p">][</span><span class="n">inchi_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">formula</span><span class="p">:</span> <span class="n">mol</span><span class="p">}</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">continue</span>
+        
+        <span class="c1"># Generate combinations of bonds to break</span>
+        <span class="k">for</span> <span class="n">bond_combination</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">breakable_bonds</span><span class="p">,</span> <span class="n">n_breaks</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">combinations_explored</span> <span class="o">&gt;=</span> <span class="n">max_combinations</span><span class="p">:</span>
+                <span class="k">break</span>
+                
+            <span class="n">combinations_explored</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Create a copy and break the bonds</span>
+                <span class="n">rwmol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                
+                <span class="c1"># Sort bonds in descending order to avoid index shifting</span>
+                <span class="n">sorted_bonds</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">bond_combination</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
+                <span class="k">for</span> <span class="n">bond_idx</span> <span class="ow">in</span> <span class="n">sorted_bonds</span><span class="p">:</span>
+                    <span class="n">bond</span> <span class="o">=</span> <span class="n">rwmol</span><span class="o">.</span><span class="n">GetBondWithIdx</span><span class="p">(</span><span class="n">bond_idx</span><span class="p">)</span>
+                    <span class="n">rwmol</span><span class="o">.</span><span class="n">RemoveBond</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">())</span>
+                
+                <span class="c1"># Get fragments</span>
+                <span class="n">fragments</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">GetMolFrags</span><span class="p">(</span><span class="n">rwmol</span><span class="p">,</span> <span class="n">asMols</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sanitizeFrags</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
+                <span class="c1"># Store each fragment</span>
+                <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">frag</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">min_fragment_size</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">inchi_key</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">frag</span><span class="p">)</span>
+                        <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">frag</span><span class="p">)</span>
+                        
+                        <span class="k">if</span> <span class="n">inchi_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">degradation_products</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_breaks</span><span class="si">}</span><span class="s2">_breaks&quot;</span><span class="p">]:</span>
+                            <span class="n">degradation_products</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_breaks</span><span class="si">}</span><span class="s2">_breaks&quot;</span><span class="p">][</span><span class="n">inchi_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                        
+                        <span class="n">degradation_products</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_breaks</span><span class="si">}</span><span class="s2">_breaks&quot;</span><span class="p">][</span><span class="n">inchi_key</span><span class="p">][</span><span class="n">formula</span><span class="p">]</span> <span class="o">=</span> <span class="n">frag</span>
+                        
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                        
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">continue</span>
+        
+        <span class="k">if</span> <span class="n">combinations_explored</span> <span class="o">&gt;=</span> <span class="n">max_combinations</span><span class="p">:</span>
+            <span class="k">break</span>
+    
+    <span class="k">return</span> <span class="n">degradation_products</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_degradation_pathways</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="o">=</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">,</span> <span class="n">max_breaks</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyze possible degradation pathways and return detailed information about fragments.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol: RDKit molecule object</span>
+<span class="sd">        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains</span>
+<span class="sd">        max_breaks: Maximum number of bonds to break</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary with detailed pathway analysis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input mol must be an rdkit.Chem.Mol object&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Get degradation products</span>
+    <span class="n">degradation_products</span> <span class="o">=</span> <span class="n">generate_degradation_products</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="o">=</span><span class="n">smartsPathName</span><span class="p">,</span> <span class="n">max_breaks</span><span class="o">=</span><span class="n">max_breaks</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># Analyze the results</span>
+    <span class="n">analysis</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;original_molecule&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span>
+            <span class="s1">&#39;formula&#39;</span><span class="p">:</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span>
+            <span class="s1">&#39;molecular_weight&#39;</span><span class="p">:</span> <span class="n">ExactMolWt</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span>
+            <span class="s1">&#39;fluorinated_atoms&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">find_fluorinated_chains</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="p">))</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;degradation_summary&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;total_products&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">degradation_products</span><span class="p">),</span>
+            <span class="s1">&#39;products_by_breaks&#39;</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;products&#39;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">}</span>
+    
+    <span class="c1"># Organize products by number of breaks</span>
+    <span class="k">for</span> <span class="n">inchi_key</span><span class="p">,</span> <span class="n">formulas</span> <span class="ow">in</span> <span class="n">degradation_products</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">formula</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">formulas</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">frag_mol</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;mol&#39;</span><span class="p">]</span>
+            <span class="n">n_breaks</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;n_breaks&#39;</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">n_breaks</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">analysis</span><span class="p">[</span><span class="s1">&#39;degradation_summary&#39;</span><span class="p">][</span><span class="s1">&#39;products_by_breaks&#39;</span><span class="p">]:</span>
+                <span class="n">analysis</span><span class="p">[</span><span class="s1">&#39;degradation_summary&#39;</span><span class="p">][</span><span class="s1">&#39;products_by_breaks&#39;</span><span class="p">][</span><span class="n">n_breaks</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">analysis</span><span class="p">[</span><span class="s1">&#39;degradation_summary&#39;</span><span class="p">][</span><span class="s1">&#39;products_by_breaks&#39;</span><span class="p">][</span><span class="n">n_breaks</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="c1"># Analyze fragment</span>
+            <span class="n">frag_fluorinated_atoms</span> <span class="o">=</span> <span class="n">find_fluorinated_chains</span><span class="p">(</span><span class="n">frag_mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="p">)</span>
+            
+            <span class="n">product_info</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;inchi_key&#39;</span><span class="p">:</span> <span class="n">inchi_key</span><span class="p">,</span>
+                <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">frag_mol</span><span class="p">),</span>
+                <span class="s1">&#39;formula&#39;</span><span class="p">:</span> <span class="n">formula</span><span class="p">,</span>
+                <span class="s1">&#39;molecular_weight&#39;</span><span class="p">:</span> <span class="n">ExactMolWt</span><span class="p">(</span><span class="n">frag_mol</span><span class="p">),</span>
+                <span class="s1">&#39;num_atoms&#39;</span><span class="p">:</span> <span class="n">frag_mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">(),</span>
+                <span class="s1">&#39;num_bonds&#39;</span><span class="p">:</span> <span class="n">frag_mol</span><span class="o">.</span><span class="n">GetNumBonds</span><span class="p">(),</span>
+                <span class="s1">&#39;fluorinated_atoms&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">frag_fluorinated_atoms</span><span class="p">),</span>
+                <span class="s1">&#39;contains_fluorinated_chain&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">frag_fluorinated_atoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s1">&#39;n_breaks&#39;</span><span class="p">:</span> <span class="n">n_breaks</span><span class="p">,</span>
+                <span class="s1">&#39;broken_bonds&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;broken_bonds&#39;</span><span class="p">]</span>
+            <span class="p">}</span>
+            
+            <span class="n">analysis</span><span class="p">[</span><span class="s1">&#39;products&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">product_info</span><span class="p">)</span>
+    
+    <span class="c1"># Sort products by number of breaks and molecular weight</span>
+    <span class="n">analysis</span><span class="p">[</span><span class="s1">&#39;products&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;n_breaks&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;molecular_weight&#39;</span><span class="p">]))</span>
+    
+    <span class="k">return</span> <span class="n">analysis</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

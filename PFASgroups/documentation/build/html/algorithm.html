@@ -1,0 +1,469 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithm Overview &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Testing and Benchmarking" href="testing.html" />
+    <link rel="prev" title="Pathway Types" href="pfas_groups/pathway_types.html" />
+ 
+<link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">Core Module (core.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/visualization.html">Visualization Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/generation.html">Molecule Generation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/generic_groups.html">Generic Classification Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/pathway_types.html">Pathway Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Algorithm Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-algorithm">Core Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-1-smarts-matching">Phase 1: SMARTS Matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-2-path-finding">Phase 2: Path Finding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-3-constraint-validation">Phase 3: Constraint Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-4-classification">Phase 4: Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bycomponent-mode">bycomponent Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#max-dist-from-cf-parameter">max_dist_from_CF Parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computational-complexity">Computational Complexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-optimization">Performance Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Algorithm Overview</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/lucmiaz/PFASGroups/blob/main/source/algorithm.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="algorithm-overview">
+<h1>Algorithm Overview<a class="headerlink" href="#algorithm-overview" title="Link to this heading"></a></h1>
+<p>This section provides a detailed explanation of the algorithms used in PFASgroups
+for PFAS detection and classification.</p>
+<section id="core-algorithm">
+<h2>Core Algorithm<a class="headerlink" href="#core-algorithm" title="Link to this heading"></a></h2>
+<p>The PFASgroups algorithm consists of four main phases:</p>
+<ol class="arabic simple">
+<li><p><strong>SMARTS Matching</strong>: Find functional groups using SMARTS patterns</p></li>
+<li><p><strong>Path Finding</strong>: Identify fluorinated chains between functional groups</p></li>
+<li><p><strong>Constraint Validation</strong>: Apply molecular formula constraints</p></li>
+<li><p><strong>Classification</strong>: Assign PFAS group labels</p></li>
+</ol>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_static/algorithm_flowchart.png"><img alt="Algorithm Flowchart" src="_static/algorithm_flowchart.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-text"><em>High-level flowchart of the PFASgroups algorithm</em></span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="phase-1-smarts-matching">
+<h2>Phase 1: SMARTS Matching<a class="headerlink" href="#phase-1-smarts-matching" title="Link to this heading"></a></h2>
+<p>The algorithm first identifies functional groups using SMARTS (SMiles ARbitrary
+Target Specification) patterns.</p>
+<p><strong>Input Processing:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="c1"># Convert SMILES to RDKit molecule</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add hydrogens for accurate matching</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>SMARTS Pattern Matching:</strong></p>
+<p>Each PFAS group defines one or two SMARTS patterns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">smarts1</span></code>: Primary functional group (e.g., carboxylic acid)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smarts2</span></code>: Secondary group (e.g., trifluoromethyl terminal)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example: PFCA (Perfluoroalkyl carboxylic acid)</span>
+<span class="n">smarts1</span> <span class="o">=</span> <span class="s2">&quot;C(=O)O&quot;</span>   <span class="c1"># Carboxylic acid</span>
+<span class="n">smarts2</span> <span class="o">=</span> <span class="kc">None</span>       <span class="c1"># Uses default from pathway</span>
+
+<span class="c1"># Find matches</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">smarts1</span><span class="p">)</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="phase-2-path-finding">
+<h2>Phase 2: Path Finding<a class="headerlink" href="#phase-2-path-finding" title="Link to this heading"></a></h2>
+<p>The algorithm identifies fluorinated chains connecting functional groups using
+graph-based pathfinding.</p>
+<p><strong>Molecular Graph Construction:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">mol_to_nx</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert RDKit molecule to NetworkX graph.&quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">(),</span>
+                  <span class="n">element</span><span class="o">=</span><span class="n">atom</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">(),</span>
+                  <span class="n">symbol</span><span class="o">=</span><span class="n">atom</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">():</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span>
+                  <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">(),</span>
+                  <span class="n">order</span><span class="o">=</span><span class="n">bond</span><span class="o">.</span><span class="n">GetBondTypeAsDouble</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">G</span>
+</pre></div>
+</div>
+<p><strong>Shortest Path Algorithm:</strong></p>
+<p>The algorithm uses NetworkX’s shortest path algorithm to find the minimum
+path between functional groups:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find shortest path between two atom indices</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">smarts1_match</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">smarts2_match</span><span class="p">)</span>
+
+<span class="c1"># Filter to include only fluorinated carbons</span>
+<span class="n">chain_length</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">path</span>
+                   <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span>
+                   <span class="ow">and</span> <span class="n">is_fluorinated</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">idx</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>Chain SMARTS Validation:</strong></p>
+<p>Paths are validated against pathway SMARTS patterns:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Perfluoroalkyl chain: [C;X4](F)(F)!@!=!#[C;X4](F)(F)
+
+This matches: -CF₂-CF₂- bonds
+But not: -CF₂-CH₂- bonds (wrong fluorination)
+And not: aromatic C-C bonds (ring bonds)
+</pre></div>
+</div>
+</section>
+<section id="phase-3-constraint-validation">
+<h2>Phase 3: Constraint Validation<a class="headerlink" href="#phase-3-constraint-validation" title="Link to this heading"></a></h2>
+<p>Molecular formula constraints filter out false positives:</p>
+<p><strong>Constraint Types:</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 35.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Syntax</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>eq</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;O&quot;:</span> <span class="pre">2}</span></code></p></td>
+<td><p>Exactly 2 oxygen atoms</p></td>
+</tr>
+<tr class="row-odd"><td><p>gte</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;F&quot;:</span> <span class="pre">3}</span></code></p></td>
+<td><p>At least 3 fluorine atoms</p></td>
+</tr>
+<tr class="row-even"><td><p>lte</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;Cl&quot;:</span> <span class="pre">1}</span></code></p></td>
+<td><p>At most 1 chlorine atom</p></td>
+</tr>
+<tr class="row-odd"><td><p>only</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[&quot;C&quot;,&quot;F&quot;,&quot;H&quot;,&quot;O&quot;]</span></code></p></td>
+<td><p>Only these elements allowed</p></td>
+</tr>
+<tr class="row-even"><td><p>rel</p></td>
+<td><p>see below</p></td>
+<td><p>Relative element ratios</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relative Constraints:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Carbon count must equal (F + H) / 2 - 1</span>
+<span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;rel&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;div&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;add&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Constraint Validation Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">formula_dict_satisfies_constraints</span><span class="p">(</span><span class="n">formula_dict</span><span class="p">,</span> <span class="n">constraints</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if formula satisfies all constraints.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Check exact constraints</span>
+    <span class="k">if</span> <span class="s1">&#39;eq&#39;</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">elem</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">[</span><span class="s1">&#39;eq&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">formula_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">count</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Check minimum constraints</span>
+    <span class="k">if</span> <span class="s1">&#39;gte&#39;</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">elem</span><span class="p">,</span> <span class="n">min_count</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">[</span><span class="s1">&#39;gte&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">formula_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">min_count</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Check maximum constraints</span>
+    <span class="k">if</span> <span class="s1">&#39;lte&#39;</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">elem</span><span class="p">,</span> <span class="n">max_count</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">[</span><span class="s1">&#39;lte&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">formula_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_count</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Check element restrictions</span>
+    <span class="k">if</span> <span class="s1">&#39;only&#39;</span> <span class="ow">in</span> <span class="n">constraints</span><span class="p">:</span>
+        <span class="n">allowed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">constraints</span><span class="p">[</span><span class="s1">&#39;only&#39;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">formula_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed</span> <span class="ow">and</span> <span class="n">formula_dict</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="phase-4-classification">
+<h2>Phase 4: Classification<a class="headerlink" href="#phase-4-classification" title="Link to this heading"></a></h2>
+<p>The final phase assigns PFAS group labels and computes metadata.</p>
+<p><strong>Group Priority:</strong></p>
+<p>Groups are processed in order of specificity:</p>
+<ol class="arabic simple">
+<li><p>OECD-defined groups (IDs 1-28) - most specific</p></li>
+<li><p>Generic functional groups (IDs 29-57) - broader categories</p></li>
+</ol>
+<p><strong>Output Format:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">PFASGroup</span><span class="p">,</span> <span class="n">match_count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched_chains</span><span class="p">),</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+
+<span class="c1"># Example:</span>
+<span class="c1"># (PFCA, 1, [7], [[0,1,2,3,4,5,6,7]])</span>
+</pre></div>
+</div>
+</section>
+<section id="bycomponent-mode">
+<h2>bycomponent Mode<a class="headerlink" href="#bycomponent-mode" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">bycomponent</span></code> parameter enables alternative analysis for complex structures:</p>
+<p><strong>Standard Mode (bycomponent=False):</strong></p>
+<ul class="simple">
+<li><p>Analyzes the entire molecule as one unit</p></li>
+<li><p>Finds paths between any pair of functional groups</p></li>
+<li><p>Best for linear chains</p></li>
+</ul>
+<p><strong>Component Mode (bycomponent=True):</strong></p>
+<ul class="simple">
+<li><p>Fragments the molecule at functional groups</p></li>
+<li><p>Analyzes each fragment independently</p></li>
+<li><p>Better for cyclic structures and multi-chain molecules</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Standard mode</span>
+<span class="n">results_std</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Component mode</span>
+<span class="n">results_comp</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="max-dist-from-cf-parameter">
+<h2>max_dist_from_CF Parameter<a class="headerlink" href="#max-dist-from-cf-parameter" title="Link to this heading"></a></h2>
+<p>For groups without explicit formula constraints, the <code class="docutils literal notranslate"><span class="pre">max_dist_from_CF</span></code>
+parameter limits how far a functional group can be from a fluorinated carbon:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Custom Group&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;smarts1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[N;!R]&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;smartsPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;constraints&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nt">&quot;max_dist_from_CF&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This ensures the functional group is within 2 bonds of a CF₂ unit.</p>
+</section>
+<section id="computational-complexity">
+<h2>Computational Complexity<a class="headerlink" href="#computational-complexity" title="Link to this heading"></a></h2>
+<p><strong>Time Complexity:</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Phase</p></th>
+<th class="head"><p>Complexity</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SMARTS Matching</p></td>
+<td><p>O(N × M × S)</p></td>
+<td><p>N=atoms, M=groups, S=SMARTS size</p></td>
+</tr>
+<tr class="row-odd"><td><p>Path Finding</p></td>
+<td><p>O(V + E)</p></td>
+<td><p>Dijkstra’s algorithm</p></td>
+</tr>
+<tr class="row-even"><td><p>Constraint Validation</p></td>
+<td><p>O(E)</p></td>
+<td><p>E=elements in formula</p></td>
+</tr>
+<tr class="row-odd"><td><p>Overall</p></td>
+<td><p>O(N × M × S)</p></td>
+<td><p>Dominated by SMARTS matching</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Memory Usage:</strong></p>
+<ul class="simple">
+<li><p>Molecular graph: O(V + E) per molecule</p></li>
+<li><p>SMARTS patterns: Pre-compiled, constant</p></li>
+<li><p>Results: O(G) per molecule, G=matched groups</p></li>
+</ul>
+</section>
+<section id="performance-optimization">
+<h2>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading"></a></h2>
+<p><strong>Pre-compilation:</strong></p>
+<p>SMARTS patterns are pre-compiled on module load:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Patterns compiled once</span>
+<span class="n">smarts_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">smarts_string</span><span class="p">)</span>
+
+<span class="c1"># Reused for all molecules</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">smarts_mol</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Parallel Processing:</strong></p>
+<p>For batch processing, use multiprocessing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">process_batch</span><span class="p">(</span><span class="n">smiles_batch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_batch</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">process_batch</span><span class="p">,</span> <span class="n">smiles_batches</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/core.html"><span class="doc">Core Module (core.py)</span></a> - Core module API documentation</p></li>
+<li><p><a class="reference internal" href="api/models.html"><span class="doc">Data Models</span></a> - Data model documentation</p></li>
+<li><p><a class="reference internal" href="testing.html"><span class="doc">Testing and Benchmarking</span></a> - Testing and benchmarking</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pfas_groups/pathway_types.html" class="btn btn-neutral float-left" title="Pathway Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="testing.html" class="btn btn-neutral float-right" title="Testing and Benchmarking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

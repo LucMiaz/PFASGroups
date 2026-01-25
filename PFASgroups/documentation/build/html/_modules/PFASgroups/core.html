@@ -1,0 +1,1308 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PFASgroups.core &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+ 
+<link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/core.html">Core Module (core.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/visualization.html">Visualization Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/generation.html">Molecule Generation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pfas_groups/oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pfas_groups/generic_groups.html">Generic Classification Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pfas_groups/pathway_types.html">Pathway Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">PFASgroups.core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for PFASgroups.core</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">PFASgroups core functions.</span>
+
+<span class="sd">This module provides functions for parsing and plotting PFAS groups.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem.rdMolDescriptors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalcMolFormula</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.PFASGroupModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASGroup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.PFASDefinitionModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASDefinition</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span><span class="p">,</span> <span class="n">groupby</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">svgutils.transform</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.draw_mols</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw_images</span><span class="p">,</span> <span class="n">plot_mols</span>
+
+<span class="n">PATH_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">,</span><span class="s1">&#39;Polyfluoroalkyl&#39;</span><span class="p">,</span><span class="s1">&#39;Polyfluoro&#39;</span><span class="p">,</span><span class="s1">&#39;Polyfluorobr&#39;</span><span class="p">]</span>
+
+<span class="c1"># --- Load SMARTS paths from fpaths.json ---</span>
+<span class="n">MODULE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MODULE_DIR</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">FPATHS_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;fpaths.json&#39;</span><span class="p">)</span>
+<span class="n">PFAS_GROUPS_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;PFAS_groups_smarts.json&#39;</span><span class="p">)</span>
+<span class="n">PFAS_DEFINITIONS_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;PFAS_definitions_smarts.json&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># --- Load PFAS groups from PFAS_groups_smarts.json ---</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_PFASGroups</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds default PFASGroups to function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">PFAS_GROUPS_FILE</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">pfg</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">pfg</span> <span class="o">=</span> <span class="p">[</span><span class="n">PFASGroup</span><span class="p">(</span><span class="o">**</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pfg</span><span class="p">]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">,</span><span class="n">pfg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_PFASDefinitions</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds default PFAS definitions to function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">PFAS_DEFINITIONS_FILE</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">pfg</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">pfg</span> <span class="o">=</span> <span class="p">[</span><span class="n">PFASDefinition</span><span class="p">(</span><span class="o">**</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pfg</span><span class="p">]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pfas_definitions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_definitions&#39;</span><span class="p">,</span><span class="n">pfg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+<span class="c1"># --- Add SMARTS paths to function ---</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_smartsPath</span><span class="p">(</span><span class="n">names</span> <span class="o">=</span><span class="n">PATH_NAMES</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">FPATHS_FILE</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yields SMARTS for chains&quot;&quot;&quot;</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">pathsEnd</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">fpaths</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> 
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">fpaths</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s1">&#39;chain&#39;</span><span class="p">]</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">fpaths</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s1">&#39;end&#39;</span><span class="p">]</span>
+        <span class="n">smol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">UpdatePropertyCache</span><span class="p">()</span>
+        <span class="n">Chem</span><span class="o">.</span><span class="n">GetSymmSSSR</span><span class="p">(</span><span class="n">smol</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">GetRingInfo</span><span class="p">()</span><span class="o">.</span><span class="n">NumRings</span><span class="p">()</span>
+        <span class="n">emol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">emol</span><span class="o">.</span><span class="n">UpdatePropertyCache</span><span class="p">()</span>
+        <span class="n">Chem</span><span class="o">.</span><span class="n">GetSymmSSSR</span><span class="p">(</span><span class="n">emol</span><span class="p">)</span>
+        <span class="n">emol</span><span class="o">.</span><span class="n">GetRingInfo</span><span class="p">()</span><span class="o">.</span><span class="n">NumRings</span><span class="p">()</span>
+        <span class="n">paths</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">smol</span><span class="p">,</span><span class="n">emol</span><span class="p">]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;smartsPaths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;smartsPaths&quot;</span><span class="p">,</span><span class="n">paths</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">add_smarts</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;smarts&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yields preprocessed SMARTS to decorated function&quot;&quot;&quot;</span>
+    <span class="n">smarts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">smol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">UpdatePropertyCache</span><span class="p">()</span>
+        <span class="n">Chem</span><span class="o">.</span><span class="n">GetSymmSSSR</span><span class="p">(</span><span class="n">smol</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">GetRingInfo</span><span class="p">()</span><span class="o">.</span><span class="n">NumRings</span><span class="p">()</span>
+        <span class="n">smarts</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">=</span><span class="n">smol</span>
+        <span class="k">return</span> <span class="n">smol</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">smarts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+<span class="c1"># --- Helper functions ---</span>
+
+<div class="viewcode-block" id="remove_atoms">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.remove_atoms">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_atoms</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">idxs</span><span class="p">,</span> <span class="n">removable</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;H&#39;</span><span class="p">,</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;Cl&#39;</span><span class="p">,</span><span class="s1">&#39;Br&#39;</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">],</span> <span class="n">show_on_error</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove atoms by indices and maintain connectivity.</span>
+<span class="sd">    </span>
+<span class="sd">    This function removes the specified atoms and their removable neighbors,</span>
+<span class="sd">    then reconnects the remaining structure to maintain molecular integrity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">idxs</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mol</span>
+    
+    <span class="n">to_remove</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="c1"># Map each removed atom to its non-removable neighbors</span>
+    <span class="n">removed_to_neighbors</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="c1"># First pass: identify all atoms to remove and their connections</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">:</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="n">neighbors_r</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="ow">in</span> <span class="n">removable</span><span class="p">]</span>
+        <span class="n">neighbors_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">removable</span><span class="p">]</span>
+        
+        <span class="c1"># Add the atom and its removable neighbors to removal list</span>
+        <span class="n">to_remove</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="n">to_remove</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">neighbors_r</span><span class="p">)</span>
+        
+        <span class="c1"># Store non-removable neighbors for reconnection</span>
+        <span class="k">if</span> <span class="n">neighbors_c</span><span class="p">:</span>
+            <span class="n">removed_to_neighbors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">neighbors_c</span>
+    
+    <span class="c1"># Build a graph of connectivity between removed atoms and their neighbors</span>
+    <span class="c1"># to determine how to reconnect the structure</span>
+    <span class="n">new_bonds</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">processed_chains</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    
+    <span class="c1"># Process each chain of consecutive removed atoms</span>
+    <span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="n">processed_chains</span><span class="p">:</span>
+            <span class="k">continue</span>
+            
+        <span class="c1"># Find the chain of consecutive removed atoms containing start_idx</span>
+        <span class="n">chain</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_idx</span><span class="p">]</span>
+        <span class="n">processed_chains</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">start_idx</span><span class="p">)</span>
+        
+        <span class="c1"># Extend chain in both directions</span>
+        <span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_idx</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">neighbor_idx</span> <span class="ow">in</span> <span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">current</span><span class="p">)</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()]:</span>
+                <span class="k">if</span> <span class="n">neighbor_idx</span> <span class="ow">in</span> <span class="n">idxs</span> <span class="ow">and</span> <span class="n">neighbor_idx</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">processed_chains</span><span class="p">:</span>
+                    <span class="n">chain</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neighbor_idx</span><span class="p">)</span>
+                    <span class="n">processed_chains</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">neighbor_idx</span><span class="p">)</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neighbor_idx</span><span class="p">)</span>
+        
+        <span class="c1"># Find the endpoints of this chain (atoms that connect to non-removable parts)</span>
+        <span class="n">chain_endpoints</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">atom_idx</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">atom_idx</span> <span class="ow">in</span> <span class="n">removed_to_neighbors</span><span class="p">:</span>
+                <span class="n">non_removable_neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">removed_to_neighbors</span><span class="p">[</span><span class="n">atom_idx</span><span class="p">]</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_remove</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">non_removable_neighbors</span><span class="p">:</span>
+                    <span class="n">chain_endpoints</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">non_removable_neighbors</span><span class="p">)</span>
+        
+        <span class="c1"># Connect the endpoints if there are exactly 2</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain_endpoints</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">chain_endpoints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">chain_endpoints</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">new_bonds</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">chain_endpoints</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">chain_endpoints</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain_endpoints</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># For branched structures, don&#39;t create connections that would change topology</span>
+            <span class="c1"># This prevents fragmentation but may not be chemically meaningful</span>
+            <span class="k">pass</span>
+    
+    <span class="c1"># Create new molecule without removed atoms</span>
+    <span class="n">rwm</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">()</span>
+    <span class="n">_rwm</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">Chem</span><span class="o">.</span><span class="n">Kekulize</span><span class="p">(</span><span class="n">_rwm</span><span class="p">)</span>
+    
+    <span class="c1"># Map from old atom indices to new atom indices</span>
+    <span class="n">old_to_new</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">charged_atoms</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Add all atoms except those to be removed</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_rwm</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_remove</span><span class="p">:</span>
+            <span class="n">new_atom</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">())</span>
+            <span class="n">new_idx</span> <span class="o">=</span> <span class="n">rwm</span><span class="o">.</span><span class="n">AddAtom</span><span class="p">(</span><span class="n">new_atom</span><span class="p">)</span>
+            <span class="c1"># Copy formal charge if present</span>
+            <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetFormalCharge</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">charged_atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">())</span>
+            <span class="n">old_to_new</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_idx</span>
+
+    <span class="c1"># Copy existing bonds that don&#39;t involve removed atoms</span>
+    <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">_rwm</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">():</span>
+        <span class="n">a1</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">()</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">a1</span> <span class="ow">in</span> <span class="n">old_to_new</span> <span class="ow">and</span> <span class="n">a2</span> <span class="ow">in</span> <span class="n">old_to_new</span><span class="p">:</span>
+            <span class="n">rwm</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">old_to_new</span><span class="p">[</span><span class="n">a1</span><span class="p">],</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">a2</span><span class="p">],</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetBondType</span><span class="p">())</span>
+
+    <span class="c1"># Add new bonds to maintain connectivity</span>
+    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">new_bonds</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">old_to_new</span> <span class="ow">and</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">old_to_new</span> <span class="ow">and</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">b</span><span class="p">]:</span>
+            <span class="c1"># Check if bond already exists to avoid duplication</span>
+            <span class="n">existing_bond</span> <span class="o">=</span> <span class="n">rwm</span><span class="o">.</span><span class="n">GetBondBetweenAtoms</span><span class="p">(</span><span class="n">old_to_new</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">b</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">existing_bond</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rwm</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">old_to_new</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">old_to_new</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">Chem</span><span class="o">.</span><span class="n">BondType</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">)</span>
+    
+    <span class="c1"># Restore formal charges</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">charged_atoms</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">old_to_new</span><span class="p">:</span>
+            <span class="n">atom</span> <span class="o">=</span> <span class="n">rwm</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">old_to_new</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+            <span class="n">atom</span><span class="o">.</span><span class="n">SetFormalCharge</span><span class="p">(</span><span class="n">_rwm</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">GetFormalCharge</span><span class="p">())</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">rwm</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">show_on_error</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">_mol</span> <span class="o">=</span> <span class="n">rwm</span><span class="o">.</span><span class="n">GetMol</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">img</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">plot_mols</span><span class="p">([</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">_mol</span><span class="p">)],</span> <span class="n">subwidth</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">subheight</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">svg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">addAtomIndices</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bondLineWidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">fixedBondLength</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">minFontSize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+                <span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">raise</span> <span class="n">e</span>
+    
+    <span class="k">return</span> <span class="n">rwm</span><span class="o">.</span><span class="n">GetMol</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="n_from_formula">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.n_from_formula">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">n_from_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the number of elements (any or one specific)</span>
+
+<span class="sd">    :params formula: Formula to parse</span>
+<span class="sd">    :params element: Element&#39;s symbol to find</span>
+<span class="sd">    :return: Number of elements in the formula</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">PAT</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;([</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s2">])&quot;</span><span class="o">+</span><span class="sa">r</span><span class="s2">&quot;(\d*)&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">PAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;([A-Z][a-z]?)(\d*)&quot;</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">PAT</span><span class="p">,</span><span class="n">formula</span><span class="p">)</span>
+    <span class="n">formula_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">sym</span><span class="p">,</span><span class="n">nb</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nb</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">formula_dict</span><span class="p">[</span><span class="n">sym</span><span class="p">]</span> <span class="o">=</span> <span class="n">formula_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">sym</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">nb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">formula_dict</span><span class="p">[</span><span class="n">sym</span><span class="p">]</span> <span class="o">=</span><span class="n">formula_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">sym</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">formula_dict</span><span class="p">[</span><span class="n">element</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">formula_dict</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fragment_on_bond</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fragment a molecule on a bond between atoms a1 and a2 (indices)&quot;&quot;&quot;</span>
+    <span class="n">bond</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetBondBetweenAtoms</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">)</span>
+    <span class="n">mms</span> <span class="o">=</span>  <span class="n">Chem</span><span class="o">.</span><span class="n">FragmentOnBonds</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="p">[</span><span class="n">bond</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()],</span> <span class="n">addDummies</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">Chem</span><span class="o">.</span><span class="n">GetMolFrags</span><span class="p">(</span><span class="n">mms</span><span class="p">,</span> <span class="n">asMols</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sanitizeFrags</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="fragment_until_valence_is_correct">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.fragment_until_valence_is_correct">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fragment_until_valence_is_correct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">frags</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate over the molecule and fragment it until  valence is corrected&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>    
+        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AtomValenceException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">all</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?&lt;=#\s)(\d)&quot;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">all</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+        <span class="n">neighbours</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="nb">all</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">()</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">mol</span><span class="o">.</span><span class="n">GetBondBetweenAtoms</span><span class="p">(</span><span class="nb">all</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">())</span><span class="o">.</span><span class="n">GetBondType</span><span class="p">(),</span><span class="n">x</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">())</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">neighbours</span><span class="p">],</span> <span class="n">reverse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># return index of neighbour with bond of highest degree</span>
+        <span class="n">mols</span> <span class="o">=</span> <span class="n">fragment_on_bond</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">all</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">atom</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mols</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">frags</span> <span class="o">=</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">frags</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="c1"># assume that element in frag is actually isolated</span>
+                <span class="k">return</span> <span class="n">frags</span> 
+        <span class="k">return</span> <span class="n">frags</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">frags</span> <span class="o">+</span> <span class="p">[</span><span class="n">mol</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="mol_to_nx">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.mol_to_nx">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mol_to_nx</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct a networkx graph from a molecule&quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()):</span>
+        <span class="n">element_Z</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">()</span>
+        <span class="n">node_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;element&quot;</span> <span class="p">:</span> <span class="n">element_Z</span><span class="p">,</span>
+                       <span class="s2">&quot;symbol&quot;</span> <span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()}</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">(),</span>
+                   <span class="o">**</span><span class="n">node_params</span>
+                   <span class="p">)</span>
+    <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetBonds</span><span class="p">():</span>
+        <span class="n">edgeOrder</span><span class="o">=</span><span class="n">bond</span><span class="o">.</span><span class="n">GetBondTypeAsDouble</span><span class="p">()</span>
+        <span class="n">node1</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtom</span><span class="p">()</span>
+        <span class="n">node1</span> <span class="o">=</span> <span class="n">node1</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">()</span>
+        <span class="n">node2</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtom</span><span class="p">()</span>
+        <span class="n">node2</span> <span class="o">=</span> <span class="n">node2</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">()</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetBeginAtomIdx</span><span class="p">(),</span>
+                   <span class="n">bond</span><span class="o">.</span><span class="n">GetEndAtomIdx</span><span class="p">(),</span>
+                   <span class="n">order</span><span class="o">=</span><span class="n">edgeOrder</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+<div class="viewcode-block" id="get_substruct">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.get_substruct">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_substruct</span><span class="p">(</span><span class="n">_mol</span><span class="p">:</span><span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">,</span><span class="n">struct</span><span class="p">:</span><span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the indices of the atoms in the molecule that match the substructure&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">struct</span><span class="p">)])</span></div>
+
+
+<span class="nd">@add_smartsPath</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_path_between_smarts</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">smarts1</span><span class="p">,</span><span class="n">smarts2</span><span class="p">,</span><span class="n">G</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterates over substructures matched by smarts1 and smarts2 and finds fluorinated paths between them.</span>
+<span class="sd">    Fluorinated atoms are defined by the SMARTS yield by the decorator add_smartsPath.</span>
+<span class="sd">    if smarts2 is None, uses SMARTS corresponding to smartsPath.&quot;&quot;&quot;</span>
+    <span class="n">chains</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Extract shortest_path_method from kwargs (default to &#39;dijkstra&#39; if not provided)</span>
+    <span class="n">shortest_path_method</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;shortest_path_method&#39;</span><span class="p">,</span> <span class="s1">&#39;dijkstra&#39;</span><span class="p">)</span>
+    <span class="n">smartsPaths</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;smartsPaths&#39;</span><span class="p">)</span>
+    <span class="n">smartsMatches1</span> <span class="o">=</span> <span class="n">get_substruct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smarts1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">smarts2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">digroup_smarts</span> <span class="o">=</span> <span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmarts</span><span class="p">(</span><span class="n">smarts1</span><span class="p">)</span> <span class="o">!=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmarts</span><span class="p">(</span><span class="n">smarts2</span><span class="p">))</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">{</span><span class="n">smarts2</span><span class="p">:[(</span><span class="n">path</span><span class="p">,</span><span class="n">get_substruct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">smartsPath</span><span class="p">))</span> <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="n">smartsPath</span><span class="p">,</span><span class="n">_</span><span class="p">)</span>  <span class="ow">in</span> <span class="n">smartsPaths</span><span class="o">.</span><span class="n">items</span><span class="p">()]}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">digroup_smarts</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">{</span><span class="n">_smarts2</span><span class="p">:[(</span><span class="n">path</span><span class="p">,</span><span class="n">get_substruct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPath</span><span class="p">))]</span> <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="n">smartsPath</span><span class="p">,</span><span class="n">_smarts2</span><span class="p">)</span> <span class="ow">in</span> <span class="n">smartsPaths</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match_intersection</span><span class="p">(</span><span class="n">_pair</span><span class="p">,</span><span class="n">_setp</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">path</span><span class="p">,</span><span class="n">pmatch</span> <span class="ow">in</span> <span class="n">_pair</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_setp</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">_setp</span> <span class="o">==</span> <span class="n">_setp</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">pmatch</span><span class="p">):</span>
+                <span class="n">chains</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">path</span><span class="p">,[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_setp</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">path</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">mi</span><span class="p">,</span> <span class="n">match1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">smartsMatches1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_smarts2</span><span class="p">,</span> <span class="n">smartsPath</span> <span class="ow">in</span> <span class="n">pairs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">smartsMatches2</span> <span class="o">=</span> <span class="n">get_substruct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span><span class="n">_smarts2</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">mj</span><span class="p">,</span> <span class="n">match2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">smartsMatches2</span><span class="p">):</span>
+                <span class="c1"># Fix: Compare SMARTS strings, not object identity, to avoid self-matching</span>
+                <span class="c1"># For disulfonic acids, allow same-atom matching when we have identical SMARTS patterns</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">match1</span><span class="o">!=</span><span class="n">match2</span><span class="p">)</span> <span class="ow">or</span> <span class="n">digroup_smarts</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="p">(</span><span class="n">digroup_smarts</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">mi</span> <span class="o">!=</span> <span class="n">mj</span><span class="p">):</span><span class="c1"># avoid double matching for diacids</span>
+                    <span class="k">if</span> <span class="n">match1</span> <span class="o">==</span> <span class="n">match2</span><span class="p">:</span>
+                        <span class="c1"># Special case: both functional groups on same atom (e.g., disulfonic acids)</span>
+                        <span class="c1"># Create a minimal path containing just the shared atom</span>
+                        <span class="n">path_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">match1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">path_idx</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">match1</span><span class="p">,</span> <span class="n">match2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">shortest_path_method</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="n">nx</span><span class="o">.</span><span class="n">NetworkXNoPath</span><span class="p">:</span>
+                            <span class="n">path_idx</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">setp</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">path_idx</span><span class="p">)</span>
+                    <span class="n">match_intersection</span><span class="p">(</span><span class="n">smartsPath</span><span class="p">,</span><span class="n">setp</span><span class="p">)</span>
+    <span class="n">chains</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="nb">sorted</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">chains</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">chains</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">remove</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">sum</span><span class="p">([</span><span class="n">chain</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">i</span><span class="p">]])</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">chains</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remove</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chains</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">chain_lengths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chains</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span><span class="c1">#{k:len(chain) for k,chain in chains.items()}</span>
+        <span class="n">chain_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chains</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">,[[]])]</span><span class="c1">#{k:[len(x) for x in chain] for k,chain in chains.items()}</span>
+    <span class="n">matched_chains</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;chain&#39;</span><span class="p">:</span><span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">),</span> <span class="s1">&#39;length&#39;</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="p">),</span><span class="s1">&#39;SMARTS&#39;</span><span class="p">:</span><span class="n">path</span><span class="p">}</span> <span class="k">for</span> <span class="n">path</span><span class="p">,</span><span class="n">all_chains</span> <span class="ow">in</span> <span class="n">chains</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">all_chains</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">smartsMatches1</span><span class="p">),</span> <span class="n">matched_chains</span>  
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">path_between_smarts</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span><span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">,</span> <span class="n">smarts1</span><span class="p">,</span><span class="n">smarts2</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :params compound: Molecule</span>
+<span class="sd">    :params smarts1, smarts2: SMARTS as string</span>
+<span class="sd">    :params pathsmarts: SMARTS (parsed as Chem.MolFromSmarts) with constraint for the atoms on the path</span>
+<span class="sd">    :return: number of chains, and max_length in chain for path between an occurrence of smarts1 and smarts2 with all atoms satisfying pathsmarts.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">mol_to_nx</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="n">find_path_between_smarts</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span>
+                                    <span class="n">smarts1</span><span class="p">,</span>
+                                    <span class="n">smarts2</span><span class="p">,</span>
+                                    <span class="n">G</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">connected_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">subset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find connected components in a molecule.&quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">mol_to_nx</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">components</span>
+
+<span class="nd">@add_smartsPath</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_fluorinated_subgraph</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the fluorinated indices by connected components of a molecule based on path SMARTS.&quot;&quot;&quot;</span>
+    <span class="n">subsets</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">smartsPaths</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;smartsPaths&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pathName</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">smartsPaths</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">path_smarts</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># chain</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">path_smarts</span><span class="p">)</span>
+        <span class="n">subset</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">matches</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">subsets</span><span class="p">[</span><span class="n">pathName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">continue</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="n">connected_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">subset</span><span class="p">)</span>
+        <span class="n">subsets</span><span class="p">[</span><span class="n">pathName</span><span class="p">]</span> <span class="o">=</span> <span class="n">components</span>
+    <span class="k">return</span> <span class="n">subsets</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">find_alkyl_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smarts</span><span class="p">,</span> <span class="n">components</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find alkyl components in a molecule.&quot;&quot;&quot;</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">smarts</span><span class="p">)</span>
+    <span class="n">subset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">matches</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[],</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[]</span>
+    <span class="c1"># Filter components connected to the smarts</span>
+    <span class="n">relevant_components</span> <span class="o">=</span> <span class="p">[</span><span class="n">comp</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">components</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">comp</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">chain_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">relevant_components</span><span class="p">]</span>
+    <span class="c1"># Convert components to dictionary format</span>
+    <span class="n">matched_chains</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;chain&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">comp</span><span class="p">),</span> <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">comp</span><span class="p">),</span> <span class="s1">&#39;SMARTS&#39;</span><span class="p">:</span> <span class="s1">&#39;alkyl&#39;</span><span class="p">}</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">relevant_components</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">relevant_components</span><span class="p">]),</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">relevant_components</span><span class="p">),</span> <span class="n">matched_chains</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">find_aryl_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">aryl_smarts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find aryl components in a molecule.&quot;&quot;&quot;</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">aryl_smarts</span><span class="p">)</span>
+    <span class="n">subset</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">matches</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[],</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[]</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="n">connected_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">subset</span><span class="p">)</span>
+    <span class="n">chain_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">components</span><span class="p">]</span>
+    <span class="c1"># Convert components to the same format as other functions return</span>
+    <span class="n">matched_chains</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;chain&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">comp</span><span class="p">),</span> <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">comp</span><span class="p">),</span> <span class="s1">&#39;SMARTS&#39;</span><span class="p">:</span> <span class="s1">&#39;cyclic&#39;</span><span class="p">}</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">components</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">components</span><span class="p">]),</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">),</span> <span class="n">matched_chains</span>
+
+
+<span class="nd">@load_PFASDefinitions</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_definitions_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">formula</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;formula&quot;</span><span class="p">,</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AtomValenceException</span><span class="p">:</span>
+        <span class="c1">#logger.debug(&quot;failed sanitisation, fragmenting&quot;)</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="p">[</span><span class="n">mol</span><span class="p">]</span>
+    <span class="n">definition_matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pfas_definitions</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_definitions&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pdef</span> <span class="ow">in</span> <span class="n">pfas_definitions</span><span class="p">:</span>
+        <span class="n">matched</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">frags</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pdef</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="n">mol_or_smiles</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">matched</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">matched</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">definition_matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pdef</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">definition_matches</span>
+
+
+<span class="c1"># --- Main PFAS group parsing functions ---</span>
+<div class="viewcode-block" id="parse_groups_in_mol">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.parse_groups_in_mol">[docs]</a>
+<span class="nd">@add_smartsPath</span><span class="p">()</span>
+<span class="nd">@load_PFASGroups</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_groups_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterates over PFAS groups and finds the ones that match the molecule.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol : rdkit.Chem.Mol</span>
+<span class="sd">        RDKit molecule object</span>
+<span class="sd">    bycomponent : bool, optional</span>
+<span class="sd">        Whether to look for fluorinated components or for chains between functional groups</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional parameters (formula, pfas_groups, smartsPaths, etc.)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of tuples</span>
+<span class="sd">        List of (PFASGroup, match_count, chain_lengths, matched_chains) tuples where:</span>
+<span class="sd">        - PFASGroup: The matched PFAS group object</span>
+<span class="sd">        - match_count: Number of times this group pattern was matched (int)</span>
+<span class="sd">        - chain_lengths: List of carbon chain lengths found (list of int)</span>
+<span class="sd">        - matched_chains: Detailed information about matched chains (list of dicts)</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    For PFASgroups </span>
+<span class="sd">    1. with smartsPath = &#39;cyclic&#39;, search for connected component matching smarts1</span>
+<span class="sd">    2. with smarts1 and smarts2 defined: Find shortest path between each pairs of matches</span>
+<span class="sd">    3. with smarts1 defined and smarts2 null, no formula constraints: either a. (if bycomponent is False) use default smarts2, do like 2. for each default pathtype. b. (if bycomponent is True) search for connected components of fluorinated atoms (for each pathType) where smarts1 C match is in the component</span>
+<span class="sd">    4. with smarts1 defined and formula constraints: search for substructure matches of smarts1, and for given smartsPath for the PFASgroup, search for connected components of fluorinated atoms where smarts1 C match is in the component</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pfas_groups</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">)</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">formula</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;formula&quot;</span><span class="p">,</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AtomValenceException</span><span class="p">:</span>
+        <span class="c1">#logger.debug(&quot;failed sanitisation, fragmenting&quot;)</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">formulas</span> <span class="o">=</span> <span class="p">[</span><span class="n">n_from_formula</span><span class="p">(</span><span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">frag</span><span class="p">))</span> <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">frags</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="p">[</span><span class="n">mol</span><span class="p">]</span>
+        <span class="n">formulas</span> <span class="o">=</span> <span class="p">[</span><span class="n">n_from_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">)]</span><span class="c1"># formula as a dictionary</span>
+    
+    <span class="c1"># PFAS groups</span>
+    <span class="n">group_matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">fluorinated_components_dict</span> <span class="o">=</span> <span class="n">get_fluorinated_subgraph</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pf</span> <span class="ow">in</span> <span class="n">pfas_groups</span><span class="p">:</span>
+        <span class="c1">#logger.debug(f&quot;{pf.name}&quot;)</span>
+        <span class="n">matched1_len</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">fd</span><span class="p">,</span><span class="n">mol</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">formulas</span><span class="p">,</span><span class="n">frags</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">pf</span><span class="o">.</span><span class="n">formula_dict_satisfies_constraints</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">chain_lengths</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="n">pf</span><span class="o">.</span><span class="n">smartsPath</span> <span class="o">==</span><span class="s1">&#39;cyclic&#39;</span><span class="p">:</span>
+                    <span class="c1"># treat cyclic groups separately</span>
+                    <span class="n">match_count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched1_len</span><span class="p">,</span> <span class="n">matched_chains</span> <span class="o">=</span> <span class="n">find_aryl_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">pf</span><span class="o">.</span><span class="n">smarts2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># treat cases with both smarts1 and smarts2, finding path</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">match_count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched1_len</span><span class="p">,</span> <span class="n">matched_chains</span> <span class="o">=</span> <span class="n">path_between_smarts</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span>
+                                                                            <span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span><span class="p">,</span>
+                                                                            <span class="n">pf</span><span class="o">.</span><span class="n">smarts2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">elif</span> <span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># treat cases with only smarts1, using default smarts2 (if looking for chains) else </span>
+                    <span class="c1"># if bycomponent is True, find fluorinated components for each path type</span>
+                    <span class="k">if</span> <span class="n">bycomponent</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">match_count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched1_len</span><span class="p">,</span> <span class="n">matched_chains</span> <span class="o">=</span> <span class="n">find_alkyl_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span><span class="p">,</span> <span class="n">path_components</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">match_count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched1_len</span><span class="p">,</span> <span class="n">matched_chains</span> <span class="o">=</span> <span class="n">path_between_smarts</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span>
+                                                                                <span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span><span class="p">,</span>
+                                                                                <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                            
+                            <span class="c1"># For groups with no constraints and smarts2=null, verify that smarts1 matches</span>
+                            <span class="c1"># are within 1-2 bonds of a fluorinated terminal atom</span>
+                            <span class="c1"># This prevents matching non-fluorinated functional groups that are &gt;2 bonds</span>
+                            <span class="c1"># away from the fluorinated region (since chain SMARTS allow $(CF) and $(CCF))</span>
+                            <span class="k">if</span> <span class="n">match_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">matched_chains</span><span class="p">:</span>
+                                <span class="n">smartsPaths</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;smartsPaths&#39;</span><span class="p">)</span>
+                                <span class="c1"># Get smarts1 matches</span>
+                                <span class="n">smarts1_matches</span> <span class="o">=</span> <span class="n">get_substruct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span><span class="p">)</span>
+                                <span class="c1"># Filter matched_chains where smarts1 atoms are ≤2 bonds from an END atom</span>
+                                <span class="n">valid_chains</span> <span class="o">=</span> <span class="p">[]</span>
+                                <span class="k">for</span> <span class="n">chain_info</span> <span class="ow">in</span> <span class="n">matched_chains</span><span class="p">:</span>
+                                    <span class="n">path_type</span> <span class="o">=</span> <span class="n">chain_info</span><span class="p">[</span><span class="s1">&#39;SMARTS&#39;</span><span class="p">]</span>
+                                    <span class="n">chain_atoms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">chain_info</span><span class="p">[</span><span class="s1">&#39;chain&#39;</span><span class="p">])</span>
+                                    <span class="c1"># Get the end SMARTS for this path type</span>
+                                    <span class="k">if</span> <span class="n">smartsPaths</span> <span class="ow">and</span> <span class="n">path_type</span> <span class="ow">in</span> <span class="n">smartsPaths</span><span class="p">:</span>
+                                        <span class="n">end_smarts</span> <span class="o">=</span> <span class="n">smartsPaths</span><span class="p">[</span><span class="n">path_type</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># [chain, end]</span>
+                                        <span class="n">end_matches</span> <span class="o">=</span> <span class="n">get_substruct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">end_smarts</span><span class="p">)</span>
+                                        <span class="c1"># Get smarts1 atoms that are in this chain</span>
+                                        <span class="n">smarts1_in_chain</span> <span class="o">=</span> <span class="n">chain_atoms</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">smarts1_matches</span><span class="p">)</span>
+                                        <span class="c1"># Check if any smarts1 atom is within 2 bonds of an END atom</span>
+                                        <span class="n">chain_is_valid</span> <span class="o">=</span> <span class="kc">False</span>
+                                        <span class="k">for</span> <span class="n">s1_atom</span> <span class="ow">in</span> <span class="n">smarts1_in_chain</span><span class="p">:</span>
+                                            <span class="c1"># Check if smarts1 atom itself is an END</span>
+                                            <span class="k">if</span> <span class="n">s1_atom</span> <span class="ow">in</span> <span class="n">end_matches</span><span class="p">:</span>
+                                                <span class="n">chain_is_valid</span> <span class="o">=</span> <span class="kc">True</span>
+                                                <span class="k">break</span>
+                                            <span class="c1"># Otherwise, check the actual molecular bond distance to nearest END atom</span>
+                                            <span class="c1"># (not position in chain array, since path can jump around in molecule)</span>
+                                            <span class="n">G</span> <span class="o">=</span> <span class="n">mol_to_nx</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                                            <span class="k">for</span> <span class="n">end_atom</span> <span class="ow">in</span> <span class="n">end_matches</span><span class="p">:</span>
+                                                <span class="k">if</span> <span class="n">end_atom</span> <span class="ow">in</span> <span class="n">chain_atoms</span><span class="p">:</span>
+                                                    <span class="k">try</span><span class="p">:</span>
+                                                        <span class="c1"># Get shortest path distance in molecular graph</span>
+                                                        <span class="c1"># Uses Breadth-First Search by default (unweighted graph)</span>
+                                                        <span class="n">path</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">s1_atom</span><span class="p">,</span> <span class="n">end_atom</span><span class="p">)</span>
+                                                        <span class="n">distance</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Number of bonds</span>
+                                                        <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;=</span> <span class="n">pf</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">:</span>
+                                                            <span class="n">chain_is_valid</span> <span class="o">=</span> <span class="kc">True</span>
+                                                            <span class="k">break</span>
+                                                    <span class="k">except</span> <span class="n">nx</span><span class="o">.</span><span class="n">NetworkXNoPath</span><span class="p">:</span>
+                                                        <span class="k">continue</span>
+                                            <span class="k">if</span> <span class="n">chain_is_valid</span><span class="p">:</span>
+                                                <span class="k">break</span>
+                                        
+                                        <span class="k">if</span> <span class="n">chain_is_valid</span><span class="p">:</span>
+                                            <span class="n">valid_chains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chain_info</span><span class="p">)</span>
+                                
+                                <span class="c1"># Update results with only valid chains</span>
+                                <span class="k">if</span> <span class="n">valid_chains</span><span class="p">:</span>
+                                    <span class="n">matched_chains</span> <span class="o">=</span> <span class="n">valid_chains</span>
+                                    <span class="n">match_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_chains</span><span class="p">)</span>
+                                    <span class="n">chain_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">valid_chains</span><span class="p">]</span>
+                                    <span class="n">matched1_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">atom</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">valid_chains</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;chain&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">smarts1_matches</span><span class="p">))</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="c1"># No valid chains - smarts1 matches are &gt;2 bonds from fluorinated terminals</span>
+                                    <span class="n">matched_chains</span> <span class="o">=</span> <span class="p">[]</span>
+                                    <span class="n">match_count</span> <span class="o">=</span> <span class="mi">0</span>
+                                    <span class="n">chain_lengths</span> <span class="o">=</span> <span class="p">[]</span>
+                                    <span class="n">matched1_len</span> <span class="o">=</span> <span class="mi">0</span>
+                                
+                        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">elif</span> <span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># treat cases with only smarts1 as simple substructure match, no path finding</span>
+                    <span class="c1"># if bycomponent is True, find fluorinated components for relevant path type</span>
+                    <span class="c1">#  (given by pf parameter smartsPath)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatch</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span><span class="p">))</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AtomValenceException</span><span class="p">:</span>
+                            <span class="n">frags</span> <span class="o">=</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="p">[])</span>
+                        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">frags</span><span class="p">:</span>
+                            <span class="n">n</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">frag</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span><span class="p">))</span>
+                    <span class="n">path_components</span> <span class="o">=</span> <span class="n">fluorinated_components_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">smartsPath</span><span class="p">,</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">)</span>
+                    <span class="n">match_count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched1_len</span><span class="p">,</span> <span class="n">matched_chains</span> <span class="o">=</span> <span class="n">find_alkyl_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">pf</span><span class="o">.</span><span class="n">smarts1</span><span class="p">,</span> <span class="n">path_components</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># teat cases with no smarts1, just formula constraints</span>
+                    <span class="n">match_count</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="n">matched_chains</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">matched1_len</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">match_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">matched1_len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># add to matches if functional group was found</span>
+                    <span class="n">group_matches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pf</span><span class="p">,</span> <span class="n">match_count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched_chains</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">group_matches</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse SMILES string(s) and return PFAS group information.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    smiles : str or list of str</span>
+<span class="sd">        Single SMILES string or list of SMILES strings</span>
+<span class="sd">    bycomponent : bool</span>
+<span class="sd">        Whether to use component-based analysis</span>
+<span class="sd">    output_format : str, default &#39;list&#39;</span>
+<span class="sd">        Output format: &#39;list&#39; (default), &#39;dataframe&#39;, or &#39;csv&#39;</span>
+<span class="sd">        - &#39;list&#39;: Returns nested lists of tuples (default behavior)</span>
+<span class="sd">        - &#39;dataframe&#39;: Returns pandas DataFrame with one row per match</span>
+<span class="sd">        - &#39;csv&#39;: Returns CSV string</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional parameters (pfas_groups, smartsPaths, etc.)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    list, pandas.DataFrame, or str</span>
+<span class="sd">        Depends on output_format parameter</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert single input to list for uniform processing</span>
+    <span class="n">single_input</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">smiles</span><span class="p">]</span> <span class="k">if</span> <span class="n">single_input</span> <span class="k">else</span> <span class="n">smiles</span>
+    <span class="n">mol_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smi</span><span class="p">)</span> <span class="k">for</span> <span class="n">smi</span> <span class="ow">in</span> <span class="n">smiles_list</span><span class="p">]</span>
+    <span class="c1"># Parse all molecules</span>
+    <span class="k">return</span> <span class="n">parse_mols</span><span class="p">(</span><span class="n">mol_list</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="n">bycomponent</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="n">output_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for parse_mols to handle single molecule input.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">parse_mol</span><span class="p">([</span><span class="n">mol</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="parse_mols">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.parse_mols">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_mols</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">include_PFAS_definitions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse RDKit molecule(s) and return PFAS group information.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    mols : list of rdkit.Chem.Mol</span>
+<span class="sd">        Single RDKit molecule or list of molecules</span>
+<span class="sd">    bycomponent : bool</span>
+<span class="sd">        Whether to use component-based analysis</span>
+<span class="sd">    output_format : str, default &#39;list&#39;</span>
+<span class="sd">        Output format: &#39;list&#39; (default), &#39;dataframe&#39;, or &#39;csv&#39;</span>
+<span class="sd">        - &#39;list&#39;: Returns nested lists of tuples (default behavior)</span>
+<span class="sd">        - &#39;dataframe&#39;: Returns pandas DataFrame with one row per match</span>
+<span class="sd">        - &#39;csv&#39;: Returns CSV string</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional parameters (pfas_groups, smartsPaths, etc.)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    list, pandas.DataFrame, or str</span>
+<span class="sd">        Depends on output_format parameter</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Parse all molecules</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">mols</span><span class="p">:</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="n">parse_groups_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="n">bycomponent</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">inchikey</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">inchi</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchi</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">smi</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">inchikey</span><span class="p">,{})</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="n">smi</span><span class="p">,</span>
+                        <span class="s2">&quot;inchikey&quot;</span><span class="p">:</span> <span class="n">inchikey</span><span class="p">,</span>
+                        <span class="s2">&quot;inchi&quot;</span><span class="p">:</span> <span class="n">inchi</span><span class="p">,</span>
+                        <span class="s2">&quot;formula&quot;</span><span class="p">:</span> <span class="n">formula</span><span class="p">})</span>
+        <span class="n">results</span><span class="p">[</span><span class="n">inchikey</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;matches&#39;</span><span class="p">,[])</span><span class="o">.</span><span class="n">extend</span><span class="p">([{</span><span class="s1">&#39;match_id&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;G</span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                        <span class="s1">&#39;group_name&#39;</span><span class="p">:</span> <span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="s1">&#39;match_count&#39;</span><span class="p">:</span> <span class="n">match_count</span><span class="p">,</span>
+                        <span class="s1">&#39;chain_lengths&#39;</span><span class="p">:</span> <span class="n">chain_lengths</span><span class="p">,</span>
+                        <span class="s1">&#39;num_chains&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">matched_chains</span><span class="p">),</span>
+                        <span class="s1">&#39;chains&#39;</span><span class="p">:</span> <span class="n">matched_chains</span><span class="p">,</span>
+                        <span class="s1">&#39;chain_types&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;SMARTS&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_chains</span><span class="p">])],</span>
+                        <span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;PFASgroup&#39;</span><span class="p">}</span> <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">match_count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched_chains</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">include_PFAS_definitions</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mols</span><span class="p">):</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="n">definitions</span> <span class="o">=</span> <span class="n">parse_definitions_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">inchikey</span><span class="p">,{</span>
+                        <span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span>
+                        <span class="s2">&quot;inchikey&quot;</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span>
+                        <span class="s2">&quot;inchi&quot;</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchi</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span>
+                        <span class="s2">&quot;formula&quot;</span><span class="p">:</span> <span class="n">formula</span><span class="p">})</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;matches&quot;</span><span class="p">,[])</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+                            <span class="p">{</span><span class="s1">&#39;match_id&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">definition</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                            <span class="s1">&#39;definition_name&#39;</span><span class="p">:</span> <span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                            <span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;PFASdefinition&#39;</span><span class="p">}</span> <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">definitions</span><span class="p">])</span>
+    <span class="c1"># Convert results to list format</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+    <span class="c1"># Format output based on requested format</span>
+    <span class="k">if</span> <span class="n">output_format</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;dataframe&#39;</span><span class="p">,</span> <span class="s1">&#39;csv&#39;</span><span class="p">]:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;matches&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;PFASgroup&#39;</span><span class="p">:</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smi</span><span class="p">,</span>
+                        <span class="s1">&#39;match_id&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;match_id&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_name&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;group_name&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_count&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;match_count&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;chain_lengths&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;chain_lengths&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;num_chains&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;num_chains&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_type&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+                    <span class="p">})</span>
+                <span class="k">elif</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;PFASdefinition&#39;</span><span class="p">:</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smi</span><span class="p">,</span>
+                        <span class="s1">&#39;match_id&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;match_id&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_name&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;definition_name&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_type&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+                    <span class="p">})</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="n">output_format</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span> <span class="k">else</span> <span class="n">df</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="generate_fingerprint">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.generate_fingerprint">[docs]</a>
+<span class="nd">@load_PFASGroups</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_fingerprint</span><span class="p">(</span><span class="n">smiles</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> 
+                             <span class="n">selected_groups</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">range</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                             <span class="n">representation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;vector&#39;</span><span class="p">,</span>
+                             <span class="n">count_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;binary&#39;</span><span class="p">,</span>
+                             <span class="n">include_PFAS_definitions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                             <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate PFAS group fingerprints from SMILES strings.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    smiles : str or list of str</span>
+<span class="sd">        SMILES string(s) to generate fingerprints for</span>
+<span class="sd">    selected_groups : list of int, range, or None</span>
+<span class="sd">        Indices of PFAS groups to include in fingerprint. </span>
+<span class="sd">        If None, all groups are used. Examples: [28, 29, 30], range(28, 52)</span>
+<span class="sd">    representation : str, default &#39;vector&#39;</span>
+<span class="sd">        Type of fingerprint representation:</span>
+<span class="sd">        - &#39;vector&#39;: Binary/count vector (numpy array)</span>
+<span class="sd">        - &#39;dict&#39;: Dictionary mapping group names to counts</span>
+<span class="sd">        - &#39;sparse&#39;: Dictionary with only non-zero group counts</span>
+<span class="sd">        - &#39;detailed&#39;: Full match information including chain details</span>
+<span class="sd">        - &#39;int&#39;: Convert binary to int using int(x,2)</span>
+<span class="sd">    count_mode : str, default &#39;binary&#39;</span>
+<span class="sd">        How to count matches:</span>
+<span class="sd">        - &#39;binary&#39;: 1 if group present, 0 if absent</span>
+<span class="sd">        - &#39;count&#39;: Number of matches found</span>
+<span class="sd">        - &#39;max_chain&#39;: Maximum chain length for groups with chains</span>
+<span class="sd">    pfas_groups : list, optional</span>
+<span class="sd">        Custom list of PFAS groups. If None, uses default groups.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    fingerprints : numpy.ndarray, dict, or list</span>
+<span class="sd">        Fingerprint representation(s) based on &#39;representation&#39; parameter.</span>
+<span class="sd">        For single SMILES input, returns single fingerprint.</span>
+<span class="sd">        For list input, returns list of fingerprints.</span>
+<span class="sd">    group_info : dict</span>
+<span class="sd">        Information about the groups used in fingerprinting:</span>
+<span class="sd">        - &#39;group_names&#39;: List of group names in fingerprint order</span>
+<span class="sd">        - &#39;group_ids&#39;: List of group IDs in fingerprint order</span>
+<span class="sd">        - &#39;selected_indices&#39;: Indices of selected groups</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    &gt;&gt;&gt; # Binary vector for specific groups</span>
+<span class="sd">    &gt;&gt;&gt; fp, info = generate_pfas_fingerprint(&#39;CC(F)(F)C(=O)O&#39;, </span>
+<span class="sd">    ...                                       selected_groups=range(28, 52))</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; # Count-based dictionary representation</span>
+<span class="sd">    &gt;&gt;&gt; fp, info = generate_pfas_fingerprint([&#39;CCF&#39;, &#39;CCFF&#39;], </span>
+<span class="sd">    ...                                       representation=&#39;dict&#39;,</span>
+<span class="sd">    ...                                       count_mode=&#39;count&#39;)</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; # Detailed match information</span>
+<span class="sd">    &gt;&gt;&gt; fp, info = generate_pfas_fingerprint(&#39;PFOA_SMILES&#39;, </span>
+<span class="sd">    ...                                       representation=&#39;detailed&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pfas_groups</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">)</span>
+    <span class="c1"># Handle single SMILES input</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">smiles</span><span class="p">]</span>
+        <span class="n">single_input</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">smiles_list</span> <span class="o">=</span> <span class="n">smiles</span>
+        <span class="n">single_input</span> <span class="o">=</span> <span class="kc">False</span>
+    
+    <span class="c1"># Determine which groups to use</span>
+    <span class="k">if</span> <span class="n">selected_groups</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Use all groups</span>
+        <span class="n">selected_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pfas_groups</span><span class="p">)))</span>
+        <span class="n">selected_pfas_groups</span> <span class="o">=</span> <span class="n">pfas_groups</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Convert range to list if needed</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_groups</span><span class="p">,</span> <span class="nb">range</span><span class="p">):</span>
+            <span class="n">selected_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">selected_groups</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">selected_groups</span>
+            
+        <span class="c1"># Validate indices</span>
+        <span class="n">max_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pfas_groups</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">invalid_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">selected_indices</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">max_index</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">invalid_indices</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid group indices </span><span class="si">{</span><span class="n">invalid_indices</span><span class="si">}</span><span class="s2">. &quot;</span>
+                           <span class="sa">f</span><span class="s2">&quot;Valid range is 0-</span><span class="si">{</span><span class="n">max_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">selected_pfas_groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">pfas_groups</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">selected_indices</span><span class="p">]</span>
+    
+    <span class="c1"># Create group info</span>
+    <span class="n">group_info</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;group_names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">selected_pfas_groups</span><span class="p">],</span>
+        <span class="s1">&#39;group_ids&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">selected_pfas_groups</span><span class="p">],</span>
+        <span class="s1">&#39;selected_indices&#39;</span><span class="p">:</span> <span class="n">selected_indices</span><span class="p">,</span>
+        <span class="s1">&#39;total_groups&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">pfas_groups</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="n">fingerprints</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">smiles_str</span> <span class="ow">in</span> <span class="n">smiles_list</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles_str</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid SMILES: </span><span class="si">{</span><span class="n">smiles_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="n">all_matches</span> <span class="o">=</span> <span class="n">parse_groups_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span> <span class="n">pfas_groups</span><span class="o">=</span><span class="n">pfas_groups</span><span class="p">,</span><span class="n">include_PFAS_definitions</span><span class="o">=</span><span class="n">include_PFAS_definitions</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            
+            <span class="c1"># Create mapping from group ID to match information</span>
+            <span class="n">match_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">match_count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched_chains</span> <span class="ow">in</span> <span class="n">all_matches</span><span class="p">:</span>
+                <span class="n">match_dict</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+                    <span class="s1">&#39;match_count&#39;</span><span class="p">:</span> <span class="n">match_count</span><span class="p">,</span>
+                    <span class="s1">&#39;chain_lengths&#39;</span><span class="p">:</span> <span class="n">chain_lengths</span><span class="p">,</span>
+                    <span class="s1">&#39;matched_chains&#39;</span><span class="p">:</span> <span class="n">matched_chains</span>
+                <span class="p">}</span>
+            
+            <span class="k">if</span> <span class="n">representation</span> <span class="o">==</span> <span class="s1">&#39;vector&#39;</span> <span class="ow">or</span> <span class="n">representation</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+                <span class="c1"># Create binary or count vector</span>
+                <span class="n">fingerprint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_pfas_groups</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">selected_pfas_groups</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">match_dict</span><span class="p">:</span>
+                        <span class="n">match_info</span> <span class="o">=</span> <span class="n">match_dict</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">count_mode</span> <span class="o">==</span> <span class="s1">&#39;binary&#39;</span> <span class="ow">or</span> <span class="n">representation</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+                            <span class="n">fingerprint</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                        <span class="k">elif</span> <span class="n">count_mode</span> <span class="o">==</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span>
+                            <span class="n">fingerprint</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;match_count&#39;</span><span class="p">]</span>
+                        <span class="k">elif</span> <span class="n">count_mode</span> <span class="o">==</span> <span class="s1">&#39;max_chain&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;matched_chains&#39;</span><span class="p">]:</span>
+                                <span class="n">fingerprint</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">chain</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;matched_chains&#39;</span><span class="p">]])</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">fingerprint</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;match_count&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;match_count&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown count_mode: </span><span class="si">{</span><span class="n">count_mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">representation</span> <span class="o">==</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+                    <span class="n">fingerprints</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]),</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fingerprint</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">fingerprints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="n">representation</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">:</span>
+                <span class="c1"># Create dictionary with all groups (including zeros)</span>
+                <span class="n">fingerprint</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">selected_pfas_groups</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">match_dict</span><span class="p">:</span>
+                        <span class="n">match_info</span> <span class="o">=</span> <span class="n">match_dict</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">count_mode</span> <span class="o">==</span> <span class="s1">&#39;binary&#39;</span><span class="p">:</span>
+                            <span class="n">fingerprint</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                        <span class="k">elif</span> <span class="n">count_mode</span> <span class="o">==</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span>
+                            <span class="n">fingerprint</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;match_count&#39;</span><span class="p">]</span>
+                        <span class="k">elif</span> <span class="n">count_mode</span> <span class="o">==</span> <span class="s1">&#39;max_chain&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;matched_chains&#39;</span><span class="p">]:</span>
+                                <span class="n">fingerprint</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">chain</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;matched_chains&#39;</span><span class="p">]])</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">fingerprint</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;match_count&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;match_count&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">fingerprint</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">fingerprints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="n">representation</span> <span class="o">==</span> <span class="s1">&#39;sparse&#39;</span><span class="p">:</span>
+                <span class="c1"># Create dictionary with only non-zero entries</span>
+                <span class="n">fingerprint</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">selected_pfas_groups</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">match_dict</span><span class="p">:</span>
+                        <span class="n">match_info</span> <span class="o">=</span> <span class="n">match_dict</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="k">if</span> <span class="n">count_mode</span> <span class="o">==</span> <span class="s1">&#39;binary&#39;</span><span class="p">:</span>
+                            <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+                        <span class="k">elif</span> <span class="n">count_mode</span> <span class="o">==</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span>
+                            <span class="n">value</span> <span class="o">=</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;n_matches&#39;</span><span class="p">]</span>
+                        <span class="k">elif</span> <span class="n">count_mode</span> <span class="o">==</span> <span class="s1">&#39;max_chain&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;chains&#39;</span><span class="p">]:</span>
+                                <span class="n">value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">chain</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;chains&#39;</span><span class="p">]])</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">value</span> <span class="o">=</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;n_matches&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;n_matches&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                        
+                        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">fingerprint</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="n">fingerprints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="n">representation</span> <span class="o">==</span> <span class="s1">&#39;detailed&#39;</span><span class="p">:</span>
+                <span class="c1"># Return full match information for selected groups</span>
+                <span class="n">fingerprint</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">selected_pfas_groups</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">match_dict</span><span class="p">:</span>
+                        <span class="n">match_info</span> <span class="o">=</span> <span class="n">match_dict</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+                        <span class="n">fingerprint</span><span class="p">[</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                            <span class="s1">&#39;n_matches&#39;</span><span class="p">:</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;n_matches&#39;</span><span class="p">],</span>
+                            <span class="s1">&#39;n_cfchains&#39;</span><span class="p">:</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;n_cfchains&#39;</span><span class="p">],</span>
+                            <span class="s1">&#39;chains&#39;</span><span class="p">:</span> <span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;chains&#39;</span><span class="p">],</span>
+                            <span class="s1">&#39;smarts1&#39;</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmarts</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">smarts1</span><span class="p">)</span> <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">smarts1</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                            <span class="s1">&#39;smarts2&#39;</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmarts</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">smarts2</span><span class="p">)</span> <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">smarts2</span> <span class="k">else</span> <span class="kc">None</span>
+                        <span class="p">}</span>
+                <span class="n">fingerprints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown representation: </span><span class="si">{</span><span class="n">representation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error processing SMILES &#39;</span><span class="si">{</span><span class="n">smiles_str</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Return single fingerprint for single input, list for multiple inputs</span>
+    <span class="k">if</span> <span class="n">single_input</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fingerprints</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">group_info</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fingerprints</span><span class="p">,</span> <span class="n">group_info</span></div>
+
+
+<div class="viewcode-block" id="plot_pfasgroups">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.plot_pfasgroups">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_pfasgroups</span><span class="p">(</span><span class="n">smiles</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">svg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ipython</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">subwidth</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">subheight</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">addAtomIndices</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">addBondIndices</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">split_matches</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">SMARTS</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot PFAS group assignments for a list of SMILES strings.</span>
+
+<span class="sd">    :params smiles: List of SMILES strings or a single SMILES string.</span>
+<span class="sd">    :params display: Whether to display the plot.</span>
+<span class="sd">    :params path: Path to save the plot image.</span>
+<span class="sd">    :params svg: Whether to generate SVG images.</span>
+<span class="sd">    :params ipython: Whether to display in an IPython environment.</span>
+<span class="sd">    :params subwidth: Width of each sub-image.</span>
+<span class="sd">    :params subheight: Height of each sub-image.</span>
+<span class="sd">    :params ncols: Number of columns in the grid layout.</span>
+<span class="sd">    :params addAtomIndices: Whether to add atom indices to the plot.</span>
+<span class="sd">    :params addBondIndices: Whether to add bond indices to the plot.</span>
+<span class="sd">    :params paths: List of PFAS group indices or names to include in the plot.</span>
+<span class="sd">    :params split_matches: Whether to create separate images for each match.</span>
+<span class="sd">    :params SMARTS: Optional SMARTS pattern to highlight in the plots.</span>
+<span class="sd">    :params kwargs: Additional keyword arguments for customization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">Draw</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">smiles</span> <span class="o">=</span> <span class="p">[</span><span class="n">smiles</span><span class="p">]</span>
+    <span class="n">imgs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">PATH_NAMES</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_subfig</span><span class="p">(</span><span class="n">legend</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="k">if</span> <span class="n">svg</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">d2d</span> <span class="o">=</span> <span class="n">Draw</span><span class="o">.</span><span class="n">MolDraw2DSVG</span><span class="p">(</span><span class="n">subwidth</span><span class="p">,</span> <span class="n">subheight</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d2d</span> <span class="o">=</span> <span class="n">Draw</span><span class="o">.</span><span class="n">MolDraw2DCairo</span><span class="p">(</span><span class="n">subwidth</span><span class="p">,</span> <span class="n">subheight</span><span class="p">)</span>
+        <span class="n">dopts</span> <span class="o">=</span> <span class="n">d2d</span><span class="o">.</span><span class="n">drawOptions</span><span class="p">()</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">useBWAtomPalette</span><span class="p">()</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">fixedBondLength</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">addAtomIndices</span> <span class="o">=</span> <span class="n">addAtomIndices</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">addBondIndices</span> <span class="o">=</span> <span class="n">addBondIndices</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">maxFontSize</span> <span class="o">=</span> <span class="mi">16</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">minFontSize</span> <span class="o">=</span> <span class="mi">13</span>
+        <span class="n">d2d</span><span class="o">.</span><span class="n">DrawMolecule</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="n">legend</span><span class="p">,</span> <span class="n">highlightAtoms</span><span class="o">=</span><span class="n">atoms</span><span class="p">)</span>
+        <span class="n">d2d</span><span class="o">.</span><span class="n">FinishDrawing</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">d2d</span><span class="o">.</span><span class="n">GetDrawingText</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">smiles</span><span class="p">):</span>
+        <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="n">parse_groups_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span> <span class="n">bycomponent</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bycomponent&#39;</span><span class="p">,</span><span class="kc">False</span><span class="p">))</span>
+        <span class="n">highlight_atoms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">pf</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n_cfchains</span><span class="p">,</span> <span class="n">match_indices</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">match_indices</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">SMARTS</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;SMARTS&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">SMARTS</span><span class="p">:</span>
+                    <span class="n">highlight_atoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">match</span><span class="p">[</span><span class="s1">&#39;chain&#39;</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">split_matches</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">new_img</span> <span class="o">=</span> <span class="n">draw_subfig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pf</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">match</span><span class="p">[</span><span class="s1">&#39;SMARTS&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">match</span><span class="p">[</span><span class="s1">&#39;chain&#39;</span><span class="p">])</span>
+                        <span class="n">imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_img</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">split_matches</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">new_img</span> <span class="o">=</span> <span class="n">draw_subfig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">SMARTS</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">SMARTS</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">highlight_atoms</span><span class="p">)</span>
+            <span class="n">imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_img</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">svg</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">d2d</span> <span class="o">=</span> <span class="n">Draw</span><span class="o">.</span><span class="n">MolDraw2DSVG</span><span class="p">(</span><span class="n">subwidth</span><span class="p">,</span> <span class="n">subheight</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d2d</span> <span class="o">=</span> <span class="n">Draw</span><span class="o">.</span><span class="n">MolDraw2DCairo</span><span class="p">(</span><span class="n">subwidth</span><span class="p">,</span> <span class="n">subheight</span><span class="p">)</span>
+        <span class="n">dopts</span> <span class="o">=</span> <span class="n">d2d</span><span class="o">.</span><span class="n">drawOptions</span><span class="p">()</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">useBWAtomPalette</span><span class="p">()</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">fixedBondLength</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">addAtomIndices</span> <span class="o">=</span> <span class="n">addAtomIndices</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">addBondIndices</span> <span class="o">=</span> <span class="n">addBondIndices</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">maxFontSize</span> <span class="o">=</span> <span class="mi">16</span>
+        <span class="n">dopts</span><span class="o">.</span><span class="n">minFontSize</span> <span class="o">=</span> <span class="mi">13</span>
+        <span class="n">d2d</span><span class="o">.</span><span class="n">DrawMolecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">d2d</span><span class="o">.</span><span class="n">FinishDrawing</span><span class="p">()</span>
+        <span class="n">imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d2d</span><span class="o">.</span><span class="n">GetDrawingText</span><span class="p">())</span>
+    <span class="c1"># For now, just return the images as PIL Images</span>
+    <span class="k">if</span> <span class="n">svg</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">imgs</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">img</span><span class="p">))</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">imgs</span><span class="p">]</span>
+    <span class="c1"># Simple grid</span>
+    <span class="k">return</span> <span class="n">draw_images</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">buffer</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;buffer&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">ncols</span> <span class="o">=</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">svg</span> <span class="o">=</span> <span class="n">svg</span><span class="p">)</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">subwidth</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">ncols</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">))</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">subheight</span> <span class="o">*</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">)</span> <span class="o">+</span> <span class="n">ncols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">ncols</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;RGBA&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">img</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">imgs</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">idx</span> <span class="o">%</span> <span class="n">ncols</span><span class="p">)</span> <span class="o">*</span> <span class="n">subwidth</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">idx</span> <span class="o">//</span> <span class="n">ncols</span><span class="p">)</span> <span class="o">*</span> <span class="n">subheight</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">display</span><span class="p">:</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">grid</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span></div>
+
+
+<div class="viewcode-block" id="get_smartsPaths">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.get_smartsPaths">[docs]</a>
+<span class="nd">@add_smartsPath</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_smartsPaths</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;smartsPaths&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_PFASGroups">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.get_PFASGroups">[docs]</a>
+<span class="nd">@load_PFASGroups</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_PFASGroups</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_PFASDefinitions">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.get_PFASDefinitions">[docs]</a>
+<span class="nd">@load_PFASDefinitions</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_PFASDefinitions</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_definitions&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compile_smartsPath">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.compile_smartsPath">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compile_smartsPath</span><span class="p">(</span><span class="n">chain_smarts</span><span class="p">,</span> <span class="n">end_smarts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compile a pair of SMARTS patterns into a ready-to-use path definition.</span>
+<span class="sd">    </span>
+<span class="sd">    This function preprocesses SMARTS patterns for chain and end groups,</span>
+<span class="sd">    preparing them for use in PFAS parsing functions.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    chain_smarts : str</span>
+<span class="sd">        SMARTS pattern for the repeating chain unit</span>
+<span class="sd">    end_smarts : str</span>
+<span class="sd">        SMARTS pattern for the terminal group</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        List containing [chain_mol, end_mol] where both are preprocessed RDKit Mol objects</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; chain = compile_smartsPath(</span>
+<span class="sd">    ...     &quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;,</span>
+<span class="sd">    ...     &quot;[C;X4](Cl)(Cl)Cl&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; paths = {&#39;Perchlorinated&#39;: chain}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">chain_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">chain_smarts</span><span class="p">)</span>
+    <span class="n">chain_mol</span><span class="o">.</span><span class="n">UpdatePropertyCache</span><span class="p">()</span>
+    <span class="n">Chem</span><span class="o">.</span><span class="n">GetSymmSSSR</span><span class="p">(</span><span class="n">chain_mol</span><span class="p">)</span>
+    <span class="n">chain_mol</span><span class="o">.</span><span class="n">GetRingInfo</span><span class="p">()</span><span class="o">.</span><span class="n">NumRings</span><span class="p">()</span>
+    
+    <span class="n">end_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">end_smarts</span><span class="p">)</span>
+    <span class="n">end_mol</span><span class="o">.</span><span class="n">UpdatePropertyCache</span><span class="p">()</span>
+    <span class="n">Chem</span><span class="o">.</span><span class="n">GetSymmSSSR</span><span class="p">(</span><span class="n">end_mol</span><span class="p">)</span>
+    <span class="n">end_mol</span><span class="o">.</span><span class="n">GetRingInfo</span><span class="p">()</span><span class="o">.</span><span class="n">NumRings</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="n">chain_mol</span><span class="p">,</span> <span class="n">end_mol</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="compile_smartsPaths">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.core.compile_smartsPaths">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compile_smartsPaths</span><span class="p">(</span><span class="n">paths_dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compile multiple SMARTS path definitions from a dictionary.</span>
+<span class="sd">    </span>
+<span class="sd">    This function takes a dictionary of path definitions (with &#39;chain&#39; and &#39;end&#39; keys)</span>
+<span class="sd">    and preprocesses them for use in PFAS parsing functions.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    paths_dict : dict</span>
+<span class="sd">        Dictionary with structure:</span>
+<span class="sd">        {</span>
+<span class="sd">            &#39;PathName&#39;: {&#39;chain&#39;: &#39;SMARTS&#39;, &#39;end&#39;: &#39;SMARTS&#39;},</span>
+<span class="sd">            ...</span>
+<span class="sd">        }</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Dictionary mapping path names to [chain_mol, end_mol] pairs</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; custom_paths = {</span>
+<span class="sd">    ...     &#39;Perchlorinated&#39;: {</span>
+<span class="sd">    ...         &#39;chain&#39;: &#39;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&#39;,</span>
+<span class="sd">    ...         &#39;end&#39;: &#39;[C;X4](Cl)(Cl)Cl&#39;</span>
+<span class="sd">    ...     },</span>
+<span class="sd">    ...     &#39;MixedHalo&#39;: {</span>
+<span class="sd">    ...         &#39;chain&#39;: &#39;[C;X4]([F,Cl])([F,Cl])!@!=!#[C;X4]([F,Cl])&#39;,</span>
+<span class="sd">    ...         &#39;end&#39;: &#39;[C;X4]([F,Cl])([F,Cl])[F,Cl]&#39;</span>
+<span class="sd">    ...     }</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; compiled = compile_smartsPaths(custom_paths)</span>
+<span class="sd">    &gt;&gt;&gt; results = parse_smiles(smiles, smartsPaths=compiled)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">compiled</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">patterns</span> <span class="ow">in</span> <span class="n">paths_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">patterns</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;chain&#39;</span> <span class="ow">in</span> <span class="n">patterns</span> <span class="ow">and</span> <span class="s1">&#39;end&#39;</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">:</span>
+            <span class="n">compiled</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">compile_smartsPath</span><span class="p">(</span><span class="n">patterns</span><span class="p">[</span><span class="s1">&#39;chain&#39;</span><span class="p">],</span> <span class="n">patterns</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; must have &#39;chain&#39; and &#39;end&#39; keys&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">compiled</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

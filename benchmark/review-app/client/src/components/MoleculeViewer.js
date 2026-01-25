@@ -1,29 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 function MoleculeViewer({ smiles, width = 300, height = 200 }) {
-  const containerRef = useRef(null);
+  const canvasRef = useRef(null);
   const [error, setError] = useState(null);
   const [rdkit, setRdkit] = useState(null);
 
   useEffect(() => {
     const loadRDKit = async () => {
       try {
-        // Load RDKit from npm package
-        const RDKit = await import('@rdkit/rdkit');
-        // The package exports initRDKitModule in different ways
-        const initRDKitModule = RDKit.default || RDKit.initRDKitModule || RDKit;
+        // Try to load RDKit.js - handle both default and named exports
+        const RDKitModule = await import('@rdkit/rdkit');
         
-        // Call the initialization function
-        let rdkitInstance;
-        if (typeof initRDKitModule === 'function') {
-          rdkitInstance = await initRDKitModule();
-        } else if (typeof initRDKitModule.initRDKitModule === 'function') {
-          rdkitInstance = await initRDKitModule.initRDKitModule();
+        // Try different import patterns
+        let initFunc = RDKitModule.initRDKitModule || RDKitModule.default?.initRDKitModule || RDKitModule.default;
+        
+        if (typeof initFunc === 'function') {
+          const rdkitInstance = await initFunc();
+          setRdkit(rdkitInstance);
         } else {
-          throw new Error('Could not find initRDKitModule function');
+          throw new Error('initRDKitModule function not found');
         }
-        
-        setRdkit(rdkitInstance);
       } catch (err) {
         console.error('Error loading RDKit:', err);
         setError('RDKit.js not available. Showing SMILES string instead.');
@@ -34,29 +30,39 @@ function MoleculeViewer({ smiles, width = 300, height = 200 }) {
   }, []);
 
   useEffect(() => {
-    if (rdkit && smiles && containerRef.current) {
+    if (rdkit && smiles && canvasRef.current) {
       try {
-        // Clear previous content
-        containerRef.current.innerHTML = '';
+        // Clear previous drawing
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Create molecule from SMILES
         const mol = rdkit.get_mol(smiles);
-        if (mol && mol.is_valid()) {
-          // Generate SVG directly
-          const svg = mol.get_svg_with_highlights(JSON.stringify({
-            width: width,
-            height: height
-          }));
+        if (mol) {
+          // Generate 2D coordinates
+          mol.normalize_depiction();
           
-          // Inject SVG directly into container
-          containerRef.current.innerHTML = svg;
+          // Draw molecule to canvas
+          const svg = mol.get_svg(width, height);
+          
+          // Convert SVG to canvas
+          const img = new Image();
+          const svgBlob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+          const url = URL.createObjectURL(svgBlob);
+          
+          img.onload = () => {
+            ctx.drawImage(img, 0, 0);
+            URL.revokeObjectURL(url);
+          };
+          
+          img.src = url;
           
           // Clean up
           mol.delete();
           setError(null);
         } else {
           setError('Invalid SMILES string');
-          if (mol) mol.delete();
         }
       } catch (err) {
         console.error('Error drawing molecule:', err);
@@ -117,15 +123,14 @@ function MoleculeViewer({ smiles, width = 300, height = 200 }) {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <div
-        ref={containerRef}
+      <canvas
+        ref={canvasRef}
+        width={width}
+        height={height}
         style={{
           border: '1px solid #ddd',
           borderRadius: '4px',
-          backgroundColor: 'white',
-          display: 'inline-block',
-          minWidth: width,
-          minHeight: height
+          backgroundColor: 'white'
         }}
       />
       <div style={{ 

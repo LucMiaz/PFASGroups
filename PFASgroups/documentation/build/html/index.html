@@ -1,0 +1,341 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PFASgroups Documentation &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="getting_started.html" />
+ 
+<link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">Core Module (core.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/visualization.html">Visualization Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/generation.html">Molecule Generation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/generic_groups.html">Generic Classification Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/pathway_types.html">Pathway Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">PFASgroups Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/lucmiaz/PFASGroups/blob/main/source/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pfasgroups-documentation">
+<h1>PFASgroups Documentation<a class="headerlink" href="#pfasgroups-documentation" title="Link to this heading"></a></h1>
+<a class="reference external image-reference" href="https://badge.fury.io/py/PFASgroups"><img alt="PyPI version" src="https://badge.fury.io/py/PFASgroups.svg" />
+</a>
+<a class="reference external image-reference" href="https://www.python.org/downloads/"><img alt="Python 3.7+" src="https://img.shields.io/badge/python-3.7+-blue.svg" />
+</a>
+<a class="reference external image-reference" href="https://creativecommons.org/licenses/by-nc/4.0/"><img alt="License" src="https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg" />
+</a>
+<a class="reference external image-reference" href="https://www.rdkit.org/"><img alt="Powered by RDKit" src="https://img.shields.io/badge/Powered%20by-RDKit-3838ff.svg" />
+</a>
+<p><strong>PFASgroups</strong> is a comprehensive Python cheminformatics package for automated detection,
+classification, and analysis of Per- and Polyfluoroalkyl Substances (PFAS) in chemical databases.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>PFAS Group Identification</strong>: Automated detection of 55 functional groups based on OECD terminology</p></li>
+<li><p><strong>Chain Length Analysis</strong>: Quantification of per- or polyfluorinated alkyl chain lengths</p></li>
+<li><p><strong>Fingerprint Generation</strong>: Generate PFAS fingerprints for machine learning applications</p></li>
+<li><p><strong>Homologue Generation</strong>: Create shorter-chain analogues by removing CF₂ moieties</p></li>
+<li><p><strong>Visualization</strong>: Plot PFAS group assignments on molecular structures</p></li>
+<li><p><strong>Customization</strong>: Extend with custom PFAS groups and pathway patterns via JSON</p></li>
+</ul>
+</section>
+<section id="quick-example">
+<h2>Quick Example<a class="headerlink" href="#quick-example" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span><span class="p">,</span> <span class="n">generate_fingerprint</span>
+
+<span class="c1"># Parse PFAS structures</span>
+<span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C(C(F)(F)F)F&quot;</span><span class="p">,</span> <span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+
+<span class="c1"># Generate fingerprints for machine learning</span>
+<span class="n">fingerprints</span><span class="p">,</span> <span class="n">group_info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>From PyPI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PFASgroups
+</pre></div>
+</div>
+<p>From Conda-Forge:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>pfasgroups
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#fingerprint-generation">Fingerprint Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#homologue-series-generation">Homologue Series Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#batch-processing">Batch Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#working-with-pfas-definitions">Working with PFAS Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#advanced-topics">Advanced Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#parse-command">Parse Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#fingerprint-command">Fingerprint Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#list-groups-command">List Groups Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#list-paths-command">List Paths Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#using-custom-configuration">Using Custom Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#scripting-examples">Scripting Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#creating-custom-pfas-groups">Creating Custom PFAS Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#creating-custom-pathway-types">Creating Custom Pathway Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#extending-vs-replacing">Extending vs Replacing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#example-complete-custom-configuration">Example: Complete Custom Configuration</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">Core Module (core.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#main-parsing-functions">Main Parsing Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#fingerprint-generation">Fingerprint Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#configuration-functions">Configuration Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#helper-functions">Helper Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Data Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#pfasgroup-class">PFASGroup Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#pfasdefinition-class">PFASDefinition Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/homologues.html">Homologue Generation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/homologues.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/homologues.html#main-functions">Main Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/homologues.html#use-cases">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/homologues.html#notes-and-limitations">Notes and Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/fragmentation.html">Fragmentation Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/fragmentation.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/fragmentation.html#main-functions">Main Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/fragmentation.html#bond-dissociation-energies">Bond Dissociation Energies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/fragmentation.html#helper-functions">Helper Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/fragmentation.html#use-cases">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/fragmentation.html#notes-and-limitations">Notes and Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/visualization.html">Visualization Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#main-functions">Main Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#helper-functions">Helper Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#pfas-specific-visualization">PFAS-Specific Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#output-formats">Output Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#customization-examples">Customization Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/generation.html">Molecule Generation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/generation.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generation.html#main-functions">Main Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generation.html#use-cases">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generation.html#notes-and-limitations">Notes and Limitations</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/oecd_groups.html">OECD-Defined Groups</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/oecd_groups.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/oecd_groups.html#acids-and-derivatives">Acids and Derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/oecd_groups.html#sulfonamides">Sulfonamides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/oecd_groups.html#alcohols-and-ethers">Alcohols and Ethers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/oecd_groups.html#phosphorus-containing-groups">Phosphorus-Containing Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/oecd_groups.html#cyclic-structures">Cyclic Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/oecd_groups.html#other-oecd-groups">Other OECD Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/oecd_groups.html#usage-in-code">Usage in Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/oecd_groups.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/generic_groups.html">Generic Classification Groups</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/generic_groups.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/generic_groups.html#perfluoroalkyl-generic-groups">Perfluoroalkyl Generic Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/generic_groups.html#polyfluoroalkyl-generic-groups">Polyfluoroalkyl Generic Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/generic_groups.html#branched-and-polyfluoro-groups">Branched and Polyfluoro Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/generic_groups.html#brominated-groups">Brominated Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/generic_groups.html#cyclic-and-special-structures">Cyclic and Special Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/generic_groups.html#usage-in-code">Usage in Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/generic_groups.html#hierarchical-classification">Hierarchical Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/generic_groups.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/pathway_types.html">Pathway Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/pathway_types.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/pathway_types.html#perfluoroalkyl">Perfluoroalkyl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/pathway_types.html#polyfluoroalkyl">Polyfluoroalkyl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/pathway_types.html#polyfluoro-branched">Polyfluoro (Branched)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/pathway_types.html#polyfluorobr-brominated">Polyfluorobr (Brominated)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/pathway_types.html#custom-pathway-definition">Custom Pathway Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/pathway_types.html#pathway-selection-in-groups">Pathway Selection in Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/pathway_types.html#algorithm-details">Algorithm Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_groups/pathway_types.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading"></a></h2>
+<p>This project is part of the <a class="reference external" href="https://zeropm.eu/">ZeroPM project</a> (WP2) and has received
+funding from the European Union’s Horizon 2020 research and innovation programme under
+grant agreement No 101036756.</p>
+<p>Developed at the <a class="reference external" href="https://aces.su.se">Department of Environmental Science</a> at Stockholm University.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

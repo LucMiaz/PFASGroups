@@ -79,6 +79,7 @@ class DataImporter {
         if (filename.includes('enhanced')) return 'enhanced';
         if (filename.includes('non_fluorinated')) return 'non_fluorinated';
         if (filename.includes('complex_branched')) return 'complex_branched';
+        if (filename.includes('definitions')) return 'definitions';
         return 'unknown';
     }
 
@@ -87,8 +88,49 @@ class DataImporter {
         const benchmarkDate = this.extractDateFromFilename(filename);
         
         // Handle different data structures
+        
+        // Definitions benchmark data has a nested structure: { metadata: {...}, benchmarks: {...} }
+        if (data.metadata && data.benchmarks) {
+            const allMolecules = [];
+            
+            // Flatten all molecules from all categories and subcategories
+            for (const [categoryName, categoryData] of Object.entries(data.benchmarks)) {
+                if (categoryData.subcategories) {
+                    for (const [subcategoryName, molecules] of Object.entries(categoryData.subcategories)) {
+                        if (Array.isArray(molecules)) {
+                            for (const mol of molecules) {
+                                if (mol.smiles) {
+                                    allMolecules.push({
+                                        molecule_data: {
+                                            smiles: mol.smiles,
+                                            molecular_weight: mol.molecular_weight,
+                                            num_atoms: mol.num_atoms
+                                        },
+                                        pfasgroups_result: {
+                                            detected_groups: mol.pfasgroups_groups || [],
+                                            detected_definitions: mol.pfasgroups_definitions || [],
+                                            success: mol.pfasgroups_detected !== false,
+                                            error: null,
+                                            execution_time: mol.pfasgroups_execution_time
+                                        },
+                                        atlas_result: {
+                                            first_class: mol.atlas_first_class,
+                                            second_class: mol.atlas_second_class,
+                                            success: mol.atlas_detected !== false,
+                                            error: null,
+                                            execution_time: mol.atlas_execution_time
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            data = allMolecules;
+        }
         // Complex branched data has a wrapper object with "molecules" array
-        if (Array.isArray(data) && data.length > 0 && data[0].molecules) {
+        else if (Array.isArray(data) && data.length > 0 && data[0].molecules) {
             // Flatten the molecules from all test cases
             const allMolecules = [];
             for (const testCase of data) {

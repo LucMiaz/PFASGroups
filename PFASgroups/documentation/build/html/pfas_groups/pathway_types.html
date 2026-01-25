@@ -1,0 +1,385 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pathway Types &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Algorithm Overview" href="../algorithm.html" />
+    <link rel="prev" title="Generic Classification Groups" href="generic_groups.html" />
+ 
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/core.html">Core Module (core.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/visualization.html">Visualization Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/generation.html">Molecule Generation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generic_groups.html">Generic Classification Groups</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pathway Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#perfluoroalkyl">Perfluoroalkyl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polyfluoroalkyl">Polyfluoroalkyl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polyfluoro-branched">Polyfluoro (Branched)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polyfluorobr-brominated">Polyfluorobr (Brominated)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-pathway-definition">Custom Pathway Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pathway-selection-in-groups">Pathway Selection in Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#algorithm-details">Algorithm Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Pathway Types</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/lucmiaz/PFASGroups/blob/main/source/pfas_groups/pathway_types.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pathway-types">
+<h1>Pathway Types<a class="headerlink" href="#pathway-types" title="Link to this heading"></a></h1>
+<p>This section documents the pathway types used to classify fluorinated chains
+in PFASgroups.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Pathway types define the repeating structural units that form fluorinated chains.
+Each pathway has:</p>
+<ul class="simple">
+<li><p><strong>Chain SMARTS</strong>: Pattern for the repeating unit</p></li>
+<li><p><strong>End SMARTS</strong>: Pattern for the terminal group</p></li>
+</ul>
+<p>The module supports four main pathway types:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Pathway</p></th>
+<th class="head"><p>Chain Unit</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Perfluoroalkyl</p></td>
+<td><p>-CF₂-CF₂-</p></td>
+<td><p>Fully fluorinated chain</p></td>
+</tr>
+<tr class="row-odd"><td><p>Polyfluoroalkyl</p></td>
+<td><p>-CF₂-CHF- or -CF₂-CH₂-</p></td>
+<td><p>Partially fluorinated chain</p></td>
+</tr>
+<tr class="row-even"><td><p>Polyfluoro</p></td>
+<td><p>Various</p></td>
+<td><p>Branched/irregular fluorination</p></td>
+</tr>
+<tr class="row-odd"><td><p>Polyfluorobr</p></td>
+<td><p>Contains Br</p></td>
+<td><p>Brominated polyfluorinated</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="perfluoroalkyl">
+<h2>Perfluoroalkyl<a class="headerlink" href="#perfluoroalkyl" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Name: Perfluoroalkyl
+Chain SMARTS: [C;X4](F)(F)!@!=!#[C;X4](F)(F)
+End SMARTS: [C;X4](F)(F)F
+Description: Fully fluorinated alkyl chain
+</pre></div>
+</div>
+<p><strong>Structural Formula:</strong></p>
+<div class="math notranslate nohighlight">
+\[C_nF_{2n+1}-\]</div>
+<p><strong>Characteristics:</strong></p>
+<ul class="simple">
+<li><p>All carbon atoms are bonded to fluorine</p></li>
+<li><p>Linear or branched chain</p></li>
+<li><p>Highly stable and persistent</p></li>
+<li><p>Most common in legacy PFAS compounds</p></li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># PFOA - C8 perfluoroalkyl carboxylic acid</span>
+<span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O&quot;</span>
+
+<span class="c1"># PFOS - C8 perfluoroalkyl sulfonic acid</span>
+<span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O&quot;</span>
+</pre></div>
+</div>
+<p><strong>Chain Length Calculation:</strong></p>
+<p>The chain length counts the number of fully fluorinated carbon atoms:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: chain length = </span><span class="si">{</span><span class="n">chain_lengths</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># PFCA: chain length = [3]</span>
+</pre></div>
+</div>
+</section>
+<section id="polyfluoroalkyl">
+<h2>Polyfluoroalkyl<a class="headerlink" href="#polyfluoroalkyl" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Name: Polyfluoroalkyl
+Chain SMARTS: [C;X4]([F,H,I,Br,Cl])([F,H,I,Br,Cl])!@!=!#[C;X4]([F,H,I,Br,Cl])([F,H,I,Br,Cl])
+End SMARTS: [C;X4]([F,H,I,Br,Cl])([F,H,I,Br,Cl])[F,H,I,Br,Cl]
+Description: Partially fluorinated alkyl chain
+</pre></div>
+</div>
+<p><strong>Structural Formula:</strong></p>
+<div class="math notranslate nohighlight">
+\[C_nF_xH_y-  \text{ where } x + y = 2n + 1\]</div>
+<p><strong>Characteristics:</strong></p>
+<ul class="simple">
+<li><p>Mix of C-F and C-H bonds</p></li>
+<li><p>Includes fluorotelomer structures</p></li>
+<li><p>May contain halogens (Cl, Br, I)</p></li>
+<li><p>Common in newer PFAS alternatives</p></li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 6:2 FTOH - Fluorotelomer alcohol</span>
+<span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCO&quot;</span>
+
+<span class="c1"># 4:2 FTCA - Fluorotelomer carboxylic acid</span>
+<span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)CC(=O)O&quot;</span>
+</pre></div>
+</div>
+<p><strong>Difference from Perfluoroalkyl:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Perfluoroalkyl: F-C(F)(F)-C(F)(F)-C(F)(F)-COOH
+                ↑ all C-F bonds
+
+Polyfluoroalkyl: F-C(F)(F)-C(F)(F)-C(F)(F)-C(H)(H)-COOH
+                                           ↑ C-H bonds
+</pre></div>
+</div>
+</section>
+<section id="polyfluoro-branched">
+<h2>Polyfluoro (Branched)<a class="headerlink" href="#polyfluoro-branched" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Name: Polyfluoro
+Chain SMARTS: [C;X4]([F,H])([F,H])!@!=!#[C;X4;H0,H1]
+End SMARTS: [C;X4;H0](F)(F)F
+Description: Branched polyfluorinated structures
+</pre></div>
+</div>
+<p><strong>Characteristics:</strong></p>
+<ul class="simple">
+<li><p>Branched carbon backbone</p></li>
+<li><p>Variable fluorination pattern</p></li>
+<li><p>May include tertiary carbons</p></li>
+<li><p>Common in complex industrial PFAS</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Branched perfluorinated compound</span>
+<span class="s2">&quot;FC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(=O)O&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="polyfluorobr-brominated">
+<h2>Polyfluorobr (Brominated)<a class="headerlink" href="#polyfluorobr-brominated" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Name: Polyfluorobr
+Chain SMARTS: [C;X4]([F,H,Br])([F,H,Br])!@!=!#[C;X4]([F,H,Br])([F,H,Br])
+End SMARTS: [C;X4]([F,H,Br])([F,H,Br])[F,H,Br]
+Description: Brominated polyfluorinated structures
+</pre></div>
+</div>
+<p><strong>Characteristics:</strong></p>
+<ul class="simple">
+<li><p>Contains bromine atoms</p></li>
+<li><p>Often used in flame retardants</p></li>
+<li><p>May have mixed Br/F substitution</p></li>
+</ul>
+</section>
+<section id="custom-pathway-definition">
+<h2>Custom Pathway Definition<a class="headerlink" href="#custom-pathway-definition" title="Link to this heading"></a></h2>
+<p>You can define custom pathway types:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_smartsPaths</span><span class="p">,</span> <span class="n">compile_smartsPath</span><span class="p">,</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Get default paths</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="n">get_smartsPaths</span><span class="p">()</span>
+
+<span class="c1"># Add a custom path (e.g., perchlorinated)</span>
+<span class="n">paths</span><span class="p">[</span><span class="s1">&#39;Perchlorinated&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compile_smartsPath</span><span class="p">(</span>
+    <span class="n">chain_smarts</span><span class="o">=</span><span class="s2">&quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;</span><span class="p">,</span>
+    <span class="n">end_smarts</span><span class="o">=</span><span class="s2">&quot;[C;X4](Cl)(Cl)Cl&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Use custom paths</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">smartsPaths</span><span class="o">=</span><span class="n">paths</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pathway-selection-in-groups">
+<h2>Pathway Selection in Groups<a class="headerlink" href="#pathway-selection-in-groups" title="Link to this heading"></a></h2>
+<p>Each PFAS group is associated with a specific pathway type:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_PFASGroups</span>
+
+<span class="n">groups</span> <span class="o">=</span> <span class="n">get_PFASGroups</span><span class="p">()</span>
+
+<span class="c1"># Show pathway for each group</span>
+<span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">smartsPath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Output:</span>
+<span class="c1"># PFCA: Perfluoroalkyl</span>
+<span class="c1"># n:2 FTCA: Perfluoroalkyl</span>
+<span class="c1"># PFSA: Perfluoroalkyl</span>
+<span class="c1"># FTOH: Perfluoroalkyl</span>
+<span class="c1"># ...</span>
+</pre></div>
+</div>
+</section>
+<section id="algorithm-details">
+<h2>Algorithm Details<a class="headerlink" href="#algorithm-details" title="Link to this heading"></a></h2>
+<p><strong>Chain Detection Algorithm:</strong></p>
+<ol class="arabic simple">
+<li><p>Find all matches of the chain SMARTS pattern</p></li>
+<li><p>Find all matches of the end SMARTS pattern</p></li>
+<li><p>Build a molecular graph</p></li>
+<li><p>Find shortest path between end groups through chain atoms</p></li>
+<li><p>Count chain length as number of carbon atoms in path</p></li>
+</ol>
+<p><strong>Handling Cyclic Structures:</strong></p>
+<p>For cyclic structures, the algorithm uses a different approach:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cyclic pathway</span>
+<span class="n">smartsPath</span> <span class="o">=</span> <span class="s2">&quot;cyclic&quot;</span>
+
+<span class="c1"># Uses connected component analysis instead of path finding</span>
+<span class="c1"># Matches cyclic fluorinated structures as a whole</span>
+</pre></div>
+</div>
+<p><strong>Multiple Chains:</strong></p>
+<p>If a molecule has multiple fluorinated chains:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Molecule with two fluorinated chains</span>
+<span class="n">smiles</span> <span class="o">=</span> <span class="s2">&quot;FC(F)(F)C(F)(F)CC(F)(F)C(F)(F)F&quot;</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="n">smiles</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">matched_chains</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: count=</span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">, chains=</span><span class="si">{</span><span class="n">chain_lengths</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># May match multiple times with different chain lengths</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="oecd_groups.html"><span class="doc">OECD-Defined Groups</span></a> - OECD-defined groups</p></li>
+<li><p><a class="reference internal" href="generic_groups.html"><span class="doc">Generic Classification Groups</span></a> - Generic classification groups</p></li>
+<li><p><a class="reference internal" href="../api/core.html"><span class="doc">Core Module (core.py)</span></a> - Core module API</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generic_groups.html" class="btn btn-neutral float-left" title="Generic Classification Groups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../algorithm.html" class="btn btn-neutral float-right" title="Algorithm Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

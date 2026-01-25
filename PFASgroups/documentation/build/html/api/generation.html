@@ -1,0 +1,456 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Molecule Generation &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="OECD-Defined Groups" href="../pfas_groups/oecd_groups.html" />
+    <link rel="prev" title="Visualization Module" href="visualization.html" />
+ 
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Module (core.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Molecule Generation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-functions">Main Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generate-random-carbon-chain">generate_random_carbon_chain</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.generate_mol.generate_random_carbon_chain"><code class="docutils literal notranslate"><span class="pre">generate_random_carbon_chain()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#append-functional-group">append_functional_group</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.generate_mol.append_functional_group"><code class="docutils literal notranslate"><span class="pre">append_functional_group()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-attachment">get_attachment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.generate_mol.get_attachment"><code class="docutils literal notranslate"><span class="pre">get_attachment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#attach-mol">attach_mol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.generate_mol.attach_mol"><code class="docutils literal notranslate"><span class="pre">attach_mol()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#insert-mol">insert_mol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.generate_mol.insert_mol"><code class="docutils literal notranslate"><span class="pre">insert_mol()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-atoms">remove_atoms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.generate_mol.remove_atoms"><code class="docutils literal notranslate"><span class="pre">remove_atoms()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generating-test-molecules">Generating Test Molecules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#synthetic-validation-dataset">Synthetic Validation Dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#notes-and-limitations">Notes and Limitations</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pfas_groups/oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pfas_groups/generic_groups.html">Generic Classification Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pfas_groups/pathway_types.html">Pathway Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Molecule Generation</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/lucmiaz/PFASGroups/blob/main/source/api/generation.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="molecule-generation">
+<h1>Molecule Generation<a class="headerlink" href="#molecule-generation" title="Link to this heading"></a></h1>
+<p>This module provides utilities for generating random PFAS-like molecules
+for testing and validation purposes.</p>
+<section id="overview">
+<span id="module-PFASgroups.generate_mol"></span><h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The molecule generation module is primarily used for:</p>
+<ul class="simple">
+<li><p>Creating synthetic test molecules</p></li>
+<li><p>Generating training data for machine learning</p></li>
+<li><p>Validating algorithm behavior</p></li>
+<li><p>Exploring chemical space</p></li>
+</ul>
+</section>
+<section id="main-functions">
+<h2>Main Functions<a class="headerlink" href="#main-functions" title="Link to this heading"></a></h2>
+<section id="generate-random-carbon-chain">
+<h3>generate_random_carbon_chain<a class="headerlink" href="#generate-random-carbon-chain" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.generate_mol.generate_random_carbon_chain">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.generate_mol.</span></span><span class="sig-name descname"><span class="pre">generate_random_carbon_chain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alkene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alkyne</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/generate_mol.html#generate_random_carbon_chain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.generate_mol.generate_random_carbon_chain" title="Link to this definition"></a></dt>
+<dd><p>Generate a random carbon chain molecule with n carbons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of carbon atoms</p></li>
+<li><p><strong>cycle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Generate cyclic (aromatic) structure</p></li>
+<li><p><strong>alkene</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Include C=C double bonds</p></li>
+<li><p><strong>alkyne</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Include C≡C triple bonds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RDKit molecule object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.Mol</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups.generate_mol</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_random_carbon_chain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="c1"># Simple chain</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">generate_random_carbon_chain</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>  <span class="c1"># e.g., &quot;CCCCCC&quot;</span>
+
+<span class="c1"># Cyclic structure</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">generate_random_carbon_chain</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>  <span class="c1"># e.g., &quot;c1ccccc1&quot;</span>
+
+<span class="c1"># With double bonds</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">generate_random_carbon_chain</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">alkene</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>  <span class="c1"># e.g., &quot;CC=CCCC&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="append-functional-group">
+<h3>append_functional_group<a class="headerlink" href="#append-functional-group" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.generate_mol.append_functional_group">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.generate_mol.</span></span><span class="sig-name descname"><span class="pre">append_functional_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'attach'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighbor_atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['C']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanitize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/generate_mol.html#append_functional_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.generate_mol.append_functional_group" title="Link to this definition"></a></dt>
+<dd><p>Append a functional group to a molecule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – Base molecule</p></li>
+<li><p><strong>group_smiles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Functional group as SMILES string</p></li>
+<li><p><strong>insertion</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Mode - ‘attach’ (append) or ‘insert’ (between atoms)</p></li>
+<li><p><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of groups to attach</p></li>
+<li><p><strong>atom_indices</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>, </em><em>optional</em>) – Specific atom indices for attachment</p></li>
+<li><p><strong>neighbor_atoms</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – Allowed neighbor atom types</p></li>
+<li><p><strong>sanitize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Sanitize molecule after attachment</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Modified molecule</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.Mol</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups.generate_mol</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_random_carbon_chain</span><span class="p">,</span> <span class="n">append_functional_group</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="c1"># Create base chain</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">generate_random_carbon_chain</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Add carboxylic acid</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">append_functional_group</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="s2">&quot;C(=O)O&quot;</span><span class="p">,</span> <span class="n">insertion</span><span class="o">=</span><span class="s1">&#39;attach&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
+
+<span class="c1"># Insert ether linkage</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">generate_random_carbon_chain</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">append_functional_group</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="n">insertion</span><span class="o">=</span><span class="s1">&#39;insert&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="get-attachment">
+<h3>get_attachment<a class="headerlink" href="#get-attachment" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.generate_mol.get_attachment">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.generate_mol.</span></span><span class="sig-name descname"><span class="pre">get_attachment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['C']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighbors_symbols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'C':</span> <span class="pre">['F',</span> <span class="pre">'H']}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/generate_mol.html#get_attachment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.generate_mol.get_attachment" title="Link to this definition"></a></dt>
+<dd><p>Find attachment points in a molecule for functional group addition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – Molecule to analyze</p></li>
+<li><p><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Maximum number of attachment points to return</p></li>
+<li><p><strong>atom_symbols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – Allowed central atom types</p></li>
+<li><p><strong>neighbors_symbols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>, </em><em>optional</em>) – Allowed neighbor types for each atom type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of (atom_index, neighbor_index) tuples</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="attach-mol">
+<h3>attach_mol<a class="headerlink" href="#attach-mol" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.generate_mol.attach_mol">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.generate_mol.</span></span><span class="sig-name descname"><span class="pre">attach_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">submol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/generate_mol.html#attach_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.generate_mol.attach_mol" title="Link to this definition"></a></dt>
+<dd><p>Attach a submolecule to a specific atom in the main molecule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – Main molecule</p></li>
+<li><p><strong>submol</strong> (<em>rdkit.Chem.Mol</em>) – Submolecule to attach</p></li>
+<li><p><strong>atom_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Atom index in main molecule for attachment</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Combined molecule</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.Mol</p>
+</dd>
+</dl>
+<p>The submolecule is attached at its first atom (index 0).</p>
+</dd></dl>
+
+</section>
+<section id="insert-mol">
+<h3>insert_mol<a class="headerlink" href="#insert-mol" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.generate_mol.insert_mol">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.generate_mol.</span></span><span class="sig-name descname"><span class="pre">insert_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighbor_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/generate_mol.html#insert_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.generate_mol.insert_mol" title="Link to this definition"></a></dt>
+<dd><p>Insert a submolecule between two bonded atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – Main molecule</p></li>
+<li><p><strong>group_mol</strong> (<em>rdkit.Chem.Mol</em>) – Group to insert</p></li>
+<li><p><strong>atom_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – First atom of the bond</p></li>
+<li><p><strong>neighbor_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Second atom of the bond</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Modified molecule</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="remove-atoms">
+<h3>remove_atoms<a class="headerlink" href="#remove-atoms" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.generate_mol.remove_atoms">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.generate_mol.</span></span><span class="sig-name descname"><span class="pre">remove_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idxs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['H',</span> <span class="pre">'F',</span> <span class="pre">'Cl',</span> <span class="pre">'Br',</span> <span class="pre">'I']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_on_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/generate_mol.html#remove_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.generate_mol.remove_atoms" title="Link to this definition"></a></dt>
+<dd><p>Remove atoms and reconnect the molecular structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – Molecule to modify</p></li>
+<li><p><strong>idxs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>]</em>) – Atom indices to remove</p></li>
+<li><p><strong>removable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – Elements that can be removed along with specified atoms</p></li>
+<li><p><strong>show_on_error</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Display molecule on error</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Modified molecule</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="use-cases">
+<h2>Use Cases<a class="headerlink" href="#use-cases" title="Link to this heading"></a></h2>
+<section id="generating-test-molecules">
+<h3>Generating Test Molecules<a class="headerlink" href="#generating-test-molecules" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups.generate_mol</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_random_carbon_chain</span><span class="p">,</span> <span class="n">append_functional_group</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_random_pfas</span><span class="p">(</span><span class="n">n_carbons</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_fluorines</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a random PFAS-like molecule.&quot;&quot;&quot;</span>
+    <span class="c1"># Create carbon chain</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">generate_random_carbon_chain</span><span class="p">(</span><span class="n">n_carbons</span><span class="p">)</span>
+
+    <span class="c1"># Add fluorines (if not specified, use random amount)</span>
+    <span class="k">if</span> <span class="n">n_fluorines</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_fluorines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_carbons</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_fluorines</span><span class="p">):</span>
+        <span class="n">mol</span> <span class="o">=</span> <span class="n">append_functional_group</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">insertion</span><span class="o">=</span><span class="s1">&#39;attach&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Add functional group</span>
+    <span class="n">functional_groups</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C(=O)O&quot;</span><span class="p">,</span> <span class="s2">&quot;S(=O)(=O)O&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">]</span>
+    <span class="n">fg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">functional_groups</span><span class="p">)</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">append_functional_group</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fg</span><span class="p">,</span> <span class="n">insertion</span><span class="o">=</span><span class="s1">&#39;attach&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mol</span>
+
+<span class="c1"># Generate 10 random PFAS molecules</span>
+<span class="n">molecules</span> <span class="o">=</span> <span class="p">[</span><span class="n">generate_random_pfas</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="synthetic-validation-dataset">
+<h3>Synthetic Validation Dataset<a class="headerlink" href="#synthetic-validation-dataset" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups.generate_mol</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_random_carbon_chain</span><span class="p">,</span> <span class="n">append_functional_group</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_validation_set</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate molecules for each PFAS group.&quot;&quot;&quot;</span>
+    <span class="n">validation_molecules</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># PFCAs: perfluoroalkyl carboxylic acids</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="n">mol</span> <span class="o">=</span> <span class="n">generate_random_carbon_chain</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="c1"># Fluorinate all carbons except the terminal one</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">append_functional_group</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">mol</span> <span class="o">=</span> <span class="n">append_functional_group</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="s2">&quot;C(=O)O&quot;</span><span class="p">)</span>
+        <span class="n">validation_molecules</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;PFCA&quot;</span><span class="p">,</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">validation_molecules</span>
+
+<span class="n">validation</span> <span class="o">=</span> <span class="n">generate_validation_set</span><span class="p">()</span>
+
+<span class="c1"># Verify classification</span>
+<span class="k">for</span> <span class="n">expected_group</span><span class="p">,</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="n">validation</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="n">smiles</span><span class="p">])</span>
+    <span class="n">detected</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">expected_group</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">smiles</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">detected</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="notes-and-limitations">
+<h2>Notes and Limitations<a class="headerlink" href="#notes-and-limitations" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Random seed</strong>: Set <code class="docutils literal notranslate"><span class="pre">np.random.seed()</span></code> for reproducibility</p></li>
+<li><p><strong>Valence checking</strong>: Generated molecules are sanitized but may have unusual structures</p></li>
+<li><p><strong>Not exhaustive</strong>: Does not generate all possible structures</p></li>
+<li><p><strong>Test purposes</strong>: Primarily intended for testing, not for generating real compounds</p></li>
+<li><p><strong>Stereochemistry</strong>: Does not handle stereochemistry</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="visualization.html" class="btn btn-neutral float-left" title="Visualization Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../pfas_groups/oecd_groups.html" class="btn btn-neutral float-right" title="OECD-Defined Groups" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

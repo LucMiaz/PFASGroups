@@ -42,7 +42,7 @@ function MoleculeReviewer({ onReviewUpdate }) {
     try {
       const params = new URLSearchParams({
         page: currentPage,
-        limit: 10,
+        limit: 50,
         dataset: filters.dataset,
         reviewStatus: filters.reviewStatus,
         search: filters.search,
@@ -141,16 +141,6 @@ function MoleculeReviewer({ onReviewUpdate }) {
   return (
     <div>
       <h1>🔬 Molecule Reviewer</h1>
-
-      {/* Legend for component types color coding */}
-      <Alert variant="info" className="mb-3">
-        <strong>Component Types Legend:</strong> &nbsp;
-        <span className="badge bg-primary me-2">per</span> Perfluoroalkyl &nbsp;
-        <span className="badge bg-success me-2">poly</span> Polyfluoroalkyl &nbsp;
-        <span className="badge bg-info me-2">per,poly</span> Mixed &nbsp;
-        <span className="badge bg-warning text-dark me-2">cyc</span> Cyclic &nbsp;
-        <span className="badge bg-secondary me-2">—</span> No data
-      </Alert>
 
       {/* Filters */}
       <Card className="filter-section mb-4">
@@ -252,35 +242,16 @@ function MoleculeReviewer({ onReviewUpdate }) {
                       <div>
                         <p><strong>Detected Groups:</strong></p>
                         <div>
-                          {molecule.pfasgroups_detected && molecule.pfasgroups_detected.map(group => {
-                            // Handle both enriched objects {id, name, matchedPathTypeFull} and simple strings/numbers
+                          {molecule.pfasgroups_detected.map(group => {
+                            // Handle both object format {id, name, alias} and simple string/number format
                             const groupKey = typeof group === 'object' ? group.id : group;
-                            const groupName = typeof group === 'object' ? group.name : group;
-                            const pathType = typeof group === 'object' ? group.matchedPathTypeFull : null;
-                            const pathAbbrev = typeof group === 'object' ? group.matchedPathType : null;
-                            
-                            // Color code by path type - handle comma-separated types
-                            let badgeColor = 'secondary';
-                            if (pathType) {
-                              if (pathType.includes('Perfluoroalkyl') && pathType.includes('Polyfluoroalkyl')) {
-                                badgeColor = 'info'; // Cyan for mixed
-                              } else if (pathType.includes('Perfluoroalkyl') || pathType.includes('Perfluoro')) {
-                                badgeColor = 'primary'; // Blue for Perfluoroalkyl
-                              } else if (pathType.includes('Polyfluoroalkyl') || pathType.includes('Polyfluoro')) {
-                                badgeColor = 'success'; // Green for Polyfluoroalkyl
-                              } else if (pathType.includes('cyclic')) {
-                                badgeColor = 'warning'; // Yellow for cyclic
-                              }
-                            }
+                            const groupLabel = typeof group === 'object' ? group.name : group;
+                            const pathType = typeof group === 'object' ? group.matchedPathType : null;
                             
                             return (
-                              <Badge 
-                                key={groupKey} 
-                                bg={badgeColor} 
-                                className="me-1 mb-1"
-                                title={pathType ? `Components: ${pathType}` : 'No component type data'}
-                              >
-                                {groupName} {pathAbbrev && <small>({pathAbbrev})</small>}
+                              <Badge key={groupKey} bg="secondary" className="me-1 mb-1">
+                                {groupLabel}
+                                {pathType && <span className="ms-1" style={{fontSize: '0.7em'}}>({pathType})</span>}
                               </Badge>
                             );
                           })}

@@ -1,0 +1,648 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core Module (core.py) &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data Models" href="models.html" />
+    <link rel="prev" title="Customization" href="../customization.html" />
+ 
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Core Module (core.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#main-parsing-functions">Main Parsing Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parse-smiles">parse_smiles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parse-groups-in-mol">parse_groups_in_mol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.parse_groups_in_mol"><code class="docutils literal notranslate"><span class="pre">parse_groups_in_mol()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parse-mols">parse_mols</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.parse_mols"><code class="docutils literal notranslate"><span class="pre">parse_mols()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fingerprint-generation">Fingerprint Generation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generate-fingerprint">generate_fingerprint</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#visualization">Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#plot-pfasgroups">plot_pfasgroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.plot_pfasgroups"><code class="docutils literal notranslate"><span class="pre">plot_pfasgroups()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-functions">Configuration Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get-smartspaths">get_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-pfasgroups">get_PFASGroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-pfasdefinitions">get_PFASDefinitions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.get_PFASDefinitions"><code class="docutils literal notranslate"><span class="pre">get_PFASDefinitions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-smartspath">compile_smartsPath</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-smartspaths">compile_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#helper-functions">Helper Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#n-from-formula">n_from_formula</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.n_from_formula"><code class="docutils literal notranslate"><span class="pre">n_from_formula()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mol-to-nx">mol_to_nx</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.mol_to_nx"><code class="docutils literal notranslate"><span class="pre">mol_to_nx()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-substruct">get_substruct</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.get_substruct"><code class="docutils literal notranslate"><span class="pre">get_substruct()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-atoms">remove_atoms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.remove_atoms"><code class="docutils literal notranslate"><span class="pre">remove_atoms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#fragment-until-valence-is-correct">fragment_until_valence_is_correct</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.core.fragment_until_valence_is_correct"><code class="docutils literal notranslate"><span class="pre">fragment_until_valence_is_correct()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generation.html">Molecule Generation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pfas_groups/oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pfas_groups/generic_groups.html">Generic Classification Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pfas_groups/pathway_types.html">Pathway Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Core Module (core.py)</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/lucmiaz/PFASGroups/blob/main/source/api/core.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="core-module-core-py">
+<h1>Core Module (core.py)<a class="headerlink" href="#core-module-core-py" title="Link to this heading"></a></h1>
+<p>The core module provides the main functions for PFAS group identification and analysis.</p>
+<section id="main-parsing-functions">
+<span id="module-PFASgroups.core"></span><h2>Main Parsing Functions<a class="headerlink" href="#main-parsing-functions" title="Link to this heading"></a></h2>
+<section id="parse-smiles">
+<h3>parse_smiles<a class="headerlink" href="#parse-smiles" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.parse_smiles">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">parse_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bycomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASgroups.core.parse_smiles" title="Link to this definition"></a></dt>
+<dd><p>Parse SMILES string(s) and return PFAS group information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smiles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Single SMILES string or list of SMILES strings</p></li>
+<li><p><strong>bycomponent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to use component-based analysis (for cyclic structures)</p></li>
+<li><p><strong>output_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output format - ‘list’, ‘dataframe’, or ‘csv’</p></li>
+<li><p><strong>kwargs</strong> – Additional parameters (pfas_groups, smartsPaths, etc.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Parsed results in specified format</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>, <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.3.3)">pandas.DataFrame</a>, or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Parse single SMILES</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+
+<span class="c1"># Parse multiple SMILES</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;SMILES1&quot;</span><span class="p">,</span> <span class="s2">&quot;SMILES2&quot;</span><span class="p">])</span>
+
+<span class="c1"># Get DataFrame output</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="parse-groups-in-mol">
+<h3>parse_groups_in_mol<a class="headerlink" href="#parse-groups-in-mol" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.parse_groups_in_mol">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">parse_groups_in_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bycomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#parse_groups_in_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.parse_groups_in_mol" title="Link to this definition"></a></dt>
+<dd><p>Iterates over PFAS groups and finds the ones that match the molecule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – RDKit molecule object</p></li>
+<li><p><strong>bycomponent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to use component-based analysis</p></li>
+<li><p><strong>kwargs</strong> – Additional parameters (formula, pfas_groups, smartsPaths, etc.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of (PFASGroup, match_count, chain_lengths, matched_chains) tuples</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>]</p>
+</dd>
+</dl>
+<p><strong>Processing Logic:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Cyclic groups</strong> (smartsPath=’cyclic’): Search for connected component matching smarts1</p></li>
+<li><p><strong>Both SMARTS defined</strong>: Find shortest path between pairs of matches</p></li>
+<li><p><strong>Only smarts1, no constraints</strong>: Use default smarts2 for each pathway type</p></li>
+<li><p><strong>Only smarts1 with constraints</strong>: Substructure match with component analysis</p></li>
+</ol>
+</dd></dl>
+
+</section>
+<section id="parse-mols">
+<h3>parse_mols<a class="headerlink" href="#parse-mols" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.parse_mols">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">parse_mols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bycomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_PFAS_definitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#parse_mols"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.parse_mols" title="Link to this definition"></a></dt>
+<dd><p>Parse RDKit molecule(s) and return PFAS group information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><em>rdkit.Chem.Mol</em><em>]</em>) – List of RDKit molecule objects</p></li>
+<li><p><strong>bycomponent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to use component-based analysis</p></li>
+<li><p><strong>output_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output format - ‘list’, ‘dataframe’, or ‘csv’</p></li>
+<li><p><strong>include_PFAS_definitions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to include PFAS definition matches</p></li>
+<li><p><strong>kwargs</strong> – Additional parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Parsed results in specified format</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>, <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.3.3)">pandas.DataFrame</a>, or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="fingerprint-generation">
+<h2>Fingerprint Generation<a class="headerlink" href="#fingerprint-generation" title="Link to this heading"></a></h2>
+<section id="generate-fingerprint">
+<h3>generate_fingerprint<a class="headerlink" href="#generate-fingerprint" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.generate_fingerprint">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">generate_fingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">representation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vector'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binary'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_PFAS_definitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#generate_fingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.generate_fingerprint" title="Link to this definition"></a></dt>
+<dd><p>Generate PFAS group fingerprints for machine learning applications.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smiles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – SMILES string(s) to fingerprint</p></li>
+<li><p><strong>selected_groups</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#range" title="(in Python v3.14)"><em>range</em></a><em>, </em><em>optional</em>) – Specific group IDs to include (default: all)</p></li>
+<li><p><strong>representation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output format - ‘vector’, ‘dict’, or ‘sparse’</p></li>
+<li><p><strong>count_mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Counting mode - ‘binary’, ‘count’, or ‘max_chain’</p></li>
+<li><p><strong>include_PFAS_definitions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Include PFAS definition matches</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple of (fingerprints, group_info)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+</dd>
+</dl>
+<p><strong>Representation Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'vector'</span></code>: NumPy array with shape (n_molecules, n_groups)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'dict'</span></code>: List of dictionaries mapping group names to values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'sparse'</span></code>: List of dictionaries with only non-zero entries</p></li>
+</ul>
+<p><strong>Count Mode Options:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'binary'</span></code>: 1 if group present, 0 otherwise</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'count'</span></code>: Number of matches for each group</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'max_chain'</span></code>: Maximum chain length for each group</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_fingerprint</span>
+
+<span class="c1"># Binary fingerprints</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+
+<span class="c1"># Count-based fingerprints</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">count_mode</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+
+<span class="c1"># Select specific groups</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">selected_groups</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+<section id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h2>
+<section id="plot-pfasgroups">
+<h3>plot_pfasgroups<a class="headerlink" href="#plot-pfasgroups" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.plot_pfasgroups">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">plot_pfasgroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipython</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subheight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addAtomIndices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addBondIndices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_matches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SMARTS</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#plot_pfasgroups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.plot_pfasgroups" title="Link to this definition"></a></dt>
+<dd><p>Plot PFAS group assignments for a list of SMILES strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smiles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – SMILES string(s) to visualize</p></li>
+<li><p><strong>display</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to display the plot</p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Path to save the plot image</p></li>
+<li><p><strong>svg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to generate SVG output</p></li>
+<li><p><strong>ipython</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to display in IPython/Jupyter</p></li>
+<li><p><strong>subwidth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Width of each sub-image in pixels</p></li>
+<li><p><strong>subheight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Height of each sub-image in pixels</p></li>
+<li><p><strong>ncols</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of columns in grid layout</p></li>
+<li><p><strong>addAtomIndices</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to add atom indices to the plot</p></li>
+<li><p><strong>addBondIndices</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to add bond indices to the plot</p></li>
+<li><p><strong>paths</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – List of pathway indices to include</p></li>
+<li><p><strong>split_matches</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Create separate images for each match</p></li>
+<li><p><strong>SMARTS</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Optional SMARTS pattern to highlight</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image object (PIL Image or SVG)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="configuration-functions">
+<h2>Configuration Functions<a class="headerlink" href="#configuration-functions" title="Link to this heading"></a></h2>
+<section id="get-smartspaths">
+<h3>get_smartsPaths<a class="headerlink" href="#get-smartspaths" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.get_smartsPaths">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">get_smartsPaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#get_smartsPaths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.get_smartsPaths" title="Link to this definition"></a></dt>
+<dd><p>Get the default pathway SMARTS definitions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Custom JSON file path (optional)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping pathway names to [chain_mol, end_mol] pairs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+<p><strong>Default Pathways:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Perfluoroalkyl</span></code>: Fully fluorinated chains (CF₂ units)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Polyfluoroalkyl</span></code>: Partially fluorinated chains (CHF units)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Polyfluoro</span></code>: Branched polyfluorinated chains</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Polyfluorobr</span></code>: Brominated polyfluorinated chains</p></li>
+</ul>
+</dd></dl>
+
+</section>
+<section id="get-pfasgroups">
+<h3>get_PFASGroups<a class="headerlink" href="#get-pfasgroups" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.get_PFASGroups">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">get_PFASGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#get_PFASGroups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.get_PFASGroups" title="Link to this definition"></a></dt>
+<dd><p>Get the default PFAS group definitions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Custom JSON file path (optional)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of PFASGroup objects</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup" title="PFASgroups.PFASGroupModel.PFASGroup">PFASGroup</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="get-pfasdefinitions">
+<h3>get_PFASDefinitions<a class="headerlink" href="#get-pfasdefinitions" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.get_PFASDefinitions">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">get_PFASDefinitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#get_PFASDefinitions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.get_PFASDefinitions" title="Link to this definition"></a></dt>
+<dd><p>Get the default PFAS definition objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Custom JSON file path (optional)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of PFASDefinition objects</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="models.html#PFASgroups.PFASDefinitionModel.PFASDefinition" title="PFASgroups.PFASDefinitionModel.PFASDefinition">PFASDefinition</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="compile-smartspath">
+<h3>compile_smartsPath<a class="headerlink" href="#compile-smartspath" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.compile_smartsPath">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">compile_smartsPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chain_smarts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_smarts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#compile_smartsPath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.compile_smartsPath" title="Link to this definition"></a></dt>
+<dd><p>Compile a pair of SMARTS patterns into a ready-to-use path definition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chain_smarts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – SMARTS pattern for the repeating chain unit</p></li>
+<li><p><strong>end_smarts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – SMARTS pattern for the terminal group</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List containing [chain_mol, end_mol] preprocessed RDKit Mol objects</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a></p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_smartsPath</span><span class="p">,</span> <span class="n">get_smartsPaths</span>
+
+<span class="n">paths</span> <span class="o">=</span> <span class="n">get_smartsPaths</span><span class="p">()</span>
+<span class="n">paths</span><span class="p">[</span><span class="s1">&#39;Perchlorinated&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compile_smartsPath</span><span class="p">(</span>
+    <span class="s2">&quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;[C;X4](Cl)(Cl)Cl&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="compile-smartspaths">
+<h3>compile_smartsPaths<a class="headerlink" href="#compile-smartspaths" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.compile_smartsPaths">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">compile_smartsPaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#compile_smartsPaths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.compile_smartsPaths" title="Link to this definition"></a></dt>
+<dd><p>Compile multiple SMARTS path definitions from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>paths_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Dictionary with ‘chain’ and ‘end’ keys for each pathway</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping path names to [chain_mol, end_mol] pairs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="helper-functions">
+<h2>Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading"></a></h2>
+<section id="n-from-formula">
+<h3>n_from_formula<a class="headerlink" href="#n-from-formula" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.n_from_formula">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">n_from_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#n_from_formula"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.n_from_formula" title="Link to this definition"></a></dt>
+<dd><p>Compute the number of elements from a molecular formula string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formula</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Molecular formula string (e.g., “C8HF15O2”)</p></li>
+<li><p><strong>element</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Specific element to count (None for all elements)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Element count (int) or dictionary of all elements</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="mol-to-nx">
+<h3>mol_to_nx<a class="headerlink" href="#mol-to-nx" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.mol_to_nx">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">mol_to_nx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#mol_to_nx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.mol_to_nx" title="Link to this definition"></a></dt>
+<dd><p>Construct a NetworkX graph from an RDKit molecule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – RDKit molecule object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NetworkX graph with atoms as nodes and bonds as edges</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/graph.html#networkx.Graph" title="(in NetworkX v3.6.1)">networkx.Graph</a></p>
+</dd>
+</dl>
+<p>Node attributes include <code class="docutils literal notranslate"><span class="pre">element</span></code> (atomic number) and <code class="docutils literal notranslate"><span class="pre">symbol</span></code>.
+Edge attributes include <code class="docutils literal notranslate"><span class="pre">order</span></code> (bond order).</p>
+</dd></dl>
+
+</section>
+<section id="get-substruct">
+<h3>get_substruct<a class="headerlink" href="#get-substruct" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.get_substruct">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">get_substruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struct</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#get_substruct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.get_substruct" title="Link to this definition"></a></dt>
+<dd><p>Get indices of atoms matching a substructure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – RDKit molecule object</p></li>
+<li><p><strong>struct</strong> (<em>rdkit.Chem.Mol</em>) – SMARTS pattern (RDKit Mol object)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Set of matching atom indices</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)">set</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="remove-atoms">
+<h3>remove_atoms<a class="headerlink" href="#remove-atoms" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.remove_atoms">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">remove_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idxs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['H',</span> <span class="pre">'F',</span> <span class="pre">'Cl',</span> <span class="pre">'Br',</span> <span class="pre">'I']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_on_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#remove_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.remove_atoms" title="Link to this definition"></a></dt>
+<dd><p>Remove atoms by indices and maintain molecular connectivity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – RDKit molecule object</p></li>
+<li><p><strong>idxs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>]</em>) – Atom indices to remove</p></li>
+<li><p><strong>removable</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – Elements that can be removed along with specified atoms</p></li>
+<li><p><strong>show_on_error</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Display molecule on error</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Modified molecule with atoms removed</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rdkit.Chem.Mol</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="fragment-until-valence-is-correct">
+<h3>fragment_until_valence_is_correct<a class="headerlink" href="#fragment-until-valence-is-correct" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.core.fragment_until_valence_is_correct">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.core.</span></span><span class="sig-name descname"><span class="pre">fragment_until_valence_is_correct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frags</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/core.html#fragment_until_valence_is_correct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.core.fragment_until_valence_is_correct" title="Link to this definition"></a></dt>
+<dd><p>Iteratively fragment a molecule until valence errors are resolved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>rdkit.Chem.Mol</em>) – RDKit molecule object with potential valence issues</p></li>
+<li><p><strong>frags</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a>) – Accumulator list for valid fragments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of valid molecular fragments</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[rdkit.Chem.Mol]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../customization.html" class="btn btn-neutral float-left" title="Customization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="models.html" class="btn btn-neutral float-right" title="Data Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

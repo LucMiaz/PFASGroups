@@ -1,0 +1,304 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User Guide" href="user_guide.html" />
+    <link rel="prev" title="PFASgroups Documentation" href="index.html" />
+ 
+<link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-pypi">From PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-conda-forge">From Conda-Forge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#verifying-installation">Verifying Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-parsing">Basic Parsing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#understanding-results">Understanding Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fingerprint-generation">Fingerprint Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command-line-interface">Command Line Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visualization">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">Core Module (core.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/homologues.html">Homologue Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/fragmentation.html">Fragmentation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/visualization.html">Visualization Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/generation.html">Molecule Generation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PFAS Classifications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/oecd_groups.html">OECD-Defined Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/generic_groups.html">Generic Classification Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_groups/pathway_types.html">Pathway Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing and Benchmarking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/lucmiaz/PFASGroups/blob/main/source/getting_started.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
+<p>This guide will help you get up and running with PFASgroups quickly.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<section id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Python &gt;= 3.7</p></li>
+<li><p>RDKit</p></li>
+<li><p>NumPy</p></li>
+<li><p>Pandas</p></li>
+<li><p>NetworkX</p></li>
+<li><p>tqdm</p></li>
+<li><p>svgutils</p></li>
+</ul>
+</section>
+<section id="from-pypi">
+<h3>From PyPI<a class="headerlink" href="#from-pypi" title="Link to this heading"></a></h3>
+<p>The easiest way to install PFASgroups is via pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PFASgroups
+</pre></div>
+</div>
+</section>
+<section id="from-conda-forge">
+<h3>From Conda-Forge<a class="headerlink" href="#from-conda-forge" title="Link to this heading"></a></h3>
+<p>If you use conda, you can install from conda-forge:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>pfasgroups
+</pre></div>
+</div>
+</section>
+<section id="from-source">
+<h3>From Source<a class="headerlink" href="#from-source" title="Link to this heading"></a></h3>
+<p>For the latest development version:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/lucmiaz/PFASGroups.git
+<span class="nb">cd</span><span class="w"> </span>PFASGroups
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="verifying-installation">
+<h3>Verifying Installation<a class="headerlink" href="#verifying-installation" title="Link to this heading"></a></h3>
+<p>After installation, verify that PFASgroups is correctly installed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">PFASgroups</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">PFASgroups</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You should also have access to the command-line interface:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfasgroups<span class="w"> </span>--help
+</pre></div>
+</div>
+</section>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<section id="basic-parsing">
+<h3>Basic Parsing<a class="headerlink" href="#basic-parsing" title="Link to this heading"></a></h3>
+<p>Parse SMILES strings to identify PFAS groups:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Parse a single SMILES</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+
+<span class="c1"># Parse multiple SMILES</span>
+<span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C(C(F)(F)F)F&quot;</span><span class="p">,</span> <span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+
+<span class="c1"># Each result contains: (PFASGroup, match_count, chain_lengths, matched_chains)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">smiles_str</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Analyzing: </span><span class="si">{</span><span class="n">smiles_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">n_matches</span><span class="p">,</span> <span class="n">chain_lengths</span><span class="p">,</span> <span class="n">chains</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">n_matches</span><span class="si">}</span><span class="s2"> matches, chains: </span><span class="si">{</span><span class="n">chain_lengths</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="understanding-results">
+<h3>Understanding Results<a class="headerlink" href="#understanding-results" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">parse_smiles</span></code> function returns a list of results, one for each input SMILES.
+Each result is a list of tuples containing:</p>
+<ol class="arabic simple">
+<li><p><strong>PFASGroup</strong>: The matched PFAS group object with name, ID, and constraints</p></li>
+<li><p><strong>match_count</strong>: Number of times this group pattern was matched</p></li>
+<li><p><strong>chain_lengths</strong>: List of carbon chain lengths found</p></li>
+<li><p><strong>matched_chains</strong>: Detailed information about matched chains (atom indices, pathway type)</p></li>
+</ol>
+</section>
+<section id="fingerprint-generation">
+<h3>Fingerprint Generation<a class="headerlink" href="#fingerprint-generation" title="Link to this heading"></a></h3>
+<p>Generate PFAS fingerprints for machine learning:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_fingerprint</span>
+
+<span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C(C(F)(F)F)F&quot;</span><span class="p">,</span> <span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">]</span>
+
+<span class="c1"># Binary vector fingerprint (default)</span>
+<span class="n">fingerprints</span><span class="p">,</span> <span class="n">group_info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fingerprints</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (2, 55) - 2 molecules, 55 PFAS groups</span>
+
+<span class="c1"># Dictionary format</span>
+<span class="n">fps_dict</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">representation</span><span class="o">=</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+
+<span class="c1"># Count-based fingerprint</span>
+<span class="n">fps_count</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">count_mode</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="command-line-interface">
+<h3>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Link to this heading"></a></h3>
+<p>PFASgroups also provides a convenient CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parse SMILES</span>
+pfasgroups<span class="w"> </span>parse<span class="w"> </span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span>
+
+<span class="c1"># Generate fingerprints</span>
+pfasgroups<span class="w"> </span>fingerprint<span class="w"> </span><span class="s2">&quot;C(C(F)(F)F)F&quot;</span><span class="w"> </span>--format<span class="w"> </span>dict
+
+<span class="c1"># List available groups</span>
+pfasgroups<span class="w"> </span>list-groups
+
+<span class="c1"># List pathway types</span>
+pfasgroups<span class="w"> </span>list-paths
+</pre></div>
+</div>
+</section>
+<section id="visualization">
+<h3>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h3>
+<p>Visualize PFAS group assignments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_pfasgroups</span>
+
+<span class="c1"># Plot PFAS groups on a molecule</span>
+<span class="n">plot_pfasgroups</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+
+<span class="c1"># Save as SVG</span>
+<span class="n">plot_pfasgroups</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span> <span class="n">svg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;output.svg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Read the <a class="reference internal" href="user_guide.html"><span class="doc">User Guide</span></a> for comprehensive examples</p></li>
+<li><p>Explore the <a class="reference internal" href="api/core.html"><span class="doc">Core Module (core.py)</span></a> for detailed API documentation</p></li>
+<li><p>Learn about <a class="reference internal" href="customization.html"><span class="doc">Customization</span></a> to extend PFASgroups</p></li>
+<li><p>Check <a class="reference internal" href="pfas_groups/oecd_groups.html"><span class="doc">OECD-Defined Groups</span></a> for PFAS classifications</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="PFASgroups Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="user_guide.html" class="btn btn-neutral float-right" title="User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-2026, Luc T. Miaz, Stockholm University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
