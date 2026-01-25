@@ -27,24 +27,30 @@ try {
 // Helper function to convert group IDs to names with path type information
 function enrichGroupData(groupIds, matchedPathTypes = {}) {
     if (!Array.isArray(groupIds)) return [];
+    
     return groupIds.map(id => {
         const groupInfo = pfasGroupsMap[id] || { name: `Group ${id}`, alias: `Group ${id}` };
         const pathType = matchedPathTypes[id] || null;
         
-        // Map path types to abbreviations
-        const pathTypeAbbrev = {
-            'Perfluoroalkyl': 'per',
-            'Polyfluoroalkyl': 'poly',
-            'Perfluoro': 'per',
-            'Polyfluoro': 'poly',
-            'cyclic': 'cyc'
-        };
+        // pathType can be comma-separated like "Perfluoroalkyl,Polyfluoroalkyl"
+        // Split and create abbreviations for each
+        let pathAbbrev = null;
+        if (pathType) {
+            const types = pathType.split(',');
+            const abbrevs = types.map(t => {
+                if (t === 'Perfluoroalkyl' || t === 'Perfluoro') return 'per';
+                if (t === 'Polyfluoroalkyl' || t === 'Polyfluoro') return 'poly';
+                if (t === 'cyclic') return 'cyc';
+                return t;
+            });
+            pathAbbrev = abbrevs.join(',');
+        }
         
         return {
             id: id,
             name: groupInfo.name,
             alias: groupInfo.alias,
-            matchedPathType: pathType ? (pathTypeAbbrev[pathType] || pathType) : null,
+            matchedPathType: pathAbbrev,
             matchedPathTypeFull: pathType
         };
     });

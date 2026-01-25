@@ -8,6 +8,13 @@ PFASgroups combines SMARTS pattern matching, molecular formula constraints, and 
 
 ## Recent Updates
 
+### Summary of changes by version
+
+- **Version 2.1 (Feb 2026)**: Added support for multiple smarts, with individual minimum count, per PFASgroup.
+
+- **Version 2.0 (Jan 2026)**: Major expansion of graph‑based component metrics, new coverage statistics, schema updates, and richer per‑component outputs.
+- **Version 1.x**: Shift to component‑based analysis with improved SMARTS matching and better handling of branched/cyclic structures.
+
 ### Version 2.0 (January 2026) - Comprehensive Graph Metrics
 
 Major enhancement adding comprehensive NetworkX graph theory metrics for detailed component analysis:

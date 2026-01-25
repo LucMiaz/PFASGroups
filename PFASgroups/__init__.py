@@ -1,7 +1,8 @@
 # PFASgroups package
 from .PFASGroupModel import PFASGroup
 from .PFASDefinitionModel import PFASDefinition
-from .core import parse_smiles, parse_mols, parse_mol,parse_groups_in_mol, plot_pfasgroups, generate_fingerprint, get_smartsPaths, get_PFASGroups, get_PFASDefinitions, compile_smartsPath, compile_smartsPaths, ComponentsSolver
+from .ComponentsSolverModel import ComponentsSolver
+from .parser import parse_smiles, parse_mols, parse_mol,parse_groups_in_mol, plot_pfasgroups, generate_fingerprint, get_smartsPaths, get_PFASGroups, get_PFASDefinitions, compile_smartsPath, compile_smartsPaths
 from .draw_mols import plot_mol, plot_mols
 from .generate_homologues import generate_homologues
 from .fragmentation import generate_degradation_products

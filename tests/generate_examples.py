@@ -36,7 +36,7 @@ except ImportError:
         from .generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
     except ImportError:
         try:
-            from PFASgroups.core import parse_groups_in_mol
+            from PFASgroups.parser import parse_groups_in_mol
             from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
         except ImportError as e:
             print(f"Error importing PFASgroups modules: {e}")

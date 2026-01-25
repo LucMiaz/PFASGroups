@@ -1,5 +1,8 @@
 from rdkit import Chem
 import numpy as np
+import re
+import networkx as nx
+from .core import mol_to_nx
 
 class PFASGroup():
     """Model class representing a specific PFAS functional group with structural patterns.
@@ -14,12 +17,9 @@ class PFASGroup():
         Unique identifier for this PFAS group
     name : str
         Human-readable group name (e.g., "Perfluoroalkyl carboxylic acid")
-    smarts1 : Chem.Mol or None
-        Primary SMARTS pattern (compiled RDKit molecule) for functional group detection.
+    smarts : Chem.Mol or None
+        SMARTS patterns (compiled RDKit molecule) for functional group detection.
         None if group is defined by smartsPath alone.
-    smarts2 : Chem.Mol or None
-        Secondary SMARTS pattern for groups requiring two functional groups.
-        None if only one functional group is needed.
     smartsPath : str or None
         Type of fluorinated component to search:
         - 'Perfluoroalkyl': Fully fluorinated carbon chains
@@ -45,8 +45,7 @@ class PFASGroup():
     >>> pfaa = PFASGroup(
     ...     id=1,
     ...     name="Perfluoroalkyl carboxylic acid",
-    ...     smarts1="C(=O)O",  # Carboxylic acid group
-    ...     smarts2=None,
+    ...     smarts={"C(=O)O":1},  # Carboxylic acid group
     ...     smartsPath="Perfluoroalkyl",
     ...     constraints={"only": ["C", "F", "O", "H"]},
     ...     max_dist_from_CF=0
@@ -58,55 +57,42 @@ class PFASGroup():
     - Constraints are validated when checking if a molecule belongs to this group
     - max_dist_from_CF allows finding functional groups connected via non-fluorinated linkers
     """
-    def __init__(self, id, name, smarts1, smarts2, smartsPath, constraints,**kwargs):
+    def __init__(self, id, name, smarts, smartsPath, constraints,**kwargs):
         self.id = id
         self.name = name
         # Save original SMARTS strings for atom counting
-        self.smarts1_str = smarts1 if smarts1 and smarts1 != "" else None
-        self.smarts2_str = smarts2 if smarts2 and smarts2 != "" else None
-        # Get manual SMARTS sizes if provided in JSON
-        self.smarts1_size = kwargs.get('smarts1_size', None)
-        self.smarts2_size = kwargs.get('smarts2_size', None)
-        self.smarts1 = smarts1
-        self.smarts2 = smarts2
+        if smarts and len(smarts) > 0:
+            self.smarts_str, self.smarts_count = zip(*smarts.items())
+        else:
+            self.smarts_str = None
+            self.smarts_count = None
+        self.smarts = [] if self.smarts_str else None
         self.smartsPath = smartsPath
         self.max_dist_from_CF = kwargs.get('max_dist_from_CF', 0)
-        if self.smarts1 !="" and self.smarts1 is not None:
-            try:
-                self.smarts1 = Chem.MolFromSmarts(self.smarts1)
-                self.smarts1.UpdatePropertyCache()
-                Chem.GetSymmSSSR(self.smarts1)
-                self.smarts1.GetRingInfo().NumRings()
-                if self.smarts2 !="" and self.smarts2 is not None:
-                    self.smarts2 = Chem.MolFromSmarts(self.smarts2)
-                    self.smarts2.UpdatePropertyCache()
-                    Chem.GetSymmSSSR(self.smarts2)
-                    self.smarts2.GetRingInfo().NumRings()
-                else:
-                    self.smarts2 = None
-            except:
-                raise ValueError(f"Invalid SMARTS pattern(s) for PFASGroup '{self.name}' (ID: {self.id})")
-        else:
-            self.smarts1 = None
-            self.smarts2 = None
+        if self.smarts_str is not None:
+            for smarts_pattern in self.smarts_str:
+                if smarts_pattern and smarts_pattern != "":
+                    try:
+                        smarts_mol = Chem.MolFromSmarts(smarts_pattern)
+                        smarts_mol.UpdatePropertyCache()
+                        Chem.GetSymmSSSR(smarts_mol)
+                        smarts_mol.GetRingInfo().NumRings()
+                        self.smarts.append(smarts_mol)
+                    except:
+                        raise ValueError(f"Invalid SMARTS pattern(s) for PFASGroup '{self.name}' (ID: {self.id})")
         self.constraints = constraints
         # Precompute number of extra atoms in SMARTS patterns (beyond matched atom and H/F/Cl/Br/I)
-        self.smarts1_extra_atoms = self._count_smarts_extra_atoms(self.smarts1, self.smarts1_str, self.smarts1_size)
-        self.smarts2_extra_atoms = self._count_smarts_extra_atoms(self.smarts2, self.smarts2_str, self.smarts2_size)
+        self.smarts_extra_atoms = self._count_smarts_extra_atoms(self.smarts_str)
+        self.component_specific_extra_atoms = []
+        self.all_matches = []
     
-    def _count_smarts_extra_atoms(self, smarts_mol, smarts_str, manual_size=None):
+    def _count_smarts_extra_atoms(self, smarts_str):
         """Count number of extra carbon atoms in functional group beyond what's captured by component.
         
         Parameters
         ----------
-        smarts_mol : Chem.Mol or None
-            Compiled SMARTS pattern
         smarts_str : str or None
             Original SMARTS string before compilation
-        manual_size : int or None
-            Manually specified number of carbon atoms in the SMARTS pattern (from JSON).
-            If provided, returns manual_size - 1 (to exclude the matched carbon atom).
-            
         Returns
         -------
         int
@@ -119,20 +105,13 @@ class PFASGroup():
         2. Carbon atoms in SMARTS matches
         3. Additional carbon atoms from SMARTS (this return value)
         
-        If manual_size is provided in the JSON (smarts1_size or smarts2_size), it represents
-        the total number of CARBON atoms in the functional group, so we subtract 1 for the matched carbon.
         
         For automatic counting (when manual_size is None), this returns 0 since we now focus only
         on carbons and they are already counted in the component and SMARTS matches.
         """
-        # Use manual size if provided (subtract 1 for the matched carbon atom itself)
-        if manual_size is not None:
-            return max(0, manual_size - 1)
-        
-        # Since we now focus on carbon atoms only, and carbons are already counted
-        # in the component and SMARTS matches, we don't need to add extra atoms
-        # when manual_size is not provided
-        return 0
+        PAT_c = re.compile(r'((C(?![adeflmnorsu]))|((?<![TAS])c)|(\#6))')  # Match 'C' not followed by a letter, or c not preceded by T,A,S or #6
+        return [max(0,len(PAT_c.findall(s))-1) for s in smarts_str] if smarts_str is not None else None
+
     
     def __str__(self):
         return self.name
@@ -337,3 +316,193 @@ class PFASGroup():
             success = k(formula_dict)
             k = process.pop()
         return success
+    def find_matched_atoms(self, mol):
+        """Find all substructure matches of this PFAS group's SMARTS patterns in a molecule.
+        
+        Parameters
+        ----------
+        mol : Chem.Mol
+            RDKit molecule object to search for matches
+        
+        Returns
+        -------
+        List[List[int]]
+            List of matches, where each match is a list of atom indices in the molecule
+        
+        Notes
+        -----
+        - If no SMARTS patterns are defined, returns an empty list.
+        - Each SMARTS pattern is searched independently; matches from all patterns are combined.
+        """
+        self.all_matches = []
+        if self.smarts is not None:
+            for smarts_mol,min_count in zip(self.smarts, self.smarts_count):
+                matches = mol.GetSubstructMatches(smarts_mol)
+                if len(matches) < min_count:
+                    return False
+                self.all_matches.append(set(matches))
+        return True
+    def component_satisfies_all_smarts(self, component):
+        """Check if a fluorinated component matches all SMARTS patterns of this PFAS group.
+        
+        Parameters
+        ----------
+        component : PFASComponent
+            PFASComponent object representing a fluorinated component in the molecule
+        
+        Returns
+        -------
+        bool
+            True if the component matches all SMARTS patterns, False otherwise
+        
+        Notes
+        -----
+        - If no SMARTS patterns are defined for this group, returns True.
+        - Each SMARTS pattern must have at least one match that includes the component's atom.
+        """
+        atom_count = 0
+        for i, (matches, min_count) in enumerate(zip(self.all_matches,self.smarts_count)):
+            found = len(set(matches).intersection(set(component)))
+            if found <min_count:
+                self.component_specific_extra_atoms.append(0)
+                return False
+            atom_count += found * self.smarts_extra_atoms[i]
+        self.component_specific_extra_atoms.append(atom_count)
+        return True
+    
+    def find_alkyl_components(self, mol, component_solver, **kwargs):
+        """Find fluorinated components in a molecule that match this PFAS group's criteria.
+        
+        Parameters
+        ----------
+        mol : Chem.Mol
+            RDKit molecule object to search
+        components : List[PFASComponent]
+            List of PFASComponent objects representing fluorinated components in the molecule
+        
+        Returns
+        -------
+        List[PFASComponent]
+            List of PFASComponent objects that match this PFAS group's criteria
+        
+        Notes
+        -----
+        - Matches are determined based on smartsPath and max_dist_from_CF attributes.
+        - If smartsPath is None, all components are considered.
+        - max_dist_from_CF allows extending the search radius for functional groups.
+        """
+        if not self.find_matched_atoms(mol):
+            return 0, [], 0, []
+        if self.smartsPath is None:
+            # If no smartsPath specified, check all available component types
+            # When no specific smartsPath is defined, search across all available component types
+            # (e.g., Perfluoroalkyl, Polyfluoroalkyl) and combine results
+            all_components = []
+            # Iterate through all available smartsPath types (default to Perfluoroalkyl and Polyfluoroalkyl)
+            for path_type in kwargs.get('smartsPaths',{'Perfluoroalkyl','Polyfluoroalkyl'}).keys():
+                # Retrieve components for this path type with the specified max distance
+                path_comps = component_solver.get(path_type, max_dist = self.max_dist_from_CF, default=[])
+                all_components.extend(path_comps)
+            components = all_components
+        else:
+            # Get components for the specified path type, fallback to Polyfluoroalkyl if not found
+            components = component_solver.get(self.smartsPath, max_dist = self.max_dist_from_CF, default = component_solver.get("Polyfluoroalkyl", max_dist = self.max_dist_from_CF, default=[]))
+
+        # find each component that matches all SMARTS
+        matched_components = []
+        for comp in components:
+            if self.component_satisfies_all_smarts(comp):
+                matched_components.append(comp)
+        
+        if self.smartsPath is not None:
+            smartsPaths = [self.smartsPath]
+        else:
+            smartsPaths = component_solver.smartsPaths.keys()
+        
+        # Filter components connected to the smarts and get augmented versions
+        augmented_matched_components = []
+        for _smartsPath in smartsPaths:
+            extended_components = component_solver.get(_smartsPath, self.max_dist_from_CF, [])
+            for i, comp in enumerate(extended_components):
+                # Check if this component is connected to SMARTS matches
+                augmented = component_solver.get_augmented_component(
+                        _smartsPath, self.max_dist_from_CF, i, self.all_matches[i]
+                    )
+                if len(self.all_matches[i].intersection(augmented)) > 0:
+                    augmented_matched_components.append(
+                    component_solver.get_matched_component_dict(comp, self.all_matches[i], _smartsPath, self, comp_id = i)
+                    )
+        
+        if len(augmented_matched_components) == 0:
+            return 0, [], 0, []
+        
+        # Get all component sizes from all path types
+        all_components = list(set([comp for comps in augmented_matched_components for comp in comps]))
+        component_sizes = [len(x) for x in all_components]
+
+        self.all_matches = []  # Clear matches after use
+        self.component_specific_extra_atoms = []
+        return max([0] + component_sizes), component_sizes, len(all_components), augmented_matched_components
+    
+    def find_aryl_components(self,mol, component_solver=None, **kwargs):
+        """Find aryl components in a molecule with comprehensive metrics."""
+        matches = mol.GetSubstructMatches(self.smarts[0])
+        subset = [y for x in matches for y in x]
+        if len(subset)==0:
+            return 0, [], 0, []
+        
+        components = component_solver._connected_components(subset)
+        component_sizes = [len(x) for x in components]
+        
+        # Get molecular graph for metrics calculation
+        subset_set = set(subset)
+        
+        # Convert components to the same format as other functions return with comprehensive metrics
+        matched_components = []
+        for comp in components:
+            matched_components.append(
+                component_solver.get_matched_component_dict(comp, subset_set, 'cyclic', self.pfas_group)
+            )
+        
+        return max([0]+[len(x) for x in components]), component_sizes, len(components), matched_components
+        
+    def find_components(self, mol, fd, component_solver, **kwargs):
+        """Find fluorinated components in a molecule that match this PFAS group's criteria."""
+        group_matches = []
+        if self.formula_dict_satisfies_constraints(fd) is True:
+            component_sizes = []
+            # Create molecular graph once for this fragment
+            G = mol_to_nx(mol)
+            kwargs['G'] = G
+            if self.smartsPath =='cyclic':
+                # treat cyclic groups separately
+                # Use first SMARTS pattern for cyclic
+                match_count, component_sizes, matched1_len, matched_components = self.find_aryl_components(mol, component_solver=component_solver, **kwargs)
+            elif self.smarts is not None and len(self.smarts) > 0:
+                # Handle groups with SMARTS patterns
+                match_count, component_sizes, matched1_len, matched_components = self.find_alkyl_components(mol, component_solver, **kwargs)
+            elif self.smartsPath is not None:
+                # treat cases with only smartsPath defined (no SMARTS patterns), find all components of that path type
+                path_components = component_solver.get(self.smartsPath, max_dist = self.max_dist_from_CF, default = component_solver.get("Polyfluoroalkyl", max_dist = self.max_dist_from_CF, default=[]))
+                match_count = len(path_components)
+                component_sizes = [len(x) for x in path_components]
+                matched1_len = len(path_components)  # Set matched1_len to enable group matching
+                matched_components = []
+                for comp in path_components:
+                    # Use get_matched_component_dict with no SMARTS matches
+                    matched_components.append(
+                        component_solver.get_matched_component_dict(comp, None, self.smartsPath, self)
+                    )
+            else:
+                # treat cases with no SMARTS patterns, just formula constraints
+                match_count = 1
+                matched_components = []
+                matched1_len = 1
+            if match_count > 0 and matched1_len > 0:
+                # add to matches if functional group was found
+                group_matches.append((self, match_count, component_sizes, matched_components))
+            else:
+                return None
+            return group_matches
+        return None
+        

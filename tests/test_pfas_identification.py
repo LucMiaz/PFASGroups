@@ -15,7 +15,7 @@ RDLogger.DisableLog('rdApp.*')
 
 # Import PFASgroups functionality
 try:
-    from PFASgroups.core import parse_groups_in_mol, parse_mol
+    from PFASgroups.parser import parse_groups_in_mol, parse_mol
 except ImportError:
     from ..core import parse_groups_in_mol, parse_mol
 

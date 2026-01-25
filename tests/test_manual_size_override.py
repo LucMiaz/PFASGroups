@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from rdkit import Chem
 from PFASgroups.PFASGroupModel import PFASGroup
-from PFASgroups.core import parse_groups_in_mol
+from PFASgroups.parser import parse_groups_in_mol
 
 def test_with_manual_override():
     """Test component fraction with manual SMARTS size specification."""

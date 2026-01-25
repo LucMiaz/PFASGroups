@@ -10,7 +10,7 @@ function MoleculeViewer({ smiles, width = 300, height = 200 }) {
       try {
         // Load RDKit from npm package
         const RDKit = await import('@rdkit/rdkit');
-        // The package exports initRDKitModule as default or as a named export
+        // The package exports initRDKitModule in different ways
         const initRDKitModule = RDKit.default || RDKit.initRDKitModule || RDKit;
         
         // Call the initialization function

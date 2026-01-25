@@ -1,6 +1,6 @@
 """Quick verification that all metrics are computed and reported."""
 
-from PFASgroups.core import parse_smiles
+from PFASgroups.parser import parse_smiles
 
 # Test with PFOA
 smiles = 'C(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F'

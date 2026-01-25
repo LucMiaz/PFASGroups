@@ -1,5 +1,5 @@
 from rdkit import Chem
-from PFASgroups.core import parse_groups_in_mol
+from PFASgroups.parser import parse_groups_in_mol
 
 # Test with functional group at the end (peripheral)
 print("Test 1: Functional group at END (peripheral):")
