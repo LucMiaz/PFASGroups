@@ -3,7 +3,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from PFASgroups.core import parse_smiles
+from PFASgroups.parser import parse_smiles
 
 # Test with PFOA (Perfluorooctanoic acid)
 pfoa_smiles = "C(C(C(C(C(C(C(C(=O)O)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)(F)F"

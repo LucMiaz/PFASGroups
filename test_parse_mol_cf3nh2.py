@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from rdkit import Chem
-from PFASgroups.core import parse_mol
+from PFASgroups.parser import parse_mol
 
 def test_both_smiles():
     """Test both SMILES variations of trifluoromethylamine."""

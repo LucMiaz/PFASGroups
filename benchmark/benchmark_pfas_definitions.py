@@ -471,7 +471,7 @@ class PFASDefinitionBenchmark:
         """
         from rdkit import Chem
         from rdkit.Chem import Descriptors, rdMolDescriptors
-        from PFASgroups.core import parse_mol
+        from PFASgroups.parser import parse_mol
 
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:

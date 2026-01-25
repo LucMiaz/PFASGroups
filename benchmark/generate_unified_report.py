@@ -354,7 +354,7 @@ def analyze_oecd_robustness(oecd_molecules):
             
             # Run PFASGroups analysis
             try:
-                from PFASgroups.core import parse_groups_in_mol
+                from PFASgroups.parser import parse_groups_in_mol
                 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
                 from rdkit import Chem
                 

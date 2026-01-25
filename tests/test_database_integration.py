@@ -1,6 +1,6 @@
 """Test the updated utility_funcgroups with comprehensive metrics."""
 
-from PFASgroups.core import parse_mols
+from PFASgroups.parser import parse_mols
 from rdkit import Chem
 
 def test_parse_mols_output_structure():

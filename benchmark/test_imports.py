@@ -23,7 +23,7 @@ print(f"  Path: {parent_dir}")
 
 print("Test 5: PFASgroups.core import")
 try:
-    from PFASgroups.core import parse_mol
+    from PFASgroups.parser import parse_mol
     print("  parse_mol imported OK")
 except Exception as e:
     print(f"  FAILED: {e}")

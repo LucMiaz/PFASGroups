@@ -1,5 +1,5 @@
 from rdkit import Chem
-from PFASgroups.core import parse_groups_in_mol
+from PFASgroups.parser import parse_groups_in_mol
 from numpy import nan as np_na
 # Test with PFOA (linear chain)
 print("Testing PFOA (linear chain):")

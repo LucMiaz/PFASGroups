@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from .core import parse_smiles, generate_fingerprint, get_smartsPaths, get_PFASGroups
+from .parser import parse_smiles, generate_fingerprint, get_smartsPaths, get_PFASGroups
 from rdkit import Chem
 
 

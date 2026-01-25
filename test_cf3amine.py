@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from PFASgroups.core import parse_mol
+from PFASgroups.parser import parse_mol
 
 def test_trifluoromethylamine():
     """Test FC(F)(F)N against all PFAS definitions."""

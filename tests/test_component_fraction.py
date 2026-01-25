@@ -1,6 +1,6 @@
 """Test component_fraction metric"""
 from rdkit import Chem
-from PFASgroups.core import parse_mols
+from PFASgroups.parser import parse_mols
 
 # Test with a perfluorinated carboxylic acid
 smiles = 'C(F)(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O'

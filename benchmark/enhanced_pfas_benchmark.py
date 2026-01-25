@@ -19,7 +19,7 @@ parent_dir = os.path.dirname(script_dir)
 sys.path.append(parent_dir)
 
 try:
-    from PFASgroups.core import parse_mol
+    from PFASgroups.parser import parse_mol
     from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_groups
     PFASGROUPS_AVAILABLE = True
 except ImportError:

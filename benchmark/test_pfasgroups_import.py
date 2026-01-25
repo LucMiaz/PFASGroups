@@ -4,7 +4,7 @@ sys.path.append('c:/Users/luc/git/PFASGroups')
 
 try:
     print("1. Importing parse_mol...")
-    from PFASgroups.core import parse_mol
+    from PFASgroups.parser import parse_mol
     print("   Success!")
     
     print("2. Importing PFASDefinition...")

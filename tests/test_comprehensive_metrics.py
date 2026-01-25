@@ -1,7 +1,7 @@
 """Test comprehensive graph metrics in ComponentsSolver."""
 
 from rdkit import Chem
-from PFASgroups.core import parse_smiles
+from PFASgroups.parser import parse_smiles
 import json
 
 def test_comprehensive_metrics():

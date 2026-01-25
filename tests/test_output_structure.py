@@ -1,6 +1,6 @@
 """Simple test to inspect the output structure."""
 
-from PFASgroups.core import parse_smiles
+from PFASgroups.parser import parse_smiles
 import json
 
 smiles = 'C(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F'

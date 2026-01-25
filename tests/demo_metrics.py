@@ -7,7 +7,7 @@ These metrics provide insights into the molecular structure:
 """
 
 from rdkit import Chem
-from PFASgroups.core import parse_groups_in_mol
+from PFASgroups.parser import parse_groups_in_mol
 
 def analyze_molecule(smiles, description):
     """Analyze a molecule and print its metrics."""
