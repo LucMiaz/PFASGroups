@@ -42,6 +42,16 @@ Run-Benchmark "3️⃣" "Timing Performance Benchmark"
 Run-Benchmark "4️⃣" "Non-Fluorinated Exclusion Benchmark"
 Run-Benchmark "5️⃣" "Complex Branched Structures Benchmark"
 
+# Highly Branched Compounds Test
+Write-Host "6️⃣ Running Highly Branched Compounds Test..." -ForegroundColor Yellow
+python test_highly_branched.py
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ Highly Branched Compounds Test failed" -ForegroundColor Red
+    exit 1
+}
+Write-Host "✅ Highly Branched Compounds Test completed" -ForegroundColor Green
+Write-Host ""
+
 # Generate Unified Report
 Write-Host "📊 Generating Unified HTML Report..." -ForegroundColor Yellow
 python generate_unified_report.py
@@ -66,6 +76,7 @@ Write-Host "   • OECD Validation: Validates against OECD database"
 Write-Host "   • Timing Performance: Measures execution speed scaling"
 Write-Host "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 Write-Host "   • Complex Branched: Tests complex molecular structures"
+Write-Host "   • Highly Branched: Tests functional groups on perfluorinated components"
 Write-Host ""
 
 # Run analysis scripts

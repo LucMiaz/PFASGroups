@@ -31,6 +31,10 @@ class PFASGroup():
     max_dist_from_CF : int
         Maximum graph distance (number of bonds) from fluorinated component to functional group.
         When > 0, extends component search radius to find nearby functional groups.
+    linker_smarts : Chem.Mol or None
+        Compiled SMARTS pattern for validating linker atoms between fluorinated component
+        and functional group. When None (default), no restriction is applied to linker atoms.
+        Only used when max_dist_from_CF > 0.
     constraints : dict
         Molecular formula constraints with keys:
         - 'only': Elements that must be present exclusively (e.g., ['C', 'F', 'O'])
@@ -48,7 +52,8 @@ class PFASGroup():
     ...     smarts={"C(=O)O":1},  # Carboxylic acid group
     ...     smartsPath="Perfluoroalkyl",
     ...     constraints={"only": ["C", "F", "O", "H"]},
-    ...     max_dist_from_CF=0
+    ...     max_dist_from_CF=0,
+    ...     linker_smarts=None
     ... )
     
     Notes
@@ -56,6 +61,7 @@ class PFASGroup():
     - SMARTS patterns are compiled on initialization for efficient matching
     - Constraints are validated when checking if a molecule belongs to this group
     - max_dist_from_CF allows finding functional groups connected via non-fluorinated linkers
+    - linker_smarts restricts which atoms can be in the path between component and functional group
     """
     def __init__(self, id, name, smarts, smartsPath, constraints,**kwargs):
         self.id = id
@@ -69,6 +75,14 @@ class PFASGroup():
         self.smarts = [] if self.smarts_str else None
         self.smartsPath = smartsPath
         self.max_dist_from_CF = kwargs.get('max_dist_from_CF', 0)
+        # Compile linker_smarts pattern if provided
+        linker_smarts_str = kwargs.get('linker_smarts', None)
+        self.linker_smarts = None
+        if linker_smarts_str is not None:
+            try:
+                self.linker_smarts = Chem.MolFromSmarts(linker_smarts_str)
+            except:
+                raise ValueError(f"Invalid linker_smarts pattern '{linker_smarts_str}' for PFASGroup '{self.name}' (ID: {self.id})")
         if self.smarts_str is not None:
             for smarts_pattern in self.smarts_str:
                 if smarts_pattern and smarts_pattern != "":
@@ -427,7 +441,7 @@ class PFASGroup():
                 # Check if this component is connected to SMARTS matches
                 if self.component_satisfies_all_smarts(comp):
                     augmented = component_solver.get_augmented_component(
-                        _smartsPath, self.max_dist_from_CF, i, self.subset
+                        _smartsPath, self.max_dist_from_CF, i, self.subset, self.linker_smarts
                     )
                     augmented_matched_components.append(
                         component_solver.get_matched_component_dict(comp, self.subset, _smartsPath, self, comp_id = i)

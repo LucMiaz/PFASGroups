@@ -70,6 +70,16 @@ fi
 echo "✅ Complex Branched Structures Benchmark completed"
 echo ""
 
+# Highly Branched Compounds Test
+echo "6️⃣ Running Highly Branched Compounds Test..."
+python test_highly_branched.py
+if [ $? -ne 0 ]; then
+    echo "❌ Highly Branched Compounds Test failed"
+    exit 1
+fi
+echo "✅ Highly Branched Compounds Test completed"
+echo ""
+
 # Generate Unified Report
 echo "📊 Generating Unified HTML Report..."
 python generate_unified_report.py
@@ -97,6 +107,7 @@ echo "   • OECD Validation: Validates against OECD database"
 echo "   • Timing Performance: Measures execution speed scaling"
 echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 echo "   • Complex Branched: Tests complex molecular structures"
+echo "   • Highly Branched: Tests functional groups on perfluorinated components"
 echo ""
 
 # Run analysis scripts

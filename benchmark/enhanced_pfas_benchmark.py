@@ -59,8 +59,8 @@ class EnhancedPFASBenchmark:
         with open(specificity_path, 'r') as f:
             self.specificity_groups = json.load(f)
         
-        # Target groups 29-59 (excluding 49, 50 which are smartsPath-only groups)
-        self.target_groups = [g for g in range(29, 60) if g not in [49, 50]]
+        # Target groups 29-73 (excluding 49, 50 which are smartsPath-only groups)
+        self.target_groups = [g for g in range(29, 74) if g not in [49, 50]]
         
         # OECD target groups 1-28
         self.oecd_target_groups = list(range(1, 29))
@@ -95,8 +95,22 @@ class EnhancedPFASBenchmark:
             56: {'name': 'Perfluoroaryl compounds', 'smiles': 'c1c(F)c(F)c(F)c(F)c1F', 'mode': 'attach'},
             57: {'name': 'Polyfluoroaryl compounds', 'smiles': 'c1c(F)c(F)ccc1F', 'mode': 'attach'},
             58: {'name': 'Peroxydes', 'smiles': 'OO', 'mode': 'insert'},
-            59: {'name': 'Benzoyl peroxydes', 'smiles': 'C(=O)OOC(=O)', 'mode': 'insert'}
-
+            59: {'name': 'Benzoyl peroxydes', 'smiles': 'C(=O)OOC(=O)', 'mode': 'insert'},
+            # Fluorotelomer groups 60-73 (require CH2 linker chains)
+            60: {'name': 'Silane', 'smiles': '[Si](C)(C)C', 'mode': 'attach', 'telomer': True},
+            61: {'name': 'Trichlorosilane', 'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach', 'telomer': True},
+            62: {'name': 'Fluorotelomer silane', 'smiles': '[Si](C)(C)C', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 6)},
+            63: {'name': 'Fluorotelomer trichlorosilane', 'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 6)},
+            64: {'name': 'Fluorotelomer', 'smiles': 'C', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 6)},
+            65: {'name': 'Fluorotelomer aldehyde', 'smiles': 'C(=O)[H]', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
+            66: {'name': 'Fluorotelomer carboxylic acids', 'smiles': 'C(=O)O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
+            67: {'name': 'Fluorotelomer unsaturated carboxylic acids', 'smiles': 'C=CC(=O)O', 'mode': 'attach', 'telomer': True},
+            68: {'name': 'Fluorotelomer ethoxylates', 'smiles': 'O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8), 'ethoxylate': True},
+            69: {'name': 'Fluorotelomer sulfonic acid', 'smiles': 'S(=O)(=O)O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
+            70: {'name': 'Fluorotelomer monophosphate', 'smiles': 'OP(=O)(O)O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
+            71: {'name': 'Fluorotelomer diphosphate', 'smiles': 'OP(=O)(O)OP(=O)(O)O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
+            72: {'name': 'Fluorotelomer acrylate', 'smiles': 'OC(=O)C=C', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
+            73: {'name': 'Fluorotelomer metacrylate', 'smiles': 'OC(=O)C(=C)C', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)}
         }
         
         # Build OECD group mappings after functional_smarts is defined
@@ -263,6 +277,99 @@ class EnhancedPFASBenchmark:
                     
             except Exception as e:
                 print(f"Warning: Failed to generate multi-group molecule for groups {group_ids}: {e}")
+                continue
+        
+        return molecules
+    
+    def generate_fluorotelomer_molecules(self, group_id, count=15):
+        """Generate fluorotelomer molecules with varying perfluorinated chain and CH2 linker lengths
+        
+        Fluorotelomers have structure: (CF2)n-CF3 + (CH2)m + functional_group
+        where n varies the perfluorinated length and m varies the CH2 linker length
+        
+        Args:
+            group_id: Fluorotelomer group ID (60-73)
+            count: Number of molecules to generate
+        """
+        if group_id not in self.functional_smarts:
+            print(f"Warning: Group {group_id} not found in functional_smarts")
+            return []
+        
+        group_info = self.functional_smarts[group_id]
+        molecules = []
+        
+        # Check if this is a telomer group
+        is_telomer = group_info.get('telomer', False)
+        is_ethoxylate = group_info.get('ethoxylate', False)
+        ch2_range = group_info.get('ch2_range', (2, 8))
+        
+        if not is_telomer:
+            # For non-telomer groups like 60, 61, generate normally
+            return self.generate_single_group_molecules(group_id, count)
+        
+        # Generate telomer molecules with varying perfluorinated and CH2 lengths
+        for i in range(count):
+            try:
+                # Vary perfluorinated chain length: CF3-(CF2)n where n = 1-5
+                n_perfluoro = 2 + (i % 4)  # CF3-CF2 to CF3-CF2-CF2-CF2-CF2 (4:x to 10:x telomers)
+                
+                # Vary CH2 linker length within specified range
+                ch2_min, ch2_max = ch2_range
+                n_ch2 = ch2_min + (i % (ch2_max - ch2_min + 1))
+                
+                # Build perfluorinated chain: FC(F)(F)C(F)(F)...C(F)(F)
+                # Start with FC(F)(F) then add C(F)(F) units
+                if n_perfluoro == 1:
+                    perfluoro_smiles = "FC(F)(F)"
+                else:
+                    perfluoro_smiles = "FC(F)(F)" + "C(F)(F)" * (n_perfluoro - 1)
+                
+                # Build CH2 linker chain
+                if is_ethoxylate:
+                    # For ethoxylates, add oxygen atoms between some CH2 groups
+                    # Pattern: -CH2-O-CH2-O-CH2- (ethylene oxide units)
+                    linker_parts = ["C"]
+                    for j in range(1, n_ch2):
+                        if (j % 2 == 1):  # Add O every other position
+                            linker_parts.append("OC")
+                        else:
+                            linker_parts.append("C")
+                    linker_smiles = "".join(linker_parts)
+                else:
+                    # Regular CH2 chain
+                    linker_smiles = "C" * n_ch2
+                
+                # Add functional group
+                func_smiles = group_info['smiles']
+                
+                # Construct full SMILES by direct concatenation (atoms bond left to right in SMILES)
+                # For most groups, structure is: perfluoro + linker + functional_group
+                if group_info['mode'] == 'attach':
+                    # Functional group attaches at end
+                    full_smiles = f"{perfluoro_smiles}{linker_smiles}{func_smiles}"
+                else:
+                    # For insert mode, functional group goes in the middle (less common for telomers)
+                    full_smiles = f"{perfluoro_smiles}{linker_smiles[:n_ch2//2]}{func_smiles}{linker_smiles[n_ch2//2:]}"
+                
+                # Validate and canonicalize SMILES
+                mol = Chem.MolFromSmiles(full_smiles)
+                if mol is not None:
+                    canonical_smiles = Chem.MolToSmiles(mol)
+                    
+                    molecule_data = {
+                        'group_id': group_id,
+                        'group_name': group_info['name'],
+                        'smiles': canonical_smiles,
+                        'perfluoro_length': n_perfluoro,
+                        'ch2_length': n_ch2,
+                        'target_groups': [group_id],
+                        'generation_type': 'fluorotelomer',
+                        'telomer_notation': f"{n_perfluoro*2}:{n_ch2}"  # e.g., "6:2", "8:3"
+                    }
+                    molecules.append(molecule_data)
+                    
+            except Exception as e:
+                print(f"Warning: Failed to generate fluorotelomer for group {group_id}: {e}")
                 continue
         
         return molecules
@@ -470,7 +577,11 @@ class EnhancedPFASBenchmark:
             group_name = self.functional_smarts[group_id]['name']
             print(f"🧪 Generating molecules for Group {group_id}: {group_name}")
             
-            molecules = self.generate_single_group_molecules(group_id, count=replicates)
+            # Use specialized fluorotelomer generation for groups 60-73
+            if group_id >= 60 and group_id <= 73:
+                molecules = self.generate_fluorotelomer_molecules(group_id, count=replicates)
+            else:
+                molecules = self.generate_single_group_molecules(group_id, count=replicates)
             success_count = 0
             
             for mol_data in molecules:

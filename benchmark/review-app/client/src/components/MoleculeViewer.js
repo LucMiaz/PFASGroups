@@ -8,18 +8,10 @@ function MoleculeViewer({ smiles, width = 300, height = 200 }) {
   useEffect(() => {
     const loadRDKit = async () => {
       try {
-        // Try to load RDKit.js - handle both default and named exports
+        // Try to load RDKit.js
         const RDKitModule = await import('@rdkit/rdkit');
-        
-        // Try different import patterns
-        let initFunc = RDKitModule.initRDKitModule || RDKitModule.default?.initRDKitModule || RDKitModule.default;
-        
-        if (typeof initFunc === 'function') {
-          const rdkitInstance = await initFunc();
-          setRdkit(rdkitInstance);
-        } else {
-          throw new Error('initRDKitModule function not found');
-        }
+        const rdkitInstance = await RDKitModule.initRDKitModule();
+        setRdkit(rdkitInstance);
       } catch (err) {
         console.error('Error loading RDKit:', err);
         setError('RDKit.js not available. Showing SMILES string instead.');

@@ -175,7 +175,7 @@ class ComponentsSolver:
                 self.extended_components.setdefault(pathType, {})[max_dist] = extended_components
             self.levels.add(max_dist)
     
-    def get_augmented_component(self, pathType, max_dist, component_index, smarts_matches):
+    def get_augmented_component(self, pathType, max_dist, component_index, smarts_matches, linker_smarts=None):
         """Get original component augmented with connecting atoms to SMARTS matches.
         
         Parameters
@@ -188,6 +188,9 @@ class ComponentsSolver:
             Index of the component in the extended components list
         smarts_matches : set
             Set of atom indices that matched the SMARTS pattern
+        linker_smarts : Chem.Mol, optional
+            Compiled SMARTS pattern for validating linker atoms.
+            If provided, only paths where intermediate atoms match this pattern are accepted.
             
         Returns
         -------
@@ -214,6 +217,17 @@ class ComponentsSolver:
                 for base_atom in orig_comp:
                     try:
                         path = nx.shortest_path(self.G, smarts_atom, base_atom)
+                        # Validate linker atoms if linker_smarts is provided
+                        if linker_smarts is not None and len(path) > 2:
+                            # Check intermediate atoms (exclude first and last)
+                            linker_atoms = path[1:-1]
+                            valid_linker = all(
+                                self.mol.GetAtomWithIdx(int(atom_idx)).Match(linker_smarts)
+                                for atom_idx in linker_atoms
+                            )
+                            if not valid_linker:
+                                continue  # Skip this path if linker atoms don't match
+                        
                         if len(path) < min_len:
                             min_path = path
                             min_len = len(path)

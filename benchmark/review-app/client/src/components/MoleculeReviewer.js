@@ -42,7 +42,7 @@ function MoleculeReviewer({ onReviewUpdate }) {
     try {
       const params = new URLSearchParams({
         page: currentPage,
-        limit: 50,
+        limit: 10,
         dataset: filters.dataset,
         reviewStatus: filters.reviewStatus,
         search: filters.search,
@@ -242,19 +242,9 @@ function MoleculeReviewer({ onReviewUpdate }) {
                       <div>
                         <p><strong>Detected Groups:</strong></p>
                         <div>
-                          {molecule.pfasgroups_detected.map(group => {
-                            // Handle both object format {id, name, alias} and simple string/number format
-                            const groupKey = typeof group === 'object' ? group.id : group;
-                            const groupLabel = typeof group === 'object' ? group.name : group;
-                            const pathType = typeof group === 'object' ? group.matchedPathType : null;
-                            
-                            return (
-                              <Badge key={groupKey} bg="secondary" className="me-1 mb-1">
-                                {groupLabel}
-                                {pathType && <span className="ms-1" style={{fontSize: '0.7em'}}>({pathType})</span>}
-                              </Badge>
-                            );
-                          })}
+                          {molecule.pfasgroups_detected.map(group => (
+                            <Badge key={group} bg="secondary" className="me-1 mb-1">{group}</Badge>
+                          ))}
                         </div>
                         {molecule.pfasgroups_detected_definitions && molecule.pfasgroups_detected_definitions.length > 0 && (
                           <>
