@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: PFASgroups
-Version: 2.1.0
+Version: 2.2.0
 Summary: A comprehensive cheminformatics package for automated detection, classification, and analysis of per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 55 PFAS group classifications (28 OECD-defined groups and 27 generic categories) with fluorinated chain length determination.
 Author: Luc Miaz
 Author-email: Luc Miaz <luc@miaz.ch>
@@ -48,7 +48,9 @@ PFASgroups combines SMARTS pattern matching, molecular formula constraints, and 
 
 ### Summary of changes by version
 
-- **Version 2.1 (Feb 2026)**: Added support for multiple smarts, with individual minimum count, per PFASgroup.
+- **Version 2.2 (Feb 2026)**: Added linked_smarts option to specify a restriction on path between smarts groups and fluorinated component. Added new PFASgroups (telomers).
+
+- **Version 2.1 (Jan 2026)**: Added support for multiple smarts, with individual minimum count, per PFASgroup.
 
 - **Version 2.0 (Jan 2026)**: Major expansion of graph‑based component metrics, new coverage statistics, schema updates, and richer per‑component outputs.
 - **Version 1.x**: Shift to component‑based analysis with improved SMARTS matching and better handling of branched/cyclic structures.
