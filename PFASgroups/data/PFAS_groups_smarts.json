@@ -1611,5 +1611,19 @@
         "smarts": {
             "[CH2$(COC(O)C(C)=[CH2])]": 1
         }
-    }
+    },
+    {
+        "id": 74,
+        "name": "Fluorotelomer alcohol",
+        "alias": "FTO",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": null,
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 8,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C[OH1,Oh1,O-])]": 1
+        }
+    },
 ]
