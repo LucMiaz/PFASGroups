@@ -29,7 +29,8 @@ Add custom groups programmatically:
            "gte": {"F": 3},                # At least 3 fluorines
            "eq": {"N": 1},                 # Exactly 1 nitrogen
        },
-       max_dist_from_CF=2                  # Max distance from fluorinated carbon
+       max_dist_from_CF=2,                 # Max distance from fluorinated carbon
+       linker_smarts="[CH2X4]"             # Only allow CH2 linker atoms (optional)
    )
 
    # Add to groups list
@@ -69,6 +70,9 @@ PFASGroup Parameters
    * - ``max_dist_from_CF``
      - int
      - Maximum bond distance from fluorinated carbon (default: 2)
+   * - ``linker_smarts``
+     - str or None
+     - SMARTS pattern for validating linker atoms between fluorinated component and functional group (optional)
 
 Constraint Types
 ^^^^^^^^^^^^^^^^
@@ -109,6 +113,57 @@ The ``constraints`` dictionary supports five types:
    # With additional atoms to add
    {"rel": {"C": {"atoms": ["F"], "add": 0.5, "div": 2, "add_atoms": ["O"]}}}
 
+Linker SMARTS Validation
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``linker_smarts`` parameter allows you to specify which atoms are permitted in the path between the fluorinated component and the functional group. This is particularly useful for fluorotelomer compounds where only specific linker atoms (e.g., CH2) should connect the perfluorinated chain to the functional group.
+
+**Example: Fluorotelomer Alcohols**
+
+Fluorotelomer alcohols have the structure CF3(CF2)n-(CH2)m-OH, where only CH2 units should link the perfluorinated chain to the alcohol group:
+
+.. code-block:: python
+
+   fluorotelomer_alcohol = PFASGroup(
+       id=15,
+       name="Fluorotelomer alcohols",
+       smarts1="[#6X4$([C;!$([C]=O)][OH1])]",
+       smartsPath="Perfluoroalkyl",
+       linker_smarts="[#6H2X4]",  # Only CH2 atoms allowed in linker
+       max_dist_from_CF=12,
+       constraints={}
+   )
+
+**How It Works:**
+
+1. The algorithm finds the shortest path between the fluorinated component and the functional group
+2. If ``linker_smarts`` is specified and the path has intermediate atoms (length > 2)
+3. Each intermediate atom (excluding endpoints) is validated against the linker pattern
+4. If any atom doesn't match, the path is rejected
+
+**Common Patterns:**
+
+.. code-block:: python
+
+   # Only CH2 units
+   linker_smarts="[CH2X4]"
+   
+   # CH2 or oxygen (for ethoxylates)
+   linker_smarts="[CH2X4,O$(O([CH2])[CH2])]"
+   
+   # Any sp3 carbon
+   linker_smarts="[CX4]"
+   
+   # Sp3 carbon or nitrogen
+   linker_smarts="[CX4,NX3]"
+
+**Use Cases:**
+
+- Fluorotelomer compounds with specific linker requirements
+- Ensuring no heteroatoms in certain positions
+- Distinguishing between direct attachment vs. linker-mediated attachment
+- Validating chain composition in degradation products
+
 JSON Configuration
 ^^^^^^^^^^^^^^^^^^
 
@@ -126,6 +181,7 @@ Create a JSON file for custom groups:
        "smarts1": "[C](F)(F)F",
        "smarts2": null,
        "smartsPath": "Perfluoroalkyl",
+       "linker_smarts": "[CH2X4]",
        "constraints": {
          "gte": {"F": 3},
          "only": ["C", "F", "H", "O"]

@@ -293,5 +293,75 @@
     "id": 59,
     "name": "Benzoyl peroxydes",
     "alias": "Benzoyl peroxydes"
+  },
+  {
+    "id": 60,
+    "name": "Silane",
+    "alias": "Silane"
+  },
+  {
+    "id": 61,
+    "name": "Trichlorosilane",
+    "alias": "Trichlorosilane"
+  },
+  {
+    "id": 62,
+    "name": "Fluorotelomer silane",
+    "alias": "Fluorotelomer silane"
+  },
+  {
+    "id": 63,
+    "name": "Fluorotelomer trichlorosilane",
+    "alias": "Fluorotelomer trichlorosilane"
+  },
+  {
+    "id": 64,
+    "name": "Fluorotelomer",
+    "alias": "Fluorotelomer"
+  },
+  {
+    "id": 65,
+    "name": "Fluorotelomer aldehyde",
+    "alias": "FTUCA"
+  },
+  {
+    "id": 66,
+    "name": "Fluorotelomer carboxylic acids",
+    "alias": "FTCA"
+  },
+  {
+    "id": 67,
+    "name": "Fluorotelomer unsaturated carboxylic acids",
+    "alias": "FTUCA"
+  },
+  {
+    "id": 68,
+    "name": "Fluorotelomer ethoxylates",
+    "alias": "FTEO"
+  },
+  {
+    "id": 69,
+    "name": "Fluorotelomer sulfonic acid",
+    "alias": "FTSA"
+  },
+  {
+    "id": 70,
+    "name": "Fluorotelomer monophosphate",
+    "alias": "monoPAP"
+  },
+  {
+    "id": 71,
+    "name": "Fluorotelomer diphosphate",
+    "alias": "diPAP"
+  },
+  {
+    "id": 72,
+    "name": "Fluorotelomer acrylate",
+    "alias": "FTAC"
+  },
+  {
+    "id": 73,
+    "name": "Fluorotelomer metacrylate",
+    "alias": "FTMAC"
   }
 ]

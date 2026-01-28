@@ -79,6 +79,7 @@ class DataImporter {
         if (filename.includes('enhanced')) return 'enhanced';
         if (filename.includes('non_fluorinated')) return 'non_fluorinated';
         if (filename.includes('complex_branched')) return 'complex_branched';
+        if (filename.includes('highly_branched')) return 'highly_branched';
         if (filename.includes('definitions')) return 'definitions';
         return 'unknown';
     }
@@ -89,8 +90,39 @@ class DataImporter {
         
         // Handle different data structures
         
+        // Highly branched benchmark has: { metadata: {...}, summary: {...}, details: [...] }
+        if (data.metadata && data.details && Array.isArray(data.details)) {
+            const allMolecules = [];
+            
+            // Transform details array into molecule records
+            for (const test of data.details) {
+                if (test.smiles) {
+                    allMolecules.push({
+                        molecule_data: {
+                            smiles: test.smiles,
+                            group_id: test.group_id,
+                            group_name: test.group_name
+                        },
+                        pfasgroups_result: {
+                            detected_groups: test.group_id ? [test.group_id] : [],
+                            success: test.passed === true,
+                            error: test.passed === false ? 'Test failed' : null,
+                            execution_time: null
+                        },
+                        atlas_result: {
+                            first_class: null,
+                            second_class: null,
+                            success: false,
+                            error: false,
+                            execution_time: null
+                        }
+                    });
+                }
+            }
+            data = allMolecules;
+        }
         // Definitions benchmark data has a nested structure: { metadata: {...}, benchmarks: {...} }
-        if (data.metadata && data.benchmarks) {
+        else if (data.metadata && data.benchmarks) {
             const allMolecules = [];
             
             // Flatten all molecules from all categories and subcategories
