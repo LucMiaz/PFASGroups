@@ -14,7 +14,7 @@ from datetime import datetime
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 try:
-    from pfasgroups import analyze_mol
+    from PFASgroups.parser import parse_smiles
 except ImportError:
     print("❌ Error: Could not import pfasgroups module")
     print("   Make sure you're running from the benchmark directory")
@@ -82,7 +82,7 @@ def attach_functional_group(component_size, func_group, distance):
 def analyze_molecule(smiles):
     """Analyze a molecule using pfasgroups"""
     try:
-        result = analyze_mol(smiles)
+        result = parse_smiles(smiles)
         return result
     except Exception as e:
         print(f"     Error analyzing: {str(e)}")
@@ -112,7 +112,7 @@ def run_benchmark():
         print("-" * 80)
         
         for group_id, group_info in FUNCTIONAL_GROUPS.items():
-            for distance in group_info['distances']:
+            for distance in group_info['distance']:
                 results['total'] += 1
                 smiles = attach_functional_group(component_size, group_info['smarts'], distance)
                 
@@ -123,41 +123,43 @@ def run_benchmark():
                 
                 analysis = analyze_molecule(smiles)
                 
-                if analysis and hasattr(analysis, 'matches'):
+                if analysis and len(analysis)>0:
                     # Check if the expected group was detected
-                    found_group = any(m['id'] == group_id for m in analysis.matches)
-                    found_perfluoro = any(m['id'] in [49, 50] for m in analysis.matches)
+                    found_group = any(m['id'] == group_id for a in analysis for m in a['matches'])
+                    found_perfluoro = any(m['id'] in [49, 50] for a in analysis for m in a['matches'])
                     
                     if found_group:
                         results['success'] += 1
                         print(f"  ✅ PASS - Group {group_id} ({group_info['name']}) detected")
                         
                         # Log component information if available
-                        for match in analysis.matches:
-                            if match['id'] == group_id and 'components' in match and match['components']:
-                                comp = match['components'][0]
-                                size = comp.get('size', len(comp.get('component', [])))
-                                diameter = comp.get('diameter', 'N/A')
-                                radius = comp.get('radius', 'N/A')
-                                ecc = comp.get('eccentricity', 'N/A')
-                                print(f"     Component size: {size}")
-                                print(f"     Diameter/Radius: {diameter}/{radius}")
-                                if isinstance(ecc, float):
-                                    print(f"     Eccentricity: {ecc:.3f}")
-                                else:
-                                    print(f"     Eccentricity: {ecc}")
+                        for m in analysis:
+                            for match in m['matches']:
+                                if match['id'] == group_id and 'components' in match and match['components']:
+                                    comp = match['components'][0]
+                                    size = comp.get('size', len(comp.get('component', [])))
+                                    diameter = comp.get('diameter', 'N/A')
+                                    radius = comp.get('radius', 'N/A')
+                                    ecc = comp.get('eccentricity', 'N/A')
+                                    print(f"     Component size: {size}")
+                                    print(f"     Diameter/Radius: {diameter}/{radius}")
+                                    if isinstance(ecc, float):
+                                        print(f"     Eccentricity: {ecc:.3f}")
+                                    else:
+                                        print(f"     Eccentricity: {ecc}")
                     else:
                         results['failed'] += 1
                         print(f"  ❌ FAIL - Group {group_id} ({group_info['name']}) NOT detected")
-                        detected = ', '.join([f"{m['id']}:{m['name']}" for m in analysis.matches[:5]])
+                        detected = ', '.join([f"{m['id']}:{m['name']}" for a in analysis for m in a['matches'][:5]])
                         print(f"     Detected groups: {detected}")
                     
                     if found_perfluoro:
-                        for match in analysis.matches:
-                            if match['id'] in [49, 50]:
-                                chain_size = match.get('nCFchain', [None])[0]
-                                print(f"     Perfluoroalkyl component: ✓ (size: {chain_size})")
-                                break
+                        for m in analysis:
+                            for match in m['matches']:
+                                if match['id'] in [49, 50]:
+                                    chain_size = match.get('nCFchain', [None])[0]
+                                    print(f"     Perfluoroalkyl component: ✓ (size: {chain_size})")
+                                    break
                 else:
                     results['failed'] += 1
                     print(f"  ❌ FAIL - Analysis error or invalid SMILES")
@@ -169,7 +171,7 @@ def run_benchmark():
                     'group_name': group_info['name'],
                     'distance': distance,
                     'smiles': smiles,
-                    'passed': analysis and hasattr(analysis, 'matches') and any(m['id'] == group_id for m in analysis.matches)
+                    'passed': analysis and len(analysis) and any(m['id'] == group_id for a in analysis for m in a['matches'])
                 })
     
     # Print summary
@@ -230,7 +232,7 @@ def run_benchmark():
     
     # Save results to JSON
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_file = f"pfas_highly_branched_benchmark_{timestamp}.json"
+    output_file = f"data/pfas_highly_branched_benchmark_{timestamp}.json"
     
     output_data = {
         'metadata': {
