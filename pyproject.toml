@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PFASgroups"
-version = "2.1.0"
+version = "2.1.1"
 description = "A comprehensive cheminformatics package for automated detection, classification, and analysis of per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 55 PFAS group classifications (28 OECD-defined groups and 27 generic categories) with fluorinated chain length determination."
 authors = [
     { name = "Luc Miaz", email = "luc@miaz.ch" }
