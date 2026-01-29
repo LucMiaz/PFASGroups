@@ -68,7 +68,13 @@ def load_componentsSolver(**kwargs):
             args = list(args)  # Convert to mutable list
             args[0] = mol
             args = tuple(args)  # Convert back to tuple
-            with ComponentsSolver(mol) as fluorinated_components_dict:
+            # Pass through component metric options
+            solver_kwargs = {}
+            if 'limit_effective_graph_resistance' in kwargs:
+                solver_kwargs['limit_effective_graph_resistance'] = kwargs['limit_effective_graph_resistance']
+            if 'compute_component_metrics' in kwargs:
+                solver_kwargs['compute_component_metrics'] = kwargs['compute_component_metrics']
+            with ComponentsSolver(mol, **solver_kwargs) as fluorinated_components_dict:
                 kwargs['fluorinated_components_dict'] = kwargs.get('fluorinated_components_dict',fluorinated_components_dict)
                 return func(*args, **kwargs)
         return wrapper
@@ -164,7 +170,8 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                 group_matches.extend(match)
     return group_matches
 
-def parse_smiles(smiles, bycomponent=False, output_format='list', **kwargs):
+def parse_smiles(smiles, bycomponent=False, output_format='list', 
+                  limit_effective_graph_resistance=None, compute_component_metrics=True, **kwargs):
     """
     Parse SMILES string(s) and return PFAS group information.
     
@@ -179,6 +186,15 @@ def parse_smiles(smiles, bycomponent=False, output_format='list', **kwargs):
         - 'list': Returns nested lists of tuples (default behavior)
         - 'dataframe': Returns pandas DataFrame with one row per match
         - 'csv': Returns CSV string
+    limit_effective_graph_resistance : int or None, default None
+        Maximum component size for computing effective graph resistance.
+        - None: Compute for all components (default, may be slow for large molecules)
+        - int > 0: Only compute for components with fewer atoms than this limit
+        - 0: Skip computation for all components (set to NaN)
+    compute_component_metrics : bool, default True
+        Whether to compute graph metrics (diameter, radius, etc.) for components.
+        - True: Compute all metrics (default)
+        - False: Only compute component size, skip all other metrics
     **kwargs : dict
         Additional parameters (pfas_groups, smartsPaths, etc.)
     
@@ -192,13 +208,16 @@ def parse_smiles(smiles, bycomponent=False, output_format='list', **kwargs):
     smiles_list = [smiles] if single_input else smiles
     mol_list = [Chem.MolFromSmiles(smi) for smi in smiles_list]
     # Parse all molecules
+    kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
+    kwargs['compute_component_metrics'] = compute_component_metrics
     return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, **kwargs)
 
 def parse_mol(mol, **kwargs):
     """Wrapper for parse_mols to handle single molecule input."""
     return parse_mols([mol], **kwargs)[0]
 
-def parse_mols(mols, output_format='list', include_PFAS_definitions=True, **kwargs):
+def parse_mols(mols, output_format='list', include_PFAS_definitions=True, 
+               limit_effective_graph_resistance=None, compute_component_metrics=True, **kwargs):
     """
     Parse RDKit molecule(s) and return PFAS group information.
     
@@ -213,6 +232,15 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True, **kwar
         - 'list': Returns nested lists of tuples (default behavior)
         - 'dataframe': Returns pandas DataFrame with one row per match
         - 'csv': Returns CSV string
+    limit_effective_graph_resistance : int or None, default None
+        Maximum component size for computing effective graph resistance.
+        - None: Compute for all components (default, may be slow for large molecules)
+        - int > 0: Only compute for components with fewer atoms than this limit
+        - 0: Skip computation for all components (set to NaN)
+    compute_component_metrics : bool, default True
+        Whether to compute graph metrics (diameter, radius, etc.) for components.
+        - True: Compute all metrics (default)
+        - False: Only compute component size, skip all other metrics
     **kwargs : dict
         Additional parameters (pfas_groups, smartsPaths, etc.)
     
@@ -229,6 +257,9 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True, **kwar
         mol_with_h = Chem.AddHs(mol)
         formula = CalcMolFormula(mol)
         bycomponent = kwargs.pop('bycomponent', False)
+        # Pass through component metric options
+        kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
+        kwargs['compute_component_metrics'] = compute_component_metrics
         matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
         inchikey = Chem.MolToInchiKey(mol)
         inchi = Chem.MolToInchi(mol)

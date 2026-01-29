@@ -1285,13 +1285,13 @@
         "base_functional_groups": [
             "alkene"
         ],
-        "main_group": "other perfluorinated compound",
+        "main_group": "other fluorinated compound",
         "smartsPath": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
-            "[#6$([#6X3]=[#6])]": 1
+            "[#6$([#6X3](F)=[#6])]": 1
         }
     },
     {
@@ -1474,16 +1474,16 @@
     },
     {
         "id": 64,
-        "name": "Fluorotelomer",
-        "alias": "Fluorotelomer",
+        "name": "Fluorotelomer iodide",
+        "alias": "FTI",
         "base_functional_groups": [],
         "main_group": "other PFAS",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 6,
+        "max_dist_from_CF": 8,
         "constraints": {},
         "smarts": {
-            "[C$(C[I,OH1,Oh1,O-]),C$(C(=O)),C$(C(=O)[OH1,Oh1,O-])]": 1
+            "[CH2$(CI)]": 1
         }
     },
     {
@@ -1492,7 +1492,7 @@
         "alias": "FTUCA",
         "base_functional_groups": [],
         "main_group": "aldehyde",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 8,
         "constraints": {},
@@ -1506,7 +1506,7 @@
         "alias": "FTCA",
         "base_functional_groups": [],
         "main_group": "carboxylic acid",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 8,
         "constraints": {},
@@ -1520,7 +1520,7 @@
         "alias": "FTUCA",
         "base_functional_groups": [],
         "main_group": "carboxylic acid",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {},
@@ -1534,7 +1534,7 @@
         "alias": "FTEO",
         "base_functional_groups": [],
         "main_group": "ether",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4,O$(O([CH2])[CH2])]",
         "max_dist_from_CF": 8,
         "constraints": {},
@@ -1548,7 +1548,7 @@
         "alias": "FTSA",
         "base_functional_groups": [],
         "main_group": "sulfonic acid",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 8,
         "constraints": {},
@@ -1562,7 +1562,7 @@
         "alias": "monoPAP",
         "base_functional_groups": [],
         "main_group": "other PFAS",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 8,
         "constraints": {},
@@ -1576,7 +1576,7 @@
         "alias": "diPAP",
         "base_functional_groups": [],
         "main_group": "other PFAS",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 8,
         "constraints": {},
@@ -1590,7 +1590,7 @@
         "alias": "FTAC",
         "base_functional_groups": [],
         "main_group": "other PFAS",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 8,
         "constraints": {},
@@ -1604,7 +1604,7 @@
         "alias": "FTMAC",
         "base_functional_groups": [],
         "main_group": "other PFAS",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 8,
         "constraints": {},
@@ -1618,12 +1618,195 @@
         "alias": "FTO",
         "base_functional_groups": [],
         "main_group": "other PFAS",
-        "smartsPath": null,
+        "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 8,
         "constraints": {},
         "smarts": {
             "[CH2$(C[OH1,Oh1,O-])]": 1
         }
+    },
+    {
+        "id": 75,
+        "name": "Fluorotelomer unsaturated silane",
+        "alias": "Fluorotelomer unsaturated silane",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=C[SiH3])]": 1
+        }
+    },
+    {
+        "id": 76,
+        "name": "Fluorotelomer unsaturated trichlorosilane",
+        "alias": "Fluorotelomer unsaturated trichlorosilane",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=C[Si](Cl)(Cl)Cl)]": 1
+        }
+    },
+    {
+        "id": 77,
+        "name": "Fluorotelomer unsaturated iodide",
+        "alias": "FTUI",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=CI)]": 1
+        }
+    },
+    {
+        "id": 78,
+        "name": "Fluorotelomer unsaturated aldehyde",
+        "alias": "FTUCHO",
+        "base_functional_groups": [],
+        "main_group": "aldehyde",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=CC(=O)[H])]": 1
+        }
+    },
+    {
+        "id": 79,
+        "name": "Fluorotelomer unsaturated ethoxylates",
+        "alias": "FTUEO",
+        "base_functional_groups": [],
+        "main_group": "ether",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=C[O$(O[CH2])])]": 1
+        }
+    },
+    {
+        "id": 80,
+        "name": "Fluorotelomer unsaturated sulfonic acid",
+        "alias": "FTUSA",
+        "base_functional_groups": [],
+        "main_group": "sulfonic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=CC[#16](=O)(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 81,
+        "name": "Fluorotelomer unsaturated monophosphate",
+        "alias": "unsaturated monoPAP",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=CCOP(=O)(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 82,
+        "name": "Fluorotelomer unsaturated diphosphate",
+        "alias": "unsaturated diPAP",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=CCOP(=O)(=O)O[CH2][CH2])]": 1
+        }
+    },
+    {
+        "id": 83,
+        "name": "Fluorotelomer unsaturated acrylate",
+        "alias": "FTUAC",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=CCOC(O)[CH1]=[CH2])]": 1
+        }
+    },
+    {
+        "id": 84,
+        "name": "Fluorotelomer unsaturated metacrylate",
+        "alias": "FTUMAC",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=CCOC(O)C(C)=[CH2])]": 1
+        }
+    },
+    {
+        "id": 85,
+        "name": "Fluorotelomer unsaturated alcohol",
+        "alias": "FTUOH",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=CC[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 86,
+        "name": "Fluorotelomers (generic)",
+        "alias": "FT",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 8,
+        "constraints": {},
+        "smarts": {
+            "[CH2]": 1
+        }
+    },
+    {
+        "id": 87,
+        "name": "Unsaturated fluorotelomers (generic)",
+        "alias": "UFT",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {},
+        "smarts": {
+            "[CH2$(C(F)=C)]": 1
+        }
     }
+    
 ]

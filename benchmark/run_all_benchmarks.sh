@@ -8,21 +8,21 @@ echo "========================================="
 echo ""
 
 # Check if we're in the right directory
-if [ ! -f "enhanced_pfas_benchmark.py" ]; then
-    echo "❌ Error: enhanced_pfas_benchmark.py not found!"
+if [ ! -f "scripts/enhanced_pfas_benchmark.py" ]; then
+    echo "❌ Error: scripts/enhanced_pfas_benchmark.py not found!"
     echo "   Please run this script from the benchmark directory"
     exit 1
 fi
 
 # Create output directories
-mkdir -p imgs html data
+mkdir -p scripts reports data imgs
 
 echo "📋 Running all PFAS benchmarks..."
 echo ""
 
 # Functional Groups Benchmark
 echo "1️⃣ Running Functional Groups Benchmark..."
-echo "1" | python enhanced_pfas_benchmark.py
+echo "1" | python scripts/enhanced_pfas_benchmark.py
 if [ $? -ne 0 ]; then
     echo "❌ Functional Groups Benchmark failed"
     exit 1
@@ -32,7 +32,7 @@ echo ""
 
 # OECD Validation Benchmark
 echo "2️⃣ Running OECD Validation Benchmark..."
-echo "2" | python enhanced_pfas_benchmark.py
+echo "2" | python scripts/enhanced_pfas_benchmark.py
 if [ $? -ne 0 ]; then
     echo "❌ OECD Validation Benchmark failed"
     exit 1
@@ -42,7 +42,7 @@ echo ""
 
 # Timing Performance Benchmark
 echo "3️⃣ Running Timing Performance Benchmark..."
-echo "3" | python enhanced_pfas_benchmark.py
+echo "3" | python scripts/enhanced_pfas_benchmark.py
 if [ $? -ne 0 ]; then
     echo "❌ Timing Performance Benchmark failed"
     exit 1
@@ -52,7 +52,7 @@ echo ""
 
 # Non-Fluorinated Exclusion Benchmark
 echo "4️⃣ Running Non-Fluorinated Exclusion Benchmark..."
-echo "4" | python enhanced_pfas_benchmark.py
+echo "4" | python scripts/enhanced_pfas_benchmark.py
 if [ $? -ne 0 ]; then
     echo "❌ Non-Fluorinated Exclusion Benchmark failed"
     exit 1
@@ -62,7 +62,7 @@ echo ""
 
 # Complex Branched Structures Benchmark
 echo "5️⃣ Running Complex Branched Structures Benchmark..."
-echo "5" | python enhanced_pfas_benchmark.py
+echo "5" | python scripts/enhanced_pfas_benchmark.py
 if [ $? -ne 0 ]; then
     echo "❌ Complex Branched Structures Benchmark failed"
     exit 1
@@ -72,7 +72,7 @@ echo ""
 
 # Highly Branched Compounds Test
 echo "6️⃣ Running Highly Branched Compounds Test..."
-python test_highly_branched.py
+python scripts/test_highly_branched.py
 if [ $? -ne 0 ]; then
     echo "❌ Highly Branched Compounds Test failed"
     exit 1
@@ -82,7 +82,7 @@ echo ""
 
 # Generate Unified Report
 echo "📊 Generating Unified HTML Report..."
-python generate_unified_report.py
+python scripts/generate_unified_report.py
 if [ $? -ne 0 ]; then
     echo "❌ Unified Report generation failed"
     exit 1
@@ -93,7 +93,7 @@ echo "📁 Organizing output files..."
 # Move data files
 mv pfas_*_benchmark_*.json data/ 2>/dev/null || true
 # Move HTML files
-mv *.html html/ 2>/dev/null || true
+mv *.html reports/ 2>/dev/null || true
 # Move image files
 mv *.png imgs/ 2>/dev/null || true
 mv *.svg imgs/ 2>/dev/null || true

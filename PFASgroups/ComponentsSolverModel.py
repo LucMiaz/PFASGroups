@@ -10,6 +10,8 @@ class ComponentsSolver:
         self.mol_size = mol.GetNumAtoms()  # Total atoms in molecule for fraction calculation
         self.total_carbons = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')  # Total carbon atoms
         self.G = mol_to_nx(mol)
+        self.limit_effective_graph_resistance = kwargs.get('limit_effective_graph_resistance',None)
+        self.skip_component_metrics = not kwargs.get('compute_component_metrics', True)
         self.components = self.get_fluorinated_subgraph()
         self.extended_components = {k:{0:v} for k,v in self.components.items()}
         # Mapping from (pathType, max_dist, extended_component_index) -> original_component_index
@@ -25,8 +27,9 @@ class ComponentsSolver:
             for i, comp in enumerate(components_list):
                 full_comp = self.get_full_component_atoms(comp)
                 self.component_full_sizes[path_type][i] = len(full_comp)
-        # Compute and store metrics for all components on creation
-        self._precompute_component_metrics()
+        # Compute and store metrics for all components on creation (if enabled)
+        if not self.skip_component_metrics:
+            self._precompute_component_metrics()
         # Initialize mapping for level 0 (original components)
         self._init_component_mapping()
         
@@ -261,6 +264,19 @@ class ComponentsSolver:
             - barycenter: nodes minimizing sum of distances
             - effective_graph_resistance: sum of resistance distances
         """
+        # If metrics computation is disabled, return minimal metrics (size only)
+        if self.skip_component_metrics:
+            return {
+                'size': len(component),
+                'diameter': float('nan'),
+                'radius': float('nan'),
+                'eccentricity_values': {},
+                'center': [],
+                'periphery': [],
+                'barycenter': [],
+                'effective_graph_resistance': float('nan')
+            }
+        
         # Use frozenset for caching
         comp_key = frozenset(component)
         if comp_key in self._component_metrics_cache:
@@ -320,8 +336,14 @@ class ComponentsSolver:
             
             # Effective graph resistance (requires matrix operations)
             try:
-                # Compute resistance distance for small graphs
-                if len(component) < 100:  # Limit for performance
+                # Compute resistance distance based on limit setting
+                # None = compute for all, int > 0 = compute if component size < limit, 0 = skip all
+                should_compute_resistance = (
+                    self.limit_effective_graph_resistance is None or
+                    (self.limit_effective_graph_resistance > 0 and len(component) < self.limit_effective_graph_resistance)
+                )
+                
+                if should_compute_resistance:
                     resistance_sum = 0.0
                     nodes = list(subG.nodes())
                     for i, u in enumerate(nodes):

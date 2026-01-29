@@ -7,16 +7,14 @@ Write-Host ("=" * 50) -ForegroundColor Cyan
 Write-Host ""
 
 # Check if we're in the right directory
-if (-not (Test-Path "enhanced_pfas_benchmark.py")) {
-    Write-Host "❌ Error: enhanced_pfas_benchmark.py not found!" -ForegroundColor Red
+if (-not (Test-Path "scripts/enhanced_pfas_benchmark.py")) {
+    Write-Host "❌ Error: scripts/enhanced_pfas_benchmark.py not found!" -ForegroundColor Red
     Write-Host "   Please run this script from the benchmark directory" -ForegroundColor Red
     exit 1
 }
 
 # Create output directories
-New-Item -ItemType Directory -Force -Path imgs | Out-Null
-New-Item -ItemType Directory -Force -Path html | Out-Null
-New-Item -ItemType Directory -Force -Path data | Out-Null
+New-Item -ItemType Directory -Force -Path scripts, reports, data, imgs | Out-Null
 
 Write-Host "📋 Running all PFAS benchmarks..." -ForegroundColor Yellow
 Write-Host ""
@@ -26,7 +24,7 @@ function Run-Benchmark {
     param($number, $name)
     Write-Host "$number Running $name..." -ForegroundColor Yellow
     $input = "$($number.Substring(0,1))"
-    $input | python enhanced_pfas_benchmark.py
+    $input | python scripts/enhanced_pfas_benchmark.py
     if ($LASTEXITCODE -ne 0) {
         Write-Host "❌ $name failed" -ForegroundColor Red
         exit 1
@@ -44,7 +42,7 @@ Run-Benchmark "5️⃣" "Complex Branched Structures Benchmark"
 
 # Highly Branched Compounds Test
 Write-Host "6️⃣ Running Highly Branched Compounds Test..." -ForegroundColor Yellow
-python test_highly_branched.py
+python scripts/test_highly_branched.py
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Highly Branched Compounds Test failed" -ForegroundColor Red
     exit 1
@@ -54,7 +52,7 @@ Write-Host ""
 
 # Generate Unified Report
 Write-Host "📊 Generating Unified HTML Report..." -ForegroundColor Yellow
-python generate_unified_report.py
+python scripts/generate_unified_report.py
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Unified Report generation failed" -ForegroundColor Red
     exit 1
@@ -63,7 +61,7 @@ if ($LASTEXITCODE -ne 0) {
 # Organize output files
 Write-Host "📁 Organizing output files..." -ForegroundColor Yellow
 Move-Item pfas_*_benchmark_*.json data\ -Force -ErrorAction SilentlyContinue
-Move-Item *.html html\ -Force -ErrorAction SilentlyContinue
+Move-Item *.html reports\ -Force -ErrorAction SilentlyContinue
 Move-Item *.png imgs\ -Force -ErrorAction SilentlyContinue
 Move-Item *.svg imgs\ -Force -ErrorAction SilentlyContinue
 
@@ -200,3 +198,4 @@ Write-Host "   • Open browser: http://localhost:5000" -ForegroundColor Gray
 Write-Host "   • View Analysis Reports tab for timing, complex, and enhanced analysis" -ForegroundColor Gray
 Write-Host ""
 Write-Host "✨ Benchmark Suite Complete!" -ForegroundColor Green
+

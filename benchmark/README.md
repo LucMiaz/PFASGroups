@@ -133,23 +133,10 @@ node server.js
 ### Files Generated
 ```
 benchmark/
-├── data/
-│   ├── pfas_oecd_benchmark_YYYYMMDD_HHMMSS.json (NEW)
-│   ├── pfas_non_fluorinated_benchmark_YYYYMMDD_HHMMSS.json (UPDATED)
-│   ├── pfas_complex_branched_benchmark_YYYYMMDD_HHMMSS.json (UPDATED)
-│   ├── pfas_enhanced_benchmark_YYYYMMDD_HHMMSS.json (existing)
-│   └── pfas_timing_benchmark_YYYYMMDD_HHMMSS.json (existing)
-├── analysis_reports/
-│   ├── timing_analysis.json
-│   ├── timing_description.md
-│   ├── complex_analysis.json
-│   ├── complex_description.md
-│   ├── enhanced_analysis.json
-│   ├── enhanced_description.md
-│   └── figures/
-│       ├── timing_fig1.svg
-│       ├── timing_fig1.png
-│       └── ...
+├── scripts/          # 34 Python scripts
+├── reports/          # 9 HTML reports (all in one place)
+├── data/             # 14 data files (JSON, CSV, NPZ, TSV)
+├── imgs/             # 30 images (PNG, PDF, SVG)
 └── review-app/
     └── database/
         └── pfas_benchmark.db (updated with all molecules)

@@ -49,9 +49,10 @@ class DataImporter {
             for (const file of jsonFiles) {
                 const filePath = path.join(dataPath, file);
                 
-                // Skip analysis/summary files
-                if (file.includes('validation') || file.includes('analysis') || file.includes('summary')) {
-                    console.log(`Skipping analysis file: ${file}`);
+                // Skip analysis/summary/test files
+                if (file.includes('validation') || file.includes('analysis') || file.includes('summary') || 
+                    file.includes('test_api') || !file.startsWith('pfas_')) {
+                    console.log(`Skipping non-benchmark file: ${file}`);
                     continue;
                 }
                 
