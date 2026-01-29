@@ -1791,7 +1791,7 @@
         "max_dist_from_CF": 8,
         "constraints": {},
         "smarts": {
-            "[CH2$([CH2][OH1,Oh1,O-,I,#14,#16,#15,#8,C])]": 1
+            "[CH2$([CH2][OH1,Oh1,O-,I,#14,#16,#15,#8,C$((=O)[OH1,Oh1,O-]])]": 1
         }
     },
     {
@@ -1801,11 +1801,11 @@
         "base_functional_groups": [],
         "main_group": "other PFAS",
         "smartsPath": "Perfluoroalkyl",
-        "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "linker_smarts": "[CX3$(C([F,H])=C),CH2X4]",
+        "max_dist_from_CF": 8,
         "constraints": {},
         "smarts": {
-            "[CH2$(C(F)=C[OH1,Oh1,O-,I,#14,#16,#15,#8,C])]": 1
+            "[CH2$(C[OH1,Oh1,O-,I,#15]),CH2$(C(=O)[OH1,Oh1,O-]),])]": 1
         }
     }
     
