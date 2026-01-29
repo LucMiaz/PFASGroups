@@ -1791,7 +1791,7 @@
         "max_dist_from_CF": 8,
         "constraints": {},
         "smarts": {
-            "[CH2]": 1
+            "[CH2$([CH2][OH1,Oh1,O-,I,#14,#16,#15,#8,C])]": 1
         }
     },
     {
@@ -1805,7 +1805,7 @@
         "max_dist_from_CF": 0,
         "constraints": {},
         "smarts": {
-            "[CH2$(C(F)=C)]": 1
+            "[CH2$(C(F)=C[OH1,Oh1,O-,I,#14,#16,#15,#8,C])]": 1
         }
     }
     
