@@ -95,6 +95,25 @@ if ($LASTEXITCODE -eq 0) {
         if ($importExitCode -eq 0) {
             Write-Host ""
             Write-Host "✅ Data import completed successfully!" -ForegroundColor Green
+            
+            # Generate timing report
+            Write-Host ""
+            Write-Host "3️⃣ Generating timing analysis report..." -ForegroundColor Green
+            
+            # Check if conda is available
+            $condaAvailable = Get-Command conda -ErrorAction SilentlyContinue
+            if ($condaAvailable) {
+                & conda run -n chem python generate_timing_report.py benchmark_timing_report.html
+            } else {
+                & python generate_timing_report.py benchmark_timing_report.html
+            }
+            
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "✅ Timing report generated: benchmark_timing_report.html" -ForegroundColor Green
+                Write-Host "   Open this file in your browser to view performance metrics" -ForegroundColor Cyan
+            } else {
+                Write-Host "⚠️  Could not generate timing report (non-critical)" -ForegroundColor Yellow
+            }
         } else {
             Write-Host ""
             Write-Host "⚠️  Data import had issues. Check the output above." -ForegroundColor Yellow

@@ -26,6 +26,22 @@ if [ $? -eq 0 ]; then
     echo ""
     echo "✅ Setup completed successfully!"
     echo ""
+    
+    # Generate timing analysis report
+    echo "3️⃣ Generating timing analysis report..."
+    if command -v conda &> /dev/null; then
+        conda run -n chem python generate_timing_report.py benchmark_timing_report.html 2>/dev/null
+    else
+        python generate_timing_report.py benchmark_timing_report.html 2>/dev/null
+    fi
+    
+    if [ -f "benchmark_timing_report.html" ]; then
+        echo "✅ Timing report generated: benchmark_timing_report.html"
+        echo "   View it by opening the file in your browser"
+    else
+        echo "⚠️  Timing report generation skipped (optional)"
+    fi
+    echo ""
     echo "🎯 What's next?"
     echo ""
     echo "Option 1: Development mode (recommended for reviewing)"
