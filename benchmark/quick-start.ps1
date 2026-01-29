@@ -51,9 +51,15 @@ if ($dataFiles.Count -eq 0) {
         if ($condaAvailable) {
             Write-Host "Using conda environment 'chem'..." -ForegroundColor Cyan
             & conda run -n chem python scripts/enhanced_pfas_benchmark.py
+            Write-Host ""
+            Write-Host "📊 Generating telomer validation data..." -ForegroundColor Green
+            & conda run -n chem python validate_telomers.py
         } else {
             Write-Host "Running with default Python..." -ForegroundColor Cyan
             & python scripts/enhanced_pfas_benchmark.py
+            Write-Host ""
+            Write-Host "📊 Generating telomer validation data..." -ForegroundColor Green
+            & python validate_telomers.py
         }
         
         if ($LASTEXITCODE -eq 0) {

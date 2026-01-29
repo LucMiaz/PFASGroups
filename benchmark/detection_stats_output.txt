@@ -1,0 +1,68 @@
+PFAS Group Detection Statistics Across Benchmark Datasets
+================================================================================
+
+Enhanced:
+  Total molecules: 2435
+  Molecules with PFAS groups: 2435 (100.0%)
+  Unique PFAS groups detected: 57
+  Top 5 groups:
+    Group 49: 4870 detections
+    Group 50: 4870 detections
+    Group 64: 2096 detections
+    Group 53: 720 detections
+    Group 22: 712 detections
+
+OECD:
+  Total molecules: 3414
+  Molecules with PFAS groups: 3412 (99.9%)
+  Unique PFAS groups detected: 59
+  Top 5 groups:
+    Group 50: 6772 detections
+    Group 49: 6766 detections
+    Group 64: 3592 detections
+    Group 31: 846 detections
+    Group 53: 818 detections
+
+Complex Branched:
+  Total molecules: 300
+  Molecules with PFAS groups: 300 (100.0%)
+  Unique PFAS groups detected: 16
+  Top 5 groups:
+    Group 49: 300 detections
+    Group 50: 300 detections
+    Group 64: 200 detections
+    Group 33: 150 detections
+    Group 36: 100 detections
+
+Highly Branched:
+  Total molecules: 360
+  PFAS groups detected: 360 (100.0%)
+  Unique PFAS groups: 24
+  Top 5 groups:
+    Group 29: 15 detections
+    Group 30: 15 detections
+    Group 31: 15 detections
+    Group 32: 15 detections
+    Group 33: 15 detections
+
+Telomer Validation:
+  Total molecules: 785
+  Telomers detected: 753 (95.9%)
+  Unique telomer groups: 7
+  Top 5 telomer groups:
+    Group 68: 67 detections (Fluorotelomer ethoxylates)
+    Group 74: 67 detections (Fluorotelomer alcohol)
+    Group 86: 748 detections (Fluorotelomers (generic))
+    Group 64: 7 detections (Fluorotelomer iodide)
+    Group 69: 57 detections (Fluorotelomer sulfonic acid)
+
+================================================================================
+Summary table for LaTeX:
+
+Dataset & Total & Detected & Detection Rate & Unique Groups \\
+\hline
+Enhanced & 2435 & 2435 & 100.0\% & 57 \\
+OECD & 3414 & 3412 & 99.9\% & 59 \\
+Complex Branched & 300 & 300 & 100.0\% & 16 \\
+Highly Branched & 360 & 360 & 100.0\% & 24 \\
+Telomer Validation & 785 & 753 & 95.9\% & 7 \\

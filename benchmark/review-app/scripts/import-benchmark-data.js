@@ -49,9 +49,10 @@ class DataImporter {
             for (const file of jsonFiles) {
                 const filePath = path.join(dataPath, file);
                 
-                // Skip analysis/summary/test files
-                if (file.includes('validation') || file.includes('analysis') || file.includes('summary') || 
-                    file.includes('test_api') || !file.startsWith('pfas_')) {
+                // Skip analysis/summary/test files (but keep telomer_validation for reporting)
+                if ((file.includes('validation') && !file.includes('telomer_validation')) || 
+                    file.includes('analysis') || file.includes('summary') || 
+                    file.includes('test_api') || (!file.startsWith('pfas_') && !file.includes('telomer_validation'))) {
                     console.log(`Skipping non-benchmark file: ${file}`);
                     continue;
                 }

@@ -80,6 +80,16 @@ fi
 echo "✅ Highly Branched Compounds Test completed"
 echo ""
 
+# Telomer Validation
+echo "7️⃣ Running Telomer Detection Validation..."
+python validate_telomers.py
+if [ $? -ne 0 ]; then
+    echo "❌ Telomer Validation failed"
+    exit 1
+fi
+echo "✅ Telomer Validation completed"
+echo ""
+
 # Generate Unified Report
 echo "📊 Generating Unified HTML Report..."
 python scripts/generate_unified_report.py
@@ -108,6 +118,7 @@ echo "   • Timing Performance: Measures execution speed scaling"
 echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 echo "   • Complex Branched: Tests complex molecular structures"
 echo "   • Highly Branched: Tests functional groups on perfluorinated components"
+echo "   • Telomer Validation: Tests detection of fluorotelomers on PubChem dataset"
 echo ""
 
 # Run analysis scripts
@@ -157,6 +168,20 @@ if [ -f "$ENHANCED_FILE" ] && [ -f "$OECD_FILE" ]; then
     fi
 else
     echo "⚠️  Missing enhanced or OECD benchmark files"
+fi
+echo ""
+
+# Telomer Validation Report
+echo "🧪 Generating telomer validation report..."
+if [ -f "data/telomer_validation_results.json" ]; then
+    python scripts/generate_telomer_report.py
+    if [ $? -eq 0 ]; then
+        echo "✅ Telomer validation report completed"
+    else
+        echo "⚠️  Telomer validation report failed"
+    fi
+else
+    echo "⚠️  No telomer validation data found"
 fi
 echo ""
 
