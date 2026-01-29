@@ -1,0 +1,2897 @@
+{
+  "metadata": {
+    "timestamp": "20260129_004813",
+    "test_type": "highly_branched",
+    "total_tests": 360,
+    "success_rate": 100.0,
+    "failure_rate": 0.0
+  },
+  "summary": {
+    "total": 360,
+    "passed": 360,
+    "failed": 0
+  },
+  "details": [
+    {
+      "component_size": 1,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 0,
+      "smiles": "OC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 1,
+      "smiles": "OC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 2,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 0,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 1,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 2,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 0,
+      "smiles": "COC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 1,
+      "smiles": "COC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 2,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 0,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 1,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 2,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 0,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 1,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 2,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 0,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 1,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 2,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 0,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 1,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 2,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 0,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 1,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 2,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 0,
+      "smiles": "OSC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 1,
+      "smiles": "OSC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 2,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 0,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 1,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 2,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 0,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 1,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 2,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 0,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 1,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 2,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 0,
+      "smiles": "ClC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 1,
+      "smiles": "ClC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 2,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 0,
+      "smiles": "BrC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 1,
+      "smiles": "BrC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 2,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 0,
+      "smiles": "IC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 1,
+      "smiles": "IC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 2,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 0,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 1,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 2,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 0,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 1,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 2,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 0,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 1,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 2,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 0,
+      "smiles": "NC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 1,
+      "smiles": "NC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 2,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 0,
+      "smiles": "C=CC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 1,
+      "smiles": "C=CC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 2,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 0,
+      "smiles": "C#CC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 1,
+      "smiles": "C#CC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 2,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 0,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 1,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 2,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 0,
+      "smiles": "OOC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 1,
+      "smiles": "OOC(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 2,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 0,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 1,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 1,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 2,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 0,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 1,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 2,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 0,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 1,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 2,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 0,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 1,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 2,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 0,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 1,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 2,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 0,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 1,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 2,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 0,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 1,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 2,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 0,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 1,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 2,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 0,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 1,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 2,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 0,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 1,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 2,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 0,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 1,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 2,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 0,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 1,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 2,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 0,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 1,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 2,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 0,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 1,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 2,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 0,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 1,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 2,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 0,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 1,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 2,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 0,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 1,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 2,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 0,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 1,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 2,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 0,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 1,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 2,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 0,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 1,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 2,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 0,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 1,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 2,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 0,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 1,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 2,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 0,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 1,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 2,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 0,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 1,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 2,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 0,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 1,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 2,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 2,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 0,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 1,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 2,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 0,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 1,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 2,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 0,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 1,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 2,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 0,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 1,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 2,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 0,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 1,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 2,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 0,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 1,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 2,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 0,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 1,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 2,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 0,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 1,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 2,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 0,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 1,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 2,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 0,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 1,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 2,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 0,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 1,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 2,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 0,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 1,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 2,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 0,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 1,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 2,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 0,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 1,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 2,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 0,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 1,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 2,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 0,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 1,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 2,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 0,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 1,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 2,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 0,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 1,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 2,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 0,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 1,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 2,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 0,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 1,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 2,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 0,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 1,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 2,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 0,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 1,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 2,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 0,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 1,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 2,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 0,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 1,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 3,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 2,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 0,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 1,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 2,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 0,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 1,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 2,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 0,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 1,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 2,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 0,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 1,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 2,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 0,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 1,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 2,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 0,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 1,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 2,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 0,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 1,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 2,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 0,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 1,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 2,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 0,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 1,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 2,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 0,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 1,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 2,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 0,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 1,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 2,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 0,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 1,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 2,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 0,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 1,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 2,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 0,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 1,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 2,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 0,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 1,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 2,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 0,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 1,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 2,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 0,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 1,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 2,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 0,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 1,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 2,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 0,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 1,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 2,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 0,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 1,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 2,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 0,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 1,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 2,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 0,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 1,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 2,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 0,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 1,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 2,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 0,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 1,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 4,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 2,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 0,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 1,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 29,
+      "group_name": "alcohol",
+      "distance": 2,
+      "smiles": "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 0,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 1,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 30,
+      "group_name": "ketone",
+      "distance": 2,
+      "smiles": "FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 0,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 1,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 31,
+      "group_name": "ether",
+      "distance": 2,
+      "smiles": "COC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 0,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 1,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 32,
+      "group_name": "ester",
+      "distance": 2,
+      "smiles": "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 0,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 1,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 33,
+      "group_name": "carboxylic acid",
+      "distance": 2,
+      "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 0,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 1,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 34,
+      "group_name": "amide",
+      "distance": 2,
+      "smiles": "NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 0,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 1,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 35,
+      "group_name": "acyl halide",
+      "distance": 2,
+      "smiles": "ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 0,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 1,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 36,
+      "group_name": "sulfonic acid",
+      "distance": 2,
+      "smiles": "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 0,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 1,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 37,
+      "group_name": "sulfenic acid",
+      "distance": 2,
+      "smiles": "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 0,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 1,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 38,
+      "group_name": "sulfinic acid",
+      "distance": 2,
+      "smiles": "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 0,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 1,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 39,
+      "group_name": "phosphonic acid",
+      "distance": 2,
+      "smiles": "OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 0,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 1,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 40,
+      "group_name": "phosphinic acid",
+      "distance": 2,
+      "smiles": "P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 0,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 1,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 41,
+      "group_name": "chloride",
+      "distance": 2,
+      "smiles": "ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 0,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 1,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 42,
+      "group_name": "bromide",
+      "distance": 2,
+      "smiles": "BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 0,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 1,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 43,
+      "group_name": "iodide",
+      "distance": 2,
+      "smiles": "IC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 0,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 1,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 44,
+      "group_name": "sulfonamide",
+      "distance": 2,
+      "smiles": "CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 0,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 1,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 45,
+      "group_name": "heterocyclic azole",
+      "distance": 2,
+      "smiles": "C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 0,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 1,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 46,
+      "group_name": "heterocyclic azine",
+      "distance": 2,
+      "smiles": "c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 0,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 1,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 48,
+      "group_name": "amine",
+      "distance": 2,
+      "smiles": "NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 0,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 1,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 51,
+      "group_name": "alkene",
+      "distance": 2,
+      "smiles": "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 0,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 1,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 52,
+      "group_name": "alkyne",
+      "distance": 2,
+      "smiles": "C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 0,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 1,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 53,
+      "group_name": "side-chain aromatics",
+      "distance": 2,
+      "smiles": "c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 0,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 1,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 58,
+      "group_name": "peroxydes",
+      "distance": 2,
+      "smiles": "OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 0,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 1,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    },
+    {
+      "component_size": 5,
+      "group_id": 59,
+      "group_name": "benzoyl peroxydes",
+      "distance": 2,
+      "smiles": "c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+      "passed": true
+    }
+  ],
+  "failures_by_group": {}
+}
