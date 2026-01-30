@@ -14,7 +14,7 @@ from PFASgroups import parse_smiles
 from rdkit import Chem
 
 # Telomer group IDs (62-87)
-TELOMER_GROUP_IDS = set(range(62, 88))
+TELOMER_GROUP_IDS = set(range(68, 93))
 
 def main():
     """Main execution."""
@@ -23,7 +23,7 @@ def main():
     print("="*60)
     
     # Input file
-    sdf_file = Path('data/PubChem_fluorotelomers.sdf')
+    sdf_file = Path('../data/PubChem_fluorotelomers.sdf')
     
     if not sdf_file.exists():
         print(f"Error: SDF file not found: {sdf_file}")
@@ -131,7 +131,7 @@ def main():
             print(f"  {i:2d}. ID {data['id']:2d}: {data['name']:<45s} ({data['count']:3d} detections)")
     
     # Save results
-    output_file = Path('data/telomer_validation_results.json')
+    output_file = Path('../data/telomer_validation_results.json')
     output_data = {
         'test_date': datetime.now().isoformat(),
         'dataset': 'PubChem_fluorotelomers.sdf',

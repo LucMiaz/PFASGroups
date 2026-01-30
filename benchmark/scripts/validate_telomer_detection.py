@@ -22,40 +22,42 @@ from datetime import datetime
 from rdkit import Chem
 from PFASgroups import parse_smiles
 
-# Telomer group IDs
-TELOMER_GROUP_IDS = {
-    # Saturated telomers (62-74, excluding 67 which is unsaturated)
-    62: "Fluorotelomer silane",
-    63: "Fluorotelomer trichlorosilane",
-    64: "Fluorotelomer iodide",
-    65: "Fluorotelomer aldehyde",
-    66: "Fluorotelomer carboxylic acids",
-    68: "Fluorotelomer ethoxylates",
-    69: "Fluorotelomer sulfonic acid",
-    70: "Fluorotelomer monophosphate",
-    71: "Fluorotelomer diphosphate",
-    72: "Fluorotelomer acrylate",
-    73: "Fluorotelomer metacrylate",
-    74: "Fluorotelomer alcohol",
+
+def load_telomer_groups():
+    """Load telomer group IDs automatically from PFAS_groups_smarts.json.
     
-    # Unsaturated telomers (67, 75-85)
-    67: "Fluorotelomer unsaturated carboxylic acids",
-    75: "Fluorotelomer unsaturated silane",
-    76: "Fluorotelomer unsaturated trichlorosilane",
-    77: "Fluorotelomer unsaturated iodide",
-    78: "Fluorotelomer unsaturated aldehyde",
-    79: "Fluorotelomer unsaturated ethoxylates",
-    80: "Fluorotelomer unsaturated sulfonic acid",
-    81: "Fluorotelomer unsaturated monophosphate",
-    82: "Fluorotelomer unsaturated diphosphate",
-    83: "Fluorotelomer unsaturated acrylate",
-    84: "Fluorotelomer unsaturated metacrylate",
-    85: "Fluorotelomer unsaturated alcohol",
+    Returns dictionary mapping group ID to group name for all groups containing
+    'telomer' in their name (case-insensitive).
+    """
+    script_dir = Path(__file__).parent.parent.parent
+    json_path = script_dir / 'PFASgroups' / 'data' / 'PFAS_groups_smarts.json'
     
-    # Generic groups
-    86: "Fluorotelomers (generic)",
-    87: "Unsaturated fluorotelomers (generic)",
-}
+    telomer_groups = {}
+    
+    try:
+        with open(json_path, 'r') as f:
+            groups = json.load(f)
+        
+        for group in groups:
+            group_id = group.get('id')
+            group_name = group.get('name', '')
+            
+            # Check if "telomer" appears in the group name (case-insensitive)
+            if 'telomer' in group_name.lower():
+                telomer_groups[group_id] = group_name
+        
+        print(f"✓ Loaded {len(telomer_groups)} telomer groups from PFAS_groups_smarts.json")
+        print(f"  Telomer group IDs: {sorted(telomer_groups.keys())}")
+        
+    except Exception as e:
+        print(f"⚠ Warning: Could not load telomer groups from JSON: {e}")
+        print(f"  Using empty telomer group list")
+    
+    return telomer_groups
+
+
+# Automatically load telomer group IDs from PFAS_groups_smarts.json
+TELOMER_GROUP_IDS = load_telomer_groups()
 
 
 def read_sdf_file(sdf_path):

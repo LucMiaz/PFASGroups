@@ -59,59 +59,114 @@ class EnhancedPFASBenchmark:
         with open(specificity_path, 'r') as f:
             self.specificity_groups = json.load(f)
         
-        # Target groups 29-73 (excluding 49, 50 which are smartsPath-only groups)
-        self.target_groups = [g for g in range(29, 74) if g not in [49, 50]]
+        # Automatically determine max group ID from loaded data
+        max_group_id = max(g['id'] for g in self.pfas_groups)
+        
+        # Build telomer group set by checking for "telomer" in group names
+        self.telomer_groups = set()
+        for group in self.pfas_groups:
+            if 'telomer' in group.get('name', '').lower():
+                self.telomer_groups.add(group['id'])
+        
+        print(f"✅ Loaded {len(self.pfas_groups)} PFAS groups (max ID: {max_group_id})")
+        print(f"✅ Identified {len(self.telomer_groups)} telomer groups: {sorted(self.telomer_groups)}")
+        
+        # Target groups 29-max_id (excluding 49, 50 which are smartsPath-only groups)
+        # Automatically includes all functional groups and telomers
+        self.target_groups = [g for g in range(29, max_group_id + 1) if g not in [49, 50]]
         
         # OECD target groups 1-28
         self.oecd_target_groups = list(range(1, 29))
         
         # Functional group definitions following test_examples.py format with proper modes
-        self.functional_smarts = {
-            29: {'name': 'alcohol', 'smiles': 'O[H]', 'mode': 'attach'},
-            30: {'name': 'ketone', 'smiles': 'C(=O)', 'mode': 'insert'},
-            31: {'name': 'ether', 'smiles': 'O', 'mode': 'insert'},
-            32: {'name': 'ester', 'smiles': 'C(=O)OC', 'mode': 'insert'},
-            33: {'name': 'carboxylic acid', 'smiles': 'C(=O)O', 'mode': 'attach'},
-            34: {'name': 'amide', 'smiles': 'C(=O)N', 'mode': 'insert'},
-            35: {'name': 'acyl halide', 'smiles': 'C(=O)Cl', 'mode': 'attach'},
-            36: {'name': 'sulfonic acid', 'smiles': 'S(=O)(=O)O', 'mode': 'attach'},
-            37: {'name': 'sulfenic acid', 'smiles': 'SO[H]', 'mode': 'attach'},
-            38: {'name': 'sulfinic acid', 'smiles': 'S(=O)O[H]', 'mode': 'attach'},
-            39: {'name': 'phosphonic acid', 'smiles': 'P(=O)(O)O', 'mode': 'attach'},
-            40: {'name': 'phosphinic acid', 'smiles': 'P(=O)O', 'mode': 'attach'},
-            41: {'name': 'chloride', 'smiles': 'Cl', 'mode': 'attach'},
-            42: {'name': 'bromide', 'smiles': 'Br', 'mode': 'attach'},
-            43: {'name': 'iodide', 'smiles': 'I', 'mode': 'attach'},
-            44: {'name': 'sulfonamide', 'smiles': 'S(=O)(=O)N', 'mode': 'insert'},
-            45: {'name': 'Heterocyclic azole', 'smiles': 'c1ncc[nH]1', 'mode': 'attach'},
-            46: {'name': 'Heterocyclic azine', 'smiles': 'c1ncccc1', 'mode': 'attach'},
-            47: {'name': 'benzodioxole', 'smiles': 'c1ccc2OC(F)(F)Oc2c1', 'mode': 'attach'},
-            48: {'name': 'amine', 'smiles': 'N', 'mode': 'insert'},
-            51: {'name': 'alkene', 'smiles': 'C(F)=C(F)', 'mode': 'insert'},
-            52: {'name': 'alkyne', 'smiles': 'C#C', 'mode': 'insert'},
-            53: {'name': 'Side-chain aromatics', 'smiles': 'c1ccccc1', 'mode': 'attach'},
-            54: {'name': 'Perfluoro cyclic compounds', 'smiles': 'C1(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)(F)', 'mode': 'attach'},
-            55: {'name': 'Polyfluoro cyclic compounds', 'smiles': 'C1(F)C(F)(F)(F)C(H)C(F)C(F)(F)C1(F)', 'mode': 'attach'},
-            56: {'name': 'Perfluoroaryl compounds', 'smiles': 'c1c(F)c(F)c(F)c(F)c1F', 'mode': 'attach'},
-            57: {'name': 'Polyfluoroaryl compounds', 'smiles': 'c1c(F)c(F)ccc1F', 'mode': 'attach'},
-            58: {'name': 'Peroxydes', 'smiles': 'OO', 'mode': 'insert'},
-            59: {'name': 'Benzoyl peroxydes', 'smiles': 'C(=O)OOC(=O)', 'mode': 'insert'},
-            # Fluorotelomer groups 60-73 (require CH2 linker chains)
-            60: {'name': 'Silane', 'smiles': '[Si](C)(C)C', 'mode': 'attach', 'telomer': True},
-            61: {'name': 'Trichlorosilane', 'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach', 'telomer': True},
-            62: {'name': 'Fluorotelomer silane', 'smiles': '[Si](C)(C)C', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 6)},
-            63: {'name': 'Fluorotelomer trichlorosilane', 'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 6)},
-            64: {'name': 'Fluorotelomer', 'smiles': 'C', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 6)},
-            65: {'name': 'Fluorotelomer aldehyde', 'smiles': 'C(=O)[H]', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
-            66: {'name': 'Fluorotelomer carboxylic acids', 'smiles': 'C(=O)O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
-            67: {'name': 'Fluorotelomer unsaturated carboxylic acids', 'smiles': 'C=CC(=O)O', 'mode': 'attach', 'telomer': True},
-            68: {'name': 'Fluorotelomer ethoxylates', 'smiles': 'O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8), 'ethoxylate': True},
-            69: {'name': 'Fluorotelomer sulfonic acid', 'smiles': 'S(=O)(=O)O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
-            70: {'name': 'Fluorotelomer monophosphate', 'smiles': 'OP(=O)(O)O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
-            71: {'name': 'Fluorotelomer diphosphate', 'smiles': 'OP(=O)(O)OP(=O)(O)O', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
-            72: {'name': 'Fluorotelomer acrylate', 'smiles': 'OC(=O)C=C', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)},
-            73: {'name': 'Fluorotelomer metacrylate', 'smiles': 'OC(=O)C(=C)C', 'mode': 'attach', 'telomer': True, 'ch2_range': (2, 8)}
-        }
+        # Load group names and properties from JSON automatically
+        self.functional_smarts = {}
+        
+        # Load from PFAS_groups_smarts.json for groups in target range
+        for group in self.pfas_groups:
+            group_id = group['id']
+            if group_id in self.target_groups:
+                group_name = group.get('name', f'Group {group_id}')
+                is_telomer = group_id in self.telomer_groups
+                
+                # Try to determine appropriate SMILES and mode from group data
+                # For telomers, use basic functional group patterns
+                # This is a simplified version - actual molecule generation will use the full SMARTS
+                smiles_map = {
+                    # Keep existing mappings for groups 29-59
+                    29: {'smiles': 'O[H]', 'mode': 'attach'},
+                    30: {'smiles': 'C(=O)', 'mode': 'insert'},
+                    31: {'smiles': 'O', 'mode': 'insert'},
+                    32: {'smiles': 'C(=O)OC', 'mode': 'insert'},
+                    33: {'smiles': 'C(=O)O', 'mode': 'attach'},
+                    34: {'smiles': 'C(=O)N', 'mode': 'insert'},
+                    35: {'smiles': 'C(=O)Cl', 'mode': 'attach'},
+                    36: {'smiles': 'S(=O)(=O)O', 'mode': 'attach'},
+                    37: {'smiles': 'SO[H]', 'mode': 'attach'},
+                    38: {'smiles': 'S(=O)O[H]', 'mode': 'attach'},
+                    39: {'smiles': 'P(=O)(O)O', 'mode': 'attach'},
+                    40: {'smiles': 'P(=O)O', 'mode': 'attach'},
+                    41: {'smiles': 'Cl', 'mode': 'attach'},
+                    42: {'smiles': 'Br', 'mode': 'attach'},
+                    43: {'smiles': 'I', 'mode': 'attach'},
+                    44: {'smiles': 'S(=O)(=O)N', 'mode': 'insert'},
+                    45: {'smiles': 'c1ncc[nH]1', 'mode': 'attach'},
+                    46: {'smiles': 'c1ncccc1', 'mode': 'attach'},
+                    47: {'smiles': 'c1ccc2OC(F)(F)Oc2c1', 'mode': 'attach'},
+                    48: {'smiles': 'N', 'mode': 'insert'},
+                    51: {'smiles': 'C(F)=C(F)', 'mode': 'insert'},
+                    52: {'smiles': 'C#C', 'mode': 'insert'},
+                    53: {'smiles': 'c1ccccc1', 'mode': 'attach'},
+                    54: {'smiles': 'C1(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)(F)', 'mode': 'attach'},
+                    55: {'smiles': 'C1(F)C(F)(F)(F)C(H)C(F)C(F)(F)C1(F)', 'mode': 'attach'},
+                    56: {'smiles': 'c1c(F)c(F)c(F)c(F)c1F', 'mode': 'attach'},
+                    57: {'smiles': 'c1c(F)c(F)ccc1F', 'mode': 'attach'},
+                    58: {'smiles': 'OO', 'mode': 'insert'},
+                    59: {'smiles': 'C(=O)OOC(=O)', 'mode': 'insert'},
+                    # Groups 60-66 non-telomers
+                    60: {'smiles': 'C(=O)OOC(=O)', 'mode': 'insert'},  # Benzoyl peroxides
+                    61: {'smiles': '[Si](C)(C)C', 'mode': 'attach'},  # Silane
+                    62: {'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach'},  # Trichlorosilane
+                    63: {'smiles': 'OC(=O)C=C', 'mode': 'attach'},  # Acrylate
+                    64: {'smiles': 'OC(=O)C(=C)C', 'mode': 'attach'},  # Methacrylate
+                    65: {'smiles': 'N(C)(C)CC(=O)O', 'mode': 'attach'},  # Betaine
+                    66: {'smiles': 'SN#C', 'mode': 'attach'},  # Thiocyanic acid
+                    # Telomer groups 67-83 - use simplified patterns for generation
+                    67: {'smiles': '[Si](C)(C)C', 'mode': 'attach'},  # FT silane
+                    68: {'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach'},  # FT trichlorosilane
+                    69: {'smiles': 'I', 'mode': 'attach'},  # FT iodide
+                    70: {'smiles': 'C(=O)[H]', 'mode': 'attach'},  # FT aldehyde
+                    71: {'smiles': 'C(=O)O', 'mode': 'attach'},  # FT carboxylic acids
+                    72: {'smiles': 'O', 'mode': 'attach'},  # FT ethoxylates
+                    73: {'smiles': 'S(=O)(=O)O', 'mode': 'attach'},  # FT sulfonic acid
+                    74: {'smiles': 'OP(=O)(O)O', 'mode': 'attach'},  # FT monophosphate
+                    75: {'smiles': 'OP(=O)(O)OP(=O)(O)O', 'mode': 'attach'},  # FT diphosphate
+                    76: {'smiles': 'OC(=O)C=C', 'mode': 'attach'},  # FT acrylate
+                    77: {'smiles': 'OC(=O)C(=C)C', 'mode': 'attach'},  # FT methacrylate
+                    78: {'smiles': 'O', 'mode': 'attach'},  # FT alcohol
+                    79: {'smiles': 'S', 'mode': 'insert'},  # FT sulfide
+                    80: {'smiles': 'S(=O)(=O)N', 'mode': 'insert'},  # FT sulfonamide
+                    81: {'smiles': '[Si](OC)(OC)OC', 'mode': 'attach'},  # FT silyl
+                    82: {'smiles': 'N(C)(C)CC(=O)O', 'mode': 'attach'},  # FT betaine
+                    83: {'smiles': 'OC(=O)C', 'mode': 'attach'},  # FT ester - using simplified pattern
+                }
+                
+                if group_id in smiles_map:
+                    entry = {
+                        'name': group_name,
+                        'smiles': smiles_map[group_id]['smiles'],
+                        'mode': smiles_map[group_id]['mode']
+                    }
+                    
+                    if is_telomer:
+                        entry['telomer'] = True
+                        entry['ch2_range'] = (2, 8)
+                        if 'ethoxylate' in group_name.lower():
+                            entry['ethoxylate'] = True
+                    
+                    self.functional_smarts[group_id] = entry
+        
+        print(f"✅ Loaded {len(self.functional_smarts)} functional group definitions for testing")
         
         # Build OECD group mappings after functional_smarts is defined
         self.build_oecd_mappings()
@@ -577,8 +632,8 @@ class EnhancedPFASBenchmark:
             group_name = self.functional_smarts[group_id]['name']
             print(f"🧪 Generating molecules for Group {group_id}: {group_name}")
             
-            # Use specialized fluorotelomer generation for groups 60-73
-            if group_id >= 60 and group_id <= 73:
+            # Use specialized fluorotelomer generation for telomer groups (detected by name)
+            if group_id in self.telomer_groups:
                 molecules = self.generate_fluorotelomer_molecules(group_id, count=replicates)
             else:
                 molecules = self.generate_single_group_molecules(group_id, count=replicates)
