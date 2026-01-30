@@ -1518,6 +1518,20 @@
     },
     {
         "id": 67,
+        "name": "Thia keto propanoic acid",
+        "alias": "Thia keto propanoic acid",
+        "base_functional_groups": [],
+        "main_group": "carboxylic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {"gte":{"O":5,"S":1}},
+        "smarts": {
+            "[C$(C(=O)SC(=O)C([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 68,
         "name": "Glucuronate",
         "alias": "Glucuronate",
         "base_functional_groups": [],
@@ -1531,7 +1545,7 @@
         }
     },
     {
-        "id": 68,
+        "id": 69,
         "name": "Fluorotelomer silane",
         "alias": "Fluorotelomer silane",
         "base_functional_groups": [],
@@ -1545,7 +1559,7 @@
         }
     },
     {
-        "id": 69,
+        "id": 70,
         "name": "Fluorotelomer trichlorosilane",
         "alias": "Fluorotelomer trichlorosilane",
         "base_functional_groups": [],
@@ -1559,7 +1573,7 @@
         }
     },
     {
-        "id": 70,
+        "id": 71,
         "name": "Fluorotelomer iodide",
         "alias": "FTI",
         "base_functional_groups": [],
@@ -1573,7 +1587,7 @@
         }
     },
     {
-        "id": 71,
+        "id": 72,
         "name": "Fluorotelomer aldehyde",
         "alias": "FTUCA",
         "base_functional_groups": [],
@@ -1587,7 +1601,7 @@
         }
     },
     {
-        "id": 72,
+        "id": 73,
         "name": "Fluorotelomer carboxylic acids",
         "alias": "FTCA",
         "base_functional_groups": [],
@@ -1601,7 +1615,7 @@
         }
     },
     {
-        "id": 73,
+        "id": 74,
         "name": "Fluorotelomer ethoxylates",
         "alias": "FTEO",
         "base_functional_groups": [],
@@ -1616,7 +1630,7 @@
         }
     },
     {
-        "id": 74,
+        "id": 75,
         "name": "Fluorotelomer sulfonic acid",
         "alias": "FTSA",
         "base_functional_groups": [],
@@ -1630,7 +1644,7 @@
         }
     },
     {
-        "id": 75,
+        "id": 76,
         "name": "Fluorotelomer monophosphate",
         "alias": "monoPAP",
         "base_functional_groups": [],
@@ -1644,7 +1658,7 @@
         }
     },
     {
-        "id": 76,
+        "id": 77,
         "name": "Fluorotelomer diphosphate",
         "alias": "diPAP",
         "base_functional_groups": [],
@@ -1656,9 +1670,22 @@
         "smarts": {
             "[CH2$(COP(=O)([OH1,Oh1,O-])O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]": 1
         }
+    },{
+        "id": 78,
+        "name": "Fluorotelomer triphosphate",
+        "alias": "triPAP",
+        "base_functional_groups": [],
+        "main_group": "other PFAS",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":4}},
+        "smarts": {
+            "[CH2$(COP(=O)(O[CH2$(C[CH2,CX4$(C(F)(F)C)])])O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]": 1
+        }
     },
     {
-        "id": 77,
+        "id": 79,
         "name": "Fluorotelomer acrylate",
         "alias": "FTAC",
         "base_functional_groups": [],
@@ -1672,7 +1699,7 @@
         }
     },
     {
-        "id": 78,
+        "id": 80,
         "name": "Fluorotelomer methacrylate",
         "alias": "FTMAC",
         "base_functional_groups": [],
@@ -1686,7 +1713,7 @@
         }
     },
     {
-        "id": 79,
+        "id": 81,
         "name": "Fluorotelomer alcohol",
         "alias": "FTO",
         "base_functional_groups": [],
@@ -1700,7 +1727,7 @@
         }
     },
     {
-        "id": 80,
+        "id": 82,
         "name": "Fluorotelomer sulfure",
         "alias": "FTS",
         "base_functional_groups": [],
@@ -1714,7 +1741,7 @@
         }
     },
     {
-        "id": 81,
+        "id": 83,
         "name": "Fluorotelomer sulfonamide",
         "alias": "FTS",
         "base_functional_groups": [],
@@ -1728,7 +1755,7 @@
         }
     },
     {
-        "id": 82,
+        "id": 84,
         "name": "Fluorotelomer silyl",
         "alias": "FTSi",
         "base_functional_groups": [],
@@ -1742,7 +1769,7 @@
         }
     },
     {
-        "id": 83,
+        "id": 85,
         "name": "Fluorotelomer betaine",
         "alias": "FTB",
         "base_functional_groups": [],
@@ -1756,7 +1783,7 @@
         }
     },
     {
-        "id": 84,
+        "id": 86,
         "name": "Fluorotelomer ester",
         "alias": "FTEs",
         "base_functional_groups": [],
@@ -1770,7 +1797,7 @@
         }
     },
     {
-        "id": 85,
+        "id": 87,
         "name": "Fluorotelomer thiocyanic acid",
         "alias": "Fluorotelomer thiocyanic acid",
         "base_functional_groups": [],
@@ -1785,7 +1812,7 @@
     }
     ,
     {
-        "id": 86,
+        "id": 88,
         "name": "Fluorotelomer alkene",
         "alias": "Fluorotelomer alkene",
         "base_functional_groups": [],
@@ -1799,7 +1826,7 @@
         }
     },
     {
-        "id": 87,
+        "id": 89,
         "name": "Fluorotelomer trimethylamine",
         "alias": "Fluorotelomer trimethylamine",
         "base_functional_groups": [],
@@ -1813,7 +1840,7 @@
         }
     },
     {
-        "id": 88,
+        "id": 90,
         "name": "Fluorotelomer sulfinic acid",
         "alias": "Fluorotelomer sulfinic acid",
         "base_functional_groups": [],
@@ -1827,7 +1854,7 @@
         }
     },
     {
-        "id": 89,
+        "id": 91,
         "name": "Fluorotelomer sulfenic acid",
         "alias": "Fluorotelomer sulfenic acid",
         "base_functional_groups": [],
@@ -1841,7 +1868,7 @@
         }
     },
     {
-        "id": 90,
+        "id": 92,
         "name": "Fluorotelomer sulfuric acid",
         "alias": "Fluorotelomer sulfuric acid",
         "base_functional_groups": [],
@@ -1855,7 +1882,7 @@
         }
     },
     {
-        "id": 91,
+        "id": 93,
         "name": "Fluorotelomer methyl",
         "alias": "Fluorotelomer methyl",
         "base_functional_groups": [],
@@ -1869,7 +1896,7 @@
         }
     },
     {
-        "id": 92,
+        "id": 94,
         "name": "Fluorotelomer glucuronic acid",
         "alias": "Fluorotelomer glucuronic acid",
         "base_functional_groups": [],
@@ -1881,5 +1908,59 @@
         "smarts": {
             "[CX4$(C[O$(O[C@@H]1O[C@H](C(=O)O)[C@@H](O)[C@H](O)[C@H]1O),O$(O[C@H]1[C@H](O)O[C@H](C(=O)O)[C@@H](O)[C@@H]1O),O$(O[C@@H]1[C@@H](O)[C@H](O)O[C@H](C(=O)O)[C@H]1O),O$(O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1C(=O)O)])]": 1
         }
+    },
+    {
+        "id": 95,
+        "name": "Fluorotelomer formaldehyde bisulfite",
+        "alias": "Fluorotelomer formaldehyde bisulfite",
+        "base_functional_groups": [],
+        "main_group": "alkyl",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":4,"S":1}},
+        "smarts": {
+            "[CH2$(CC([OH1,Oh1,O-])S(=O)(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 96,
+        "name": "Fluorotelomer unsaturated carboxylic acids",
+        "alias": "FTUCA",
+        "base_functional_groups": [],
+        "main_group": "carboxylic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4,C$(C[H,F]=CH1)]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":2}},
+        "smarts": {
+            "[CH2$(CC(=O)[OH1,Oh1,O-])]": 1,
+            "C=C":1
+        }
+    },
+    {
+        "id": 97,
+        "name": "Fluorotelomer thia keto propanoic acid",
+        "alias": "Fluorotelomer thia keto propanoic acid",
+        "base_functional_groups": [],
+        "main_group": "carboxylic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":2}},
+        "smarts": {
+            "[C$(C(=O)SC(=O)C([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 97,
+        "name": "Telomers",
+        "alias": "Telomers",
+        "base_functional_groups": [],
+        "main_group": "telomers",
+        "smartsPath": "Perfluoroalkyl",
+        "constraints": {},
+        "compute": false,
+        "re_search": "telomer"
     }
 ]

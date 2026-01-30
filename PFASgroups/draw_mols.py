@@ -4,8 +4,11 @@ from rdkit.Chem import Draw
 from PIL import Image
 from io import BytesIO
 import svgutils.transform as sg
-
-
+from rdkit import Chem
+from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+from .core import add_smartsPath
+from .parser import parse_groups_in_mol
+from typing import Union
 def merge_raster(imgs,buffer,ncols):
     """Merge multiple raster images into a grid layout.
     
@@ -234,3 +237,96 @@ def plot_mols(mols,**kwargs):
     else:
         imgs = [Image.open(BytesIO(img)) for img in imgs]
     return draw_images(imgs, buffer = kwargs.get('buffer',2), ncols = kwargs.get('ncols',1), svg = kwargs.get('svg',False))
+
+@add_smartsPath()
+def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, **kwargs):
+    """
+    Plot PFAS group assignments for a list of SMILES strings.
+
+    :params smiles: List of SMILES strings or a single SMILES string.
+    :params display: Whether to display the plot.
+    :params path: Path to save the plot image.
+    :params svg: Whether to generate SVG images.
+    :params ipython: Whether to display in an IPython environment.
+    :params subwidth: Width of each sub-image.
+    :params subheight: Height of each sub-image.
+    :params ncols: Number of columns in the grid layout.
+    :params addAtomIndices: Whether to add atom indices to the plot.
+    :params addBondIndices: Whether to add bond indices to the plot.
+    :params paths: List of PFAS group indices or names to include in the plot.
+    :params split_matches: Whether to create separate images for each match.
+    :params SMARTS: Optional SMARTS pattern to highlight in the plots.
+    :params kwargs: Additional keyword arguments for customization.
+    """
+    from rdkit.Chem import Draw
+    if isinstance(smiles, str):
+        smiles = [smiles]
+    imgs = []
+    path_names = list(kwargs.get('smartsPaths',{'Perfluoroalkyl':'Perfluoroalkyl','Polyfluoroalkyl':'Polyfluoroalkyl'}).keys())
+    for i, s in enumerate(paths):
+        if isinstance(s, int):
+            paths[i] = path_names[s]
+    def draw_subfig(legend, atoms=[]):
+        if svg is True:
+            d2d = Draw.MolDraw2DSVG(subwidth, subheight)
+        else:
+            d2d = Draw.MolDraw2DCairo(subwidth, subheight)
+        dopts = d2d.drawOptions()
+        dopts.useBWAtomPalette()
+        dopts.fixedBondLength = 20
+        dopts.addAtomIndices = addAtomIndices
+        dopts.addBondIndices = addBondIndices
+        dopts.maxFontSize = 16
+        dopts.minFontSize = 13
+        d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
+        d2d.FinishDrawing()
+        return d2d.GetDrawingText()
+    for i, s in enumerate(smiles):
+        mol = Chem.MolFromSmiles(s)
+        mol = Chem.AddHs(mol)
+        matches = parse_groups_in_mol(mol, CalcMolFormula(mol), bycomponent=kwargs.get('bycomponent',False))
+        highlight_atoms = []
+        for pf, n, n_cfchains, match_indices in matches:
+            for match in match_indices:
+                if SMARTS is None or match['SMARTS'] in SMARTS:
+                    highlight_atoms.extend(match['chain'])
+                    if split_matches is True:
+                        new_img = draw_subfig(f"{pf.name}, {match['SMARTS']}", atoms=match['chain'])
+                        imgs.append(new_img)
+        if split_matches is False:
+            new_img = draw_subfig(f"{SMARTS if SMARTS is not None else ''}", atoms=highlight_atoms)
+            imgs.append(new_img)
+    if len(imgs) == 0:
+        if svg is True:
+            d2d = Draw.MolDraw2DSVG(subwidth, subheight)
+        else:
+            d2d = Draw.MolDraw2DCairo(subwidth, subheight)
+        dopts = d2d.drawOptions()
+        dopts.useBWAtomPalette()
+        dopts.fixedBondLength = 20
+        dopts.addAtomIndices = addAtomIndices
+        dopts.addBondIndices = addBondIndices
+        dopts.maxFontSize = 16
+        dopts.minFontSize = 13
+        d2d.DrawMolecule(mol)
+        d2d.FinishDrawing()
+        imgs.append(d2d.GetDrawingText())
+    # For now, just return the images as PIL Images
+    if svg is True:
+        imgs = [sg.fromstring(img) for img in imgs]
+    else:
+        imgs = [Image.open(BytesIO(img)) for img in imgs]
+    # Simple grid
+    return draw_images(imgs, buffer = kwargs.get('buffer',2), ncols = ncols, svg = svg)
+    width = subwidth * min(ncols, len(imgs))
+    height = subheight * ((len(imgs) + ncols - 1) // ncols)
+    grid = Image.new('RGBA', (width, height), (255, 255, 255, 0))
+    for idx, img in enumerate(imgs):
+        x = (idx % ncols) * subwidth
+        y = (idx // ncols) * subheight
+        grid.paste(img, (x, y))
+    if path is not None:
+        grid.save(path)
+    if display:
+        grid.show()
+    return grid, width, height

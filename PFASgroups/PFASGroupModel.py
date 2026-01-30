@@ -63,9 +63,10 @@ class PFASGroup():
     - max_dist_from_CF allows finding functional groups connected via non-fluorinated linkers
     - linker_smarts restricts which atoms can be in the path between component and functional group
     """
-    def __init__(self, id, name, smarts, smartsPath, constraints,**kwargs):
+    def __init__(self, id, name,**kwargs):
         self.id = id
         self.name = name
+        smarts = kwargs.get('smarts',{})
         # Save original SMARTS strings for atom counting
         if smarts and len(smarts) > 0:
             self.smarts_str, self.smarts_count = zip(*smarts.items())
@@ -73,7 +74,7 @@ class PFASGroup():
             self.smarts_str = None
             self.smarts_count = None
         self.smarts = [] if self.smarts_str else None
-        self.smartsPath = smartsPath
+        self.smartsPath = kwargs.get('smartsPath',None)
         self.max_dist_from_CF = kwargs.get('max_dist_from_CF', 0)
         # Compile linker_smarts pattern if provided
         linker_smarts_str = kwargs.get('linker_smarts', None)
@@ -94,11 +95,19 @@ class PFASGroup():
                         self.smarts.append(smarts_mol)
                     except:
                         raise ValueError(f"Invalid SMARTS pattern(s) for PFASGroup '{self.name}' (ID: {self.id})")
-        self.constraints = constraints
+        self.constraints = kwargs.get('constraints',{})
         # Precompute number of extra atoms in SMARTS patterns (beyond matched atom and H/F/Cl/Br/I)
         self.smarts_extra_atoms = self._count_smarts_extra_atoms(self.smarts_str)
         self.component_specific_extra_atoms = []
         self.all_matches = []
+        self.compute = kwargs.get('compute',True)# whether the pfasgroups needs to be parsed, or is an aggregate group, e.g. telomers
+        self.re_search = kwargs.get('re_search',None)# regex for aggregate groups, e.g. telomers
+        if self.re_search is not None:
+            try:
+                self.re_search = re.compile(self.re_search)
+            except Exception as e:
+                raise Exception(f"Error for agg Group {self.id}: {self.name}\n {e}")
+            
     
     def _count_smarts_extra_atoms(self, smarts_str):
         """Count number of extra carbon atoms in functional group beyond what's captured by component.

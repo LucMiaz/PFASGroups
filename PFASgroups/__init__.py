@@ -2,8 +2,10 @@
 from .PFASGroupModel import PFASGroup
 from .PFASDefinitionModel import PFASDefinition
 from .ComponentsSolverModel import ComponentsSolver
-from .parser import parse_smiles, parse_mols, parse_mol,parse_groups_in_mol, plot_pfasgroups, generate_fingerprint, get_smartsPaths, get_PFASGroups, get_PFASDefinitions, compile_smartsPath, compile_smartsPaths
-from .draw_mols import plot_mol, plot_mols
+from .parser import parse_smiles, parse_mols, parse_mol,parse_groups_in_mol,  compile_smartsPath, compile_smartsPaths
+from .draw_mols import plot_mol, plot_mols, plot_pfasgroups
+from .getter import get_smartsPaths, get_PFASGroups, get_PFASDefinitions
+from .fingerprints import generate_fingerprint
 from .generate_homologues import generate_homologues
 from .fragmentation import generate_degradation_products
 # Optional imports for testing
@@ -14,5 +16,5 @@ except ImportError:
     # These modules might not be available in all environments
     pass
 
-__version__ = "0.1.0"
+__version__ = "2.2.1"
 __all__ = ['PFASGroup', 'PFASDefinition', 'parse_smiles', 'parse_mols','parse_mol', 'parse_groups_in_mol', 'plot_pfasgroups', 'plot_mol','plot_mols',"generate_fingerprint", 'get_smartsPaths', 'get_PFASGroups', 'get_PFASDefinitions' ,'compile_smartsPath', 'compile_smartsPaths','ComponentsSolver', 'generate_homologues', 'generate_degradation_products']

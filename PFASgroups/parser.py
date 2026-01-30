@@ -11,17 +11,8 @@ from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from .PFASGroupModel import PFASGroup
 from .PFASDefinitionModel import PFASDefinition
 from .ComponentsSolverModel import ComponentsSolver
-from .core import fragment_until_valence_is_correct, n_from_formula, add_smartsPath, add_smarts, PFAS_DEFINITIONS_FILE, PFAS_GROUPS_FILE
-from typing import Union, List, Dict
-from PIL import Image
-from io import BytesIO
-import re
+from .core import fragment_until_valence_is_correct, n_from_formula, add_smartsPath, PFAS_DEFINITIONS_FILE, PFAS_GROUPS_FILE
 import json
-import os
-from itertools import product, groupby
-import svgutils.transform as sg
-from .draw_mols import draw_images, plot_mols
-
 
 
 
@@ -31,11 +22,17 @@ def load_PFASGroups():
     Adds default PFASGroups to function
     """
     with open(PFAS_GROUPS_FILE,'r') as f:
-        pfg = json.load(f)
-    pfg = [PFASGroup(**x) for x in pfg]
+        _pfg = json.load(f)
+    pfg = [PFASGroup(**x) for x in _pfg if x.get('compute',True)]
+    agg_pfg = [PFASGroup(**x) for x in _pfg if not x.get('compute',True)]
+    # list of PFASgroup names
+    pfg_names =  {pf.name:pf.id for pf in pfg}
+    # list groups aggregated by groups with compute=FALSE
+    agg_pfg = {ppf:list(map(pfg_names.get,list(filter(ppf.re_search.search,pfg_names.keys())))) for ppf in agg_pfg}
     def inner(func):
         def wrapper(*args,**kwargs):
             kwargs['pfas_groups'] = kwargs.get('pfas_groups',pfg)
+            kwargs['agg_pfas_groups'] = kwargs.get('agg_pfas_groups',agg_pfg)
             return func(*args, **kwargs)
         return wrapper
     return inner
@@ -158,16 +155,62 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
     else:
         frags = [mol]
         formulas = [n_from_formula(formula)]# formula as a dictionary
-
+    agg_pfas_groups = kwargs.get('agg_pfas_groups',{})
     # PFAS groups
     group_matches = []
+    # map of group_id -> list of matches for quick lookup
+    group_id_to_matches = {}
     for pf in pfas_groups:
         #logger.debug(f"{pf.name}")
         matched1_len = 0
         for fd,mol in zip(formulas,frags):
+            # match = pfgroup_obj, match_count, component_sizes, matched_components
+            # matched_components = list(dicts) with entries: 'component','size','component_fraction','smarts_matches','smarts_extra_atoms','SMARTS','branching','smarts_centrality','diameter','radius','effective_graph_resistance','eccentricity_values','mean_eccentricity','median_eccentricity','center','periphery','barycenter','min_dist_to_barycenter','min_resistance_dist_to_barycenter','min_dist_to_center','min_resistance_dist_to_center','max_dist_to_periphery','max_resistance_dist_to_periphery'
             match = pf.find_components(mol, fd, fluorinated_components_dict, **kwargs)
             if match is not None and len(match)>0:
                 group_matches.extend(match)
+                group_id_to_matches.setdefault(pf.id, []).extend(match)
+    
+    # Process aggregate PFAS groups efficiently
+    if agg_pfas_groups:
+        
+        # For each aggregate group, collect and deduplicate components
+        for agg_group, component_group_ids in agg_pfas_groups.items():
+            # Check if any component groups were matched
+            matched_component_ids = [gid for gid in component_group_ids if gid in group_id_to_matches]
+            
+            if matched_component_ids:
+                # Collect all components from matched groups
+                all_components = []
+                for gid in matched_component_ids:
+                    for _, match_count, component_sizes, matched_components in group_id_to_matches[gid]:
+                        all_components.extend(matched_components)
+                
+                # Deduplicate components by atom set while keeping different SMARTS types
+                # Filter by smartsPath if aggregate has one
+                unique_components = []
+                seen_keys = set()  # Track (atom_set, SMARTS_type) combinations
+                
+                for comp in all_components:
+                    atoms_key = frozenset(comp.get('component', []))
+                    smarts_type = comp.get('SMARTS')
+                    
+                    # Filter by smartsPath if aggregate has one (not None)
+                    if agg_group.smartsPath is not None and smarts_type != agg_group.smartsPath:
+                        continue
+                    
+                    # Deduplicate by (atoms, SMARTS_type) key
+                    key = (atoms_key, smarts_type)
+                    if key not in seen_keys:
+                        seen_keys.add(key)
+                        unique_components.append(comp)
+                
+                # Create match entry for aggregate group if we have unique components
+                if unique_components:
+                    component_sizes = [comp.get('size', 0) for comp in unique_components]
+                    match_count = len(unique_components)
+                    group_matches.append((agg_group, match_count, component_sizes, unique_components))
+
     return group_matches
 
 def parse_smiles(smiles, bycomponent=False, output_format='list', 
@@ -416,316 +459,6 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         df = pd.DataFrame(rows)
         return df.to_csv(index=False) if output_format == 'csv' else df
     return results
-
-@load_PFASGroups()
-def generate_fingerprint(smiles: Union[str, List[str]], 
-                             selected_groups: Union[List[int], range, None] = None,
-                             representation: str = 'vector',
-                             count_mode: str = 'binary',
-                             **kwargs):
-    """
-    Generate PFAS group fingerprints from SMILES strings.
-    
-    Parameters:
-    -----------
-    smiles : str or list of str
-        SMILES string(s) to generate fingerprints for
-    selected_groups : list of int, range, or None
-        Indices of PFAS groups to include in fingerprint. 
-        If None, all groups are used. Examples: [28, 29, 30], range(28, 52)
-    representation : str, default 'vector'
-        Type of fingerprint representation:
-        - 'vector': Binary/count vector (numpy array)
-        - 'dict': Dictionary mapping group names to counts
-        - 'sparse': Dictionary with only non-zero group counts
-        - 'detailed': Full match information including chain details
-        - 'int': Convert binary to int using int(x,2)
-    count_mode : str, default 'binary'
-        How to count matches:
-        - 'binary': 1 if group present, 0 if absent
-        - 'count': Number of matches found
-        - 'max_component': Maximum component size for groups with components
-    pfas_groups : list, optional
-        Custom list of PFAS groups. If None, uses default groups.
-    
-    Returns:
-    --------
-    fingerprints : numpy.ndarray, dict, or list
-        Fingerprint representation(s) based on 'representation' parameter.
-        For single SMILES input, returns single fingerprint.
-        For list input, returns list of fingerprints.
-    group_info : dict
-        Information about the groups used in fingerprinting:
-        - 'group_names': List of group names in fingerprint order
-        - 'group_ids': List of group IDs in fingerprint order
-        - 'selected_indices': Indices of selected groups
-    
-    Examples:
-    ---------
-    >>> # Binary vector for specific groups
-    >>> fp, info = generate_pfas_fingerprint('CC(F)(F)C(=O)O', 
-    ...                                       selected_groups=range(28, 52))
-    
-    >>> # Count-based dictionary representation
-    >>> fp, info = generate_pfas_fingerprint(['CCF', 'CCFF'], 
-    ...                                       representation='dict',
-    ...                                       count_mode='count')
-    
-    >>> # Detailed match information
-    >>> fp, info = generate_pfas_fingerprint('PFOA_SMILES', 
-    ...                                       representation='detailed')
-    """
-    pfas_groups = kwargs.get('pfas_groups')
-    # Handle single SMILES input
-    if isinstance(smiles, str):
-        smiles_list = [smiles]
-        single_input = True
-    else:
-        smiles_list = smiles
-        single_input = False
-    
-    # Determine which groups to use
-    if selected_groups is None:
-        # Use all groups
-        selected_indices = list(range(len(pfas_groups)))
-        selected_pfas_groups = pfas_groups
-    else:
-        # Convert range to list if needed
-        if isinstance(selected_groups, range):
-            selected_indices = list(selected_groups)
-        else:
-            selected_indices = selected_groups
-            
-        # Validate indices
-        max_index = len(pfas_groups) - 1
-        invalid_indices = [i for i in selected_indices if i < 0 or i > max_index]
-        if invalid_indices:
-            raise ValueError(f"Invalid group indices {invalid_indices}. "
-                           f"Valid range is 0-{max_index}")
-        
-        selected_pfas_groups = [pfas_groups[i] for i in selected_indices]
-    
-    # Create group info
-    group_info = {
-        'group_names': [group.name for group in selected_pfas_groups],
-        'group_ids': [group.id for group in selected_pfas_groups],
-        'selected_indices': selected_indices,
-        'total_groups': len(pfas_groups)
-    }
-    
-    fingerprints = []
-    
-    for smiles_str in smiles_list:
-        try:
-            mol = Chem.MolFromSmiles(smiles_str)
-            if mol is None:
-                raise ValueError(f"Invalid SMILES: {smiles_str}")
-            
-            formula = CalcMolFormula(mol)
-            all_matches = parse_groups_in_mol(mol, formula=formula, pfas_groups=pfas_groups,include_PFAS_definitions=False, **kwargs)
-            
-            # Create mapping from group ID to match information
-            match_dict = {}
-            for group, match_count, component_sizes, matched_components in all_matches:
-                match_dict[group.id] = {
-                    'group': group,
-                    'match_count': match_count,
-                    'component_sizes': component_sizes,
-                    'matched_components': matched_components
-                }
-            
-            if representation == 'vector' or representation == 'int':
-                # Create binary or count vector
-                fingerprint = np.zeros(len(selected_pfas_groups), dtype=int)
-                for i, group in enumerate(selected_pfas_groups):
-                    if group.id in match_dict:
-                        match_info = match_dict[group.id]
-                        if count_mode == 'binary' or representation == 'int':
-                            fingerprint[i] = 1
-                        elif count_mode == 'count':
-                            fingerprint[i] = match_info['match_count']
-                        elif count_mode == 'max_component':
-                            if match_info['matched_components']:
-                                fingerprint[i] = max([comp['size'] for comp in match_info['matched_components']])
-                            else:
-                                fingerprint[i] = match_info['match_count'] if match_info['match_count'] > 0 else 0
-                        else:
-                            raise ValueError(f"Unknown count_mode: {count_mode}")
-                if representation == 'int':
-                    fingerprints.append([int(''.join([str(x) for x in f]),2) for f in fingerprint])
-                else:
-                    fingerprints.append(fingerprint)
-                
-            elif representation == 'dict':
-                # Create dictionary with all groups (including zeros)
-                fingerprint = {}
-                for group in selected_pfas_groups:
-                    if group.id in match_dict:
-                        match_info = match_dict[group.id]
-                        if count_mode == 'binary':
-                            fingerprint[group.name] = 1
-                        elif count_mode == 'count':
-                            fingerprint[group.name] = match_info['match_count']
-                        elif count_mode == 'max_component':
-                            if match_info['matched_components']:
-                                fingerprint[group.name] = max([comp['size'] for comp in match_info['matched_components']])
-                            else:
-                                fingerprint[group.name] = match_info['match_count'] if match_info['match_count'] > 0 else 0
-                    else:
-                        fingerprint[group.name] = 0
-                fingerprints.append(fingerprint)
-                
-            elif representation == 'sparse':
-                # Create dictionary with only non-zero entries
-                fingerprint = {}
-                for group in selected_pfas_groups:
-                    if group.id in match_dict:
-                        match_info = match_dict[group.id]
-                        value = 0
-                        if count_mode == 'binary':
-                            value = 1
-                        elif count_mode == 'count':
-                            value = match_info['match_count']
-                        elif count_mode == 'max_component':
-                            if match_info['matched_components']:
-                                value = max([comp['size'] for comp in match_info['matched_components']])
-                            else:
-                                value = match_info['match_count'] if match_info['match_count'] > 0 else 0
-                        
-                        if value > 0:
-                            fingerprint[group.name] = value
-                fingerprints.append(fingerprint)
-                
-            elif representation == 'detailed':
-                # Return full match information for selected groups
-                fingerprint = {}
-                for group in selected_pfas_groups:
-                    if group.id in match_dict:
-                        match_info = match_dict[group.id]
-                        fingerprint[group.name] = {
-                            'group_id': group.id,
-                            'match_count': match_info['match_count'],
-                            'component_sizes': match_info['component_sizes'],
-                            'matched_components': match_info['matched_components'],
-                            'smarts1': [Chem.MolToSmarts(x) for x in group.smarts if x is not None],
-                        }
-                fingerprints.append(fingerprint)
-            else:
-                raise ValueError(f"Unknown representation: {representation}")
-                
-        except Exception as e:
-            raise ValueError(f"Error processing SMILES '{smiles_str}': {str(e)}")
-    
-    # Return single fingerprint for single input, list for multiple inputs
-    if single_input:
-        return fingerprints[0], group_info
-    else:
-        return fingerprints, group_info
-
-@add_smartsPath()
-def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, **kwargs):
-    """
-    Plot PFAS group assignments for a list of SMILES strings.
-
-    :params smiles: List of SMILES strings or a single SMILES string.
-    :params display: Whether to display the plot.
-    :params path: Path to save the plot image.
-    :params svg: Whether to generate SVG images.
-    :params ipython: Whether to display in an IPython environment.
-    :params subwidth: Width of each sub-image.
-    :params subheight: Height of each sub-image.
-    :params ncols: Number of columns in the grid layout.
-    :params addAtomIndices: Whether to add atom indices to the plot.
-    :params addBondIndices: Whether to add bond indices to the plot.
-    :params paths: List of PFAS group indices or names to include in the plot.
-    :params split_matches: Whether to create separate images for each match.
-    :params SMARTS: Optional SMARTS pattern to highlight in the plots.
-    :params kwargs: Additional keyword arguments for customization.
-    """
-    from rdkit.Chem import Draw
-    if isinstance(smiles, str):
-        smiles = [smiles]
-    imgs = []
-    path_names = list(kwargs.get('smartsPaths',{'Perfluoroalkyl':'Perfluoroalkyl','Polyfluoroalkyl':'Polyfluoroalkyl'}).keys())
-    for i, s in enumerate(paths):
-        if isinstance(s, int):
-            paths[i] = path_names[s]
-    def draw_subfig(legend, atoms=[]):
-        if svg is True:
-            d2d = Draw.MolDraw2DSVG(subwidth, subheight)
-        else:
-            d2d = Draw.MolDraw2DCairo(subwidth, subheight)
-        dopts = d2d.drawOptions()
-        dopts.useBWAtomPalette()
-        dopts.fixedBondLength = 20
-        dopts.addAtomIndices = addAtomIndices
-        dopts.addBondIndices = addBondIndices
-        dopts.maxFontSize = 16
-        dopts.minFontSize = 13
-        d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
-        d2d.FinishDrawing()
-        return d2d.GetDrawingText()
-    for i, s in enumerate(smiles):
-        mol = Chem.MolFromSmiles(s)
-        mol = Chem.AddHs(mol)
-        matches = parse_groups_in_mol(mol, CalcMolFormula(mol), bycomponent=kwargs.get('bycomponent',False))
-        highlight_atoms = []
-        for pf, n, n_cfchains, match_indices in matches:
-            for match in match_indices:
-                if SMARTS is None or match['SMARTS'] in SMARTS:
-                    highlight_atoms.extend(match['chain'])
-                    if split_matches is True:
-                        new_img = draw_subfig(f"{pf.name}, {match['SMARTS']}", atoms=match['chain'])
-                        imgs.append(new_img)
-        if split_matches is False:
-            new_img = draw_subfig(f"{SMARTS if SMARTS is not None else ''}", atoms=highlight_atoms)
-            imgs.append(new_img)
-    if len(imgs) == 0:
-        if svg is True:
-            d2d = Draw.MolDraw2DSVG(subwidth, subheight)
-        else:
-            d2d = Draw.MolDraw2DCairo(subwidth, subheight)
-        dopts = d2d.drawOptions()
-        dopts.useBWAtomPalette()
-        dopts.fixedBondLength = 20
-        dopts.addAtomIndices = addAtomIndices
-        dopts.addBondIndices = addBondIndices
-        dopts.maxFontSize = 16
-        dopts.minFontSize = 13
-        d2d.DrawMolecule(mol)
-        d2d.FinishDrawing()
-        imgs.append(d2d.GetDrawingText())
-    # For now, just return the images as PIL Images
-    if svg is True:
-        imgs = [sg.fromstring(img) for img in imgs]
-    else:
-        imgs = [Image.open(BytesIO(img)) for img in imgs]
-    # Simple grid
-    return draw_images(imgs, buffer = kwargs.get('buffer',2), ncols = ncols, svg = svg)
-    width = subwidth * min(ncols, len(imgs))
-    height = subheight * ((len(imgs) + ncols - 1) // ncols)
-    grid = Image.new('RGBA', (width, height), (255, 255, 255, 0))
-    for idx, img in enumerate(imgs):
-        x = (idx % ncols) * subwidth
-        y = (idx // ncols) * subheight
-        grid.paste(img, (x, y))
-    if path is not None:
-        grid.save(path)
-    if display:
-        grid.show()
-    return grid, width, height
-
-@add_smartsPath()
-def get_smartsPaths(**kwargs):
-    return kwargs.get('smartsPaths')
-
-@load_PFASGroups()
-def get_PFASGroups(**kwargs):
-    return kwargs.get('pfas_groups')
-
-@load_PFASDefinitions()
-def get_PFASDefinitions(**kwargs):
-    return kwargs.get('pfas_definitions')
 
 def compile_smartsPath(chain_smarts, end_smarts):
     """

@@ -8,13 +8,13 @@ from pathlib import Path
 import json
 from datetime import datetime
 
-from PFASgroups import parse_smiles
+from PFASgroups.parser import parse_mol
 
 # Import Chem after PFASgroups to avoid conflicts
 from rdkit import Chem
 
 # Telomer group IDs (62-87)
-TELOMER_GROUP_IDS = set(range(68, 93))
+TELOMER_GROUP_IDS = set(range(69, 100))
 
 def main():
     """Main execution."""
@@ -52,17 +52,17 @@ def main():
     telomer_detected_count = 0
     
     for i, mol_data in enumerate(molecules, 1):
+        mol = mol_data['mol']
         smiles = mol_data['smiles']
-        
         if i % 10 == 0:
             print(f"  [{i}/{len(molecules)}] processed...", end='\r')
         
         try:
             # Parse with PFASgroups
-            parse_results = parse_smiles(smiles)
+            parse_results = parse_mol(mol)
             
             if parse_results and len(parse_results) > 0:
-                mol_result = parse_results[0]
+                mol_result = parse_results
                 
                 # Extract detected telomer groups
                 detected_telomers = []
@@ -100,6 +100,7 @@ def main():
                 })
         
         except Exception as e:
+            raise e
             results.append({
                 'index': mol_data['index'],
                 'smiles': smiles,
