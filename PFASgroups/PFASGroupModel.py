@@ -82,6 +82,9 @@ class PFASGroup():
         if linker_smarts_str is not None:
             try:
                 self.linker_smarts = Chem.MolFromSmarts(linker_smarts_str)
+                self.linker_smarts.UpdatePropertyCache()
+                Chem.GetSymmSSSR(self.linker_smarts)
+                self.linker_smarts.GetRingInfo().NumRings()
             except:
                 raise ValueError(f"Invalid linker_smarts pattern '{linker_smarts_str}' for PFASGroup '{self.name}' (ID: {self.id})")
         if self.smarts_str is not None:

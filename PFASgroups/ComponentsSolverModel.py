@@ -177,7 +177,24 @@ class ComponentsSolver:
                     self.component_to_original_index[(pathType, max_dist, i)] = i
                 self.extended_components.setdefault(pathType, {})[max_dist] = extended_components
             self.levels.add(max_dist)
-    
+    def shortest_path_to_component(self, atom, component):
+        """Get shortest paths from SMARTS matches to original component within extended component.
+        
+        Parameters
+        ----------
+        atom_index : int
+        component : set
+            
+        Returns
+        -------
+        dict
+            Mapping from SMARTS match atom index to shortest path list to original component
+        """
+        path = nx.shortest_path(self.G, atom, component[0])
+        border = path.pop(-1)
+        while path[-1] not in component:
+            border = path.pop(-1)
+        return border, path + [border]
     def get_augmented_component(self, pathType, max_dist, component_index, smarts_matches, linker_smarts=None):
         """Get original component augmented with connecting atoms to SMARTS matches.
         
@@ -211,31 +228,21 @@ class ComponentsSolver:
         
         # Start with original component
         augmented = set(orig_comp)
-        
+        linker_matches = set([y for x in self.mol.GetSubstructMatches(linker_smarts) for y in x]) if linker_smarts is not None else []
         # Add shortest paths from SMARTS matches to original component
         for smarts_atom in smarts_matches:
             if smarts_atom in ext_comp and smarts_atom not in orig_comp:
                 min_path = None
-                min_len = float('inf')
-                for base_atom in orig_comp:
-                    try:
-                        path = nx.shortest_path(self.G, smarts_atom, base_atom)
-                        # Validate linker atoms if linker_smarts is provided
-                        if linker_smarts is not None and len(path) > 2:
-                            # Check intermediate atoms (exclude first and last)
-                            linker_atoms = path[1:-1]
-                            valid_linker = all(
-                                self.mol.GetAtomWithIdx(int(atom_idx)).Match(linker_smarts)
-                                for atom_idx in linker_atoms
-                            )
-                            if not valid_linker:
-                                continue  # Skip this path if linker atoms don't match
-                        
-                        if len(path) < min_len:
-                            min_path = path
-                            min_len = len(path)
-                    except nx.NetworkXNoPath:
-                        continue
+                try:
+                    base_atom, min_path = self.shortest_path_to_component(smarts_atom, orig_comp)
+                    if linker_smarts is not None and len(min_path) > 2:
+                        # Check intermediate atoms (exclude first and last)
+                        linker_atoms = min_path[1:-1]
+                        # All intermediate atoms must be part of linker matches
+                        if not all(atom in linker_matches for atom in linker_atoms):
+                            continue  # Skip this path if linker atoms don't match
+                except nx.NetworkXNoPath:
+                    continue
                 if min_path:
                     augmented.update(min_path)
             elif smarts_atom in orig_comp:

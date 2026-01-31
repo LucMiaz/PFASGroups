@@ -1930,11 +1930,11 @@
         "base_functional_groups": [],
         "main_group": "carboxylic acid",
         "smartsPath": "Perfluoroalkyl",
-        "linker_smarts": "[CH2X4,C$(C[H,F]=CH1)]",
+        "linker_smarts": "[CH2X4,CX3$(C[H,F]=C[H,F])]",
         "max_dist_from_CF": 16,
         "constraints": {"gte":{"O":2}},
         "smarts": {
-            "[CH2$(CC(=O)[OH1,Oh1,O-])]": 1,
+            "[C$(CC(=O)[OH1,Oh1,O-])]": 1,
             "C=C":1
         }
     },
