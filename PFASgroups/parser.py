@@ -11,7 +11,7 @@ from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from .PFASGroupModel import PFASGroup
 from .PFASDefinitionModel import PFASDefinition
 from .ComponentsSolverModel import ComponentsSolver
-from .core import fragment_until_valence_is_correct, n_from_formula, add_smartsPath, PFAS_DEFINITIONS_FILE, PFAS_GROUPS_FILE
+from .core import fragment_until_valence_is_correct, n_from_formula, add_smartsPath, PFAS_DEFINITIONS_FILE, PFAS_GROUPS_FILE, rdkit_disable_log
 import json
 
 
@@ -213,6 +213,8 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
 
     return group_matches
 
+
+@rdkit_disable_log(level='warning')
 def parse_smiles(smiles, bycomponent=False, output_format='list', 
                   limit_effective_graph_resistance=None, compute_component_metrics=True, **kwargs):
     """

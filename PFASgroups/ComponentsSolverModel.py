@@ -190,11 +190,11 @@ class ComponentsSolver:
         dict
             Mapping from SMARTS match atom index to shortest path list to original component
         """
-        path = nx.shortest_path(self.G, atom, component[0])
-        border = path.pop(-1)
-        while path[-1] not in component:
-            border = path.pop(-1)
-        return border, path + [border]
+        path = nx.shortest_path(self.G, atom, list(component)[0])
+        path = set(path).difference(component)
+        if len(path)==0:
+            return None, []
+        return [x for x in path if x!=atom]
     def get_augmented_component(self, pathType, max_dist, component_index, smarts_matches, linker_smarts=None):
         """Get original component augmented with connecting atoms to SMARTS matches.
         
@@ -232,22 +232,32 @@ class ComponentsSolver:
         # Add shortest paths from SMARTS matches to original component
         for smarts_atom in smarts_matches:
             if smarts_atom in ext_comp and smarts_atom not in orig_comp:
-                min_path = None
                 try:
-                    base_atom, min_path = self.shortest_path_to_component(smarts_atom, orig_comp)
-                    if linker_smarts is not None and len(min_path) > 2:
-                        # Check intermediate atoms (exclude first and last)
-                        linker_atoms = min_path[1:-1]
-                        # All intermediate atoms must be part of linker matches
+                    linker_atoms = self.shortest_path_to_component(smarts_atom, orig_comp)
+
+                    
+                    # Validate linker atoms only if there are intermediate atoms
+                    # Direct connections (no linker) are accepted without validation
+                    if linker_smarts is not None and len(linker_atoms) > 0:
+                        # Validate the intermediate linker atoms
                         if not all(atom in linker_matches for atom in linker_atoms):
-                            continue  # Skip this path if linker atoms don't match
+                            continue  # Skip this SMARTS atom if linker validation fails
                 except nx.NetworkXNoPath:
-                    continue
-                if min_path:
-                    augmented.update(min_path)
+                    continue  # Skip this SMARTS atom if no path exists
+                # Add the complete path: SMARTS atom + linker atoms + component border atom
+                augmented.update([smarts_atom] + linker_atoms)
             elif smarts_atom in orig_comp:
                 # SMARTS atom already in original component
                 augmented.add(smarts_atom)
+        
+        # Verify that augmented component still contains the SMARTS matches
+        # Count how many SMARTS atoms ended up in the augmented component
+        smarts_in_augmented = sum(1 for atom in smarts_matches if atom in augmented)
+        
+        # If no SMARTS atoms made it into the augmented component, reject it
+        # This happens when all SMARTS atoms failed linker validation
+        if smarts_in_augmented == 0 and len(smarts_matches) > 0:
+            return []
         
         return augmented
     

@@ -9,13 +9,14 @@ import json
 from datetime import datetime
 
 from PFASgroups.parser import parse_mol
-
+from PFASgroups.core import rdkit_disable_log
 # Import Chem after PFASgroups to avoid conflicts
 from rdkit import Chem
 
 # Telomer group IDs (62-87)
-TELOMER_GROUP_IDS = set(range(69, 100))
+TELOMER_GROUP_IDS = set(range(69, 115))
 
+@rdkit_disable_log(level='warning')
 def main():
     """Main execution."""
     print("="*60)

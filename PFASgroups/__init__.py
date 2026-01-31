@@ -2,6 +2,7 @@
 from .PFASGroupModel import PFASGroup
 from .PFASDefinitionModel import PFASDefinition
 from .ComponentsSolverModel import ComponentsSolver
+from .core import rdkit_disable_log
 from .parser import parse_smiles, parse_mols, parse_mol,parse_groups_in_mol,  compile_smartsPath, compile_smartsPaths
 from .draw_mols import plot_mol, plot_mols, plot_pfasgroups
 from .getter import get_smartsPaths, get_PFASGroups, get_PFASDefinitions
@@ -17,4 +18,4 @@ except ImportError:
     pass
 
 __version__ = "2.2.1"
-__all__ = ['PFASGroup', 'PFASDefinition', 'parse_smiles', 'parse_mols','parse_mol', 'parse_groups_in_mol', 'plot_pfasgroups', 'plot_mol','plot_mols',"generate_fingerprint", 'get_smartsPaths', 'get_PFASGroups', 'get_PFASDefinitions' ,'compile_smartsPath', 'compile_smartsPaths','ComponentsSolver', 'generate_homologues', 'generate_degradation_products']
+__all__ = ['PFASGroup', 'PFASDefinition', 'parse_smiles', 'parse_mols','parse_mol', 'parse_groups_in_mol', 'plot_pfasgroups', 'plot_mol','plot_mols',"generate_fingerprint", 'get_smartsPaths', 'get_PFASGroups', 'get_PFASDefinitions' ,'compile_smartsPath', 'compile_smartsPaths','ComponentsSolver', 'generate_homologues', 'generate_degradation_products',"rdkit_disable_log"]

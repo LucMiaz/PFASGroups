@@ -8,9 +8,11 @@ PFASgroups/__init__.py
 PFASgroups/cli.py
 PFASgroups/core.py
 PFASgroups/draw_mols.py
+PFASgroups/fingerprints.py
 PFASgroups/fragmentation.py
 PFASgroups/generate_homologues.py
 PFASgroups/generate_mol.py
+PFASgroups/getter.py
 PFASgroups/parser.py
 PFASgroups.egg-info/PKG-INFO
 PFASgroups.egg-info/SOURCES.txt

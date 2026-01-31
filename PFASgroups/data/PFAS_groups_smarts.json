@@ -1654,7 +1654,7 @@
         "max_dist_from_CF": 16,
         "constraints": {"gte":{"O":4}},
         "smarts": {
-            "[CH2$(COP(=O)([OH1,Oh1,O-])[OH1,Oh1,O-])]": 1
+            "[CH2$(COP(=O)([O!$(O[CH2])])[OH1,Oh1,O-])]": 1
         }
     },
     {
@@ -1668,7 +1668,7 @@
         "max_dist_from_CF": 16,
         "constraints": {"gte":{"O":4}},
         "smarts": {
-            "[CH2$(COP(=O)([OH1,Oh1,O-])O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]": 1
+            "[CH2$(COP(=O)(O)O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]": 1
         }
     },{
         "id": 78,
@@ -1693,7 +1693,7 @@
         "smartsPath": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
-        "constraints": {"gte":{"O":2,"H":3}},
+        "constraints": {"gte":{"O":2}},
         "smarts": {
             "[CH2$(COC(=O)[CH1]=[CH2])]": 1
         }
@@ -1953,7 +1953,218 @@
         }
     },
     {
-        "id": 97,
+        "id": 98,
+        "name": "Glycine",
+        "alias": "Glycine",
+        "base_functional_groups": [],
+        "main_group": "carboxylic acid",
+        "smartsPath": null,
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {"gte":{"N":1,"O":2}},
+        "smarts": {
+            "[C$(C[NH2+,N$([N+]([CH3])[CH3])]CC(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 99,
+        "name": "Fluorotelomer glycine",
+        "alias": "Fluorotelomer glycine",
+        "base_functional_groups": [],
+        "main_group": "carboxylic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4,CH1X4$(C(F))]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"N":1,"O":2}},
+        "smarts": {
+            "[C$(C[NH2+,N$([N+]([CH3])[CH3])]CC(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 100,
+        "name": "Sulfonamidoethanol",
+        "alias": "Sulfonamidoethanol",
+        "base_functional_groups": [],
+        "main_group": "carboxylic acid",
+        "smartsPath": null,
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {"gte":{"N":1,"O":3,"S":1}},
+        "smarts": {
+            "[C$(CS(=O)(=O)NCC[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 101,
+        "name": "Fluorotelomer sulfonamidoethanol",
+        "alias": "FOSE",
+        "base_functional_groups": [],
+        "main_group": "carboxylic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"N":1,"O":3,"S":1}},
+        "smarts": {
+            "[C$(CS(=O)(=O)NCC[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 102,
+        "name": "Fluorotelomer ether carboxylic acids",
+        "alias": "FTCA",
+        "base_functional_groups": [],
+        "main_group": "carboxylic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4,OH0X2]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":3}},
+        "smarts": {
+            "[CH2$(CC(=O)[OH1,Oh1,O-])]": 1,
+            "[O$(O([C])[C])]":1
+        }
+    },
+    {
+        "id": 103,
+        "name": "Fluorotelomer sulfonyl propanoic acid",
+        "alias": "Fluorotelomer sulfonyl propanoic acid",
+        "base_functional_groups": [],
+        "main_group": "sulfonic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":4,"S":1}},
+        "smarts": {
+            "[CH2$(CS(=O)(=O)[CH2][CH2]C(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 104,
+        "name": "Sulfonyl propanoic acid",
+        "alias": "Sulfonyl propanoic acid",
+        "base_functional_groups": [],
+        "main_group": "sulfonic acid",
+        "smartsPath": null,
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {"gte":{"O":4,"S":1}},
+        "smarts": {
+            "[CH2$(CS(=O)(=O)[CH2][CH2]C(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 105,
+        "name": "Fluorotelomer sulfinyl amido sulfonic acid",
+        "alias": "Fluorotelomer sulfinyl amido sulfonic acid",
+        "base_functional_groups": [],
+        "main_group": "sulfinic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":5,"S":2,"N":1}},
+        "smarts": {
+            "[CH2$(CS(=O)[CH2][CH2]C(=O)[NH][CH2]([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 106,
+        "name": "Sulfinyl amido sulfonic acid",
+        "alias": "Sulfinyl amido sulfonic acid",
+        "base_functional_groups": [],
+        "main_group": "sulfinic acid",
+        "smartsPath": null,
+        "linker_smarts": null,
+        "max_dist_from_CF": 0,
+        "constraints": {"gte":{"O":5,"S":2,"N":1}},
+        "smarts": {
+            "[CH2$(CS(=O)[CH2][CH2]C(=O)[NH][CH2]([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 107,
+        "name": "Fluorotelomer sulfinyl",
+        "alias": "Fluorotelomer sulfinyl",
+        "base_functional_groups": [],
+        "main_group": "sulfinic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":1,"S":1}},
+        "smarts": {
+            "[CH2$(C[SX3$(S(=O))!$(S(=O)(=O))])]": 1
+        }
+    },
+    {
+        "id": 108,
+        "name": "Fluorotelomer sulfone",
+        "alias": "Fluorotelomer sulfone",
+        "base_functional_groups": [],
+        "main_group": "sulfinic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":2,"S":1}},
+        "smarts": {
+            "[CH2$(C[SX4$(S(=O)(=O))!$(S(=O)(=O)(=O))])]": 1
+        }
+    },
+    {
+        "id": 109,
+        "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid",
+        "alias": "Fluorotelomer acetylsulfanylhydroxypropanoic acid",
+        "base_functional_groups": [],
+        "main_group": "sulfinic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":4,"S":1}},
+        "smarts": {
+            "[CH2$(CC(=O)SCC([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 110,
+        "name": "Fluorotelomer acetylhydroxyethanethioate",
+        "alias": "Fluorotelomer acetylhydroxyethanethioate",
+        "base_functional_groups": [],
+        "main_group": "sulfinic acid",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":4,"S":1}},
+        "smarts": {
+            "[CH2$(CC(=O)SC([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 111,
+        "name": "Fluorotelomer amino propanoic acid",
+        "alias": "Fluorotelomer amino propanoic acid",
+        "base_functional_groups": [],
+        "main_group": "amine",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":2,"N":1}},
+        "smarts": {
+            "[C$(CN([CH2$(C[CH2,C$(C(F)F)])])[CH2][CH2]C(=O)[OH1,Oh1,O-])]": 1
+        }
+    },
+    {
+        "id": 112,
+        "name": "Fluorotelomer amino ethyl trimethyl ammonium",
+        "alias": "Fluorotelomer amino ethyl trimethyl ammonium",
+        "base_functional_groups": [],
+        "main_group": "amine",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4]",
+        "max_dist_from_CF": 16,
+        "constraints": {"gte":{"O":4,"S":1}},
+        "smarts": {
+            "[CH2$(C[NH][CH2][CH2][N+]([CH3])([CH3])[CH3])]": 1
+        }
+    },
+    {
+        "id": 113,
         "name": "Telomers",
         "alias": "Telomers",
         "base_functional_groups": [],

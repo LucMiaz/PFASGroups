@@ -3,6 +3,10 @@ import numpy as np
 import re
 import networkx as nx
 from .core import mol_to_nx
+import logging
+
+
+
 
 class PFASGroup():
     """Model class representing a specific PFAS functional group with structural patterns.
@@ -369,7 +373,7 @@ class PFASGroup():
                     return False
                 if len(matches)>0:
                     self.all_matches.append(set(matches))
-                    self.subset.union({y for x in matches for y in x if len(x)>0})
+                    self.subset.update({y for x in matches for y in x if len(x)>0})
         return True
     def component_satisfies_all_smarts(self, component):
         """Check if a fluorinated component matches all SMARTS patterns of this PFAS group.
@@ -426,6 +430,10 @@ class PFASGroup():
         """
         if not self.find_matched_atoms(mol):
             return 0, [], 0, []
+        
+        # Clear component-specific extra atoms list for this matching attempt
+        self.component_specific_extra_atoms = []
+        
         if self.smartsPath is None:
             # If no smartsPath specified, only check alkyl components (not cyclic)
             # This ensures functional groups like carboxylic acid (group 33) are only
@@ -455,8 +463,10 @@ class PFASGroup():
                     augmented = component_solver.get_augmented_component(
                         _smartsPath, self.max_dist_from_CF, i, self.subset, self.linker_smarts
                     )
-                    augmented_matched_components.append(
-                        component_solver.get_matched_component_dict(comp, self.subset, _smartsPath, self, comp_id = i)
+                    # Accept augmented component if valid (linker validation already done in get_augmented_component)
+                    if augmented is not None and len(augmented) > 0:
+                        augmented_matched_components.append(
+                        component_solver.get_matched_component_dict(augmented, self.subset, _smartsPath, self, comp_id = i)
                         )
         
         if len(augmented_matched_components) == 0:

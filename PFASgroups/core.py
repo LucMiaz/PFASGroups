@@ -5,6 +5,8 @@ import re
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from typing import Union, List, Dict
+from rdkit import rdBase
+
 PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl']
 # --- Load SMARTS paths from fpaths.json ---
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -12,6 +14,29 @@ DATA_DIR = os.path.join(MODULE_DIR, 'data')
 PFAS_GROUPS_FILE = os.path.join(DATA_DIR, 'PFAS_groups_smarts.json')
 PFAS_DEFINITIONS_FILE = os.path.join(DATA_DIR, 'PFAS_definitions_smarts.json')
 FPATHS_FILE = os.path.join(DATA_DIR, 'fpaths.json')
+
+def rdkit_disable_log(level='warning'):
+    """Disable RDKit warnings and errors logging to stderr"""
+    def disable_logs():
+        if level == 'error':
+            rdBase.DisableLog('rdApp.error')
+            rdBase.DisableLog('rdApp.warning')
+        elif level == 'warning':
+            rdBase.DisableLog('rdApp.warning')
+        else:
+            rdBase.DisableLog('rdApp.*')
+    def enable_logs():
+        rdBase.EnableLog('rdApp.*')
+    def inner(func):
+        def wrapper(*args,**kwargs):
+            disable_logs()
+            func_ret = func(*args, **kwargs)
+            enable_logs()
+            return func_ret
+        return wrapper
+    return inner
+    rdBase.DisableLog('rdApp.error')
+    rdBase.DisableLog('rdApp.warning')
 
 def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error = False):
     """Remove atoms by indices and maintain connectivity.
