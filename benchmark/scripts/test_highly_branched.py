@@ -33,20 +33,21 @@ FUNCTIONAL_GROUPS = {
     36: { "name": 'sulfonic acid', "smarts": 'OS(=O)(=O)', "distance": [0, 1, 2] },
     37: { "name": 'sulfenic acid', "smarts": 'OS', "distance": [0, 1, 2] },
     38: { "name": 'sulfinic acid', "smarts": 'OS(=O)', "distance": [0, 1, 2] },
-    39: { "name": 'phosphonic acid', "smarts": 'OP(=O)(O)', "distance": [0, 1, 2] },
-    40: { "name": 'phosphinic acid', "smarts": 'P(=O)(O)', "distance": [0, 1, 2] },
-    41: { "name": 'chloride', "smarts": 'Cl', "distance": [0, 1, 2] },
-    42: { "name": 'bromide', "smarts": 'Br', "distance": [0, 1, 2] },
-    43: { "name": 'iodide', "smarts": 'I', "distance": [0, 1, 2] },
-    44: { "name": 'sulfonamide', "smarts": 'CS(=O)(=O)N', "distance": [0, 1, 2] },
-    45: { "name": 'heterocyclic azole', "smarts": 'C1NCNC1', "distance": [0, 1, 2] },
-    46: { "name": 'heterocyclic azine', "smarts": 'c1cccnc1', "distance": [0, 1, 2] },
+    39: { "name": 'sulfuric acid', "smarts": 'OS(=O)(=O)O', "distance": [0, 1, 2] },
+    40: { "name": 'phosphonic acid', "smarts": 'P(=O)(O)O', "distance": [0, 1, 2] },
+    41: { "name": 'phosphinic acid', "smarts": 'P(=O)(O)', "distance": [0, 1, 2] },
+    42: { "name": 'chloride', "smarts": 'Cl', "distance": [0, 1, 2] },
+    43: { "name": 'bromide', "smarts": 'Br', "distance": [0, 1, 2] },
+    44: { "name": 'iodide', "smarts": 'I', "distance": [0, 1, 2] },
+    45: { "name": 'sulfonamide', "smarts": 'CS(=O)(=O)N', "distance": [0, 1, 2] },
+    46: { "name": 'heterocyclic azole', "smarts": 'C1NCNC1', "distance": [0, 1, 2] },
+    47: { "name": 'heterocyclic azine', "smarts": 'c1cccnc1', "distance": [0, 1, 2] },
     48: { "name": 'amine', "smarts": 'N', "distance": [0, 1, 2] },
-    51: { "name": 'alkene', "smarts": 'C=C', "distance": [0, 1, 2] },
-    52: { "name": 'alkyne', "smarts": 'C#C', "distance": [0, 1, 2] },
-    53: { "name": 'side-chain aromatics', "smarts": 'c1ccccc1', "distance": [0, 1, 2] },
-    58: { "name": 'peroxydes', "smarts": 'OO', "distance": [0, 1, 2] },
-    59: { "name": 'benzoyl peroxydes', "smarts": 'c1ccccc1C(=O)OOC(=O)', "distance": [0, 1, 2] }
+    52: { "name": 'alkene', "smarts": 'C=C', "distance": [0, 1, 2] },
+    53: { "name": 'alkyne', "smarts": 'C#C', "distance": [0, 1, 2] },
+    54: { "name": 'side-chain aromatics', "smarts": 'c1ccccc1', "distance": [0, 1, 2] },
+    59: { "name": 'peroxydes', "smarts": 'OO', "distance": [0, 1, 2] },
+    60: { "name": 'benzoyl peroxydes', "smarts": 'c1ccccc1C(=O)OOC(=O)', "distance": [0, 1, 2] }
 }
 
 
@@ -150,7 +151,7 @@ def run_benchmark():
                     else:
                         results['failed'] += 1
                         print(f"  ❌ FAIL - Group {group_id} ({group_info['name']}) NOT detected")
-                        detected = ', '.join([f"{m['id']}:{m['name']}" for a in analysis for m in a['matches'][:5]])
+                        detected = ', '.join([f"{m['id']}:{m.get('group_name', m.get('definition_name', 'unknown'))}" for a in analysis for m in a['matches'][:5]])
                         print(f"     Detected groups: {detected}")
                     
                     if found_perfluoro:

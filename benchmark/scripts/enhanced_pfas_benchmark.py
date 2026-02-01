@@ -15,7 +15,8 @@ import os
 
 # Add parent directory to path to import PFASGroups
 script_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(script_dir)
+parent_dir = os.path.dirname(os.path.dirname(script_dir))
+
 sys.path.append(parent_dir)
 
 try:
@@ -48,8 +49,6 @@ class EnhancedPFASBenchmark:
     
     def __init__(self):
         # Load PFAS groups definitions
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        parent_dir = os.path.dirname(script_dir)
         pfas_groups_path = os.path.join(parent_dir, 'PFASgroups', 'data', 'PFAS_groups_smarts.json')
         with open(pfas_groups_path, 'r') as f:
             self.pfas_groups = json.load(f)
@@ -131,24 +130,56 @@ class EnhancedPFASBenchmark:
                     64: {'smiles': 'OC(=O)C(=C)C', 'mode': 'attach'},  # Methacrylate
                     65: {'smiles': 'N(C)(C)CC(=O)O', 'mode': 'attach'},  # Betaine
                     66: {'smiles': 'SN#C', 'mode': 'attach'},  # Thiocyanic acid
-                    # Telomer groups 67-83 - use simplified patterns for generation
-                    67: {'smiles': '[Si](C)(C)C', 'mode': 'attach'},  # FT silane
-                    68: {'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach'},  # FT trichlorosilane
-                    69: {'smiles': 'I', 'mode': 'attach'},  # FT iodide
-                    70: {'smiles': 'C(=O)[H]', 'mode': 'attach'},  # FT aldehyde
-                    71: {'smiles': 'C(=O)O', 'mode': 'attach'},  # FT carboxylic acids
-                    72: {'smiles': 'O', 'mode': 'attach'},  # FT ethoxylates
-                    73: {'smiles': 'S(=O)(=O)O', 'mode': 'attach'},  # FT sulfonic acid
-                    74: {'smiles': 'OP(=O)(O)O', 'mode': 'attach'},  # FT monophosphate
-                    75: {'smiles': 'OP(=O)(O)OP(=O)(O)O', 'mode': 'attach'},  # FT diphosphate
-                    76: {'smiles': 'OC(=O)C=C', 'mode': 'attach'},  # FT acrylate
-                    77: {'smiles': 'OC(=O)C(=C)C', 'mode': 'attach'},  # FT methacrylate
-                    78: {'smiles': 'O', 'mode': 'attach'},  # FT alcohol
-                    79: {'smiles': 'S', 'mode': 'insert'},  # FT sulfide
-                    80: {'smiles': 'S(=O)(=O)N', 'mode': 'insert'},  # FT sulfonamide
-                    81: {'smiles': '[Si](OC)(OC)OC', 'mode': 'attach'},  # FT silyl
-                    82: {'smiles': 'N(C)(C)CC(=O)O', 'mode': 'attach'},  # FT betaine
-                    83: {'smiles': 'OC(=O)C', 'mode': 'attach'},  # FT ester - using simplified pattern
+                    67: {'smiles': 'C(=O)SC(=O)C(O)C(=O)O', 'mode': 'attach'},  # Thia keto propanoic acid
+                    68: {'smiles': 'OC1C(O)C(OC(C1O)C(=O)O)O', 'mode': 'attach'},  # Glucuronate
+                    # Telomer groups 69+ - use simplified patterns for generation
+                    69: {'smiles': '[Si]([H])([H])[H]', 'mode': 'attach'},  # FT silane
+                    70: {'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach'},  # FT trichlorosilane
+                    71: {'smiles': 'I', 'mode': 'attach'},  # FT iodide
+                    72: {'smiles': 'C(=O)[H]', 'mode': 'attach'},  # FT aldehyde
+                    73: {'smiles': 'C(=O)O', 'mode': 'attach'},  # FT carboxylic acids
+                    74: {'smiles': 'O', 'mode': 'attach'},  # FT ethoxylates
+                    75: {'smiles': 'S(=O)(=O)O', 'mode': 'attach'},  # FT sulfonic acid
+                    76: {'smiles': 'OP(=O)(O)O', 'mode': 'attach'},  # FT monophosphate
+                    77: {'smiles': 'OP(=O)(O)OP(=O)(O)O', 'mode': 'attach'},  # FT diphosphate
+                    78: {'smiles': 'OP(=O)(O)OP(=O)(O)OP(=O)(O)O', 'mode': 'attach'},  # FT triphosphate
+                    79: {'smiles': 'OC(=O)C=C', 'mode': 'attach'},  # FT acrylate
+                    80: {'smiles': 'OC(=O)C(=C)C', 'mode': 'attach'},  # FT methacrylate
+                    81: {'smiles': 'O', 'mode': 'attach'},  # FT alcohol
+                    82: {'smiles': 'S', 'mode': 'insert'},  # FT sulfure
+                    83: {'smiles': 'S(=O)(=O)N', 'mode': 'insert'},  # FT sulfonamide
+                    84: {'smiles': '[Si](OC)(OC)OC', 'mode': 'attach'},  # FT silyl
+                    85: {'smiles': 'N(C)(C)CC(=O)O', 'mode': 'attach'},  # FT betaine
+                    86: {'smiles': 'OC(=O)C', 'mode': 'attach'},  # FT ester
+                    87: {'smiles': 'SN#C', 'mode': 'attach'},  # FT thiocyanic acid
+                    88: {'smiles': 'C=C', 'mode': 'insert'},  # FT alkene
+                    89: {'smiles': 'N(C)(C)C', 'mode': 'attach'},  # FT trimethylamine
+                    90: {'smiles': 'S(=O)O', 'mode': 'attach'},  # FT sulfinic acid
+                    91: {'smiles': 'SO', 'mode': 'attach'},  # FT sulfenic acid
+                    92: {'smiles': 'OS(=O)(=O)O', 'mode': 'attach'},  # FT sulfuric acid
+                    93: {'smiles': 'C', 'mode': 'attach'},  # FT methyl
+                    94: {'smiles': 'OC1C(O)C(OC(C1O)C(=O)O)O', 'mode': 'attach'},  # FT glucuronic acid
+                    95: {'smiles': 'C(O)S(=O)(=O)O', 'mode': 'attach'},  # FT formaldehyde bisulfite
+                    96: {'smiles': 'C(=O)O', 'mode': 'attach'},  # FT unsaturated carboxylic acids (with alkene)
+                    97: {'smiles': 'C(=O)SC(=O)C(O)C(=O)O', 'mode': 'attach'},  # FT thia keto propanoic acid
+                    # Non-telomer groups 98+
+                    98: {'smiles': 'NCC(=O)O', 'mode': 'attach'},  # Glycine
+                    # More telomers 99+
+                    99: {'smiles': 'NCC(=O)O', 'mode': 'attach'},  # FT glycine
+                    100: {'smiles': 'S(=O)(=O)NCCO', 'mode': 'attach'},  # Sulfonamidoethanol
+                    101: {'smiles': 'S(=O)(=O)NCCO', 'mode': 'attach'},  # FT sulfonamidoethanol
+                    102: {'smiles': 'OCC(=O)O', 'mode': 'attach'},  # FT ether carboxylic acids
+                    103: {'smiles': 'S(=O)(=O)CCC(=O)O', 'mode': 'attach'},  # FT sulfonyl propanoic acid
+                    104: {'smiles': 'S(=O)(=O)CCC(=O)O', 'mode': 'attach'},  # Sulfonyl propanoic acid
+                    105: {'smiles': 'S(=O)CCC(=O)NCC(C)(C)CS(=O)(=O)O', 'mode': 'attach'},  # FT sulfinyl amido sulfonic acid
+                    106: {'smiles': 'S(=O)CCC(=O)NCC(C)(C)CS(=O)(=O)O', 'mode': 'attach'},  # Sulfinyl amido sulfonic acid
+                    107: {'smiles': 'S(=O)', 'mode': 'attach'},  # FT sulfinyl
+                    108: {'smiles': 'S(=O)(=O)', 'mode': 'attach'},  # FT sulfone
+                    109: {'smiles': 'C(=O)SCC(O)C(=O)O', 'mode': 'attach'},  # FT acetylsulfanylhydroxypropanoic acid
+                    110: {'smiles': 'C(=O)SC(O)C(=O)O', 'mode': 'attach'},  # FT acetylhydroxyethanethioate
+                    111: {'smiles': 'NCCC(=O)O', 'mode': 'attach'},  # FT amino propanoic acid
+                    112: {'smiles': 'NCC[N+](C)(C)C', 'mode': 'attach'},  # FT amino ethyl trimethyl ammonium
+                    113: {'smiles': 'C', 'mode': 'attach'},  # Telomers (generic)
                 }
                 
                 if group_id in smiles_map:

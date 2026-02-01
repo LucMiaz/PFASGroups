@@ -82,7 +82,7 @@ echo ""
 
 # Telomer Validation
 echo "7️⃣ Running Telomer Detection Validation..."
-python validate_telomers.py
+python scripts/validate_telomers.py
 if [ $? -ne 0 ]; then
     echo "❌ Telomer Validation failed"
     exit 1
