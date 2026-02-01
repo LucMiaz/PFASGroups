@@ -3,6 +3,7 @@
 Test suite for highly branched PFAS compounds
 Tests functional groups 29-59 (excluding cyclic 54-57 and groups without SMARTS 49-50)
 attached at different distances (0, 1, 2 bonds) from perfluorinated components of varying sizes
+Compares PFASGroups and PFAS-Atlas detection
 """
 
 import sys
@@ -15,11 +16,31 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 try:
     from PFASgroups.parser import parse_smiles
+    PFASGROUPS_AVAILABLE = True
 except ImportError:
     print("❌ Error: Could not import pfasgroups module")
     print("   Make sure you're running from the benchmark directory")
     print("   and pfasgroups is installed in your environment")
+    PFASGROUPS_AVAILABLE = False
     sys.exit(1)
+
+# Try to import PFAS-Atlas
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+atlas_dir = os.path.join(os.path.dirname(parent_dir), 'PFAS-atlas')
+try:
+    sys.path.append(atlas_dir)
+    from classification_helper.classify_pfas import classify_pfas_molecule
+    ATLAS_AVAILABLE = True
+    print("✅ PFAS-Atlas available")
+except ImportError:
+    try:
+        sys.path.append(os.path.join(atlas_dir, 'classification_helper'))
+        from classify_pfas import classify_pfas_molecule
+        ATLAS_AVAILABLE = True
+        print("✅ PFAS-Atlas available (fallback import)")
+    except ImportError:
+        print("⚠️  PFAS-Atlas not available - will only test PFASGroups")
+        ATLAS_AVAILABLE = False
 
 # Functional groups to test (29-59, excluding cyclic and no-SMARTS)
 FUNCTIONAL_GROUPS = {
@@ -80,13 +101,25 @@ def attach_functional_group(component_size, func_group, distance):
     return smiles
 
 
-def analyze_molecule(smiles):
-    """Analyze a molecule using pfasgroups"""
+def analyze_molecule_pfasgroups(smiles):
+    """Analyze a molecule using PFASGroups"""
     try:
         result = parse_smiles(smiles)
         return result
     except Exception as e:
-        print(f"     Error analyzing: {str(e)}")
+        print(f"     Error analyzing with PFASGroups: {str(e)}")
+        return None
+
+
+def analyze_molecule_atlas(smiles):
+    """Analyze a molecule using PFAS-Atlas"""
+    if not ATLAS_AVAILABLE:
+        return None
+    try:
+        predictions = classify_pfas_molecule(smiles)
+        return predictions
+    except Exception as e:
+        print(f"     Error analyzing with PFAS-Atlas: {str(e)}")
         return None
 
 
@@ -97,13 +130,19 @@ def run_benchmark():
     print(f"Testing {len(FUNCTIONAL_GROUPS)} functional groups")
     print("Component sizes: 1-5 CF2 units")
     print("Distances: 0, 1, 2 bonds from component start")
+    if ATLAS_AVAILABLE:
+        print("Comparing PFASGroups and PFAS-Atlas detection")
+    else:
+        print("Testing PFASGroups only (PFAS-Atlas not available)")
     print("=" * 80)
     print()
     
     results = {
         'total': 0,
-        'success': 0,
-        'failed': 0,
+        'pfasgroups_success': 0,
+        'pfasgroups_failed': 0,
+        'atlas_success': 0,
+        'atlas_failed': 0,
         'details': []
     }
     
@@ -122,48 +161,59 @@ def run_benchmark():
                 print(f"  Component Size: {component_size}, Distance: {distance}")
                 print(f"  SMILES: {smiles}")
                 
-                analysis = analyze_molecule(smiles)
+                # Test with PFASGroups
+                pfas_analysis = analyze_molecule_pfasgroups(smiles)
+                pfas_passed = False
                 
-                if analysis and len(analysis)>0:
+                if pfas_analysis and len(pfas_analysis) > 0:
                     # Check if the expected group was detected
-                    found_group = any(m['id'] == group_id for a in analysis for m in a['matches'])
-                    found_perfluoro = any(m['id'] in [49, 50] for a in analysis for m in a['matches'])
+                    found_group = any(m['id'] == group_id for a in pfas_analysis for m in a['matches'])
+                    found_perfluoro = any(m['id'] in [49, 50] for a in pfas_analysis for m in a['matches'])
                     
                     if found_group:
-                        results['success'] += 1
-                        print(f"  ✅ PASS - Group {group_id} ({group_info['name']}) detected")
+                        results['pfasgroups_success'] += 1
+                        pfas_passed = True
+                        print(f"  ✅ PFASGroups PASS - Group {group_id} ({group_info['name']}) detected")
                         
-                        # Log component information if available
-                        for m in analysis:
+                        # Log component information
+                        for m in pfas_analysis:
                             for match in m['matches']:
                                 if match['id'] == group_id and 'components' in match and match['components']:
                                     comp = match['components'][0]
                                     size = comp.get('size', len(comp.get('component', [])))
-                                    diameter = comp.get('diameter', 'N/A')
-                                    radius = comp.get('radius', 'N/A')
-                                    ecc = comp.get('eccentricity', 'N/A')
-                                    print(f"     Component size: {size}")
-                                    print(f"     Diameter/Radius: {diameter}/{radius}")
-                                    if isinstance(ecc, float):
-                                        print(f"     Eccentricity: {ecc:.3f}")
-                                    else:
-                                        print(f"     Eccentricity: {ecc}")
+                                    print(f"       Component size: {size}")
+                                    break
                     else:
-                        results['failed'] += 1
-                        print(f"  ❌ FAIL - Group {group_id} ({group_info['name']}) NOT detected")
-                        detected = ', '.join([f"{m['id']}:{m.get('group_name', m.get('definition_name', 'unknown'))}" for a in analysis for m in a['matches'][:5]])
+                        results['pfasgroups_failed'] += 1
+                        print(f"  ❌ PFASGroups FAIL - Group {group_id} ({group_info['name']}) NOT detected")
+                        detected = ', '.join([f"{m['id']}:{m.get('group_name', m.get('definition_name', 'unknown'))}" for a in pfas_analysis for m in a['matches'][:5]])
                         print(f"     Detected groups: {detected}")
                     
                     if found_perfluoro:
-                        for m in analysis:
+                        for m in pfas_analysis:
                             for match in m['matches']:
                                 if match['id'] in [49, 50]:
                                     chain_size = match.get('nCFchain', [None])[0]
                                     print(f"     Perfluoroalkyl component: ✓ (size: {chain_size})")
                                     break
                 else:
-                    results['failed'] += 1
-                    print(f"  ❌ FAIL - Analysis error or invalid SMILES")
+                    results['pfasgroups_failed'] += 1
+                    print(f"  ❌ PFASGroups FAIL - Analysis error or invalid SMILES")
+                
+                # Test with PFAS-Atlas
+                atlas_passed = False
+                atlas_predictions = None
+                if ATLAS_AVAILABLE:
+                    atlas_predictions = analyze_molecule_atlas(smiles)
+                    if atlas_predictions and len(atlas_predictions) >= 1:
+                        results['atlas_success'] += 1
+                        atlas_passed = True
+                        print(f"  ✅ PFAS-Atlas PASS - Classified as PFAS: {atlas_predictions[0]}")
+                        if len(atlas_predictions) >= 2:
+                            print(f"     Second class: {atlas_predictions[1]}")
+                    else:
+                        results['atlas_failed'] += 1
+                        print(f"  ❌ PFAS-Atlas FAIL - Not classified as PFAS")
                 
                 # Store detailed results
                 results['details'].append({
@@ -172,7 +222,9 @@ def run_benchmark():
                     'group_name': group_info['name'],
                     'distance': distance,
                     'smiles': smiles,
-                    'passed': analysis and len(analysis) and any(m['id'] == group_id for a in analysis for m in a['matches'])
+                    'pfasgroups_passed': pfas_passed,
+                    'atlas_passed': atlas_passed if ATLAS_AVAILABLE else None,
+                    'atlas_predictions': atlas_predictions if ATLAS_AVAILABLE else None
                 })
     
     # Print summary
@@ -180,52 +232,101 @@ def run_benchmark():
     print("📈 TEST SUMMARY")
     print("=" * 80)
     print(f"Total tests: {results['total']}")
-    success_pct = (results['success'] / results['total'] * 100) if results['total'] > 0 else 0
-    failed_pct = (results['failed'] / results['total'] * 100) if results['total'] > 0 else 0
-    print(f"✅ Passed: {results['success']} ({success_pct:.1f}%)")
-    print(f"❌ Failed: {results['failed']} ({failed_pct:.1f}%)")
+    print(f"\nPFASGroups Results:")
+    print(f"  Passed: {results['pfasgroups_success']} ({results['pfasgroups_success']/results['total']*100:.1f}%)")
+    print(f"  Failed: {results['pfasgroups_failed']} ({results['pfasgroups_failed']/results['total']*100:.1f}%)")
     
-    # Failures by group
-    failures_by_group = {}
+    if ATLAS_AVAILABLE:
+        print(f"\nPFAS-Atlas Results:")
+        print(f"  Passed: {results['atlas_success']} ({results['atlas_success']/results['total']*100:.1f}%)")
+        print(f"  Failed: {results['atlas_failed']} ({results['atlas_failed']/results['total']*100:.1f}%)")
+    
+    pfasgroups_success_pct = results['pfasgroups_success'] / results['total'] * 100
+    
+    # Failures by group for PFASGroups
+    pfasgroups_failures_by_group = {}
     for detail in results['details']:
-        if not detail['passed']:
+        if not detail['pfasgroups_passed']:
             gid = detail['group_id']
-            if gid not in failures_by_group:
-                failures_by_group[gid] = {
+            if gid not in pfasgroups_failures_by_group:
+                pfasgroups_failures_by_group[gid] = {
                     'name': detail['group_name'],
                     'count': 0,
                     'distances': set(),
                     'component_sizes': set()
                 }
-            failures_by_group[gid]['count'] += 1
-            failures_by_group[gid]['distances'].add(detail['distance'])
-            failures_by_group[gid]['component_sizes'].add(detail['component_size'])
+            pfasgroups_failures_by_group[gid]['count'] += 1
+            pfasgroups_failures_by_group[gid]['distances'].add(detail['distance'])
+            pfasgroups_failures_by_group[gid]['component_sizes'].add(detail['component_size'])
     
-    if failures_by_group:
-        print("\n❌ Failures by Functional Group:")
+    if pfasgroups_failures_by_group:
+        print("\n❌ PFASGroups Failures by Functional Group:")
         print("-" * 80)
-        for gid, info in sorted(failures_by_group.items()):
+        for gid, info in sorted(pfasgroups_failures_by_group.items()):
             print(f"  Group {gid} ({info['name']}): {info['count']} failures")
             print(f"    At distances: {', '.join(map(str, sorted(info['distances'])))}")
             print(f"    With component sizes: {', '.join(map(str, sorted(info['component_sizes'])))}")
     
-    # Success rate by distance
-    print("\n📊 Success Rate by Distance:")
+    # Failures by group for PFAS-Atlas
+    atlas_failures_by_group = {}
+    if ATLAS_AVAILABLE:
+        for detail in results['details']:
+            if detail['atlas_passed'] is not None and not detail['atlas_passed']:
+                gid = detail['group_id']
+                if gid not in atlas_failures_by_group:
+                    atlas_failures_by_group[gid] = {
+                        'name': detail['group_name'],
+                        'count': 0,
+                        'distances': set(),
+                        'component_sizes': set()
+                    }
+                atlas_failures_by_group[gid]['count'] += 1
+                atlas_failures_by_group[gid]['distances'].add(detail['distance'])
+                atlas_failures_by_group[gid]['component_sizes'].add(detail['component_size'])
+        
+        if atlas_failures_by_group:
+            print("\n❌ PFAS-Atlas Failures by Functional Group:")
+            print("-" * 80)
+            for gid, info in sorted(atlas_failures_by_group.items()):
+                print(f"  Group {gid} ({info['name']}): {info['count']} failures")
+                print(f"    At distances: {', '.join(map(str, sorted(info['distances'])))}")
+                print(f"    With component sizes: {', '.join(map(str, sorted(info['component_sizes'])))}")
+    
+    # Success rate by distance for PFASGroups
+    print("\n📊 PFASGroups Success Rate by Distance:")
     print("-" * 80)
     for dist in range(3):
         dist_tests = [d for d in results['details'] if d['distance'] == dist]
-        dist_success = sum(1 for d in dist_tests if d['passed'])
+        dist_success = sum(1 for d in dist_tests if d['pfasgroups_passed'])
         dist_pct = (dist_success / len(dist_tests) * 100) if dist_tests else 0
         print(f"  Distance {dist}: {dist_success}/{len(dist_tests)} ({dist_pct:.1f}%)")
     
-    # Success rate by component size
-    print("\n📊 Success Rate by Component Size:")
+    # Success rate by component size for PFASGroups
+    print("\n📊 PFASGroups Success Rate by Component Size:")
     print("-" * 80)
     for size in range(1, 6):
         size_tests = [d for d in results['details'] if d['component_size'] == size]
-        size_success = sum(1 for d in size_tests if d['passed'])
+        size_success = sum(1 for d in size_tests if d['pfasgroups_passed'])
         size_pct = (size_success / len(size_tests) * 100) if size_tests else 0
         print(f"  Size {size}: {size_success}/{len(size_tests)} ({size_pct:.1f}%)")
+    
+    # PFAS-Atlas analysis
+    if ATLAS_AVAILABLE:
+        print("\n📊 PFAS-Atlas Success Rate by Distance:")
+        print("-" * 80)
+        for dist in range(3):
+            dist_tests = [d for d in results['details'] if d['distance'] == dist and d['atlas_passed'] is not None]
+            dist_success = sum(1 for d in dist_tests if d['atlas_passed'])
+            dist_pct = (dist_success / len(dist_tests) * 100) if dist_tests else 0
+            print(f"  Distance {dist}: {dist_success}/{len(dist_tests)} ({dist_pct:.1f}%)")
+        
+        print("\n📊 PFAS-Atlas Success Rate by Component Size:")
+        print("-" * 80)
+        for size in range(1, 6):
+            size_tests = [d for d in results['details'] if d['component_size'] == size and d['atlas_passed'] is not None]
+            size_success = sum(1 for d in size_tests if d['atlas_passed'])
+            size_pct = (size_success / len(size_tests) * 100) if size_tests else 0
+            print(f"  Size {size}: {size_success}/{len(size_tests)} ({size_pct:.1f}%)")
     
     print("\n" + "=" * 80)
     print("✨ Test suite complete!")
@@ -240,24 +341,36 @@ def run_benchmark():
             'timestamp': timestamp,
             'test_type': 'highly_branched',
             'total_tests': results['total'],
-            'success_rate': success_pct,
-            'failure_rate': failed_pct
+            'pfasgroups_success_rate': pfasgroups_success_pct,
+            'atlas_available': ATLAS_AVAILABLE,
+            'atlas_success_rate': (results['atlas_success'] / results['total'] * 100) if ATLAS_AVAILABLE else None
         },
         'summary': {
             'total': results['total'],
-            'passed': results['success'],
-            'failed': results['failed']
+            'pfasgroups_passed': results['pfasgroups_success'],
+            'pfasgroups_failed': results['pfasgroups_failed'],
+            'atlas_passed': results['atlas_success'] if ATLAS_AVAILABLE else None,
+            'atlas_failed': results['atlas_failed'] if ATLAS_AVAILABLE else None
         },
         'details': results['details'],
-        'failures_by_group': {
+        'pfasgroups_failures_by_group': {
             str(gid): {
                 'name': info['name'],
                 'count': info['count'],
                 'distances': sorted(list(info['distances'])),
                 'component_sizes': sorted(list(info['component_sizes']))
             }
-            for gid, info in failures_by_group.items()
-        }
+            for gid, info in pfasgroups_failures_by_group.items()
+        },
+        'atlas_failures_by_group': {
+            str(gid): {
+                'name': info['name'],
+                'count': info['count'],
+                'distances': sorted(list(info['distances'])),
+                'component_sizes': sorted(list(info['component_sizes']))
+            }
+            for gid, info in atlas_failures_by_group.items()
+        } if ATLAS_AVAILABLE and atlas_failures_by_group else {}
     }
     
     with open(output_file, 'w') as f:
