@@ -15,7 +15,7 @@ if [ ! -f "scripts/enhanced_pfas_benchmark.py" ]; then
 fi
 
 # Create output directories
-mkdir -p scripts reports data imgs html
+mkdir -p scripts reports data imgs
 
 echo "📋 Running all PFAS benchmarks..."
 echo ""
@@ -119,6 +119,35 @@ else
 fi
 echo ""
 
+# Timing Models Analysis
+echo "📈 Analyzing timing models (exponential fit)..."
+if [ -f "$TIMING_FILE" ]; then
+    python scripts/analyze_timing_models.py
+    if [ $? -eq 0 ]; then
+        echo "✅ Timing models analysis completed"
+    else
+        echo "⚠️  Timing models analysis failed"
+    fi
+else
+    echo "⚠️  No timing benchmark file found"
+fi
+echo ""
+
+# Definitions Benchmark Analysis
+echo "📋 Analyzing PFAS definitions benchmark..."
+DEFINITION_FILE=$(ls data/pfas_definitions_benchmark_*.json 2>/dev/null | tail -1)
+if [ -f "$DEFINITION_FILE" ]; then
+    python scripts/analyze_definitions_benchmark.py "$DEFINITION_FILE"
+    if [ $? -eq 0 ]; then
+        echo "✅ Definitions analysis completed"
+    else
+        echo "⚠️  Definitions analysis failed"
+    fi
+else
+    echo "⚠️  No definitions benchmark file found (this is optional)"
+fi
+echo ""
+
 # Complex Branched Analysis
 echo "🧬 Analyzing complex branched structures..."
 COMPLEX_FILE=$(ls data/pfas_complex_branched_benchmark_*.json 2>/dev/null | tail -1)
@@ -195,7 +224,7 @@ echo ""
 
 # Comprehensive Benchmark Analysis
 echo "📊 Generating comprehensive benchmark statistics..."
-python analyze_benchmarks_simple.py
+python scripts/analyze_benchmarks_simple.py
 if [ $? -eq 0 ]; then
     echo "✅ Comprehensive benchmark analysis completed"
 else

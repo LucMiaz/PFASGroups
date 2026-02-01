@@ -1,0 +1,1128 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Models API Reference &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Changelog" href="../changelog.html" />
+    <link rel="prev" title="Core API Reference" href="core.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#from-pypi-recommended">From PyPI (Recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#from-conda-forge">From Conda-Forge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#from-source">From Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#core-dependencies">Core Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#optional-dependencies">Optional Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#verifying-installation">Verifying Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#testing-the-installation">Testing the Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#rdkit-installation-issues">RDKit Installation Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#import-errors">Import Errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#performance-issues">Performance Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#upgrading">Upgrading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#development-installation">Development Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#basic-pfas-detection">Basic PFAS Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#multiple-molecules">Multiple Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#generating-fingerprints">Generating Fingerprints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#component-based-analysis">Component-Based Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#command-line-interface">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#working-with-dataframes">Working with DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#reading-from-files">Reading from Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm.html">Algorithm Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#algorithm-workflow">Algorithm Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#step-1-molecule-preprocessing">Step 1: Molecule Preprocessing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#step-2-formula-constraint-validation">Step 2: Formula Constraint Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#step-3-smarts-pattern-matching">Step 3: SMARTS Pattern Matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#step-4a-fluorinated-path-finding-non-cyclic">Step 4a: Fluorinated Path Finding (Non-Cyclic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#step-4b-fluorinated-connected-components-cyclic">Step 4b: Fluorinated Connected Components (Cyclic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#step-5-result-aggregation">Step 5: Result Aggregation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#pathway-smarts-patterns">Pathway SMARTS Patterns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#perfluoroalkyl-chain">Perfluoroalkyl Chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#polyfluoroalkyl-chain">Polyfluoroalkyl Chain</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#optimization-strategies">Optimization Strategies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#early-termination">Early Termination</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#caching">Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#graph-algorithms">Graph Algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#parallel-processing">Parallel Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#time-complexity">Time Complexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#accuracy-and-validation">Accuracy and Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#future-development">Future Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#main-functions">Main Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#parse-smiles">parse_smiles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#parse-groups-in-mol">parse_groups_in_mol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#generate-fingerprint">generate_fingerprint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#plot-pfasgroups">plot_pfasgroups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#helper-functions">Helper Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#get-pfasgroups">get_PFASGroups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#get-smartspaths">get_smartsPaths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#compile-smartspath">compile_smartsPath</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#compile-smartspaths">compile_smartsPaths</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#internal-functions">Internal Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Models API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pfasgroup-class">PFASGroup Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup"><code class="docutils literal notranslate"><span class="pre">PFASGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.smartsPath"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smartsPath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.__init__"><code class="docutils literal notranslate"><span class="pre">PFASGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_gte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_lte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_only()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_rel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.formula_dict_satisfies_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_matched_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.component_satisfies_all_smarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_alkyl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_aryl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.find_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_components()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#formula-dict-satisfies-constraints">formula_dict_satisfies_constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pfasdefinition-class">PFASDefinition Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#applies-to-molecule">applies_to_molecule</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-model-integration">Data Model Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#json-configuration">JSON Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-2-0">Version 1.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-1-0">Version 1.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#migration-guides">Migration Guides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#migrating-from-1-1-x-to-1-2-x">Migrating from 1.1.x to 1.2.x</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#migrating-from-1-0-x-to-1-1-x">Migrating from 1.0.x to 1.1.x</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#roadmap">Roadmap</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#version-1-3-0-planned-q2-2026">Version 1.3.0 (Planned - Q2 2026)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../changelog.html#version-2-0-0-planned-q4-2026">Version 2.0.0 (Planned - Q4 2026)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#contributing">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#citation">Citation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#pfasgroups-license">PFASgroups License</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../license.html#you-are-free-to">You are free to:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../license.html#under-the-following-terms">Under the following terms:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../license.html#notices">Notices:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#commercial-use">Commercial Use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#attribution-requirements">Attribution Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#acknowledgments">Acknowledgments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#third-party-licenses">Third-Party Licenses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../license.html#rdkit">RDKit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../license.html#numpy">NumPy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../license.html#networkx">NetworkX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../license.html#pandas">Pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../license.html#matplotlib">Matplotlib</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#full-license-text">Full License Text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#disclaimer">Disclaimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#privacy">Privacy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../license.html#questions">Questions</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Data Models API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data-models-api-reference">
+<h1>Data Models API Reference<a class="headerlink" href="#data-models-api-reference" title="Link to this heading"></a></h1>
+<p>This module defines the data structures used to represent PFAS groups and definitions.</p>
+<section id="pfasgroup-class">
+<h2>PFASGroup Class<a class="headerlink" href="#pfasgroup-class" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PFASgroups.PFASGroupModel.</span></span><span class="sig-name descname"><span class="pre">PFASGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup" title="Link to this definition"></a></dt>
+<dd><p>Model class representing a specific PFAS functional group with structural patterns.</p>
+<p>A PFASGroup defines a specific fluorinated functional group using SMARTS patterns,
+component path types, and molecular formula constraints. Groups are used to classify
+molecules into specific categories (e.g., “Perfluoroalkyl carboxylic acid”).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.id" title="Link to this definition"></a></dt>
+<dd><p>Unique identifier for this PFAS group</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.name" title="Link to this definition"></a></dt>
+<dd><p>Human-readable group name (e.g., “Perfluoroalkyl carboxylic acid”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.smarts">
+<span class="sig-name descname"><span class="pre">smarts</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.smarts" title="Link to this definition"></a></dt>
+<dd><p>SMARTS patterns (compiled RDKit molecule) for functional group detection.
+None if group is defined by smartsPath alone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Chem.Mol or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.smartsPath">
+<span class="sig-name descname"><span class="pre">smartsPath</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.smartsPath" title="Link to this definition"></a></dt>
+<dd><p>Type of fluorinated component to search:
+- ‘Perfluoroalkyl’: Fully fluorinated carbon chains
+- ‘Polyfluoroalkyl’: Partially fluorinated carbon chains
+- ‘Polyfluoro’: General polyfluorinated structures
+- ‘Polyfluorobr’: Polyfluorobromo structures
+- ‘cyclic’: Aromatic/cyclic fluorinated structures
+- None: Check all component types</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF">
+<span class="sig-name descname"><span class="pre">max_dist_from_CF</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF" title="Link to this definition"></a></dt>
+<dd><p>Maximum graph distance (number of bonds) from fluorinated component to functional group.
+When &gt; 0, extends component search radius to find nearby functional groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.linker_smarts">
+<span class="sig-name descname"><span class="pre">linker_smarts</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts" title="Link to this definition"></a></dt>
+<dd><p>Compiled SMARTS pattern for validating linker atoms between fluorinated component
+and functional group. When None (default), no restriction is applied to linker atoms.
+Only used when max_dist_from_CF &gt; 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Chem.Mol or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.constraints">
+<span class="sig-name descname"><span class="pre">constraints</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.constraints" title="Link to this definition"></a></dt>
+<dd><p>Molecular formula constraints with keys:
+- ‘only’: Elements that must be present exclusively (e.g., [‘C’, ‘F’, ‘O’])
+- ‘gte’: Minimum element counts (e.g., {‘C’: 2})
+- ‘lte’: Maximum element counts (e.g., {‘O’: 2})
+- ‘eq’: Exact element counts (e.g., {‘N’: 1})
+- ‘rel’: Relational constraints (e.g., {‘O’: {‘atoms’: [‘C’], ‘div’: 2, ‘add’: 0}})</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Perfluoroalkyl carboxylic acid: R_F-COOH</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pfaa</span> <span class="o">=</span> <span class="n">PFASGroup</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl carboxylic acid&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">smarts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;C(=O)O&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span>  <span class="c1"># Carboxylic acid group</span>
+<span class="gp">... </span>    <span class="n">smartsPath</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;only&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">]},</span>
+<span class="gp">... </span>    <span class="n">max_dist_from_CF</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">linker_smarts</span><span class="o">=</span><span class="kc">None</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>SMARTS patterns are compiled on initialization for efficient matching</p></li>
+<li><p>Constraints are validated when checking if a molecule belongs to this group</p></li>
+<li><p>max_dist_from_CF allows finding functional groups connected via non-fluorinated linkers</p></li>
+<li><p>linker_smarts restricts which atoms can be in the path between component and functional group</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.constraint_gte">
+<span class="sig-name descname"><span class="pre">constraint_gte</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.constraint_gte"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_gte" title="Link to this definition"></a></dt>
+<dd><p>Check ‘greater than or equal’ constraints on element counts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>formula_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Molecular formula as {element: count} dictionary</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if all ‘gte’ constraints are satisfied, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Requires at least 2 carbons and 3 fluorines</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gte&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_gte</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>  <span class="c1"># True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_gte</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>  <span class="c1"># False (C &lt; 2)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.constraint_lte">
+<span class="sig-name descname"><span class="pre">constraint_lte</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.constraint_lte"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_lte" title="Link to this definition"></a></dt>
+<dd><p>Check ‘less than or equal’ constraints on element counts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>formula_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Molecular formula as {element: count} dictionary</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if all ‘lte’ constraints are satisfied, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Requires at most 2 oxygens</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lte&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_lte</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>  <span class="c1"># True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_lte</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>  <span class="c1"># False (O &gt; 2)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.constraint_eq">
+<span class="sig-name descname"><span class="pre">constraint_eq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.constraint_eq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_eq" title="Link to this definition"></a></dt>
+<dd><p>Check ‘equal to’ constraints on element counts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>formula_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Molecular formula as {element: count} dictionary</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if all ‘eq’ constraints are satisfied, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Requires exactly 1 nitrogen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;eq&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_eq</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>  <span class="c1"># True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_eq</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>  <span class="c1"># False (N != 1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.constraint_only">
+<span class="sig-name descname"><span class="pre">constraint_only</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.constraint_only"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_only" title="Link to this definition"></a></dt>
+<dd><p>Check ‘only’ constraint - molecule must contain only specified elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>formula_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Molecular formula as {element: count} dictionary</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if molecule contains only the allowed elements, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Molecule must contain only C, F, O, H</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_only</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>  <span class="c1"># True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_only</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>  <span class="c1"># False (S not allowed)</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>Checks that sum of allowed elements equals total atoms in molecule.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.constraint_rel">
+<span class="sig-name descname"><span class="pre">constraint_rel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.constraint_rel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.constraint_rel" title="Link to this definition"></a></dt>
+<dd><p>Check relational constraints between element counts.</p>
+<p>Validates relationships of the form: count(element) = f(other_elements)
+where f can include division, addition, and summing other element counts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>formula_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Molecular formula as {element: count} dictionary</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul>
+<li><p><em>bool</em> – True if all relational constraints are satisfied, False otherwise</p></li>
+<li><p><em>Constraint Format</em></p></li>
+<li><p><em>—————–</em></p></li>
+<li><p><strong>‘rel’</strong> (<em>{</em>) –</p>
+<dl class="simple">
+<dt>‘ElementA’: {</dt><dd><p>‘atoms’: [‘ElementB’, ‘ElementC’],  # Elements to sum
+‘div’: int,  # Divisor (default 1)
+‘add’: int,  # Additive constant (default 0)
+‘add_atoms’: [‘ElementD’]  # Additional elements to add</p>
+</dd>
+</dl>
+<p>}</p>
+</li>
+<li><p><em>}</em></p></li>
+<li><p><strong>Formula</strong> (<em>count(ElementA) = (sum(atoms) / div) + add + sum(add_atoms)</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Carbon count must equal half the fluorine count</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rel&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;atoms&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">],</span> <span class="s1">&#39;div&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_rel</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>  <span class="c1"># True (4 == 8/2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_rel</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>  <span class="c1"># False (3 != 8/2)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Oxygen count must equal carbon count plus 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rel&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;atoms&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="s1">&#39;div&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraint_rel</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">})</span>  <span class="c1"># True (4 == 3 + 1)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.formula_dict_satisfies_constraints">
+<span class="sig-name descname"><span class="pre">formula_dict_satisfies_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.formula_dict_satisfies_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.formula_dict_satisfies_constraints" title="Link to this definition"></a></dt>
+<dd><p>Check if a molecular formula satisfies all constraints for this PFAS group.</p>
+<p>Evaluates all constraint types in order: relational → only → equal → lte → gte.
+Stops evaluation at first failure for efficiency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>formula_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – Molecular formula as {element: count} dictionary (e.g., {‘C’: 8, ‘F’: 17, ‘O’: 2})</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>bool</em> – True if all constraints are satisfied, False if any constraint fails</p></li>
+<li><p><em>Constraint Evaluation Order</em></p></li>
+<li><p><em>—————————</em></p></li>
+<li><p><em>1. Relational constraints (‘rel’) - element count relationships</em></p></li>
+<li><p><em>2. ‘Only’ constraints - allowed elements</em></p></li>
+<li><p><em>3. Equality constraints (‘eq’) - exact element counts</em></p></li>
+<li><p><em>4. Upper bound constraints (‘lte’) - maximum element counts</em></p></li>
+<li><p><em>5. Lower bound constraints (‘gte’) - minimum element counts</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Perfluoroalkyl carboxylic acid constraints</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">],</span>  <span class="c1"># No other elements</span>
+<span class="gp">... </span>    <span class="s1">&#39;gte&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>  <span class="c1"># At least 2 carbons, 3 fluorines</span>
+<span class="gp">... </span>    <span class="s1">&#39;eq&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>  <span class="c1"># Exactly 2 oxygens</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">formula_dict_satisfies_constraints</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">formula_dict_satisfies_constraints</span><span class="p">({</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="go">False  # Fails &#39;eq&#39;: {&#39;O&#39;: 2}</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Returns True immediately if no constraints are defined</p></li>
+<li><p>Short-circuits on first constraint failure for performance</p></li>
+<li><p>Constraint evaluation order is fixed for consistency</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.find_matched_atoms">
+<span class="sig-name descname"><span class="pre">find_matched_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.find_matched_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.find_matched_atoms" title="Link to this definition"></a></dt>
+<dd><p>Find all substructure matches of this PFAS group’s SMARTS patterns in a molecule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mol</strong> (<em>Chem.Mol</em>) – RDKit molecule object to search for matches</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of matches, where each match is a list of atom indices in the molecule</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[List[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]]</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If no SMARTS patterns are defined, returns an empty list.</p></li>
+<li><p>Each SMARTS pattern is searched independently; matches from all patterns are combined.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.component_satisfies_all_smarts">
+<span class="sig-name descname"><span class="pre">component_satisfies_all_smarts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.component_satisfies_all_smarts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.component_satisfies_all_smarts" title="Link to this definition"></a></dt>
+<dd><p>Check if a fluorinated component matches all SMARTS patterns of this PFAS group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component</strong> (<em>PFASComponent</em>) – PFASComponent object representing a fluorinated component in the molecule</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the component matches all SMARTS patterns, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If no SMARTS patterns are defined for this group, returns True.</p></li>
+<li><p>Each SMARTS pattern must have at least one match that includes the component’s atom.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components">
+<span class="sig-name descname"><span class="pre">find_alkyl_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_solver</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.find_alkyl_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components" title="Link to this definition"></a></dt>
+<dd><p>Find fluorinated components in a molecule that match this PFAS group’s criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>Chem.Mol</em>) – RDKit molecule object to search</p></li>
+<li><p><strong>components</strong> (<em>List</em><em>[</em><em>PFASComponent</em><em>]</em>) – List of PFASComponent objects representing fluorinated components in the molecule</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of PFASComponent objects that match this PFAS group’s criteria</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[PFASComponent]</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Matches are determined based on smartsPath and max_dist_from_CF attributes.</p></li>
+<li><p>If smartsPath is None, all components are considered.</p></li>
+<li><p>max_dist_from_CF allows extending the search radius for functional groups.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components">
+<span class="sig-name descname"><span class="pre">find_aryl_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.find_aryl_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components" title="Link to this definition"></a></dt>
+<dd><p>Find aryl components in a molecule with comprehensive metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.find_components">
+<span class="sig-name descname"><span class="pre">find_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_solver</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.find_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.find_components" title="Link to this definition"></a></dt>
+<dd><p>Find fluorinated components in a molecule that match this PFAS group’s criteria.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><strong>Class Description:</strong></p>
+<p>Represents a PFAS functional group definition with SMARTS patterns, pathway requirements, and molecular formula constraints.</p>
+<p><strong>Attributes:</strong></p>
+<ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>): Unique identifier for the group (1-55+ for OECD groups, higher for custom)</p></li>
+<li><p><strong>name</strong> (<em>str</em>): Descriptive name (e.g., “Perfluoroalkyl carboxylic acids”)</p></li>
+<li><p><strong>alias</strong> (<em>str</em>, optional): Short name or abbreviation (e.g., “PFCAs”)</p></li>
+<li><p><strong>smarts1</strong> (<em>rdkit.Chem.Mol</em>): Primary SMARTS pattern (compiled RDKit Mol object)</p></li>
+<li><p><strong>smarts2</strong> (<em>rdkit.Chem.Mol</em>, optional): Secondary SMARTS pattern for additional specificity</p></li>
+<li><p><strong>smartsPath</strong> (<em>str</em>): Pathway type - ‘Perfluoroalkyl’, ‘Polyfluoroalkyl’, ‘cyclic’, or None</p></li>
+<li><p><strong>constraints</strong> (<em>dict</em>): Molecular formula constraints</p></li>
+<li><p><strong>max_dist_from_CF</strong> (<em>int</em>): Maximum bond distance from fluorinated carbon terminal (default: 2)</p></li>
+<li><p><strong>base_functional_groups</strong> (<em>list</em>, optional): Base functional group categories</p></li>
+<li><p><strong>main_group</strong> (<em>str</em>, optional): Main classification category</p></li>
+</ul>
+<p><strong>Constraint Dictionary Structure:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>  <span class="c1"># Exactly 2 oxygen atoms</span>
+    <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>  <span class="c1"># At least 1 fluorine atom</span>
+    <span class="s2">&quot;lte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>  <span class="c1"># At most 1 nitrogen atom</span>
+    <span class="s2">&quot;only&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">],</span>  <span class="c1"># Only these elements allowed</span>
+    <span class="s2">&quot;rel&quot;</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># Relative element ratios</span>
+        <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">],</span>  <span class="c1"># Reference atoms</span>
+            <span class="s2">&quot;add&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Addition term</span>
+            <span class="s2">&quot;div&quot;</span><span class="p">:</span> <span class="mi">2</span>  <span class="c1"># Division factor</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Relative Constraint Formula:</strong></p>
+<div class="math notranslate nohighlight">
+\[n_{target} = \frac{\sum_{i} n_{atoms_i} + add}{div}\]</div>
+<p>For example, perfluorinated compounds: C = (F + H) / 2 - 1</p>
+<p><strong>Methods:</strong></p>
+<section id="formula-dict-satisfies-constraints">
+<h3>formula_dict_satisfies_constraints<a class="headerlink" href="#formula-dict-satisfies-constraints" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">formula_dict_satisfies_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a molecular formula satisfies all constraints.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        formula_dict: Dictionary mapping element symbols to counts</span>
+<span class="sd">                     e.g., {&#39;C&#39;: 8, &#39;F&#39;: 15, &#39;O&#39;: 2, &#39;H&#39;: 1}</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if all constraints satisfied, False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p><strong>Examples:</strong></p>
+<p>Creating a custom PFAS group:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASGroup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="c1"># Define a custom PFAS group</span>
+<span class="n">my_group</span> <span class="o">=</span> <span class="n">PFASGroup</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="mi">999</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl nitrates&quot;</span><span class="p">,</span>
+    <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;PFANs&quot;</span><span class="p">,</span>
+    <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[C]-[O]-[N+](=O)[O-]&quot;</span><span class="p">),</span>
+    <span class="n">smarts2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">smartsPath</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>  <span class="c1"># One N and three O (nitrate)</span>
+        <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>  <span class="c1"># At least one F</span>
+        <span class="s2">&quot;only&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="n">max_dist_from_CF</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="c1"># Check if a formula satisfies constraints</span>
+<span class="n">formula</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="n">satisfies</span> <span class="o">=</span> <span class="n">my_group</span><span class="o">.</span><span class="n">formula_dict_satisfies_constraints</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Formula satisfies: </span><span class="si">{</span><span class="n">satisfies</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using in custom analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_PFASGroups</span><span class="p">,</span> <span class="n">parse_smiles</span>
+
+<span class="c1"># Get default groups</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="n">get_PFASGroups</span><span class="p">()</span>
+
+<span class="c1"># Add custom group</span>
+<span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">my_group</span><span class="p">)</span>
+
+<span class="c1"># Use in parsing</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span>
+    <span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)ON(=O)=O&quot;</span><span class="p">,</span>
+    <span class="n">pfas_groups</span><span class="o">=</span><span class="n">groups</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="pfasdefinition-class">
+<h2>PFASDefinition Class<a class="headerlink" href="#pfasdefinition-class" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PFASgroups.PFASDefinitionModel.</span></span><span class="sig-name descname"><span class="pre">PFASDefinition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">smarts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluorineRatio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASDefinitionModel.html#PFASDefinition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition" title="Link to this definition"></a></dt>
+<dd><p>Model class representing a PFAS definition based on structural criteria.</p>
+<p>A PFAS definition identifies molecules using SMARTS patterns and/or fluorine ratio thresholds.
+Unlike PFASGroup which focuses on specific functional groups, PFASDefinition provides
+broader chemical definitions (e.g., “contains at least one perfluoroalkyl moiety”).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.id" title="Link to this definition"></a></dt>
+<dd><p>Unique identifier for this PFAS definition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.name" title="Link to this definition"></a></dt>
+<dd><p>Human-readable name (e.g., “Per- and polyfluoroalkyl substances”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.description" title="Link to this definition"></a></dt>
+<dd><p>Detailed description of what this definition represents</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.fluorineRatio">
+<span class="sig-name descname"><span class="pre">fluorineRatio</span></span><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.fluorineRatio" title="Link to this definition"></a></dt>
+<dd><p>Minimum ratio of fluorine atoms required (None if not applicable)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_strings">
+<span class="sig-name descname"><span class="pre">smarts_strings</span></span><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_strings" title="Link to this definition"></a></dt>
+<dd><p>Original SMARTS pattern strings for structural matching</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_patterns">
+<span class="sig-name descname"><span class="pre">smarts_patterns</span></span><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_patterns" title="Link to this definition"></a></dt>
+<dd><p>Compiled SMARTS molecule objects for efficient matching</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Chem.Mol]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.includeHydrogen">
+<span class="sig-name descname"><span class="pre">includeHydrogen</span></span><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.includeHydrogen" title="Link to this definition"></a></dt>
+<dd><p>Whether to include hydrogen atoms in fluorine ratio calculations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth">
+<span class="sig-name descname"><span class="pre">requireBoth</span></span><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth" title="Link to this definition"></a></dt>
+<dd><p>If True, requires both SMARTS match AND fluorine ratio.
+If False, requires SMARTS match OR fluorine ratio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Definition requiring perfluoroalkyl chain OR high fluorine ratio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pfas_def</span> <span class="o">=</span> <span class="n">PFASDefinition</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PFAS (OECD definition)&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">smarts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;[CX4][CX4]([F])([F])[F]&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">fluorineRatio</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Contains perfluoroalkyl moiety with ≥2 carbons&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">requireBoth</span><span class="o">=</span><span class="kc">False</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">smarts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluorineRatio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASDefinitionModel.html#PFASDefinition.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule">
+<span class="sig-name descname"><span class="pre">applies_to_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_or_smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://www.rdkit.org/docs/source/rdkit.Chem.rdchem.html#rdkit.Chem.rdchem.Mol" title="(in The RDKit v2025.09)"><span class="pre">Mol</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/PFASgroups/PFASDefinitionModel.html#PFASDefinition.applies_to_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule" title="Link to this definition"></a></dt>
+<dd><p>Check if this PFAS definition applies to a given molecule.</p>
+<p>This method evaluates whether a molecule meets the structural and/or compositional
+criteria defined by this PFASDefinition. The evaluation logic depends on the
+requireBoth flag:</p>
+<ul class="simple">
+<li><p>If requireBoth=False (default): Returns True if EITHER SMARTS matches OR
+fluorine ratio is met (logical OR)</p></li>
+<li><p>If requireBoth=True: Returns True only if BOTH SMARTS matches AND fluorine
+ratio are met (logical AND)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_or_smiles</strong> (<em>Union</em><em>[</em><em>Chem.Mol</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Input molecule as RDKit Mol object or SMILES string</p></li>
+<li><p><strong>formula</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>]</em><em>]</em><em>, </em><em>default=None</em>) – Pre-computed molecular formula as {element: count} dictionary.
+If None, will be computed from the molecule.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – <p>Additional parameters:
+- include_hydrogen (bool): Whether to include H in fluorine ratio calculation.</p>
+<blockquote>
+<div><p>Defaults to self.includeHydrogen</p>
+</div></blockquote>
+<ul>
+<li><p>require_both (bool): Override the instance’s requireBoth setting</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the molecule meets the definition criteria, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pfas_def</span> <span class="o">=</span> <span class="n">PFASDefinition</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span> <span class="n">smarts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;[CX4]F&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">fluorineRatio</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pfas_def</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)F&quot;</span><span class="p">)</span>  <span class="c1"># PFOA-like</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pfas_def</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="s2">&quot;CCCCCC&quot;</span><span class="p">)</span>  <span class="c1"># No fluorine</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>SMARTS patterns are checked using substructure matching (HasSubstructMatch)</p></li>
+<li><p>Fluorine ratio is calculated as: F_count / total_atom_count</p></li>
+<li><p>Invalid SMILES strings return False</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<p><strong>Class Description:</strong></p>
+<p>Represents broader PFAS definitions (e.g., OECD, EPA, EU) based on SMARTS patterns and fluorine ratios.</p>
+<p><strong>Attributes:</strong></p>
+<ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>): Unique identifier</p></li>
+<li><p><strong>name</strong> (<em>str</em>): Definition name (e.g., “OECD PFAS Definition”)</p></li>
+<li><p><strong>smarts</strong> (<em>list</em>): List of SMARTS pattern strings</p></li>
+<li><p><strong>fluorineRatio</strong> (<em>float</em>): Minimum F/(C+F+H) ratio threshold (0.0-1.0)</p></li>
+<li><p><strong>description</strong> (<em>str</em>): Human-readable description</p></li>
+<li><p><strong>includeHydrogen</strong> (<em>bool</em>): Include H in ratio calculation</p></li>
+<li><p><strong>requireBoth</strong> (<em>bool</em>): Require both SMARTS match AND fluorine ratio</p></li>
+</ul>
+<p><strong>Methods:</strong></p>
+<section id="applies-to-molecule">
+<h3>applies_to_molecule<a class="headerlink" href="#applies-to-molecule" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">applies_to_molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_or_smiles</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if this definition applies to a molecule.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol_or_smiles: RDKit Mol object or SMILES string</span>
+<span class="sd">        formula: Pre-computed molecular formula (optional)</span>
+<span class="sd">        **kwargs: Additional parameters</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if definition applies, False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p><strong>Examples:</strong></p>
+<p>Creating a custom PFAS definition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASDefinition</span>
+
+<span class="c1"># OECD definition example</span>
+<span class="n">oecd_def</span> <span class="o">=</span> <span class="n">PFASDefinition</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;OECD PFAS Definition&quot;</span><span class="p">,</span>
+    <span class="n">smarts</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;[C](F)(F)F&quot;</span><span class="p">,</span>  <span class="c1"># CF3 group</span>
+        <span class="s2">&quot;[C](F)(F)[C](F)(F)&quot;</span>  <span class="c1"># CF2-CF2 segment</span>
+    <span class="p">],</span>
+    <span class="n">fluorineRatio</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># No minimum ratio (SMARTS match sufficient)</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;OECD: Contains at least one perfluoroalkyl moiety&quot;</span><span class="p">,</span>
+    <span class="n">includeHydrogen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">requireBoth</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># SMARTS match OR ratio</span>
+<span class="p">)</span>
+
+<span class="c1"># Check if molecule matches definition</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">oecd_def</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matches OECD definition: </span><span class="si">{</span><span class="n">matches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using multiple definitions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define multiple PFAS definitions</span>
+<span class="n">definitions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">PFASDefinition</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;OECD&quot;</span><span class="p">,</span>
+        <span class="n">smarts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;[C](F)(F)F&quot;</span><span class="p">],</span>
+        <span class="n">fluorineRatio</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">requireBoth</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">),</span>
+    <span class="n">PFASDefinition</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;High Fluorination&quot;</span><span class="p">,</span>
+        <span class="n">smarts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;[F]&quot;</span><span class="p">],</span>
+        <span class="n">fluorineRatio</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># 50% F content</span>
+        <span class="n">includeHydrogen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">requireBoth</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Must have F AND meet ratio</span>
+    <span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># Test molecule against all definitions</span>
+<span class="n">smiles</span> <span class="o">=</span> <span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(=O)O&quot;</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">definitions</span><span class="p">:</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">definition</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">matches</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="data-model-integration">
+<h2>Data Model Integration<a class="headerlink" href="#data-model-integration" title="Link to this heading"></a></h2>
+<p>Both PFASGroup and PFASDefinition integrate with the core parsing functions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">parse_smiles</span><span class="p">,</span>
+    <span class="n">get_PFASGroups</span><span class="p">,</span>
+    <span class="n">PFASGroup</span><span class="p">,</span>
+    <span class="n">PFASDefinition</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="c1"># Custom groups</span>
+<span class="n">custom_groups</span> <span class="o">=</span> <span class="n">get_PFASGroups</span><span class="p">()</span>
+<span class="n">custom_groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PFASGroup</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Custom Group&quot;</span><span class="p">,</span>
+    <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[custom_pattern]&quot;</span><span class="p">),</span>
+    <span class="n">smartsPath</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
+<span class="p">))</span>
+
+<span class="c1"># Use in parsing</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span>
+    <span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span>
+    <span class="n">pfas_groups</span><span class="o">=</span><span class="n">custom_groups</span>
+<span class="p">)</span>
+
+<span class="c1"># Custom definitions for broad classification</span>
+<span class="n">oecd_def</span> <span class="o">=</span> <span class="n">PFASDefinition</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;OECD&quot;</span><span class="p">,</span>
+    <span class="n">smarts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;[C](F)(F)F&quot;</span><span class="p">],</span>
+    <span class="n">fluorineRatio</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="p">)</span>
+
+<span class="c1"># Check definition</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
+<span class="n">is_pfas</span> <span class="o">=</span> <span class="n">oecd_def</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="json-configuration">
+<h2>JSON Configuration<a class="headerlink" href="#json-configuration" title="Link to this heading"></a></h2>
+<p>Both models support JSON serialization for configuration files:</p>
+<p><strong>PFAS Groups JSON (PFAS_groups_smarts.json):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perfluoroalkyl carboxylic acids&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;alias&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PFCAs&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;smarts1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[#6$([#6][#6](=O)([OH1,O-]))]&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;smarts2&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;smartsPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;constraints&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;eq&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;O&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;gte&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;F&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;only&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;O&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;H&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;max_dist_from_CF&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>PFAS Definitions JSON:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OECD PFAS Definition&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;smarts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;[C](F)(F)F&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;[C](F)(F)[C](F)(F)&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;fluorineRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OECD definition&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;includeHydrogen&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;requireBoth&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="core.html"><span class="doc">Core API Reference</span></a>: Core parsing functions</p></li>
+<li><p><span class="xref std std-doc">../customization</span>: Creating custom groups and definitions</p></li>
+<li><p><a class="reference internal" href="../algorithm.html"><span class="doc">Algorithm Overview</span></a>: How these models are used in detection</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="core.html" class="btn btn-neutral float-left" title="Core API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Luc T. Miaz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

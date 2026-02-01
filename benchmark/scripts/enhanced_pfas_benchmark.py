@@ -1443,8 +1443,9 @@ class EnhancedPFASBenchmark:
         
         # Load OECD data
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        atlas_dir = os.path.join(os.path.dirname(os.path.dirname(script_dir)), 'PFAS-atlas')
-        oecd_file = os.path.join(atlas_dir, 'input_data', 'OECD_4000', 'step3_OECD_Class_0812.csv')
+        # Use relative path: ../../../PFAS-atlas from scripts folder
+        oecd_file = os.path.join(script_dir, '..', '..', '..', 'PFAS-atlas', 'input_data', 'OECD_4000', 'step3_OECD_Class_0812.csv')
+        oecd_file = os.path.normpath(oecd_file)  # Normalize the path
         try:
             import pandas as pd
             oecd_data = pd.read_csv(oecd_file)

@@ -198,6 +198,63 @@ Analyzes detection accuracy on complex structures, accounting for perfluoro/poly
 
 Comprehensive analysis of functional group detection and OECD validation results.
 
+### Analysis Scripts
+
+After benchmarks complete, several analysis scripts process the results:
+
+#### Timing Analysis
+**Script**: `scripts/analyze_timing.py`  
+**Input**: `data/pfas_timing_benchmark_*.json`  
+**Output**: Interactive HTML plots and performance metrics
+
+Analyzes timing performance comparing PFASGroups and PFAS-Atlas:
+- Execution time vs. molecule size
+- Scaling behavior analysis
+- Performance comparison charts
+
+#### Timing Models
+**Script**: `scripts/analyze_timing_models.py`  
+**Input**: `data/pfas_timing_benchmark_*.json`  
+**Output**: Exponential fit models and predictions
+
+Generates exponential models for timing data:
+- Model: t = a × exp(α × n) where n is number of atoms
+- Parameter estimation and goodness of fit
+- Predictive models for different configurations
+
+#### Definitions Benchmark Analysis
+**Script**: `scripts/analyze_definitions_benchmark.py`  
+**Input**: `data/pfas_definitions_benchmark_*.json`  
+**Output**: Comprehensive HTML report with visualizations
+
+Analyzes PFAS definition benchmark results (optional):
+- Performance metrics per definition (OECD, EU, OPPT, UK, PFASTRUCTv5)
+- Confusion matrices
+- Agreement/disagreement patterns
+- Interactive visualizations
+
+Note: This analysis only runs if definitions benchmark data is available.
+
+#### Complex Branched Analysis
+**Script**: `scripts/analyze_complex.py`  
+**Input**: `data/pfas_complex_branched_benchmark_*.json`  
+**Output**: Accuracy metrics for complex structures
+
+#### Enhanced Analysis
+**Script**: `scripts/enhanced_analysis.py`  
+**Input**: `data/pfas_enhanced_benchmark_*.json`, `data/pfas_oecd_benchmark_*.json`  
+**Output**: Combined functional groups and OECD analysis
+
+#### Comprehensive Statistics
+**Script**: `scripts/analyze_benchmarks_simple.py`  
+**Output**: LaTeX tables and benchmark summary JSON
+
+Generates comprehensive statistics across all benchmarks:
+- Exponential fit visualization
+- Summary statistics
+- LaTeX-formatted tables for publication
+- Saved to `reports/benchmark_summary.json`
+
 ### Telomer Report
 **Script**: `scripts/generate_telomer_report.py`  
 **Input**: `data/telomer_validation_results.json`  
@@ -238,8 +295,11 @@ Then open your browser to: **http://localhost:5000**
    
 3. **Analysis Execution**
    - Timing analysis (performance curves)
+   - Timing models (exponential fit and predictions)
+   - Definitions analysis (if definitions benchmark data available)
    - Complex branched analysis (accuracy assessment)
    - Enhanced analysis (functional groups + OECD)
+   - Comprehensive statistics (LaTeX tables and summary)
    - Telomer report generation
    
 4. **File Organization**

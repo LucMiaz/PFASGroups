@@ -1357,7 +1357,9 @@ class EnhancedPFASBenchmark:
         
         # Load OECD data
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        atlas_dir = os.path.join(os.path.dirname(os.path.dirname(script_dir)), 'PFAS-atlas')
+        # Go up to /home/luc/git level (3 levels up from scripts/)
+        git_dir = os.path.dirname(os.path.dirname(os.path.dirname(script_dir)))
+        atlas_dir = os.path.join(git_dir, 'PFAS-atlas')
         oecd_file = os.path.join(atlas_dir, 'input_data', 'OECD_4000', 'step3_OECD_Class_0812.csv')
         try:
             import pandas as pd

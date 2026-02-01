@@ -89,6 +89,35 @@ if ($timingFile) {
 }
 Write-Host ""
 
+# Timing Models Analysis
+Write-Host "📈 Analyzing timing models (exponential fit)..." -ForegroundColor Yellow
+if ($timingFile) {
+    python scripts\analyze_timing_models.py
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ Timing models analysis completed" -ForegroundColor Green
+    } else {
+        Write-Host "⚠️  Timing models analysis failed" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "⚠️  No timing benchmark file found" -ForegroundColor Yellow
+}
+Write-Host ""
+
+# Definitions Benchmark Analysis
+Write-Host "📋 Analyzing PFAS definitions benchmark..." -ForegroundColor Yellow
+$definitionFile = Get-ChildItem "data\pfas_definitions_benchmark_*.json" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+if ($definitionFile) {
+    python scripts\analyze_definitions_benchmark.py $definitionFile.FullName
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ Definitions analysis completed" -ForegroundColor Green
+    } else {
+        Write-Host "⚠️  Definitions analysis failed" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "⚠️  No definitions benchmark file found (this is optional)" -ForegroundColor Yellow
+}
+Write-Host ""
+
 # Complex Branched Analysis
 Write-Host "🧬 Analyzing complex branched structures..." -ForegroundColor Yellow
 $complexFile = Get-ChildItem "data\pfas_complex_branched_benchmark_*.json" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
@@ -165,7 +194,7 @@ Write-Host ""
 
 # Comprehensive Benchmark Analysis
 Write-Host "📊 Generating comprehensive benchmark statistics..." -ForegroundColor Yellow
-python analyze_benchmarks_simple.py
+python scripts\analyze_benchmarks_simple.py
 if ($LASTEXITCODE -eq 0) {
     Write-Host "✅ Comprehensive benchmark analysis completed" -ForegroundColor Green
 } else {
