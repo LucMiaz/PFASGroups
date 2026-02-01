@@ -249,6 +249,64 @@ Note: This analysis only runs if definitions benchmark data is available.
 **Script**: `scripts/analyze_benchmarks_simple.py`  
 **Output**: LaTeX tables and benchmark summary JSON
 
+Combines all benchmark results into comprehensive statistics and LaTeX-formatted tables for publication.
+
+#### LaTeX Article Tables Generator
+**Script**: `scripts/generate_latex_tables.py`  
+**Input**: All benchmark JSON files  
+**Output**: Publication-ready LaTeX tables and text
+
+**What it generates:**
+- **Dataset Overview Table**: Summary of all benchmark datasets (Table~1)
+- **OECD Accuracy Table**: Detection accuracy by PFAS group (Table~2)
+- **Timing Statistics Table**: Overall execution time comparison with PFAS-Atlas (Table~3)
+- **Performance by Molecule Size**: Scaling analysis by atom count ranges (Table~4)
+- **Exponential Model Table**: Fitted parameters for timing model (Table~5)
+- **Group Type Performance**: Performance metrics by functional group category (Table~6)
+- **PFAS-Atlas Comparison Table**: Head-to-head comparison metrics (Table~7)
+- **Figure Captions**: References to three main figures with detailed descriptions
+- **Statistical Summary Text**: Publication-ready paragraph summarizing key findings
+
+**Output files:**
+- `reports/pfasgroups_latex_results.tex` - Complete LaTeX content with all tables and text
+- `reports/pfasgroups_latex_summary.tex` - Summary paragraph for abstract/introduction
+
+**Features:**
+- Automatically escapes LaTeX special characters
+- Formats numbers appropriately (e.g., scientific notation for small values)
+- Calculates descriptive statistics (mean, median, SD, min, max, quartiles)
+- Fits exponential scaling model: $t(n) = a \cdot e^{\alpha \cdot n}$ with R² goodness of fit
+- Groups OECD classifications for clarity (top 15 groups shown)
+- Compares timing by molecule size ranges (20-atom bins)
+- Categorizes functional groups into chemical families
+- Uses `booktabs` package for publication-quality tables
+
+**Usage in article:**
+```latex
+% Include in your LaTeX document preamble:
+\usepackage{booktabs}  % For professional tables
+\usepackage{graphicx}  % For figures
+\usepackage{amsmath}   % For equations
+
+% Include in your document body:
+\input{reports/pfasgroups_latex_results.tex}
+
+% Or just the summary paragraph:
+\input{reports/pfasgroups_latex_summary.tex}
+```
+
+**Key metrics reported:**
+- Overall OECD detection accuracy (%)
+- Mean/median execution times (ms) for PFASgroups and PFAS-Atlas
+- Speedup factor (Atlas/PFASgroups ratio)
+- Exponential model parameters (a, α) and R²
+- Performance by functional group categories
+- Agreement rate with PFAS-Atlas (%)
+
+**Example output:**
+The script generates 7 publication-ready tables and 3 figure references, plus statistical summary text ready for direct inclusion in manuscripts. All data is automatically extracted from the latest benchmark JSON files.
+
+
 Generates comprehensive statistics across all benchmarks:
 - Exponential fit visualization
 - Summary statistics

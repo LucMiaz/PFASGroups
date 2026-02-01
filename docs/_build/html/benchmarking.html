@@ -1,0 +1,996 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benchmarking and Validation &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="Customization" href="customization.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-pypi-recommended">From PyPI (Recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-conda-forge">From Conda-Forge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-source">From Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#core-dependencies">Core Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#optional-dependencies">Optional Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verifying-installation">Verifying Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#testing-the-installation">Testing the Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#rdkit-installation-issues">RDKit Installation Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#import-errors">Import Errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#performance-issues">Performance Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#upgrading">Upgrading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#development-installation">Development Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-pfas-detection">Basic PFAS Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#multiple-molecules">Multiple Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#generating-fingerprints">Generating Fingerprints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#component-based-analysis">Component-Based Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#command-line-interface">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#working-with-dataframes">Working with DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#reading-from-files">Reading from Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-1-basic-pfas-detection">Part 1: Basic PFAS Detection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#understanding-pfas-groups">Understanding PFAS Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#analyzing-common-pfas">Analyzing Common PFAS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-2-working-with-data">Part 2: Working with Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#batch-processing">Batch Processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#dataframe-output">DataFrame Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-3-fingerprints-for-ml">Part 3: Fingerprints for ML</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#binary-fingerprints">Binary Fingerprints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#count-based-fingerprints">Count-Based Fingerprints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-4-visualization">Part 4: Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#basic-visualization">Basic Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#grid-layouts">Grid Layouts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#svg-for-publications">SVG for Publications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-5-advanced-features">Part 5: Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#component-based-analysis">Component-Based Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#homologue-generation">Homologue Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#custom-pfas-groups">Custom PFAS Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-6-real-world-applications">Part 6: Real-World Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#database-screening">Database Screening</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#regulatory-compliance">Regulatory Compliance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#algorithm-workflow">Algorithm Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-1-molecule-preprocessing">Step 1: Molecule Preprocessing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-2-formula-constraint-validation">Step 2: Formula Constraint Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-3-smarts-pattern-matching">Step 3: SMARTS Pattern Matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-4a-fluorinated-path-finding-non-cyclic">Step 4a: Fluorinated Path Finding (Non-Cyclic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-4b-fluorinated-connected-components-cyclic">Step 4b: Fluorinated Connected Components (Cyclic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-5-result-aggregation">Step 5: Result Aggregation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#pathway-smarts-patterns">Pathway SMARTS Patterns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#perfluoroalkyl-chain">Perfluoroalkyl Chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#polyfluoroalkyl-chain">Polyfluoroalkyl Chain</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#optimization-strategies">Optimization Strategies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#early-termination">Early Termination</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#caching">Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#graph-algorithms">Graph Algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#parallel-processing">Parallel Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#time-complexity">Time Complexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#accuracy-and-validation">Accuracy and Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#future-development">Future Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">Core API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#main-functions">Main Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-smiles">parse_smiles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-groups-in-mol">parse_groups_in_mol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.parse_groups_in_mol"><code class="docutils literal notranslate"><span class="pre">parse_groups_in_mol()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#generate-fingerprint">generate_fingerprint</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.fingerprints.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#plot-pfasgroups">plot_pfasgroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.draw_mols.plot_pfasgroups"><code class="docutils literal notranslate"><span class="pre">plot_pfasgroups()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#helper-functions">Helper Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-pfasgroups">get_PFASGroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-smartspaths">get_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-smartspath">compile_smartsPath</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-smartspaths">compile_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#internal-functions">Internal Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Data Models API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#pfasgroup-class">PFASGroup Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup"><code class="docutils literal notranslate"><span class="pre">PFASGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smartsPath"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smartsPath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.__init__"><code class="docutils literal notranslate"><span class="pre">PFASGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_gte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_lte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_only()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_rel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.formula_dict_satisfies_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_matched_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.component_satisfies_all_smarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_alkyl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_aryl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_components()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#formula-dict-satisfies-constraints">formula_dict_satisfies_constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#pfasdefinition-class">PFASDefinition Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#applies-to-molecule">applies_to_molecule</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#data-model-integration">Data Model Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#json-configuration">JSON Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Topics</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#custom-pfas-groups">Custom PFAS Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#modifying-existing-groups">Modifying Existing Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#loading-groups-from-json">Loading Groups from JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#constraint-examples">Constraint Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#custom-pathways">Custom Pathways</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#defining-pathway-types">Defining Pathway Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#loading-pathways-from-json">Loading Pathways from JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#smarts-pattern-guide">SMARTS Pattern Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#custom-pfas-definitions">Custom PFAS Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#creating-definitions">Creating Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#fluorine-ratio-calculation">Fluorine Ratio Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#advanced-customization">Advanced Customization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#combining-custom-components">Combining Custom Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#configuration-management">Configuration Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#testing-custom-groups">Testing Custom Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#smarts-pattern-design">SMARTS Pattern Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#constraint-design">Constraint Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="customization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarking and Validation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-benchmarks">Running Benchmarks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#individual-benchmarks">Individual Benchmarks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#benchmark-results">Benchmark Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#performance-metrics">Performance Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-results">Viewing Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#validation-against-reference-data">Validation Against Reference Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#oecd-database">OECD Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pubchem-validation">PubChem Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-validation">Custom Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-test-sets">Creating Test Sets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-custom-tests">Running Custom Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-testing">Performance Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#timing-analysis">Timing Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scaling-analysis">Scaling Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#accuracy-metrics">Accuracy Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#confusion-matrix">Confusion Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#precision-and-recall">Precision and Recall</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#comparative-analysis">Comparative Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compare-with-pfas-atlas">Compare with PFAS-Atlas</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#continuous-integration">Continuous Integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#automated-testing">Automated Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#regression-testing">Regression Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#setting-up-development-environment">Setting Up Development Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#development-workflow">Development Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#bug-reports">Bug Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#feature-requests">Feature Requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#code-contributions">Code Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#coding-standards">Coding Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#adding-new-pfas-groups">Adding New PFAS Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#performance-optimization">Performance Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-request-process">Pull Request Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#pr-checklist">PR Checklist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#pr-template">PR Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#review-process">Review Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#communication">Communication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#channels">Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#communication-guidelines">Communication Guidelines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#code-of-conduct">Code of Conduct</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#pledge">Pledge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#standards">Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#enforcement">Enforcement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#recognition">Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#questions">Questions?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-2-0">Version 1.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-1-0">Version 1.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#migration-guides">Migration Guides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#migrating-from-1-1-x-to-1-2-x">Migrating from 1.1.x to 1.2.x</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#migrating-from-1-0-x-to-1-1-x">Migrating from 1.0.x to 1.1.x</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#roadmap">Roadmap</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#version-1-3-0-planned-q2-2026">Version 1.3.0 (Planned - Q2 2026)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#version-2-0-0-planned-q4-2026">Version 2.0.0 (Planned - Q4 2026)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#contributing">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#citation">Citation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="license.html#pfasgroups-license">PFASgroups License</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="license.html#you-are-free-to">You are free to:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#under-the-following-terms">Under the following terms:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#notices">Notices:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#commercial-use">Commercial Use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#attribution-requirements">Attribution Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#acknowledgments">Acknowledgments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#third-party-licenses">Third-Party Licenses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="license.html#rdkit">RDKit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#numpy">NumPy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#networkx">NetworkX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#pandas">Pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="license.html#matplotlib">Matplotlib</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#full-license-text">Full License Text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#disclaimer">Disclaimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#privacy">Privacy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#questions">Questions</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Benchmarking and Validation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/benchmarking.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="benchmarking-and-validation">
+<h1>Benchmarking and Validation<a class="headerlink" href="#benchmarking-and-validation" title="Link to this heading"></a></h1>
+<p>PFASgroups includes a comprehensive benchmarking suite to validate accuracy and measure performance.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The benchmark suite tests:</p>
+<ul class="simple">
+<li><p><strong>Functional groups detection accuracy</strong></p></li>
+<li><p><strong>OECD database validation</strong></p></li>
+<li><p><strong>Timing performance and scalability</strong></p></li>
+<li><p><strong>Non-fluorinated exclusion</strong></p></li>
+<li><p><strong>Complex branched structures</strong></p></li>
+<li><p><strong>Fluorotelomer detection</strong></p></li>
+</ul>
+<p>For complete details, see the <a class="reference external" href="https://github.com/lucid-luc/PFASGroups/blob/main/benchmark/BENCHMARK_GUIDE.md">BENCHMARK_GUIDE.md</a> in the repository.</p>
+</section>
+<section id="running-benchmarks">
+<h2>Running Benchmarks<a class="headerlink" href="#running-benchmarks" title="Link to this heading"></a></h2>
+<section id="quick-start">
+<h3>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h3>
+<p>Run all benchmarks:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>benchmark
+
+<span class="c1"># Linux/macOS</span>
+./run_all_benchmarks.sh
+
+<span class="c1"># Windows PowerShell</span>
+.<span class="se">\r</span>un_all_benchmarks.ps1
+</pre></div>
+</div>
+</section>
+<section id="individual-benchmarks">
+<h3>Individual Benchmarks<a class="headerlink" href="#individual-benchmarks" title="Link to this heading"></a></h3>
+<p>Run specific benchmark types:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>benchmark
+
+<span class="c1"># Functional groups</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>scripts/enhanced_pfas_benchmark.py
+
+<span class="c1"># OECD validation</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>scripts/enhanced_pfas_benchmark.py
+
+<span class="c1"># Timing performance</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>scripts/enhanced_pfas_benchmark.py
+
+<span class="c1"># Non-fluorinated exclusion</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;4&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>scripts/enhanced_pfas_benchmark.py
+
+<span class="c1"># Complex branched structures</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;5&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>scripts/enhanced_pfas_benchmark.py
+</pre></div>
+</div>
+</section>
+</section>
+<section id="benchmark-results">
+<h2>Benchmark Results<a class="headerlink" href="#benchmark-results" title="Link to this heading"></a></h2>
+<section id="performance-metrics">
+<h3>Performance Metrics<a class="headerlink" href="#performance-metrics" title="Link to this heading"></a></h3>
+<p>The benchmarks generate detailed performance metrics:</p>
+<p><strong>Timing Performance:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Exponential model: t = a × exp(α × n)
+
+Parameters:
+- a = 0.001234 s (base time)
+- α = 0.0234 atoms⁻¹ (scaling factor)
+
+Performance:
+- 10 atoms: ~1.5 ms
+- 50 atoms: ~3.8 ms
+- 100 atoms: ~9.5 ms
+- 200 atoms: ~90 ms
+</pre></div>
+</div>
+<p><strong>Accuracy Metrics:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>OECD Database Validation:
+- Total compounds: 4,000+
+- Correctly classified: 3,850+
+- Accuracy: &gt;96%
+
+By Group:
+- PFCAs: 98.5% accuracy
+- PFSAs: 97.8% accuracy
+- FTOHs: 99.2% accuracy
+</pre></div>
+</div>
+</section>
+<section id="viewing-results">
+<h3>Viewing Results<a class="headerlink" href="#viewing-results" title="Link to this heading"></a></h3>
+<p>Results are saved in multiple formats:</p>
+<p><strong>HTML Reports:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open unified report</span>
+firefox<span class="w"> </span>reports/unified_pfas_benchmark_report_*.html
+</pre></div>
+</div>
+<p><strong>JSON Data:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="c1"># Load timing results</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data/pfas_timing_benchmark_*.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">timing_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># Load OECD results</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data/pfas_oecd_benchmark_*.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">oecd_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Interactive Review App:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>review-app
+node<span class="w"> </span>server.js
+<span class="c1"># Open http://localhost:5000</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="validation-against-reference-data">
+<h2>Validation Against Reference Data<a class="headerlink" href="#validation-against-reference-data" title="Link to this heading"></a></h2>
+<section id="oecd-database">
+<h3>OECD Database<a class="headerlink" href="#oecd-database" title="Link to this heading"></a></h3>
+<p>Validate against the OECD PFAS database:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Load OECD data</span>
+<span class="n">oecd_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;OECD_PFAS_database.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Analyze each compound</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">oecd_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">smiles</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;SMILES&#39;</span><span class="p">]</span>
+    <span class="n">expected_class</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;First_Class&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Parse with PFASgroups</span>
+    <span class="n">pfas_result</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+
+    <span class="n">detected_groups</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">pfas_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">detected_groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pfas_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smiles</span><span class="p">,</span>
+        <span class="s1">&#39;expected&#39;</span><span class="p">:</span> <span class="n">expected_class</span><span class="p">,</span>
+        <span class="s1">&#39;detected&#39;</span><span class="p">:</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">detected_groups</span><span class="p">),</span>
+        <span class="s1">&#39;match&#39;</span><span class="p">:</span> <span class="n">expected_class</span> <span class="ow">in</span> <span class="n">detected_groups</span>
+    <span class="p">})</span>
+
+<span class="c1"># Calculate accuracy</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;match&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OECD Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pubchem-validation">
+<h3>PubChem Validation<a class="headerlink" href="#pubchem-validation" title="Link to this heading"></a></h3>
+<p>Validate fluorotelomer detection:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Load PubChem fluorotelomers</span>
+<span class="n">pubchem_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;pubchem_fluorotelomers.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Expected to detect as FTOHs (Group 15)</span>
+<span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pubchem_df</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="n">pubchem_df</span><span class="p">[</span><span class="s1">&#39;SMILES&#39;</span><span class="p">]:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">group_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="mi">15</span> <span class="ow">in</span> <span class="n">group_ids</span><span class="p">:</span>  <span class="c1"># FTOH group</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FTOH Detection Rate: </span><span class="si">{</span><span class="n">correct</span><span class="o">/</span><span class="n">total</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="custom-validation">
+<h2>Custom Validation<a class="headerlink" href="#custom-validation" title="Link to this heading"></a></h2>
+<section id="creating-test-sets">
+<h3>Creating Test Sets<a class="headerlink" href="#creating-test-sets" title="Link to this heading"></a></h3>
+<p>Build custom test sets:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create test dataset</span>
+<span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;PFOA&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="s1">&#39;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;expected_groups&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="c1"># PFCA</span>
+        <span class="s1">&#39;expected_chain&#39;</span><span class="p">:</span> <span class="mi">8</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;PFOS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="s1">&#39;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;expected_groups&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">],</span>  <span class="c1"># PFSA</span>
+        <span class="s1">&#39;expected_chain&#39;</span><span class="p">:</span> <span class="mi">8</span>
+    <span class="p">},</span>
+    <span class="c1"># Add more test cases</span>
+<span class="p">]</span>
+
+<span class="c1"># Save as JSON</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;my_test_set.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">test_cases</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="running-custom-tests">
+<h3>Running Custom Tests<a class="headerlink" href="#running-custom-tests" title="Link to this heading"></a></h3>
+<p>Test against custom dataset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_validation</span><span class="p">(</span><span class="n">test_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run validation on custom test set.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Load test cases</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">test_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">test_cases</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">test_cases</span><span class="p">:</span>
+        <span class="n">smiles</span> <span class="o">=</span> <span class="n">test</span><span class="p">[</span><span class="s1">&#39;smiles&#39;</span><span class="p">]</span>
+        <span class="n">expected_groups</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="s1">&#39;expected_groups&#39;</span><span class="p">])</span>
+        <span class="n">expected_chain</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expected_chain&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Parse</span>
+        <span class="n">pfas_result</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pfas_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">detected_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">g</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pfas_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+            <span class="n">chain_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pfas_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">l</span><span class="p">]</span>
+            <span class="n">max_chain</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">chain_lengths</span><span class="p">)</span> <span class="k">if</span> <span class="n">chain_lengths</span> <span class="k">else</span> <span class="mi">0</span>
+
+            <span class="c1"># Check accuracy</span>
+            <span class="n">groups_match</span> <span class="o">=</span> <span class="n">detected_ids</span> <span class="o">==</span> <span class="n">expected_groups</span>
+            <span class="n">chain_match</span> <span class="o">=</span> <span class="p">(</span><span class="ow">not</span> <span class="n">expected_chain</span> <span class="ow">or</span>
+                         <span class="n">max_chain</span> <span class="o">==</span> <span class="n">expected_chain</span><span class="p">)</span>
+
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">test</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;groups_correct&#39;</span><span class="p">:</span> <span class="n">groups_match</span><span class="p">,</span>
+                <span class="s1">&#39;chain_correct&#39;</span><span class="p">:</span> <span class="n">chain_match</span><span class="p">,</span>
+                <span class="s1">&#39;detected&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">detected_ids</span><span class="p">),</span>
+                <span class="s1">&#39;expected&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">expected_groups</span><span class="p">)</span>
+            <span class="p">})</span>
+
+    <span class="c1"># Summary</span>
+    <span class="n">groups_accuracy</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;groups_correct&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="n">chain_accuracy</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;chain_correct&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Validation Results:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Group Detection: </span><span class="si">{</span><span class="n">groups_accuracy</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Chain Length: </span><span class="si">{</span><span class="n">chain_accuracy</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+<span class="c1"># Run validation</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">run_validation</span><span class="p">(</span><span class="s1">&#39;my_test_set.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-testing">
+<h2>Performance Testing<a class="headerlink" href="#performance-testing" title="Link to this heading"></a></h2>
+<section id="timing-analysis">
+<h3>Timing Analysis<a class="headerlink" href="#timing-analysis" title="Link to this heading"></a></h3>
+<p>Measure execution time:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">time_analysis</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Time the analysis of molecules.&quot;&quot;&quot;</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="n">smiles_list</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+        <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smiles</span><span class="p">,</span>
+            <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">elapsed</span><span class="p">,</span>
+            <span class="s1">&#39;num_groups&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="p">})</span>
+
+    <span class="c1"># Statistics</span>
+    <span class="n">avg_time</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+    <span class="n">max_time</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">)</span>
+    <span class="n">min_time</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Timing Results:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Average: </span><span class="si">{</span><span class="n">avg_time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Min: </span><span class="si">{</span><span class="n">min_time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Max: </span><span class="si">{</span><span class="n">max_time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">times</span>
+
+<span class="c1"># Test on molecules</span>
+<span class="n">test_molecules</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span>
+    <span class="c1"># Add more of varying complexity</span>
+<span class="p">]</span>
+
+<span class="n">timing_results</span> <span class="o">=</span> <span class="n">time_analysis</span><span class="p">(</span><span class="n">test_molecules</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="scaling-analysis">
+<h3>Scaling Analysis<a class="headerlink" href="#scaling-analysis" title="Link to this heading"></a></h3>
+<p>Test how performance scales with molecule size:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_pfas_chain</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate PFCA of length n.&quot;&quot;&quot;</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="s2">&quot;FC(F)(F)&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;C(=O)O&quot;</span>
+    <span class="k">return</span> <span class="n">chain</span>
+
+<span class="c1"># Test different sizes</span>
+<span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">:</span>
+    <span class="n">smiles</span> <span class="o">=</span> <span class="n">generate_pfas_chain</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># Time multiple runs</span>
+    <span class="n">run_times</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+        <span class="n">run_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+
+    <span class="n">avg_time</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">run_times</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">run_times</span><span class="p">)</span>
+    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_time</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;C</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">avg_time</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="p">[</span><span class="n">t</span><span class="o">*</span><span class="mi">1000</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">],</span> <span class="s1">&#39;o-&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Chain Length&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Time (ms)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Performance Scaling&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;scaling_analysis.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="accuracy-metrics">
+<h2>Accuracy Metrics<a class="headerlink" href="#accuracy-metrics" title="Link to this heading"></a></h2>
+<section id="confusion-matrix">
+<h3>Confusion Matrix<a class="headerlink" href="#confusion-matrix" title="Link to this heading"></a></h3>
+<p>Generate confusion matrix for classification:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_confusion_matrix</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate confusion matrix from validation results.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Extract true and predicted labels</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;expected_group&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;detected_group&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+
+    <span class="c1"># Generate matrix</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+    <span class="c1"># Calculate metrics</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">classification_report</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Confusion Matrix:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Classification Report:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cm</span><span class="p">,</span> <span class="n">report</span>
+</pre></div>
+</div>
+</section>
+<section id="precision-and-recall">
+<h3>Precision and Recall<a class="headerlink" href="#precision-and-recall" title="Link to this heading"></a></h3>
+<p>Calculate precision and recall:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_metrics</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate precision, recall, F1.&quot;&quot;&quot;</span>
+
+    <span class="n">tp</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;true_positive&#39;</span><span class="p">])</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;false_positive&#39;</span><span class="p">])</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;false_negative&#39;</span><span class="p">])</span>
+
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Metrics:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Precision: </span><span class="si">{</span><span class="n">precision</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Recall: </span><span class="si">{</span><span class="n">recall</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  F1 Score: </span><span class="si">{</span><span class="n">f1</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">precision</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">f1</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="comparative-analysis">
+<h2>Comparative Analysis<a class="headerlink" href="#comparative-analysis" title="Link to this heading"></a></h2>
+<section id="compare-with-pfas-atlas">
+<h3>Compare with PFAS-Atlas<a class="headerlink" href="#compare-with-pfas-atlas" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+<span class="c1"># Assuming PFAS-Atlas is installed</span>
+<span class="c1"># from pfas_atlas import classify_pfas</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">compare_tools</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare PFASgroups with PFAS-Atlas.&quot;&quot;&quot;</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="n">smiles_list</span><span class="p">:</span>
+        <span class="c1"># PFASgroups</span>
+        <span class="n">pg_result</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+        <span class="n">pg_detected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pg_result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">pg_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span>
+
+        <span class="c1"># PFAS-Atlas (example)</span>
+        <span class="c1"># atlas_result = classify_pfas(smiles)</span>
+        <span class="c1"># atlas_detected = atlas_result[&#39;is_pfas&#39;]</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smiles</span><span class="p">,</span>
+            <span class="s1">&#39;pfasgroups&#39;</span><span class="p">:</span> <span class="n">pg_detected</span><span class="p">,</span>
+            <span class="c1"># &#39;atlas&#39;: atlas_detected,</span>
+            <span class="c1"># &#39;agreement&#39;: pg_detected == atlas_detected</span>
+        <span class="p">})</span>
+
+    <span class="c1"># Calculate agreement</span>
+    <span class="c1"># agreement = sum(r[&#39;agreement&#39;] for r in results) / len(results)</span>
+    <span class="c1"># print(f&quot;Tool Agreement: {agreement:.1%}&quot;)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="continuous-integration">
+<h2>Continuous Integration<a class="headerlink" href="#continuous-integration" title="Link to this heading"></a></h2>
+<section id="automated-testing">
+<h3>Automated Testing<a class="headerlink" href="#automated-testing" title="Link to this heading"></a></h3>
+<p>Set up automated benchmark runs:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># .github/workflows/benchmark.yml</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Benchmark</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">benchmark</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v2</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v2</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.9</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">pip install -e .</span>
+<span class="w">          </span><span class="no">pip install pytest</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run benchmarks</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">cd benchmark</span>
+<span class="w">          </span><span class="no">python -m pytest tests/</span>
+</pre></div>
+</div>
+</section>
+<section id="regression-testing">
+<h3>Regression Testing<a class="headerlink" href="#regression-testing" title="Link to this heading"></a></h3>
+<p>Detect performance regressions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">check_regression</span><span class="p">(</span><span class="n">current_results</span><span class="p">,</span> <span class="n">baseline_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check for performance regression.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Load baseline</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">baseline_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">baseline</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="c1"># Compare</span>
+    <span class="n">degraded</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">current_results</span><span class="p">:</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">current_results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="c1"># Check if performance degraded by &gt;10%</span>
+        <span class="k">if</span> <span class="s1">&#39;time&#39;</span> <span class="ow">in</span> <span class="n">current</span> <span class="ow">and</span> <span class="s1">&#39;time&#39;</span> <span class="ow">in</span> <span class="n">base</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">current</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">base</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">:</span>
+                <span class="n">degraded</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">&#39;metric&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
+                    <span class="s1">&#39;baseline&#39;</span><span class="p">:</span> <span class="n">base</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;current&#39;</span><span class="p">:</span> <span class="n">current</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;degradation&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">current</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">base</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+                <span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">degraded</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">⚠️  Performance Regressions Detected:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">degraded</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;metric&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: +</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;degradation&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✓ No regressions detected&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">degraded</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/lucid-luc/PFASGroups/blob/main/benchmark/BENCHMARK_GUIDE.md">Complete Benchmark Guide</a></p></li>
+<li><p><a class="reference internal" href="algorithm.html"><span class="doc">Algorithm Overview</span></a>: Algorithm details affecting performance</p></li>
+<li><p><a class="reference internal" href="api/core.html"><span class="doc">Core API Reference</span></a>: API reference for optimization</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="customization.html" class="btn btn-neutral float-left" title="Customization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Luc T. Miaz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

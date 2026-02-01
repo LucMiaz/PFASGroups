@@ -75,6 +75,43 @@
 <li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#next-steps">Next Steps</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-1-basic-pfas-detection">Part 1: Basic PFAS Detection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#understanding-pfas-groups">Understanding PFAS Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#analyzing-common-pfas">Analyzing Common PFAS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-2-working-with-data">Part 2: Working with Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#batch-processing">Batch Processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#dataframe-output">DataFrame Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-3-fingerprints-for-ml">Part 3: Fingerprints for ML</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#binary-fingerprints">Binary Fingerprints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#count-based-fingerprints">Count-Based Fingerprints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-4-visualization">Part 4: Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#basic-visualization">Basic Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#grid-layouts">Grid Layouts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#svg-for-publications">SVG for Publications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-5-advanced-features">Part 5: Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#component-based-analysis">Component-Based Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#homologue-generation">Homologue Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#custom-pfas-groups">Custom PFAS Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-6-real-world-applications">Part 6: Real-World Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#database-screening">Database Screening</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#regulatory-compliance">Regulatory Compliance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../algorithm.html">Algorithm Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#core-concepts">Core Concepts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#algorithm-workflow">Algorithm Workflow</a><ul>
@@ -110,17 +147,41 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api/core.html">Core API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../api/core.html#main-functions">Main Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#parse-smiles">parse_smiles</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#parse-groups-in-mol">parse_groups_in_mol</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#generate-fingerprint">generate_fingerprint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#plot-pfasgroups">plot_pfasgroups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#parse-smiles">parse_smiles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#parse-groups-in-mol">parse_groups_in_mol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.parse_groups_in_mol"><code class="docutils literal notranslate"><span class="pre">parse_groups_in_mol()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#generate-fingerprint">generate_fingerprint</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.fingerprints.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#plot-pfasgroups">plot_pfasgroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.draw_mols.plot_pfasgroups"><code class="docutils literal notranslate"><span class="pre">plot_pfasgroups()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/core.html#helper-functions">Helper Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-pfasgroups">get_PFASGroups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-smartspaths">get_smartsPaths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspath">compile_smartsPath</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspaths">compile_smartsPaths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-pfasgroups">get_PFASGroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-smartspaths">get_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspath">compile_smartsPath</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspaths">compile_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/core.html#internal-functions">Internal Functions</a></li>
@@ -177,8 +238,130 @@
 </ul>
 </li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Topics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../customization.html">Customization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#custom-pfas-groups">Custom PFAS Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#modifying-existing-groups">Modifying Existing Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#loading-groups-from-json">Loading Groups from JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#constraint-examples">Constraint Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#custom-pathways">Custom Pathways</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#defining-pathway-types">Defining Pathway Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#loading-pathways-from-json">Loading Pathways from JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#smarts-pattern-guide">SMARTS Pattern Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#custom-pfas-definitions">Custom PFAS Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#creating-definitions">Creating Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#fluorine-ratio-calculation">Fluorine Ratio Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#advanced-customization">Advanced Customization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#combining-custom-components">Combining Custom Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#configuration-management">Configuration Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#testing-custom-groups">Testing Custom Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#smarts-pattern-design">SMARTS Pattern Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#constraint-design">Constraint Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../benchmarking.html">Benchmarking and Validation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#running-benchmarks">Running Benchmarks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#individual-benchmarks">Individual Benchmarks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#benchmark-results">Benchmark Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#performance-metrics">Performance Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#viewing-results">Viewing Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#validation-against-reference-data">Validation Against Reference Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#oecd-database">OECD Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#pubchem-validation">PubChem Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#custom-validation">Custom Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#creating-test-sets">Creating Test Sets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#running-custom-tests">Running Custom Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#performance-testing">Performance Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#timing-analysis">Timing Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#scaling-analysis">Scaling Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#accuracy-metrics">Accuracy Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#confusion-matrix">Confusion Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#precision-and-recall">Precision and Recall</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#comparative-analysis">Comparative Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#compare-with-pfas-atlas">Compare with PFAS-Atlas</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#continuous-integration">Continuous Integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#automated-testing">Automated Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#regression-testing">Regression Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#setting-up-development-environment">Setting Up Development Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#development-workflow">Development Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#bug-reports">Bug Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#feature-requests">Feature Requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#code-contributions">Code Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#coding-standards">Coding Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#adding-new-pfas-groups">Adding New PFAS Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#performance-optimization">Performance Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#pull-request-process">Pull Request Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#pr-checklist">PR Checklist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#pr-template">PR Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#review-process">Review Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#communication">Communication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#channels">Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#communication-guidelines">Communication Guidelines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#code-of-conduct">Code of Conduct</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#pledge">Pledge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#standards">Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#enforcement">Enforcement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#recognition">Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#questions">Questions?</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-2-0">Version 1.2.0</a></li>
@@ -537,16 +720,18 @@
 <span class="sd">        bool</span>
 <span class="sd">            True if all relational constraints are satisfied, False otherwise</span>
 <span class="sd">        </span>
-<span class="sd">        Constraint Format</span>
-<span class="sd">        -----------------</span>
-<span class="sd">        &#39;rel&#39;: {</span>
-<span class="sd">            &#39;ElementA&#39;: {</span>
-<span class="sd">                &#39;atoms&#39;: [&#39;ElementB&#39;, &#39;ElementC&#39;],  # Elements to sum</span>
-<span class="sd">                &#39;div&#39;: int,  # Divisor (default 1)</span>
-<span class="sd">                &#39;add&#39;: int,  # Additive constant (default 0)</span>
-<span class="sd">                &#39;add_atoms&#39;: [&#39;ElementD&#39;]  # Additional elements to add</span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Constraint Format::</span>
+<span class="sd">        </span>
+<span class="sd">            &#39;rel&#39;: {</span>
+<span class="sd">                &#39;ElementA&#39;: {</span>
+<span class="sd">                    &#39;atoms&#39;: [&#39;ElementB&#39;, &#39;ElementC&#39;],  # Elements to sum</span>
+<span class="sd">                    &#39;div&#39;: int,  # Divisor (default 1)</span>
+<span class="sd">                    &#39;add&#39;: int,  # Additive constant (default 0)</span>
+<span class="sd">                    &#39;add_atoms&#39;: [&#39;ElementD&#39;]  # Additional elements to add</span>
+<span class="sd">                }</span>
 <span class="sd">            }</span>
-<span class="sd">        }</span>
 <span class="sd">        </span>
 <span class="sd">        Formula: count(ElementA) = (sum(atoms) / div) + add + sum(add_atoms)</span>
 <span class="sd">        </span>

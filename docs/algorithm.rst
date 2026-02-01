@@ -18,10 +18,8 @@ Algorithm Workflow
 
 The detection algorithm processes molecules through five sequential steps:
 
-.. image:: _static/algorithm_flowchart.png
-   :alt: Algorithm Flowchart
-   :align: center
-   :width: 600px
+.. note::
+   A detailed flowchart diagram will be added here in a future update.
 
 Step 1: Molecule Preprocessing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -202,6 +202,22 @@ if ($LASTEXITCODE -eq 0) {
 }
 Write-Host ""
 
+# LaTeX Tables Generation for Article
+Write-Host "📝 Generating LaTeX tables for article..." -ForegroundColor Yellow
+if (Test-Path "scripts\generate_latex_tables.py") {
+    python scripts\generate_latex_tables.py
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ LaTeX tables generated successfully" -ForegroundColor Green
+        Write-Host "   • Main content: reports\pfasgroups_latex_results.tex" -ForegroundColor Gray
+        Write-Host "   • Summary: reports\pfasgroups_latex_summary.tex" -ForegroundColor Gray
+    } else {
+        Write-Host "⚠️  LaTeX generation failed" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "⚠️  generate_latex_tables.py not found" -ForegroundColor Yellow
+}
+Write-Host ""
+
 # Organize analysis results
 Write-Host "📁 Organizing analysis results..." -ForegroundColor Yellow
 

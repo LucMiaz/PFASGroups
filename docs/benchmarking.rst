@@ -15,7 +15,7 @@ The benchmark suite tests:
 - **Complex branched structures**
 - **Fluorotelomer detection**
 
-See the complete :doc:`../benchmark/BENCHMARK_GUIDE` for detailed information.
+For complete details, see the `BENCHMARK_GUIDE.md <https://github.com/lucid-luc/PFASGroups/blob/main/benchmark/BENCHMARK_GUIDE.md>`_ in the repository.
 
 Running Benchmarks
 ------------------
@@ -557,6 +557,6 @@ Detect performance regressions:
 See Also
 --------
 
-- :doc:`../benchmark/BENCHMARK_GUIDE`: Complete benchmark guide
+- `Complete Benchmark Guide <https://github.com/lucid-luc/PFASGroups/blob/main/benchmark/BENCHMARK_GUIDE.md>`_
 - :doc:`algorithm`: Algorithm details affecting performance
 - :doc:`api/core`: API reference for optimization

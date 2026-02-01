@@ -1,0 +1,1019 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PFASgroups.parser &mdash; PFASgroups 1.2.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=fd7cadf9"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PFASgroups
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#from-pypi-recommended">From PyPI (Recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#from-conda-forge">From Conda-Forge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#from-source">From Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#core-dependencies">Core Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#optional-dependencies">Optional Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verifying-installation">Verifying Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#testing-the-installation">Testing the Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#rdkit-installation-issues">RDKit Installation Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#import-errors">Import Errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#performance-issues">Performance Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#upgrading">Upgrading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#development-installation">Development Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#basic-pfas-detection">Basic PFAS Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#multiple-molecules">Multiple Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#generating-fingerprints">Generating Fingerprints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#component-based-analysis">Component-Based Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#command-line-interface">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#working-with-dataframes">Working with DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#reading-from-files">Reading from Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-1-basic-pfas-detection">Part 1: Basic PFAS Detection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#understanding-pfas-groups">Understanding PFAS Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#analyzing-common-pfas">Analyzing Common PFAS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-2-working-with-data">Part 2: Working with Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#batch-processing">Batch Processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#dataframe-output">DataFrame Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-3-fingerprints-for-ml">Part 3: Fingerprints for ML</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#binary-fingerprints">Binary Fingerprints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#count-based-fingerprints">Count-Based Fingerprints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-4-visualization">Part 4: Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#basic-visualization">Basic Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#grid-layouts">Grid Layouts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#svg-for-publications">SVG for Publications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-5-advanced-features">Part 5: Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#component-based-analysis">Component-Based Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#homologue-generation">Homologue Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#custom-pfas-groups">Custom PFAS Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#part-6-real-world-applications">Part 6: Real-World Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#database-screening">Database Screening</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#regulatory-compliance">Regulatory Compliance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial.html#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../algorithm.html">Algorithm Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#algorithm-workflow">Algorithm Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#step-1-molecule-preprocessing">Step 1: Molecule Preprocessing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#step-2-formula-constraint-validation">Step 2: Formula Constraint Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#step-3-smarts-pattern-matching">Step 3: SMARTS Pattern Matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#step-4a-fluorinated-path-finding-non-cyclic">Step 4a: Fluorinated Path Finding (Non-Cyclic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#step-4b-fluorinated-connected-components-cyclic">Step 4b: Fluorinated Connected Components (Cyclic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#step-5-result-aggregation">Step 5: Result Aggregation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#pathway-smarts-patterns">Pathway SMARTS Patterns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#perfluoroalkyl-chain">Perfluoroalkyl Chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#polyfluoroalkyl-chain">Polyfluoroalkyl Chain</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#optimization-strategies">Optimization Strategies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#early-termination">Early Termination</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#caching">Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#graph-algorithms">Graph Algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#parallel-processing">Parallel Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#time-complexity">Time Complexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#accuracy-and-validation">Accuracy and Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#future-development">Future Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/core.html">Core API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/core.html#main-functions">Main Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#parse-smiles">parse_smiles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#parse-groups-in-mol">parse_groups_in_mol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.parse_groups_in_mol"><code class="docutils literal notranslate"><span class="pre">parse_groups_in_mol()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#generate-fingerprint">generate_fingerprint</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.fingerprints.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#plot-pfasgroups">plot_pfasgroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.draw_mols.plot_pfasgroups"><code class="docutils literal notranslate"><span class="pre">plot_pfasgroups()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/core.html#helper-functions">Helper Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-pfasgroups">get_PFASGroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-smartspaths">get_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspath">compile_smartsPath</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspaths">compile_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/core.html#internal-functions">Internal Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/core.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/models.html">Data Models API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#pfasgroup-class">PFASGroup Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup"><code class="docutils literal notranslate"><span class="pre">PFASGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smartsPath"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smartsPath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.__init__"><code class="docutils literal notranslate"><span class="pre">PFASGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_gte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_lte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_only()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_rel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.formula_dict_satisfies_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_matched_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.component_satisfies_all_smarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_alkyl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_aryl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_components()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/models.html#formula-dict-satisfies-constraints">formula_dict_satisfies_constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#pfasdefinition-class">PFASDefinition Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/models.html#applies-to-molecule">applies_to_molecule</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#data-model-integration">Data Model Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#json-configuration">JSON Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Topics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../customization.html">Customization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#custom-pfas-groups">Custom PFAS Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#modifying-existing-groups">Modifying Existing Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#loading-groups-from-json">Loading Groups from JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#constraint-examples">Constraint Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#custom-pathways">Custom Pathways</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#defining-pathway-types">Defining Pathway Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#loading-pathways-from-json">Loading Pathways from JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#smarts-pattern-guide">SMARTS Pattern Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#custom-pfas-definitions">Custom PFAS Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#creating-definitions">Creating Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#fluorine-ratio-calculation">Fluorine Ratio Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#advanced-customization">Advanced Customization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#combining-custom-components">Combining Custom Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#configuration-management">Configuration Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#testing-custom-groups">Testing Custom Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#smarts-pattern-design">SMARTS Pattern Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#constraint-design">Constraint Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../customization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../benchmarking.html">Benchmarking and Validation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#running-benchmarks">Running Benchmarks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#individual-benchmarks">Individual Benchmarks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#benchmark-results">Benchmark Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#performance-metrics">Performance Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#viewing-results">Viewing Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#validation-against-reference-data">Validation Against Reference Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#oecd-database">OECD Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#pubchem-validation">PubChem Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#custom-validation">Custom Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#creating-test-sets">Creating Test Sets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#running-custom-tests">Running Custom Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#performance-testing">Performance Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#timing-analysis">Timing Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#scaling-analysis">Scaling Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#accuracy-metrics">Accuracy Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#confusion-matrix">Confusion Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#precision-and-recall">Precision and Recall</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#comparative-analysis">Comparative Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#compare-with-pfas-atlas">Compare with PFAS-Atlas</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#continuous-integration">Continuous Integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#automated-testing">Automated Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#regression-testing">Regression Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#setting-up-development-environment">Setting Up Development Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#development-workflow">Development Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#bug-reports">Bug Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#feature-requests">Feature Requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#code-contributions">Code Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#coding-standards">Coding Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#adding-new-pfas-groups">Adding New PFAS Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#performance-optimization">Performance Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#pull-request-process">Pull Request Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#pr-checklist">PR Checklist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#pr-template">PR Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#review-process">Review Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#communication">Communication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#channels">Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#communication-guidelines">Communication Guidelines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#code-of-conduct">Code of Conduct</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#pledge">Pledge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#standards">Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../contributing.html#enforcement">Enforcement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#recognition">Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#questions">Questions?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-2-0">Version 1.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-1-0">Version 1.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#migration-guides">Migration Guides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../changelog.html#migrating-from-1-1-x-to-1-2-x">Migrating from 1.1.x to 1.2.x</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../changelog.html#migrating-from-1-0-x-to-1-1-x">Migrating from 1.0.x to 1.1.x</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#roadmap">Roadmap</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../changelog.html#version-1-3-0-planned-q2-2026">Version 1.3.0 (Planned - Q2 2026)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../changelog.html#version-2-0-0-planned-q4-2026">Version 2.0.0 (Planned - Q4 2026)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#contributing">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#citation">Citation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#pfasgroups-license">PFASgroups License</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#you-are-free-to">You are free to:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#under-the-following-terms">Under the following terms:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#notices">Notices:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#commercial-use">Commercial Use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#attribution-requirements">Attribution Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#acknowledgments">Acknowledgments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#third-party-licenses">Third-Party Licenses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#rdkit">RDKit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#numpy">NumPy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#networkx">NetworkX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#pandas">Pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../license.html#matplotlib">Matplotlib</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#full-license-text">Full License Text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#disclaimer">Disclaimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#privacy">Privacy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#questions">Questions</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PFASgroups</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">PFASgroups.parser</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for PFASgroups.parser</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">PFASgroups core functions.</span>
+
+<span class="sd">This module provides functions for parsing and plotting PFAS groups.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem.rdMolDescriptors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalcMolFormula</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.PFASGroupModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASGroup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.PFASDefinitionModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASDefinition</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.ComponentsSolverModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentsSolver</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">,</span> <span class="n">n_from_formula</span><span class="p">,</span> <span class="n">add_smartsPath</span><span class="p">,</span> <span class="n">PFAS_DEFINITIONS_FILE</span><span class="p">,</span> <span class="n">PFAS_GROUPS_FILE</span><span class="p">,</span> <span class="n">rdkit_disable_log</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+
+
+<span class="c1"># --- Load PFAS groups from PFAS_groups_smarts.json ---</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_PFASGroups</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds default PFASGroups to function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">PFAS_GROUPS_FILE</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">_pfg</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">pfg</span> <span class="o">=</span> <span class="p">[</span><span class="n">PFASGroup</span><span class="p">(</span><span class="o">**</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_pfg</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;compute&#39;</span><span class="p">,</span><span class="kc">True</span><span class="p">)]</span>
+    <span class="n">agg_pfg</span> <span class="o">=</span> <span class="p">[</span><span class="n">PFASGroup</span><span class="p">(</span><span class="o">**</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_pfg</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;compute&#39;</span><span class="p">,</span><span class="kc">True</span><span class="p">)]</span>
+    <span class="c1"># list of PFASgroup names</span>
+    <span class="n">pfg_names</span> <span class="o">=</span>  <span class="p">{</span><span class="n">pf</span><span class="o">.</span><span class="n">name</span><span class="p">:</span><span class="n">pf</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">pf</span> <span class="ow">in</span> <span class="n">pfg</span><span class="p">}</span>
+    <span class="c1"># list groups aggregated by groups with compute=FALSE</span>
+    <span class="n">agg_pfg</span> <span class="o">=</span> <span class="p">{</span><span class="n">ppf</span><span class="p">:</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">pfg_names</span><span class="o">.</span><span class="n">get</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">ppf</span><span class="o">.</span><span class="n">re_search</span><span class="o">.</span><span class="n">search</span><span class="p">,</span><span class="n">pfg_names</span><span class="o">.</span><span class="n">keys</span><span class="p">()))))</span> <span class="k">for</span> <span class="n">ppf</span> <span class="ow">in</span> <span class="n">agg_pfg</span><span class="p">}</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">,</span><span class="n">pfg</span><span class="p">)</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;agg_pfas_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;agg_pfas_groups&#39;</span><span class="p">,</span><span class="n">agg_pfg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_PFASDefinitions</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds default PFAS definitions to function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">PFAS_DEFINITIONS_FILE</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">pfg</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">pfg</span> <span class="o">=</span> <span class="p">[</span><span class="n">PFASDefinition</span><span class="p">(</span><span class="o">**</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pfg</span><span class="p">]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pfas_definitions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_definitions&#39;</span><span class="p">,</span><span class="n">pfg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_componentsSolver</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds componentsSolver to function (creates it per call with the molecule)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Add hydrogens to molecule before creating ComponentsSolver</span>
+            <span class="c1"># This ensures atom indices are consistent throughout the analysis</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>  <span class="c1"># Convert to mutable list</span>
+            <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>  <span class="c1"># Convert back to tuple</span>
+            <span class="c1"># Pass through component metric options</span>
+            <span class="n">solver_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="s1">&#39;limit_effective_graph_resistance&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">solver_kwargs</span><span class="p">[</span><span class="s1">&#39;limit_effective_graph_resistance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;limit_effective_graph_resistance&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;compute_component_metrics&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">solver_kwargs</span><span class="p">[</span><span class="s1">&#39;compute_component_metrics&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;compute_component_metrics&#39;</span><span class="p">]</span>
+            <span class="k">with</span> <span class="n">ComponentsSolver</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">solver_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">fluorinated_components_dict</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;fluorinated_components_dict&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fluorinated_components_dict&#39;</span><span class="p">,</span><span class="n">fluorinated_components_dict</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">inner</span>
+
+
+<span class="nd">@load_PFASDefinitions</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_definitions_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">formula</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;formula&quot;</span><span class="p">,</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AtomValenceException</span><span class="p">:</span>
+        <span class="c1">#logger.debug(&quot;failed sanitisation, fragmenting&quot;)</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="p">[</span><span class="n">mol</span><span class="p">]</span>
+    <span class="n">definition_matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pfas_definitions</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_definitions&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pdef</span> <span class="ow">in</span> <span class="n">pfas_definitions</span><span class="p">:</span>
+        <span class="n">matched</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">frags</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pdef</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="n">mol_or_smiles</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">matched</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">matched</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">definition_matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pdef</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">definition_matches</span>
+
+
+<span class="c1"># --- Main PFAS group parsing functions ---</span>
+<span class="nd">@add_smartsPath</span><span class="p">()</span>
+<span class="nd">@load_PFASGroups</span><span class="p">()</span>
+<span class="nd">@load_componentsSolver</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_groups_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fluorinated_components_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pfas_groups</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterates over PFAS groups and finds the ones that match the molecule.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol : rdkit.Chem.Mol</span>
+<span class="sd">        RDKit molecule object</span>
+<span class="sd">    bycomponent : bool, optional</span>
+<span class="sd">        Whether to look for fluorinated components or for chains between functional groups</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional parameters (formula, pfas_groups, smartsPaths, etc.)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of tuples</span>
+<span class="sd">        List of (PFASGroup, match_count, component_sizes, matched_components) tuples where:</span>
+<span class="sd">        - PFASGroup: The matched PFAS group object</span>
+<span class="sd">        - match_count: Number of times this group pattern was matched (int)</span>
+<span class="sd">        - component_sizes: List of carbon component sizes found (list of int)</span>
+<span class="sd">        - matched_components: Detailed information about matched components (list of dicts)</span>
+<span class="sd">            Each dict contains:</span>
+<span class="sd">            - &#39;component&#39;: list of atom indices</span>
+<span class="sd">            - &#39;size&#39;: number of atoms in component</span>
+<span class="sd">            - &#39;SMARTS&#39;: component type (e.g., &#39;Perfluoroalkyl&#39;, &#39;alkyl&#39;, &#39;cyclic&#39;)</span>
+<span class="sd">            - &#39;branching&#39;: float [0-1], 1.0 = linear, 0.0 = highly branched</span>
+<span class="sd">            - &#39;smarts_centrality&#39;: float [0-1], 1.0 = functional group at center, 0.0 = at periphery</span>
+<span class="sd">            - &#39;mean_eccentricity&#39;: float, mean graph eccentricity across nodes in component</span>
+<span class="sd">            - &#39;median_eccentricity&#39;: float, median graph eccentricity across nodes in component</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    For PFASgroups </span>
+<span class="sd">    1. with smartsPath = &#39;cyclic&#39;, search for connected component matching first smarts</span>
+<span class="sd">    2. with multiple smarts patterns or counts &gt; 1: Find components containing all required SMARTS matches with minimum counts</span>
+<span class="sd">    3. with single smarts pattern: Search for connected components of fluorinated atoms (for each pathType) where smarts match is in the component</span>
+<span class="sd">    4. with smarts defined and formula constraints: search for substructure matches of smarts, and for given smartsPath for the PFASgroup, search for connected components of fluorinated atoms where smarts match is in the component</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">formula</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;formula&quot;</span><span class="p">,</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Chem</span><span class="o">.</span><span class="n">SanitizeMol</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AtomValenceException</span><span class="p">:</span>
+        <span class="c1">#logger.debug(&quot;failed sanitisation, fragmenting&quot;)</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">formulas</span> <span class="o">=</span> <span class="p">[</span><span class="n">n_from_formula</span><span class="p">(</span><span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">frag</span><span class="p">))</span> <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">frags</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="p">[</span><span class="n">mol</span><span class="p">]</span>
+        <span class="n">formulas</span> <span class="o">=</span> <span class="p">[</span><span class="n">n_from_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">)]</span><span class="c1"># formula as a dictionary</span>
+    <span class="n">agg_pfas_groups</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;agg_pfas_groups&#39;</span><span class="p">,{})</span>
+    <span class="c1"># PFAS groups</span>
+    <span class="n">group_matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># map of group_id -&gt; list of matches for quick lookup</span>
+    <span class="n">group_id_to_matches</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">pf</span> <span class="ow">in</span> <span class="n">pfas_groups</span><span class="p">:</span>
+        <span class="c1">#logger.debug(f&quot;{pf.name}&quot;)</span>
+        <span class="n">matched1_len</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">fd</span><span class="p">,</span><span class="n">mol</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">formulas</span><span class="p">,</span><span class="n">frags</span><span class="p">):</span>
+            <span class="c1"># match = pfgroup_obj, match_count, component_sizes, matched_components</span>
+            <span class="c1"># matched_components = list(dicts) with entries: &#39;component&#39;,&#39;size&#39;,&#39;component_fraction&#39;,&#39;smarts_matches&#39;,&#39;smarts_extra_atoms&#39;,&#39;SMARTS&#39;,&#39;branching&#39;,&#39;smarts_centrality&#39;,&#39;diameter&#39;,&#39;radius&#39;,&#39;effective_graph_resistance&#39;,&#39;eccentricity_values&#39;,&#39;mean_eccentricity&#39;,&#39;median_eccentricity&#39;,&#39;center&#39;,&#39;periphery&#39;,&#39;barycenter&#39;,&#39;min_dist_to_barycenter&#39;,&#39;min_resistance_dist_to_barycenter&#39;,&#39;min_dist_to_center&#39;,&#39;min_resistance_dist_to_center&#39;,&#39;max_dist_to_periphery&#39;,&#39;max_resistance_dist_to_periphery&#39;</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">find_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">fluorinated_components_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">match</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">group_matches</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+                <span class="n">group_id_to_matches</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+    
+    <span class="c1"># Process aggregate PFAS groups efficiently</span>
+    <span class="k">if</span> <span class="n">agg_pfas_groups</span><span class="p">:</span>
+        
+        <span class="c1"># For each aggregate group, collect and deduplicate components</span>
+        <span class="k">for</span> <span class="n">agg_group</span><span class="p">,</span> <span class="n">component_group_ids</span> <span class="ow">in</span> <span class="n">agg_pfas_groups</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Check if any component groups were matched</span>
+            <span class="n">matched_component_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">gid</span> <span class="k">for</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">component_group_ids</span> <span class="k">if</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">group_id_to_matches</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="n">matched_component_ids</span><span class="p">:</span>
+                <span class="c1"># Collect all components from matched groups</span>
+                <span class="n">all_components</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">matched_component_ids</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">match_count</span><span class="p">,</span> <span class="n">component_sizes</span><span class="p">,</span> <span class="n">matched_components</span> <span class="ow">in</span> <span class="n">group_id_to_matches</span><span class="p">[</span><span class="n">gid</span><span class="p">]:</span>
+                        <span class="n">all_components</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">matched_components</span><span class="p">)</span>
+                
+                <span class="c1"># Deduplicate components by atom set while keeping different SMARTS types</span>
+                <span class="c1"># Filter by smartsPath if aggregate has one</span>
+                <span class="n">unique_components</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">seen_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># Track (atom_set, SMARTS_type) combinations</span>
+                
+                <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">all_components</span><span class="p">:</span>
+                    <span class="n">atoms_key</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;component&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+                    <span class="n">smarts_type</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SMARTS&#39;</span><span class="p">)</span>
+                    
+                    <span class="c1"># Filter by smartsPath if aggregate has one (not None)</span>
+                    <span class="k">if</span> <span class="n">agg_group</span><span class="o">.</span><span class="n">smartsPath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">smarts_type</span> <span class="o">!=</span> <span class="n">agg_group</span><span class="o">.</span><span class="n">smartsPath</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    
+                    <span class="c1"># Deduplicate by (atoms, SMARTS_type) key</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">atoms_key</span><span class="p">,</span> <span class="n">smarts_type</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen_keys</span><span class="p">:</span>
+                        <span class="n">seen_keys</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                        <span class="n">unique_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span>
+                
+                <span class="c1"># Create match entry for aggregate group if we have unique components</span>
+                <span class="k">if</span> <span class="n">unique_components</span><span class="p">:</span>
+                    <span class="n">component_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">comp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">unique_components</span><span class="p">]</span>
+                    <span class="n">match_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_components</span><span class="p">)</span>
+                    <span class="n">group_matches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">agg_group</span><span class="p">,</span> <span class="n">match_count</span><span class="p">,</span> <span class="n">component_sizes</span><span class="p">,</span> <span class="n">unique_components</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">group_matches</span>
+
+
+<span class="nd">@rdkit_disable_log</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;warning&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> 
+                  <span class="n">limit_effective_graph_resistance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compute_component_metrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse SMILES string(s) and return PFAS group information.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    smiles : str or list of str</span>
+<span class="sd">        Single SMILES string or list of SMILES strings</span>
+<span class="sd">    bycomponent : bool</span>
+<span class="sd">        Whether to use component-based analysis</span>
+<span class="sd">    output_format : str, default &#39;list&#39;</span>
+<span class="sd">        Output format: &#39;list&#39; (default), &#39;dataframe&#39;, or &#39;csv&#39;</span>
+<span class="sd">        - &#39;list&#39;: Returns nested lists of tuples (default behavior)</span>
+<span class="sd">        - &#39;dataframe&#39;: Returns pandas DataFrame with one row per match</span>
+<span class="sd">        - &#39;csv&#39;: Returns CSV string</span>
+<span class="sd">    limit_effective_graph_resistance : int or None, default None</span>
+<span class="sd">        Maximum component size for computing effective graph resistance.</span>
+<span class="sd">        - None: Compute for all components (default, may be slow for large molecules)</span>
+<span class="sd">        - int &gt; 0: Only compute for components with fewer atoms than this limit</span>
+<span class="sd">        - 0: Skip computation for all components (set to NaN)</span>
+<span class="sd">    compute_component_metrics : bool, default True</span>
+<span class="sd">        Whether to compute graph metrics (diameter, radius, etc.) for components.</span>
+<span class="sd">        - True: Compute all metrics (default)</span>
+<span class="sd">        - False: Only compute component size, skip all other metrics</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional parameters (pfas_groups, smartsPaths, etc.)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    list, pandas.DataFrame, or str</span>
+<span class="sd">        Depends on output_format parameter</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert single input to list for uniform processing</span>
+    <span class="n">single_input</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">smiles</span><span class="p">]</span> <span class="k">if</span> <span class="n">single_input</span> <span class="k">else</span> <span class="n">smiles</span>
+    <span class="n">mol_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smi</span><span class="p">)</span> <span class="k">for</span> <span class="n">smi</span> <span class="ow">in</span> <span class="n">smiles_list</span><span class="p">]</span>
+    <span class="c1"># Parse all molecules</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;limit_effective_graph_resistance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit_effective_graph_resistance</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;compute_component_metrics&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_component_metrics</span>
+    <span class="k">return</span> <span class="n">parse_mols</span><span class="p">(</span><span class="n">mol_list</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="n">bycomponent</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="n">output_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for parse_mols to handle single molecule input.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">parse_mols</span><span class="p">([</span><span class="n">mol</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_mols</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">include_PFAS_definitions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+               <span class="n">limit_effective_graph_resistance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compute_component_metrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse RDKit molecule(s) and return PFAS group information.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    mols : list of rdkit.Chem.Mol</span>
+<span class="sd">        Single RDKit molecule or list of molecules</span>
+<span class="sd">    bycomponent : bool</span>
+<span class="sd">        Whether to use component-based analysis</span>
+<span class="sd">    output_format : str, default &#39;list&#39;</span>
+<span class="sd">        Output format: &#39;list&#39; (default), &#39;dataframe&#39;, or &#39;csv&#39;</span>
+<span class="sd">        - &#39;list&#39;: Returns nested lists of tuples (default behavior)</span>
+<span class="sd">        - &#39;dataframe&#39;: Returns pandas DataFrame with one row per match</span>
+<span class="sd">        - &#39;csv&#39;: Returns CSV string</span>
+<span class="sd">    limit_effective_graph_resistance : int or None, default None</span>
+<span class="sd">        Maximum component size for computing effective graph resistance.</span>
+<span class="sd">        - None: Compute for all components (default, may be slow for large molecules)</span>
+<span class="sd">        - int &gt; 0: Only compute for components with fewer atoms than this limit</span>
+<span class="sd">        - 0: Skip computation for all components (set to NaN)</span>
+<span class="sd">    compute_component_metrics : bool, default True</span>
+<span class="sd">        Whether to compute graph metrics (diameter, radius, etc.) for components.</span>
+<span class="sd">        - True: Compute all metrics (default)</span>
+<span class="sd">        - False: Only compute component size, skip all other metrics</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional parameters (pfas_groups, smartsPaths, etc.)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    list, pandas.DataFrame, or str</span>
+<span class="sd">        Depends on output_format parameter</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Parse all molecules</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">mols</span><span class="p">:</span>
+        <span class="c1"># Add hydrogens to ensure consistent atom indexing</span>
+        <span class="n">mol_with_h</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">bycomponent</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bycomponent&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Pass through component metric options</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;limit_effective_graph_resistance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit_effective_graph_resistance</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;compute_component_metrics&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_component_metrics</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="n">parse_groups_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="n">bycomponent</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">inchikey</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">inchi</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchi</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">smi</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">inchikey</span><span class="p">,{})</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="n">smi</span><span class="p">,</span>
+                        <span class="s2">&quot;inchikey&quot;</span><span class="p">:</span> <span class="n">inchikey</span><span class="p">,</span>
+                        <span class="s2">&quot;inchi&quot;</span><span class="p">:</span> <span class="n">inchi</span><span class="p">,</span>
+                        <span class="s2">&quot;formula&quot;</span><span class="p">:</span> <span class="n">formula</span><span class="p">})</span>
+        
+        <span class="c1"># Build match results with comprehensive summary metrics</span>
+        <span class="n">match_results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">match_count</span><span class="p">,</span> <span class="n">components_sizes</span><span class="p">,</span> <span class="n">matched_components</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+            <span class="c1"># Calculate summary metrics across all components for this group</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matched_components</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Basic metrics summaries</span>
+                <span class="n">mean_branching</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;branching&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">matched_components</span><span class="p">)</span>
+                <span class="n">mean_smarts_centrality</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;smarts_centrality&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">matched_components</span><span class="p">)</span>
+                <span class="n">mean_mean_eccentricity</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;mean_eccentricity&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">matched_components</span><span class="p">)</span>
+                <span class="n">mean_median_eccentricity</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;median_eccentricity&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">matched_components</span><span class="p">)</span>
+                <span class="n">mean_component_fraction</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;component_fraction&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">matched_components</span><span class="p">)</span>
+                
+                <span class="c1"># Calculate total fraction covered by union of all carbon atoms in components</span>
+                <span class="n">union_carbon_atoms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+                <span class="c1"># Use molecule with hydrogens for consistent atom indexing</span>
+                <span class="n">total_carbons</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol_with_h</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()</span> <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+                <span class="n">extra_carbons_count</span> <span class="o">=</span> <span class="mi">0</span>
+                
+                <span class="k">for</span> <span class="n">comp_dict</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">:</span>
+                    <span class="n">component</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">comp_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;component&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+                    <span class="n">smarts_matches</span> <span class="o">=</span> <span class="n">comp_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;smarts_matches&#39;</span><span class="p">)</span>
+                    
+                    <span class="c1"># Add carbon atoms from component</span>
+                    <span class="k">for</span> <span class="n">atom_idx</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">mol_with_h</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">atom_idx</span><span class="p">)</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span>
+                            <span class="n">union_carbon_atoms</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">atom_idx</span><span class="p">)</span>
+                    
+                    <span class="c1"># Add carbon atoms from SMARTS matches</span>
+                    <span class="k">if</span> <span class="n">smarts_matches</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">atom_idx</span> <span class="ow">in</span> <span class="n">smarts_matches</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">mol_with_h</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">atom_idx</span><span class="p">)</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span>
+                                <span class="n">union_carbon_atoms</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">atom_idx</span><span class="p">)</span>
+                    
+                    <span class="c1"># Add extra carbons from functional groups</span>
+                    <span class="k">if</span> <span class="s1">&#39;smarts_extra_atoms&#39;</span> <span class="ow">in</span> <span class="n">comp_dict</span><span class="p">:</span>
+                        <span class="n">extra_carbons_count</span> <span class="o">+=</span> <span class="n">comp_dict</span><span class="p">[</span><span class="s1">&#39;smarts_extra_atoms&#39;</span><span class="p">]</span>
+                
+                <span class="c1"># Total = union of matched carbons + extra functional group carbons</span>
+                <span class="c1"># Cap at total_carbons to avoid exceeding 1.0</span>
+                <span class="n">total_carbon_count</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">union_carbon_atoms</span><span class="p">)</span> <span class="o">+</span> <span class="n">extra_carbons_count</span><span class="p">,</span> <span class="n">total_carbons</span><span class="p">)</span>
+                <span class="n">total_components_fraction</span> <span class="o">=</span> <span class="n">total_carbon_count</span> <span class="o">/</span> <span class="n">total_carbons</span> <span class="k">if</span> <span class="n">total_carbons</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+                
+                <span class="c1"># Graph structure metrics summaries</span>
+                <span class="n">diameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;diameter&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;diameter&#39;</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;diameter&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;diameter&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;diameter&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)))]</span>
+                <span class="n">radii</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)))]</span>
+                <span class="n">resistances</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;effective_graph_resistance&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;effective_graph_resistance&#39;</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;effective_graph_resistance&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;effective_graph_resistance&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;effective_graph_resistance&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)))]</span>
+                
+                <span class="n">mean_diameter</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">diameters</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">diameters</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">diameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+                <span class="n">mean_radius</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+                <span class="n">mean_resistance</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">resistances</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">resistances</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">resistances</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+                
+                <span class="c1"># Distance metrics summaries</span>
+                <span class="n">min_dists_bc</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_dist_to_barycenter&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_dist_to_barycenter&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span>
+                <span class="n">min_dists_center</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_dist_to_center&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_dist_to_center&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span>
+                <span class="n">max_dists_periph</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;max_dist_to_periphery&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;max_dist_to_periphery&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+                
+                <span class="n">mean_dist_to_barycenter</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">min_dists_bc</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">min_dists_bc</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">min_dists_bc</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="n">mean_dist_to_center</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">min_dists_center</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">min_dists_center</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">min_dists_center</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="n">mean_dist_to_periphery</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">max_dists_periph</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">max_dists_periph</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">max_dists_periph</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+                
+                <span class="n">summary_metrics</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;mean_branching&#39;</span><span class="p">:</span> <span class="n">mean_branching</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_smarts_centrality&#39;</span><span class="p">:</span> <span class="n">mean_smarts_centrality</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_component_fraction&#39;</span><span class="p">:</span> <span class="n">mean_component_fraction</span><span class="p">,</span>
+                    <span class="s1">&#39;total_components_fraction&#39;</span><span class="p">:</span> <span class="n">total_components_fraction</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_eccentricity&#39;</span><span class="p">:</span> <span class="n">mean_mean_eccentricity</span><span class="p">,</span>
+                    <span class="s1">&#39;median_eccentricity&#39;</span><span class="p">:</span> <span class="n">mean_median_eccentricity</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_diameter&#39;</span><span class="p">:</span> <span class="n">mean_diameter</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_radius&#39;</span><span class="p">:</span> <span class="n">mean_radius</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_effective_graph_resistance&#39;</span><span class="p">:</span> <span class="n">mean_resistance</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_dist_to_barycenter&#39;</span><span class="p">:</span> <span class="n">mean_dist_to_barycenter</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_dist_to_center&#39;</span><span class="p">:</span> <span class="n">mean_dist_to_center</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_dist_to_periphery&#39;</span><span class="p">:</span> <span class="n">mean_dist_to_periphery</span>
+                <span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">summary_metrics</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;mean_branching&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_smarts_centrality&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_component_fraction&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="s1">&#39;total_components_fraction&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_eccentricity&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="s1">&#39;median_eccentricity&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_diameter&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;mean_radius&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;mean_effective_graph_resistance&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;mean_dist_to_barycenter&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_dist_to_center&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_dist_to_periphery&#39;</span><span class="p">:</span> <span class="mi">0</span>
+                <span class="p">}</span>
+            
+            <span class="n">match_results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;match_id&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;G</span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s1">&#39;group_name&#39;</span><span class="p">:</span> <span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s1">&#39;match_count&#39;</span><span class="p">:</span> <span class="n">match_count</span><span class="p">,</span>
+                <span class="s1">&#39;components_sizes&#39;</span><span class="p">:</span> <span class="n">components_sizes</span><span class="p">,</span>
+                <span class="s1">&#39;num_components&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">matched_components</span><span class="p">),</span>
+                <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="n">matched_components</span><span class="p">,</span>
+                <span class="s1">&#39;components_types&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;SMARTS&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">])],</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;PFASgroup&#39;</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">summary_metrics</span>
+            <span class="p">})</span>
+        
+        <span class="n">results</span><span class="p">[</span><span class="n">inchikey</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;matches&#39;</span><span class="p">,[])</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">match_results</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">include_PFAS_definitions</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mols</span><span class="p">):</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="n">formula_dict</span> <span class="o">=</span> <span class="n">n_from_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+            <span class="n">definitions</span> <span class="o">=</span> <span class="n">parse_definitions_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="n">formula_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">inchikey</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchiKey</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">inchikey</span><span class="p">,{</span>
+                        <span class="s2">&quot;smiles&quot;</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span>
+                        <span class="s2">&quot;inchikey&quot;</span><span class="p">:</span> <span class="n">inchikey</span><span class="p">,</span>
+                        <span class="s2">&quot;inchi&quot;</span><span class="p">:</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToInchi</span><span class="p">(</span><span class="n">mol</span><span class="p">),</span>
+                        <span class="s2">&quot;formula&quot;</span><span class="p">:</span> <span class="n">formula</span><span class="p">})</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;matches&quot;</span><span class="p">,[])</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+                            <span class="p">{</span><span class="s1">&#39;match_id&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;D</span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">definition</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                            <span class="s1">&#39;definition_name&#39;</span><span class="p">:</span> <span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                            <span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;PFASdefinition&#39;</span><span class="p">}</span> <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">definitions</span><span class="p">])</span>
+    <span class="c1"># Convert results to list format</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+    <span class="c1"># Format output based on requested format</span>
+    <span class="k">if</span> <span class="n">output_format</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;dataframe&#39;</span><span class="p">,</span> <span class="s1">&#39;csv&#39;</span><span class="p">]:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;matches&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;PFASgroup&#39;</span><span class="p">:</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smi</span><span class="p">,</span>
+                        <span class="s1">&#39;match_id&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;match_id&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_name&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;group_name&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_count&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;match_count&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;components_sizes&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;components_sizes&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;num_chains&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;num_chains&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_type&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+                    <span class="p">})</span>
+                <span class="k">elif</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;PFASdefinition&#39;</span><span class="p">:</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smi</span><span class="p">,</span>
+                        <span class="s1">&#39;match_id&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;match_id&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_name&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;definition_name&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;match_type&#39;</span><span class="p">:</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+                    <span class="p">})</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="n">output_format</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span> <span class="k">else</span> <span class="n">df</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+<div class="viewcode-block" id="compile_smartsPath">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.fingerprints.compile_smartsPath">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compile_smartsPath</span><span class="p">(</span><span class="n">chain_smarts</span><span class="p">,</span> <span class="n">end_smarts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compile a pair of SMARTS patterns into a ready-to-use path definition.</span>
+<span class="sd">    </span>
+<span class="sd">    This function preprocesses SMARTS patterns for chain and end groups,</span>
+<span class="sd">    preparing them for use in PFAS parsing functions.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    chain_smarts : str</span>
+<span class="sd">        SMARTS pattern for the repeating chain unit</span>
+<span class="sd">    end_smarts : str</span>
+<span class="sd">        SMARTS pattern for the terminal group</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        List containing [chain_mol, end_mol] where both are preprocessed RDKit Mol objects</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; chain = compile_smartsPath(</span>
+<span class="sd">    ...     &quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;,</span>
+<span class="sd">    ...     &quot;[C;X4](Cl)(Cl)Cl&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; paths = {&#39;Perchlorinated&#39;: chain}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">chain_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">chain_smarts</span><span class="p">)</span>
+    <span class="n">chain_mol</span><span class="o">.</span><span class="n">UpdatePropertyCache</span><span class="p">()</span>
+    <span class="n">Chem</span><span class="o">.</span><span class="n">GetSymmSSSR</span><span class="p">(</span><span class="n">chain_mol</span><span class="p">)</span>
+    <span class="n">chain_mol</span><span class="o">.</span><span class="n">GetRingInfo</span><span class="p">()</span><span class="o">.</span><span class="n">NumRings</span><span class="p">()</span>
+    
+    <span class="n">end_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">end_smarts</span><span class="p">)</span>
+    <span class="n">end_mol</span><span class="o">.</span><span class="n">UpdatePropertyCache</span><span class="p">()</span>
+    <span class="n">Chem</span><span class="o">.</span><span class="n">GetSymmSSSR</span><span class="p">(</span><span class="n">end_mol</span><span class="p">)</span>
+    <span class="n">end_mol</span><span class="o">.</span><span class="n">GetRingInfo</span><span class="p">()</span><span class="o">.</span><span class="n">NumRings</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="n">chain_mol</span><span class="p">,</span> <span class="n">end_mol</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="compile_smartsPaths">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.fingerprints.compile_smartsPaths">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compile_smartsPaths</span><span class="p">(</span><span class="n">paths_dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compile multiple SMARTS path definitions from a dictionary.</span>
+<span class="sd">    </span>
+<span class="sd">    This function takes a dictionary of path definitions (with &#39;chain&#39; and &#39;end&#39; keys)</span>
+<span class="sd">    and preprocesses them for use in PFAS parsing functions.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    paths_dict : dict</span>
+<span class="sd">        Dictionary with structure::</span>
+<span class="sd">        </span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;PathName&#39;: {&#39;chain&#39;: &#39;SMARTS&#39;, &#39;end&#39;: &#39;SMARTS&#39;},</span>
+<span class="sd">                ...</span>
+<span class="sd">            }</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Dictionary mapping path names to [chain_mol, end_mol] pairs</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; custom_paths = {</span>
+<span class="sd">    ...     &#39;Perchlorinated&#39;: {</span>
+<span class="sd">    ...         &#39;chain&#39;: &#39;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&#39;,</span>
+<span class="sd">    ...         &#39;end&#39;: &#39;[C;X4](Cl)(Cl)Cl&#39;</span>
+<span class="sd">    ...     },</span>
+<span class="sd">    ...     &#39;MixedHalo&#39;: {</span>
+<span class="sd">    ...         &#39;chain&#39;: &#39;[C;X4]([F,Cl])([F,Cl])!@!=!#[C;X4]([F,Cl])&#39;,</span>
+<span class="sd">    ...         &#39;end&#39;: &#39;[C;X4]([F,Cl])([F,Cl])[F,Cl]&#39;</span>
+<span class="sd">    ...     }</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; compiled = compile_smartsPaths(custom_paths)</span>
+<span class="sd">    &gt;&gt;&gt; results = parse_smiles(smiles, smartsPaths=compiled)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">compiled</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">patterns</span> <span class="ow">in</span> <span class="n">paths_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">patterns</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;chain&#39;</span> <span class="ow">in</span> <span class="n">patterns</span> <span class="ow">and</span> <span class="s1">&#39;end&#39;</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">:</span>
+            <span class="n">compiled</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">compile_smartsPath</span><span class="p">(</span><span class="n">patterns</span><span class="p">[</span><span class="s1">&#39;chain&#39;</span><span class="p">],</span> <span class="n">patterns</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; must have &#39;chain&#39; and &#39;end&#39; keys&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">compiled</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Luc T. Miaz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

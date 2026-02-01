@@ -265,16 +265,18 @@ class PFASGroup():
         bool
             True if all relational constraints are satisfied, False otherwise
         
-        Constraint Format
-        -----------------
-        'rel': {
-            'ElementA': {
-                'atoms': ['ElementB', 'ElementC'],  # Elements to sum
-                'div': int,  # Divisor (default 1)
-                'add': int,  # Additive constant (default 0)
-                'add_atoms': ['ElementD']  # Additional elements to add
+        Notes
+        -----
+        Constraint Format::
+        
+            'rel': {
+                'ElementA': {
+                    'atoms': ['ElementB', 'ElementC'],  # Elements to sum
+                    'div': int,  # Divisor (default 1)
+                    'add': int,  # Additive constant (default 0)
+                    'add_atoms': ['ElementD']  # Additional elements to add
+                }
             }
-        }
         
         Formula: count(ElementA) = (sum(atoms) / div) + add + sum(add_atoms)
         

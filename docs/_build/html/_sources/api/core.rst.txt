@@ -9,7 +9,7 @@ Main Functions
 parse_smiles
 ~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.core.parse_smiles
+.. autofunction:: PFASgroups.parser.parse_smiles
 
 **Detailed Description:**
 
@@ -53,7 +53,7 @@ The primary function for detecting PFAS groups in molecules from SMILES strings.
 parse_groups_in_mol
 ~~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.core.parse_groups_in_mol
+.. autofunction:: PFASgroups.parser.parse_groups_in_mol
 
 **Detailed Description:**
 
@@ -92,7 +92,7 @@ List of tuples: ``[(PFASGroup, match_count, chain_lengths, matched_chains), ...]
 generate_fingerprint
 ~~~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.core.generate_fingerprint
+.. autofunction:: PFASgroups.fingerprints.generate_fingerprint
 
 **Detailed Description:**
 
@@ -152,7 +152,7 @@ Tuple: ``(fingerprints, group_info)``
 plot_pfasgroups
 ~~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.core.plot_pfasgroups
+.. autofunction:: PFASgroups.draw_mols.plot_pfasgroups
 
 **Detailed Description:**
 
@@ -207,7 +207,7 @@ Helper Functions
 get_PFASGroups
 ~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.core.get_PFASGroups
+.. autofunction:: PFASgroups.getter.get_PFASGroups
 
 **Description:**
 
@@ -241,7 +241,7 @@ List of PFASGroup objects
 get_smartsPaths
 ~~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.core.get_smartsPaths
+.. autofunction:: PFASgroups.getter.get_smartsPaths
 
 **Description:**
 
@@ -272,7 +272,7 @@ Dictionary with keys: 'Perfluoroalkyl', 'Polyfluoroalkyl', 'Polyfluoro', 'Polyfl
 compile_smartsPath
 ~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.core.compile_smartsPath
+.. autofunction:: PFASgroups.parser.compile_smartsPath
 
 **Description:**
 
@@ -305,7 +305,7 @@ Dictionary: ``{'chain': <Mol>, 'end': <Mol>}``
 compile_smartsPaths
 ~~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.core.compile_smartsPaths
+.. autofunction:: PFASgroups.parser.compile_smartsPaths
 
 **Description:**
 

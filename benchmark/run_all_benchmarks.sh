@@ -232,6 +232,22 @@ else
 fi
 echo ""
 
+# LaTeX Tables Generation for Article
+echo "📝 Generating LaTeX tables for article..."
+if [ -f "scripts/generate_latex_tables.py" ]; then
+    python scripts/generate_latex_tables.py
+    if [ $? -eq 0 ]; then
+        echo "✅ LaTeX tables generated successfully"
+        echo "   • Main content: reports/pfasgroups_latex_results.tex"
+        echo "   • Summary: reports/pfasgroups_latex_summary.tex"
+    else
+        echo "⚠️  LaTeX generation failed"
+    fi
+else
+    echo "⚠️  generate_latex_tables.py not found"
+fi
+echo ""
+
 # Organize analysis results
 echo "📁 Organizing analysis results..."
 

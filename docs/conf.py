@@ -25,7 +25,7 @@ extensions = [
 ]
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md']
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_rtd_theme'
@@ -35,7 +35,7 @@ html_favicon = None
 
 html_theme_options = {
     'logo_only': False,
-    'display_version': True,
+    # 'display_version': True,  # Not supported in current RTD theme version
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
     'style_nav_header_background': '#2980B9',

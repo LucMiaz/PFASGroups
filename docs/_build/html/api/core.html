@@ -78,6 +78,43 @@
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#part-1-basic-pfas-detection">Part 1: Basic PFAS Detection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#understanding-pfas-groups">Understanding PFAS Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#analyzing-common-pfas">Analyzing Common PFAS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#part-2-working-with-data">Part 2: Working with Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#batch-processing">Batch Processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#dataframe-output">DataFrame Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#part-3-fingerprints-for-ml">Part 3: Fingerprints for ML</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#binary-fingerprints">Binary Fingerprints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#count-based-fingerprints">Count-Based Fingerprints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#part-4-visualization">Part 4: Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#basic-visualization">Basic Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#grid-layouts">Grid Layouts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#svg-for-publications">SVG for Publications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#part-5-advanced-features">Part 5: Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#component-based-analysis">Component-Based Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#homologue-generation">Homologue Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#custom-pfas-groups">Custom PFAS Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#part-6-real-world-applications">Part 6: Real-World Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#database-screening">Database Screening</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#regulatory-compliance">Regulatory Compliance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../algorithm.html">Algorithm Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../algorithm.html#core-concepts">Core Concepts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithm.html#algorithm-workflow">Algorithm Workflow</a><ul>
@@ -113,17 +150,41 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Core API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#main-functions">Main Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#parse-smiles">parse_smiles</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#parse-groups-in-mol">parse_groups_in_mol</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#generate-fingerprint">generate_fingerprint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#plot-pfasgroups">plot_pfasgroups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parse-smiles">parse_smiles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.parser.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parse-groups-in-mol">parse_groups_in_mol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.parser.parse_groups_in_mol"><code class="docutils literal notranslate"><span class="pre">parse_groups_in_mol()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-fingerprint">generate_fingerprint</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.fingerprints.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-pfasgroups">plot_pfasgroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.draw_mols.plot_pfasgroups"><code class="docutils literal notranslate"><span class="pre">plot_pfasgroups()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#helper-functions">Helper Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#get-pfasgroups">get_PFASGroups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#get-smartspaths">get_smartsPaths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#compile-smartspath">compile_smartsPath</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#compile-smartspaths">compile_smartsPaths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-pfasgroups">get_PFASGroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-smartspaths">get_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-smartspath">compile_smartsPath</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-smartspaths">compile_smartsPaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#internal-functions">Internal Functions</a></li>
@@ -180,8 +241,130 @@
 </ul>
 </li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Topics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../customization.html">Customization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../customization.html#custom-pfas-groups">Custom PFAS Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#modifying-existing-groups">Modifying Existing Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#loading-groups-from-json">Loading Groups from JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#constraint-examples">Constraint Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../customization.html#custom-pathways">Custom Pathways</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#defining-pathway-types">Defining Pathway Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#loading-pathways-from-json">Loading Pathways from JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#smarts-pattern-guide">SMARTS Pattern Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../customization.html#custom-pfas-definitions">Custom PFAS Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#creating-definitions">Creating Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#fluorine-ratio-calculation">Fluorine Ratio Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../customization.html#advanced-customization">Advanced Customization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#combining-custom-components">Combining Custom Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#configuration-management">Configuration Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#testing-custom-groups">Testing Custom Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../customization.html#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#smarts-pattern-design">SMARTS Pattern Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#constraint-design">Constraint Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../customization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Benchmarking and Validation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#running-benchmarks">Running Benchmarks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#individual-benchmarks">Individual Benchmarks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#benchmark-results">Benchmark Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#performance-metrics">Performance Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#viewing-results">Viewing Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#validation-against-reference-data">Validation Against Reference Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#oecd-database">OECD Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#pubchem-validation">PubChem Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#custom-validation">Custom Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#creating-test-sets">Creating Test Sets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#running-custom-tests">Running Custom Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#performance-testing">Performance Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#timing-analysis">Timing Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#scaling-analysis">Scaling Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#accuracy-metrics">Accuracy Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#confusion-matrix">Confusion Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#precision-and-recall">Precision and Recall</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#comparative-analysis">Comparative Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#compare-with-pfas-atlas">Compare with PFAS-Atlas</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#continuous-integration">Continuous Integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#automated-testing">Automated Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#regression-testing">Regression Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#setting-up-development-environment">Setting Up Development Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#development-workflow">Development Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#bug-reports">Bug Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#feature-requests">Feature Requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#code-contributions">Code Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#coding-standards">Coding Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#adding-new-pfas-groups">Adding New PFAS Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#performance-optimization">Performance Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#pull-request-process">Pull Request Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#pr-checklist">PR Checklist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#pr-template">PR Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#review-process">Review Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#communication">Communication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#channels">Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#communication-guidelines">Communication Guidelines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#code-of-conduct">Code of Conduct</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#pledge">Pledge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#standards">Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../contributing.html#enforcement">Enforcement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#recognition">Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing.html#questions">Questions?</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-2-0">Version 1.2.0</a></li>
@@ -260,6 +443,11 @@
 <h2>Main Functions<a class="headerlink" href="#main-functions" title="Link to this heading"></a></h2>
 <section id="parse-smiles">
 <h3>parse_smiles<a class="headerlink" href="#parse-smiles" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.parser.parse_smiles">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.parser.</span></span><span class="sig-name descname"><span class="pre">parse_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASgroups.parser.parse_smiles" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <p><strong>Detailed Description:</strong></p>
 <p>The primary function for detecting PFAS groups in molecules from SMILES strings.</p>
 <p><strong>Parameters:</strong></p>
@@ -298,6 +486,11 @@
 </section>
 <section id="parse-groups-in-mol">
 <h3>parse_groups_in_mol<a class="headerlink" href="#parse-groups-in-mol" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.parser.parse_groups_in_mol">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.parser.</span></span><span class="sig-name descname"><span class="pre">parse_groups_in_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASgroups.parser.parse_groups_in_mol" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <p><strong>Detailed Description:</strong></p>
 <p>Parse an RDKit molecule object directly, useful when you already have a molecule object or need to set specific properties.</p>
 <p><strong>Parameters:</strong></p>
@@ -329,6 +522,11 @@
 </section>
 <section id="generate-fingerprint">
 <h3>generate_fingerprint<a class="headerlink" href="#generate-fingerprint" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.fingerprints.generate_fingerprint">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.fingerprints.</span></span><span class="sig-name descname"><span class="pre">generate_fingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASgroups.fingerprints.generate_fingerprint" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <p><strong>Detailed Description:</strong></p>
 <p>Generate PFAS group fingerprints for machine learning applications. Creates binary, count-based, or chain-length-based feature vectors.</p>
 <p><strong>Parameters:</strong></p>
@@ -383,6 +581,11 @@
 </section>
 <section id="plot-pfasgroups">
 <h3>plot_pfasgroups<a class="headerlink" href="#plot-pfasgroups" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.draw_mols.plot_pfasgroups">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.draw_mols.</span></span><span class="sig-name descname"><span class="pre">plot_pfasgroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASgroups.draw_mols.plot_pfasgroups" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <p><strong>Detailed Description:</strong></p>
 <p>Visualize PFAS group assignments on molecular structures with color-coded highlights.</p>
 <p><strong>Parameters:</strong></p>
@@ -430,6 +633,11 @@
 <h2>Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading"></a></h2>
 <section id="get-pfasgroups">
 <h3>get_PFASGroups<a class="headerlink" href="#get-pfasgroups" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.getter.get_PFASGroups">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.getter.</span></span><span class="sig-name descname"><span class="pre">get_PFASGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASgroups.getter.get_PFASGroups" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <p><strong>Description:</strong></p>
 <p>Returns the list of all 55 default PFAS group definitions.</p>
 <p><strong>Parameters:</strong></p>
@@ -456,6 +664,11 @@
 </section>
 <section id="get-smartspaths">
 <h3>get_smartsPaths<a class="headerlink" href="#get-smartspaths" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.getter.get_smartsPaths">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.getter.</span></span><span class="sig-name descname"><span class="pre">get_smartsPaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASgroups.getter.get_smartsPaths" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <p><strong>Description:</strong></p>
 <p>Returns the default pathway SMARTS definitions for perfluorinated and polyfluorinated chains.</p>
 <p><strong>Parameters:</strong></p>
@@ -479,6 +692,36 @@
 </section>
 <section id="compile-smartspath">
 <h3>compile_smartsPath<a class="headerlink" href="#compile-smartspath" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.parser.compile_smartsPath">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.parser.</span></span><span class="sig-name descname"><span class="pre">compile_smartsPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chain_smarts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_smarts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/parser.html#compile_smartsPath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.parser.compile_smartsPath" title="Link to this definition"></a></dt>
+<dd><p>Compile a pair of SMARTS patterns into a ready-to-use path definition.</p>
+<p>This function preprocesses SMARTS patterns for chain and end groups,
+preparing them for use in PFAS parsing functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chain_smarts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – SMARTS pattern for the repeating chain unit</p></li>
+<li><p><strong>end_smarts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – SMARTS pattern for the terminal group</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List containing [chain_mol, end_mol] where both are preprocessed RDKit Mol objects</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span> <span class="o">=</span> <span class="n">compile_smartsPath</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;[C;X4](Cl)(Cl)Cl&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">paths</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Perchlorinated&#39;</span><span class="p">:</span> <span class="n">chain</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <p><strong>Description:</strong></p>
 <p>Compile SMARTS patterns for custom pathway definitions.</p>
 <p><strong>Parameters:</strong></p>
@@ -504,6 +747,47 @@
 </section>
 <section id="compile-smartspaths">
 <h3>compile_smartsPaths<a class="headerlink" href="#compile-smartspaths" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="PFASgroups.parser.compile_smartsPaths">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.parser.</span></span><span class="sig-name descname"><span class="pre">compile_smartsPaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/parser.html#compile_smartsPaths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.parser.compile_smartsPaths" title="Link to this definition"></a></dt>
+<dd><p>Compile multiple SMARTS path definitions from a dictionary.</p>
+<p>This function takes a dictionary of path definitions (with ‘chain’ and ‘end’ keys)
+and preprocesses them for use in PFAS parsing functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>paths_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a>) – <p>Dictionary with structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;PathName&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;chain&#39;</span><span class="p">:</span> <span class="s1">&#39;SMARTS&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;SMARTS&#39;</span><span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping path names to [chain_mol, end_mol] pairs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">custom_paths</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;Perchlorinated&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s1">&#39;chain&#39;</span><span class="p">:</span> <span class="s1">&#39;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;[C;X4](Cl)(Cl)Cl&#39;</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="s1">&#39;MixedHalo&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s1">&#39;chain&#39;</span><span class="p">:</span> <span class="s1">&#39;[C;X4]([F,Cl])([F,Cl])!@!=!#[C;X4]([F,Cl])&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;[C;X4]([F,Cl])([F,Cl])[F,Cl]&#39;</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compiled</span> <span class="o">=</span> <span class="n">compile_smartsPaths</span><span class="p">(</span><span class="n">custom_paths</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">smartsPaths</span><span class="o">=</span><span class="n">compiled</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <p><strong>Description:</strong></p>
 <p>Compile multiple pathway definitions from a dictionary.</p>
 <p><strong>Parameters:</strong></p>
@@ -549,7 +833,7 @@
 <ul class="simple">
 <li><p><a class="reference internal" href="models.html"><span class="doc">Data Models API Reference</span></a>: PFAS group and definition data models</p></li>
 <li><p><a class="reference internal" href="../algorithm.html"><span class="doc">Algorithm Overview</span></a>: Detailed algorithm description</p></li>
-<li><p><span class="xref std std-doc">../customization</span>: Creating custom groups and pathways</p></li>
+<li><p><a class="reference internal" href="../customization.html"><span class="doc">Customization</span></a>: Creating custom groups and pathways</p></li>
 </ul>
 </section>
 </section>

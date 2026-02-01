@@ -511,11 +511,12 @@ def compile_smartsPaths(paths_dict):
     Parameters
     ----------
     paths_dict : dict
-        Dictionary with structure:
-        {
-            'PathName': {'chain': 'SMARTS', 'end': 'SMARTS'},
-            ...
-        }
+        Dictionary with structure::
+        
+            {
+                'PathName': {'chain': 'SMARTS', 'end': 'SMARTS'},
+                ...
+            }
     
     Returns
     -------

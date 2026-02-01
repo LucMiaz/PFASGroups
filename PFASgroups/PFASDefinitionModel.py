@@ -88,6 +88,7 @@ class PFASDefinition:
             If None, will be computed from the molecule.
         **kwargs : dict
             Additional parameters:
+            
             - include_hydrogen (bool): Whether to include H in fluorine ratio calculation.
               Defaults to self.includeHydrogen
             - require_both (bool): Override the instance's requireBoth setting

@@ -71,7 +71,6 @@ Table of Contents
    quickstart
    tutorial
    algorithm
-   pfas_groups
 
 .. toctree::
    :maxdepth: 2
@@ -79,10 +78,6 @@ Table of Contents
 
    api/core
    api/models
-   api/homologues
-   api/fragmentation
-   api/visualization
-   api/generation
 
 .. toctree::
    :maxdepth: 2
@@ -90,7 +85,6 @@ Table of Contents
 
    customization
    benchmarking
-   cli
 
 .. toctree::
    :maxdepth: 1
