@@ -1451,7 +1451,9 @@ class EnhancedPFASBenchmark:
             print(f"📊 Loaded {len(oecd_data)} OECD molecules")
         except Exception as e:
             print(f"❌ Error loading OECD data: {e}")
-            return [], None
+            print(f"   Expected path: {oecd_file}")
+            import sys
+            sys.exit(1)
             
         all_results = []
         

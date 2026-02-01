@@ -632,62 +632,69 @@ def main():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
     # Determine output directories
-    reports_dir = "review-app/analysis_reports" if os.path.exists("review-app/analysis_reports") else "."
+    imgs_dir = "../imgs" if os.path.exists("../imgs") else "imgs"
+    reports_dir = "../reports" if os.path.exists("../reports") else "reports"
+    os.makedirs(imgs_dir, exist_ok=True)
+    os.makedirs(reports_dir, exist_ok=True)
     
-    # Save plots to reports directory
+    # Save plots to imgs directory (PNG) and reports directory (HTML/SVG)
     scatter_plot = create_timing_scatter_plot(timing_results)
-    scatter_plot.write_image(f"{reports_dir}/timing_scatter_{timestamp}.png", width=1200, height=700)
-    scatter_plot.write_html(f"{reports_dir}/timing_scatter_{timestamp}.svg")
+    scatter_plot.write_image(f"{imgs_dir}/timing_scatter_{timestamp}.png", width=1200, height=700)
+    scatter_plot.write_html(f"{reports_dir}/timing_scatter_{timestamp}.html")
     
     distribution_plot = create_timing_distribution_plot(timing_results)
-    distribution_plot.write_image(f"{reports_dir}/timing_distribution_{timestamp}.png", width=1000, height=800)
-    distribution_plot.write_html(f"{reports_dir}/timing_distribution_{timestamp}.svg")
+    distribution_plot.write_image(f"{imgs_dir}/timing_distribution_{timestamp}.png", width=1000, height=800)
+    distribution_plot.write_html(f"{reports_dir}/timing_distribution_{timestamp}.html")
     
     scaling_plot = create_scaling_analysis_plot(timing_results)
-    scaling_plot.write_image(f"{reports_dir}/timing_scaling_{timestamp}.png", width=1200, height=800)
-    scaling_plot.write_html(f"{reports_dir}/timing_scaling_{timestamp}.svg")
+    scaling_plot.write_image(f"{imgs_dir}/timing_scaling_{timestamp}.png", width=1200, height=800)
+    scaling_plot.write_html(f"{reports_dir}/timing_scaling_{timestamp}.html")
     
     # Create comprehensive HTML report
     html_content = create_timing_html_report(timing_results, stats, timestamp)
-    html_filename = f"{reports_dir}/timing_analysis_{timestamp}.html"
+    html_filename = f\"{reports_dir}/timing_analysis_{timestamp}.html\"
     
     with open(html_filename, 'w', encoding='utf-8') as f:
         f.write(html_content)
     
-    # Create JSON report for review app
+    # Save JSON report to data directory
+    data_dir = \"../data\" if os.path.exists(\"../data\") else \"data\"
+    os.makedirs(data_dir, exist_ok=True)
+    
+    # Create JSON report
     json_report = {
-        "summary": {
-            "total_molecules": len(timing_results),
-            "pfasgroups_avg_time": stats['pfasgroups_avg_time'],
-            "pfasgroups_std_time": stats['pfasgroups_std_time'],
-            "atlas_avg_time": stats['atlas_avg_time'],
-            "atlas_std_time": stats['atlas_std_time'],
-            "speed_ratio": stats['speed_ratio'],
-            "iterations": timing_results[0].get('iterations', 1),
-            "timestamp": timestamp
+        \"summary\": {
+            \"total_molecules\": len(timing_results),
+            \"pfasgroups_avg_time\": stats['pfasgroups_avg_time'],
+            \"pfasgroups_std_time\": stats['pfasgroups_std_time'],
+            \"atlas_avg_time\": stats['atlas_avg_time'],
+            \"atlas_std_time\": stats['atlas_std_time'],
+            \"speed_ratio\": stats['speed_ratio'],
+            \"iterations\": timing_results[0].get('iterations', 1),
+            \"timestamp\": timestamp
         },
-        "system_specs": timing_results[0].get('system_specs', {}),
-        "figures": [
+        \"system_specs\": timing_results[0].get('system_specs', {}),
+        \"figures\": [
             {
-                "title": "Timing Scatter Plot",
-                "url": f"/analysis-reports/timing_scatter_{timestamp}.png",
-                "description": "Scatter plot showing execution times vs molecular properties"
+                \"title\": \"Timing Scatter Plot\",
+                \"url\": f\"/imgs/timing_scatter_{timestamp}.png\",
+                \"description\": \"Scatter plot showing execution times vs molecular properties\"
             },
             {
-                "title": "Timing Distribution",
-                "url": f"/analysis-reports/timing_distribution_{timestamp}.png",
-                "description": "Distribution of execution times for both systems"
+                \"title\": \"Timing Distribution\",
+                \"url\": f\"/imgs/timing_distribution_{timestamp}.png\",
+                \"description\": \"Distribution of execution times for both systems\"
             },
             {
-                "title": "Scaling Analysis",
-                "url": f"/analysis-reports/timing_scaling_{timestamp}.png",
-                "description": "Performance scaling with molecular complexity"
+                \"title\": \"Scaling Analysis\",
+                \"url\": f\"/imgs/timing_scaling_{timestamp}.png\",
+                \"description\": \"Performance scaling with molecular complexity\"
             }
         ],
-        "html_report": f"/analysis-reports/timing_analysis_{timestamp}.html"
+        \"html_report\": f\"/reports/timing_analysis_{timestamp}.html\"
     }
     
-    json_filename = f"{reports_dir}/timing_analysis.json"
+    json_filename = f\"{data_dir}/timing_analysis_{timestamp}.json\"
     with open(json_filename, 'w', encoding='utf-8') as f:
         json.dump(json_report, f, indent=2)
     

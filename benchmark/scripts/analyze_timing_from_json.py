@@ -3,7 +3,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 # Load timing analysis JSON
-with open('review-app/analysis_reports/timing_analysis.json', 'r') as f:
+with open('../reports/timing_analysis.json', 'r') as f:
     data = json.load(f)
 
 print("Timing Analysis Data:")
@@ -20,14 +20,14 @@ import os
 import glob
 
 # Look for timing data files
-pattern = 'review-app/analysis_reports/timing_data_*.json'
+pattern = '../reports/timing_data_*.json'
 files = glob.glob(pattern)
 
 if files:
     print(f"\nFound {len(files)} timing data files")
     # Use the most recent one (matching timestamp)
     timestamp = data['summary']['timestamp']
-    data_file = f'review-app/analysis_reports/timing_data_{timestamp}.json'
+    data_file = f'../reports/timing_data_{timestamp}.json'
     
     if os.path.exists(data_file):
         print(f"Loading: {data_file}")

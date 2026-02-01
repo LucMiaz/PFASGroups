@@ -176,6 +176,7 @@ echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 echo "   • Complex Branched: Tests complex molecular structures"
 echo "   • Highly Branched: Tests functional groups on perfluorinated components"
 echo "   • Telomer Validation: Tests detection of fluorotelomers on PubChem dataset"
+echo "   • Comprehensive Statistics: LaTeX tables and benchmark summary (reports/benchmark_summary.json)"
 echo ""
 
 # Telomer Validation Report
@@ -189,6 +190,16 @@ if [ -f "data/telomer_validation_results.json" ]; then
     fi
 else
     echo "⚠️  No telomer validation data found"
+fi
+echo ""
+
+# Comprehensive Benchmark Analysis
+echo "📊 Generating comprehensive benchmark statistics..."
+python analyze_benchmarks_simple.py
+if [ $? -eq 0 ]; then
+    echo "✅ Comprehensive benchmark analysis completed"
+else
+    echo "⚠️  Comprehensive benchmark analysis failed"
 fi
 echo ""
 

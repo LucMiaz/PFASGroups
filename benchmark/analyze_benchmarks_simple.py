@@ -1,10 +1,21 @@
 """
 Comprehensive benchmark analysis without numpy dependency.
 Analyzes timing models and generates summary statistics for LaTeX documents.
+Generates exponential fit visualization using Plotly with PNG/SVG export.
 """
 
 import json
 import math
+import glob
+import os
+
+try:
+    import plotly.graph_objects as go
+    import plotly.io as pio
+    PLOTLY_AVAILABLE = True
+except ImportError:
+    PLOTLY_AVAILABLE = False
+    print("⚠️  plotly not available - plots will not be generated")
 
 print("="*80)
 print("PFASGROUPS BENCHMARK ANALYSIS")
@@ -13,31 +24,58 @@ print("="*80)
 # Load all benchmark data
 print("\n1. Loading benchmark data...")
 
+# Find the latest benchmark files
+import glob
+
+def get_latest_file(pattern):
+    """Get the most recent file matching the pattern."""
+    files = glob.glob(pattern)
+    if not files:
+        return None
+    return max(files, key=os.path.getmtime) if os.path.exists else max(files)
+
 # Timing benchmark
-with open('data/pfas_timing_benchmark_20260201_022433.json', 'r') as f:
+timing_file = get_latest_file('data/pfas_timing_benchmark_*.json')
+if not timing_file:
+    print("  Error: No timing benchmark file found")
+    exit(1)
+with open(timing_file, 'r') as f:
     timing_data = json.load(f)
 
 # Enhanced benchmark
-with open('data/pfas_enhanced_benchmark_20260201_022011.json', 'r') as f:
+enhanced_file = get_latest_file('data/pfas_enhanced_benchmark_*.json')
+if not enhanced_file:
+    print("  Error: No enhanced benchmark file found")
+    exit(1)
+with open(enhanced_file, 'r') as f:
     enhanced_data = json.load(f)
 
 # Complex branched
-with open('data/pfas_complex_branched_benchmark_20260201_022453.json', 'r') as f:
+complex_file = get_latest_file('data/pfas_complex_branched_benchmark_*.json')
+if not complex_file:
+    print("  Error: No complex branched benchmark file found")
+    exit(1)
+with open(complex_file, 'r') as f:
     complex_data = json.load(f)
 
 # Highly branched
-with open('data/pfas_highly_branched_benchmark_20260201_022459.json', 'r') as f:
+hb_file = get_latest_file('data/pfas_highly_branched_benchmark_*.json')
+if not hb_file:
+    print("  Error: No highly branched benchmark file found")
+    exit(1)
+with open(hb_file, 'r') as f:
     highly_branched_data = json.load(f)
 
 # Telomer validation
 with open('data/telomer_validation_results.json', 'r') as f:
     telomer_data = json.load(f)
 
-print(f"  Timing: {len(timing_data)} molecules")
-print(f"  Enhanced: {len(enhanced_data)} molecules")
-print(f"  Complex branched: {len(complex_data)} molecules")
-print(f"  Highly branched: {len(highly_branched_data)} molecules")
-print(f"  Telomer validation: {len(telomer_data)} molecules")
+print(f"  Timing: {timing_file}")
+print(f"  Enhanced: {enhanced_file}")
+print(f"  Complex branched: {complex_file}")
+print(f"  Highly branched: {hb_file}")
+print(f"  Telomer validation: data/telomer_validation_results.json")
+print(f"  Loaded: {len(timing_data)} timing, {len(enhanced_data)} enhanced, {len(complex_data)} complex, {len(highly_branched_data)} HB, {len(telomer_data.get('results', []))} telomer")
 
 # Analyze timing model
 print("\n2. Analyzing timing model (exponential fit)...")
@@ -78,12 +116,12 @@ corr_coef = numerator / (denominator_x * denominator_y)
 median_timing = sorted(timing_avg)[len(timing_avg)//2]
 std_timing = math.sqrt(sum((t - mean_t)**2 for t in timing_avg) / n)
 
-print(f"\n  Exponential Model: t = a × exp(b × n)")
+print(f"\n  Exponential Model: t = a x exp(b x n)")
 print(f"  Parameters:")
 print(f"    a = {a_fit:.6e} seconds")
-print(f"    b = {b_fit:.6f} atoms⁻¹ (α in paper)")
+print(f"    b = {b_fit:.6f} atoms^-1 (alpha in paper)")
 print(f"  Quality:")
-print(f"    R² = {r_squared:.6f}")
+print(f"    R^2 = {r_squared:.6f}")
 print(f"    Pearson r = {corr_coef:.6f}")
 print(f"  Statistics:")
 print(f"    Mean time: {mean_t*1000:.2f} ms")
@@ -138,11 +176,13 @@ print(f"  Unique groups found: {len(complex_unique_groups)}")
 # Analyze highly branched
 print("\n5. Analyzing highly branched benchmark...")
 hb_total = highly_branched_data.get('summary', {}).get('total', 0)
-hb_detected = highly_branched_data.get('summary', {}).get('passed', 0)
+hb_detected = highly_branched_data.get('summary', {}).get('pfasgroups_passed', 0)
 hb_unique_groups = set()
 for detail in highly_branched_data.get('details', []):
-    if detail.get('passed', False):
-        hb_unique_groups.add(detail.get('group_id'))
+    # Group ID appears directly in detail
+    group_id = detail.get('group_id')
+    if group_id is not None:
+        hb_unique_groups.add(group_id)
 
 detection_rate_hb = 100.0 * hb_detected / hb_total if hb_total > 0 else 0
 print(f"  Total molecules: {hb_total}")
@@ -239,4 +279,135 @@ with open('reports/benchmark_summary.json', 'w') as f:
     json.dump(summary, f, indent=2)
 
 print(f"\nSummary saved to: reports/benchmark_summary.json")
+
+# Generate exponential fit plot
+if PLOTLY_AVAILABLE:
+    print("\n7. Generating exponential fit visualization...")
+    
+    # Create fit line data
+    x_fit = list(range(min(timing_atoms), max(timing_atoms) + 1))
+    y_fit = [a_fit * math.exp(b_fit * x) * 1000 for x in x_fit]
+    
+    # Create figure
+    fig = go.Figure()
+    
+    # Add scatter plot for measured data
+    fig.add_trace(go.Scatter(
+        x=timing_atoms,
+        y=[t*1000 for t in timing_avg],
+        mode='markers',
+        name='Measured times',
+        marker=dict(
+            size=10,
+            color='#2196F3',
+            opacity=0.7,
+            line=dict(color='black', width=1)
+        ),
+        hovertemplate='<b>Atoms:</b> %{x}<br><b>Time:</b> %{y:.2f} ms<extra></extra>'
+    ))
+    
+    # Add exponential fit line
+    fig.add_trace(go.Scatter(
+        x=x_fit,
+        y=y_fit,
+        mode='lines',
+        name=f'Exponential fit: t = {a_fit:.2e} × exp({b_fit:.4f} × n) s',
+        line=dict(color='red', width=3),
+        hovertemplate='<b>Atoms:</b> %{x}<br><b>Fit:</b> %{y:.2f} ms<extra></extra>'
+    ))
+    
+    # Update layout
+    fig.update_layout(
+        title=dict(
+            text=f'PFASGroups Exponential Scaling Model<br><sub>R² = {r_squared:.4f}, Pearson r = {corr_coef:.4f}</sub>',
+            font=dict(size=20, family='Arial, sans-serif', color='#333')
+        ),
+        xaxis=dict(
+            title=dict(text='Number of Atoms (n)', font=dict(size=16, family='Arial, sans-serif')),
+            showgrid=True,
+            gridcolor='rgba(0,0,0,0.1)',
+            zeroline=False
+        ),
+        yaxis=dict(
+            title=dict(text='Execution Time (ms)', font=dict(size=16, family='Arial, sans-serif')),
+            showgrid=True,
+            gridcolor='rgba(0,0,0,0.1)',
+            zeroline=False
+        ),
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        legend=dict(
+            x=0.02,
+            y=0.98,
+            xanchor='left',
+            yanchor='top',
+            bgcolor='rgba(255,255,255,0.9)',
+            bordercolor='#999',
+            borderwidth=1,
+            font=dict(size=12)
+        ),
+        width=1200,
+        height=800,
+        margin=dict(l=80, r=200, t=100, b=80),
+        hovermode='closest'
+    )
+    
+    # Add annotation box with parameters
+    annotation_text = (
+        f'<b>Parameters:</b><br>'
+        f'a = {a_fit:.3e} s<br>'
+        f'α = {b_fit:.4f} atoms⁻¹<br><br>'
+        f'<b>Statistics:</b><br>'
+        f'Mean: {mean_t*1000:.1f} ms<br>'
+        f'Median: {median_timing*1000:.1f} ms<br>'
+        f'Std: {std_timing*1000:.1f} ms<br><br>'
+        f'<b>Dataset:</b><br>'
+        f'n = {len(timing_data)} molecules<br>'
+        f'Atom range: {min(timing_atoms)}-{max(timing_atoms)}'
+    )
+    
+    fig.add_annotation(
+        x=0.98,
+        y=0.02,
+        xref='paper',
+        yref='paper',
+        text=annotation_text,
+        showarrow=False,
+        xanchor='right',
+        yanchor='bottom',
+        bordercolor='#999',
+        borderwidth=1,
+        borderpad=10,
+        bgcolor='rgba(255, 245, 220, 0.9)',
+        font=dict(size=11, family='Courier New, monospace'),
+        align='left'
+    )
+    
+    # Save figure in multiple formats
+    os.makedirs('imgs', exist_ok=True)
+    
+    # Save as PNG (high resolution for publications)
+    png_path = 'imgs/timing_exponential_fit.png'
+    fig.write_image(png_path, width=1200, height=800, scale=2)  # 2x scale for high DPI
+    print(f"  [OK] PNG saved: {png_path}")
+    
+    # Save as SVG (vector format for LaTeX)
+    svg_path = 'imgs/timing_exponential_fit.svg'
+    fig.write_image(svg_path, width=1200, height=800)
+    print(f"  [OK] SVG saved: {svg_path}")
+    
+    # Save as PDF (alternative vector format for LaTeX)
+    pdf_path = 'imgs/timing_exponential_fit.pdf'
+    fig.write_image(pdf_path, width=1200, height=800)
+    print(f"  [OK] PDF saved: {pdf_path}")
+    
+    # Also save interactive HTML version
+    html_path = 'reports/timing_exponential_fit.html'
+    fig.write_html(html_path)
+    print(f"  [OK] HTML (interactive) saved: {html_path}")
+    
+else:
+    print("\n[WARNING] Skipping plot generation (plotly not available)")
+
+print("="*80)
 print("="*80)

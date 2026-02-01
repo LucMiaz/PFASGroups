@@ -146,6 +146,7 @@ Write-Host "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 Write-Host "   • Complex Branched: Tests complex molecular structures"
 Write-Host "   • Highly Branched: Tests functional groups on perfluorinated components"
 Write-Host "   • Telomer Validation: Tests detection of fluorotelomers on PubChem dataset"
+Write-Host "   • Comprehensive Statistics: LaTeX tables and benchmark summary (reports/benchmark_summary.json)"
 Write-Host ""
 
 # Telomer Validation Report
@@ -159,6 +160,16 @@ if (Test-Path "data\telomer_validation_results.json") {
     }
 } else {
     Write-Host "⚠️  No telomer validation data found" -ForegroundColor Yellow
+}
+Write-Host ""
+
+# Comprehensive Benchmark Analysis
+Write-Host "📊 Generating comprehensive benchmark statistics..." -ForegroundColor Yellow
+python analyze_benchmarks_simple.py
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "✅ Comprehensive benchmark analysis completed" -ForegroundColor Green
+} else {
+    Write-Host "⚠️  Comprehensive benchmark analysis failed" -ForegroundColor Yellow
 }
 Write-Host ""
 

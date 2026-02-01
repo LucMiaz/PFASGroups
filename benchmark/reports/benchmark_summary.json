@@ -1,13 +1,13 @@
 {
   "timing_model": {
     "model": "t = a \u00d7 exp(b \u00d7 n)",
-    "a": 0.00822928648090476,
-    "b": 0.022499036273815533,
-    "r_squared": 0.9626398745702048,
-    "correlation": 0.918735799700496,
-    "mean_time_ms": 63.98904060001041,
-    "median_time_ms": 40.50908650006022,
-    "std_time_ms": 63.51097812214117,
+    "a": 0.008367141986944875,
+    "b": 0.022404791873517023,
+    "r_squared": 0.9687634724971286,
+    "correlation": 0.9236010510130166,
+    "mean_time_ms": 64.25667110749464,
+    "median_time_ms": 41.45613679984308,
+    "std_time_ms": 62.997470161793956,
     "n_molecules": 200,
     "atom_range": [
       13,
@@ -38,7 +38,7 @@
       "total": 375,
       "detected": 330,
       "detection_rate": 88.0,
-      "unique_groups": 22
+      "unique_groups": 25
     },
     "telomer_validation": {
       "total": 785,

@@ -315,7 +315,7 @@ def generate_telomer_report():
 </html>"""
     
     # Save report
-    output_file = Path('review-app/analysis_reports/telomer_validation.html')
+    output_file = Path('../reports/telomer_validation.html')
     output_file.parent.mkdir(parents=True, exist_ok=True)
     
     with open(output_file, 'w') as f:
