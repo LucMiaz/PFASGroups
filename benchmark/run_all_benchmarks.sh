@@ -15,7 +15,7 @@ if [ ! -f "scripts/enhanced_pfas_benchmark.py" ]; then
 fi
 
 # Create output directories
-mkdir -p scripts reports data imgs
+mkdir -p scripts reports data imgs html
 
 echo "📋 Running all PFAS benchmarks..."
 echo ""
@@ -97,39 +97,18 @@ if [ $? -ne 0 ]; then
     echo "❌ Unified Report generation failed"
     exit 1
 fi
-
-# Organize output files
-echo "📁 Organizing output files..."
-# Move data files
-mv pfas_*_benchmark_*.json data/ 2>/dev/null || true
-# Move HTML files
-mv *.html reports/ 2>/dev/null || true
-# Move image files
-mv *.png imgs/ 2>/dev/null || true
-mv *.svg imgs/ 2>/dev/null || true
-
-echo ""
-echo "🎉 ALL BENCHMARKS COMPLETED SUCCESSFULLY!"
-echo ""
-echo "📋 Results Summary:"
-echo "   • Functional Groups: Tests basic PFAS group detection"
-echo "   • OECD Validation: Validates against OECD database"
-echo "   • Timing Performance: Measures execution speed scaling"
-echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
-echo "   • Complex Branched: Tests complex molecular structures"
-echo "   • Highly Branched: Tests functional groups on perfluorinated components"
-echo "   • Telomer Validation: Tests detection of fluorotelomers on PubChem dataset"
+echo "✅ Unified Report generated"
 echo ""
 
-# Run analysis scripts
+# Run analysis scripts BEFORE organizing files
 echo "📊 Running Analysis Scripts..."
 echo ""
 
 # Timing Analysis
 echo "⏱️  Analyzing timing performance..."
-TIMING_FILE=$(ls data/pfas_timing_benchmark_*.json | tail -1)
+TIMING_FILE=$(ls data/pfas_timing_benchmark_*.json 2>/dev/null | tail -1)
 if [ -f "$TIMING_FILE" ]; then
-    python analyze_timing.py "$TIMING_FILE"
+    python scripts/analyze_timing.py "$TIMING_FILE"
     if [ $? -eq 0 ]; then
         echo "✅ Timing analysis completed"
     else
@@ -142,9 +121,9 @@ echo ""
 
 # Complex Branched Analysis
 echo "🧬 Analyzing complex branched structures..."
-COMPLEX_FILE=$(ls data/pfas_complex_branched_benchmark_*.json | tail -1)
+COMPLEX_FILE=$(ls data/pfas_complex_branched_benchmark_*.json 2>/dev/null | tail -1)
 if [ -f "$COMPLEX_FILE" ]; then
-    python analyze_complex.py "$COMPLEX_FILE"
+    python scripts/analyze_complex.py "$COMPLEX_FILE"
     if [ $? -eq 0 ]; then
         echo "✅ Complex branched analysis completed"
     else
@@ -157,10 +136,10 @@ echo ""
 
 # Enhanced Analysis
 echo "🔬 Analyzing enhanced functional groups and OECD..."
-ENHANCED_FILE=$(ls data/pfas_enhanced_benchmark_*.json | tail -1)
-OECD_FILE=$(ls data/pfas_oecd_benchmark_*.json | tail -1)
+ENHANCED_FILE=$(ls data/pfas_enhanced_benchmark_*.json 2>/dev/null | tail -1)
+OECD_FILE=$(ls data/pfas_oecd_benchmark_*.json 2>/dev/null | tail -1)
 if [ -f "$ENHANCED_FILE" ] && [ -f "$OECD_FILE" ]; then
-    python enhanced_analysis.py "$ENHANCED_FILE" "$OECD_FILE"
+    python scripts/enhanced_analysis.py "$ENHANCED_FILE" "$OECD_FILE"
     if [ $? -eq 0 ]; then
         echo "✅ Enhanced analysis completed"
     else
@@ -168,7 +147,35 @@ if [ -f "$ENHANCED_FILE" ] && [ -f "$OECD_FILE" ]; then
     fi
 else
     echo "⚠️  Missing enhanced or OECD benchmark files"
+    [ ! -f "$ENHANCED_FILE" ] && echo "    Missing: enhanced benchmark"
+    [ ! -f "$OECD_FILE" ] && echo "    Missing: OECD benchmark"
 fi
+echo ""
+
+# Organize output files
+echo "📁 Organizing output files..."
+# Keep data files in data/ directory (they're already there)
+# Move HTML files
+mv *.html reports/ 2>/dev/null || true
+mv unified_pfas_benchmark_report_*.html reports/ 2>/dev/null || true
+# Move image files
+mv *.png imgs/ 2>/dev/null || true
+mv *.svg imgs/ 2>/dev/null || true
+# Move any analysis JSON files to data/
+mv *_analysis.json data/ 2>/dev/null || true
+mv *_results.json data/ 2>/dev/null || true
+mv *_benchmark_*.json data/ 2>/dev/null || true
+echo ""
+echo "🎉 ALL BENCHMARKS COMPLETED SUCCESSFULLY!"
+echo ""
+echo "📋 Results Summary:"
+echo "   • Functional Groups: Tests basic PFAS group detection"
+echo "   • OECD Validation: Validates against OECD database"
+echo "   • Timing Performance: Measures execution speed scaling"
+echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
+echo "   • Complex Branched: Tests complex molecular structures"
+echo "   • Highly Branched: Tests functional groups on perfluorinated components"
+echo "   • Telomer Validation: Tests detection of fluorotelomers on PubChem dataset"
 echo ""
 
 # Telomer Validation Report
@@ -187,16 +194,7 @@ echo ""
 
 # Organize analysis results
 echo "📁 Organizing analysis results..."
-mkdir -p review-app/analysis_reports/figures
-# Move analysis JSON files to analysis_reports directory
-mv *_analysis.json review-app/analysis_reports/ 2>/dev/null || true
-# Move figure files
-mv timing_*.png review-app/analysis_reports/figures/ 2>/dev/null || true
-mv timing_*.svg review-app/analysis_reports/figures/ 2>/dev/null || true
-mv complex_*.png review-app/analysis_reports/figures/ 2>/dev/null || true
-mv complex_*.svg review-app/analysis_reports/figures/ 2>/dev/null || true
-mv enhanced_*.png review-app/analysis_reports/figures/ 2>/dev/null || true
-mv enhanced_*.svg review-app/analysis_reports/figures/ 2>/dev/null || true
+
 echo "✅ Analysis results organized"
 echo ""
 
@@ -241,7 +239,7 @@ echo ""
 
 echo "📊 Database Update Complete!"
 echo "   • Database: review-app/database/pfas_benchmark.db"
-echo "   • Analysis reports: review-app/analysis_reports/"
+echo "   • Analysis reports: reports"
 echo ""
 echo "📄 Unified Report: html/$(ls html/unified_pfas_benchmark_report_*.html | tail -1 | xargs basename)"
 echo "🌐 Open the HTML file in your browser to view detailed results"
