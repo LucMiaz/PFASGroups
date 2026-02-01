@@ -62,8 +62,14 @@ See `COMPREHENSIVE_METRICS_SUMMARY.md` for complete documentation.
 ## Key Features
 
 ### Core Capabilities
-- **PFAS Group Identification**: Automated detection of 55 functional groups (28 OECD-defined groups and 27 generic categories)
+- **PFAS Group Identification**: Automated detection of 113 functional groups:
+  - 72 non-telomer groups (OECD-defined and generic categories)
+  - 40 fluorotelomer groups with linker validation (Groups 69-112)
+  - 1 aggregate pattern-matching group (Group 113: Telomers)
+- **Linker Validation**: CH₂-specific validation for 40 fluorotelomer groups to distinguish from direct-attachment analogues
+- **Aggregate Groups**: Pattern-matching groups that collect related PFAS groups via regex (e.g., Group 113 matches all "telomer" groups)
 - **Component Length Analysis**: Quantification of per- and polyfluorinated alkyl components with CF₂ unit counting
+- **Graph Metrics**: Comprehensive structural characterization (branching, eccentricity, diameter, resistance, centrality)
 - **Customizable Definitions**: Easy extension to additional PFAS groups and halogenated chemical classes via JSON configuration
 
 ### Additional Tools
