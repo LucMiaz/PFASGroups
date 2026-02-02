@@ -66,7 +66,8 @@ See `COMPREHENSIVE_METRICS_SUMMARY.md` for complete documentation.
   - 72 non-telomer groups (OECD-defined and generic categories)
   - 40 fluorotelomer groups with linker validation (Groups 69-112)
   - 1 aggregate pattern-matching group (Group 113: Telomers)
-- **Linker Validation**: CH₂-specific validation for 40 fluorotelomer groups to distinguish from direct-attachment analogues
+- **Atom Reference Requirement**: For non-telomer groups, SMARTS patterns must match atoms that are part of or directly connected to the fluorinated component (per/polyfluorinated carbons), respecting the `max_dist_from_CF` constraint
+- **Linker Validation**: CH₂-specific validation for 40 fluorotelomer groups to distinguish from direct-attachment analogues. Telomer groups use `linker_smarts` to allow functional groups separated from perfluoro chains by non-fluorinated linkers
 - **Aggregate Groups**: Pattern-matching groups that collect related PFAS groups via regex (e.g., Group 113 matches all "telomer" groups)
 - **Component Length Analysis**: Quantification of per- and polyfluorinated alkyl components with CF₂ unit counting
 - **Graph Metrics**: Comprehensive structural characterization (branching, eccentricity, diameter, resistance, centrality)

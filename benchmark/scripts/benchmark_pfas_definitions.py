@@ -28,7 +28,9 @@ from typing import List, Dict, Tuple, Optional
 # Add parent directory to path
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
+root_dir = os.path.dirname(parent_dir)  # Go up to the PFASGroups root
 sys.path.append(parent_dir)
+sys.path.append(root_dir)  # Add root to path for PFASgroups imports
 
 
 class PFASDefinitionBenchmark:
@@ -51,7 +53,8 @@ class PFASDefinitionBenchmark:
         # Load PFAS definitions (lazy import to allow export without RDKit/Numpy)
         if load_definitions:
             from PFASgroups.PFASDefinitionModel import PFASDefinition
-            definitions_path = os.path.join(parent_dir, 'PFASgroups', 'data', 'PFAS_definitions_smarts.json')
+            # Use relative path from benchmark/scripts to PFASgroups/data
+            definitions_path = os.path.join(script_dir, '..', '..', 'PFASgroups', 'data', 'PFAS_definitions_smarts.json')
             with open(definitions_path, 'r') as f:
                 definitions_data = json.load(f)
             

@@ -90,6 +90,42 @@ fi
 echo "✅ Telomer Validation completed"
 echo ""
 
+# PFAS Definitions Benchmark
+echo "8️⃣ Running PFAS Definitions Benchmark..."
+python scripts/benchmark_pfas_definitions.py
+if [ $? -ne 0 ]; then
+    echo "❌ PFAS Definitions Benchmark failed"
+    exit 1
+fi
+echo "✅ PFAS Definitions Benchmark completed"
+echo ""
+
+# Analyze PFAS Definitions Results
+echo "9️⃣ Analyzing PFAS Definitions Results..."
+python scripts/analyze_definitions_benchmark.py
+if [ $? -ne 0 ]; then
+    echo "❌ PFAS Definitions Analysis failed"
+    exit 1
+fi
+echo "✅ PFAS Definitions Analysis completed"
+echo ""
+
+# Add Test Metadata to JSON files
+echo "🏷️  Adding test metadata to PFAS groups and definitions..."
+python scripts/add_test_metadata.py
+if [ $? -ne 0 ]; then
+    echo "⚠️  Test metadata addition failed (non-critical)"
+fi
+echo ""
+
+# Generate Telomer Validation LaTeX
+echo "📝 Generating telomer validation LaTeX content..."
+python scripts/generate_telomer_latex.py
+if [ $? -ne 0 ]; then
+    echo "⚠️  Telomer LaTeX generation failed (non-critical)"
+fi
+echo ""
+
 # Generate Unified Report
 echo "📊 Generating Unified HTML Report..."
 python scripts/generate_unified_report.py
@@ -205,6 +241,7 @@ echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 echo "   • Complex Branched: Tests complex molecular structures"
 echo "   • Highly Branched: Tests functional groups on perfluorinated components"
 echo "   • Telomer Validation: Tests detection of fluorotelomers on PubChem dataset"
+echo "   • PFAS Definitions: Benchmarks 5 PFAS definitions (OECD, EU, OPPT, UK, PFASTRUCTv5)"
 echo "   • Comprehensive Statistics: LaTeX tables and benchmark summary (reports/benchmark_summary.json)"
 echo ""
 

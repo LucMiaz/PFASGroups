@@ -60,6 +60,16 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "✅ Telomer Validation completed" -ForegroundColor Green
 Write-Host ""
 
+# PFAS Definitions Benchmark
+Write-Host "8️⃣ Running PFAS Definitions Benchmark..." -ForegroundColor Yellow
+python scripts/benchmark_pfas_definitions.py
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ PFAS Definitions Benchmark failed" -ForegroundColor Red
+    exit 1
+}
+Write-Host "✅ PFAS Definitions Benchmark completed" -ForegroundColor Green
+Write-Host ""
+
 # Generate Unified Report
 Write-Host "📊 Generating Unified HTML Report..." -ForegroundColor Yellow
 python scripts/generate_unified_report.py
@@ -175,6 +185,7 @@ Write-Host "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 Write-Host "   • Complex Branched: Tests complex molecular structures"
 Write-Host "   • Highly Branched: Tests functional groups on perfluorinated components"
 Write-Host "   • Telomer Validation: Tests detection of fluorotelomers on PubChem dataset"
+Write-Host "   • PFAS Definitions: Benchmarks 5 PFAS definitions (OECD, EU, OPPT, UK, PFASTRUCTv5)"
 Write-Host "   • Comprehensive Statistics: LaTeX tables and benchmark summary (reports/benchmark_summary.json)"
 Write-Host ""
 
@@ -215,6 +226,36 @@ if (Test-Path "scripts\generate_latex_tables.py") {
     }
 } else {
     Write-Host "⚠️  generate_latex_tables.py not found" -ForegroundColor Yellow
+}
+Write-Host ""
+
+# Add Test Metadata
+Write-Host "🏷️  Adding test metadata to PFAS groups and definitions..." -ForegroundColor Yellow
+if (Test-Path "scripts\add_test_metadata.py") {
+    python scripts\add_test_metadata.py
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ Test metadata added successfully" -ForegroundColor Green
+    } else {
+        Write-Host "⚠️  Test metadata addition failed (non-critical)" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "⚠️  add_test_metadata.py not found" -ForegroundColor Yellow
+}
+Write-Host ""
+
+# Generate Telomer Validation LaTeX
+Write-Host "📝 Generating telomer validation LaTeX content..." -ForegroundColor Yellow
+if (Test-Path "scripts\generate_telomer_latex.py") {
+    python scripts\generate_telomer_latex.py
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ Telomer LaTeX generated successfully" -ForegroundColor Green
+        Write-Host "   • Content: reports\pfasgroups_telomer_validation.tex" -ForegroundColor Gray
+        Write-Host "   • Summary: reports\pfasgroups_telomer_summary.tex" -ForegroundColor Gray
+    } else {
+        Write-Host "⚠️  Telomer LaTeX generation failed (non-critical)" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "⚠️  generate_telomer_latex.py not found" -ForegroundColor Yellow
 }
 Write-Host ""
 

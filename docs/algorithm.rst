@@ -138,6 +138,27 @@ Provides additional specificity (e.g., specific bond types, aromatic systems)
    matches = mol.GetSubstructMatches(pattern)
    print(f"Found {len(matches)} functional groups")
 
+**Important: Functional Group Atom Reference Requirement**
+
+.. important::
+   For non-telomer PFAS groups, the SMARTS pattern must match an atom that is part of the 
+   fluorinated component or can be validated by the component criteria. This means:
+   
+   - The matched atom should be a carbon that is per- or polyfluorinated, OR
+   - The matched atom must satisfy the ``max_dist_from_CF`` constraint (distance from 
+     the nearest C-F carbon)
+   
+   For example:
+   
+   - ✅ **Valid**: ``[C$(C(=O)O)]`` where the matched ``C`` is directly bonded to ``CF2`` groups
+   - ✅ **Valid**: ``[CH2$(COC(=O))]`` where the ``CH2`` is within ``max_dist_from_CF`` of fluorinated carbons
+   - ❌ **Invalid**: Functional group atoms isolated from the fluorinated chain
+   
+   **Telomer groups** are exceptions: they use ``smartsPath`` with ``linker_smarts`` to 
+   explicitly define a non-fluorinated linker (e.g., ``[CH2X4]``) between the perfluorinated 
+   chain and the functional group. These groups can detect functional groups separated by 
+   methylene spacers.
+
 Step 4a: Fluorinated Path Finding (Non-Cyclic)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

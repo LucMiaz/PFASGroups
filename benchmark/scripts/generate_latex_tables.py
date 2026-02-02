@@ -91,6 +91,7 @@ enhanced_file = get_latest_file('data/pfas_enhanced_benchmark_*.json')
 oecd_file = get_latest_file('data/pfas_oecd_benchmark_*.json')
 complex_file = get_latest_file('data/pfas_complex_branched_benchmark_*.json')
 non_fluor_file = get_latest_file('data/pfas_non_fluorinated_benchmark_*.json')
+definitions_file = get_latest_file('data/pfas_definitions_benchmark_*.json')
 
 if not all([timing_file, enhanced_file, oecd_file, complex_file]):
     print("ERROR: Missing required benchmark files!")
@@ -111,11 +112,19 @@ if non_fluor_file:
 else:
     non_fluor_data = []
 
+if definitions_file:
+    with open(definitions_file, 'r') as f:
+        definitions_data = json.load(f)
+else:
+    definitions_data = None
+
 print(f"  Loaded {len(timing_data)} timing records")
 print(f"  Loaded {len(enhanced_data)} enhanced records")
 print(f"  Loaded {len(oecd_data)} OECD records")
 print(f"  Loaded {len(complex_data)} complex branched records")
 print(f"  Loaded {len(non_fluor_data)} non-fluorinated records")
+if definitions_data:
+    print(f"  Loaded PFAS definitions benchmark data")
 
 # Start generating LaTeX content
 latex_content = []
@@ -167,6 +176,91 @@ for name, count, source, desc in datasets:
 latex_content.append(r"""\bottomrule
 \end{tabular}
 \end{table}
+
+""")
+
+# ============================================================================
+# SECTION 1B: Classification Accuracy (TP/TN/FP/FN)
+# ============================================================================
+if definitions_data:
+    print("\n2b. Generating PFAS definitions classification accuracy table...")
+    
+    latex_content.append(r"""\subsection*{PFAS Definitions Classification Accuracy}
+
+Table~\ref{tab:definitions_accuracy} shows the classification performance of five different PFAS definition systems on a comprehensive benchmark dataset.
+
+\begin{table}[htbp]
+\centering
+\caption{Classification accuracy of PFAS definition systems.}
+\label{tab:definitions_accuracy}
+\begin{tabular}{lrrrrrrr}
+\toprule
+\textbf{Definition} & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} \\
+\midrule
+""")
+    
+    # Extract stats from definitions benchmark
+    for def_name in ['OECD', 'EU_PFAS_Restriction', 'OPPT_2023', 'UK', 'PFASTRUCTv5']:
+        if def_name in definitions_data.get('definitions', {}):
+            def_stats = definitions_data['definitions'][def_name]
+            tp = def_stats.get('true_positives', 0)
+            tn = def_stats.get('true_negatives', 0)
+            fp = def_stats.get('false_positives', 0)
+            fn = def_stats.get('false_negatives', 0)
+            
+            total = tp + tn + fp + fn
+            accuracy = (tp + tn) / total * 100 if total > 0 else 0
+            precision = tp / (tp + fp) * 100 if (tp + fp) > 0 else 0
+            recall = tp / (tp + fn) * 100 if (tp + fn) > 0 else 0
+            
+            display_name = def_name.replace('_', ' ')
+            latex_content.append(f"{display_name} & {tp} & {tn} & {fp} & {fn} & {accuracy:.1f}\\% & {precision:.1f}\\% & {recall:.1f}\\% \\\\\n")
+    
+    latex_content.append(r"""\bottomrule
+\end{tabular}
+\end{table}
+
+""")
+
+# Calculate PFASgroups TP/TN/FP/FN from OECD and non-fluorinated data
+print("\n2c. Generating PFASgroups classification accuracy...")
+
+# Calculate from OECD (should all be PFAS - true positives)
+pg_tp = sum(1 for r in oecd_data if r.get('pfasgroups_result', {}).get('is_pfas', False))
+pg_fn = len(oecd_data) - pg_tp
+
+# Calculate from non-fluorinated (should all be non-PFAS - true negatives)
+pg_tn = sum(1 for r in non_fluor_data if not r.get('pfasgroups_result', {}).get('is_pfas', True))
+pg_fp = len(non_fluor_data) - pg_tn
+
+pg_total = pg_tp + pg_tn + pg_fp + pg_fn
+pg_accuracy = (pg_tp + pg_tn) / pg_total * 100 if pg_total > 0 else 0
+pg_precision = pg_tp / (pg_tp + pg_fp) * 100 if (pg_tp + pg_fp) > 0 else 0
+pg_recall = pg_tp / (pg_tp + pg_fn) * 100 if (pg_tp + pg_fn) > 0 else 0
+pg_specificity = pg_tn / (pg_tn + pg_fp) * 100 if (pg_tn + pg_fp) > 0 else 0
+pg_f1 = 2 * (pg_precision * pg_recall) / (pg_precision + pg_recall) if (pg_precision + pg_recall) > 0 else 0
+
+latex_content.append(r"""\subsection*{PFASgroups Classification Performance}
+
+Table~\ref{tab:pfasgroups_accuracy} shows the classification performance of PFASgroups on known PFAS (OECD database) and non-fluorinated compounds.
+
+\begin{table}[htbp]
+\centering
+\caption{PFASgroups classification accuracy metrics.}
+\label{tab:pfasgroups_accuracy}
+\begin{tabular}{lrrrrrrr}
+\toprule
+\textbf{Method} & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} \\
+\midrule
+""")
+
+latex_content.append(f"PFASgroups & {pg_tp} & {pg_tn} & {pg_fp} & {pg_fn} & {pg_accuracy:.1f}\\% & {pg_precision:.1f}\\% & {pg_recall:.1f}\\% \\\\\n")
+
+latex_content.append(r"""\bottomrule
+\end{tabular}
+\end{table}
+
+Additional metrics: Specificity = """ + f"{pg_specificity:.1f}\\%, " + r"""F1-score = """ + f"{pg_f1:.1f}\\%." + r"""
 
 """)
 
@@ -539,6 +633,10 @@ The benchmark results demonstrate that PFASgroups achieves high accuracy in PFAS
 \begin{itemize}
 \item \textbf{Detection Accuracy:} Overall accuracy of """ + f"{overall_accuracy:.1f}" + r"""\% on the OECD reference database (""" + f"{len(oecd_data):,}" + r""" compounds), with individual group accuracies ranging from """ + f"{min(accuracy for _, stats in sorted_groups for accuracy in [stats['detected']/stats['total']*100] if stats['total'] > 0):.1f}" + r"""\% to """ + f"{max(accuracy for _, stats in sorted_groups for accuracy in [stats['detected']/stats['total']*100] if stats['total'] > 0):.1f}" + r"""\%.
 
+\item \textbf{Classification Performance:} PFASgroups achieves """ + f"{pg_accuracy:.1f}" + r"""\% overall classification accuracy with """ + f"{pg_precision:.1f}" + r"""\% precision, """ + f"{pg_recall:.1f}" + r"""\% recall (sensitivity), """ + f"{pg_specificity:.1f}" + r"""\% specificity, and F1-score of """ + f"{pg_f1:.1f}" + r"""\% across """ + f"{pg_total:,}" + r""" test cases (""" + f"{pg_tp}" + r""" TP, """ + f"{pg_tn}" + r""" TN, """ + f"{pg_fp}" + r""" FP, """ + f"{pg_fn}" + r""" FN).""" + (r"""
+
+\item \textbf{PFAS Definitions Benchmark:} Comparison of five PFAS definition systems shows accuracy ranging from """ + f"{min(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}" + r"""\% to """ + f"{max(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}" + r"""\% across OECD, EU, OPPT, UK, and PFASTRUCTv5 definitions.""" if definitions_data else "") + r"""
+
 \item \textbf{Performance Scaling:} Execution time follows an exponential model ($R^2 = """ + f"{r_squared:.4f}" + r"""$) with mean processing time of """ + f"{pg_stats['mean']:.2f}" + r""" ms per molecule and median of """ + f"{pg_stats['median']:.2f}" + r""" ms.
 
 \item \textbf{Comparative Performance:} """ + (f"PFASgroups demonstrates {speedup:.2f}$\\times$ speedup compared to PFAS-Atlas" if speedup > 1 else f"Performance comparable to PFAS-Atlas (ratio: {speedup:.2f}$\\times$)") + r""" while providing detailed functional group identification.
@@ -568,7 +666,7 @@ summary_content = [
     r"""%% PFASgroups Performance Summary for Abstract/Introduction
 %% Generated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + r"""
 
-The PFASgroups algorithm was validated on """ + f"{len(oecd_data):,}" + r""" reference compounds from the OECD database, achieving """ + f"{overall_accuracy:.1f}" + r"""\% accuracy in PFAS detection and classification. Performance analysis on """ + f"{len(timing_data):,}" + r""" molecules of varying complexity showed execution times ranging from """ + f"{pg_stats['min']:.2f}" + r""" to """ + f"{pg_stats['max']:.2f}" + r""" ms (mean: """ + f"{pg_stats['mean']:.2f}" + r""" ms, median: """ + f"{pg_stats['median']:.2f}" + r""" ms). The algorithm successfully identified all 55 functional groups in """ + f"{len(enhanced_data):,}" + r""" systematically generated test molecules and demonstrated robust handling of complex branched structures. """,
+The PFASgroups algorithm was validated on """ + f"{len(oecd_data):,}" + r""" reference compounds from the OECD database, achieving """ + f"{overall_accuracy:.1f}" + r"""\% accuracy in PFAS detection and classification with """ + f"{pg_precision:.1f}" + r"""\% precision and """ + f"{pg_recall:.1f}" + r"""\% recall. """ + (f"Benchmarking of five PFAS definition systems (OECD, EU, OPPT, UK, PFASTRUCTv5) showed accuracy ranging from {min(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}\\% to {max(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}\\%. " if definitions_data else "") + r"""Performance analysis on """ + f"{len(timing_data):,}" + r""" molecules of varying complexity showed execution times ranging from """ + f"{pg_stats['min']:.2f}" + r""" to """ + f"{pg_stats['max']:.2f}" + r""" ms (mean: """ + f"{pg_stats['mean']:.2f}" + r""" ms, median: """ + f"{pg_stats['median']:.2f}" + r""" ms). The algorithm successfully identified all 55 functional groups in """ + f"{len(enhanced_data):,}" + r""" systematically generated test molecules and demonstrated robust handling of complex branched structures. """,
     (f"Compared to PFAS-Atlas, PFASgroups showed {speedup:.2f}$\\times$ speedup" if speedup > 1 else f"performance comparable to PFAS-Atlas") + r""" while providing detailed functional group identification and chain length quantification.
 
 """

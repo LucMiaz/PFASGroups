@@ -330,9 +330,19 @@ class DefinitionBenchmarkAnalyzer:
         perf_data = self.results['benchmarks']['performance']
         measurements = perf_data['measurements']
         
+        # Check if we have performance data
+        if not measurements:
+            print("   No performance data available")
+            return
+        
         # Extract data with type conversion to handle string data from JSON
         sizes = [int(m['num_atoms']) for m in measurements]
         times_ms = [float(m['execution_time']) * 1000 for m in measurements]
+        
+        # Additional safety check
+        if not sizes or not times_ms:
+            print("   No valid performance measurements found")
+            return
         
         # Create scatter plot with trend
         fig = go.Figure()

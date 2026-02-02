@@ -1522,12 +1522,12 @@
         "alias": "Thia keto propanoic acid",
         "base_functional_groups": [],
         "main_group": "carboxylic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "smartsPath": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {"gte":{"O":5,"S":1}},
         "smarts": {
-            "[C$(C(=O)SC(=O)C([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
+            "[C$(CC(=O)SC(=O)C([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
         }
     },
     {
@@ -2048,7 +2048,7 @@
         "max_dist_from_CF": 0,
         "constraints": {"gte":{"O":4,"S":1}},
         "smarts": {
-            "[CH2$(CS(=O)(=O)[CH2][CH2]C(=O)[OH1,Oh1,O-])]": 1
+            "[C$(CS(=O)(=O)[CH2][CH2]C(=O)[OH1,Oh1,O-])]": 1
         }
     },
     {
@@ -2062,7 +2062,7 @@
         "max_dist_from_CF": 16,
         "constraints": {"gte":{"O":5,"S":2,"N":1}},
         "smarts": {
-            "[CH2$(CS(=O)[CH2][CH2]C(=O)[NH][CH2]([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]": 1
+            "[CH2$(CS(=O)[CH2][CH2]C(=O)[NH]C([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]": 1
         }
     },
     {
@@ -2076,7 +2076,7 @@
         "max_dist_from_CF": 0,
         "constraints": {"gte":{"O":5,"S":2,"N":1}},
         "smarts": {
-            "[CH2$(CS(=O)[CH2][CH2]C(=O)[NH][CH2]([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]": 1
+            "[C$(CS(=O)[CH2][CH2]C(=O)[NH]C([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]": 1
         }
     },
     {
