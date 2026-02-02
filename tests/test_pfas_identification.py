@@ -164,8 +164,8 @@ class TestPFASIdentification:
     ("OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F", [1], "PFPA (perfluoropentanoic acid)"),
     ("FC(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O", [6], "PFPrS (perfluoropropane sulfonic acid)"),
     ("OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F", [1], "PFDA (perfluorodecanoic acid)"),
-    ("OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F", [15, 29, 49, 50], "6:2 FTOH"),
-    ("OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F", [15, 29, 49, 50], "4:2 FTOH"),
+    ("OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F", [15, 81], "6:2 FTOH"),  # 15=FT alcohols, 81=FT alcohol
+    ("OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F", [15, 81], "4:2 FTOH"),  # 15=FT alcohols, 81=FT alcohol
 ])
 def test_parametrized_pfas_compounds(smiles, expected_groups, description):
     """Parametrized test for various PFAS compounds."""

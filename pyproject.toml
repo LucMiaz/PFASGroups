@@ -69,6 +69,18 @@ packages = ["PFASgroups"]
 [tool.setuptools.package-data]
 PFASgroups = ["data/*.json", "data/*.txt"]
 
+# Pytest configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "groups: Tests for PFAS group identification",
+    "definitions: Tests for PFAS definition validation",
+    "smoke: Quick smoke tests for basic functionality",
+]
+
 # Custom metadata
 [tool.pfasgroups]
 acknowledgements = "This work was supported by the European Union's Horizon 2020 research and innovation programme under grant agreement No 101036756 (ZeroPM - Work Package 2). Developed at the Department of Environmental Science, Stockholm University, Sweden."

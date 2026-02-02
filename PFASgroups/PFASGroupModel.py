@@ -543,4 +543,122 @@ class PFASGroup():
                 return None
             return group_matches
         return None
+    
+    def test(self, test_data=None):
+        """Test this PFAS group against test molecules from metadata.
         
+        Validates that the group correctly identifies positive examples and
+        rejects negative examples based on test metadata in PFAS_groups_smarts.json.
+        
+        Parameters
+        ----------
+        test_data : dict, optional
+            Test metadata dictionary. If None, will be loaded from the group's
+            entry in PFAS_groups_smarts.json. Expected structure:
+            {
+                'category': 'OECD'|'generic'|'telomer',
+                'examples': [smiles_string, ...],
+                'generate': {'smiles_pattern': str, 'mode': str}  # for telomers/generic
+            }
+        
+        Returns
+        -------
+        dict
+            Test results with structure:
+            {
+                'passed': bool,
+                'total_tests': int,
+                'failures': [{'smiles': str, 'expected': bool, 'got': bool, 'error': str}, ...],
+                'category': str
+            }
+        
+        Notes
+        -----
+        - For OECD groups: Tests against curated positive examples
+        - For telomer groups: Tests generated molecules based on smiles patterns
+        - For generic groups: Tests both positive and negative examples
+        - Returns detailed failure information for debugging
+        """
+        from rdkit import Chem
+        from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+        from .core import n_from_formula
+        from .ComponentsSolverModel import ComponentsSolver
+        
+        # Load test data if not provided
+        if test_data is None:
+            import json
+            from pathlib import Path
+            groups_file = Path(__file__).parent / 'data' / 'PFAS_groups_smarts.json'
+            with open(groups_file, 'r') as f:
+                all_groups = json.load(f)
+            
+            # Find this group's test data
+            test_data = None
+            for group_data in all_groups:
+                if group_data['id'] == self.id:
+                    test_data = group_data.get('test', {})
+                    break
+            
+            if test_data is None or not test_data:
+                return {
+                    'passed': None,
+                    'total_tests': 0,
+                    'failures': [],
+                    'category': 'unknown',
+                    'error': f'No test data found for group {self.id}'
+                }
+        
+        results = {
+            'passed': True,
+            'total_tests': 0,
+            'failures': [],
+            'category': test_data.get('category', 'unknown')
+        }
+        
+        # Test positive examples
+        examples = test_data.get('examples', [])
+        for smiles in examples:
+            results['total_tests'] += 1
+            try:
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    results['passed'] = False
+                    results['failures'].append({
+                        'smiles': smiles,
+                        'expected': True,
+                        'got': None,
+                        'error': 'Invalid SMILES'
+                    })
+                    continue
+                
+                # Add hydrogens as done in parser
+                mol = Chem.AddHs(mol)
+                
+                # Create ComponentsSolver for this molecule
+                with ComponentsSolver(mol) as component_solver:
+                    # Get formula dict
+                    formula = CalcMolFormula(mol)
+                    fd = n_from_formula(formula)
+                    
+                    # Use find_components to check if group matches
+                    matches = self.find_components(mol, fd, component_solver)
+                    is_match = matches is not None and len(matches) > 0
+                
+                if not is_match:
+                    results['passed'] = False
+                    results['failures'].append({
+                        'smiles': smiles,
+                        'expected': True,
+                        'got': False,
+                        'error': 'Group should match but did not'
+                    })
+            except Exception as e:
+                results['passed'] = False
+                results['failures'].append({
+                    'smiles': smiles,
+                    'expected': True,
+                    'got': None,
+                    'error': f'Exception: {str(e)}'
+                })
+        
+        return results

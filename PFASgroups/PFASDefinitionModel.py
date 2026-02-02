@@ -208,4 +208,203 @@ class PFASDefinition:
         
         ratio = f_count / total_atoms
         return ratio >= self.fluorineRatio
-
+    
+    def test(self, test_data=None):
+        """Test this PFAS definition against test molecules from metadata.
+        
+        Validates that the definition correctly classifies true positives, true negatives,
+        false positives, and false negatives based on test metadata in 
+        PFAS_definitions_smarts.json.
+        
+        Parameters
+        ----------
+        test_data : dict, optional
+            Test metadata dictionary. If None, will be loaded from the definition's
+            entry in PFAS_definitions_smarts.json. Expected structure:
+            {
+                'category': 'definition',
+                'examples': {
+                    'true_positives': [{'smiles': str, 'category': str}, ...],
+                    'true_negatives': [{'smiles': str, 'category': str}, ...],
+                    'false_positives': [{'smiles': str, 'category': str}, ...],
+                    'false_negatives': [{'smiles': str, 'category': str}, ...]
+                }
+            }
+        
+        Returns
+        -------
+        dict
+            Test results with structure:
+            {
+                'passed': bool,
+                'total_tests': int,
+                'failures': [{'smiles': str, 'expected': bool, 'got': bool, 'type': str, 'error': str}, ...],
+                'category': str,
+                'stats': {
+                    'true_positives': int,
+                    'true_negatives': int,
+                    'false_positives': int,
+                    'false_negatives': int
+                }
+            }
+        
+        Notes
+        -----
+        - Tests against benchmark test compounds with known PFAS/non-PFAS labels
+        - Validates both SMARTS patterns and fluorine ratio criteria
+        - Returns detailed failure information for debugging
+        """
+        from rdkit import Chem
+        
+        # Load test data if not provided
+        if test_data is None:
+            import json
+            from pathlib import Path
+            definitions_file = Path(__file__).parent / 'data' / 'PFAS_definitions_smarts.json'
+            with open(definitions_file, 'r') as f:
+                all_definitions = json.load(f)
+            
+            # Find this definition's test data
+            test_data = None
+            for def_data in all_definitions:
+                if def_data['id'] == self.id:
+                    test_data = def_data.get('test', {})
+                    break
+            
+            if test_data is None or not test_data:
+                return {
+                    'passed': None,
+                    'total_tests': 0,
+                    'failures': [],
+                    'category': 'unknown',
+                    'error': f'No test data found for definition {self.id}'
+                }
+        
+        results = {
+            'passed': True,
+            'total_tests': 0,
+            'failures': [],
+            'category': test_data.get('category', 'definition'),
+            'stats': {
+                'true_positives': 0,
+                'true_negatives': 0,
+                'false_positives': 0,
+                'false_negatives': 0
+            }
+        }
+        
+        examples = test_data.get('examples', {})
+        
+        # Test positives (should match)
+        for smiles in examples.get('positives', []):
+            results['total_tests'] += 1
+            try:
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    results['passed'] = False
+                    results['failures'].append({
+                        'smiles': smiles,
+                        'expected': True,
+                        'got': None,
+                        'type': 'true_positive',
+                        'error': 'Invalid SMILES'
+                    })
+                    continue
+                
+                # Check if definition applies
+                applies = self.applies_to_molecule(mol)
+                if applies:
+                    results['stats']['true_positives'] += 1
+                else:
+                    results['passed'] = False
+                    results['stats']['false_negatives'] += 1
+                    results['failures'].append({
+                        'smiles': smiles,
+                        'expected': True,
+                        'got': False,
+                        'type': 'true_positive',
+                        'error': 'Definition should match but did not'
+                    })
+            except Exception as e:
+                results['passed'] = False
+                results['failures'].append({
+                    'smiles': smiles,
+                    'expected': True,
+                    'got': None,
+                    'type': 'positive',
+                    'error': f'Exception: {str(e)}'
+                })
+        
+        # Test negatives (should NOT match)
+        for smiles in examples.get('negatives', []):
+            results['total_tests'] += 1
+            try:
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    results['passed'] = False
+                    results['failures'].append({
+                        'smiles': smiles,
+                        'expected': False,
+                        'got': None,
+                        'type': 'true_negative',
+                        'error': 'Invalid SMILES'
+                    })
+                    continue
+                
+                # Check if definition applies
+                applies = self.applies_to_molecule(mol)
+                if not applies:
+                    results['stats']['true_negatives'] += 1
+                else:
+                    results['passed'] = False
+                    results['stats']['false_positives'] += 1
+                    results['failures'].append({
+                        'smiles': smiles,
+                        'expected': False,
+                        'got': True,
+                        'type': 'true_negative',
+                        'error': 'Definition should not match but did'
+                    })
+            except Exception as e:
+                results['passed'] = False
+                results['failures'].append({
+                    'smiles': smiles,
+                    'expected': False,
+                    'got': None,
+                    'type': 'negative',
+                    'error': f'Exception: {str(e)}'
+                })
+        
+        # Test false positives (known to incorrectly match - document these)
+        for item in examples.get('false_positives', []):
+            smiles = item if isinstance(item, str) else item.get('smiles', '')
+            results['total_tests'] += 1
+            try:
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    continue
+                
+                # These are expected to match (false positives)
+                applies = self.applies_to_molecule(mol)
+                if applies:
+                    results['stats']['false_positives'] += 1
+            except Exception:
+                pass
+        
+        # Test false negatives (known to incorrectly NOT match - document these)
+        for item in examples.get('false_negatives', []):
+            smiles = item if isinstance(item, str) else item.get('smiles', '')
+            results['total_tests'] += 1
+            try:
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    continue
+                
+                # These are expected to NOT match (false negatives)
+                applies = self.applies_to_molecule(mol)
+                if not applies:
+                    results['stats']['false_negatives'] += 1
+            except Exception:
+                pass
+        
+        return results

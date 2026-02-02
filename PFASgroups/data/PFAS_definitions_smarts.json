@@ -1,54 +1,166 @@
 [
-    {
-        "id": 1,
-        "name": "OECD Definition",
-        "smarts": [
-            "[#6X4!$([#6H1])!$([#6][#17,#35,#53])](F)F"
+  {
+    "id": 1,
+    "name": "OECD Definition",
+    "smarts": [
+      "[#6X4!$([#6H1])!$([#6][#17,#35,#53])](F)F"
+    ],
+    "fluorineRatio": null,
+    "description": "At least one CF₃ or CF₂ group (not bonded to H, Cl, Br, I)",
+    "test": {
+      "category": "definition",
+      "examples": {
+        "positives": [
+          "C(F)(F)(F)C(F)(F)C(F)(F)F",
+          "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+          "C(F)(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "S(=O)(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "C(F)(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
+          "C(C(F)(F)F)(F)C(F)(F)C(F)(F)F"
         ],
-        "fluorineRatio": null,
-        "description": "At least one CF₃ or CF₂ group (not bonded to H, Cl, Br, I)"
-    },
-    {
-        "id": 2,
-        "name": "EU PFAS Restriction",
-        "smarts": [
-            "[#6X4!$([#6][#8H1,#8$([#8][#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])!$([#6][#7H2,#7H1$([#7][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#7$([#7]([#6H3,#6H2X4,a,#6X3$([#6]=[#8])])[#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])!$([#6H1])!$([#6][#17,#35,#53])](F)(F)F",
-            "[#6X4!$([#6](F)(F)(F))!$([#6]([#8H1,#8$([#8][#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])[#6H3,#6H2X4,#6X3$([#6]=[#8]),a,#8H1,#8$([#8][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#16$([#16H1,#16$([#16][#6H3,#6H2X4,a,#6X3$([#6]=[#8])])]),#7$([#7H2,#7H1$([#7#6H3,#7#6H2X4,#7a,#6X3$([#6]=[#8])]),#7$([#7]([#6H3,#6H2X4,a,#6X3$([#6]=[#8])])[#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])])!$([#6]([#7H2,#7H1$([#7][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#7$([#7]([#6H3,#6H2X4,a,#6X3$([#6]=[#8])])[#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])[#6H3,#6H2X4,#6X3$([#6]=[#8]),a,#8H1,#8$([#8][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#16$([#16H1,#16$([#16][#6H3,#6H2X4,a,#6X3$([#6]=[#8])])]),#7$([#7H2,#7H1$([#7][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#7$([#7]([#6H3,#6H2X4,a,#6X3$([#6]=[#8])])[#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])])!$([#6H1])!$([#6][#17,#35,#53])](F)F"
-        ],
-        "fluorineRatio": null,
-        "description": "Similar to OECD but with more exclusion criteria"
-    },
-    {
-        "id": 3,
-        "name": "OPPT 2023",
-        "smarts": [
-            "[#6H0X4](F)(F)[#6H0X4](F)",
-            "[#6](F)(F)([F,#8,#6H0X4])[#8][#6](F)(F)[F,#8,#6H0X4]",
-            "[#6](F)(F)(F)[#6]([#6](F)(F)F)([F,#6H0X4])[F,#6H0X4]"
-        ],
-        "fluorineRatio": null,
-        "description": "Three inclusion criteria."
-    },
-    {
-        "id": 4,
-        "name": "UK PFAS Definition",
-        "smarts": [
-            "F[#6H0X4!$([#6][#17,#35,#53])](F)F",
-            "F[#6](F)[#6X4](F)(F)"
-        ],
-        "fluorineRatio": null,
-        "description": "At least one CF₃ or CF₂ group (not bonded to Cl, Br, I)"
-    },
-    {
-        "id": 5,
-        "name": "PFASTRUCTv5",
-        "smarts": [
-            "F[#6](F)(F)[#6](F)",
-            "F[#6](F)[#6](F)(F)",
-            "F[#6](F)(F)[#6]~[#6](F)(F)",
-            "[#6](F)(F)[#5,#7,#8,#14,#15,#16][#6](F)(F)"
-        ],
-        "fluorineRatio": 0.3,
-        "description": "Custom structural patterns or F ratio ≥ 0.3"
+        "negatives": [
+          "CCCCCC",
+          "C(F)CC",
+          "FC(F)C",
+          "C(F)(F)(Cl)C",
+          "CC(F)C",
+          "C1=CC=CC=C1"
+        ]
+      }
     }
+  },
+  {
+    "id": 2,
+    "name": "EU PFAS Restriction",
+    "smarts": [
+      "[#6X4!$([#6][#8H1,#8$([#8][#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])!$([#6][#7H2,#7H1$([#7][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#7$([#7]([#6H3,#6H2X4,a,#6X3$([#6]=[#8])])[#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])!$([#6H1])!$([#6][#17,#35,#53])](F)(F)F",
+      "[#6X4!$([#6](F)(F)(F))!$([#6]([#8H1,#8$([#8][#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])[#6H3,#6H2X4,#6X3$([#6]=[#8]),a,#8H1,#8$([#8][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#16$([#16H1,#16$([#16][#6H3,#6H2X4,a,#6X3$([#6]=[#8])])]),#7$([#7H2,#7H1$([#7#6H3,#7#6H2X4,#7a,#6X3$([#6]=[#8])]),#7$([#7]([#6H3,#6H2X4,a,#6X3$([#6]=[#8])])[#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])])!$([#6]([#7H2,#7H1$([#7][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#7$([#7]([#6H3,#6H2X4,a,#6X3$([#6]=[#8])])[#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])[#6H3,#6H2X4,#6X3$([#6]=[#8]),a,#8H1,#8$([#8][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#16$([#16H1,#16$([#16][#6H3,#6H2X4,a,#6X3$([#6]=[#8])])]),#7$([#7H2,#7H1$([#7][#6H3,#6H2X4,a,#6X3$([#6]=[#8])]),#7$([#7]([#6H3,#6H2X4,a,#6X3$([#6]=[#8])])[#6H3,#6H2X4,a,#6X3$([#6]=[#8])])])])!$([#6H1])!$([#6][#17,#35,#53])](F)F"
+    ],
+    "fluorineRatio": null,
+    "description": "Similar to OECD but with more exclusion criteria",
+    "test": {
+      "category": "definition",
+      "examples": {
+        "positives": [
+          "C(F)(F)(F)C(F)(F)C(F)(F)F",
+          "C(F)(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "S(=O)(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "C(F)(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
+          "N(CCCC)C(F)(F)C(F)(F)C(F)(F)F"
+        ],
+        "negatives": [
+          "CCCCCC",
+          "FC(F)C",
+          "C(F)(F)(Cl)C",
+          "CC(F)C",
+          "C1=CC=CC=C1",
+          "FCCC"
+        ]
+      }
+    }
+  },
+  {
+    "id": 3,
+    "name": "OPPT 2023",
+    "smarts": [
+      "[#6H0X4](F)(F)[#6H0X4](F)",
+      "[#6](F)(F)([F,#8,#6H0X4])[#8][#6](F)(F)[F,#8,#6H0X4]",
+      "[#6](F)(F)(F)[#6]([#6](F)(F)F)([F,#6H0X4])[F,#6H0X4]"
+    ],
+    "fluorineRatio": null,
+    "description": "Three inclusion criteria.",
+    "test": {
+      "category": "definition",
+      "examples": {
+        "positives": [
+          "C(F)(F)(F)C(F)(F)C(F)(F)F",
+          "C(F)(F)C(F)(F)C(F)(F)C",
+          "C(F)(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
+          "C(F)(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "C(F)(F)(F)C(OC)(F)C(F)(F)F"
+        ],
+        "negatives": [
+          "CCCCCC",
+          "C(F)CCC",
+          "CC(F)(F)C",
+          "FC(F)C(F)F",
+          "C1=CC=CC=C1"
+        ]
+      }
+    }
+  },
+  {
+    "id": 4,
+    "name": "UK PFAS Definition",
+    "smarts": [
+      "F[#6H0X4!$([#6][#17,#35,#53])](F)F",
+      "F[#6](F)[#6X4](F)(F)"
+    ],
+    "fluorineRatio": null,
+    "description": "At least one CF₃ or CF₂ group (not bonded to Cl, Br, I)",
+    "test": {
+      "category": "definition",
+      "examples": {
+        "positives": [
+          "C(F)(F)(F)C(F)(F)C(F)(F)F",
+          "C(F)(F)(F)C(F)(F)C",
+          "C(F)(F)C(F)(F)C",
+          "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+          "S(=O)(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "C(F)(F)(F)C(F)(F)OC(F)(F)C(F)(F)F"
+        ],
+        "negatives": [
+          "CCCCCC",
+          "C(F)CC",
+          "C(F)(F)(Cl)C",
+          "C(F)(F)(Br)C",
+          "CC(F)C",
+          "C1=CC=CC=C1"
+        ]
+      }
+    }
+  },
+  {
+    "id": 5,
+    "name": "PFASTRUCTv5",
+    "smarts": [
+      "F[#6](F)(F)[#6](F)",
+      "F[#6](F)[#6](F)(F)",
+      "F[#6](F)(F)[#6]~[#6](F)(F)",
+      "[#6](F)(F)[#5,#7,#8,#14,#15,#16][#6](F)(F)"
+    ],
+    "fluorineRatio": 0.3,
+    "description": "Custom structural patterns or F ratio ≥ 0.3",
+    "test": {
+      "category": "definition",
+      "examples": {
+        "positives": [
+          "C(=O)(C(F)(F)Cl)C(F)(F)Cl",
+          "COC(C(OC(C(=O)C(F)(F)F)(F)F)F)(F)F",
+          "C(C(=O)CC(C(=O)C(F)(F)F)(F)F)C(C(=O)C(F)(F)F)(F)F",
+          "C(C(CC(F)(F)F)(F)F)C(CC(F)(F)F)(F)F",
+          "C(=C(F)F)(OC(OC(=C(F)F)F)(F)F)F",
+          "C(=C(F)F)(C(C(=C(F)F)F)(F)F)F",
+          "C1(=C(C(=C(C(=C1F)F)F)F)F)C2=C(C(C(=C(C2(F)F)F)F)(F)F)F",
+          "C(C(=O)F)(F)F",
+          "C(=C(C(F)(F)Cl)F)(C(F)(F)Cl)F",
+          "C(C(C(C(F)F)F)F)F",
+          "COC(CC(=C(F)F)C(F)(F)F)SC1=CC=CC=C1",
+          "C1=CC(=CC(=C1)Cl)NOC(C(C(=O)C(F)(F)F)F)(F)F",
+          "CC(C)(CS(=O)(=O)O)NC(=O)CCSCCC(C(C(C(F)(F)F)(F)F)(F)F)(F)F",
+          "CN(C)CCCN(CCC(=O)O)S(=O)(=O)C(C(C(C(F)(F)F)(F)F)(F)F)(F)F",
+          "C1=CC(=C(C=C1N)Cl)OC(C(OC(F)(F)F)F)(F)F",
+          "C1=CC=C2C(=C1)C(OC(O2)(C(F)(F)F)F)(F)F",
+          "CCCOC(=O)C(=C(F)F)C(F)(F)F",
+          "C[N+](C)(CCCNS(=O)(=O)CCC(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)CC(=O)[O-]"
+        ],
+        "negatives": [
+          "CCCCC(CC(C(F)(F)Br)(F)Cl)Br",
+          "C(C(OC(Cl)(Cl)Cl)(F)F)(F)Cl",
+          "C1=COC(=C1)C=C(S(=O)(=O)C(F)(F)F)S(=O)(=O)C(F)(F)F",
+          "COC(=C(F)Cl)F"
+        ]
+      }
+    }
+  }
 ]

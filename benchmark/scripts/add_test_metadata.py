@@ -32,28 +32,94 @@ ENHANCED_BENCHMARK = script_dir / 'enhanced_pfas_benchmark.py'
 
 def load_smiles_map():
     """Extract smiles_map from enhanced_pfas_benchmark.py"""
-    smiles_map = {}
-    
-    with open(ENHANCED_BENCHMARK, 'r') as f:
-        content = f.read()
-        
-    # Find the smiles_map dictionary definition
-    import re
-    pattern = r'smiles_map\s*=\s*\{(.*?)\}'
-    match = re.search(pattern, content, re.DOTALL)
-    
-    if match:
-        # Parse the dictionary manually
-        map_content = match.group(1)
-        # Extract each group entry
-        group_pattern = r'(\d+):\s*\{[^}]*\'smiles\':\s*[\'"]([^\'"]+)[\'"][^}]*\'mode\':\s*[\'"]([^\'"]+)[\'"][^}]*\}'
-        
-        for group_match in re.finditer(group_pattern, map_content):
-            group_id = int(group_match.group(1))
-            smiles = group_match.group(2)
-            mode = group_match.group(3)
-            smiles_map[group_id] = {'smiles': smiles, 'mode': mode}
-    
+    smiles_map = {
+        # Keep existing mappings for groups 29-59
+        29: {'smiles': 'O[H]', 'mode': 'attach'},
+        30: {'smiles': 'C(=O)', 'mode': 'insert'},
+        31: {'smiles': 'O', 'mode': 'insert'},
+        32: {'smiles': 'C(=O)OC', 'mode': 'insert'},
+        33: {'smiles': 'C(=O)O', 'mode': 'attach'},
+        34: {'smiles': 'C(=O)N', 'mode': 'insert'},
+        35: {'smiles': 'C(=O)Cl', 'mode': 'attach'},
+        36: {'smiles': 'S(=O)(=O)O', 'mode': 'attach'},
+        37: {'smiles': 'SO[H]', 'mode': 'attach'},
+        38: {'smiles': 'S(=O)O[H]', 'mode': 'attach'},
+        39: {'smiles': 'OS(=O)(=O)O', 'mode': 'attach'},
+        40: {'smiles': 'P(=O)(O)O', 'mode': 'attach'},
+        41: {'smiles': 'P(=O)O', 'mode': 'attach'},
+        42: {'smiles': 'Cl', 'mode': 'attach'},
+        43: {'smiles': 'Br', 'mode': 'attach'},
+        44: {'smiles': 'I', 'mode': 'attach'},
+        45: {'smiles': 'S(=O)(=O)N', 'mode': 'insert'},
+        46: {'smiles': 'c1ncc[nH]1', 'mode': 'attach'},
+        47: {'smiles': 'c1ncccc1', 'mode': 'attach'},
+        48: {'smiles': 'c1ccc2OC(F)(F)Oc2c1', 'mode': 'attach'},
+        49: {'smiles': 'N', 'mode': 'insert'},
+        52: {'smiles': 'C(F)=C(F)(F)F', 'mode': 'attach'},
+        53: {'smiles': 'C#C', 'mode': 'insert'},
+        54: {'smiles': 'c1ccccc1', 'mode': 'attach'},
+        55: {'smiles': 'C1(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)(F)', 'mode': 'attach'},
+        56: {'smiles': 'C1(F)C(F)(F)(F)C(H)C(F)C(F)(F)C1(F)', 'mode': 'attach'},
+        57: {'smiles': 'c1c(F)c(F)c(F)c(F)c1F', 'mode': 'attach'},
+        58: {'smiles': 'c1c(F)c(F)ccc1F', 'mode': 'attach'},
+        59: {'smiles': 'OO', 'mode': 'insert'},#peroxyde
+        60: {'smiles': 'C(=O)OOC(=O)', 'mode': 'insert'},# Benzoyl peroxides
+        61: {'smiles': '[SiH3]', 'mode': 'attach'},  # Silane - needs SiH3 not Si(C)(C)C
+        62: {'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach'},  # Trichlorosilane
+        63: {'smiles': 'COC(=O)C=C', 'mode': 'attach'},  # Acrylate - needs CH2 anchor
+        64: {'smiles': 'COC(=O)C(=C)C', 'mode': 'attach'},  # Methacrylate - needs CH2 anchor
+        65: {'smiles': 'N(C)(C)CC(=O)O', 'mode': 'attach'},  # Betaine
+        66: {'smiles': 'SN#C', 'mode': 'attach'},  # Thiocyanic acid
+        67: {'smiles': 'C(=O)SC(=O)C(O)C(=O)O', 'mode': 'attach'},  # Thia keto propanoic acid - max_dist_from_CF:0, attaches directly
+        68: {'smiles': 'OC1C(O)C(OC(C1O)C(=O)O)O', 'mode': 'attach'},  # Glucuronate
+        # Telomer groups 69+ - use simplified patterns for generation
+        69: {'smiles': 'CCCC[Si]([H])([H])[H]', 'mode': 'attach'},  # FT silane
+        70: {'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach'},  # FT trichlorosilane
+        71: {'smiles': 'CCCCI', 'mode': 'attach'},  # FT iodide
+        72: {'smiles': 'CCCCC(=O)[H]', 'mode': 'attach'},  # FT aldehyde
+        73: {'smiles': 'CCCCC(=O)O', 'mode': 'attach'},  # FT carboxylic acids
+        74: {'smiles': 'CCCCOCCCCO', 'mode': 'attach'},  # FT ethoxylates
+        75: {'smiles': 'CCCCS(=O)(=O)O', 'mode': 'attach'},  # FT sulfonic acid
+        76: {'smiles': 'CCCCOP(=O)(O)O', 'mode': 'attach'},  # FT monophosphate
+        77: {'smiles': 'CCCCOP(=O)(O)OP(=O)(O)O', 'mode': 'attach'},  # FT diphosphate
+        78: {'smiles': 'CCCCOP(=O)(O)OP(=O)(O)OP(=O)(O)O', 'mode': 'attach'},  # FT triphosphate
+        79: {'smiles': 'CCCCOC(=O)C=C', 'mode': 'attach'},  # FT acrylate
+        80: {'smiles': 'CCCCOC(=O)C(=C)C', 'mode': 'attach'},  # FT methacrylate
+        81: {'smiles': 'CCCCO', 'mode': 'attach'},  # FT alcohol
+        82: {'smiles': 'CCCCS', 'mode': 'insert'},  # FT sulfure
+        83: {'smiles': 'CCCCS(=O)(=O)N', 'mode': 'insert'},  # FT sulfonamide
+        84: {'smiles': 'CCCC[Si](OC)(OC)OC', 'mode': 'attach'},  # FT silyl
+        85: {'smiles': 'CCCCN(C)(C)CC(=O)O', 'mode': 'attach'},  # FT betaine
+        86: {'smiles': 'CCCCOC(=O)C', 'mode': 'attach'},  # FT ester
+        87: {'smiles': 'CCCCSN#C', 'mode': 'attach'},  # FT thiocyanic acid
+        88: {'smiles': 'CCCCC=C', 'mode': 'insert'},  # FT alkene
+        89: {'smiles': 'CCCCN(C)(C)C', 'mode': 'attach'},  # FT trimethylamine
+        90: {'smiles': 'CCCCS(=O)O', 'mode': 'attach'},  # FT sulfinic acid
+        91: {'smiles': 'CCCCSO', 'mode': 'attach'},  # FT sulfenic acid
+        92: {'smiles': 'OS(=O)(=O)O', 'mode': 'attach'},  # FT sulfuric acid
+        93: {'smiles': 'CCCCC', 'mode': 'attach'},  # FT methyl
+        94: {'smiles': 'CCCCOC1C(O)C(OC(C1O)C(=O)O)O', 'mode': 'attach'},  # FT glucuronic acid
+        95: {'smiles': 'CCCCC(O)S(=O)(=O)O', 'mode': 'attach'},  # FT formaldehyde bisulfite
+        96: {'smiles': 'CCCCC(=O)O', 'mode': 'attach'},  # FT unsaturated carboxylic acids (with alkene)
+        97: {'smiles': 'CCCCC(=O)SC(=O)C(O)C(=O)O', 'mode': 'attach'},  # FT thia keto propanoic acid
+        # Non-telomer groups 98+
+        98: {'smiles': 'C[NH2+]CC(=O)O', 'mode': 'attach'},  # Glycine - needs charged nitrogen or N+ form
+        # More telomers 99+
+        99: {'smiles': 'CCCCNCC(=O)O', 'mode': 'attach'},  # FT glycine
+        100: {'smiles': 'CS(=O)(=O)NCCO', 'mode': 'attach'},  # Sulfonamidoethanol - simpler anchor
+        101: {'smiles': 'S(=O)(=O)NCCO', 'mode': 'attach'},  # FT sulfonamidoethanol
+        102: {'smiles': 'CCCCOCC(=O)O', 'mode': 'attach'},  # FT ether carboxylic acids
+        103: {'smiles': 'CCCCS(=O)(=O)CCC(=O)O', 'mode': 'attach'},  # FT sulfonyl propanoic acid
+        104: {'smiles': 'S(=O)(=O)CCC(=O)O', 'mode': 'attach'},  # Sulfonyl propanoic acid - max_dist_from_CF:0, direct attachment
+        105: {'smiles': 'CCCCS(=O)CCC(=O)NC(C)(C)CS(=O)(=O)O', 'mode': 'attach'},  # FT sulfinyl amido sulfonic acid
+        106: {'smiles': 'S(=O)(CCC(=O)NC(C)(C)CS(=O)(=O)O)', 'mode': 'attach'},  # Sulfinyl amido sulfonic acid - max_dist_from_CF:0, direct attachment
+        107: {'smiles': 'CCCCS(=O)', 'mode': 'attach'},  # FT sulfinyl
+        108: {'smiles': 'CCCCS(=O)(=O)', 'mode': 'attach'},  # FT sulfone
+        109: {'smiles': 'CCCCC(=O)SCC(O)C(=O)O', 'mode': 'attach'},  # FT acetylsulfanylhydroxypropanoic acid
+        110: {'smiles': 'CCCCC(=O)SC(O)C(=O)O', 'mode': 'attach'},  # FT acetylhydroxyethanethioate
+        111: {'smiles': 'CCCCNCCC(=O)O', 'mode': 'attach'},  # FT amino propanoic acid
+        112: {'smiles': 'CCCCNCC[N+](C)(C)C', 'mode': 'attach'},  # FT amino ethyl trimethyl ammonium
+    }
     return smiles_map
 
 
@@ -63,22 +129,17 @@ def load_oecd_examples():
         oecd_data = json.load(f)
     
     # Group by detected groups
-    group_examples = defaultdict(list)
+    group_examples = {}
     
     for molecule in oecd_data:
         result = molecule.get('pfasgroups_result', {})
-        if result.get('is_pfas'):
-            groups = result.get('groups_detected', [])
-            smiles = molecule.get('smiles', '')
-            name = molecule.get('name', '')
-            
-            for group_id in groups:
-                if len(group_examples[group_id]) < 5:  # Collect up to 5 examples
-                    group_examples[group_id].append({
-                        'smiles': smiles,
-                        'name': name
-                    })
-    
+        groups = result.get('detected_groups', [])
+        smiles = molecule.get('molecule_data',{}).get('smiles', '')
+        if smiles !='':
+            if groups is not None:
+                for group_id in groups:
+                    group_examples.setdefault(group_id,[]).append(
+                        smiles)
     return group_examples
 
 
@@ -87,21 +148,17 @@ def load_telomer_examples():
     with open(TELOMER_VALIDATION, 'r') as f:
         telomer_data = json.load(f)
     
-    telomer_examples = defaultdict(list)
-    
+    telomer_examples = {}
     results = telomer_data.get('results', [])
     for result in results:
         if result.get('detected', False):
-            groups = result.get('groups_detected', [])
+            groups = result.get('telomer_groups', [])
             smiles = result.get('smiles', '')
-            cid = result.get('cid', '')
             
             for group_id in groups:
-                if len(telomer_examples[group_id]) < 5:
-                    telomer_examples[group_id].append({
-                        'smiles': smiles,
-                        'cid': cid
-                    })
+                telomer_examples.setdefault(group_id.get('id'),[]).append(
+                        smiles
+                    )
     
     return telomer_examples
 
@@ -149,14 +206,14 @@ def categorize_groups(groups_data):
         name = group['name'].lower()
         
         # Telomer groups (40-48)
-        if 40 <= group_id <= 48:
+        if 'telomer' in name.lower():
             category = 'telomer'
         # Generic component groups (49-51)
-        elif group_id in [49, 50, 51]:
-            category = 'generic'
+        elif group_id < 29:
+            category = 'OECD'
         # OECD groups (1-39)
         else:
-            category = 'OECD'
+            category = 'generic'
         
         categorized[group_id] = category
     
@@ -175,11 +232,10 @@ def add_test_metadata_to_groups():
     oecd_examples = load_oecd_examples()
     telomer_examples = load_telomer_examples()
     categories = categorize_groups(groups_data)
-    
     # Add test metadata
     for group in groups_data:
         group_id = group['id']
-        category = categories.get(group_id, 'OECD')
+        category = categories.get(group_id, 'generic')
         
         test_data = {'category': category}
         
@@ -190,7 +246,7 @@ def add_test_metadata_to_groups():
                 'mode': smiles_map.get(group_id, {}).get('mode', 'insert'),
                 'is_telomer': True
             }
-            test_data['examples'] = telomer_examples.get(group_id, [])[:3]
+            test_data['examples'] = telomer_examples.get(group_id, [])[:5]
             
         elif category == 'generic':
             # Generic groups
@@ -260,7 +316,7 @@ def main():
     
     try:
         add_test_metadata_to_groups()
-        add_test_metadata_to_definitions()
+        #add_test_metadata_to_definitions()
         
         print("\n" + "="*60)
         print("✅ TEST METADATA SUCCESSFULLY ADDED")
