@@ -24,19 +24,19 @@ old_to_new = {}
 for og in [OECD, generic]:
     for group in og:
         old_to_new[group['id']] = id
-        group['new_id'] = id
+        group['id'] = id
         new_data.append({k:v for k,v in group.items() if k not in ['main_group','base_functional_groups']})
         new_data_JS.append({k:v for k,v in group.items() if k not in ['test','linker_smarts','main_group','base_functional_groups']})
         id +=1
 for group in telomers:
     old_to_new[group['id']] = id
-    group['new_id'] = id
+    group['id'] = id
     new_data.append({k:v for k,v in group.items() if k not in ['main_group','base_functional_groups']})
     id +=1
 
 with open('../../PFASgroups/data/PFAS_groups_smarts_old.json','w') as f:
     json.dump(data,f, indent=4)
-with open('../PFASgroups/data/PFAS_groups_smarts.json','w') as f:
+with open('../../PFASgroups/data/PFAS_groups_smarts.json','w') as f:
     json.dump(new_data,f, indent=4)
 with open('../../../PFASgroupsJS/data/PFAS_groups_smarts_reordered.json','w') as f:
     json.dump(new_data_JS,f, indent=4)
