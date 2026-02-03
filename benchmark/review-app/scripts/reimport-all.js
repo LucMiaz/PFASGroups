@@ -8,10 +8,9 @@ async function reimportAll() {
     
     console.log('🗑️  Clearing all existing data...');
     
-    // Clear all tables
+    // Clear all tables (in reverse dependency order)
     await db.run('DELETE FROM manual_reviews');
     await db.run('DELETE FROM pfasgroups_results');
-    await db.run('DELETE FROM pfasgroups_results_bycomponent');
     await db.run('DELETE FROM atlas_results');
     await db.run('DELETE FROM molecules');
     

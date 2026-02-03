@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Form, Row, Col, Alert, Badge, Spinner } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
@@ -17,6 +17,8 @@ function MoleculeReviewer({ onReviewUpdate }) {
   });
   const [reviewData, setReviewData] = useState({});
   const [submitStatus, setSubmitStatus] = useState({});
+  const [autoSaveStatus, setAutoSaveStatus] = useState({});
+  const autoSaveTimers = useRef({});
 
   const datasetOptions = [
     { value: 'all', label: 'All Datasets' },
@@ -24,7 +26,9 @@ function MoleculeReviewer({ onReviewUpdate }) {
     { value: 'enhanced', label: 'Enhanced' },
     { value: 'timing', label: 'Timing' },
     { value: 'complex_branched', label: 'Complex Branched' },
-    { value: 'non_fluorinated', label: 'Non-Fluorinated' }
+    { value: 'highly_branched', label: 'Highly Branched' },
+    { value: 'non_fluorinated', label: 'Non-Fluorinated' },
+    { value: 'definitions', label: 'Definitions' }
   ];
 
   const reviewStatusOptions = [
@@ -88,6 +92,64 @@ function MoleculeReviewer({ onReviewUpdate }) {
         [field]: value
       }
     }));
+    
+    // Trigger auto-save with debouncing
+    triggerAutoSave(moleculeId);
+  };
+
+  const triggerAutoSave = (moleculeId) => {
+    // Clear existing timer for this molecule
+    if (autoSaveTimers.current[moleculeId]) {
+      clearTimeout(autoSaveTimers.current[moleculeId]);
+    }
+
+    // Set status to "saving soon"
+    setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'pending' }));
+
+    // Set new timer to auto-save after 2 seconds of inactivity
+    autoSaveTimers.current[moleculeId] = setTimeout(() => {
+      autoSaveReview(moleculeId);
+    }, 2000);
+  };
+
+  const autoSaveReview = async (moleculeId) => {
+    setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'saving' }));
+    
+    try {
+      const reviewDataForMolecule = reviewData[moleculeId];
+      
+      const response = await fetch('/api/review', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          moleculeId,
+          pfasgroupsCorrect: reviewDataForMolecule.pfasgroupsCorrect,
+          atlasCorrect: reviewDataForMolecule.atlasCorrect,
+          reviewerNotes: reviewDataForMolecule.reviewerNotes,
+          reviewerName: 'Manual Reviewer',
+          isPfas: reviewDataForMolecule.isPfas,
+          correctGroups: reviewDataForMolecule.correctGroups,
+          correctClassification: reviewDataForMolecule.correctClassification
+        }),
+      });
+
+      if (response.ok) {
+        setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'saved' }));
+        onReviewUpdate && onReviewUpdate();
+        
+        // Clear saved status after 3 seconds
+        setTimeout(() => {
+          setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: null }));
+        }, 3000);
+      } else {
+        setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'error' }));
+      }
+    } catch (error) {
+      console.error('Error auto-saving review:', error);
+      setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'error' }));
+    }
   };
 
   const submitReview = async (moleculeId) => {
@@ -353,20 +415,37 @@ function MoleculeReviewer({ onReviewUpdate }) {
 
                   {/* Submit Review */}
                   <div className="d-flex justify-content-between align-items-center">
-                    <Button
-                      variant="primary"
-                      onClick={() => submitReview(molecule.id)}
-                      disabled={submitStatus[molecule.id] === 'submitting'}
-                    >
-                      {submitStatus[molecule.id] === 'submitting' ? (
-                        <>
-                          <Spinner as="span" animation="border" size="sm" className="me-2" />
-                          Submitting...
-                        </>
-                      ) : (
-                        'Submit Review'
+                    <div>
+                      <Button
+                        variant="primary"
+                        onClick={() => submitReview(molecule.id)}
+                        disabled={submitStatus[molecule.id] === 'submitting'}
+                        className="me-2"
+                      >
+                        {submitStatus[molecule.id] === 'submitting' ? (
+                          <>
+                            <Spinner as="span" animation="border" size="sm" className="me-2" />
+                            Submitting...
+                          </>
+                        ) : (
+                          'Save Now'
+                        )}
+                      </Button>
+                      
+                      {/* Auto-save status */}
+                      {autoSaveStatus[molecule.id] === 'pending' && (
+                        <small className="text-muted">⏳ Will auto-save...</small>
                       )}
-                    </Button>
+                      {autoSaveStatus[molecule.id] === 'saving' && (
+                        <small className="text-info">💾 Auto-saving...</small>
+                      )}
+                      {autoSaveStatus[molecule.id] === 'saved' && (
+                        <small className="text-success">✓ Auto-saved</small>
+                      )}
+                      {autoSaveStatus[molecule.id] === 'error' && (
+                        <small className="text-danger">⚠ Auto-save failed</small>
+                      )}
+                    </div>
 
                     {submitStatus[molecule.id] === 'success' && (
                       <Alert variant="success" className="mb-0 py-1">Review saved!</Alert>

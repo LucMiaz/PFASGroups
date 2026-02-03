@@ -99,6 +99,9 @@ class DataImporter {
             // Transform details array into molecule records
             for (const test of data.details) {
                 if (test.smiles) {
+                    const pfasgroupsSuccess = test.pfasgroups_passed === true;
+                    const atlasSuccess = test.atlas_passed === true;
+                    
                     allMolecules.push({
                         molecule_data: {
                             smiles: test.smiles,
@@ -107,15 +110,15 @@ class DataImporter {
                         },
                         pfasgroups_result: {
                             detected_groups: test.group_id ? [test.group_id] : [],
-                            success: test.passed === true,
-                            error: test.passed === false ? 'Test failed' : null,
+                            success: pfasgroupsSuccess,
+                            error: test.pfasgroups_passed === false ? 'Test failed' : null,
                             execution_time: null
                         },
                         atlas_result: {
                             first_class: null,
                             second_class: null,
-                            success: false,
-                            error: false,
+                            success: atlasSuccess,
+                            error: test.atlas_passed === false ? 'Test failed' : null,
                             execution_time: null
                         }
                     });
@@ -396,6 +399,8 @@ class DataImporter {
         // Extract matched path types from matches data
         const matchedPathTypes = this.extractMatchedPathTypes(result.matches, result.detected_groups);
         
+        const successValue = result.success ? 1 : 0;
+        
         await this.db.run(`
             INSERT INTO pfasgroups_results (
                 molecule_id, detected_groups, detected_definitions, matched_path_types, success, error_message, execution_time
@@ -405,7 +410,7 @@ class DataImporter {
             JSON.stringify(result.detected_groups || []),
             JSON.stringify(result.detected_definitions || []),
             JSON.stringify(matchedPathTypes),
-            result.success || false,
+            successValue,
             result.error || null,
             result.execution_time || null
         ]);
@@ -420,7 +425,7 @@ class DataImporter {
             moleculeId,
             result.first_class || null,
             result.second_class || null,
-            result.success || false,
+            result.success ? 1 : 0,  // Explicitly convert to 1/0 for SQLite
             result.error || null,
             result.execution_time || null
         ]);

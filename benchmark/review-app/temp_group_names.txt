@@ -1,5 +1,3 @@
-// PFAS Group Names mapping (ID to Name)
-// Auto-generated from PFAS_groups_smarts.json - DO NOT EDIT MANUALLY
 export const PFAS_GROUP_NAMES = {
   1: "Perfluoroalkyl carboxylic acids (PFCAs)",
   2: "Polyfluoroalkyl carboxylic acid (PolyFCAs)",
@@ -113,27 +111,5 @@ export const PFAS_GROUP_NAMES = {
   110: "Fluorotelomer acetylhydroxyethanethioate (Fluorotelomer acetylhydroxyethanethioate)",
   111: "Fluorotelomer amino propanoic acid (Fluorotelomer amino propanoic acid)",
   112: "Fluorotelomer amino ethyl trimethyl ammonium (Fluorotelomer amino ethyl trimethyl ammonium)",
-  113: "Telomers (Telomers)"
+  113: "Telomers (Telomers)",
 };
-
-export function getGroupName(groupId) {
-  return PFAS_GROUP_NAMES[groupId] || `Group ${groupId}`;
-}
-
-export function getShortGroupName(groupId) {
-  const fullName = PFAS_GROUP_NAMES[groupId];
-  if (!fullName) return `G${groupId}`;
-  
-  // Extract alias if present (text in parentheses)
-  const aliasMatch = fullName.match(/\(([^)]+)\)$/);
-  if (aliasMatch) {
-    return aliasMatch[1];
-  }
-  
-  // Otherwise truncate if too long
-  if (fullName.length > 35) {
-    return fullName.substring(0, 32) + '...';
-  }
-  
-  return fullName;
-}
