@@ -1,5 +1,5 @@
 %% LaTeX tables and text for PFASgroups article
-%% Generated: 2026-02-02 10:54:12
+%% Generated: 2026-02-04 09:07:57
 %% 
 %% Include in your article with: \input{pfasgroups_results.tex}
 %%
@@ -16,7 +16,7 @@ Table~\ref{tab:datasets} provides an overview of the benchmark datasets used to 
 \toprule
 \textbf{Dataset} & \textbf{N} & \textbf{Source} & \textbf{Description} \\
 \midrule
-Enhanced Functional Groups & 3,700 & Generated & Systematically generated molecules covering all 55 PFAS functional groups \\
+Enhanced Functional Groups & 3,400 & Generated & Systematically generated molecules covering all 55 PFAS functional groups \\
 OECD Reference & 3,414 & OECD Database & Reference PFAS compounds from OECD reconciling terminology \\
 Complex Branched & 6 & Generated & Structurally complex molecules with extensive branching \\
 Non-Fluorinated & 3 & Generated & Negative control: molecules without fluorine \\
@@ -87,10 +87,10 @@ Table~\ref{tab:timing_overall} presents timing statistics for PFASgroups and PFA
 \toprule
 \textbf{Tool} & \textbf{N} & \textbf{Mean} & \textbf{Median} & \textbf{SD} & \textbf{Min} & \textbf{Max} \\
 \midrule
-PFASgroups & 200 & 69.21 & 41.88 & 69.02 & 8.05 & 300.38 \\
-PFAS-Atlas & 200 & 58.46 & 53.66 & 13.85 & 40.06 & 97.09 \\
+PFASgroups & 200 & 62.33 & 37.93 & 63.10 & 7.27 & 312.53 \\
+PFAS-Atlas & 200 & 51.94 & 47.51 & 11.54 & 36.89 & 92.27 \\
 \midrule
-\multicolumn{7}{l}{\textit{Speedup factor (Atlas/PFASgroups): 0.84$\times$}} \\
+\multicolumn{7}{l}{\textit{Speedup factor (Atlas/PFASgroups): 0.83$\times$}} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -107,13 +107,13 @@ Table~\ref{tab:timing_by_size} shows how execution time scales with molecule siz
 \toprule
 \textbf{Size Range} & \textbf{N} & \textbf{PG Mean} & \textbf{PG SD} & \textbf{Atlas Mean} & \textbf{Atlas SD} \\
 \midrule
-0--20 & 24 & 9.90 & 1.31 & 42.67 & 1.38 \\
-20--40 & 44 & 17.53 & 3.02 & 45.41 & 1.85 \\
-40--60 & 27 & 30.29 & 4.31 & 49.27 & 1.92 \\
-60--80 & 28 & 50.67 & 10.00 & 59.53 & 6.34 \\
-80--100 & 18 & 69.99 & 6.62 & 69.20 & 2.55 \\
-100--150 & 53 & 148.54 & 57.89 & 74.81 & 7.10 \\
-150--200 & 6 & 243.86 & 15.87 & 77.14 & 1.98 \\
+0--20 & 24 & 8.87 & 1.07 & 38.48 & 1.09 \\
+20--40 & 44 & 15.73 & 2.63 & 41.15 & 1.21 \\
+40--60 & 27 & 27.19 & 3.75 & 44.58 & 1.11 \\
+60--80 & 28 & 44.77 & 5.68 & 50.83 & 3.43 \\
+80--100 & 18 & 64.14 & 6.93 & 61.14 & 2.00 \\
+100--150 & 53 & 131.59 & 50.57 & 65.79 & 2.39 \\
+150--200 & 6 & 240.87 & 33.50 & 73.13 & 8.66 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -137,9 +137,9 @@ where $t$ is execution time (seconds), $n$ is number of atoms, and parameters we
 \toprule
 \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
 \midrule
-$a$ & 0.008639 & s \\
-$\alpha$ & 0.022769 & atoms$^{-1}$ \\
-$R^2$ & 0.9759 & -- \\
+$a$ & 0.007716 & s \\
+$\alpha$ & 0.022843 & atoms$^{-1}$ \\
+$R^2$ & 0.9815 & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -156,15 +156,15 @@ Table~\ref{tab:group_type_performance} compares detection rates and timing for d
 \toprule
 \textbf{Category} & \textbf{Groups} & \textbf{Tested} & \textbf{Detected (\%)} & \textbf{Mean Time (ms)} & \textbf{False Pos. (\%)} \\
 \midrule
-Alcohols & 2 & 100 & 100.0 & 13.00 & 0.0 \\
-Aromatics & 4 & 3700 & 100.0 & 20.75 & 0.0 \\
-Carboxylic Acids & 5 & 193 & 100.0 & 14.89 & 0.0 \\
-Cyclic & 2 & 40 & 100.0 & 8.45 & 0.0 \\
-Ethers & 2 & 110 & 100.0 & 18.32 & 0.0 \\
-Hydrocarbons & 5 & 175 & 100.0 & 10.21 & 0.0 \\
-Other & 26 & 1892 & 100.0 & 18.83 & 0.0 \\
-Phosphonic Acids & 2 & 110 & 100.0 & 13.46 & 0.0 \\
-Sulfonic Acids & 5 & 155 & 100.0 & 17.45 & 0.0 \\
+Alcohols & 2 & 70 & 100.0 & 11.87 & 0.0 \\
+Aromatics & 4 & 3400 & 100.0 & 19.38 & 0.0 \\
+Carboxylic Acids & 5 & 118 & 100.0 & 14.20 & 0.0 \\
+Cyclic & 2 & 40 & 100.0 & 7.39 & 0.0 \\
+Ethers & 2 & 40 & 100.0 & 9.12 & 0.0 \\
+Hydrocarbons & 5 & 160 & 100.0 & 9.85 & 0.0 \\
+Other & 26 & 1514 & 100.0 & 17.81 & 0.0 \\
+Phosphonic Acids & 2 & 80 & 100.0 & 11.64 & 0.0 \\
+Sulfonic Acids & 5 & 80 & 100.0 & 18.77 & 0.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -182,8 +182,8 @@ Table~\ref{tab:atlas_comparison} provides a detailed comparison of PFASgroups an
 \textbf{Metric} & \textbf{PFASgroups} & \textbf{PFAS-Atlas} & \textbf{Agreement (\%)} & \textbf{Advantage} \\
 \midrule
 PFAS Detection Rate & 0.0\% & 0.0\% & 100.0 & -- \\
-Mean Exec. Time (ms) & 69.21 & 58.46 & -- & PFAS-Atlas \\
-Speedup Factor & -- & -- & -- & 0.84$\times$ \\
+Mean Exec. Time (ms) & 62.33 & 51.94 & -- & PFAS-Atlas \\
+Speedup Factor & -- & -- & -- & 0.83$\times$ \\
 Detailed Groups & 0 & -- & -- & PFASgroups \\
 \bottomrule
 \end{tabular}
@@ -194,7 +194,7 @@ Detailed Groups & 0 & -- & -- & PFASgroups \\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{imgs/timing_exponential_fit.pdf}
-\caption{Exponential scaling of execution time with molecule size. Points represent individual molecules, solid line shows fitted model $t(n) = a \cdot e^{\alpha \cdot n}$, and dashed lines indicate 95\% confidence interval. Model parameters: $a = 0.008639$ s, $\alpha = 0.022769$ atoms$^{-1}$, $R^2 = 0.9759$.}
+\caption{Exponential scaling of execution time with molecule size. Points represent individual molecules, solid line shows fitted model $t(n) = a \cdot e^{\alpha \cdot n}$, and dashed lines indicate 95\% confidence interval. Model parameters: $a = 0.007716$ s, $\alpha = 0.022843$ atoms$^{-1}$, $R^2 = 0.9815$.}
 \label{fig:timing_scaling}
 \end{figure}
 
@@ -221,9 +221,9 @@ The benchmark results demonstrate that PFASgroups achieves high accuracy in PFAS
 
 \item \textbf{Classification Performance:} PFASgroups achieves 0.0\% overall classification accuracy with 0.0\% precision, 0.0\% recall (sensitivity), 0.0\% specificity, and F1-score of 0.0\% across 3,417 test cases (0 TP, 0 TN, 3 FP, 3414 FN).
 
-\item \textbf{Performance Scaling:} Execution time follows an exponential model ($R^2 = 0.9759$) with mean processing time of 69.21 ms per molecule and median of 41.88 ms.
+\item \textbf{Performance Scaling:} Execution time follows an exponential model ($R^2 = 0.9815$) with mean processing time of 62.33 ms per molecule and median of 37.93 ms.
 
-\item \textbf{Comparative Performance:} Performance comparable to PFAS-Atlas (ratio: 0.84$\times$) while providing detailed functional group identification.
+\item \textbf{Comparative Performance:} Performance comparable to PFAS-Atlas (ratio: 0.83$\times$) while providing detailed functional group identification.
 
 \item \textbf{Robustness:} Successfully handles complex branched structures (6 molecules tested) and correctly excludes non-fluorinated compounds (3 negative controls).
 \end{itemize}

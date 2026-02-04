@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Row, Col, Alert, Badge, Spinner } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 import Select from 'react-select';
@@ -17,8 +17,6 @@ function MoleculeReviewer({ onReviewUpdate }) {
   });
   const [reviewData, setReviewData] = useState({});
   const [submitStatus, setSubmitStatus] = useState({});
-  const [autoSaveStatus, setAutoSaveStatus] = useState({});
-  const autoSaveTimers = useRef({});
 
   const datasetOptions = [
     { value: 'all', label: 'All Datasets' },
@@ -27,8 +25,7 @@ function MoleculeReviewer({ onReviewUpdate }) {
     { value: 'timing', label: 'Timing' },
     { value: 'complex_branched', label: 'Complex Branched' },
     { value: 'highly_branched', label: 'Highly Branched' },
-    { value: 'non_fluorinated', label: 'Non-Fluorinated' },
-    { value: 'definitions', label: 'Definitions' }
+    { value: 'non_fluorinated', label: 'Non-Fluorinated' }
   ];
 
   const reviewStatusOptions = [
@@ -92,64 +89,6 @@ function MoleculeReviewer({ onReviewUpdate }) {
         [field]: value
       }
     }));
-    
-    // Trigger auto-save with debouncing
-    triggerAutoSave(moleculeId);
-  };
-
-  const triggerAutoSave = (moleculeId) => {
-    // Clear existing timer for this molecule
-    if (autoSaveTimers.current[moleculeId]) {
-      clearTimeout(autoSaveTimers.current[moleculeId]);
-    }
-
-    // Set status to "saving soon"
-    setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'pending' }));
-
-    // Set new timer to auto-save after 2 seconds of inactivity
-    autoSaveTimers.current[moleculeId] = setTimeout(() => {
-      autoSaveReview(moleculeId);
-    }, 2000);
-  };
-
-  const autoSaveReview = async (moleculeId) => {
-    setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'saving' }));
-    
-    try {
-      const reviewDataForMolecule = reviewData[moleculeId];
-      
-      const response = await fetch('/api/review', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          moleculeId,
-          pfasgroupsCorrect: reviewDataForMolecule.pfasgroupsCorrect,
-          atlasCorrect: reviewDataForMolecule.atlasCorrect,
-          reviewerNotes: reviewDataForMolecule.reviewerNotes,
-          reviewerName: 'Manual Reviewer',
-          isPfas: reviewDataForMolecule.isPfas,
-          correctGroups: reviewDataForMolecule.correctGroups,
-          correctClassification: reviewDataForMolecule.correctClassification
-        }),
-      });
-
-      if (response.ok) {
-        setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'saved' }));
-        onReviewUpdate && onReviewUpdate();
-        
-        // Clear saved status after 3 seconds
-        setTimeout(() => {
-          setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: null }));
-        }, 3000);
-      } else {
-        setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'error' }));
-      }
-    } catch (error) {
-      console.error('Error auto-saving review:', error);
-      setAutoSaveStatus(prev => ({ ...prev, [moleculeId]: 'error' }));
-    }
   };
 
   const submitReview = async (moleculeId) => {
@@ -304,8 +243,11 @@ function MoleculeReviewer({ onReviewUpdate }) {
                       <div>
                         <p><strong>Detected Groups:</strong></p>
                         <div>
-                          {molecule.pfasgroups_detected.map(group => (
-                            <Badge key={group} bg="secondary" className="me-1 mb-1">{group}</Badge>
+                          {molecule.pfasgroups_detected && molecule.pfasgroups_detected.map(group => (
+                            <Badge key={group.id} bg="secondary" className="me-1 mb-1">
+                              {group.alias || group.name}
+                              {group.matchedPathType && <span className="ms-1 text-muted">({group.matchedPathType})</span>}
+                            </Badge>
                           ))}
                         </div>
                         {molecule.pfasgroups_detected_definitions && molecule.pfasgroups_detected_definitions.length > 0 && (
@@ -318,26 +260,33 @@ function MoleculeReviewer({ onReviewUpdate }) {
                             </div>
                           </>
                         )}
-                        <p><small>Time: {(molecule.pfasgroups_time * 1000).toFixed(2)}ms</small></p>
+                        {molecule.pfasgroups_time && <p><small>Time: {(molecule.pfasgroups_time * 1000).toFixed(2)}ms</small></p>}
                       </div>
                     ) : (
-                      <p className="text-danger">Error: {molecule.pfasgroups_error}</p>
+                      <p className="text-danger">Error: {molecule.pfasgroups_error || 'Unknown error'}</p>
                     )}
                   </div>
 
                   {/* PFAS-Atlas Results */}
-                  <div className={`algorithm-result ${molecule.atlas_success ? 'success' : 'error'}`}>
-                    <h6>🗺️ PFAS-Atlas</h6>
-                    {molecule.atlas_success ? (
-                      <div>
-                        <p><strong>First Class:</strong> {molecule.atlas_first_class}</p>
-                        <p><strong>Second Class:</strong> {molecule.atlas_second_class}</p>
-                        <p><small>Time: {(molecule.atlas_time * 1000).toFixed(2)}ms</small></p>
-                      </div>
-                    ) : (
-                      <p className="text-danger">Error: {molecule.atlas_error}</p>
-                    )}
-                  </div>
+                  {molecule.atlas_success !== null ? (
+                    <div className={`algorithm-result ${molecule.atlas_success ? 'success' : 'error'}`}>
+                      <h6>🗺️ PFAS-Atlas</h6>
+                      {molecule.atlas_success ? (
+                        <div>
+                          <p><strong>First Class:</strong> {molecule.atlas_first_class || 'N/A'}</p>
+                          <p><strong>Second Class:</strong> {molecule.atlas_second_class || 'N/A'}</p>
+                          {molecule.atlas_time && <p><small>Time: {(molecule.atlas_time * 1000).toFixed(2)}ms</small></p>}
+                        </div>
+                      ) : (
+                        <p className="text-danger">Error: {molecule.atlas_error || 'Unknown error'}</p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="algorithm-result not-available">
+                      <h6>🗺️ PFAS-Atlas</h6>
+                      <p className="text-muted">Not available for this dataset</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Manual Review Panel */}
@@ -415,37 +364,20 @@ function MoleculeReviewer({ onReviewUpdate }) {
 
                   {/* Submit Review */}
                   <div className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <Button
-                        variant="primary"
-                        onClick={() => submitReview(molecule.id)}
-                        disabled={submitStatus[molecule.id] === 'submitting'}
-                        className="me-2"
-                      >
-                        {submitStatus[molecule.id] === 'submitting' ? (
-                          <>
-                            <Spinner as="span" animation="border" size="sm" className="me-2" />
-                            Submitting...
-                          </>
-                        ) : (
-                          'Save Now'
-                        )}
-                      </Button>
-                      
-                      {/* Auto-save status */}
-                      {autoSaveStatus[molecule.id] === 'pending' && (
-                        <small className="text-muted">⏳ Will auto-save...</small>
+                    <Button
+                      variant="primary"
+                      onClick={() => submitReview(molecule.id)}
+                      disabled={submitStatus[molecule.id] === 'submitting'}
+                    >
+                      {submitStatus[molecule.id] === 'submitting' ? (
+                        <>
+                          <Spinner as="span" animation="border" size="sm" className="me-2" />
+                          Submitting...
+                        </>
+                      ) : (
+                        'Submit Review'
                       )}
-                      {autoSaveStatus[molecule.id] === 'saving' && (
-                        <small className="text-info">💾 Auto-saving...</small>
-                      )}
-                      {autoSaveStatus[molecule.id] === 'saved' && (
-                        <small className="text-success">✓ Auto-saved</small>
-                      )}
-                      {autoSaveStatus[molecule.id] === 'error' && (
-                        <small className="text-danger">⚠ Auto-save failed</small>
-                      )}
-                    </div>
+                    </Button>
 
                     {submitStatus[molecule.id] === 'success' && (
                       <Alert variant="success" className="mb-0 py-1">Review saved!</Alert>
