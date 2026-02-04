@@ -38,6 +38,11 @@
                 "[O-]C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OC(=O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
                 "OC(=O)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(OC)C(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)C(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -81,6 +86,11 @@
                 "OC(=O)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
                 "OC(=O)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
                 "OC(=O)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(OC)C(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCC(F)C"
             ]
         }
     },
@@ -120,6 +130,11 @@
                 "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(O)=O",
                 "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(O)=O",
                 "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(O)=O"
+            ],
+            "counter-examples": [
+                "O=C(OC)C(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCCC"
             ]
         }
     },
@@ -159,6 +174,11 @@
                 "OC(=O)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "OC(=O)C(F)(OC(F)(F)F)C(F)(F)F",
                 "OC(=O)C(F)(F)C(F)(F)C(F)(F)OC(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(OC)C(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCCC"
             ]
         }
     },
@@ -205,6 +225,11 @@
                 "OC(=O)C(F)(F)OC(F)(F)C(F)(F)OC(F)(F)F",
                 "OC(=O)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "OC(=O)C(F)(OC(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(OC)C(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCCC"
             ]
         }
     },
@@ -246,6 +271,11 @@
                 "[O-]S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(O)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)OC(F)(F)F",
+                "S(=O)(=O)(O)CCCC"
             ]
         }
     },
@@ -297,6 +327,11 @@
                 "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(O)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)OC(F)(F)F",
+                "S(=O)(=O)(O)CCCC"
             ]
         }
     },
@@ -498,6 +533,10 @@
                 "OP(O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OP(O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OP(O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "OP(O)(=O)CCCCCCCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -570,6 +609,11 @@
                 "OC(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
                 "OC(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
                 "OC(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(O)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(OC)C(F)(F)C(F)(F)F",
+                "OCCCCC"
             ]
         }
     },
@@ -634,6 +678,11 @@
                 "FC(F)(F)C(F)(F)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)OC(F)(C(F)(F)F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "FC(F)(F)OC(F)(F)C(F)(OC(F)(F)F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F |lp:0:3,2:3,3:3,5:3,6:3,7:2,9:3,10:3,12:3,13:3,15:3,16:3,17:2,19:3,20:3,22:3,23:3,25:3,26:3,27:3,Sg:n:10,9,13,12,16,15,8,11,14,17::ht|"
+            ],
+            "counter-examples": [
+                "OC(F)(F)C(F)(F)F",
+                "O=C(OC)C(F)(F)F",
+                "COCCCC"
             ]
         }
     },
@@ -674,6 +723,11 @@
                 "OCC(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F",
                 "CC(F)(F)OCC(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "OC(F)(F)C(F)(F)F",
+                "O=C(OC)C(F)(F)F",
+                "COCCCC"
             ]
         }
     },
@@ -770,6 +824,10 @@
                 "CCCCCCCCCCCCCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
                 "FC(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "CCCCCCCCCCCC",
+                "C(C)(C)CCCC"
             ]
         }
     },
@@ -812,6 +870,10 @@
                 "FC(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "CCCCCCCCC(I)CCCCCCCCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -832,6 +894,10 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1=CC=C(S1)C1=CC=C(Br)S1",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C1=CC(=O)C2=CC=CC=C2O1",
                 "CCCS(=O)(=O)C1=C(CC)C(=CC=C1C(F)(C(F)(F)F)C(F)(F)F)C(O)=O"
+            ],
+            "counter-examples": [
+                "CN(C)C1=CC=C(C=C1)CCCCCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -865,6 +931,10 @@
                 "FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FCCCCC(CF)CCF",
+                "CCCCCC"
             ]
         }
     },
@@ -901,6 +971,11 @@
                 "FC(F)(F)C(F)(F)N(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)N(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)N(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(N)C(F)(F)C(F)(F)F",
+                "O=N(=O)C(F)(F)C(F)(F)F",
+                "NCCCC"
             ]
         }
     },
@@ -933,6 +1008,10 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C#C[I](F)(F)(F)F",
                 "FC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)I)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I"
+            ],
+            "counter-examples": [
+                "FCC(OCCCCCCI)CF",
+                "CCCCCC"
             ]
         }
     },
@@ -964,6 +1043,10 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)S(F)(=O)=O",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(F)(=O)=O",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(F)(=O)=O"
+            ],
+            "counter-examples": [
+                "FCCCCCCS(F)(=O)=O",
+                "CCCCCC"
             ]
         }
     },
@@ -999,6 +1082,11 @@
                 "FC(F)(F)C(=O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(=O)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)OC(F)(C(=O)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=CC(F)(F)C(F)(F)F",
+                "O=C(OC)C(F)(F)F",
+                "O=C(C)CCCC"
             ]
         }
     },
@@ -1040,6 +1128,11 @@
                 "FC(F)(F)C(F)(C(=O)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "CC(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "CC(C)(C)C(=O)CC(=O)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=CC(F)(F)C(F)(F)F",
+                "O=C(OC)C(F)(F)F",
+                "O=C(C)CCCC"
             ]
         }
     },
@@ -1069,6 +1162,11 @@
                 "OCC(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "OC(CCl)(C1=C(F)C=C(F)C=C1)C(F)(F)C(F)(F)C(F)(F)F",
                 "CC(O)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(O)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(OC)C(F)(F)C(F)(F)F",
+                "OCCCCC"
             ]
         }
     },
@@ -1097,6 +1195,11 @@
                 "COC1=CC=C(C=C1)C(=O)CC(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "CC(C)(C)C(=O)C(=N\\NC1=CC=C(C=C1)[N+]([O-])=O)\\C(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC1=CC=C(C=C1)C(=O)CC(=O)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=CC(F)(F)C(F)(F)F",
+                "O=C(OC)C(F)(F)F",
+                "O=C(C)CCCC"
             ]
         }
     },
@@ -1126,7 +1229,7 @@
                 "FC(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(=O)C(F)(F)C(F)(F)C(F)(F)F"
             ],
-            "counter-examples":[
+            "counter-examples": [
                 "CCC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "COC(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "OC(=O)C(F)(F)C(F)(F)C(F)(F)F"
@@ -1160,7 +1263,7 @@
                 "[NH4+].[O-]C(=O)C(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
                 "OCC(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F"
             ],
-            "counter-examples":[
+            "counter-examples": [
                 "CCC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "COC(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)F"
@@ -1194,7 +1297,7 @@
                 "OC1=CC=C(C=C1)C(=O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OC(CC(=O)OCCOC(F)(F)F)(CC(=O)OC(F)(F)F)C(=O)OC(F)(F)F"
             ],
-            "counter-examples":[
+            "counter-examples": [
                 "CCC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "COC(=O)CC(F)(F)C(F)(F)C(F)(F)F"
@@ -1227,6 +1330,11 @@
                 "[NH4+].[O-]C(=O)C(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
                 "OC(=O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
                 "CC[NH+](CC)CC.[O-]C(=O)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(OC)C(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCCC"
             ]
         }
     },
@@ -1257,6 +1365,11 @@
                 "CN(C(=O)C(F)(F)C(F)(F)C(F)(F)F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(=O)NC1=CC=CC=C1I",
                 "[H]N(C(=O)C(F)(F)C(F)(F)C(F)(F)F)C1=CC(Cl)=C(Cl)C=C1"
+            ],
+            "counter-examples": [
+                "NC(F)(F)C(F)(F)F",
+                "O=C(OC)C(F)(F)F",
+                "O=C(N)CCCC"
             ]
         }
     },
@@ -1282,6 +1395,10 @@
                 "FC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
                 "FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(Cl)=O",
                 "FC(=O)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FC(=O)CCCCCCCC(CF)CF",
+                "CCCCCC"
             ]
         }
     },
@@ -1312,6 +1429,11 @@
                 "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
                 "[O-]S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.CC(C)(C)C1=CC=C([I+]C2=CC=C(C=C2)C(C)(C)C)C=C1",
                 "[K+].[O-]S(=O)(=O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(O)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)OC(F)(F)F",
+                "S(=O)(=O)(O)CCCC"
             ]
         }
     },
@@ -1368,6 +1490,10 @@
                 "[Zn++].[O-]S(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.[O-]S(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "[Na+].[O-]S(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "[Na+].[O-]S(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "[Zn++].[O-]S(=O)CCCCCCF.[O-]S(=O)CCCCCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -1424,6 +1550,10 @@
                 "OP(O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OP(O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OP(O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "OP(O)(=O)CCCCCCCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -1454,6 +1584,10 @@
                 "OP(=O)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OP(=O)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OP(=O)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "OP(=O)(CCCCF)CCCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -1483,6 +1617,10 @@
                 "OC(CCl)(C1=C(F)C=C(F)C=C1)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(Cl)=O",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(Cl)=O"
+            ],
+            "counter-examples": [
+                "OC(CCl)(C1=CC=CC=C1)CCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -1512,6 +1650,10 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(Br)CBr",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(Br)=C",
                 "FC(F)(F)C(F)(C(Br)=C)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FCCCCC(Br)CBr",
+                "CCCCCC"
             ]
         }
     },
@@ -1541,6 +1683,10 @@
                 "FC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I)C(F)(F)F",
                 "F[B-](F)(F)F.FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)[I+]C1=CC=CC=C1",
                 "FC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)I)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FCC(OCCCCCCI)CF",
+                "CCCCCC"
             ]
         }
     },
@@ -1572,6 +1718,11 @@
                 "CCN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "[K+].CCS(=O)(=O)N(CC([O-])=O)C(F)(F)C(F)(F)F |lp:4:2,5:2,6:1,9:3,10:2,12:3,13:3,15:3,16:3,17:3,Sg:n:13,12,11:4-9:ht|",
                 "CCN(CCOP(=O)(OCCN(CC)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCN(CC)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "NC(F)(F)C(F)(F)F",
+                "O=C(OC)C(F)(F)F",
+                "O=C(N)CCCC"
             ]
         }
     },
@@ -1602,6 +1753,10 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C1=CC2=CC=CC=C2N1",
                 "CNC1=NN=C(O1)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1=CN=CN1"
+            ],
+            "counter-examples": [
+                "FCCCCC1=CC2=CC=CC=C2N1",
+                "CCCCCC"
             ]
         }
     },
@@ -1632,6 +1787,10 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C1=C(N=C2C=CC=CC2=N1)C1=CC=CC=C1",
                 "OC1=CC=C(C=C1)C1=CC=C(OC(=O)C(F)(C(F)(F)F)C(F)(F)N2C(F)(F)C(F)(F)OC(F)(F)C2(F)F)C=C1",
                 "NC1=NC(OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)=NC(N)=N1"
+            ],
+            "counter-examples": [
+                "c1ccc2nc(C)c(C)nc2c1",
+                "c1ccc2nccnc2c1"
             ]
         }
     },
@@ -1686,6 +1845,11 @@
                 "[K+].CCS(=O)(=O)N(CC([O-])=O)C(F)(F)C(F)(F)F |lp:4:2,5:2,6:1,9:3,10:2,12:3,13:3,15:3,16:3,17:3,Sg:n:13,12,11:4-9:ht|",
                 "NC(C(O)=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "OC1=CC=C(C=C1)C1=CC=C(OC(=O)C(F)(C(F)(F)F)C(F)(F)N2C(F)(F)C(F)(F)OC(F)(F)C2(F)F)C=C1"
+            ],
+            "counter-examples": [
+                "O=C(N)CCCC",
+                "[N+](=O)([O-])CCCC",
+                "NCCCC"
             ]
         }
     },
@@ -1708,6 +1872,10 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC[Si](Cl)(Cl)Cl",
                 "COCCOCCOCCOCCOCCOCCOCCOCCOCCOCC(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
                 "FC(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FCCCCCCCCCCCC[Si](Cl)(Cl)Cl",
+                "CCCCCC"
             ]
         }
     },
@@ -1730,6 +1898,10 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC[Si](Cl)(Cl)Cl",
                 "COCCOCCOCCOCCOCCOCCOCCOCCOCCOCC(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
                 "FC(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "CCCCCCCCCCCC[Si](Cl)(Cl)Cl",
+                "CCCCCCCC"
             ]
         }
     },
@@ -1776,6 +1948,10 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C#C[I](F)(F)(F)F",
                 "[H]C#CC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
                 "CC(C)(O)C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FCCCCCCC#C[I](F)F",
+                "CCCCCC"
             ]
         }
     },
@@ -1800,6 +1976,10 @@
                 "CN(C)C1=CC=C(C=C1)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1=CC=C(S1)C1=CC=C(Br)S1",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C1=CC(=O)C2=CC=CC=C2O1"
+            ],
+            "counter-examples": [
+                "CN(C)C1=CC=C(C=C1)CCCCCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -1824,6 +2004,10 @@
                 "FC1(F)OC(F)(F)C(F)(F)C1(F)F",
                 "FC(F)=C(F)C(F)(F)C1(F)OC1(F)F",
                 "FC1(F)C(F)(F)C(F)(F)C(F)(Cl)C(F)(F)C1(F)F"
+            ],
+            "counter-examples": [
+                "C1COCCC1",
+                "C1CCCCC1"
             ]
         }
     },
@@ -1848,6 +2032,10 @@
                 "FC1(F)OC(F)(F)C(F)(F)C1(F)F",
                 "FC(F)=C(F)C(F)(F)C1(F)OC1(F)F",
                 "FC1(F)C(F)(F)C(F)(F)C(F)(Cl)C(F)(F)C1(F)F"
+            ],
+            "counter-examples": [
+                "C1COCCC1",
+                "C1CCCCC1"
             ]
         }
     },
@@ -1872,6 +2060,10 @@
                 "OC(CCl)(C1=C(F)C=C(F)C=C1)C(F)(F)C(F)(F)C(F)(F)F",
                 "CC1=CC(=CC(C)=C1NC(=O)C1=C(F)C(NC(=O)C2=CC=C(F)C=C2Cl)=CC=C1)C(F)(C(F)(F)F)C(F)(F)F",
                 "FC1=C2C(=O)C(F)(C2=C(F)C(F)=C1F)C(F)(C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "OC(CCl)(C1=CC=CC=C1)CCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -1896,6 +2088,10 @@
                 "OC(CCl)(C1=C(F)C=C(F)C=C1)C(F)(F)C(F)(F)C(F)(F)F",
                 "CC1=CC(=CC(C)=C1NC(=O)C1=C(F)C(NC(=O)C2=CC=C(F)C=C2Cl)=CC=C1)C(F)(C(F)(F)F)C(F)(F)F",
                 "FC1=C2C(=O)C(F)(C2=C(F)C(F)=C1F)C(F)(C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "OC(CCl)(C1=CC=CC=C1)CCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -1923,6 +2119,12 @@
             "examples": [
                 "CC(C)(C)OOC(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "OOOOOOOOOOOOOOOC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "CC(C)(C)OC(=O)CCCC",
+                "CCOC(=O)CC",
+                "CCOCCC",
+                "CC(C)C"
             ]
         }
     },
@@ -1947,6 +2149,10 @@
                 "FC(F)(F)C(F)(C(=O)OOC(=O)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)OC(F)(C(=O)OOC(=O)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "CC(C(=O)OOC(=O)C(C)C)C",
+                "c1ccccc1C(=O)OOC(=O)c1ccccc1"
             ]
         }
     },
@@ -2002,6 +2208,10 @@
             "examples": [
                 "FC(F)C(F)(F)C(F)(F)C(F)(F)[Si](Cl)(Cl)Cl",
                 "FC(F)(F)CCC(F)(F)C(F)(F)C(F)(F)[Si](Cl)(Cl)Cl"
+            ],
+            "counter-examples": [
+                "FCCCC[Si](Cl)(Cl)Cl",
+                "CCCCCC"
             ]
         }
     },
@@ -2031,6 +2241,10 @@
                 "FC(F)(COC(=O)C=C)C(F)(F)C(F)(F)C(F)(F)COC(=O)C=C",
                 "FC1(F)C(F)(F)C(F)(F)C(F)(COC(=O)C=C)C(F)(F)C1(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)COC(=O)C=C"
+            ],
+            "counter-examples": [
+                "C(COC(=O)C=C)CCCCOC(=O)C=C",
+                "CCOC(=O)C=C"
             ]
         }
     },
@@ -2060,6 +2274,10 @@
                 "CC(=C)C(=O)OCC(F)(F)C(F)(F)C(F)(F)F",
                 "CC(=C)C(=O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "CC(=C)C(=O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "CC(=C)C(=O)OCCCCF",
+                "CCCCCC"
             ]
         }
     },
@@ -2220,6 +2438,10 @@
                 "CCN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "CCCCN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "[K+].CN(CC([O-])=O)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "CCN(CCO)S(=O)(=O)CCCCCCCCF",
+                "CCCCCC"
             ]
         }
     },
