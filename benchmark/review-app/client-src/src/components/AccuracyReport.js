@@ -17,6 +17,7 @@ function AccuracyReport() {
     { value: 'enhanced', label: 'Enhanced' },
     { value: 'timing', label: 'Timing' },
     { value: 'complex_branched', label: 'Complex Branched' },
+    { value: 'highly_branched', label: 'Highly Branched' },
     { value: 'non_fluorinated', label: 'Non-Fluorinated' }
   ];
 

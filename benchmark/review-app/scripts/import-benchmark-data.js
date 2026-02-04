@@ -100,9 +100,10 @@ class DataImporter {
             for (const test of data.details) {
                 if (test.smiles) {
                     const pfasgroupsSuccess = test.pfasgroups_passed === true;
+                    const atlasAvailable = test.atlas_passed !== null;
                     const atlasSuccess = test.atlas_passed === true;
                     
-                    allMolecules.push({
+                    const moleculeRecord = {
                         molecule_data: {
                             smiles: test.smiles,
                             group_id: test.group_id,
@@ -113,15 +114,21 @@ class DataImporter {
                             success: pfasgroupsSuccess,
                             error: test.pfasgroups_passed === false ? 'Test failed' : null,
                             execution_time: null
-                        },
-                        atlas_result: {
+                        }
+                    };
+                    
+                    // Only include Atlas results if they're available (not null)
+                    if (atlasAvailable) {
+                        moleculeRecord.atlas_result = {
                             first_class: null,
                             second_class: null,
                             success: atlasSuccess,
                             error: test.atlas_passed === false ? 'Test failed' : null,
                             execution_time: null
-                        }
-                    });
+                        };
+                    }
+                    
+                    allMolecules.push(moleculeRecord);
                 }
             }
             data = allMolecules;
@@ -257,8 +264,26 @@ class DataImporter {
                 // Insert molecule data
                 const moleculeId = await this.insertTimingMolecule(record, benchmarkDate);
                 
-                // Note: Timing benchmark data is analyzed separately via Python scripts,
-                // not stored in database
+                // Insert PFASGroups results if available
+                if (record.pfasgroups_detected !== undefined) {
+                    await this.insertPFASGroupsResult(moleculeId, {
+                        detected_groups: record.pfasgroups_detected || [],
+                        success: record.pfasgroups_success_rate === 1.0,
+                        error: record.pfasgroups_success_rate === 0 ? 'Classification failed' : null,
+                        execution_time: record.pfasgroups_time_avg || null
+                    });
+                }
+                
+                // Insert Atlas results if available
+                if (record.atlas_first_class !== undefined) {
+                    await this.insertAtlasResult(moleculeId, {
+                        first_class: record.atlas_first_class || null,
+                        second_class: record.atlas_second_class || null,
+                        success: record.atlas_success_rate === 1.0,
+                        error: record.atlas_success_rate === 0 ? 'Classification failed' : null,
+                        execution_time: record.atlas_time_avg || null
+                    });
+                }
             } catch (error) {
                 console.error(`Error importing timing record in ${filename}:`, error);
             }

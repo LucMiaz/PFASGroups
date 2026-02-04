@@ -24,6 +24,7 @@ function MoleculeReviewer({ onReviewUpdate }) {
     { value: 'enhanced', label: 'Enhanced' },
     { value: 'timing', label: 'Timing' },
     { value: 'complex_branched', label: 'Complex Branched' },
+    { value: 'highly_branched', label: 'Highly Branched' },
     { value: 'non_fluorinated', label: 'Non-Fluorinated' }
   ];
 
@@ -242,8 +243,11 @@ function MoleculeReviewer({ onReviewUpdate }) {
                       <div>
                         <p><strong>Detected Groups:</strong></p>
                         <div>
-                          {molecule.pfasgroups_detected.map(group => (
-                            <Badge key={group} bg="secondary" className="me-1 mb-1">{group}</Badge>
+                          {molecule.pfasgroups_detected && molecule.pfasgroups_detected.map(group => (
+                            <Badge key={group.id} bg="secondary" className="me-1 mb-1">
+                              {group.alias || group.name}
+                              {group.matchedPathType && <span className="ms-1 text-muted">({group.matchedPathType})</span>}
+                            </Badge>
                           ))}
                         </div>
                         {molecule.pfasgroups_detected_definitions && molecule.pfasgroups_detected_definitions.length > 0 && (
@@ -256,26 +260,33 @@ function MoleculeReviewer({ onReviewUpdate }) {
                             </div>
                           </>
                         )}
-                        <p><small>Time: {(molecule.pfasgroups_time * 1000).toFixed(2)}ms</small></p>
+                        {molecule.pfasgroups_time && <p><small>Time: {(molecule.pfasgroups_time * 1000).toFixed(2)}ms</small></p>}
                       </div>
                     ) : (
-                      <p className="text-danger">Error: {molecule.pfasgroups_error}</p>
+                      <p className="text-danger">Error: {molecule.pfasgroups_error || 'Unknown error'}</p>
                     )}
                   </div>
 
                   {/* PFAS-Atlas Results */}
-                  <div className={`algorithm-result ${molecule.atlas_success ? 'success' : 'error'}`}>
-                    <h6>🗺️ PFAS-Atlas</h6>
-                    {molecule.atlas_success ? (
-                      <div>
-                        <p><strong>First Class:</strong> {molecule.atlas_first_class}</p>
-                        <p><strong>Second Class:</strong> {molecule.atlas_second_class}</p>
-                        <p><small>Time: {(molecule.atlas_time * 1000).toFixed(2)}ms</small></p>
-                      </div>
-                    ) : (
-                      <p className="text-danger">Error: {molecule.atlas_error}</p>
-                    )}
-                  </div>
+                  {molecule.atlas_success !== null ? (
+                    <div className={`algorithm-result ${molecule.atlas_success ? 'success' : 'error'}`}>
+                      <h6>🗺️ PFAS-Atlas</h6>
+                      {molecule.atlas_success ? (
+                        <div>
+                          <p><strong>First Class:</strong> {molecule.atlas_first_class || 'N/A'}</p>
+                          <p><strong>Second Class:</strong> {molecule.atlas_second_class || 'N/A'}</p>
+                          {molecule.atlas_time && <p><small>Time: {(molecule.atlas_time * 1000).toFixed(2)}ms</small></p>}
+                        </div>
+                      ) : (
+                        <p className="text-danger">Error: {molecule.atlas_error || 'Unknown error'}</p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="algorithm-result not-available">
+                      <h6>🗺️ PFAS-Atlas</h6>
+                      <p className="text-muted">Not available for this dataset</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Manual Review Panel */}
