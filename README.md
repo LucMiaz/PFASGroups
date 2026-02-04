@@ -6,59 +6,6 @@ A comprehensive cheminformatics package for automated detection, classification,
 
 PFASgroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
 
-## Recent Updates
-
-### Summary of changes by version
-
-- **Version 2.2 (Feb 2026)**: Added linked_smarts option to specify a restriction on path between smarts groups and fluorinated component. Added new PFASgroups (telomers).
-
-- **Version 2.1 (Jan 2026)**: Added support for multiple smarts, with individual minimum count, per PFASgroup.
-
-- **Version 2.0 (Jan 2026)**: Major expansion of graph‑based component metrics, new coverage statistics, schema updates, and richer per‑component outputs.
-- **Version 1.x**: Shift to component‑based analysis with improved SMARTS matching and better handling of branched/cyclic structures.
-
-### Version 2.0 (January 2026) - Comprehensive Graph Metrics
-
-Major enhancement adding comprehensive NetworkX graph theory metrics for detailed component analysis:
-
-**New Features:**
-- **Component-Level Metrics**: Each fluorinated component now includes 15+ graph metrics:
-  - `diameter` and `radius` - Graph eccentricity bounds
-  - `center`, `periphery`, `barycenter` - Structural node sets
-  - `effective_graph_resistance` - Sum of resistance distances
-  - `component_fraction` - Fraction of molecule covered by component (includes all attached H, F, Cl, Br, I)
-  - Distance metrics from functional groups to structural features
-- **Molecular Coverage Metrics**: New fraction-based metrics quantify fluorination extent:
-  - `mean_component_fraction` - Average coverage per component
-  - `total_components_fraction` - Total coverage by union of all components (accounts for overlaps)
-- **Summary Statistics**: Aggregated metrics across all components per PFAS group
-- **Enhanced Database Models**: New `Components` model stores individual component data with all metrics
-- **Improved Analysis**: Better understanding of molecular topology, branching, functional group positioning, and fluorination extent
-
-**Breaking Changes:**
-- `parse_mols` output now includes additional summary metric fields (`mean_diameter`, `mean_radius`, etc.)
-- Database schema changes require migration (see `DATABASE_MIGRATION_GUIDE.md`)
-
-**Metrics Explained:**
-- `branching` (0-1): Measures linearity (1.0 = linear, 0.0 = highly branched) - renamed from "eccentricity"
-- `mean_eccentricity`, `median_eccentricity`: Graph-theoretic eccentricity statistics for component nodes
-- `smarts_centrality` (0-1): Functional group position (1.0 = central, 0.0 = peripheral)
-- `component_fraction` (0-1): Fraction of total molecule atoms in this component (includes all attached atoms)
-- `total_components_fraction` (0-1): Fraction of molecule covered by union of all components
-- `diameter`: Maximum distance between any two atoms in component
-- `radius`: Minimum eccentricity across component nodes
-- `barycenter`: Nodes minimizing total distance to all other nodes
-- `center`: Nodes with minimum eccentricity
-- `periphery`: Nodes with maximum eccentricity
-
-See `COMPREHENSIVE_METRICS_SUMMARY.md` for complete documentation.
-
-### Version 1.x - Component-Based Analysis
-
-- Replaced chain-finding with connected component analysis
-- Added support for branched and cyclic structures
-- Improved SMARTS pattern matching for diverse PFAS classes
-
 ## Key Features
 
 ### Core Capabilities
@@ -199,6 +146,62 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Custom configuration files
 - Batch processing
 - Integration with pandas and scikit-learn
+
+## Summary of changes by version
+
+- **Version 2.2 (Feb 2026)**: Added linked_smarts option to specify a restriction on path between smarts groups and fluorinated component. Added new PFASgroups (telomers). **v2.2.2** Fixed telomers and added examples and counter-examples to each PFASgroup. Removed boundary O in fluorinated components (for both Per and Polyalkyl components).
+
+- **Version 2.1 (Jan 2026)**: Added support for multiple smarts, with individual minimum count, per PFASgroup.
+
+- **Version 2.0 (Jan 2026)**: Major expansion of graph‑based component metrics, new coverage statistics, schema updates, and richer per‑component outputs.
+
+### Version 2.0 (January 2026) - Comprehensive Graph Metrics
+
+Major enhancement adding comprehensive NetworkX graph theory metrics for detailed component analysis:
+
+**New Features:**
+- **Component-Level Metrics**: Each fluorinated component now includes 15+ graph metrics:
+  - `diameter` and `radius` - Graph eccentricity bounds
+  - `center`, `periphery`, `barycenter` - Structural node sets
+  - `effective_graph_resistance` - Sum of resistance distances
+  - `component_fraction` - Fraction of molecule covered by component (includes all attached H, F, Cl, Br, I)
+  - Distance metrics from functional groups to structural features
+- **Molecular Coverage Metrics**: New fraction-based metrics quantify fluorination extent:
+  - `mean_component_fraction` - Average coverage per component
+  - `total_components_fraction` - Total coverage by union of all components (accounts for overlaps)
+- **Summary Statistics**: Aggregated metrics across all components per PFAS group
+- **Enhanced Database Models**: New `Components` model stores individual component data with all metrics
+- **Improved Analysis**: Better understanding of molecular topology, branching, functional group positioning, and fluorination extent
+
+**Breaking Changes:**
+- `parse_mols` output now includes additional summary metric fields (`mean_diameter`, `mean_radius`, etc.)
+- Database schema changes require migration (see `DATABASE_MIGRATION_GUIDE.md`)
+
+**Metrics Explained:**
+- `branching` (0-1): Measures linearity (1.0 = linear, 0.0 = highly branched) - renamed from "eccentricity"
+- `mean_eccentricity`, `median_eccentricity`: Graph-theoretic eccentricity statistics for component nodes
+- `smarts_centrality` (0-1): Functional group position (1.0 = central, 0.0 = peripheral)
+- `component_fraction` (0-1): Fraction of total molecule atoms in this component (includes all attached atoms)
+- `total_components_fraction` (0-1): Fraction of molecule covered by union of all components
+- `diameter`: Maximum distance between any two atoms in component
+- `radius`: Minimum eccentricity across component nodes
+- `barycenter`: Nodes minimizing total distance to all other nodes
+- `center`: Nodes with minimum eccentricity
+- `periphery`: Nodes with maximum eccentricity
+
+See `COMPREHENSIVE_METRICS_SUMMARY.md` for complete documentation.
+
+- **Version 1.x**: Shift to component‑based analysis with improved SMARTS matching and better handling of branched/cyclic structures.
+
+### Version 1.x - Component-Based Analysis
+
+- Replaced chain-finding with connected component analysis
+- Added support for branched and cyclic structures
+- Improved SMARTS pattern matching for diverse PFAS classes
+
+### Version 0.x - Path-Based Analysis
+
+- Find SMARTS match connected to either a second SMARTS or a default path-related SMARTS using networkx shortest_path.
 
 ## Licence
 <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.

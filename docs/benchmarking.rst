@@ -287,6 +287,94 @@ Test against custom dataset:
    # Run validation
    results = run_validation('my_test_set.json')
 
+Test Molecule Generation
+-------------------------
+
+JSON-Driven Generation
+~~~~~~~~~~~~~~~~~~~~~~
+
+Since version 1.2.3, the benchmark system reads test molecule generation patterns directly from ``PFAS_groups_smarts.json``. Each functional group definition includes a ``test.generate`` field that specifies:
+
+- **smiles**: The SMILES pattern to attach or insert
+- **mode**: Either ``"attach"`` (terminal) or ``"insert"`` (internal)
+- **is_telomer**: Boolean flag indicating if this is a fluorotelomer group
+
+Example group definition:
+
+.. code-block:: json
+
+   {
+     "id": 31,
+     "name": "aldehyde",
+     "test": {
+       "generate": {
+         "smiles": "C(=O)[H]",
+         "mode": "attach",
+         "is_telomer": false
+       }
+     }
+   }
+
+Example telomer group:
+
+.. code-block:: json
+
+   {
+     "id": 74,
+     "name": "Fluorotelomer silane",
+     "test": {
+       "generate": {
+         "smiles": "CCCC[Si]([H])([H])[H]",
+         "mode": "attach",
+         "is_telomer": true
+       }
+     }
+   }
+
+The benchmark script automatically:
+
+1. Reads all group definitions from ``PFAS_groups_smarts.json``
+2. Extracts the ``test.generate`` field for each target group
+3. Generates test molecules by attaching/inserting the SMILES patterns
+4. Creates single-group and multi-group test cases
+5. Validates detection accuracy against expected groups
+
+This approach ensures:
+
+- **Single source of truth**: Test patterns match production group definitions
+- **Automatic updates**: Adding new groups automatically includes them in benchmarks
+- **Consistency**: No risk of hardcoded test data diverging from actual patterns
+- **Maintainability**: Changes to group definitions propagate to test generation
+
+Customizing Test Generation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To modify test generation for a specific group, edit the ``test.generate`` field in ``PFAS_groups_smarts.json``:
+
+.. code-block:: python
+
+   import json
+   
+   # Load group definitions
+   with open('PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+       groups = json.load(f)
+   
+   # Find and modify a group
+   for group in groups:
+       if group['id'] == 31:  # aldehyde
+           group['test']['generate'] = {
+               'smiles': 'C(=O)[H]',
+               'mode': 'attach',
+               'is_telomer': False
+           }
+   
+   # Save updated definitions
+   with open('PFASgroups/data/PFAS_groups_smarts.json', 'w') as f:
+       json.dump(groups, f, indent=2)
+   
+   # Re-run benchmark to use new pattern
+   # The benchmark script will automatically pick up the changes
+
 Performance Testing
 -------------------
 

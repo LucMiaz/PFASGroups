@@ -82,118 +82,38 @@ class EnhancedPFASBenchmark:
         self.functional_smarts = {}
         
         # Load from PFAS_groups_smarts.json for groups in target range
+        # Read test generation data directly from the JSON file
         for group in self.pfas_groups:
             group_id = group['id']
             if group_id in self.target_groups:
                 group_name = group.get('name', f'Group {group_id}')
-                is_telomer = group_id in self.telomer_groups
                 
-                # Try to determine appropriate SMILES and mode from group data
-                # For telomers, use basic functional group patterns
-                # This is a simplified version - actual molecule generation will use the full SMARTS
-                smiles_map = {
-                    # Keep existing mappings for groups 29-59
-                    29: {'smiles': 'O[H]', 'mode': 'attach'},
-                    30: {'smiles': 'C(=O)', 'mode': 'insert'},
-                    31: {'smiles': 'O', 'mode': 'insert'},
-                    32: {'smiles': 'C(=O)OC', 'mode': 'insert'},
-                    33: {'smiles': 'C(=O)O', 'mode': 'attach'},
-                    34: {'smiles': 'C(=O)N', 'mode': 'insert'},
-                    35: {'smiles': 'C(=O)Cl', 'mode': 'attach'},
-                    36: {'smiles': 'S(=O)(=O)O', 'mode': 'attach'},
-                    37: {'smiles': 'SO[H]', 'mode': 'attach'},
-                    38: {'smiles': 'S(=O)O[H]', 'mode': 'attach'},
-                    39: {'smiles': 'OS(=O)(=O)O', 'mode': 'attach'},
-                    40: {'smiles': 'P(=O)(O)O', 'mode': 'attach'},
-                    41: {'smiles': 'P(=O)O', 'mode': 'attach'},
-                    42: {'smiles': 'Cl', 'mode': 'attach'},
-                    43: {'smiles': 'Br', 'mode': 'attach'},
-                    44: {'smiles': 'I', 'mode': 'attach'},
-                    45: {'smiles': 'S(=O)(=O)N', 'mode': 'insert'},
-                    46: {'smiles': 'c1ncc[nH]1', 'mode': 'attach'},
-                    47: {'smiles': 'c1ncccc1', 'mode': 'attach'},
-                    48: {'smiles': 'c1ccc2OC(F)(F)Oc2c1', 'mode': 'attach'},
-                    49: {'smiles': 'N', 'mode': 'insert'},
-                    52: {'smiles': 'C(F)=C(F)(F)F', 'mode': 'attach'},
-                    53: {'smiles': 'C#C', 'mode': 'insert'},
-                    54: {'smiles': 'c1ccccc1', 'mode': 'attach'},
-                    55: {'smiles': 'C1(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)(F)', 'mode': 'attach'},
-                    56: {'smiles': 'C1(F)C(F)(F)(F)C(H)C(F)C(F)(F)C1(F)', 'mode': 'attach'},
-                    57: {'smiles': 'c1c(F)c(F)c(F)c(F)c1F', 'mode': 'attach'},
-                    58: {'smiles': 'c1c(F)c(F)ccc1F', 'mode': 'attach'},
-                    59: {'smiles': 'OO', 'mode': 'insert'},#peroxyde
-                    60: {'smiles': 'C(=O)OOC(=O)', 'mode': 'insert'},# Benzoyl peroxides
-                    61: {'smiles': '[SiH3]', 'mode': 'attach'},  # Silane - needs SiH3 not Si(C)(C)C
-                    62: {'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach'},  # Trichlorosilane
-                    63: {'smiles': 'COC(=O)C=C', 'mode': 'attach'},  # Acrylate - needs CH2 anchor
-                    64: {'smiles': 'COC(=O)C(=C)C', 'mode': 'attach'},  # Methacrylate - needs CH2 anchor
-                    65: {'smiles': 'N(C)(C)CC(=O)O', 'mode': 'attach'},  # Betaine
-                    66: {'smiles': 'SN#C', 'mode': 'attach'},  # Thiocyanic acid
-                    67: {'smiles': 'C(=O)SC(=O)C(O)C(=O)O', 'mode': 'attach'},  # Thia keto propanoic acid - max_dist_from_CF:0, attaches directly
-                    68: {'smiles': 'OC1C(O)C(OC(C1O)C(=O)O)O', 'mode': 'attach'},  # Glucuronate
-                    # Telomer groups 69+ - use simplified patterns for generation
-                    69: {'smiles': 'CCCC[Si]([H])([H])[H]', 'mode': 'attach'},  # FT silane
-                    70: {'smiles': '[Si](Cl)(Cl)Cl', 'mode': 'attach'},  # FT trichlorosilane
-                    71: {'smiles': 'CCCCI', 'mode': 'attach'},  # FT iodide
-                    72: {'smiles': 'CCCCC(=O)[H]', 'mode': 'attach'},  # FT aldehyde
-                    73: {'smiles': 'CCCCC(=O)O', 'mode': 'attach'},  # FT carboxylic acids
-                    74: {'smiles': 'CCCCOCCCCO', 'mode': 'attach'},  # FT ethoxylates
-                    75: {'smiles': 'CCCCS(=O)(=O)O', 'mode': 'attach'},  # FT sulfonic acid
-                    76: {'smiles': 'CCCCOP(=O)(O)O', 'mode': 'attach'},  # FT monophosphate
-                    77: {'smiles': 'CCCCOP(=O)(O)OP(=O)(O)O', 'mode': 'attach'},  # FT diphosphate
-                    78: {'smiles': 'CCCCOP(=O)(O)OP(=O)(O)OP(=O)(O)O', 'mode': 'attach'},  # FT triphosphate
-                    79: {'smiles': 'CCCCOC(=O)C=C', 'mode': 'attach'},  # FT acrylate
-                    80: {'smiles': 'CCCCOC(=O)C(=C)C', 'mode': 'attach'},  # FT methacrylate
-                    81: {'smiles': 'CCCCO', 'mode': 'attach'},  # FT alcohol
-                    82: {'smiles': 'CCCCS', 'mode': 'insert'},  # FT sulfure
-                    83: {'smiles': 'CCCCS(=O)(=O)N', 'mode': 'insert'},  # FT sulfonamide
-                    84: {'smiles': 'CCCC[Si](OC)(OC)OC', 'mode': 'attach'},  # FT silyl
-                    85: {'smiles': 'CCCCN(C)(C)CC(=O)O', 'mode': 'attach'},  # FT betaine
-                    86: {'smiles': 'CCCCOC(=O)C', 'mode': 'attach'},  # FT ester
-                    87: {'smiles': 'CCCCSN#C', 'mode': 'attach'},  # FT thiocyanic acid
-                    88: {'smiles': 'CCCCC=C', 'mode': 'insert'},  # FT alkene
-                    89: {'smiles': 'CCCCN(C)(C)C', 'mode': 'attach'},  # FT trimethylamine
-                    90: {'smiles': 'CCCCS(=O)O', 'mode': 'attach'},  # FT sulfinic acid
-                    91: {'smiles': 'CCCCSO', 'mode': 'attach'},  # FT sulfenic acid
-                    92: {'smiles': 'OS(=O)(=O)O', 'mode': 'attach'},  # FT sulfuric acid
-                    93: {'smiles': 'CCCCC', 'mode': 'attach'},  # FT methyl
-                    94: {'smiles': 'CCCCOC1C(O)C(OC(C1O)C(=O)O)O', 'mode': 'attach'},  # FT glucuronic acid
-                    95: {'smiles': 'CCCCC(O)S(=O)(=O)O', 'mode': 'attach'},  # FT formaldehyde bisulfite
-                    96: {'smiles': 'CCCCC(=O)O', 'mode': 'attach'},  # FT unsaturated carboxylic acids (with alkene)
-                    97: {'smiles': 'CCCCC(=O)SC(=O)C(O)C(=O)O', 'mode': 'attach'},  # FT thia keto propanoic acid
-                    # Non-telomer groups 98+
-                    98: {'smiles': 'C[NH2+]CC(=O)O', 'mode': 'attach'},  # Glycine - needs charged nitrogen or N+ form
-                    # More telomers 99+
-                    99: {'smiles': 'CCCCNCC(=O)O', 'mode': 'attach'},  # FT glycine
-                    100: {'smiles': 'CS(=O)(=O)NCCO', 'mode': 'attach'},  # Sulfonamidoethanol - simpler anchor
-                    101: {'smiles': 'S(=O)(=O)NCCO', 'mode': 'attach'},  # FT sulfonamidoethanol
-                    102: {'smiles': 'CCCCOCC(=O)O', 'mode': 'attach'},  # FT ether carboxylic acids
-                    103: {'smiles': 'CCCCS(=O)(=O)CCC(=O)O', 'mode': 'attach'},  # FT sulfonyl propanoic acid
-                    104: {'smiles': 'S(=O)(=O)CCC(=O)O', 'mode': 'attach'},  # Sulfonyl propanoic acid - max_dist_from_CF:0, direct attachment
-                    105: {'smiles': 'CCCCS(=O)CCC(=O)NC(C)(C)CS(=O)(=O)O', 'mode': 'attach'},  # FT sulfinyl amido sulfonic acid
-                    106: {'smiles': 'S(=O)(CCC(=O)NC(C)(C)CS(=O)(=O)O)', 'mode': 'attach'},  # Sulfinyl amido sulfonic acid - max_dist_from_CF:0, direct attachment
-                    107: {'smiles': 'CCCCS(=O)', 'mode': 'attach'},  # FT sulfinyl
-                    108: {'smiles': 'CCCCS(=O)(=O)', 'mode': 'attach'},  # FT sulfone
-                    109: {'smiles': 'CCCCC(=O)SCC(O)C(=O)O', 'mode': 'attach'},  # FT acetylsulfanylhydroxypropanoic acid
-                    110: {'smiles': 'CCCCC(=O)SC(O)C(=O)O', 'mode': 'attach'},  # FT acetylhydroxyethanethioate
-                    111: {'smiles': 'CCCCNCCC(=O)O', 'mode': 'attach'},  # FT amino propanoic acid
-                    112: {'smiles': 'CCCCNCC[N+](C)(C)C', 'mode': 'attach'},  # FT amino ethyl trimethyl ammonium
-                }
-                
-                if group_id in smiles_map:
-                    entry = {
-                        'name': group_name,
-                        'smiles': smiles_map[group_id]['smiles'],
-                        'mode': smiles_map[group_id]['mode']
-                    }
+                # Check if group has test.generate field
+                if 'test' in group and 'generate' in group['test']:
+                    generate_info = group['test']['generate']
+                    smiles = generate_info.get('smiles', '')
+                    mode = generate_info.get('mode', 'attach')
+                    is_telomer = generate_info.get('is_telomer', False)
                     
-                    if is_telomer:
-                        entry['telomer'] = True
-                        entry['ch2_range'] = (2, 8)
-                        if 'ethoxylate' in group_name.lower():
-                            entry['ethoxylate'] = True
-                    
-                    self.functional_smarts[group_id] = entry
+                    # Only add groups that have valid SMILES for generation
+                    if smiles:
+                        entry = {
+                            'name': group_name,
+                            'smiles': smiles,
+                            'mode': mode
+                        }
+                        
+                        if is_telomer:
+                            entry['telomer'] = True
+                            entry['ch2_range'] = (2, 8)
+                            if 'ethoxylate' in group_name.lower():
+                                entry['ethoxylate'] = True
+                        
+                        self.functional_smarts[group_id] = entry
+                    else:
+                        print(f"⚠️  Group {group_id} ({group_name}) has empty SMILES in test.generate, skipping")
+                else:
+                    print(f"⚠️  Group {group_id} ({group_name}) missing test.generate field, skipping")
         
         print(f"✅ Loaded {len(self.functional_smarts)} functional group definitions for testing")
         
@@ -1276,37 +1196,37 @@ class EnhancedPFASBenchmark:
             'highly_branched_carboxylic_acid': {
                 'smiles': 'C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O',
                 'description': 'Highly branched perfluorocarboxylic acid',
-                'expected_pfasgroups': [1,33],  # carboxylic acid
+                'expected_pfasgroups': [34],  # carboxylic acid (group 34)
                 'complexity': 'very_high'
             },
             'branched_sulfonic_acid': {
                 'smiles': 'C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O',
                 'description': 'Branched perfluorosulfonic acid',
-                'expected_pfasgroups': [7,36],  # polyfluorosulfonic acid (contains C-H bond in -SO3H), sulfonic acid
+                'expected_pfasgroups': [37],  # sulfonic acid (group 37)
                 'complexity': 'high'
             },
             'branched_ether_chain': {
                 'smiles': 'C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F',
                 'description': 'Branched perfluoroether',
-                'expected_pfasgroups': [31],  # ether
+                'expected_pfasgroups': [32],  # ether (group 32)
                 'complexity': 'high'
             },
             'multi_functional_branched': {
                 'smiles': 'C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O',
                 'description': 'Multi-functional branched PFAS (carboxylic acid + ether + sulfonic acid)',
-                'expected_pfasgroups': [31, 33, 36],  # ether, carboxylic acid, sulfonic acid
+                'expected_pfasgroups': [32, 34, 37],  # ether (32), carboxylic acid (34), sulfonic acid (37)
                 'complexity': 'very_high'
             },
             'cyclic_branched': {
                 'smiles': 'C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F',
                 'description': 'Cyclic branched perfluorocarboxylic acid',
-                'expected_pfasgroups': [55, 56],  # perfluoro cyclic, polyfluoro cyclic (carboxylic acid group not matching due to attachment pattern)
+                'expected_pfasgroups': [56, 57],  # Perfluoro cyclic (56), Polyfluoro cyclic (57)
                 'complexity': 'high'
             },
             'aromatic_branched': {
                 'smiles': 'c1(F)c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F',
                 'description': 'Aromatic branched PFAS with carboxylic acid',
-                'expected_pfasgroups': [22, 33, 54, 57, 58],  # side-chain fluorinated aromatics, carboxylic acid, side-chain aromatics, perfluoroaryl, polyfluoroaryl
+                'expected_pfasgroups': [22, 34, 54, 58, 59],  # side-chain fluorinated aromatics, carboxylic acid (34), side-chain aromatics, perfluoroaryl (58), polyfluoroaryl (59)
                 'complexity': 'very_high'
             }
         }

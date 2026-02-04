@@ -1,5 +1,40 @@
 # PFAS Benchmark
 
+## Overview
+
+The PFASGroups benchmark suite provides comprehensive validation of PFAS detection accuracy and performance. As of version 1.2.3, test molecule generation is **JSON-driven**, reading patterns directly from `PFASgroups/data/PFAS_groups_smarts.json` for consistency and maintainability.
+
+### JSON-Driven Test Generation
+
+The benchmark system automatically generates test molecules using the `test.generate` field from each group definition:
+
+```json
+{
+  "id": 31,
+  "name": "aldehyde",
+  "test": {
+    "generate": {
+      "smiles": "C(=O)[H]",
+      "mode": "attach",
+      "is_telomer": false
+    }
+  }
+}
+```
+
+**Benefits:**
+- ✅ Single source of truth for test patterns
+- ✅ Automatic inclusion of new groups in benchmarks
+- ✅ No risk of hardcoded test data diverging from production
+- ✅ Easy to maintain and update
+
+**How It Works:**
+1. Script reads `PFAS_groups_smarts.json`
+2. Extracts `test.generate.smiles`, `mode`, and `is_telomer` for each group
+3. Generates test molecules by attaching/inserting SMILES to perfluorinated chains
+4. Creates single-group and multi-group test combinations
+5. Validates detection accuracy against expected groups
+
 ## Actions Required
 
 ### Step 1: Run Missing/Updated Benchmarks
