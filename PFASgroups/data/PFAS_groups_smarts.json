@@ -1112,7 +1112,7 @@
             }
         },
         "smarts": {
-            "[#6$([#6][CH1,C$(C(F))](=O))]": 1
+            "[C$(C[CH1,C$(C(F))](=O))]": 1
         },
         "test": {
             "category": "generic",
@@ -1122,9 +1122,14 @@
                 "is_telomer": false
             },
             "examples": [
-                "C(=O)CC(=O)C(F)(F)C(F)(F)C(F)(F)F",
-                "C(=O)C(=N\\NC1=CC=C(C=C1)[N+]([O-])=O)\\C(=O)C(F)(F)C(F)(F)C(F)(F)F",
-                "FC(=O)CC(=O)C(F)(F)C(F)(F)C(F)(F)F"
+                "C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "FC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "FC(=O)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples":[
+                "CCC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "COC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "OC(=O)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -1154,6 +1159,11 @@
                 "FC(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "[NH4+].[O-]C(=O)C(F)(F)OC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
                 "OCC(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples":[
+                "CCC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "COC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -1182,7 +1192,12 @@
             "examples": [
                 "FC(F)(COC(=O)C=C)C(F)(F)C(F)(F)C(F)(F)COC(=O)C=C",
                 "OC1=CC=C(C=C1)C(=O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "OC(CC(=O)OCCOC(F)(F)F)(CC(=O)OC(F)(F)F)C(=O)OC(F)(F)F |lp:0:2,4:2,5:2,8:2,10:3,11:3,12:3,15:2,16:2,18:3,19:3,20:3,22:2,23:2,25:3,26:3,27:3,Sg:n:12,11,9::ht,Sg:n:19,18,17::ht,Sg:n:26,25,24::ht|"
+                "OC(CC(=O)OCCOC(F)(F)F)(CC(=O)OC(F)(F)F)C(=O)OC(F)(F)F"
+            ],
+            "counter-examples":[
+                "CCC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "COC(=O)CC(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2301,7 +2316,7 @@
             }
         },
         "smarts": {
-            "[C$(C[Si](Cl)(Cl)Cl)]": 1
+            "[C$(C[CH2][Si](Cl)(Cl)Cl)]": 1
         },
         "test": {
             "category": "telomer",
@@ -2312,6 +2327,9 @@
             },
             "examples": [
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC[Si](Cl)(Cl)Cl"
+            ],
+            "counter-examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)[Si](Cl)(Cl)Cl"
             ]
         }
     },
@@ -2328,7 +2346,7 @@
             }
         },
         "smarts": {
-            "[CH2$(CI)]": 1
+            "[C$(C[CH2]I)]": 1
         },
         "test": {
             "category": "telomer",
@@ -2343,6 +2361,13 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCI",
                 "FC(F)(F)C(F)(F)C(F)(F)CCI",
                 "FC(F)(F)C(F)(F)CCI"
+            ],
+            "counter-examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
+                "FC(F)(F)C(F)(F)C(F)(F)I",
+                "FC(F)(F)C(F)(F)I"
             ]
         }
     },
@@ -2359,7 +2384,7 @@
             }
         },
         "smarts": {
-            "[CH1$(C(=O))]": 1
+            "[C$(C[CH2][CH1](=O))]": 1
         },
         "test": {
             "category": "telomer",
@@ -2374,6 +2399,13 @@
                 "O=CCC(F)(F)C(F)(F)F",
                 "O=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=CC(F)(F)C(F)(F)F",
+                "O=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2390,7 +2422,7 @@
             }
         },
         "smarts": {
-            "[CH2$(CC(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]C(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2405,6 +2437,13 @@
                 "O=C(O)CCC(F)(F)F",
                 "O=C(O)CC(F)(F)F",
                 "O=C(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(O)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)C(F)(F)F",
+                "O=C(O)C(F)(F)F",
+                "O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2421,7 +2460,7 @@
             }
         },
         "smarts": {
-            "[CH2$(C[OH1,Oh1,O-])]": 1,
+            "[C$(C[CH2][OH1,Oh1,O-])]": 1,
             "[O$(O(C)C)]": 1
         },
         "test": {
@@ -2431,7 +2470,20 @@
                 "mode": "attach",
                 "is_telomer": true
             },
-            "examples": []
+            "examples": [
+                "C(O)CCOC(F)(F)C(F)(F)C(F)(F)F",
+                "C(O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C(O)COCCC(F)(F)F",
+                "C(O)COC(F)(F)F",
+                "C(O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "C(O)CCC(F)(F)C(F)(F)C(F)(F)F",
+                "C(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C(O)CCCC(F)(F)F",
+                "C(O)(F)(F)F",
+                "C(O)(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ]
         }
     },
     {
@@ -2448,7 +2500,7 @@
             }
         },
         "smarts": {
-            "[CH2$(C[#16](=O)(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2][#16](=O)(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2463,6 +2515,13 @@
                 "O=S(=O)([O-])CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.[NH4+]",
                 "O=S(=O)([O-])CCCCC(F)(F)F",
                 "O=S(=O)(O)CCCC(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)([O-])C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.[NH4+]",
+                "O=S(=O)([O-])C(F)(F)F",
+                "O=S(=O)(O)C(F)(F)F"
             ]
         }
     },
@@ -2479,7 +2538,7 @@
             }
         },
         "smarts": {
-            "[CH2$(COP(=O)([O!$(O[CH2])])[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]OP(=O)([O!$(O[CH2])])[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2494,6 +2553,13 @@
                 "O=P(O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=P(O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=P(O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=P(O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2510,7 +2576,7 @@
             }
         },
         "smarts": {
-            "[CH2$(COP(=O)(O)O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]": 1
+            "[C$(C[CH2]OP(=O)(O)O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2525,6 +2591,13 @@
                 "O=P(O)(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=P(O)(OCCC(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)F",
                 "O=P(O)(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=P(O)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(O)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(O)(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(O)(O)OCCC(F)(F)C(F)(F)F",
+                "O=P(O)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2541,7 +2614,7 @@
             }
         },
         "smarts": {
-            "[CH2$(COP(=O)(O[CH2$(C[CH2,CX4$(C(F)(F)C)])])O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]": 1
+            "[C$(C[CH2]OP(=O)(O[CH2$(C[CH2,CX4$(C(F)(F)C)])])O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2556,6 +2629,13 @@
                 "O=P(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=P(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=P(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=P(OC(F)(F)C(F)(F)F)(OCCC(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)F",
+                "O=P(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=P(O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2572,7 +2652,7 @@
             }
         },
         "smarts": {
-            "[CH2$(COC(=O)[CH1]=[CH2])]": 1
+            "[C$(C[CH2]OC(=O)[CH1]=[CH2])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2587,6 +2667,13 @@
                 "C=CC(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "C=CC(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "C=CC(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "C=CC(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C=CC(=O)OC(F)(F)C(F)(F)F",
+                "C=CC(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C=CC(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C=CC(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2604,7 +2691,7 @@
             }
         },
         "smarts": {
-            "[CH2$(COC(=O)C(C)=[CH2])]": 1
+            "[C$(C[CH2]OC(=O)C(C)=[CH2])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2617,6 +2704,11 @@
                 "C=C(C)C(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "C=C(C)C(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "C=C(C)C(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "C=C(C)C(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C=C(C)C(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C=C(C)C(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2633,7 +2725,7 @@
             }
         },
         "smarts": {
-            "[CH2$(C[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2][OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2648,6 +2740,13 @@
                 "OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "OC(F)(F)C(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2664,7 +2763,7 @@
             }
         },
         "smarts": {
-            "[CH2$(C[S!$(S(=O))!$(SO)])]": 1
+            "[C$(C[CH2][S!$(S(=O))!$(SO)])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2679,6 +2778,13 @@
                 "C[N+](C)(C)CC(O)CSCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.[Cl-]",
                 "C[N+](C)(C)CC(O)CSCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)CCSCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FC(F)(F)C(F)(F)S",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S",
+                "C[N+](C)(C)CC(O)CSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.[Cl-]",
+                "C[N+](C)(C)CC(O)CSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)SC(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2697,7 +2803,7 @@
             }
         },
         "smarts": {
-            "[CX4$([#6][#16]([#7])(=[#8])=[#8]),CX4$([#6][#7][#16](=[#8])=[#8])]": 1
+            "[C$(C[CH2][#16]([#7])(=[#8])=[#8]),C$(C[CH2][#7][#16](=[#8])=[#8])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2708,10 +2814,17 @@
             },
             "examples": [
                 "C[N+](C)(CCCNS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
-                "C[N+](C)(CCCNS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
-                "C[N+](C)(C)CCCNS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "NS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "CNCCCNS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+                "C[N+](C)(CCCNS(=O)(=O)CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(C)CCCNS(=O)(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "NS(=O)(=O)CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CNCCCNS(=O)(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "C[N+](C)(CCCNS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(CCCNS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(C)CCCNS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "NS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CNCCCNS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2729,7 +2842,7 @@
             }
         },
         "smarts": {
-            "[CX4$([#6][Si](OC)(OC)OC)]": 1
+            "[C$(C[CH2][Si](OC)(OC)OC)]": 1
         },
         "test": {
             "category": "telomer",
@@ -2740,6 +2853,9 @@
             },
             "examples": [
                 "CO[Si](CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(OC)OC"
+            ],
+            "counter-examples": [
+                "CO[Si](C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(OC)OC"
             ]
         }
     },
@@ -2757,7 +2873,7 @@
             }
         },
         "smarts": {
-            "[CX4$([#6]N(C)(C)CC(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]N(C)(C)CC(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2769,9 +2885,16 @@
             "examples": [
                 "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
                 "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
-                "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
-                "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
-                "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O"
+                "C[N+](C)(CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(CCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O"
+            ],
+            "counter-examples": [
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O"
             ]
         }
     },
@@ -2788,7 +2911,7 @@
             }
         },
         "smarts": {
-            "[CX4$([#6]OC(=O)[CH2]),CX4$(CC(=O)O[CH2X4])]": 1
+            "[C$(C[CH2]OC(=O)[CH2]),C$(C[CH2]C(=O)O[CH2X4])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2799,7 +2922,13 @@
             },
             "examples": [
                 "CCCCCCCCCCCCCCCCCC(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=C(CC(O)(CC(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+                "O=C(CC(O)(CC(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CCCCCCCCCCCCCCCCCC(=O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(CC(O)(CC(=O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "CCCCCCCCCCCCCCCCCC(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(CC(O)(CC(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2817,28 +2946,35 @@
             }
         },
         "smarts": {
-            "[CX4$(CSN#C)]": 1
+            "[C$(C[CH2]SC#N)]": 1
         },
         "test": {
             "category": "telomer",
             "generate": {
-                "smiles": "CCCCSN#C",
+                "smiles": "CCCCSC#N",
                 "mode": "attach",
                 "is_telomer": true
             },
-            "examples": []
+            "examples": [
+                "N#CSCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "N#CSCCCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "N#CSCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "N#CSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ]
         }
     },
     {
         "id": 93,
         "name": "Fluorotelomer alkene",
         "alias": "Fluorotelomer alkene",
-        "smartsPath": "Perfluoroalkyl",
-        "linker_smarts": "[CH2X4]",
+        "smartsPath": null,
+        "linker_smarts": null,
         "max_dist_from_CF": 16,
         "constraints": {},
         "smarts": {
-            "[CX4$(C[CH1]=[CH3])]": 1
+            "[C$(C[CH2]C=C)]": 1
         },
         "test": {
             "category": "telomer",
@@ -2847,7 +2983,14 @@
                 "mode": "insert",
                 "is_telomer": true
             },
-            "examples": []
+            "examples": [
+                "C=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C=CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C=CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ]
         }
     },
     {
@@ -2863,7 +3006,7 @@
             }
         },
         "smarts": {
-            "[CX4$([#6]N([CH3])([CH3])C)]": 1
+            "[C$(C[CH2]N([CH3])([CH3])C)]": 1
         },
         "test": {
             "category": "telomer",
@@ -2874,10 +3017,17 @@
             },
             "examples": [
                 "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
-                "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
                 "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
-                "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
                 "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O"
+            ],
+            "counter-examples": [
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O"
             ]
         }
     },
@@ -2895,7 +3045,7 @@
             }
         },
         "smarts": {
-            "[CH2$(C[#16](=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2][#16](=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2905,11 +3055,18 @@
                 "is_telomer": true
             },
             "examples": [
-                "O=S(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(=O)([O-])CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.[NH4+]",
                 "O=S(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)([O-])C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.[NH4+]",
+                "O=S(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2927,7 +3084,7 @@
             }
         },
         "smarts": {
-            "[CH2$(C[#16][OH1,Oh1,O-])]": 1
+            "[C$(C[CH2][#16][OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2938,10 +3095,17 @@
             },
             "examples": [
                 "O=S(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=S(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(=O)([O-])CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.[NH4+]",
                 "O=S(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)([O-])C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.[NH4+]",
+                "O=S(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2959,7 +3123,7 @@
             }
         },
         "smarts": {
-            "[#6H2$([#6]O[#16](=O)(=O)[OX2])]": 1
+            "[C$(C[CH2]O[#16](=O)(=O)[OX2])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2970,10 +3134,17 @@
             },
             "examples": [
                 "O=S(=O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=S(=O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(=O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(=O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(=O)(O)OCCC(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(=O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)OC(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -2986,7 +3157,7 @@
         "max_dist_from_CF": 16,
         "constraints": {},
         "smarts": {
-            "[CH2$(C[CH3])]": 1
+            "[C$(C[CH2][CH3])]": 1
         },
         "test": {
             "category": "telomer",
@@ -2998,6 +3169,10 @@
             "examples": [
                 "CCC(F)(F)C(F)(F)C(F)(F)F",
                 "CCCCCCCCCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -3014,7 +3189,7 @@
             }
         },
         "smarts": {
-            "[CX4$(C[O$(O[C@@H]1O[C@H](C(=O)O)[C@@H](O)[C@H](O)[C@H]1O),O$(O[C@H]1[C@H](O)O[C@H](C(=O)O)[C@@H](O)[C@@H]1O),O$(O[C@@H]1[C@@H](O)[C@H](O)O[C@H](C(=O)O)[C@H]1O),O$(O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1C(=O)O)])]": 1
+            "[C$(C[CH2][O$(O[C@@H]1O[C@H](C(=O)O)[C@@H](O)[C@H](O)[C@H]1O),O$(O[C@H]1[C@H](O)O[C@H](C(=O)O)[C@@H](O)[C@@H]1O),O$(O[C@@H]1[C@@H](O)[C@H](O)O[C@H](C(=O)O)[C@H]1O),O$(O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1C(=O)O)])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3024,10 +3199,16 @@
                 "is_telomer": true
             },
             "examples": [
-                "O=C(O)[C@H]1O[C@@H](OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)[C@H](O)[C@@H](O)[C@@H]1O",
+                "O=C(O)[C@H]1O[C@@H](OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)[C@H](O)[C@@H](O)[C@@H]1O",
                 "O=C(O)[C@H]1O[C@@H](OCCC(F)(F)C(F)(F)F)[C@H](O)[C@@H](O)[C@@H]1O",
                 "O=C(O)[C@H]1O[C@@H](OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)[C@H](O)[C@@H](O)[C@@H]1O",
                 "O=C(O)[C@H]1O[C@@H](OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)[C@H](O)[C@@H](O)[C@@H]1O"
+            ],
+            "counter-examples": [
+                "O=C(O)[C@H]1O[C@@H](OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)[C@H](O)[C@@H](O)[C@@H]1O",
+                "O=C(O)[C@H]1O[C@@H](OC(F)(F)C(F)(F)F)[C@H](O)[C@@H](O)[C@@H]1O",
+                "O=C(O)[C@H]1O[C@@H](OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)[C@H](O)[C@@H](O)[C@@H]1O",
+                "O=C(O)[C@H]1O[C@@H](OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)[C@H](O)[C@@H](O)[C@@H]1O"
             ]
         }
     },
@@ -3045,7 +3226,7 @@
             }
         },
         "smarts": {
-            "[CH2$(CC([OH1,Oh1,O-])S(=O)(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]C([OH1,Oh1,O-])S(=O)(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3056,10 +3237,17 @@
             },
             "examples": [
                 "O=S(=O)(O)C(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=S(=O)(O)C(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(O)CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(=O)(O)C(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=S(=O)(O)C(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(O)CCCCCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=S(=O)(O)C(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(=O)(O)C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(O)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(O)COC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(O)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -3076,7 +3264,7 @@
             }
         },
         "smarts": {
-            "[C$(CC(=O)[OH1,Oh1,O-])]": 1,
+            "C(=O)[OH1,Oh1,O-]": 1,
             "C=C": 1
         },
         "test": {
@@ -3087,11 +3275,16 @@
                 "is_telomer": true
             },
             "examples": [
-                "O=C(O)/C=C(\\F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=C(O)/C=C(\\F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=C(O)/C=C(\\F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=C(O)/C=C/C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "NC(CCC(=O)NC(CS/C(=C\\C=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(=O)NCC(=O)O)C(=O)O"
+                "O=C(O)C=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)C=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)C=CCCC=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCCC=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(O)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -3108,7 +3301,7 @@
             }
         },
         "smarts": {
-            "[C$(C(=O)SC(=O)C([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]C(=O)SC(=O)C([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3118,11 +3311,18 @@
                 "is_telomer": true
             },
             "examples": [
-                "O=C(CCC(F)(F)F)SC(=O)C(O)C(=O)O",
+                "O=C(CC(F)(F)F)SC(=O)C(O)C(=O)O",
                 "O=C(CCC(F)(F)C(F)(F)F)SC(=O)C(O)C(=O)O",
                 "O=C(CCC(F)(F)C(F)(F)C(F)(F)F)SC(=O)C(O)C(=O)O",
                 "O=C(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SC(=O)C(O)C(=O)O",
                 "O=C(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SC(=O)C(O)C(=O)O"
+            ],
+            "counter-examples": [
+                "O=C(C(F)(F)F)SC(=O)C(O)C(=O)O",
+                "O=C(C(F)(F)C(F)(F)F)SC(=O)C(O)C(=O)O",
+                "O=C(C(F)(F)C(F)(F)C(F)(F)F)SC(=O)C(O)C(=O)O",
+                "O=C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SC(=O)C(O)C(=O)O",
+                "O=C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SC(=O)C(O)C(=O)O"
             ]
         }
     },
@@ -3140,7 +3340,7 @@
             }
         },
         "smarts": {
-            "[C$(C[NH2+,N$([N+]([CH3])[CH3])]CC(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2][NH2+,N$([N+]([CH3])[CH3])]CC(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3151,10 +3351,17 @@
             },
             "examples": [
                 "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
-                "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
                 "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
-                "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
-                "C[N+](C)(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O"
+                "C[N+](C)(CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O"
+            ],
+            "counter-examples": [
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
+                "C[N+](C)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O"
             ]
         }
     },
@@ -3173,7 +3380,7 @@
             }
         },
         "smarts": {
-            "[C$(CS(=O)(=O)NCC[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]S(=O)(=O)NCC[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3183,11 +3390,18 @@
                 "is_telomer": true
             },
             "examples": [
-                "CCCN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "CCCN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "CCCN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "N(CCO)S(=O)(=O)CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "N(CCO)S(=O)(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "N(CCO)S(=O)(=O)CCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C/C=C/N(CCO)S(=O)(=O)CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "N(CCO)S(=O)(=O)CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CF"
+            ],
+            "counter-examples": [
+                "N(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "N(CCO)S(=O)(=O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "N(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "C/C=C/N(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "C=C=CN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CF"
+                "N(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CF"
             ]
         }
     },
@@ -3204,7 +3418,7 @@
             }
         },
         "smarts": {
-            "[CH2$(CC(=O)[OH1,Oh1,O-])]": 1,
+            "[$([CH2X4,OH0X2][CH2]C(=O)[OH1,Oh1,O-])]": 1,
             "[O$(O([C])[C])]": 1
         },
         "test": {
@@ -3216,10 +3430,17 @@
             },
             "examples": [
                 "O=C(O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=C(O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=C(O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=C(O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCCCOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCOCOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCCCCOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=C(O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -3237,7 +3458,7 @@
             }
         },
         "smarts": {
-            "[CH2$(CS(=O)(=O)[CH2][CH2]C(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]S(=O)(=O)[CH2][CH2]C(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3247,11 +3468,18 @@
                 "is_telomer": true
             },
             "examples": [
-                "O=C(O)CCS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCS(=O)(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=C(O)CCS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=C(O)CCS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCS(=O)(=O)CCCCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=C(O)CCS(=O)(=O)CCC(F)(F)C(F)(F)F",
-                "O=C(O)CCS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+                "O=C(O)CCS(=O)(=O)CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(O)CCS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCS(=O)(=O)C(F)(F)C(F)(F)F",
+                "O=C(O)CCS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -3270,7 +3498,7 @@
             }
         },
         "smarts": {
-            "[CH2$(CS(=O)[CH2][CH2]C(=O)[NH]C([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]S(=O)[CH2][CH2]C(=O)[NH]C([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3280,11 +3508,18 @@
                 "is_telomer": true
             },
             "examples": [
-                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "CC(C)(CS(=O)(=O)[O-])NC(=O)CCS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)CCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)(=O)CCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(C)(CS(=O)(=O)[O-])NC(=O)CCS(=O)(=O)CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "CC(C)(CS(=O)(=O)[O-])NC(=O)CCS(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(C)(CS(=O)(=O)[O-])NC(=O)CCS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(C)(CS(=O)(=O)[O-])NC(=O)CCS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -3302,7 +3537,7 @@
             }
         },
         "smarts": {
-            "[CH2$(C[SX3$(S(=O))!$(S(=O)(=O))])]": 1
+            "[C$(C[CH2]S(=O)[#6!$(C~O)])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3312,11 +3547,16 @@
                 "is_telomer": true
             },
             "examples": [
-                "O=S(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=S(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=S(O)CCC(F)(F)C(F)(F)F",
-                "CC(C)(CS(=O)(=O)O)NC(=O)CCS(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "C[N+](C)(C)CC(O)CS(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+                "O=S(C)CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(C)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(C)CC(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(C)CCOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(O)CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(C)CCOC(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -3334,7 +3574,7 @@
             }
         },
         "smarts": {
-            "[CH2$(C[SX4$(S(=O)(=O))!$(S(=O)(=O)(=O))])]": 1
+            "[C$(C[CH2][SX4](=O)(=O))]": 1
         },
         "test": {
             "category": "telomer",
@@ -3344,11 +3584,18 @@
                 "is_telomer": true
             },
             "examples": [
-                "C[N+](C)(CCCNS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)[O-]",
-                "C[N+](C)(CCCNS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CC(=O)O",
-                "O=S(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "O=S(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "C[N+](C)(C)CCCNS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+                "S(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "S(=O)(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "S(=O)(=O)CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "S(=O)(=O)CC(F)(F)C(F)(F)F",
+                "S(=O)(=O)CCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "S(=O)CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=S(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -3366,7 +3613,7 @@
             }
         },
         "smarts": {
-            "[CH2$(CC(=O)SCC([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]C(=O)SCC([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3377,10 +3624,17 @@
             },
             "examples": [
                 "O=C(CCC(F)(F)F)SCC(O)C(=O)O",
-                "O=C(CCC(F)(F)C(F)(F)F)SCC(O)C(=O)O",
+                "O=C(CCCCCC(F)(F)C(F)(F)F)SCC(O)C(=O)O",
                 "O=C(CCC(F)(F)C(F)(F)C(F)(F)F)SCC(O)C(=O)O",
-                "O=C(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SCC(O)C(=O)O",
+                "O=C(CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SCC(O)C(=O)O",
                 "O=C(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SCC(O)C(=O)O"
+            ],
+            "counter-examples": [
+                "O=C(C(F)(F)F)SCC(O)C(=O)O",
+                "O=C(CCC(F)(F)C(F)(F)F)SC(O)C(=O)O",
+                "O=C(COCC(F)(F)C(F)(F)C(F)(F)F)SCC(O)C(=O)O",
+                "O=C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SCC(O)C(=O)O",
+                "O=C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SCC(O)C(=O)O"
             ]
         }
     },
@@ -3398,7 +3652,7 @@
             }
         },
         "smarts": {
-            "[CH2$(CC(=O)SC([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]C(=O)SC([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3407,7 +3661,20 @@
                 "mode": "attach",
                 "is_telomer": true
             },
-            "examples": []
+            "examples": [
+                "O=C(CCC(F)(F)F)SC(O)C(=O)O",
+                "O=C(CCCCCC(F)(F)C(F)(F)F)SC(O)C(=O)O",
+                "O=C(CCC(F)(F)C(F)(F)C(F)(F)F)SC(O)C(=O)O",
+                "O=C(CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SC(O)C(=O)O",
+                "O=C(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SC(O)C(=O)O"
+            ],
+            "counter-examples": [
+                "O=C(CCC(F)(F)F)SCC(O)C(=O)O",
+                "O=C(C(F)(F)C(F)(F)F)SC(O)C(=O)O",
+                "O=C(COCC(F)(F)C(F)(F)C(F)(F)F)SC(O)C(=O)O",
+                "O=C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SC(O)C(=O)O",
+                "O=C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)SC(O)C(=O)O"
+            ]
         }
     },
     {
@@ -3424,7 +3691,7 @@
             }
         },
         "smarts": {
-            "[C$(CN([CH2$(C[CH2,C$(C(F)F)])])[CH2][CH2]C(=O)[OH1,Oh1,O-])]": 1
+            "[C$(C[CH2]N([CH2$(C[CH2,C$(C(F)F)])])[CH2][CH2]C(=O)[OH1,Oh1,O-])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3439,6 +3706,13 @@
                 "O=C(O)CCN(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=C(O)CCN(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "O=C(O)CCN(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=C(O)CCN(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCN(COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CN(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CN(CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "O=C(O)CCN(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -3451,12 +3725,11 @@
         "max_dist_from_CF": 16,
         "constraints": {
             "gte": {
-                "O": 4,
-                "S": 1
+                "N": 2
             }
         },
         "smarts": {
-            "[CH2$(C[NH][CH2][CH2][N+]([CH3])([CH3])[CH3])]": 1
+            "[C$(C[CH2][CH2][NH,Nh,N-][CH2][CH2][N+]([CH3])([CH3])[CH3])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3465,7 +3738,20 @@
                 "mode": "attach",
                 "is_telomer": true
             },
-            "examples": []
+            "examples": [
+                "C(CCC(F)(F)F)NCC[N+](C)(C)C",
+                "C(CCCC(F)(F)C(F)(F)C(F)(F)F)NCC[N+](C)(C)C",
+                "C(CCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)NCC[N+](C)(C)C",
+                "C(CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)NCC[N+](C)(C)C",
+                "C(CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)NCC[N+](C)(C)C"
+            ],
+            "counter-examples": [
+                "C(C(F)(F)F)NCC[N+](C)(C)C",
+                "C(C(F)(F)C(F)(F)C(F)(F)F)NCC[N+](C)(C)C",
+                "C(CCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)NCCC[N+](C)(C)C",
+                "C(CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)NC[N+](C)(C)C",
+                "C(CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F)NCC(C)(C)C"
+            ]
         }
     },
     {
@@ -3475,21 +3761,6 @@
         "smartsPath": "Perfluoroalkyl",
         "constraints": {},
         "compute": false,
-        "re_search": "telomer",
-        "test": {
-            "category": "telomer",
-            "generate": {
-                "smiles": "",
-                "mode": "insert",
-                "is_telomer": true
-            },
-            "examples": [
-                "OCC(F)(F)C(F)(F)C(F)(F)F",
-                "OCC(F)(F)C(F)(F)F",
-                "OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
-            ]
-        }
+        "re_search": "telomer"
     }
 ]

@@ -33,6 +33,8 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 from collections import defaultdict
 
+import pytest
+
 # Add parent directory to path to import PFASgroups
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -104,7 +106,37 @@ def load_definitions(definitions_file: Path) -> List[PFASDefinition]:
     return definitions
 
 
-def test_groups(groups: List[PFASGroup], verbose: bool = False, specific_id: int = None) -> Tuple[int, int, List[Dict]]:
+# ============================================================================
+# PYTEST FIXTURES
+# ============================================================================
+
+@pytest.fixture(scope='session')
+def data_dir():
+    """Get path to data directory."""
+    script_dir = Path(__file__).parent
+    root_dir = script_dir.parent
+    return root_dir / 'PFASgroups' / 'data'
+
+
+@pytest.fixture(scope='session')
+def groups(data_dir):
+    """Load all PFAS groups for testing."""
+    groups_file = data_dir / 'PFAS_groups_smarts.json'
+    return load_groups(groups_file)
+
+
+@pytest.fixture(scope='session')
+def definitions(data_dir):
+    """Load all PFAS definitions for testing."""
+    definitions_file = data_dir / 'PFAS_definitions_smarts.json'
+    return load_definitions(definitions_file)
+
+
+# ============================================================================
+# VALIDATION FUNCTIONS (used by both pytest and standalone)
+# ============================================================================
+
+def validate_groups(groups: List[PFASGroup], verbose: bool = False, specific_id: int = None) -> Tuple[int, int, List[Dict]]:
     """Test all PFAS groups against their test metadata.
     
     Parameters
@@ -182,7 +214,7 @@ def test_groups(groups: List[PFASGroup], verbose: bool = False, specific_id: int
     return passed, failed, all_failures
 
 
-def test_definitions(definitions: List[PFASDefinition], verbose: bool = False, specific_id: int = None) -> Tuple[int, int, List[Dict]]:
+def validate_definitions(definitions: List[PFASDefinition], verbose: bool = False, specific_id: int = None) -> Tuple[int, int, List[Dict]]:
     """Test all PFAS definitions against their test metadata.
     
     Parameters
@@ -272,6 +304,79 @@ def test_definitions(definitions: List[PFASDefinition], verbose: bool = False, s
     
     return passed, failed, all_failures
 
+
+# ============================================================================
+# PYTEST TEST FUNCTIONS
+# ============================================================================
+
+def test_all_pfas_groups(groups):
+    """Test all PFAS groups against their test metadata."""
+    failures = []
+    
+    for group in groups:
+        result = group.test()
+        
+        # Skip if no test data
+        if result.get('passed') is None:
+            continue
+        
+        if not result['passed']:
+            failures.append({
+                'group': group,
+                'result': result
+            })
+    
+    # Build detailed error message if any failures
+    if failures:
+        error_lines = [f"\n{len(failures)} group(s) failed:"]
+        for item in failures:
+            group = item['group']
+            result = item['result']
+            error_lines.append(f"\n  Group {group.id}: {group.name}")
+            error_lines.append(f"    Failed: {len(result['failures'])}/{result['total_tests']} tests")
+            for failure in result['failures'][:3]:  # Show first 3 failures per group
+                error_lines.append(f"      SMILES: {failure['smiles'][:60]}")
+                error_lines.append(f"      Expected: {failure['expected']}, Got: {failure['got']}")
+        pytest.fail('\n'.join(error_lines))
+
+
+def test_all_pfas_definitions(definitions):
+    """Test all PFAS definitions against their test metadata."""
+    failures = []
+    
+    for definition in definitions:
+        result = definition.test()
+        
+        # Skip if no test data
+        if result.get('passed') is None:
+            continue
+        
+        if not result['passed']:
+            failures.append({
+                'definition': definition,
+                'result': result
+            })
+    
+    # Build detailed error message if any failures
+    if failures:
+        error_lines = [f"\n{len(failures)} definition(s) failed:"]
+        for item in failures:
+            definition = item['definition']
+            result = item['result']
+            stats = result.get('stats', {})
+            error_lines.append(f"\n  Definition {definition.id}: {definition.name}")
+            error_lines.append(f"    Failed: {len(result['failures'])}/{result['total_tests']} tests")
+            error_lines.append(f"    TP: {stats.get('true_positives', 0)}, TN: {stats.get('true_negatives', 0)}, "
+                             f"FP: {stats.get('false_positives', 0)}, FN: {stats.get('false_negatives', 0)}")
+            for failure in result['failures'][:3]:  # Show first 3 failures per definition
+                error_lines.append(f"      [{failure['type']}] {failure['smiles'][:60]}")
+                error_lines.append(f"      Expected: {failure['expected']}, Got: {failure['got']}")
+        pytest.fail('\n'.join(error_lines))
+
+
+# ============================================================================
+# STANDALONE FUNCTIONS
+# ============================================================================
 
 def write_failure_report(failures: List[Dict], output_file: Path):
     """Write detailed failure report to file.
@@ -368,7 +473,7 @@ def main():
         groups = load_groups(groups_file)
         print(f"Loaded {len(groups)} PFAS groups")
         
-        passed, failed, failures = test_groups(
+        passed, failed, failures = validate_groups(
             groups, 
             verbose=args.verbose,
             specific_id=args.group_id
@@ -382,7 +487,7 @@ def main():
         definitions = load_definitions(definitions_file)
         print(f"Loaded {len(definitions)} PFAS definitions")
         
-        passed, failed, failures = test_definitions(
+        passed, failed, failures = validate_definitions(
             definitions,
             verbose=args.verbose,
             specific_id=args.definition_id

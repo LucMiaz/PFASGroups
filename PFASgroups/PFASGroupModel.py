@@ -114,7 +114,7 @@ class PFASGroup():
                 self.re_search = re.compile(self.re_search)
             except Exception as e:
                 raise Exception(f"Error for agg Group {self.id}: {self.name}\n {e}")
-            
+        self.test_dict = kwargs.get('test',None)# test dict for unit tests
     
     def _count_smarts_extra_atoms(self, smarts_str):
         """Count number of extra carbon atoms in functional group beyond what's captured by component.
@@ -584,39 +584,19 @@ class PFASGroup():
         from .core import n_from_formula
         from .ComponentsSolverModel import ComponentsSolver
         
-        # Load test data if not provided
-        if test_data is None:
-            import json
-            from pathlib import Path
-            groups_file = Path(__file__).parent / 'data' / 'PFAS_groups_smarts.json'
-            with open(groups_file, 'r') as f:
-                all_groups = json.load(f)
-            
-            # Find this group's test data
-            test_data = None
-            for group_data in all_groups:
-                if group_data['id'] == self.id:
-                    test_data = group_data.get('test', {})
-                    break
-            
-            if test_data is None or not test_data:
-                return {
-                    'passed': None,
-                    'total_tests': 0,
-                    'failures': [],
-                    'category': 'unknown',
-                    'error': f'No test data found for group {self.id}'
-                }
+        
         
         results = {
             'passed': True,
             'total_tests': 0,
             'failures': [],
-            'category': test_data.get('category', 'unknown')
+            'category': self.test_dict.get('category', 'unknown') if self.test_dict else 'unknown'
         }
-        
+        # Load test data if not provided
+        if self.test_dict is None:
+            return results # No tests defined for this group
         # Test positive examples
-        examples = test_data.get('examples', [])
+        examples = self.test_dict.get('examples', [])
         for smiles in examples:
             results['total_tests'] += 1
             try:
@@ -660,5 +640,49 @@ class PFASGroup():
                     'got': None,
                     'error': f'Exception: {str(e)}'
                 })
-        
+        # Test positive examples
+        examples = self.test_dict.get('counter-examples', [])
+        for smiles in examples:
+            results['total_tests'] += 1
+            try:
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    results['passed'] = False
+                    results['failures'].append({
+                        'smiles': smiles,
+                        'expected': False,
+                        'got': None,
+                        'error': 'Invalid SMILES'
+                    })
+                    continue
+                
+                # Add hydrogens as done in parser
+                mol = Chem.AddHs(mol)
+                
+                # Create ComponentsSolver for this molecule
+                with ComponentsSolver(mol) as component_solver:
+                    # Get formula dict
+                    formula = CalcMolFormula(mol)
+                    fd = n_from_formula(formula)
+                    
+                    # Use find_components to check if group matches
+                    matches = self.find_components(mol, fd, component_solver)
+                    is_match = matches is not None and len(matches) > 0
+                
+                if is_match:
+                    results['passed'] = False
+                    results['failures'].append({
+                        'smiles': smiles,
+                        'expected': False,
+                        'got': True,
+                        'error': 'Group should match but did not'
+                    })
+            except Exception as e:
+                results['passed'] = False
+                results['failures'].append({
+                    'smiles': smiles,
+                    'expected': True,
+                    'got': None,
+                    'error': f'Exception: {str(e)}'
+                })
         return results
