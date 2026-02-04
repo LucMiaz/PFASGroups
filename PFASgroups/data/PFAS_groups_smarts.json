@@ -1101,9 +1101,37 @@
         }
     },
     {
+        "name": "aldehyde",
+        "alias": "aldehyde",
+        "id": 31,
+        "smartsPath": null,
+        "linker_smarts": null,
+        "constraints": {
+            "gte": {
+                "O": 1
+            }
+        },
+        "smarts": {
+            "[#6$([#6][CH1,C$(C(F))](=O))]": 1
+        },
+        "test": {
+            "category": "generic",
+            "generate": {
+                "smiles": "C(=O)[H]",
+                "mode": "attach",
+                "is_telomer": false
+            },
+            "examples": [
+                "C(=O)CC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "C(=O)C(=N\\NC1=CC=C(C=C1)[N+]([O-])=O)\\C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+                "FC(=O)CC(=O)C(F)(F)C(F)(F)C(F)(F)F"
+            ]
+        }
+    },
+    {
         "name": "ether",
         "alias": "ether",
-        "id": 31,
+        "id": 32,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1132,7 +1160,7 @@
     {
         "name": "ester",
         "alias": "ester",
-        "id": 32,
+        "id": 33,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1161,7 +1189,7 @@
     {
         "name": "carboxylic acid",
         "alias": "carboxylic acid",
-        "id": 33,
+        "id": 34,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1190,7 +1218,7 @@
     {
         "name": "amide",
         "alias": "amide",
-        "id": 34,
+        "id": 35,
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
@@ -1220,7 +1248,7 @@
     {
         "name": "acyl halide",
         "alias": "acyl halide",
-        "id": 35,
+        "id": 36,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1245,7 +1273,7 @@
     {
         "name": "sulfonic acid",
         "alias": "sulfonic acid",
-        "id": 36,
+        "id": 37,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1275,7 +1303,7 @@
     {
         "name": "sulfenic acid",
         "alias": "sulfenic acid",
-        "id": 37,
+        "id": 38,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1301,7 +1329,7 @@
     {
         "name": "sulfinic acid",
         "alias": "sulfinic acid",
-        "id": 38,
+        "id": 39,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1331,7 +1359,7 @@
     {
         "name": "sulfuric acid",
         "alias": "sulfuric acid",
-        "id": 39,
+        "id": 40,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1357,7 +1385,7 @@
     {
         "name": "phosphonic acid",
         "alias": "phosphonic acid",
-        "id": 40,
+        "id": 41,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1387,7 +1415,7 @@
     {
         "name": "phosphinic acid",
         "alias": "phosphinic acid",
-        "id": 41,
+        "id": 42,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
@@ -1417,7 +1445,7 @@
     {
         "name": "chloride",
         "alias": "chloride",
-        "id": 42,
+        "id": 43,
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
@@ -1446,7 +1474,7 @@
     {
         "name": "bromide",
         "alias": "bromide",
-        "id": 43,
+        "id": 44,
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
@@ -1475,7 +1503,7 @@
     {
         "name": "iodide",
         "alias": "iodide",
-        "id": 44,
+        "id": 45,
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
@@ -1504,7 +1532,7 @@
     {
         "name": "sulfonamide",
         "alias": "sulfonamide",
-        "id": 45,
+        "id": 46,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "smartsPath": null,
@@ -1535,7 +1563,7 @@
     {
         "name": "Heterocyclic azole",
         "alias": "heterocyclic azole",
-        "id": 46,
+        "id": 47,
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
@@ -1565,7 +1593,7 @@
     {
         "name": "Heterocyclic azine",
         "alias": "heterocyclic azine",
-        "id": 47,
+        "id": 48,
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
@@ -1595,7 +1623,7 @@
     {
         "name": "benzodioxole",
         "alias": "benzodioxole",
-        "id": 48,
+        "id": 49,
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
@@ -1621,7 +1649,7 @@
     {
         "name": "amine",
         "alias": "amine",
-        "id": 49,
+        "id": 50,
         "smartsPath": null,
         "linker_smarts": null,
         "constraints": {
@@ -1649,7 +1677,7 @@
     {
         "name": "perfluoroalkyl",
         "alias": "perfluoroalkyl",
-        "id": 50,
+        "id": 51,
         "smartsPath": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {},
@@ -1671,7 +1699,7 @@
     {
         "name": "polyfluoroalkyl",
         "alias": "polyfluoroalkyl",
-        "id": 51,
+        "id": 52,
         "smartsPath": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {},
@@ -1693,13 +1721,13 @@
     {
         "name": "alkene",
         "alias": "alkene",
-        "id": 52,
+        "id": 53,
         "smartsPath": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
-            "[#6$([#6X3](F)=[#6])]": 1
+            "[#6$([#6X3]=[#6])]": 1
         },
         "test": {
             "category": "generic",
@@ -1714,7 +1742,7 @@
     {
         "name": "alkyne",
         "alias": "alkyne",
-        "id": 53,
+        "id": 54,
         "smartsPath": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
@@ -1737,7 +1765,7 @@
         }
     },
     {
-        "id": 54,
+        "id": 55,
         "name": "Side-chain aromatics",
         "alias": "Side-chain aromatics",
         "smartsPath": null,
@@ -1761,7 +1789,7 @@
         }
     },
     {
-        "id": 55,
+        "id": 56,
         "name": "Perfluoro cyclic compounds",
         "alias": "Perfluoro cyclic compounds",
         "smartsPath": "cyclic",
@@ -1785,7 +1813,7 @@
         }
     },
     {
-        "id": 56,
+        "id": 57,
         "name": "Polyfluoro cyclic compounds",
         "alias": "Polyfluoro cyclic compounds",
         "smartsPath": "cyclic",
@@ -1809,7 +1837,7 @@
         }
     },
     {
-        "id": 57,
+        "id": 58,
         "name": "Perfluoroaryl compounds",
         "alias": "Perfluoroaryl compounds",
         "smartsPath": "cyclic",
@@ -1833,7 +1861,7 @@
         }
     },
     {
-        "id": 58,
+        "id": 59,
         "name": "Polyfluoroaryl compounds",
         "alias": "Polyfluoroaryl compounds",
         "smartsPath": "cyclic",
@@ -1857,7 +1885,7 @@
         }
     },
     {
-        "id": 59,
+        "id": 60,
         "name": "Peroxydes",
         "alias": "Peroxydes",
         "smartsPath": null,
@@ -1884,7 +1912,7 @@
         }
     },
     {
-        "id": 60,
+        "id": 61,
         "name": "Benzoyl peroxydes",
         "alias": "Benzoyl peroxydes",
         "smartsPath": null,
@@ -1908,7 +1936,7 @@
         }
     },
     {
-        "id": 61,
+        "id": 62,
         "name": "Silane",
         "alias": "Silane",
         "smartsPath": null,
@@ -1934,7 +1962,7 @@
         }
     },
     {
-        "id": 62,
+        "id": 63,
         "name": "Trichlorosilane",
         "alias": "Trichlorosilane",
         "smartsPath": null,
@@ -1963,7 +1991,7 @@
         }
     },
     {
-        "id": 63,
+        "id": 64,
         "name": "Acrylate",
         "alias": "Acrylate",
         "smartsPath": null,
@@ -1992,7 +2020,7 @@
         }
     },
     {
-        "id": 64,
+        "id": 65,
         "name": "Methacrylate",
         "alias": "Methacrylate",
         "smartsPath": null,
@@ -2021,7 +2049,7 @@
         }
     },
     {
-        "id": 65,
+        "id": 66,
         "name": "Betaine",
         "alias": "Betaine",
         "smartsPath": null,
@@ -2047,7 +2075,7 @@
         }
     },
     {
-        "id": 66,
+        "id": 67,
         "name": "Thiocyanic acid",
         "alias": "Thiocyanic acid",
         "smartsPath": null,
@@ -2073,7 +2101,7 @@
         }
     },
     {
-        "id": 67,
+        "id": 68,
         "name": "Thia keto propanoic acid",
         "alias": "Thia keto propanoic acid",
         "smartsPath": null,
@@ -2099,7 +2127,7 @@
         }
     },
     {
-        "id": 68,
+        "id": 69,
         "name": "Glucuronate",
         "alias": "Glucuronate",
         "smartsPath": null,
@@ -2124,7 +2152,7 @@
         }
     },
     {
-        "id": 69,
+        "id": 70,
         "name": "Glycine",
         "alias": "Glycine",
         "smartsPath": null,
@@ -2150,7 +2178,7 @@
         }
     },
     {
-        "id": 70,
+        "id": 71,
         "name": "Sulfonamidoethanol",
         "alias": "Sulfonamidoethanol",
         "smartsPath": null,
@@ -2181,7 +2209,7 @@
         }
     },
     {
-        "id": 71,
+        "id": 72,
         "name": "Sulfonyl propanoic acid",
         "alias": "Sulfonyl propanoic acid",
         "smartsPath": null,
@@ -2207,7 +2235,7 @@
         }
     },
     {
-        "id": 72,
+        "id": 73,
         "name": "Sulfinyl amido sulfonic acid",
         "alias": "Sulfinyl amido sulfonic acid",
         "smartsPath": null,
@@ -2234,7 +2262,7 @@
         }
     },
     {
-        "id": 73,
+        "id": 74,
         "name": "Fluorotelomer silane",
         "alias": "Fluorotelomer silane",
         "smartsPath": null,
@@ -2260,7 +2288,7 @@
         }
     },
     {
-        "id": 74,
+        "id": 75,
         "name": "Fluorotelomer trichlorosilane",
         "alias": "Fluorotelomer trichlorosilane",
         "smartsPath": null,
@@ -2288,7 +2316,7 @@
         }
     },
     {
-        "id": 75,
+        "id": 76,
         "name": "Fluorotelomer iodide",
         "alias": "FTI",
         "smartsPath": "Perfluoroalkyl",
@@ -2319,7 +2347,7 @@
         }
     },
     {
-        "id": 76,
+        "id": 77,
         "name": "Fluorotelomer aldehyde",
         "alias": "FTUCA",
         "smartsPath": "Perfluoroalkyl",
@@ -2350,7 +2378,7 @@
         }
     },
     {
-        "id": 77,
+        "id": 78,
         "name": "Fluorotelomer carboxylic acids",
         "alias": "FTCA",
         "smartsPath": "Perfluoroalkyl",
@@ -2381,7 +2409,7 @@
         }
     },
     {
-        "id": 78,
+        "id": 79,
         "name": "Fluorotelomer ethoxylates",
         "alias": "FTEO",
         "smartsPath": "Perfluoroalkyl",
@@ -2407,7 +2435,7 @@
         }
     },
     {
-        "id": 79,
+        "id": 80,
         "name": "Fluorotelomer sulfonic acid",
         "alias": "FTSA",
         "smartsPath": "Perfluoroalkyl",
@@ -2439,7 +2467,7 @@
         }
     },
     {
-        "id": 80,
+        "id": 81,
         "name": "Fluorotelomer monophosphate",
         "alias": "monoPAP",
         "smartsPath": "Perfluoroalkyl",
@@ -2470,7 +2498,7 @@
         }
     },
     {
-        "id": 81,
+        "id": 82,
         "name": "Fluorotelomer diphosphate",
         "alias": "diPAP",
         "smartsPath": "Perfluoroalkyl",
@@ -2501,7 +2529,7 @@
         }
     },
     {
-        "id": 82,
+        "id": 83,
         "name": "Fluorotelomer triphosphate",
         "alias": "triPAP",
         "smartsPath": "Perfluoroalkyl",
@@ -2532,7 +2560,7 @@
         }
     },
     {
-        "id": 83,
+        "id": 84,
         "name": "Fluorotelomer acrylate",
         "alias": "FTAC",
         "smartsPath": "Perfluoroalkyl",
@@ -2563,7 +2591,7 @@
         }
     },
     {
-        "id": 84,
+        "id": 85,
         "name": "Fluorotelomer methacrylate",
         "alias": "FTMAC",
         "smartsPath": "Perfluoroalkyl",
@@ -2593,7 +2621,7 @@
         }
     },
     {
-        "id": 85,
+        "id": 86,
         "name": "Fluorotelomer alcohol",
         "alias": "FTO",
         "smartsPath": "Perfluoroalkyl",
@@ -2624,7 +2652,7 @@
         }
     },
     {
-        "id": 86,
+        "id": 87,
         "name": "Fluorotelomer sulfure",
         "alias": "FTS",
         "smartsPath": "Perfluoroalkyl",
@@ -2655,7 +2683,7 @@
         }
     },
     {
-        "id": 87,
+        "id": 88,
         "name": "Fluorotelomer sulfonamide",
         "alias": "FTS",
         "smartsPath": "Perfluoroalkyl",
@@ -2688,7 +2716,7 @@
         }
     },
     {
-        "id": 88,
+        "id": 89,
         "name": "Fluorotelomer silyl",
         "alias": "FTSi",
         "smartsPath": "Perfluoroalkyl",
@@ -2716,7 +2744,7 @@
         }
     },
     {
-        "id": 89,
+        "id": 90,
         "name": "Fluorotelomer betaine",
         "alias": "FTB",
         "smartsPath": "Perfluoroalkyl",
@@ -2748,7 +2776,7 @@
         }
     },
     {
-        "id": 90,
+        "id": 91,
         "name": "Fluorotelomer ester",
         "alias": "FTEs",
         "smartsPath": "Perfluoroalkyl",
@@ -2776,7 +2804,7 @@
         }
     },
     {
-        "id": 91,
+        "id": 92,
         "name": "Fluorotelomer thiocyanic acid",
         "alias": "Fluorotelomer thiocyanic acid",
         "smartsPath": "Perfluoroalkyl",
@@ -2802,7 +2830,7 @@
         }
     },
     {
-        "id": 92,
+        "id": 93,
         "name": "Fluorotelomer alkene",
         "alias": "Fluorotelomer alkene",
         "smartsPath": "Perfluoroalkyl",
@@ -2823,7 +2851,7 @@
         }
     },
     {
-        "id": 93,
+        "id": 94,
         "name": "Fluorotelomer trimethylamine",
         "alias": "Fluorotelomer trimethylamine",
         "smartsPath": "Perfluoroalkyl",
@@ -2854,7 +2882,7 @@
         }
     },
     {
-        "id": 94,
+        "id": 95,
         "name": "Fluorotelomer sulfinic acid",
         "alias": "Fluorotelomer sulfinic acid",
         "smartsPath": "Perfluoroalkyl",
@@ -2886,7 +2914,7 @@
         }
     },
     {
-        "id": 95,
+        "id": 96,
         "name": "Fluorotelomer sulfenic acid",
         "alias": "Fluorotelomer sulfenic acid",
         "smartsPath": "Perfluoroalkyl",
@@ -2918,7 +2946,7 @@
         }
     },
     {
-        "id": 96,
+        "id": 97,
         "name": "Fluorotelomer sulfuric acid",
         "alias": "Fluorotelomer sulfuric acid",
         "smartsPath": "Perfluoroalkyl",
@@ -2950,7 +2978,7 @@
         }
     },
     {
-        "id": 97,
+        "id": 98,
         "name": "Fluorotelomer methyl",
         "alias": "Fluorotelomer methyl",
         "smartsPath": "Perfluoroalkyl",
@@ -2974,7 +3002,7 @@
         }
     },
     {
-        "id": 98,
+        "id": 99,
         "name": "Fluorotelomer glucuronic acid",
         "alias": "Fluorotelomer glucuronic acid",
         "smartsPath": "Perfluoroalkyl",
@@ -3004,7 +3032,7 @@
         }
     },
     {
-        "id": 99,
+        "id": 100,
         "name": "Fluorotelomer formaldehyde bisulfite",
         "alias": "Fluorotelomer formaldehyde bisulfite",
         "smartsPath": "Perfluoroalkyl",
@@ -3036,7 +3064,7 @@
         }
     },
     {
-        "id": 100,
+        "id": 101,
         "name": "Fluorotelomer unsaturated carboxylic acids",
         "alias": "FTUCA",
         "smartsPath": "Perfluoroalkyl",
@@ -3068,7 +3096,7 @@
         }
     },
     {
-        "id": 101,
+        "id": 102,
         "name": "Fluorotelomer thia keto propanoic acid",
         "alias": "Fluorotelomer thia keto propanoic acid",
         "smartsPath": "Perfluoroalkyl",
@@ -3099,7 +3127,7 @@
         }
     },
     {
-        "id": 102,
+        "id": 103,
         "name": "Fluorotelomer glycine",
         "alias": "Fluorotelomer glycine",
         "smartsPath": "Perfluoroalkyl",
@@ -3131,7 +3159,7 @@
         }
     },
     {
-        "id": 103,
+        "id": 104,
         "name": "Fluorotelomer sulfonamidoethanol",
         "alias": "FOSE",
         "smartsPath": "Perfluoroalkyl",
@@ -3164,7 +3192,7 @@
         }
     },
     {
-        "id": 104,
+        "id": 105,
         "name": "Fluorotelomer ether carboxylic acids",
         "alias": "FTCA",
         "smartsPath": "Perfluoroalkyl",
@@ -3196,7 +3224,7 @@
         }
     },
     {
-        "id": 105,
+        "id": 106,
         "name": "Fluorotelomer sulfonyl propanoic acid",
         "alias": "Fluorotelomer sulfonyl propanoic acid",
         "smartsPath": "Perfluoroalkyl",
@@ -3228,7 +3256,7 @@
         }
     },
     {
-        "id": 106,
+        "id": 107,
         "name": "Fluorotelomer sulfinyl amido sulfonic acid",
         "alias": "Fluorotelomer sulfinyl amido sulfonic acid",
         "smartsPath": "Perfluoroalkyl",
@@ -3261,7 +3289,7 @@
         }
     },
     {
-        "id": 107,
+        "id": 108,
         "name": "Fluorotelomer sulfinyl",
         "alias": "Fluorotelomer sulfinyl",
         "smartsPath": "Perfluoroalkyl",
@@ -3293,7 +3321,7 @@
         }
     },
     {
-        "id": 108,
+        "id": 109,
         "name": "Fluorotelomer sulfone",
         "alias": "Fluorotelomer sulfone",
         "smartsPath": "Perfluoroalkyl",
@@ -3325,7 +3353,7 @@
         }
     },
     {
-        "id": 109,
+        "id": 110,
         "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid",
         "alias": "Fluorotelomer acetylsulfanylhydroxypropanoic acid",
         "smartsPath": "Perfluoroalkyl",
@@ -3357,7 +3385,7 @@
         }
     },
     {
-        "id": 110,
+        "id": 111,
         "name": "Fluorotelomer acetylhydroxyethanethioate",
         "alias": "Fluorotelomer acetylhydroxyethanethioate",
         "smartsPath": "Perfluoroalkyl",
@@ -3383,7 +3411,7 @@
         }
     },
     {
-        "id": 111,
+        "id": 112,
         "name": "Fluorotelomer amino propanoic acid",
         "alias": "Fluorotelomer amino propanoic acid",
         "smartsPath": "Perfluoroalkyl",
@@ -3415,7 +3443,7 @@
         }
     },
     {
-        "id": 112,
+        "id": 113,
         "name": "Fluorotelomer amino ethyl trimethyl ammonium",
         "alias": "Fluorotelomer amino ethyl trimethyl ammonium",
         "smartsPath": "Perfluoroalkyl",
@@ -3441,7 +3469,7 @@
         }
     },
     {
-        "id": 113,
+        "id": 114,
         "name": "Telomers",
         "alias": "Telomers",
         "smartsPath": "Perfluoroalkyl",

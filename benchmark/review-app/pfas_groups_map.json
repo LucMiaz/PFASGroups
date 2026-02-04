@@ -341,193 +341,193 @@
   },
   {
     "id": 69,
-    "name": "Fluorotelomer glucuronic acid",
-    "alias": "Fluorotelomer glucuronic acid"
-  },
-  {
-    "id": 70,
-    "name": "Fluorotelomer unsaturated carboxylic acids",
-    "alias": "FTUCA"
-  },
-  {
-    "id": 71,
-    "name": "Fluorotelomer ether carboxylic acids",
-    "alias": "FTCA"
-  },
-  {
-    "id": 72,
-    "name": "Fluorotelomer sulfinyl amido sulfonic acid",
-    "alias": "Fluorotelomer sulfinyl amido sulfonic acid"
-  },
-  {
-    "id": 73,
     "name": "Glycine",
     "alias": "Glycine"
   },
   {
-    "id": 74,
+    "id": 70,
     "name": "Sulfonamidoethanol",
     "alias": "Sulfonamidoethanol"
   },
   {
-    "id": 75,
+    "id": 71,
     "name": "Sulfonyl propanoic acid",
     "alias": "Sulfonyl propanoic acid"
   },
   {
-    "id": 76,
+    "id": 72,
     "name": "Sulfinyl amido sulfonic acid",
     "alias": "Sulfinyl amido sulfonic acid"
   },
   {
-    "id": 77,
+    "id": 73,
     "name": "Fluorotelomer silane",
     "alias": "Fluorotelomer silane"
   },
   {
-    "id": 78,
+    "id": 74,
     "name": "Fluorotelomer trichlorosilane",
     "alias": "Fluorotelomer trichlorosilane"
   },
   {
-    "id": 79,
+    "id": 75,
     "name": "Fluorotelomer iodide",
     "alias": "FTI"
   },
   {
-    "id": 80,
+    "id": 76,
     "name": "Fluorotelomer aldehyde",
     "alias": "FTUCA"
   },
   {
-    "id": 81,
+    "id": 77,
     "name": "Fluorotelomer carboxylic acids",
     "alias": "FTCA"
   },
   {
-    "id": 82,
+    "id": 78,
     "name": "Fluorotelomer ethoxylates",
     "alias": "FTEO"
   },
   {
-    "id": 83,
+    "id": 79,
     "name": "Fluorotelomer sulfonic acid",
     "alias": "FTSA"
   },
   {
-    "id": 84,
+    "id": 80,
     "name": "Fluorotelomer monophosphate",
     "alias": "monoPAP"
   },
   {
-    "id": 85,
+    "id": 81,
     "name": "Fluorotelomer diphosphate",
     "alias": "diPAP"
   },
   {
-    "id": 86,
+    "id": 82,
     "name": "Fluorotelomer triphosphate",
     "alias": "triPAP"
   },
   {
-    "id": 87,
+    "id": 83,
     "name": "Fluorotelomer acrylate",
     "alias": "FTAC"
   },
   {
-    "id": 88,
+    "id": 84,
     "name": "Fluorotelomer methacrylate",
     "alias": "FTMAC"
   },
   {
-    "id": 89,
+    "id": 85,
     "name": "Fluorotelomer alcohol",
     "alias": "FTO"
   },
   {
-    "id": 90,
+    "id": 86,
     "name": "Fluorotelomer sulfure",
     "alias": "FTS"
   },
   {
-    "id": 91,
+    "id": 87,
     "name": "Fluorotelomer sulfonamide",
     "alias": "FTS"
   },
   {
-    "id": 92,
+    "id": 88,
     "name": "Fluorotelomer silyl",
     "alias": "FTSi"
   },
   {
-    "id": 93,
+    "id": 89,
     "name": "Fluorotelomer betaine",
     "alias": "FTB"
   },
   {
-    "id": 94,
+    "id": 90,
     "name": "Fluorotelomer ester",
     "alias": "FTEs"
   },
   {
-    "id": 95,
+    "id": 91,
     "name": "Fluorotelomer thiocyanic acid",
     "alias": "Fluorotelomer thiocyanic acid"
   },
   {
-    "id": 96,
+    "id": 92,
     "name": "Fluorotelomer alkene",
     "alias": "Fluorotelomer alkene"
   },
   {
-    "id": 97,
+    "id": 93,
     "name": "Fluorotelomer trimethylamine",
     "alias": "Fluorotelomer trimethylamine"
   },
   {
-    "id": 98,
+    "id": 94,
     "name": "Fluorotelomer sulfinic acid",
     "alias": "Fluorotelomer sulfinic acid"
   },
   {
-    "id": 99,
+    "id": 95,
     "name": "Fluorotelomer sulfenic acid",
     "alias": "Fluorotelomer sulfenic acid"
   },
   {
-    "id": 100,
+    "id": 96,
     "name": "Fluorotelomer sulfuric acid",
     "alias": "Fluorotelomer sulfuric acid"
   },
   {
-    "id": 101,
+    "id": 97,
     "name": "Fluorotelomer methyl",
     "alias": "Fluorotelomer methyl"
   },
   {
-    "id": 102,
+    "id": 98,
+    "name": "Fluorotelomer glucuronic acid",
+    "alias": "Fluorotelomer glucuronic acid"
+  },
+  {
+    "id": 99,
     "name": "Fluorotelomer formaldehyde bisulfite",
     "alias": "Fluorotelomer formaldehyde bisulfite"
   },
   {
-    "id": 103,
+    "id": 100,
+    "name": "Fluorotelomer unsaturated carboxylic acids",
+    "alias": "FTUCA"
+  },
+  {
+    "id": 101,
     "name": "Fluorotelomer thia keto propanoic acid",
     "alias": "Fluorotelomer thia keto propanoic acid"
   },
   {
-    "id": 104,
+    "id": 102,
     "name": "Fluorotelomer glycine",
     "alias": "Fluorotelomer glycine"
   },
   {
-    "id": 105,
+    "id": 103,
     "name": "Fluorotelomer sulfonamidoethanol",
     "alias": "FOSE"
   },
   {
-    "id": 106,
+    "id": 104,
+    "name": "Fluorotelomer ether carboxylic acids",
+    "alias": "FTCA"
+  },
+  {
+    "id": 105,
     "name": "Fluorotelomer sulfonyl propanoic acid",
     "alias": "Fluorotelomer sulfonyl propanoic acid"
+  },
+  {
+    "id": 106,
+    "name": "Fluorotelomer sulfinyl amido sulfonic acid",
+    "alias": "Fluorotelomer sulfinyl amido sulfonic acid"
   },
   {
     "id": 107,
