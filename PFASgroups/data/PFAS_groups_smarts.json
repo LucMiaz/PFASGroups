@@ -3196,7 +3196,7 @@
         "max_dist_from_CF": 16,
         "constraints": {},
         "smarts": {
-            "[C$(C[CH2]C=C)]": 1
+            "[C$(C[CH2][CH1]=[C$([CH1,CH2])!$(CC(F))])]": 1
         },
         "test": {
             "category": "telomer",
