@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PFAS Definitions Benchmark Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #7f8c8d;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+        .metric-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .definition-box {
+            background-color: #ecf0f1;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .definition-name {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        .definition-desc {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        .section {
+            margin: 40px 0;
+        }
+        .highlight {
+            background-color: #fff9c4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .good {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .warning {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        .bad {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        iframe {
+            width: 100%;
+            height: 700px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #95a5a6;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 PFAS Definitions Benchmark Report</h1>
+        
+        <div class="section">
+            <p><strong>Generated:</strong> 2026-02-05 10:56:22</p>
+            <p><strong>Benchmark Run:</strong> 20260205_105618</p>
+        </div>
+        
+        <h2>📋 Definitions Tested</h2>
+        <div class="section">
+
+            <div class="definition-box">
+                <div class="definition-name">1. OECD Definition</div>
+                <div class="definition-desc">At least one CF₃ or CF₂ group (not bonded to H, Cl, Br, I)</div>
+            </div>
+
+            <div class="definition-box">
+                <div class="definition-name">2. EU PFAS Restriction</div>
+                <div class="definition-desc">Similar to OECD but with more exclusion criteria</div>
+            </div>
+
+            <div class="definition-box">
+                <div class="definition-name">3. OPPT 2023</div>
+                <div class="definition-desc">Three inclusion criteria for perfluorinated compounds</div>
+            </div>
+
+            <div class="definition-box">
+                <div class="definition-name">4. UK PFAS Definition</div>
+                <div class="definition-desc">At least one CF₃ or CF₂ group (not bonded to Cl, Br, I)</div>
+            </div>
+
+            <div class="definition-box">
+                <div class="definition-name">5. PFASTRUCTv5</div>
+                <div class="definition-desc">Custom structural patterns OR fluorine ratio ≥ 0.3</div>
+            </div>
+
+        </div>
+        
+        <h2> Summary Statistics</h2>
+        <div class="section">
+<table border="1" class="dataframe summary-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Definition</th>
+      <th>Sensitivity (%)</th>
+      <th>TP Count</th>
+      <th>Specificity (%)</th>
+      <th>FP Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>OECD Definition</td>
+      <td>100.0</td>
+      <td>24/24</td>
+      <td>70.0</td>
+      <td>6/20</td>
+    </tr>
+    <tr>
+      <td>EU PFAS Restriction</td>
+      <td>100.0</td>
+      <td>24/24</td>
+      <td>100.0</td>
+      <td>0/20</td>
+    </tr>
+    <tr>
+      <td>OPPT 2023</td>
+      <td>95.8</td>
+      <td>23/24</td>
+      <td>100.0</td>
+      <td>0/20</td>
+    </tr>
+    <tr>
+      <td>UK PFAS Definition</td>
+      <td>100.0</td>
+      <td>24/24</td>
+      <td>85.0</td>
+      <td>3/20</td>
+    </tr>
+    <tr>
+      <td>PFASTRUCTv5</td>
+      <td>100.0</td>
+      <td>24/24</td>
+      <td>65.0</td>
+      <td>7/20</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+        
+        <h2>🎯 Key Findings</h2>
+        <div class="section">
+            <div class="metric-card">
+                <div class="metric-label">True Positives Tested</div>
+                <div class="metric-value">24</div>
+                <div class="metric-label">Known PFAS compounds</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-label">True Negatives Tested</div>
+                <div class="metric-value">20</div>
+                <div class="metric-label">Non-PFAS compounds</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-label">Edge Cases Analyzed</div>
+                <div class="metric-value">21</div>
+                <div class="metric-label">Borderline compounds</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-label">Performance Testing</div>
+                <div class="metric-value">0</div>
+                <div class="metric-label">Mean: 0.00 ms</div>
+            </div>
+        </div>
+        
+        <h2> Sensitivity vs Specificity</h2>
+        <div class="section">
+            <p>This plot shows how well each definition balances correctly identifying PFAS (sensitivity) 
+            with correctly rejecting non-PFAS (specificity). The ideal position is the top-right corner (100%, 100%).</p>
+            <iframe src="figures_definitions/sensitivity_specificity.html"></iframe>
+        </div>
+        
+        <h2> Detection Heatmap</h2>
+        <div class="section">
+            <p>Shows which definitions successfully identify different categories of PFAS compounds.</p>
+            <iframe src="figures_definitions/detection_heatmap.html"></iframe>
+        </div>
+        
+        <h2> Inter-Definition Concordance</h2>
+        <div class="section">
+            <p>Jaccard similarity between definitions (1.0 = perfect agreement, 0.0 = no overlap).</p>
+            <img src="figures_definitions/concordance_matrix.png" style="max-width: 100%; height: auto;">
+        </div>
+        
+        <h2> Performance Analysis</h2>
+        <div class="section">
+            <p>Execution time vs molecule size for definition checking.</p>
+            <iframe src="figures_definitions/performance_by_size.html"></iframe>
+        </div>
+        
+        <h2>🔍 Detailed Results</h2>
+        <div class="section">
+            <h3>True Positives (Known PFAS)</h3>
+            <ul>
+
+            </ul>
+            
+            <h3>True Negatives (Non-PFAS)</h3>
+            <ul>
+<li class='warning'>OECD Definition: 6 false positives</li>
+<li class='good'>EU PFAS Restriction: No false positives ✓</li>
+<li class='good'>OPPT 2023: No false positives ✓</li>
+<li class='warning'>UK PFAS Definition: 3 false positives</li>
+<li class='warning'>PFASTRUCTv5: 7 false positives</li>
+
+            </ul>
+            
+            <h3>Edge Cases</h3>
+            <p>Split decisions (definitions disagree): <span class="highlight">10/21</span></p>
+            <p>Unanimous decisions (all agree): <span class="highlight">11/21</span></p>
+        </div>
+        
+        <div class="footer">
+            <p>Generated by PFASGroups Benchmark Suite</p>
+            <p>Comprehensive PFAS Definitions Benchmarking System</p>
+        </div>
+    </div>
+</body>
+</html>
