@@ -6,15 +6,15 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Models API Reference &mdash; PFASgroups 1.2.2 documentation</title>
+  <title>Data Models API Reference &mdash; PFASgroups 2.2.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=fd7cadf9"></script>
-      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/documentation_options.js?v=219dea72"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -116,6 +116,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../tutorial.html#next-steps">Next Steps</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../pfas_definitions.html">PFAS Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#supported-definitions">Supported Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#oecd-definition-2021">1. OECD Definition (2021)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#eu-pfas-restriction-reach">2. EU PFAS Restriction (REACH)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#oppt-2023-us-epa">3. OPPT 2023 (US EPA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#uk-pfas-definition">4. UK PFAS Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#pfastructv5">5. PFASTRUCTv5</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#using-pfas-definitions-in-code">Using PFAS Definitions in Code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#checking-pfas-classification">Checking PFAS Classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#filtering-by-definition">Filtering by Definition</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#regulatory-implications">Regulatory Implications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#see-also">See Also</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#references">References</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../algorithm.html">Algorithm Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../algorithm.html#core-concepts">Core Concepts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithm.html#algorithm-workflow">Algorithm Workflow</a><ul>
@@ -214,6 +234,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_alkyl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_aryl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.find_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.test"><code class="docutils literal notranslate"><span class="pre">PFASGroup.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#formula-dict-satisfies-constraints">formula_dict_satisfies_constraints</a></li>
@@ -231,6 +252,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#applies-to-molecule">applies_to_molecule</a></li>
@@ -248,6 +270,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../customization.html#custom-pfas-groups">Custom PFAS Groups</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../customization.html#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../customization.html#modifying-existing-groups">Modifying Existing Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#understanding-atom-reference-requirements">Understanding Atom Reference Requirements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../customization.html#loading-groups-from-json">Loading Groups from JSON</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../customization.html#constraint-examples">Constraint Examples</a></li>
 </ul>
@@ -298,6 +321,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#custom-validation">Custom Validation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#creating-test-sets">Creating Test Sets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#running-custom-tests">Running Custom Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#test-molecule-generation">Test Molecule Generation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#json-driven-generation">JSON-Driven Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#customizing-test-generation">Customizing Test Generation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#performance-testing">Performance Testing</a><ul>
@@ -367,10 +395,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-2-0">Version 1.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-1-0">Version 1.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-2-2-2-current">Version 2.2.2 (Current)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-2-2-0">Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-2-1-0">Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-2-0-0">Version 2.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../changelog.html#migration-guides">Migration Guides</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../changelog.html#migrating-from-1-1-x-to-1-2-x">Migrating from 1.1.x to 1.2.x</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../changelog.html#migrating-from-1-0-x-to-1-1-x">Migrating from 1.0.x to 1.1.x</a></li>
@@ -444,7 +472,7 @@
 <h2>PFASGroup Class<a class="headerlink" href="#pfasgroup-class" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PFASgroups.PFASGroupModel.</span></span><span class="sig-name descname"><span class="pre">PFASGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PFASgroups.PFASGroupModel.</span></span><span class="sig-name descname"><span class="pre">PFASGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup" title="Link to this definition"></a></dt>
 <dd><p>Model class representing a specific PFAS functional group with structural patterns.</p>
 <p>A PFASGroup defines a specific fluorinated functional group using SMARTS patterns,
 component path types, and molecular formula constraints. Groups are used to classify
@@ -835,6 +863,50 @@ Stops evaluation at first failure for efficiency.</p>
 <dd><p>Find fluorinated components in a molecule that match this PFAS group’s criteria.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASGroupModel.html#PFASGroup.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.test" title="Link to this definition"></a></dt>
+<dd><p>Test this PFAS group against test molecules from metadata.</p>
+<p>Validates that the group correctly identifies positive examples and
+rejects negative examples based on test metadata in PFAS_groups_smarts.json.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>test_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>, </em><em>optional</em>) – <p>Test metadata dictionary. If None, will be loaded from the group’s
+entry in PFAS_groups_smarts.json. Expected structure:
+{</p>
+<blockquote>
+<div><p>’category’: ‘OECD’|’generic’|’telomer’,
+‘examples’: [smiles_string, …],
+‘generate’: {‘smiles_pattern’: str, ‘mode’: str}  # for telomers/generic</p>
+</div></blockquote>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Test results with structure:
+{</p>
+<blockquote>
+<div><p>’passed’: bool,
+‘total_tests’: int,
+‘failures’: [{‘smiles’: str, ‘expected’: bool, ‘got’: bool, ‘error’: str}, …],
+‘category’: str</p>
+</div></blockquote>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>For OECD groups: Tests against curated positive examples</p></li>
+<li><p>For telomer groups: Tests generated molecules based on smiles patterns</p></li>
+<li><p>For generic groups: Tests both positive and negative examples</p></li>
+<li><p>Returns detailed failure information for debugging</p></li>
+</ul>
+</dd></dl>
+
 </dd></dl>
 
 <p><strong>Class Description:</strong></p>
@@ -937,7 +1009,7 @@ Stops evaluation at first failure for efficiency.</p>
 <h2>PFASDefinition Class<a class="headerlink" href="#pfasdefinition-class" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PFASgroups.PFASDefinitionModel.</span></span><span class="sig-name descname"><span class="pre">PFASDefinition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">smarts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluorineRatio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASDefinitionModel.html#PFASDefinition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PFASgroups.PFASDefinitionModel.</span></span><span class="sig-name descname"><span class="pre">PFASDefinition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">smarts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluorineRatio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASDefinitionModel.html#PFASDefinition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition" title="Link to this definition"></a></dt>
 <dd><p>Model class representing a PFAS definition based on structural criteria.</p>
 <p>A PFAS definition identifies molecules using SMARTS patterns and/or fluorine ratio thresholds.
 Unlike PFASGroup which focuses on specific functional groups, PFASDefinition provides
@@ -1099,6 +1171,64 @@ Defaults to self.includeHydrogen</p></li>
 <li><p>SMARTS patterns are checked using substructure matching (HasSubstructMatch)</p></li>
 <li><p>Fluorine ratio is calculated as: F_count / total_atom_count</p></li>
 <li><p>Invalid SMILES strings return False</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PFASgroups.PFASDefinitionModel.PFASDefinition.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/PFASDefinitionModel.html#PFASDefinition.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.PFASDefinitionModel.PFASDefinition.test" title="Link to this definition"></a></dt>
+<dd><p>Test this PFAS definition against test molecules from metadata.</p>
+<p>Validates that the definition correctly classifies true positives, true negatives,
+false positives, and false negatives based on test metadata in
+PFAS_definitions_smarts.json.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>test_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>, </em><em>optional</em>) – <p>Test metadata dictionary. If None, will be loaded from the definition’s
+entry in PFAS_definitions_smarts.json. Expected structure:
+{</p>
+<blockquote>
+<div><p>’category’: ‘definition’,
+‘examples’: {</p>
+<blockquote>
+<div><p>’true_positives’: [{‘smiles’: str, ‘category’: str}, …],
+‘true_negatives’: [{‘smiles’: str, ‘category’: str}, …],
+‘false_positives’: [{‘smiles’: str, ‘category’: str}, …],
+‘false_negatives’: [{‘smiles’: str, ‘category’: str}, …]</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Test results with structure:
+{</p>
+<blockquote>
+<div><p>’passed’: bool,
+‘total_tests’: int,
+‘failures’: [{‘smiles’: str, ‘expected’: bool, ‘got’: bool, ‘type’: str, ‘error’: str}, …],
+‘category’: str,
+‘stats’: {</p>
+<blockquote>
+<div><p>’true_positives’: int,
+‘true_negatives’: int,
+‘false_positives’: int,
+‘false_negatives’: int</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Tests against benchmark test compounds with known PFAS/non-PFAS labels</p></li>
+<li><p>Validates both SMARTS patterns and fluorine ratio criteria</p></li>
+<li><p>Returns detailed failure information for debugging</p></li>
 </ul>
 </dd></dl>
 

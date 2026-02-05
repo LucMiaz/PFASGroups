@@ -70,6 +70,7 @@ Table of Contents
    installation
    quickstart
    tutorial
+   pfas_definitions
    algorithm
 
 .. toctree::

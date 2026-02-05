@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Version 1.2.2 (Current)
+Version 2.2.2 (Current)
 -----------------------
 
 **Released:** February 2026
@@ -34,7 +34,7 @@ Version 1.2.2 (Current)
 - Added algorithm explanation and visualization
 - Updated benchmark guide with new analysis scripts
 
-Version 1.2.0
+Version 2.2.0
 -------------
 
 **Released:** December 2025
@@ -66,7 +66,7 @@ Version 1.2.0
 - Corrected chain length calculation for branched alcohols
 - Fixed visualization rendering in Jupyter notebooks
 
-Version 1.1.0
+Version 2.1.0
 -------------
 
 **Released:** September 2025
@@ -90,7 +90,7 @@ Version 1.1.0
 - Enhanced aromatic PFAS detection
 - Improved memory efficiency for batch processing
 
-Version 1.0.0
+Version 2.0.0
 -------------
 
 **Released:** June 2025

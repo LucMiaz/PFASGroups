@@ -5,15 +5,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PFASgroups.PFASGroupModel &mdash; PFASgroups 1.2.2 documentation</title>
+  <title>PFASgroups.PFASGroupModel &mdash; PFASgroups 2.2.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fd7cadf9"></script>
-      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/documentation_options.js?v=219dea72"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -110,6 +110,26 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pfas_definitions.html">PFAS Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pfas_definitions.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pfas_definitions.html#supported-definitions">Supported Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pfas_definitions.html#oecd-definition-2021">1. OECD Definition (2021)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pfas_definitions.html#eu-pfas-restriction-reach">2. EU PFAS Restriction (REACH)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pfas_definitions.html#oppt-2023-us-epa">3. OPPT 2023 (US EPA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pfas_definitions.html#uk-pfas-definition">4. UK PFAS Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pfas_definitions.html#pfastructv5">5. PFASTRUCTv5</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../pfas_definitions.html#using-pfas-definitions-in-code">Using PFAS Definitions in Code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pfas_definitions.html#checking-pfas-classification">Checking PFAS Classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pfas_definitions.html#filtering-by-definition">Filtering by Definition</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../pfas_definitions.html#regulatory-implications">Regulatory Implications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pfas_definitions.html#see-also">See Also</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pfas_definitions.html#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../algorithm.html">Algorithm Overview</a><ul>
@@ -210,6 +230,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_alkyl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_aryl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.test"><code class="docutils literal notranslate"><span class="pre">PFASGroup.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/models.html#formula-dict-satisfies-constraints">formula_dict_satisfies_constraints</a></li>
@@ -227,6 +248,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/models.html#applies-to-molecule">applies_to_molecule</a></li>
@@ -244,6 +266,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../customization.html#custom-pfas-groups">Custom PFAS Groups</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../customization.html#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../customization.html#modifying-existing-groups">Modifying Existing Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../customization.html#understanding-atom-reference-requirements">Understanding Atom Reference Requirements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../customization.html#loading-groups-from-json">Loading Groups from JSON</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../customization.html#constraint-examples">Constraint Examples</a></li>
 </ul>
@@ -294,6 +317,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#custom-validation">Custom Validation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#creating-test-sets">Creating Test Sets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#running-custom-tests">Running Custom Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#test-molecule-generation">Test Molecule Generation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#json-driven-generation">JSON-Driven Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../benchmarking.html#customizing-test-generation">Customizing Test Generation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../benchmarking.html#performance-testing">Performance Testing</a><ul>
@@ -363,10 +391,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-2-0">Version 1.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-1-0">Version 1.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-2-2-2-current">Version 2.2.2 (Current)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-2-2-0">Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-2-1-0">Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#version-2-0-0">Version 2.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../changelog.html#migration-guides">Migration Guides</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../changelog.html#migrating-from-1-1-x-to-1-2-x">Migrating from 1.1.x to 1.2.x</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../changelog.html#migrating-from-1-0-x-to-1-1-x">Migrating from 1.0.x to 1.1.x</a></li>
@@ -553,9 +581,9 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">re_search</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">re_search</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error for agg Group </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error for agg Group </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_dict</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span><span class="c1"># test dict for unit tests</span></div>
 
-            
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_count_smarts_extra_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">smarts_str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Count number of extra carbon atoms in functional group beyond what&#39;s captured by component.</span>
@@ -1016,9 +1044,154 @@
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">return</span> <span class="n">group_matches</span>
         <span class="k">return</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="PFASGroup.test">
+<a class="viewcode-back" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.test">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test this PFAS group against test molecules from metadata.</span>
+<span class="sd">        </span>
+<span class="sd">        Validates that the group correctly identifies positive examples and</span>
+<span class="sd">        rejects negative examples based on test metadata in PFAS_groups_smarts.json.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        test_data : dict, optional</span>
+<span class="sd">            Test metadata dictionary. If None, will be loaded from the group&#39;s</span>
+<span class="sd">            entry in PFAS_groups_smarts.json. Expected structure:</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;category&#39;: &#39;OECD&#39;|&#39;generic&#39;|&#39;telomer&#39;,</span>
+<span class="sd">                &#39;examples&#39;: [smiles_string, ...],</span>
+<span class="sd">                &#39;generate&#39;: {&#39;smiles_pattern&#39;: str, &#39;mode&#39;: str}  # for telomers/generic</span>
+<span class="sd">            }</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Test results with structure:</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;passed&#39;: bool,</span>
+<span class="sd">                &#39;total_tests&#39;: int,</span>
+<span class="sd">                &#39;failures&#39;: [{&#39;smiles&#39;: str, &#39;expected&#39;: bool, &#39;got&#39;: bool, &#39;error&#39;: str}, ...],</span>
+<span class="sd">                &#39;category&#39;: str</span>
+<span class="sd">            }</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        - For OECD groups: Tests against curated positive examples</span>
+<span class="sd">        - For telomer groups: Tests generated molecules based on smiles patterns</span>
+<span class="sd">        - For generic groups: Tests both positive and negative examples</span>
+<span class="sd">        - Returns detailed failure information for debugging</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem.rdMolDescriptors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalcMolFormula</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">n_from_formula</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.ComponentsSolverModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentsSolver</span>
+        
+        
+        
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;passed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;total_tests&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s1">&#39;failures&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_dict</span> <span class="k">else</span> <span class="s1">&#39;unknown&#39;</span>
+        <span class="p">}</span>
+        <span class="c1"># Load test data if not provided</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">results</span> <span class="c1"># No tests defined for this group</span>
+        <span class="c1"># Test positive examples</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;examples&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;total_tests&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;failures&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smiles</span><span class="p">,</span>
+                        <span class="s1">&#39;expected&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="s1">&#39;got&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Invalid SMILES&#39;</span>
+                    <span class="p">})</span>
+                    <span class="k">continue</span>
+                
+                <span class="c1"># Add hydrogens as done in parser</span>
+                <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                
+                <span class="c1"># Create ComponentsSolver for this molecule</span>
+                <span class="k">with</span> <span class="n">ComponentsSolver</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="k">as</span> <span class="n">component_solver</span><span class="p">:</span>
+                    <span class="c1"># Get formula dict</span>
+                    <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                    <span class="n">fd</span> <span class="o">=</span> <span class="n">n_from_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+                    
+                    <span class="c1"># Use find_components to check if group matches</span>
+                    <span class="n">matches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">component_solver</span><span class="p">)</span>
+                    <span class="n">is_match</span> <span class="o">=</span> <span class="n">matches</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_match</span><span class="p">:</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;failures&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smiles</span><span class="p">,</span>
+                        <span class="s1">&#39;expected&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="s1">&#39;got&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                        <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Group should match but did not&#39;</span>
+                    <span class="p">})</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;failures&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smiles</span><span class="p">,</span>
+                    <span class="s1">&#39;expected&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s1">&#39;got&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Exception: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">})</span>
+        <span class="c1"># Test positive examples</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;counter-examples&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;total_tests&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;failures&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smiles</span><span class="p">,</span>
+                        <span class="s1">&#39;expected&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                        <span class="s1">&#39;got&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Invalid SMILES&#39;</span>
+                    <span class="p">})</span>
+                    <span class="k">continue</span>
+                
+                <span class="c1"># Add hydrogens as done in parser</span>
+                <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                
+                <span class="c1"># Create ComponentsSolver for this molecule</span>
+                <span class="k">with</span> <span class="n">ComponentsSolver</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="k">as</span> <span class="n">component_solver</span><span class="p">:</span>
+                    <span class="c1"># Get formula dict</span>
+                    <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                    <span class="n">fd</span> <span class="o">=</span> <span class="n">n_from_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+                    
+                    <span class="c1"># Use find_components to check if group matches</span>
+                    <span class="n">matches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">component_solver</span><span class="p">)</span>
+                    <span class="n">is_match</span> <span class="o">=</span> <span class="n">matches</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                
+                <span class="k">if</span> <span class="n">is_match</span><span class="p">:</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;failures&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smiles</span><span class="p">,</span>
+                        <span class="s1">&#39;expected&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                        <span class="s1">&#39;got&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Group should match but did not&#39;</span>
+                    <span class="p">})</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">results</span><span class="p">[</span><span class="s1">&#39;failures&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="n">smiles</span><span class="p">,</span>
+                    <span class="s1">&#39;expected&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s1">&#39;got&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Exception: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">})</span>
+        <span class="k">return</span> <span class="n">results</span></div>
 </div>
 
-        
 </pre></div>
 
            </div>

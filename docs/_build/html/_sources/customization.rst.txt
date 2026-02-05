@@ -66,6 +66,59 @@ Customize existing PFAS groups:
    # Use modified groups
    results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O", pfas_groups=groups)
 
+Understanding Atom Reference Requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. important::
+   When defining custom PFAS groups, the SMARTS pattern must match an atom that satisfies 
+   the component criteria. This is crucial for non-telomer groups:
+
+   **Non-Telomer Groups** (``smartsPath`` without ``linker_smarts``):
+   
+   - The matched atom must be part of or directly connected to the fluorinated component
+   - The matched atom should be a carbon that is per- or polyfluorinated, OR
+   - The matched atom must be within ``max_dist_from_CF`` distance from a C-F carbon
+   - Example: ``[C$(C(=O)O)]`` where ``C`` is bonded to ``CF2`` groups
+   
+   **Telomer Groups** (``smartsPath`` with ``linker_smarts``):
+   
+   - These groups explicitly allow non-fluorinated linkers (e.g., ``[CH2X4]``)
+   - The functional group can be separated from the perfluorinated chain
+   - Example: 6:2 FTOH has ``-(CH2)2-`` linker between perfluoro chain and ``-OH``
+   
+   If your SMARTS pattern matches an atom that is not part of the fluorinated component 
+   and is beyond ``max_dist_from_CF``, the group will not be detected even though the 
+   pattern matches. This is by design to ensure functional groups are actually connected 
+   to fluorinated chains.
+
+**Example - Correct atom reference:**
+
+.. code-block:: python
+
+   # ✓ Good: Matches carbon directly attached to perfluoro chain
+   good_group = PFASGroup(
+       id=100,
+       name="My carboxylic acid",
+       smarts1=Chem.MolFromSmarts("[C$(C(=O)[OH1,O-])]"),  # Matches the C=O carbon
+       smartsPath="Perfluoroalkyl",
+       max_dist_from_CF=0  # Must be directly on fluorinated carbon
+   )
+
+**Example - Incorrect atom reference:**
+
+.. code-block:: python
+
+   # ✗ Bad: Matches oxygen which is too far from chain
+   bad_group = PFASGroup(
+       id=101,
+       name="My carboxylic acid",
+       smarts1=Chem.MolFromSmarts("[OH1]"),  # Matches the O-H oxygen
+       smartsPath="Perfluoroalkyl",
+       max_dist_from_CF=0  # The oxygen is 2 bonds away from the CF carbon!
+   )
+   # This won't detect most carboxylic acids because the matched atom (O)
+   # is not within max_dist_from_CF of the fluorinated chain
+
 Loading Groups from JSON
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 

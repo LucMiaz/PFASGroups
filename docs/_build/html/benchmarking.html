@@ -6,15 +6,15 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Benchmarking and Validation &mdash; PFASgroups 1.2.2 documentation</title>
+  <title>Benchmarking and Validation &mdash; PFASgroups 2.2.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=fd7cadf9"></script>
-      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/documentation_options.js?v=219dea72"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -115,6 +115,26 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#next-steps">Next Steps</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_definitions.html">PFAS Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#supported-definitions">Supported Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#oecd-definition-2021">1. OECD Definition (2021)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#eu-pfas-restriction-reach">2. EU PFAS Restriction (REACH)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#oppt-2023-us-epa">3. OPPT 2023 (US EPA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#uk-pfas-definition">4. UK PFAS Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#pfastructv5">5. PFASTRUCTv5</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#using-pfas-definitions-in-code">Using PFAS Definitions in Code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#checking-pfas-classification">Checking PFAS Classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#filtering-by-definition">Filtering by Definition</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#regulatory-implications">Regulatory Implications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#see-also">See Also</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#references">References</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="algorithm.html#core-concepts">Core Concepts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="algorithm.html#algorithm-workflow">Algorithm Workflow</a><ul>
@@ -213,6 +233,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_alkyl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_aryl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.test"><code class="docutils literal notranslate"><span class="pre">PFASGroup.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/models.html#formula-dict-satisfies-constraints">formula_dict_satisfies_constraints</a></li>
@@ -230,6 +251,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/models.html#applies-to-molecule">applies_to_molecule</a></li>
@@ -247,6 +269,7 @@
 <li class="toctree-l2"><a class="reference internal" href="customization.html#custom-pfas-groups">Custom PFAS Groups</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="customization.html#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="customization.html#modifying-existing-groups">Modifying Existing Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#understanding-atom-reference-requirements">Understanding Atom Reference Requirements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="customization.html#loading-groups-from-json">Loading Groups from JSON</a></li>
 <li class="toctree-l3"><a class="reference internal" href="customization.html#constraint-examples">Constraint Examples</a></li>
 </ul>
@@ -297,6 +320,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#custom-validation">Custom Validation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#creating-test-sets">Creating Test Sets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#running-custom-tests">Running Custom Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#test-molecule-generation">Test Molecule Generation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#json-driven-generation">JSON-Driven Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-test-generation">Customizing Test Generation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#performance-testing">Performance Testing</a><ul>
@@ -366,10 +394,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-2-0">Version 1.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-1-0">Version 1.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-2-current">Version 2.2.2 (Current)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-0">Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-1-0">Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-0">Version 2.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#migration-guides">Migration Guides</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="changelog.html#migrating-from-1-1-x-to-1-2-x">Migrating from 1.1.x to 1.2.x</a></li>
 <li class="toctree-l3"><a class="reference internal" href="changelog.html#migrating-from-1-0-x-to-1-1-x">Migrating from 1.0.x to 1.1.x</a></li>
@@ -694,6 +722,88 @@ node<span class="w"> </span>server.js
 
 <span class="c1"># Run validation</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">run_validation</span><span class="p">(</span><span class="s1">&#39;my_test_set.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="test-molecule-generation">
+<h2>Test Molecule Generation<a class="headerlink" href="#test-molecule-generation" title="Link to this heading"></a></h2>
+<section id="json-driven-generation">
+<h3>JSON-Driven Generation<a class="headerlink" href="#json-driven-generation" title="Link to this heading"></a></h3>
+<p>Since version 1.2.3, the benchmark system reads test molecule generation patterns directly from <code class="docutils literal notranslate"><span class="pre">PFAS_groups_smarts.json</span></code>. Each functional group definition includes a <code class="docutils literal notranslate"><span class="pre">test.generate</span></code> field that specifies:</p>
+<ul class="simple">
+<li><p><strong>smiles</strong>: The SMILES pattern to attach or insert</p></li>
+<li><p><strong>mode</strong>: Either <code class="docutils literal notranslate"><span class="pre">&quot;attach&quot;</span></code> (terminal) or <code class="docutils literal notranslate"><span class="pre">&quot;insert&quot;</span></code> (internal)</p></li>
+<li><p><strong>is_telomer</strong>: Boolean flag indicating if this is a fluorotelomer group</p></li>
+</ul>
+<p>Example group definition:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aldehyde&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;test&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;generate&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;smiles&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;C(=O)[H]&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;attach&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;is_telomer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example telomer group:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">74</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fluorotelomer silane&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;test&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;generate&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;smiles&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CCCC[Si]([H])([H])[H]&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;attach&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;is_telomer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The benchmark script automatically:</p>
+<ol class="arabic simple">
+<li><p>Reads all group definitions from <code class="docutils literal notranslate"><span class="pre">PFAS_groups_smarts.json</span></code></p></li>
+<li><p>Extracts the <code class="docutils literal notranslate"><span class="pre">test.generate</span></code> field for each target group</p></li>
+<li><p>Generates test molecules by attaching/inserting the SMILES patterns</p></li>
+<li><p>Creates single-group and multi-group test cases</p></li>
+<li><p>Validates detection accuracy against expected groups</p></li>
+</ol>
+<p>This approach ensures:</p>
+<ul class="simple">
+<li><p><strong>Single source of truth</strong>: Test patterns match production group definitions</p></li>
+<li><p><strong>Automatic updates</strong>: Adding new groups automatically includes them in benchmarks</p></li>
+<li><p><strong>Consistency</strong>: No risk of hardcoded test data diverging from actual patterns</p></li>
+<li><p><strong>Maintainability</strong>: Changes to group definitions propagate to test generation</p></li>
+</ul>
+</section>
+<section id="customizing-test-generation">
+<h3>Customizing Test Generation<a class="headerlink" href="#customizing-test-generation" title="Link to this heading"></a></h3>
+<p>To modify test generation for a specific group, edit the <code class="docutils literal notranslate"><span class="pre">test.generate</span></code> field in <code class="docutils literal notranslate"><span class="pre">PFAS_groups_smarts.json</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="c1"># Load group definitions</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;PFASgroups/data/PFAS_groups_smarts.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">groups</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># Find and modify a group</span>
+<span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">31</span><span class="p">:</span>  <span class="c1"># aldehyde</span>
+        <span class="n">group</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;generate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;smiles&#39;</span><span class="p">:</span> <span class="s1">&#39;C(=O)[H]&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;attach&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;is_telomer&#39;</span><span class="p">:</span> <span class="kc">False</span>
+        <span class="p">}</span>
+
+<span class="c1"># Save updated definitions</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;PFASgroups/data/PFAS_groups_smarts.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">groups</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Re-run benchmark to use new pattern</span>
+<span class="c1"># The benchmark script will automatically pick up the changes</span>
 </pre></div>
 </div>
 </section>

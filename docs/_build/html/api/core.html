@@ -6,15 +6,15 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Core API Reference &mdash; PFASgroups 1.2.2 documentation</title>
+  <title>Core API Reference &mdash; PFASgroups 2.2.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=fd7cadf9"></script>
-      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/documentation_options.js?v=219dea72"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -115,6 +115,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../tutorial.html#next-steps">Next Steps</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../pfas_definitions.html">PFAS Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#supported-definitions">Supported Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#oecd-definition-2021">1. OECD Definition (2021)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#eu-pfas-restriction-reach">2. EU PFAS Restriction (REACH)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#oppt-2023-us-epa">3. OPPT 2023 (US EPA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#uk-pfas-definition">4. UK PFAS Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#pfastructv5">5. PFASTRUCTv5</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#using-pfas-definitions-in-code">Using PFAS Definitions in Code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#checking-pfas-classification">Checking PFAS Classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pfas_definitions.html#filtering-by-definition">Filtering by Definition</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#regulatory-implications">Regulatory Implications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#see-also">See Also</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#references">References</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../algorithm.html">Algorithm Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../algorithm.html#core-concepts">Core Concepts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithm.html#algorithm-workflow">Algorithm Workflow</a><ul>
@@ -213,6 +233,7 @@
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_alkyl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_aryl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.find_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.test"><code class="docutils literal notranslate"><span class="pre">PFASGroup.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="models.html#formula-dict-satisfies-constraints">formula_dict_satisfies_constraints</a></li>
@@ -230,6 +251,7 @@
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="models.html#applies-to-molecule">applies_to_molecule</a></li>
@@ -247,6 +269,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../customization.html#custom-pfas-groups">Custom PFAS Groups</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../customization.html#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../customization.html#modifying-existing-groups">Modifying Existing Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../customization.html#understanding-atom-reference-requirements">Understanding Atom Reference Requirements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../customization.html#loading-groups-from-json">Loading Groups from JSON</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../customization.html#constraint-examples">Constraint Examples</a></li>
 </ul>
@@ -297,6 +320,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#custom-validation">Custom Validation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#creating-test-sets">Creating Test Sets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#running-custom-tests">Running Custom Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#test-molecule-generation">Test Molecule Generation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#json-driven-generation">JSON-Driven Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#customizing-test-generation">Customizing Test Generation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#performance-testing">Performance Testing</a><ul>
@@ -366,10 +394,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-2-0">Version 1.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-1-0">Version 1.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-2-2-2-current">Version 2.2.2 (Current)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-2-2-0">Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-2-1-0">Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../changelog.html#version-2-0-0">Version 2.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../changelog.html#migration-guides">Migration Guides</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../changelog.html#migrating-from-1-1-x-to-1-2-x">Migrating from 1.1.x to 1.2.x</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../changelog.html#migrating-from-1-0-x-to-1-1-x">Migrating from 1.0.x to 1.1.x</a></li>
@@ -528,56 +556,215 @@
 <dd></dd></dl>
 
 <p><strong>Detailed Description:</strong></p>
-<p>Generate PFAS group fingerprints for machine learning applications. Creates binary, count-based, or chain-length-based feature vectors.</p>
+<p>Generate PFAS group fingerprints for machine learning and chemoinformatics applications.
+Fingerprints encode the presence, abundance, or structural characteristics of PFAS groups
+as numerical feature vectors suitable for computational analysis.</p>
+<p><strong>Scientific Background:</strong></p>
+<p>Molecular fingerprints are binary or count-based vectors where each dimension represents
+a specific structural feature. PFAS fingerprints differ from traditional molecular fingerprints
+(e.g., Morgan, MACCS keys) by encoding domain-specific PFAS structural motifs rather than
+generic chemical features. This enables:</p>
+<ul class="simple">
+<li><p><strong>Classification models</strong>: Predict PFAS properties (toxicity, bioaccumulation, persistence)</p></li>
+<li><p><strong>Similarity analysis</strong>: Quantify structural similarity using Tanimoto coefficients</p></li>
+<li><p><strong>Database clustering</strong>: Group chemicals by structural archetypes</p></li>
+<li><p><strong>Inventory comparison</strong>: Assess compositional differences using Kullback-Leibler divergence</p></li>
+</ul>
+<p><strong>Algorithm:</strong></p>
+<ol class="arabic simple">
+<li><p>Parse each SMILES string to RDKit molecule object</p></li>
+<li><p>Apply SMARTS pattern matching for each of 55 PFAS groups</p></li>
+<li><p>Count matches or quantify chain lengths based on <code class="docutils literal notranslate"><span class="pre">count_mode</span></code></p></li>
+<li><p>Encode results as binary (0/1) or count-based integer vector</p></li>
+<li><p>Return array with dimensions (n_molecules, n_groups)</p></li>
+</ol>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><p><strong>smiles</strong> (<em>str</em> or <em>list</em>): SMILES string(s) to fingerprint</p></li>
-<li><p><strong>selected_groups</strong> (<em>list</em> or <em>range</em>, optional): Specific group IDs to include (default: all 55 groups)</p></li>
-<li><p><strong>representation</strong> (<em>str</em>, optional): Output format - ‘vector’ (numpy array), ‘dict’ (dictionary), or ‘sparse’ (scipy sparse matrix) (default: ‘vector’)</p></li>
-<li><p><strong>count_mode</strong> (<em>str</em>, optional): Fingerprint type:</p>
+<li><p><strong>selected_groups</strong> (<em>list</em> or <em>range</em>, optional): Specific group IDs to include (default: all 55 groups)</p>
 <ul class="simple">
-<li><p>‘binary’: 1 if group present, 0 otherwise</p></li>
-<li><p>‘count’: Number of matches for each group</p></li>
-<li><p>‘max_chain’: Maximum chain length for each group</p></li>
+<li><p>Groups 1-28: OECD-defined PFAS classes</p></li>
+<li><p>Groups 29-55: Generic functional group classifications</p></li>
+<li><p>Example: <code class="docutils literal notranslate"><span class="pre">range(1,</span> <span class="pre">29)</span></code> for OECD groups only</p></li>
+</ul>
+</li>
+<li><p><strong>representation</strong> (<em>str</em>, optional): Output format:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'vector'</span></code>: NumPy array (n_molecules × n_groups) - <strong>recommended for ML</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'dict'</span></code>: List of dictionaries mapping group names to counts - human-readable</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'sparse'</span></code>: List of dictionaries with only non-zero entries - memory-efficient</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'detailed'</span></code>: Full match information including component details</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'int'</span></code>: Convert binary vector to integer representation</p></li>
+</ul>
+<p>(default: ‘vector’)</p>
+</li>
+<li><p><strong>count_mode</strong> (<em>str</em>, optional): Encoding scheme:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'binary'</span></code>: 1 if group present, 0 otherwise - <strong>standard for classification</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'count'</span></code>: Integer count of matches - captures multiplicity</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'max_component'</span></code>: Maximum fluorinated chain size - structural complexity metric</p></li>
 </ul>
 <p>(default: ‘binary’)</p>
 </li>
+<li><p><strong>include_PFAS_definitions</strong> (<em>bool</em>, optional): Include regulatory definition matches (IDs 1-5)</p></li>
+<li><p><strong>pfas_groups</strong> (<em>list</em>, optional): Custom group definitions (overrides defaults)</p></li>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Tuple: <code class="docutils literal notranslate"><span class="pre">(fingerprints,</span> <span class="pre">group_info)</span></code></p>
 <ul class="simple">
-<li><p><strong>fingerprints</strong>: numpy array, list of dicts, or scipy sparse matrix</p></li>
-<li><p><strong>group_info</strong>: Dictionary mapping group IDs to group names</p></li>
+<li><p><strong>fingerprints</strong>:</p>
+<ul>
+<li><p>If representation=’vector’: NumPy array with shape (n_molecules, n_groups)</p></li>
+<li><p>If representation=’dict’: List of dictionaries</p></li>
+<li><p>If representation=’sparse’: List of dictionaries with non-zero entries only</p></li>
+</ul>
+</li>
+<li><p><strong>group_info</strong>: Dictionary with keys:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'group_names'</span></code>: List of group names in order</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'group_ids'</span></code>: List of group IDs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'selected_indices'</span></code>: Indices of selected groups</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'total_groups'</span></code>: Total number of groups</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Performance:</strong></p>
+<ul class="simple">
+<li><p>Typical runtime: 10-50 ms per molecule</p></li>
+<li><p>Memory: ~440 bytes per fingerprint (55 groups × 8 bytes)</p></li>
+<li><p>Scales linearly with number of molecules</p></li>
+<li><p>Consider multiprocessing for &gt;10,000 molecules</p></li>
 </ul>
 <p><strong>Examples:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_fingerprint</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">jaccard</span>
 
 <span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;FC(F)(F)C(F)(F)S(=O)(=O)O&quot;</span>
+    <span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span>      <span class="c1"># PFBA</span>
+    <span class="s2">&quot;FC(F)(F)C(F)(F)S(=O)(=O)O&quot;</span><span class="p">,</span>  <span class="c1"># PFBS</span>
+    <span class="s2">&quot;C(C(F)(F)C(F)(F)F)O&quot;</span>         <span class="c1"># FTOH</span>
 <span class="p">]</span>
 
-<span class="c1"># Binary fingerprints (default)</span>
+<span class="c1"># Binary fingerprints (default) - for classification</span>
 <span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">fps</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># (2, 55)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Groups: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">fps</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># (3, 55)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data type: </span><span class="si">{</span><span class="n">fps</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># int64</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Groups detected: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fps</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [2 2 1]</span>
 
-<span class="c1"># Dictionary representation (sparse)</span>
+<span class="c1"># Dictionary representation - human-readable</span>
 <span class="n">fps_dict</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">representation</span><span class="o">=</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">fps_dict</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># {1: 1, 33: 1, ...}</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PFBA groups:&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">fps_dict</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">})</span>
+<span class="c1"># Output: {&#39;PFCAs&#39;: 1, &#39;carboxylic acid&#39;: 1}</span>
 
-<span class="c1"># Count-based</span>
+<span class="c1"># Count-based fingerprints - capture multiplicity</span>
 <span class="n">fps_count</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">count_mode</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PFBA match counts: </span><span class="si">{</span><span class="n">fps_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Max chain length</span>
-<span class="n">fps_chain</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">count_mode</span><span class="o">=</span><span class="s1">&#39;max_chain&#39;</span><span class="p">)</span>
+<span class="c1"># Maximum chain length encoding</span>
+<span class="n">fps_chain</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">count_mode</span><span class="o">=</span><span class="s1">&#39;max_component&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max chain lengths: </span><span class="si">{</span><span class="n">fps_chain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Select specific groups (OECD groups 1-28)</span>
-<span class="n">fps_oecd</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">selected_groups</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OECD fingerprint shape: </span><span class="si">{</span><span class="n">fps_oecd</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># (2, 28)</span>
+<span class="c1"># Select OECD groups only (groups 1-28, but 0-indexed)</span>
+<span class="n">fps_oecd</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span>
+    <span class="n">smiles_list</span><span class="p">,</span>
+    <span class="n">selected_groups</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OECD fingerprint shape: </span><span class="si">{</span><span class="n">fps_oecd</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># (3, 28)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OECD group names: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;group_names&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Machine learning application</span>
+<span class="c1"># Assuming you have labels (e.g., toxic=1, non-toxic=0)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">fps</span><span class="p">[:</span><span class="mi">100</span><span class="p">],</span> <span class="n">labels</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+<span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">fps</span><span class="p">[</span><span class="mi">100</span><span class="p">:],</span> <span class="n">labels</span><span class="p">[</span><span class="mi">100</span><span class="p">:]</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Classification accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Feature importance</span>
+<span class="n">importances</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">feature_importances_</span>
+<span class="n">top_groups</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">importances</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Most predictive groups:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">top_groups</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;group_names&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">importances</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Similarity analysis</span>
+<span class="c1"># Jaccard similarity between PFBA and PFBS</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">jaccard</span><span class="p">(</span><span class="n">fps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fps</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PFBA-PFBS similarity: </span><span class="si">{</span><span class="n">sim</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Tanimoto coefficient (for binary fingerprints)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tanimoto</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
+
+<span class="n">tanimoto_sim</span> <span class="o">=</span> <span class="n">tanimoto</span><span class="p">(</span><span class="n">fps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fps</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PFBA-PFBS Tanimoto: </span><span class="si">{</span><span class="n">tanimoto_sim</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p><strong>Use Cases:</strong></p>
+<ol class="arabic">
+<li><p><strong>QSAR Modeling</strong>: Train regression or classification models to predict PFAS properties</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ridge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_val_score</span>
+
+<span class="c1"># Predict log Kow (octanol-water partition coefficient)</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">Ridge</span><span class="p">(),</span> <span class="n">fps</span><span class="p">,</span> <span class="n">log_kow</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R² = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Database Screening</strong>: Identify PFAS subclasses in large inventories</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Screen 100,000 compounds</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">large_smiles_list</span><span class="p">,</span> <span class="n">representation</span><span class="o">=</span><span class="s1">&#39;sparse&#39;</span><span class="p">)</span>
+
+<span class="c1"># Find molecules with perfluoroalkyl carboxylic acids</span>
+<span class="n">pfca_idx</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;group_names&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;PFCAs&#39;</span><span class="p">)</span>
+<span class="n">pfcas</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fps</span><span class="p">)</span> <span class="k">if</span> <span class="n">pfca_idx</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Similarity-Based Grouping</strong>: Cluster structurally similar PFAS</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+
+<span class="n">fps</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+
+<span class="c1"># Dimensionality reduction</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">fps_reduced</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">fps</span><span class="p">)</span>
+
+<span class="c1"># Clustering</span>
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">fps_reduced</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Regulatory Classification</strong>: Check multiple PFAS definitions</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">(</span>
+    <span class="n">smiles_list</span><span class="p">,</span>
+    <span class="n">include_PFAS_definitions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">selected_groups</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1"># Definition IDs 1-5</span>
+<span class="p">)</span>
+
+<span class="n">definition_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;OECD&#39;</span><span class="p">,</span> <span class="s1">&#39;EU&#39;</span><span class="p">,</span> <span class="s1">&#39;OPPT&#39;</span><span class="p">,</span> <span class="s1">&#39;UK&#39;</span><span class="p">,</span> <span class="s1">&#39;PFASTRUCTv5&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">):</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">definition_names</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="k">if</span> <span class="n">fps</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">smiles</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p><strong>See Also:</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../pfas_definitions.html"><span class="doc">PFAS Definitions</span></a> - Regulatory PFAS definitions</p></li>
+<li><p><a class="reference internal" href="../tutorial.html"><span class="doc">Tutorial</span></a> - Extended tutorial with examples</p></li>
+<li><p><a class="reference internal" href="models.html"><span class="doc">Data Models API Reference</span></a> - PFASGroup and PFASDefinition models</p></li>
+</ul>
 </section>
 <section id="plot-pfasgroups">
 <h3>plot_pfasgroups<a class="headerlink" href="#plot-pfasgroups" title="Link to this heading"></a></h3>

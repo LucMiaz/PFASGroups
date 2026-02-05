@@ -5,15 +5,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; PFASgroups 1.2.2 documentation</title>
+  <title>Index &mdash; PFASgroups 2.2.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=fd7cadf9"></script>
-      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/documentation_options.js?v=219dea72"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
@@ -110,6 +110,26 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pfas_definitions.html">PFAS Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#supported-definitions">Supported Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#oecd-definition-2021">1. OECD Definition (2021)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#eu-pfas-restriction-reach">2. EU PFAS Restriction (REACH)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#oppt-2023-us-epa">3. OPPT 2023 (US EPA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#uk-pfas-definition">4. UK PFAS Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#pfastructv5">5. PFASTRUCTv5</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#using-pfas-definitions-in-code">Using PFAS Definitions in Code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#checking-pfas-classification">Checking PFAS Classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#filtering-by-definition">Filtering by Definition</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#regulatory-implications">Regulatory Implications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#see-also">See Also</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm Overview</a><ul>
@@ -210,6 +230,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_alkyl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_aryl_components()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.test"><code class="docutils literal notranslate"><span class="pre">PFASGroup.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/models.html#formula-dict-satisfies-constraints">formula_dict_satisfies_constraints</a></li>
@@ -227,6 +248,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/models.html#applies-to-molecule">applies_to_molecule</a></li>
@@ -244,6 +266,7 @@
 <li class="toctree-l2"><a class="reference internal" href="customization.html#custom-pfas-groups">Custom PFAS Groups</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="customization.html#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="customization.html#modifying-existing-groups">Modifying Existing Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customization.html#understanding-atom-reference-requirements">Understanding Atom Reference Requirements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="customization.html#loading-groups-from-json">Loading Groups from JSON</a></li>
 <li class="toctree-l3"><a class="reference internal" href="customization.html#constraint-examples">Constraint Examples</a></li>
 </ul>
@@ -294,6 +317,11 @@
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#custom-validation">Custom Validation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="benchmarking.html#creating-test-sets">Creating Test Sets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="benchmarking.html#running-custom-tests">Running Custom Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#test-molecule-generation">Test Molecule Generation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#json-driven-generation">JSON-Driven Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#customizing-test-generation">Customizing Test Generation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#performance-testing">Performance Testing</a><ul>
@@ -363,10 +391,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-2-2-current">Version 1.2.2 (Current)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-2-0">Version 1.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-1-0">Version 1.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-2-current">Version 2.2.2 (Current)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-0">Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-1-0">Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-0">Version 2.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#migration-guides">Migration Guides</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="changelog.html#migrating-from-1-1-x-to-1-2-x">Migrating from 1.1.x to 1.2.x</a></li>
 <li class="toctree-l3"><a class="reference internal" href="changelog.html#migrating-from-1-0-x-to-1-1-x">Migrating from 1.0.x to 1.1.x</a></li>
@@ -449,6 +477,7 @@
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
  
 </div>
 <h2 id="_">_</h2>
@@ -622,6 +651,18 @@
 </li>
       <li><a href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smartsPath">smartsPath (PFASgroups.PFASGroupModel.PFASGroup attribute)</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.test">test() (PFASgroups.PFASDefinitionModel.PFASDefinition method)</a>
+
+      <ul>
+        <li><a href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.test">(PFASgroups.PFASGroupModel.PFASGroup method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
