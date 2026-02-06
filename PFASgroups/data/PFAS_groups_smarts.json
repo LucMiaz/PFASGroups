@@ -371,7 +371,17 @@
         },
         "test": {
             "category": "OECD",
-            "examples": []
+            "examples": [
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(S(=O)(=O)O)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "[O-]S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",
+                "OS(=O)(=O)C(S(=O)(=O)O)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)(S(=O)(=O)O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(O)C(F)(F)C(S(=O)O)(F)F",
+                "OS(=O)(=O)OC(F)(F)F",
+                "S(=O)(=O)(O)CCCC"
+            ]
         }
     },
     {
@@ -1919,7 +1929,7 @@
         "test": {
             "category": "generic",
             "generate": {
-                "smiles": "C(F)=C(F)(F)F",
+                "smiles": "C(F)=C(F)F",
                 "mode": "attach",
                 "is_telomer": false
             },
@@ -2024,7 +2034,7 @@
         "test": {
             "category": "generic",
             "generate": {
-                "smiles": "C1(F)C(F)(F)(F)C(H)C(F)C(F)(F)C1(F)",
+                "smiles": "C1(F)C(F)(F)C([H])(F)C(F)C(F)(F)C1(F)",
                 "mode": "attach",
                 "is_telomer": false
             },
@@ -2300,7 +2310,7 @@
         "test": {
             "category": "generic",
             "generate": {
-                "smiles": "N(C)(C)CC(=O)O",
+                "smiles": "[N+](C)(C)CC(=O)O",
                 "mode": "attach",
                 "is_telomer": false
             },
@@ -2321,12 +2331,12 @@
             }
         },
         "smarts": {
-            "[CX4$(CSN#C)]": 1
+            "[CX4$(CSC#N)]": 1
         },
         "test": {
             "category": "generic",
             "generate": {
-                "smiles": "SN#C",
+                "smiles": "S(C#N)",
                 "mode": "attach",
                 "is_telomer": false
             },
@@ -2690,7 +2700,8 @@
             "generate": {
                 "smiles": "CCCCOCCCCO",
                 "mode": "attach",
-                "is_telomer": true
+                "is_telomer": true,
+                "linker_extra": ["O"]
             },
             "examples": [
                 "C(O)CCOC(F)(F)C(F)(F)C(F)(F)F",
@@ -3100,7 +3111,7 @@
         "test": {
             "category": "telomer",
             "generate": {
-                "smiles": "CCCCN(C)(C)CC(=O)O",
+                "smiles": "CCCC[N+](C)(C)CC(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -3203,7 +3214,8 @@
             "generate": {
                 "smiles": "CCCCC=C",
                 "mode": "insert",
-                "is_telomer": true
+                "is_telomer": true,
+                "linker_extra": ["C=C"]
             },
             "examples": [
                 "C=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
@@ -3234,7 +3246,7 @@
         "test": {
             "category": "telomer",
             "generate": {
-                "smiles": "CCCCN(C)(C)C",
+                "smiles": "CCCC[N+](C)(C)C",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -3495,7 +3507,8 @@
             "generate": {
                 "smiles": "CCCCC(=O)O",
                 "mode": "attach",
-                "is_telomer": true
+                "is_telomer": true,
+                "linker_extra": ["C=C"]
             },
             "examples": [
                 "O=C(O)C=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",

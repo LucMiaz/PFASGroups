@@ -55,6 +55,17 @@ class DatabaseWrapper {
                 group_name TEXT,
                 dataset_type TEXT NOT NULL,
                 benchmark_date TEXT,
+                complexity_diameter REAL,
+                complexity_radius REAL,
+                complexity_avg_eccentricity REAL,
+                complexity_max_eccentricity REAL,
+                complexity_avg_degree REAL,
+                complexity_density REAL,
+                complexity_num_cycles INTEGER,
+                complexity_avg_betweenness REAL,
+                complexity_max_betweenness REAL,
+                complexity_avg_clustering REAL,
+                complexity_score REAL,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         `);
@@ -110,6 +121,8 @@ class DatabaseWrapper {
         // Create indexes for better performance
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_molecules_dataset ON molecules (dataset_type)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_molecules_smiles ON molecules (smiles)`);
+        this.db.exec(`CREATE INDEX IF NOT EXISTS idx_molecules_complexity_score ON molecules (complexity_score)`);
+        this.db.exec(`CREATE INDEX IF NOT EXISTS idx_molecules_complexity_diameter ON molecules (complexity_diameter)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_reviews_molecule ON manual_reviews (molecule_id)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_pfasgroups_molecule ON pfasgroups_results (molecule_id)`);
         this.db.exec(`CREATE INDEX IF NOT EXISTS idx_atlas_molecule ON atlas_results (molecule_id)`);

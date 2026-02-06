@@ -36,6 +36,10 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
             m.smiles,
             m.group_id,
             m.generation_type,
+            m.complexity_score,
+            m.complexity_diameter,
+            m.complexity_avg_eccentricity,
+            m.complexity_num_cycles,
             p.execution_time as pfasgroups_time,
             p.detected_groups,
             p.matched_path_types,
@@ -61,11 +65,14 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
     data_by_size = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
     data_by_chain_type = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
     data_by_atoms = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
+    data_by_complexity = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
     
     all_pfasgroups = []
     all_atlas = []
+    complexity_scores = []
+    has_complexity_data = False
     
-    for mol_id, dataset, num_atoms, smiles, group_id, gen_type, pfas_time, detected_groups, path_types, atlas_time in rows:
+    for mol_id, dataset, num_atoms, smiles, group_id, gen_type, complexity_score, complexity_diameter, complexity_eccentricity, complexity_cycles, pfas_time, detected_groups, path_types, atlas_time in rows:
         # Categorize by size (small: <20, medium: 20-40, large: >40 atoms)
         if num_atoms:
             if num_atoms < 20:
@@ -96,6 +103,13 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
             except:
                 pass
         
+        # Categorize by complexity if available
+        complexity_cat = 'unknown'
+        if complexity_score is not None and complexity_score > 0:
+            has_complexity_data = True
+            complexity_scores.append(complexity_score)
+            # Will calculate quartiles after collecting all scores
+        
         # Store times
         if pfas_time is not None:
             data_by_dataset[dataset]['pfasgroups'].append(pfas_time)
@@ -104,6 +118,9 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
             all_pfasgroups.append(pfas_time)
             if num_atoms:
                 data_by_atoms[num_atoms]['pfasgroups'].append(pfas_time)
+            if complexity_score is not None:
+                # Store with complexity score for later categorization
+                data_by_complexity[('pfasgroups', complexity_score)] = pfas_time
         
         if atlas_time is not None:
             data_by_dataset[dataset]['atlas'].append(atlas_time)
@@ -112,6 +129,36 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
             all_atlas.append(atlas_time)
             if num_atoms:
                 data_by_atoms[num_atoms]['atlas'].append(atlas_time)
+            if complexity_score is not None:
+                data_by_complexity[('atlas', complexity_score)] = atlas_time
+    
+    # Calculate complexity quartiles if we have complexity data
+    complexity_quartile_data = None
+    if has_complexity_data and complexity_scores:
+        import numpy as np
+        q1, q2, q3 = np.percentile(complexity_scores, [25, 50, 75])
+        
+        # Categorize by quartiles
+        complexity_quartile_data = {
+            'Low (Q1)': {'pfasgroups': [], 'atlas': []},
+            'Medium-Low (Q2)': {'pfasgroups': [], 'atlas': []},
+            'Medium-High (Q3)': {'pfasgroups': [], 'atlas': []},
+            'High (Q4)': {'pfasgroups': [], 'atlas': []}
+        }
+        
+        for (system, score), time in data_by_complexity.items():
+            if score <= q1:
+                cat = 'Low (Q1)'
+            elif score <= q2:
+                cat = 'Medium-Low (Q2)'
+            elif score <= q3:
+                cat = 'Medium-High (Q3)'
+            else:
+                cat = 'High (Q4)'
+            
+            complexity_quartile_data[cat][system].append(time)
+        
+        print(f"✓ Complexity analysis: Q1={q1:.2f}, Q2={q2:.2f}, Q3={q3:.2f}")
     
     # Generate HTML report
     html = generate_html_content(
@@ -119,6 +166,7 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
         data_by_size,
         data_by_chain_type,
         data_by_atoms,
+        complexity_quartile_data,
         all_pfasgroups, 
         all_atlas, 
         len(rows)
@@ -145,7 +193,7 @@ def calc_stats(times):
     }
 
 def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, data_by_atoms, 
-                          all_pfasgroups, all_atlas, total_molecules):
+                          complexity_quartile_data, all_pfasgroups, all_atlas, total_molecules):
     """Generate HTML content with embedded charts and tables"""
     
     overall_pfasgroups = calc_stats(all_pfasgroups)
@@ -197,6 +245,22 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
             'count': len(d['pfasgroups']) or len(d['atlas'])
         })
     
+    # Build complexity statistics if available
+    complexity_stats = []
+    if complexity_quartile_data:
+        for quartile in ['Low (Q1)', 'Medium-Low (Q2)', 'Medium-High (Q3)', 'High (Q4)']:
+            d = complexity_quartile_data[quartile]
+            pfas_stats = calc_stats(d['pfasgroups'])
+            atlas_stats = calc_stats(d['atlas'])
+            
+            if pfas_stats or atlas_stats:  # Only include if we have data
+                complexity_stats.append({
+                    'name': quartile,
+                    'pfas_stats': pfas_stats,
+                    'atlas_stats': atlas_stats,
+                    'count': len(d['pfasgroups']) or len(d['atlas'])
+                })
+    
     # Build atom count statistics
     atom_bins = [0, 10, 20, 30, 40, 50, 100, 200]
     atom_stats = []
@@ -223,6 +287,7 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
     dataset_chart_js = generate_dataset_chart_js(dataset_stats)
     size_chart_js = generate_size_chart_js(size_stats)
     chain_type_chart_js = generate_chain_type_chart_js(chain_type_stats)
+    complexity_chart_js = generate_complexity_chart_js(complexity_stats) if complexity_stats else ""
     atom_chart_js = generate_atom_chart_js(atom_stats)
     distribution_chart_js = generate_distribution_chart_js(all_pfasgroups, all_atlas)
     
@@ -413,6 +478,11 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
             <div id="chain-type-chart"></div>
         </div>
         
+        {'<h2>🧬 Performance by Graph Complexity</h2>' if complexity_stats else ''}
+        {generate_table_html(complexity_stats, 'Complexity Quartile') if complexity_stats else ''}
+        {'<div class="chart-container"><div id="complexity-chart"></div></div>' if complexity_stats else ''}
+        {'<p class="info"><strong>Note:</strong> Molecules grouped by graph complexity score quartiles. Higher complexity indicates more complex molecular graph topology.</p>' if complexity_stats else ''}
+        
         <h2>⚛️ Performance by Atom Count</h2>
         {generate_table_html(atom_stats, 'Atom Range', is_atom_table=True)}
         <div class="chart-container">
@@ -437,6 +507,7 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
         {dataset_chart_js}
         {size_chart_js}
         {chain_type_chart_js}
+        {complexity_chart_js if complexity_stats else ''}
         {atom_chart_js}
         {distribution_chart_js}
     </script>
@@ -585,6 +656,42 @@ def generate_chain_type_chart_js(chain_type_stats):
     }};
     
     Plotly.newPlot('chain-type-chart', [chainTrace1, chainTrace2], chainLayout);
+    """
+
+def generate_complexity_chart_js(complexity_stats):
+    """Generate Plotly.js code for complexity quartile comparison"""
+    if not complexity_stats:
+        return ""
+    
+    quartiles = [c['name'] for c in complexity_stats]
+    pfas_means = [c['pfas_stats']['mean']*1000 if c['pfas_stats'] else 0 for c in complexity_stats]
+    atlas_means = [c['atlas_stats']['mean']*1000 if c['atlas_stats'] else 0 for c in complexity_stats]
+    
+    return f"""
+    var complexityTrace1 = {{
+        x: {json.dumps(quartiles)},
+        y: {json.dumps(pfas_means)},
+        name: 'PFASgroups',
+        type: 'bar',
+        marker: {{color: '#667eea'}}
+    }};
+    
+    var complexityTrace2 = {{
+        x: {json.dumps(quartiles)},
+        y: {json.dumps(atlas_means)},
+        name: 'PFAS-Atlas',
+        type: 'bar',
+        marker: {{color: '#764ba2'}}
+    }};
+    
+    var complexityLayout = {{
+        title: 'Mean Execution Time by Graph Complexity',
+        xaxis: {{title: 'Complexity Quartile', categoryorder: 'array', categoryarray: {json.dumps(quartiles)}}},
+        yaxis: {{title: 'Time (ms)'}},
+        barmode: 'group'
+    }};
+    
+    Plotly.newPlot('complexity-chart', [complexityTrace1, complexityTrace2], complexityLayout);
     """
 
 def generate_atom_chart_js(atom_stats):

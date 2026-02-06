@@ -2,9 +2,32 @@
 # Unified PFAS Benchmark Runner (Linux/macOS)
 # Runs all benchmark types and generates unified HTML report
 # Now includes database integration for the review app
+# Usage: ./run_all_benchmarks.sh [--reuse-timing]
+
+# Parse command line arguments
+REUSE_TIMING=false
+for arg in "$@"; do
+    case $arg in
+        --reuse-timing)
+            REUSE_TIMING=true
+            shift
+            ;;
+        --help)
+            echo "Usage: ./run_all_benchmarks.sh [--reuse-timing]"
+            echo ""
+            echo "Options:"
+            echo "  --reuse-timing    Load and extend previous timing benchmark results"
+            echo "  --help           Show this help message"
+            exit 0
+            ;;
+    esac
+done
 
 echo "🚀 PFAS BENCHMARK SUITE - UNIFIED RUNNER"
 echo "========================================="
+if [ "$REUSE_TIMING" = true ]; then
+    echo "♻️  Reusing previous timing results mode enabled"
+fi
 echo ""
 
 # Check if we're in the right directory
@@ -42,7 +65,12 @@ echo ""
 
 # Timing Performance Benchmark
 echo "3️⃣ Running Timing Performance Benchmark..."
-echo "3" | python scripts/enhanced_pfas_benchmark.py
+if [ "$REUSE_TIMING" = true ]; then
+    echo "♻️  Reusing previous timing results..."
+    printf "3\ny\n" | python scripts/enhanced_pfas_benchmark.py
+else
+    printf "3\nn\n" | python scripts/enhanced_pfas_benchmark.py
+fi
 if [ $? -ne 0 ]; then
     echo "❌ Timing Performance Benchmark failed"
     exit 1

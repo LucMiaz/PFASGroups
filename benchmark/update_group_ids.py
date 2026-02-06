@@ -117,22 +117,36 @@ def main():
     
     # Update benchmark files in data/
     print("\nUpdating benchmark files in data/...")
-    benchmark_files = [
-        'pfas_oecd_benchmark_20260202_104629.json',
-        'pfas_timing_benchmark_20260202_105102.json',
-        'pfas_non_fluorinated_benchmark_20260202_105102.json',
-        'pfas_highly_branched_benchmark_20260202_105121.json',
-        'pfas_enhanced_benchmark_20260202_104204.json',
-        'pfas_complex_branched_benchmark_20260202_105117.json',
+    
+    # Find all benchmark files dynamically
+    benchmark_patterns = [
+        'pfas_oecd_benchmark_*.json',
+        'pfas_timing_benchmark_*.json',
+        'pfas_non_fluorinated_benchmark_*.json',
+        'pfas_highly_branched_benchmark_*.json',
+        'pfas_enhanced_benchmark_*.json',
+        'pfas_complex_branched_benchmark_*.json',
         'telomer_validation_results.json'
     ]
     
-    for filename in benchmark_files:
-        file_path = data_dir / filename
-        if file_path.exists():
-            update_benchmark_file(file_path, id_mapping)
+    for pattern in benchmark_patterns:
+        if '*' in pattern:
+            # Find all files matching the pattern
+            matching_files = list(data_dir.glob(pattern))
+            if matching_files:
+                # Get the latest file
+                latest_file = max(matching_files, key=lambda x: x.stat().st_mtime)
+                print(f"  Updating: {latest_file.name}")
+                update_benchmark_file(latest_file, id_mapping)
+            else:
+                print(f"  ⚠ No files found matching: {pattern}")
         else:
-            print(f"  ⚠ File not found: {filename}")
+            # Static filename
+            file_path = data_dir / pattern
+            if file_path.exists():
+                update_benchmark_file(file_path, id_mapping)
+            else:
+                print(f"  ⚠ File not found: {pattern}")
     
     # Update benchmark files in scripts/data/
     print("\nUpdating benchmark files in scripts/data/...")

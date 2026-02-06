@@ -24,8 +24,19 @@ except ImportError:
     MATPLOTLIB_AVAILABLE = False
     print("Warning: matplotlib not available, skipping plots")
 
-# Load timing benchmark data
-with open('data/pfas_timing_benchmark_20260201_022433.json', 'r') as f:
+import glob
+from pathlib import Path
+
+# Load the latest timing benchmark data
+timing_files = sorted(glob.glob('data/pfas_timing_benchmark_*.json'), key=lambda x: Path(x).stat().st_mtime, reverse=True)
+if not timing_files:
+    print("Error: No timing benchmark files found in data/")
+    exit(1)
+
+timing_file = timing_files[0]
+print(f"Loading latest timing benchmark: {timing_file}")
+
+with open(timing_file, 'r') as f:
     timing_data = json.load(f)
 
 # Extract relevant fields

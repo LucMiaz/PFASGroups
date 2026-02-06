@@ -12,6 +12,9 @@ from rdkit.Chem import rdMolDescriptors
 from collections import defaultdict
 import sys
 import os
+import networkx as nx
+from rdkit.Chem import Descriptors
+
 
 # Add parent directory to path to import PFASGroups
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -22,6 +25,7 @@ sys.path.append(parent_dir)
 try:
     from PFASgroups.parser import parse_mol
     from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_groups
+    from PFASgroups.core import mol_to_nx, rdkit_disable_log
     PFASGROUPS_AVAILABLE = True
 except ImportError:
     print("❌ PFASGroups not available")
@@ -105,9 +109,8 @@ class EnhancedPFASBenchmark:
                         
                         if is_telomer:
                             entry['telomer'] = True
-                            entry['ch2_range'] = (2, 8)
-                            if 'ethoxylate' in group_name.lower():
-                                entry['ethoxylate'] = True
+                            entry['ch2_range'] = generate_info.get('ch2_range', (2, 8))  # Default CH2 linker range for telomers
+                            entry['linker_extra'] = generate_info.get('linker_extra', ['CH2'])  # Default linker is CH2
                         
                         self.functional_smarts[group_id] = entry
                     else:
@@ -308,9 +311,8 @@ class EnhancedPFASBenchmark:
         
         # Check if this is a telomer group
         is_telomer = group_info.get('telomer', False)
-        is_ethoxylate = group_info.get('ethoxylate', False)
         ch2_range = group_info.get('ch2_range', (2, 8))
-        
+        linker_extra = group_info.get('linker_extra', [])
         if not is_telomer:
             # For non-telomer groups like 60, 61, generate normally
             return self.generate_single_group_molecules(group_id, count)
@@ -330,22 +332,18 @@ class EnhancedPFASBenchmark:
                 if n_perfluoro == 1:
                     perfluoro_smiles = "FC(F)(F)"
                 else:
-                    perfluoro_smiles = "FC(F)(F)" + "C(F)(F)" * (n_perfluoro - 1)
+                    perfluoro_smiles = "FC(C(F)(F)F)(F)" + "C(F)(F)" * (n_perfluoro - 2)
                 
                 # Build CH2 linker chain
-                if is_ethoxylate:
-                    # For ethoxylates, add oxygen atoms between some CH2 groups
-                    # Pattern: -CH2-O-CH2-O-CH2- (ethylene oxide units)
-                    linker_parts = ["C"]
-                    for j in range(1, n_ch2):
-                        if (j % 2 == 1):  # Add O every other position
-                            linker_parts.append("OC")
-                        else:
-                            linker_parts.append("C")
-                    linker_smiles = "".join(linker_parts)
-                else:
-                    # Regular CH2 chain
-                    linker_smiles = "C" * n_ch2
+                # For ethoxylates, add oxygen atoms between some CH2 groups
+                # Pattern: -CH2-O-CH2-O-CH2- (ethylene oxide units)
+                linker_parts = ["C"]
+                for j, part in enumerate(linker_extra):
+                    linker_parts.append(part)
+                    linker_parts.append("C")
+                j+=1
+                linker_parts.extend(["C"] * (n_ch2 - j))  # Add remaining CH2 groups if any
+                linker_smiles = "".join(linker_parts)
                 
                 # Add functional group
                 func_smiles = group_info['smiles']
@@ -591,7 +589,7 @@ class EnhancedPFASBenchmark:
             else:
                 molecules = self.generate_single_group_molecules(group_id, count=replicates)
             success_count = 0
-            
+            total_molecules = len(molecules)
             for mol_data in molecules:
                 if mol_data:
                     success_count += 1
@@ -611,7 +609,7 @@ class EnhancedPFASBenchmark:
                     all_results.append(result)
             
             success_rate = (success_count / replicates) * 100
-            print(f"  ✅ Generated {success_count}/40 molecules ({success_rate:.1f}% success)")
+            print(f"  ✅ Generated {success_count}/{total_molecules} molecules ({success_rate:.1f}% success) for group {group_id}")
         
         # Part 2: Enhanced Multi-group molecules  
         print("\n📋 PART 2: Enhanced Multi-Group Molecules")
@@ -645,7 +643,7 @@ class EnhancedPFASBenchmark:
             
             molecules = self.generate_multi_group_molecules(combo, count=replicates)
             success_count = 0
-            
+            total_molecules = len(molecules)
             for mol_data in molecules:
                 if mol_data:
                     success_count += 1
@@ -665,7 +663,7 @@ class EnhancedPFASBenchmark:
                     all_results.append(result)
             
             success_rate = (success_count / replicates) * 100
-            print(f"     ✅ Generated {success_count}/40 molecules ({success_rate:.1f}% success)")
+            print(f"     ✅ Generated {success_count}/{total_molecules} molecules ({success_rate:.1f}% success) for groups {combo[0]}-{combo[1]}")
         
         # Test triplets
         print("\n🔬 Testing 5 functional group triplets (10 molecules each):")
@@ -675,7 +673,7 @@ class EnhancedPFASBenchmark:
             
             molecules = self.generate_multi_group_molecules(combo, count=replicates)
             success_count = 0
-            
+            total_molecules = len(molecules)
             for mol_data in molecules:
                 if mol_data:
                     success_count += 1
@@ -695,7 +693,7 @@ class EnhancedPFASBenchmark:
                     all_results.append(result)
             
             success_rate = (success_count / replicates) * 100
-            print(f"     ✅ Generated {success_count}/40 molecules ({success_rate:.1f}% success)")
+            print(f"     ✅ Generated {success_count}/{total_molecules} molecules ({success_rate:.1f}% success) for groups {'-'.join(map(str, combo))}")
         
         # Part 3: OECD groups (1-28) molecules
         print("\n📋 PART 3: OECD Group Molecules (1-28)")
@@ -784,22 +782,138 @@ class EnhancedPFASBenchmark:
         
         return specs
     
-    def run_timing_benchmark(self, max_molecules=200, iterations=10):
-        """Run timing benchmark comparing PFASGroups vs PFAS-Atlas on increasingly large molecules
+    def calculate_molecule_complexity(self, mol):
+        """Calculate molecule complexity using graph component metrics
         
         Args:
-            max_molecules: Number of molecules to test
-            iterations: Number of iterations for averaging (default 10)
+            mol: RDKit molecule object
+            
+        Returns:
+            dict: Dictionary of complexity metrics
+        """
+        try:
+            # Convert RDKit molecule to NetworkX graph using PFASgroups.core function
+            G = mol_to_nx(mol)
+            
+            # Calculate graph metrics
+            metrics = {}
+            
+            # Eccentricity metrics (if graph is connected)
+            if nx.is_connected(G):
+                eccentricities = nx.eccentricity(G)
+                metrics['diameter'] = nx.diameter(G)
+                metrics['radius'] = nx.radius(G)
+                metrics['avg_eccentricity'] = sum(eccentricities.values()) / len(eccentricities)
+                metrics['max_eccentricity'] = max(eccentricities.values())
+            else:
+                # For disconnected graphs, use largest component
+                largest_cc = max(nx.connected_components(G), key=len)
+                subgraph = G.subgraph(largest_cc)
+                eccentricities = nx.eccentricity(subgraph)
+                metrics['diameter'] = nx.diameter(subgraph)
+                metrics['radius'] = nx.radius(subgraph)
+                metrics['avg_eccentricity'] = sum(eccentricities.values()) / len(eccentricities)
+                metrics['max_eccentricity'] = max(eccentricities.values())
+                metrics['num_components'] = nx.number_connected_components(G)
+            
+            # Additional complexity metrics
+            metrics['avg_degree'] = sum(dict(G.degree()).values()) / G.number_of_nodes()
+            metrics['density'] = nx.density(G)
+            metrics['num_cycles'] = len(nx.cycle_basis(G))
+            
+            # Betweenness centrality (complexity of pathways)
+            betweenness = nx.betweenness_centrality(G)
+            metrics['avg_betweenness'] = sum(betweenness.values()) / len(betweenness)
+            metrics['max_betweenness'] = max(betweenness.values())
+            
+            # Clustering coefficient (local connectivity)
+            metrics['avg_clustering'] = nx.average_clustering(G)
+            
+            # Overall complexity score (weighted combination)
+            metrics['complexity_score'] = (
+                metrics['diameter'] * 0.2 +
+                metrics['avg_eccentricity'] * 0.2 +
+                metrics['avg_degree'] * 0.15 +
+                metrics['density'] * 10 * 0.15 +
+                metrics['num_cycles'] * 0.15 +
+                metrics['avg_betweenness'] * 10 * 0.15
+            )
+            
+            return metrics
+            
+        except Exception as e:
+            print(f"Warning: Failed to calculate complexity metrics: {e}")
+            return {
+                'diameter': 0,
+                'radius': 0,
+                'avg_eccentricity': 0,
+                'max_eccentricity': 0,
+                'avg_degree': 0,
+                'density': 0,
+                'num_cycles': 0,
+                'avg_betweenness': 0,
+                'max_betweenness': 0,
+                'avg_clustering': 0,
+                'complexity_score': 0
+            }
+    
+    def load_latest_timing_results(self):
+        """Load the most recent timing benchmark results from data directory
+        
+        Returns:
+            List of timing results, or empty list if no previous results found
+        """
+        import glob
+        
+        # Find all timing benchmark JSON files
+        pattern = os.path.join(script_dir, '..', 'data', 'pfas_timing_benchmark_*.json')
+        files = glob.glob(pattern)
+        
+        if not files:
+            print("ℹ️  No previous timing results found")
+            return []
+        
+        # Get the most recent file
+        latest_file = max(files, key=os.path.getmtime)
+        
+        try:
+            with open(latest_file, 'r') as f:
+                results = json.load(f)
+            
+            print(f"✅ Loaded {len(results)} previous timing results from {os.path.basename(latest_file)}")
+            return results
+        except Exception as e:
+            print(f"⚠️  Failed to load previous results: {e}")
+            return []
+    
+    def run_timing_benchmark(self, max_molecules=2500, iterations=5, reuse_previous=False):
+        """Run timing benchmark comparing PFASGroups vs PFAS-Atlas with diverse functional groups
+        
+        Args:
+            max_molecules: Number of molecules to test (default 2500)
+            iterations: Number of iterations for averaging (default 5)
+            reuse_previous: If True, load previous results and add new ones (default False)
         """
         
         # Get system specifications
         system_specs = self.get_system_specifications()
         
-        print("\n🚀 TIMING PERFORMANCE BENCHMARK")
-        print("=" * 55)
-        print(f"📊 Testing {max_molecules} molecules with carboxylic acid functional groups")
-        print(f"🔄 Running {iterations} iterations for statistical averaging")
-        print("📏 Molecules will vary in size to test scaling performance (up to ~2000 atoms)")
+        # Get available functional groups (IDs 29-114)
+        available_groups = []
+        for group_id in range(29, 115):
+            if group_id in self.functional_smarts:
+                group_info = self.functional_smarts[group_id]
+                # Check if group has test generation data
+                if 'smiles' in group_info and 'mode' in group_info:
+                    available_groups.append(group_id)
+        
+        print("\n🚀 TIMING PERFORMANCE BENCHMARK WITH GRAPH COMPLEXITY METRICS")
+        print("=" * 70)
+        print(f"📊 Testing {max_molecules} molecules using grid-based sampling (IDs 29-114)")
+        print(f"🔄 Running {iterations} iterations per molecule for statistical averaging")
+        print(f"📏 Chain length range: 5-200 carbon atoms (binned for systematic coverage)")
+        print(f"🧬 Available functional groups: {len(available_groups)} groups")
+        print(f"📈 Using graph metrics for complexity: eccentricity, diameter, betweenness, etc.")
         print(f"\n💻 System Specifications:")
         print(f"   • OS: {system_specs['system']} ({system_specs['architecture']})")
         print(f"   • CPU: {system_specs['cpu_name']}")
@@ -808,53 +922,102 @@ class EnhancedPFASBenchmark:
         print(f"   • Python: {system_specs['python_version']}")
         print(f"   • Platform: {system_specs['platform']}")
         
-        timing_results = []
+        # Create grid of (chain_length, group_id) combinations
+        # Define chain length bins for better coverage
+        chain_length_bins = list(range(5, 50, 5)) + list(range(50, 100, 10)) + list(range(100, 201, 20))
+        
+        # Create all possible grid points
+        grid_points = []
+        for chain_length in chain_length_bins:
+            for group_id in available_groups:
+                grid_points.append((chain_length, group_id))
+        
+        # Shuffle grid randomly
+        random.shuffle(grid_points)
+        
+        # If max_molecules is larger than grid, allow repetition by cycling through shuffled grid
+        grid_cycle = grid_points * ((max_molecules // len(grid_points)) + 1)
+        
+        print(f"🔲 Created grid: {len(chain_length_bins)} chain lengths × {len(available_groups)} groups = {len(grid_points)} unique combinations")
+        print(f"📍 Chain length bins: {chain_length_bins[:5]}... to ...{chain_length_bins[-3:]}")
+        
+        # Load previous results if requested
+        if reuse_previous:
+            timing_results = self.load_latest_timing_results()
+            if timing_results:
+                print(f"🔄 Starting from {len(timing_results)} previous results, will add {max_molecules} more")
+                print(f"📊 Target total: {len(timing_results) + max_molecules} molecules")
+                max_molecules_total = len(timing_results) + max_molecules
+            else:
+                print(f"⚠️  No previous results found, starting fresh")
+                max_molecules_total = max_molecules
+        else:
+            timing_results = []
+            max_molecules_total = max_molecules
+        
+        excluded_molecules = []  # Track excluded molecules for review
         excluded_wrong_detection = 0
         failed_generations = 0
+        grid_index = 0
+        attempts = 0
         
-        for i in range(max_molecules):
+        while len(timing_results) < max_molecules_total and attempts < max_molecules_total * 3:
+            attempts += 1
             try:
-                # Generate molecules of increasing size (chain lengths 3-50 to reach ~2000 atoms)
-                # Use logarithmic scaling for better coverage of large molecules
-                current_target = len(timing_results)
-                if current_target < max_molecules * 0.3:  # First 30%: small molecules (3-10 carbons)
-                    chain_length = 3 + (i % 8)
-                elif current_target < max_molecules * 0.6:  # Next 30%: medium molecules (10-25 carbons)
-                    chain_length = 10 + (i % 16)
-                else:  # Last 40%: large molecules (25-50 carbons for ~2000 atoms)
-                    chain_length = 25 + (i % 26)
+                # Get next grid point (chain_length, group_id)
+                chain_length, group_id = grid_cycle[grid_index]
+                grid_index += 1
+                group_info = self.functional_smarts[group_id]
                 
-                # Create carboxylic acid functional group specification
+                # Create functional group specification from JSON data
                 functional_group_spec = {
-                    'group_smiles': 'C(=O)O',
+                    'group_smiles': group_info['smiles'],
                     'n': 1,
-                    'mode': 'attach'
+                    'mode': group_info['mode']
                 }
                 
-                # Generate molecule using generate_random_mol with increased complexity for larger molecules
-                complexity_factor = min(chain_length / 10, 3)  # Scale complexity with size
+                # Generate molecule with random structural features
                 mol = generate_random_mol(
                     n=chain_length,
                     functional_groups=functional_group_spec,
                     perfluorinated=True,
-                    # cycle=(i % max(5, int(15/complexity_factor)) == 0),  # More cycles for larger molecules
-                    # alkene=(i % max(4, int(12/complexity_factor)) == 0),   # More alkenes
-                    #alkyne=(i % max(6, int(18/complexity_factor)) == 0)   # More alkynes
+                    cycle=(random.random() < 0.2),  # 20% chance of cycle
+                    alkene=(random.random() < 0.15),  # 15% chance of alkene
+                    alkyne=(random.random() < 0.1)   # 10% chance of alkyne
                 )
                 
                 if mol is not None:
                     smiles = Chem.MolToSmiles(mol)
                     
-                    # Pre-validate: Check that PFASGroups correctly identifies carboxylic acid (group 33)
+                    # Pre-validate: Check that PFASGroups detects the molecule
                     validation_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
-                    if not validation_result['success'] or 33 not in validation_result['detected_groups']:
+                    if not validation_result['success'] or group_id not in validation_result['detected_groups']:
                         excluded_wrong_detection += 1
-                        continue  # Skip molecules where carboxylic acid is not correctly identified
+                        # Save excluded molecule for review
+                        excluded_molecules.append({
+                            'smiles': smiles,
+                            'chain_length': chain_length,
+                            'target_group_id': group_id,
+                            'target_group_name': group_info['name'],
+                            'detected_groups': validation_result['detected_groups'],
+                            'success': validation_result['success'],
+                            'reason': 'target_group_not_detected' if validation_result['success'] else 'validation_failed'
+                        })
+                        continue  # Skip molecules where the target group is not correctly identified
                     
                     # Calculate molecular properties
                     mol_weight = rdMolDescriptors.CalcExactMolWt(mol)
                     num_atoms = mol.GetNumAtoms()
                     num_bonds = mol.GetNumBonds()
+                    
+                    # Calculate graph complexity metrics
+                    complexity_metrics = self.calculate_molecule_complexity(mol)
+                    
+                    # Calculate RDKit descriptors
+                    num_rings = Descriptors.RingCount(mol)
+                    num_aromatic_rings = Descriptors.NumAromaticRings(mol)
+                    num_rotatable_bonds = Descriptors.NumRotatableBonds(mol)
+                    tpsa = Descriptors.TPSA(mol)
                     
                     # Run multiple timing iterations for statistical reliability
                     pfas_times = []
@@ -868,7 +1031,7 @@ class EnhancedPFASBenchmark:
                         # Test with PFASGroups - accuracy test
                         pfas_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
                         pfas_times.append(pfas_result['execution_time'])
-                        if pfas_result['success'] and 33 in pfas_result['detected_groups']:  # Ensure carboxylic acid is detected
+                        if pfas_result['success'] and group_id in pfas_result['detected_groups']:
                             pfas_success_count += 1
                         detected_groups_list.append(pfas_result['detected_groups'])
                         
@@ -893,12 +1056,29 @@ class EnhancedPFASBenchmark:
                     most_common_atlas = max(set(atlas_classifications), key=atlas_classifications.count) if any(atlas_classifications) else (None, None)
                     
                     timing_data = {
-                        'molecule_id': i + 1,
+                        'molecule_id': len(timing_results) + 1,
                         'chain_length': chain_length,
+                        'target_group_id': group_id,
+                        'target_group_name': group_info['name'],
                         'smiles': smiles,
                         'molecular_weight': mol_weight,
                         'num_atoms': num_atoms,
                         'num_bonds': num_bonds,
+                        'num_rings': num_rings,
+                        'num_aromatic_rings': num_aromatic_rings,
+                        'num_rotatable_bonds': num_rotatable_bonds,
+                        'tpsa': tpsa,
+                        'complexity_diameter': complexity_metrics['diameter'],
+                        'complexity_radius': complexity_metrics['radius'],
+                        'complexity_avg_eccentricity': complexity_metrics['avg_eccentricity'],
+                        'complexity_max_eccentricity': complexity_metrics['max_eccentricity'],
+                        'complexity_avg_degree': complexity_metrics['avg_degree'],
+                        'complexity_density': complexity_metrics['density'],
+                        'complexity_num_cycles': complexity_metrics['num_cycles'],
+                        'complexity_avg_betweenness': complexity_metrics['avg_betweenness'],
+                        'complexity_max_betweenness': complexity_metrics['max_betweenness'],
+                        'complexity_avg_clustering': complexity_metrics['avg_clustering'],
+                        'complexity_score': complexity_metrics['complexity_score'],
                         'iterations': iterations,
                         'pfasgroups_time_avg': pfas_time_avg,
                         'pfasgroups_time_std': pfas_time_std,
@@ -918,21 +1098,22 @@ class EnhancedPFASBenchmark:
                     
                     timing_results.append(timing_data)
                     
-                    if (i + 1) % 25 == 0:  # Report more frequently for longer tests
-                        recent_results = timing_results[-25:]
+                    if len(timing_results) % 50 == 0:  # Report every 50 molecules
+                        recent_results = timing_results[-50:]
                         avg_pfas_time = sum(r['pfasgroups_time_avg'] for r in recent_results) / len(recent_results) * 1000
                         avg_atlas_time = sum(r['atlas_time_avg'] for r in recent_results) / len(recent_results) * 1000
                         avg_atoms = sum(r['num_atoms'] for r in recent_results) / len(recent_results)
-                        print(f"  ✅ Generated {i + 1}/{max_molecules} molecules | Avg times: PFASGroups {avg_pfas_time:.2f}ms, Atlas {avg_atlas_time:.2f}ms | Avg atoms: {avg_atoms:.1f}")
+                        avg_complexity = sum(r['complexity_score'] for r in recent_results) / len(recent_results)
+                        print(f"  ✅ Generated {len(timing_results)}/{max_molecules_total} molecules | "
+                              f"Avg times: PFASGroups {avg_pfas_time:.2f}ms, Atlas {avg_atlas_time:.2f}ms | "
+                              f"Avg atoms: {avg_atoms:.1f} | Avg complexity: {avg_complexity:.2f}")
                 else:
                     failed_generations += 1
                     
             except Exception as e:
-                print(f"Warning: Failed to generate molecule {i + 1}: {e}")
+                print(f"Warning: Failed to generate molecule (attempt {attempts}): {e}")
                 failed_generations += 1
                 continue
-            
-            i += 1
         
         # Save timing results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -940,6 +1121,19 @@ class EnhancedPFASBenchmark:
         
         with open(output_file, 'w') as f:
             json.dump(timing_results, f, indent=2, default=str)
+        
+        # Save excluded molecules for review
+        if excluded_molecules:
+            excluded_file = f"data/pfas_timing_excluded_{timestamp}.json"
+            with open(excluded_file, 'w') as f:
+                json.dump(excluded_molecules, f, indent=2, default=str)
+            print(f"\n⚠️  EXCLUDED MOLECULES SAVED FOR REVIEW")
+            print(f"📋 {len(excluded_molecules)} molecules excluded (target group not detected)")
+            print(f"💾 Excluded molecules saved: {excluded_file}")
+            print(f"\n📌 Please review excluded molecules to verify:")
+            print(f"   • No bugs in molecular generation")
+            print(f"   • SMARTS patterns are correctly defined")
+            print(f"   • Expected behavior for edge cases")
         
         print(f"\n💾 Timing Benchmark Complete!")
         print(f"📊 Total molecules tested: {len(timing_results)}")
@@ -963,7 +1157,10 @@ class EnhancedPFASBenchmark:
             print(f"\n📈 Comprehensive Timing Summary ({iterations} iterations per molecule):")
             print(f"   • PFASGroups: {pfas_overall_avg:.2f}±{pfas_overall_std:.2f}ms per molecule")
             print(f"   • PFAS-Atlas: {atlas_overall_avg:.2f}±{atlas_overall_std:.2f}ms per molecule")
-            print(f"   • Speed ratio: {atlas_overall_avg/pfas_overall_avg:.1f}x (Atlas/PFASGroups)")
+            if pfas_overall_avg > atlas_overall_avg:
+                print(f"   • Speed: PFASGroups is {pfas_overall_avg/atlas_overall_avg:.1f}x slower than Atlas")
+            else:
+                print(f"   • Speed: PFASGroups is {atlas_overall_avg/pfas_overall_avg:.1f}x faster than Atlas")
             
             # Enhanced scaling analysis with multiple size bins
             atom_ranges = [
@@ -991,6 +1188,23 @@ class EnhancedPFASBenchmark:
             print(f"\n🔬 Largest Molecules Tested:")
             for i, mol in enumerate(largest_molecules, 1):
                 print(f"   {i}. {mol['num_atoms']} atoms, MW={mol['molecular_weight']:.1f}: PFASGroups {mol['pfasgroups_time_avg']*1000:.2f}ms, Atlas {mol['atlas_time_avg']*1000:.2f}ms")
+            
+            # Complexity metrics analysis
+            complexity_scores = [r['complexity_score'] for r in timing_results]
+            diameters = [r['complexity_diameter'] for r in timing_results]
+            eccentricities = [r['complexity_avg_eccentricity'] for r in timing_results]
+            
+            print(f"\n📊 Graph Complexity Metrics Summary:")
+            print(f"   • Complexity Score: {np.mean(complexity_scores):.2f}±{np.std(complexity_scores):.2f} (range: {min(complexity_scores):.2f}-{max(complexity_scores):.2f})")
+            print(f"   • Diameter: {np.mean(diameters):.2f}±{np.std(diameters):.2f} (range: {min(diameters)}-{max(diameters)})")
+            print(f"   • Avg Eccentricity: {np.mean(eccentricities):.2f}±{np.std(eccentricities):.2f}")
+            
+            # Most complex molecules
+            most_complex = sorted(timing_results, key=lambda x: x['complexity_score'], reverse=True)[:5]
+            print(f"\n🧬 Most Complex Molecules:")
+            for i, mol in enumerate(most_complex, 1):
+                print(f"   {i}. Complexity={mol['complexity_score']:.2f}, {mol['num_atoms']} atoms, diameter={mol['complexity_diameter']}, "
+                      f"cycles={mol['complexity_num_cycles']}: {mol['target_group_name']}")
         
         return timing_results, output_file
     
@@ -1428,7 +1642,7 @@ class EnhancedPFASBenchmark:
         print(f"💾 Results saved: {output_file}")
         
         return all_results, output_file
-
+@rdkit_disable_log()
 def main():
     """Main function to run enhanced benchmark"""
     
@@ -1460,7 +1674,12 @@ def main():
     
     if choice in ['3', '6', '']:
         print("\nRunning Timing Performance Benchmark...")
-        timing_results, timing_file = benchmark.run_timing_benchmark(200, 10)  # 200 molecules, 10 iterations
+        
+        # Ask if user wants to reuse previous results
+        reuse = input("⏪ Reuse previous timing results and add more? (y/N): ").strip().lower()
+        reuse_previous = reuse in ['y', 'yes']
+        
+        timing_results, timing_file = benchmark.run_timing_benchmark(2500, 5, reuse_previous=reuse_previous)  # 2500 molecules, 5 iterations
     else:
         timing_results, timing_file = None, None
     

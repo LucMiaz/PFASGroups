@@ -24,6 +24,13 @@ def load_timing_results(filename):
 def analyze_timing_performance(timing_results):
     """Analyze timing performance and scaling characteristics with iteration statistics"""
     
+    # Check if complexity metrics are available
+    has_complexity = 'complexity_score' in timing_results[0]
+    if has_complexity:
+        print("\n📊 NOTICE: This dataset includes graph complexity metrics!")
+        print("   Consider using analyze_timing_with_complexity.py for full complexity analysis")
+        print("   This script will generate basic timing analysis only.\n")
+    
     # Extract data arrays - handle both old and new format
     chain_lengths = [r['chain_length'] for r in timing_results]
     mol_weights = [r['molecular_weight'] for r in timing_results]

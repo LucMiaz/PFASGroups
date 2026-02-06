@@ -380,8 +380,12 @@ class DataImporter {
         const result = await this.db.run(`
             INSERT INTO molecules (
                 smiles, molecular_formula, molecular_weight, num_atoms, num_bonds, 
-                chain_length, dataset_type, benchmark_date
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                chain_length, dataset_type, benchmark_date,
+                complexity_diameter, complexity_radius, complexity_avg_eccentricity,
+                complexity_max_eccentricity, complexity_avg_degree, complexity_density,
+                complexity_num_cycles, complexity_avg_betweenness, complexity_max_betweenness,
+                complexity_avg_clustering, complexity_score
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, [
             record.smiles,
             record.molecular_formula || null,
@@ -390,7 +394,18 @@ class DataImporter {
             record.num_bonds || null,
             record.chain_length || null,
             'timing',
-            benchmarkDate
+            benchmarkDate,
+            record.complexity_diameter || null,
+            record.complexity_radius || null,
+            record.complexity_avg_eccentricity || null,
+            record.complexity_max_eccentricity || null,
+            record.complexity_avg_degree || null,
+            record.complexity_density || null,
+            record.complexity_num_cycles || null,
+            record.complexity_avg_betweenness || null,
+            record.complexity_max_betweenness || null,
+            record.complexity_avg_clustering || null,
+            record.complexity_score || null
         ]);
         
         return result.id;

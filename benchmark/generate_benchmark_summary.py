@@ -5,6 +5,13 @@ Analyzes timing models and generates summary statistics for LaTeX documents.
 
 import json
 import numpy as np
+import glob
+from pathlib import Path
+
+def get_latest_file(pattern):
+    """Get the most recent file matching the pattern."""
+    files = sorted(glob.glob(pattern), key=lambda x: Path(x).stat().st_mtime, reverse=True)
+    return files[0] if files else None
 
 print("="*80)
 print("PFASGROUPS BENCHMARK ANALYSIS")
@@ -14,26 +21,56 @@ print("="*80)
 print("\n1. Loading benchmark data...")
 
 # Timing benchmark
-with open('data/pfas_timing_benchmark_20260201_022433.json', 'r') as f:
-    timing_data = json.load(f)
+timing_file = get_latest_file('data/pfas_timing_benchmark_*.json')
+if timing_file:
+    print(f"  Loading timing: {timing_file}")
+    with open(timing_file, 'r') as f:
+        timing_data = json.load(f)
+else:
+    print("  Warning: No timing benchmark found")
+    timing_data = []
 
 # Enhanced benchmark
-with open('data/pfas_enhanced_benchmark_20260201_022011.json', 'r') as f:
-    enhanced_data = json.load(f)
+enhanced_file = get_latest_file('data/pfas_enhanced_benchmark_*.json')
+if enhanced_file:
+    print(f"  Loading enhanced: {enhanced_file}")
+    with open(enhanced_file, 'r') as f:
+        enhanced_data = json.load(f)
+else:
+    print("  Warning: No enhanced benchmark found")
+    enhanced_data = []
 
 # Complex branched
-with open('data/pfas_complex_branched_benchmark_20260201_022453.json', 'r') as f:
-    complex_data = json.load(f)
+complex_file = get_latest_file('data/pfas_complex_branched_benchmark_*.json')
+if complex_file:
+    print(f"  Loading complex: {complex_file}")
+    with open(complex_file, 'r') as f:
+        complex_data = json.load(f)
+else:
+    print("  Warning: No complex benchmark found")
+    complex_data = []
 
 # Highly branched
-with open('data/pfas_highly_branched_benchmark_20260201_022459.json', 'r') as f:
-    highly_branched_data = json.load(f)
+highly_file = get_latest_file('data/pfas_highly_branched_benchmark_*.json')
+if highly_file:
+    print(f"  Loading highly branched: {highly_file}")
+    with open(highly_file, 'r') as f:
+        highly_branched_data = json.load(f)
+else:
+    print("  Warning: No highly branched benchmark found")
+    highly_branched_data = []
 
 # Telomer validation
-with open('data/telomer_validation_results.json', 'r') as f:
-    telomer_data = json.load(f)
+telomer_file = 'data/telomer_validation_results.json'
+if Path(telomer_file).exists():
+    print(f"  Loading telomer: {telomer_file}")
+    with open(telomer_file, 'r') as f:
+        telomer_data = json.load(f)
+else:
+    print("  Warning: No telomer validation found")
+    telomer_data = []
 
-print(f"  Timing: {len(timing_data)} molecules")
+print(f"\n  Timing: {len(timing_data)} molecules")
 print(f"  Enhanced: {len(enhanced_data)} molecules")
 print(f"  Complex branched: {len(complex_data)} molecules")
 print(f"  Highly branched: {len(highly_branched_data)} molecules")

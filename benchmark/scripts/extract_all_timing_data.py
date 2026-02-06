@@ -3,8 +3,20 @@ Extract ALL timing data from HTML file - complete dataset
 """
 import numpy as np
 import re
+import glob
+from pathlib import Path
+import sys
 
-html_file = r'C:\Users\luc\git\PFASGroups\benchmark\review-app\analysis_reports\timing_analysis_20260129_005055.html'
+# Find the latest timing analysis HTML file
+html_files = sorted(glob.glob('review-app/analysis_reports/timing_analysis_*.html'), 
+                   key=lambda x: Path(x).stat().st_mtime, reverse=True)
+
+if not html_files:
+    print("Error: No timing analysis HTML files found in review-app/analysis_reports/")
+    sys.exit(1)
+
+html_file = html_files[0]
+print(f"Loading latest timing analysis: {html_file}")
 
 # Read the HTML file
 with open(html_file, 'r', encoding='utf-8') as f:
