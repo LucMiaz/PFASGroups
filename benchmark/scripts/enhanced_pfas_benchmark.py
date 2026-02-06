@@ -101,6 +101,20 @@ class EnhancedPFASBenchmark:
                     
                     # Only add groups that have valid SMILES for generation
                     if smiles:
+                        # For telomer groups, strip any hydrocarbon linker prefix from the functional group
+                        # Telomers often have SMILES like "CCCC[SiH3]" but the linker is built separately
+                        # So we need to extract just the functional group part
+                        if is_telomer:
+                            import re
+                            # Match leading carbons followed by heteroatom or bracket
+                            match = re.search(r'^(C+)(\[|[NOSPB])', smiles)
+                            if match:
+                                # Remove the leading carbon chain
+                                carbon_chain = match.group(1)
+                                smiles = smiles[len(carbon_chain):]  # Strip the linker
+                                print(f"ℹ️  Group {group_id} ({group_name}): Stripped linker '{carbon_chain}' from telomer SMILES")
+                                print(f"    Functional group only: {smiles}")
+                        
                         entry = {
                             'name': group_name,
                             'smiles': smiles,
