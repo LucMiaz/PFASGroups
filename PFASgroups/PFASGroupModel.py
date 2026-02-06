@@ -374,7 +374,9 @@ class PFASGroup():
                 if len(matches) < min_count:
                     return False
                 if len(matches)>0:
-                    self.all_matches.append(set(matches))
+                    # Keep matches as list to preserve duplicates when same atoms matched multiple times
+                    # (e.g., dicarboxylic/disulfonic acids where both groups attach to same carbon)
+                    self.all_matches.append(list(matches))
                     self.subset.update({y for x in matches for y in x if len(x)>0})
         return True
     def component_satisfies_all_smarts(self, component):

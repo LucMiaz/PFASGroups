@@ -84,7 +84,7 @@ def all_definitions(definitions_file):
 
 
 @pytest.mark.groups
-@pytest.mark.parametrize("group_id", range(1, 114))  # Test groups 1-113
+@pytest.mark.parametrize("group_id", range(1, 116))  # Test groups 1-113
 def test_individual_group(all_groups, group_id):
     """Test individual PFAS group by ID."""
     # Find the group

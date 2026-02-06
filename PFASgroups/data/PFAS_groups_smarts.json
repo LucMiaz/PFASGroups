@@ -3648,7 +3648,7 @@
         "name": "Fluorotelomer unsaturated carboxylic acids",
         "alias": "FTUCA",
         "smartsPath": "Perfluoroalkyl",
-        "linker_smarts": "[CH2X4,CX3$([CH1]=C[H,F])]",
+        "linker_smarts": "[CH2X4,CX3H1]",
         "max_dist_from_CF": 16,
         "constraints": {
             "gte": {
@@ -3656,7 +3656,8 @@
             }
         },
         "smarts": {
-            "C(=O)[OH1,Oh1,O-]": 1
+            "C(=O)[OH1,Oh1,O-]": 1,
+            "[CH1]=[C]": 1
         },
         "test": {
             "category": "telomer",
@@ -4151,15 +4152,12 @@
         "name": "Fluorotelomer unsaturated methyl",
         "alias": "FTI",
         "smartsPath": "Perfluoroalkyl",
-        "linker_smarts": "[CH2X4,CX3$([CH1]=C[H,F])]",
+        "linker_smarts": "[CH2X4,CX3H1]",
         "max_dist_from_CF": 16,
         "constraints": {
-            "gte": {
-                "I": 1
-            }
         },
         "smarts": {
-            "[C$(C~[CH2,CH1][CH3,CH2!$(C([CH2])[CH2]),CH1!$(C([CH2])=C)])]": 1
+            "[C$(C~[CH2,CH1]~[CH3,CH2!$(C([CH2])[CH2]),CH1!$(C([CH2])=C)])]": 1
         },
         "test": {
             "category": "telomer",
@@ -4175,11 +4173,11 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC=CCCCCCCc1ccccc1"
             ],
             "counter-examples": [
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCC",
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCI",
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCOCCC",
-                "FC(F)(F)C(F)(F)C(F)(F)CCCCC#C",
-                "FC(F)(F)C(F)(F)CCCCC(F)=CCCC"
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)COCI",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)",
+                "FC(F)(F)C(F)(F)C(F)(F)",
+                "FC(F)(F)C(F)(F)"
             ]
         }
     },
@@ -4188,7 +4186,7 @@
         "name": "Fluorotelomer unsaturated iodide",
         "alias": "FTI",
         "smartsPath": "Perfluoroalkyl",
-        "linker_smarts": "[CH2X4,CX3$([CH1]=C[H,F])]",
+        "linker_smarts": "[CH2X4,CX3H1]",
         "max_dist_from_CF": 16,
         "constraints": {
             "gte": {
@@ -4197,7 +4195,7 @@
         },
         "smarts": {
             "[C$(C~[CH2,CH1]I)]": 1,
-            "[CX3$([CH1]=C[H,F])]":1
+            "[CH1]=[C]":1
         },
         "test": {
             "category": "telomer",
@@ -4216,10 +4214,10 @@
             ],
             "counter-examples": [
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCI",
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)=CCCCCCI",
-                "FC(F)(F)C(F)(F)C(F)(F)CCC=COCCI",
-                "FC(F)(F)C(F)(F)CCCCCC(=O)C=CCI"
+                "ICCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "ICCC=CCOCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "ICCC=COCCC(F)(F)C(F)(F)C(F)(F)F",
+                "IC(=O)C=CCCCCCC(F)(F)C(F)(F)F"
             ]
         }
     },
