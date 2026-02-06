@@ -11,7 +11,7 @@ from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from .PFASGroupModel import PFASGroup
 from .PFASDefinitionModel import PFASDefinition
 from .ComponentsSolverModel import ComponentsSolver
-from .core import fragment_until_valence_is_correct, n_from_formula, add_smartsPath, PFAS_DEFINITIONS_FILE, PFAS_GROUPS_FILE, rdkit_disable_log
+from .core import fragment_until_valence_is_correct, n_from_formula, add_componentSmarts, PFAS_DEFINITIONS_FILE, PFAS_GROUPS_FILE, rdkit_disable_log
 import json
 
 
@@ -103,7 +103,7 @@ def parse_definitions_in_mol(mol, **kwargs):
 
 
 # --- Main PFAS group parsing functions ---
-@add_smartsPath()
+@add_componentSmarts()
 @load_PFASGroups()
 @load_componentsSolver()
 def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = None, **kwargs):
@@ -116,7 +116,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
     bycomponent : bool, optional
         Whether to look for fluorinated components or for chains between functional groups
     **kwargs : dict
-        Additional parameters (formula, pfas_groups, smartsPaths, etc.)
+        Additional parameters (formula, pfas_groups, componentSmartss, etc.)
     
     Returns
     -------
@@ -138,10 +138,10 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
     Notes
     -----
     For PFASgroups 
-    1. with smartsPath = 'cyclic', search for connected component matching first smarts
+    1. with componentSmarts = 'cyclic', search for connected component matching first smarts
     2. with multiple smarts patterns or counts > 1: Find components containing all required SMARTS matches with minimum counts
     3. with single smarts pattern: Search for connected components of fluorinated atoms (for each pathType) where smarts match is in the component
-    4. with smarts defined and formula constraints: search for substructure matches of smarts, and for given smartsPath for the PFASgroup, search for connected components of fluorinated atoms where smarts match is in the component
+    4. with smarts defined and formula constraints: search for substructure matches of smarts, and for given componentSmarts for the PFASgroup, search for connected components of fluorinated atoms where smarts match is in the component
 
     """
     mol = Chem.AddHs(mol)
@@ -187,7 +187,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                         all_components.extend(matched_components)
                 
                 # Deduplicate components by atom set while keeping different SMARTS types
-                # Filter by smartsPath if aggregate has one
+                # Filter by componentSmarts if aggregate has one
                 unique_components = []
                 seen_keys = set()  # Track (atom_set, SMARTS_type) combinations
                 
@@ -195,8 +195,8 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                     atoms_key = frozenset(comp.get('component', []))
                     smarts_type = comp.get('SMARTS')
                     
-                    # Filter by smartsPath if aggregate has one (not None)
-                    if agg_group.smartsPath is not None and smarts_type != agg_group.smartsPath:
+                    # Filter by componentSmarts if aggregate has one (not None)
+                    if agg_group.componentSmarts is not None and smarts_type != agg_group.componentSmarts:
                         continue
                     
                     # Deduplicate by (atoms, SMARTS_type) key
@@ -241,7 +241,7 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
         - True: Compute all metrics (default)
         - False: Only compute component size, skip all other metrics
     **kwargs : dict
-        Additional parameters (pfas_groups, smartsPaths, etc.)
+        Additional parameters (pfas_groups, componentSmartss, etc.)
     
     Returns:
     --------
@@ -287,7 +287,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         - True: Compute all metrics (default)
         - False: Only compute component size, skip all other metrics
     **kwargs : dict
-        Additional parameters (pfas_groups, smartsPaths, etc.)
+        Additional parameters (pfas_groups, componentSmartss, etc.)
     
     Returns:
     --------
@@ -462,7 +462,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         return df.to_csv(index=False) if output_format == 'csv' else df
     return results
 
-def compile_smartsPath(chain_smarts, end_smarts):
+def compile_componentSmarts(chain_smarts, end_smarts):
     """
     Compile a pair of SMARTS patterns into a ready-to-use path definition.
     
@@ -483,7 +483,7 @@ def compile_smartsPath(chain_smarts, end_smarts):
     
     Examples
     --------
-    >>> chain = compile_smartsPath(
+    >>> chain = compile_componentSmarts(
     ...     "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
     ...     "[C;X4](Cl)(Cl)Cl"
     ... )
@@ -501,7 +501,7 @@ def compile_smartsPath(chain_smarts, end_smarts):
     
     return [chain_mol, end_mol]
 
-def compile_smartsPaths(paths_dict):
+def compile_componentSmartss(paths_dict):
     """
     Compile multiple SMARTS path definitions from a dictionary.
     
@@ -535,13 +535,13 @@ def compile_smartsPaths(paths_dict):
     ...         'end': '[C;X4]([F,Cl])([F,Cl])[F,Cl]'
     ...     }
     ... }
-    >>> compiled = compile_smartsPaths(custom_paths)
-    >>> results = parse_smiles(smiles, smartsPaths=compiled)
+    >>> compiled = compile_componentSmartss(custom_paths)
+    >>> results = parse_smiles(smiles, componentSmartss=compiled)
     """
     compiled = {}
     for name, patterns in paths_dict.items():
         if isinstance(patterns, dict) and 'chain' in patterns and 'end' in patterns:
-            compiled[name] = compile_smartsPath(patterns['chain'], patterns['end'])
+            compiled[name] = compile_componentSmarts(patterns['chain'], patterns['end'])
         else:
             raise ValueError(f"Path '{name}' must have 'chain' and 'end' keys")
     return compiled

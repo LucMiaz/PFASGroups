@@ -193,16 +193,16 @@
 <li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-smartspaths">get_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-componentSmartss">get_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-smartspath">compile_smartsPath</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-componentSmarts">compile_componentSmarts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_componentSmarts"><code class="docutils literal notranslate"><span class="pre">compile_componentSmarts()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-smartspaths">compile_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-componentSmartss">compile_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_componentSmartss"><code class="docutils literal notranslate"><span class="pre">compile_componentSmartss()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -217,7 +217,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smartsPath"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smartsPath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.componentSmarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
@@ -751,7 +751,7 @@ PFBA:
 <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
 
 <span class="c1"># Generate homologues (C7, C6, C5, C4)</span>
-<span class="n">homologues</span> <span class="o">=</span> <span class="n">generate_homologues</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">smartsPathName</span><span class="o">=</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">)</span>
+<span class="n">homologues</span> <span class="o">=</span> <span class="n">generate_homologues</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">componentSmartsName</span><span class="o">=</span><span class="s1">&#39;Perfluoroalkyl&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">homologues</span><span class="p">)</span><span class="si">}</span><span class="s2"> homologues:&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">inchikey</span><span class="p">,</span> <span class="n">formulas</span> <span class="ow">in</span> <span class="n">homologues</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -776,7 +776,7 @@ PFBA:
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl nitrates&quot;</span><span class="p">,</span>
     <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;PFANs&quot;</span><span class="p">,</span>
     <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[C]-[O]-[N+](=O)[O-]&quot;</span><span class="p">),</span>
-    <span class="n">smartsPath</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
     <span class="n">constraints</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
         <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>

@@ -80,7 +80,7 @@ for test in test_cases:
     print(f"Test SMILES: {test['smiles']}")
     print(f"Group SMARTS: {group_info['smarts']}")
     print(f"max_dist_from_CF: {group_info.get('max_dist_from_CF', 'N/A')}")
-    print(f"smartsPath: {group_info.get('smartsPath')}")
+    print(f"componentSmarts: {group_info.get('componentSmarts')}")
     print(f"Constraints: {group_info.get('constraints', {})}")
     
     # Try to parse

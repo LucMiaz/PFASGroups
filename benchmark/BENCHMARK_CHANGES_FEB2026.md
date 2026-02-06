@@ -143,7 +143,7 @@ Each group in `PFAS_groups_smarts.json` can include a `test.generate` field:
 {
   "id": 115,
   "name": "My New Functional Group",
-  "smartsPath": "Polyfluoroalkyl",
+  "componentSmarts": "Polyfluoroalkyl",
   "smarts": {
     "[custom smarts pattern]": 1
   },

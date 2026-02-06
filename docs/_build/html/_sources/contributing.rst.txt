@@ -235,7 +235,7 @@ To add a new PFAS group to the default set:
         "name": "Your New Group",
         "alias": "YNG",
         "smarts1": "[SMARTS_PATTERN]",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "constraints": {
           "gte": {"F": 1}
         }

@@ -190,16 +190,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-smartspaths">get_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-componentSmartss">get_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspath">compile_smartsPath</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-componentSmarts">compile_componentSmarts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_componentSmarts"><code class="docutils literal notranslate"><span class="pre">compile_componentSmarts()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspaths">compile_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-componentSmartss">compile_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_componentSmartss"><code class="docutils literal notranslate"><span class="pre">compile_componentSmartss()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -214,7 +214,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smartsPath"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smartsPath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.componentSmarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
@@ -489,8 +489,8 @@
 <span class="sd">        Human-readable group name (e.g., &quot;Perfluoroalkyl carboxylic acid&quot;)</span>
 <span class="sd">    smarts : Chem.Mol or None</span>
 <span class="sd">        SMARTS patterns (compiled RDKit molecule) for functional group detection.</span>
-<span class="sd">        None if group is defined by smartsPath alone.</span>
-<span class="sd">    smartsPath : str or None</span>
+<span class="sd">        None if group is defined by componentSmarts alone.</span>
+<span class="sd">    componentSmarts : str or None</span>
 <span class="sd">        Type of fluorinated component to search:</span>
 <span class="sd">        - &#39;Perfluoroalkyl&#39;: Fully fluorinated carbon chains</span>
 <span class="sd">        - &#39;Polyfluoroalkyl&#39;: Partially fluorinated carbon chains  </span>
@@ -520,7 +520,7 @@
 <span class="sd">    ...     id=1,</span>
 <span class="sd">    ...     name=&quot;Perfluoroalkyl carboxylic acid&quot;,</span>
 <span class="sd">    ...     smarts={&quot;C(=O)O&quot;:1},  # Carboxylic acid group</span>
-<span class="sd">    ...     smartsPath=&quot;Perfluoroalkyl&quot;,</span>
+<span class="sd">    ...     componentSmarts=&quot;Perfluoroalkyl&quot;,</span>
 <span class="sd">    ...     constraints={&quot;only&quot;: [&quot;C&quot;, &quot;F&quot;, &quot;O&quot;, &quot;H&quot;]},</span>
 <span class="sd">    ...     max_dist_from_CF=0,</span>
 <span class="sd">    ...     linker_smarts=None</span>
@@ -546,7 +546,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">smarts_str</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">smarts_count</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">smarts</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smarts_str</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">smartsPath</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;smartsPath&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">componentSmarts</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;componentSmarts&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_dist_from_CF&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="c1"># Compile linker_smarts pattern if provided</span>
         <span class="n">linker_smarts_str</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;linker_smarts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -921,8 +921,8 @@
 <span class="sd">        </span>
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        - Matches are determined based on smartsPath and max_dist_from_CF attributes.</span>
-<span class="sd">        - If smartsPath is None, all components are considered.</span>
+<span class="sd">        - Matches are determined based on componentSmarts and max_dist_from_CF attributes.</span>
+<span class="sd">        - If componentSmarts is None, all components are considered.</span>
 <span class="sd">        - max_dist_from_CF allows extending the search radius for functional groups.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_matched_atoms</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
@@ -931,8 +931,8 @@
         <span class="c1"># Clear component-specific extra atoms list for this matching attempt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">component_specific_extra_atoms</span> <span class="o">=</span> <span class="p">[]</span>
         
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smartsPath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># If no smartsPath specified, only check alkyl components (not cyclic)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">componentSmarts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If no componentSmarts specified, only check alkyl components (not cyclic)</span>
             <span class="c1"># This ensures functional groups like carboxylic acid (group 33) are only</span>
             <span class="c1"># detected when attached to perfluoroalkyl or polyfluoroalkyl chains,</span>
             <span class="c1"># not when attached directly to cyclic structures</span>
@@ -943,27 +943,27 @@
             <span class="n">components</span> <span class="o">=</span> <span class="n">all_components</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Get components for the specified path type, fallback to Polyfluoroalkyl if not found</span>
-            <span class="n">components</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">smartsPath</span><span class="p">,</span> <span class="n">max_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Polyfluoroalkyl&quot;</span><span class="p">,</span> <span class="n">max_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[]))</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">componentSmarts</span><span class="p">,</span> <span class="n">max_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Polyfluoroalkyl&quot;</span><span class="p">,</span> <span class="n">max_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[]))</span>
         
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smartsPath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">smartsPaths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">smartsPath</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">componentSmarts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">componentSmartss</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">componentSmarts</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">smartsPaths</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">smartsPaths</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">componentSmartss</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">componentSmartss</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         
         <span class="c1"># Filter components connected to the smarts and get augmented versions</span>
         <span class="n">augmented_matched_components</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">_smartsPath</span> <span class="ow">in</span> <span class="n">smartsPaths</span><span class="p">:</span>
-            <span class="n">extended_components</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_smartsPath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">_componentSmarts</span> <span class="ow">in</span> <span class="n">componentSmartss</span><span class="p">:</span>
+            <span class="n">extended_components</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_componentSmarts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="p">[])</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">extended_components</span><span class="p">):</span>
                 <span class="c1"># Check if this component is connected to SMARTS matches</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_satisfies_all_smarts</span><span class="p">(</span><span class="n">comp</span><span class="p">):</span>
                     <span class="n">augmented</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get_augmented_component</span><span class="p">(</span>
-                        <span class="n">_smartsPath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">linker_smarts</span>
+                        <span class="n">_componentSmarts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">linker_smarts</span>
                     <span class="p">)</span>
                     <span class="c1"># Accept augmented component if valid (linker validation already done in get_augmented_component)</span>
                     <span class="k">if</span> <span class="n">augmented</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">augmented</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="n">augmented_matched_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">component_solver</span><span class="o">.</span><span class="n">get_matched_component_dict</span><span class="p">(</span><span class="n">augmented</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset</span><span class="p">,</span> <span class="n">_smartsPath</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">comp_id</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
+                        <span class="n">component_solver</span><span class="o">.</span><span class="n">get_matched_component_dict</span><span class="p">(</span><span class="n">augmented</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subset</span><span class="p">,</span> <span class="n">_componentSmarts</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">comp_id</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
                         <span class="p">)</span>
         
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">augmented_matched_components</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1013,16 +1013,16 @@
             <span class="c1"># Create molecular graph once for this fragment</span>
             <span class="n">G</span> <span class="o">=</span> <span class="n">mol_to_nx</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;G&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smartsPath</span> <span class="o">==</span><span class="s1">&#39;cyclic&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">componentSmarts</span> <span class="o">==</span><span class="s1">&#39;cyclic&#39;</span><span class="p">:</span>
                 <span class="c1"># treat cyclic groups separately</span>
                 <span class="c1"># Use first SMARTS pattern for cyclic</span>
                 <span class="n">match_count</span><span class="p">,</span> <span class="n">component_sizes</span><span class="p">,</span> <span class="n">matched1_len</span><span class="p">,</span> <span class="n">matched_components</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_aryl_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">component_solver</span><span class="o">=</span><span class="n">component_solver</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">smarts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">smarts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Handle groups with SMARTS patterns</span>
                 <span class="n">match_count</span><span class="p">,</span> <span class="n">component_sizes</span><span class="p">,</span> <span class="n">matched1_len</span><span class="p">,</span> <span class="n">matched_components</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_alkyl_components</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">component_solver</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">smartsPath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="c1"># treat cases with only smartsPath defined (no SMARTS patterns), find all components of that path type</span>
-                <span class="n">path_components</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">smartsPath</span><span class="p">,</span> <span class="n">max_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Polyfluoroalkyl&quot;</span><span class="p">,</span> <span class="n">max_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[]))</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">componentSmarts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># treat cases with only componentSmarts defined (no SMARTS patterns), find all components of that path type</span>
+                <span class="n">path_components</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">componentSmarts</span><span class="p">,</span> <span class="n">max_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">component_solver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Polyfluoroalkyl&quot;</span><span class="p">,</span> <span class="n">max_dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist_from_CF</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[]))</span>
                 <span class="n">match_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">path_components</span><span class="p">)</span>
                 <span class="n">component_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">path_components</span><span class="p">]</span>
                 <span class="n">matched1_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">path_components</span><span class="p">)</span>  <span class="c1"># Set matched1_len to enable group matching</span>
@@ -1030,7 +1030,7 @@
                 <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">path_components</span><span class="p">:</span>
                     <span class="c1"># Use get_matched_component_dict with no SMARTS matches</span>
                     <span class="n">matched_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">component_solver</span><span class="o">.</span><span class="n">get_matched_component_dict</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">smartsPath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                        <span class="n">component_solver</span><span class="o">.</span><span class="n">get_matched_component_dict</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">componentSmarts</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># treat cases with no SMARTS patterns, just formula constraints</span>

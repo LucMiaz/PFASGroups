@@ -3,7 +3,7 @@
         "id": 1,
         "name": "Perfluoroalkyl carboxylic acids",
         "alias": "PFCAs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -50,7 +50,7 @@
         "id": 2,
         "name": "Polyfluoroalkyl carboxylic acid",
         "alias": "PolyFCAs",
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -98,7 +98,7 @@
         "id": 3,
         "name": "Perfluoroalkyl dicarboxylic acids",
         "alias": "PFdiCAs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
@@ -144,7 +144,7 @@
         "id": 4,
         "name": "Perfluoroalkylether carboxylic acids",
         "alias": "PFECAs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -188,7 +188,7 @@
         "id": 5,
         "name": "Polyfluoroalkylether carboxylic acid",
         "alias": "PolyFECAs",
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -239,7 +239,7 @@
         "id": 6,
         "name": "Perfluoroalkyl sulfonic acids",
         "alias": "PFSAs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -285,7 +285,7 @@
         "id": 7,
         "name": "Polyfluoroalkyl sulfonic acid",
         "alias": "PolyFSAs",
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -341,7 +341,7 @@
         "id": 8,
         "name": "Perfluoroalkyl disulfonic acids",
         "alias": "PFdiSAs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
@@ -391,7 +391,7 @@
         "id": 9,
         "name": "Perfluoroalkylether sulfonic acids",
         "alias": "PFESAs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -419,7 +419,7 @@
         },
         "smarts": {
             "[#6$([#6][#16](=O)(=O)([OH]))]": 1,
-            "[#8$([#8](C)C)]":1
+            "[#8$([#8](C)C)]": 1
         },
         "test": {
             "category": "OECD",
@@ -444,7 +444,7 @@
         "id": 10,
         "name": "Polyfluoroalkylether sulfonic acid",
         "alias": "PolyFESAs",
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -503,7 +503,7 @@
         "id": 11,
         "name": "Perfluoroalkyl sulfinic acids",
         "alias": "PFSiAs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -548,7 +548,7 @@
         "id": 12,
         "name": "Perfluoroalkyl phosphonic acids",
         "alias": "PFPAs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -593,7 +593,7 @@
         "id": 13,
         "name": "Perfluoroalkyl phosphinic acids",
         "alias": "PFPiAs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -638,7 +638,7 @@
         "id": 14,
         "name": "Perfluoroalkyl alcohols",
         "alias": "Perfluoroalkyl alcohols",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "only": [
@@ -679,7 +679,7 @@
         "id": 15,
         "name": "fluorotelomer alcohols",
         "alias": "fluorotelomer alcohols",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -698,7 +698,9 @@
                 "mode": "insert",
                 "is_telomer": true
             },
-            "examples": ["OCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F"],
+            "examples": [
+                "OCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
             "counter-examples": [
                 "OC=CC(F)(F)C(F)(F)C(F)(F)F",
                 "OCC=C(F)C(F)(F)F",
@@ -710,7 +712,7 @@
         "id": 16,
         "name": "Perfluoropolyethers",
         "alias": "PFPEs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "only": [
@@ -753,7 +755,7 @@
         "id": 17,
         "name": "Hydrofluoroethers",
         "alias": "HFEs",
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -798,7 +800,7 @@
         "id": 18,
         "name": "Perfluoroalkene",
         "alias": "Perfluoroalkene",
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 16,
         "linker_smarts": null,
         "constraints": {
@@ -822,18 +824,22 @@
         },
         "test": {
             "category": "OECD",
-            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)=C(F)C(F)(F)C(F)(F)F",
-                        "FC(F)(F)C(F)=C(F)F"],
-            "counter-examples": ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                                "FC(F)(F)C(F)C(F)(F)C(F)C(F)=C(F)C(F)C(F)(F)F",
-                                "FC(F)(F)C(F)=CF"]
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)=C(F)C(F)(F)C(F)(F)F",
+                "FC(F)(F)C(F)=C(F)F"
+            ],
+            "counter-examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "FC(F)(F)C(F)C(F)(F)C(F)C(F)=C(F)C(F)C(F)(F)F",
+                "FC(F)(F)C(F)=CF"
+            ]
         }
     },
     {
         "id": 19,
         "name": "Hydrofluoroolefins",
         "alias": "HFOs",
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "max_dist_from_CF": 16,
         "linker_smarts": "[CH2]",
         "constraints": {
@@ -858,20 +864,26 @@
                 }
             }
         },
-        "smarts": {"[C$(C=C)]": 1},
+        "smarts": {
+            "[C$(C=C)]": 1
+        },
         "test": {
             "category": "OECD",
-            "examples": ["FC(F)(F)CCC=C(F)CCCCC"],
-            "counter-examples":["CC(F)CCCC(F)",
-                                "C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
-                                "C(F)(F)C(F)=COF"]
+            "examples": [
+                "FC(F)(F)CCC=C(F)CCCCC"
+            ],
+            "counter-examples": [
+                "CC(F)CCCC(F)",
+                "C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
+                "C(F)(F)C(F)=COF"
+            ]
         }
     },
     {
         "id": 20,
         "name": "Hydrofluorocarbons",
         "alias": "HFCs",
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -914,7 +926,7 @@
         "id": 21,
         "name": "Semi-fluorinated alkanes",
         "alias": "SFAs",
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -960,7 +972,7 @@
         "id": 22,
         "name": "Side-chain fluorinated aromatics",
         "alias": "Side-chain fluorinated aromatics",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -984,7 +996,7 @@
         "id": 23,
         "name": "Perfluoroalkane",
         "alias": "Perfluoroalkane",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "only": [
@@ -1021,7 +1033,7 @@
         "id": 24,
         "name": "Perfluoroalkyl-tert-amines",
         "alias": "Perfluoroalkyl-tert-amines",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "only": [
@@ -1062,7 +1074,7 @@
         "id": 25,
         "name": "Perfluoroalkyl iodides",
         "alias": "PFAIs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -1098,7 +1110,7 @@
         "id": 26,
         "name": "Perfluoroalkane sulfonyl fluorides",
         "alias": "PASFs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1133,7 +1145,7 @@
         "id": 27,
         "name": "Perfluoroalkyl ketones",
         "alias": "Perfluoroalkyl ketones",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "only": [
@@ -1173,7 +1185,7 @@
         "id": 28,
         "name": "Semi-fluoroalkyl ketones",
         "alias": "Semi-fluoroalkyl ketones",
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -1219,7 +1231,7 @@
         "name": "alcohol",
         "alias": "alcohol",
         "id": 29,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1253,7 +1265,7 @@
         "name": "ketone",
         "alias": "ketones",
         "id": 30,
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -1286,7 +1298,7 @@
         "name": "aldehyde",
         "alias": "aldehyde",
         "id": 31,
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -1319,7 +1331,7 @@
         "name": "ether",
         "alias": "ether",
         "id": 32,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1353,7 +1365,7 @@
         "name": "ester",
         "alias": "ester",
         "id": 33,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1387,7 +1399,7 @@
         "name": "carboxylic acid",
         "alias": "carboxylic acid",
         "id": 34,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1421,7 +1433,7 @@
         "name": "amide",
         "alias": "amide",
         "id": 35,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
@@ -1456,7 +1468,7 @@
         "name": "acyl halide",
         "alias": "acyl halide",
         "id": 36,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {},
@@ -1485,7 +1497,7 @@
         "name": "sulfonic acid",
         "alias": "sulfonic acid",
         "id": 37,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1521,7 +1533,7 @@
         "name": "sulfenic acid",
         "alias": "sulfenic acid",
         "id": 38,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1556,7 +1568,7 @@
         "name": "sulfinic acid",
         "alias": "sulfinic acid",
         "id": 39,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1591,7 +1603,7 @@
         "name": "sulfuric acid",
         "alias": "sulfuric acid",
         "id": 40,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1627,7 +1639,7 @@
         "name": "phosphonic acid",
         "alias": "phosphonic acid",
         "id": 41,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1661,7 +1673,7 @@
         "name": "phosphinic acid",
         "alias": "phosphinic acid",
         "id": 42,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {
@@ -1695,7 +1707,7 @@
         "name": "chloride",
         "alias": "chloride",
         "id": 43,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
@@ -1728,7 +1740,7 @@
         "name": "bromide",
         "alias": "bromide",
         "id": 44,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
@@ -1761,7 +1773,7 @@
         "name": "iodide",
         "alias": "iodide",
         "id": 45,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
@@ -1796,7 +1808,7 @@
         "id": 46,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
-        "smartsPath": null,
+        "componentSmarts": null,
         "constraints": {
             "gte": {
                 "S": 1,
@@ -1830,7 +1842,7 @@
         "name": "Heterocyclic azole",
         "alias": "heterocyclic azole",
         "id": 47,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
@@ -1838,7 +1850,7 @@
                 "N": 1
             }
         },
-        "definition": "Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American Heritage\u00c2\u00ae Dictionary of the English Language, 5th Edition)",
+        "definition": "Any of a class of organic compounds that have a five-membered heterocyclic ring with at least one nitrogen and two double bonds and that also may contain another heteroatom. (The American HeritageÂ® Dictionary of the English Language, 5th Edition)",
         "smarts": {
             "[$(*[#7r5,$([#6r5,#8r5,#16r5]:[#7r5]),$([#6r5,#8r5,#16r5]:[#6r5,#8r5,#16r5]:[#7r5])])]": 1
         },
@@ -1864,7 +1876,7 @@
         "name": "Heterocyclic azine",
         "alias": "heterocyclic azine",
         "id": 48,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
@@ -1872,7 +1884,7 @@
                 "N": 1
             }
         },
-        "definition": "A six-membered heterocyclic compound, such as pyridine, that contains one or more atoms of nitrogen with a ring structure resembling that of benzene. (The American Heritage\u00c2\u00ae Dictionary of the English Language, 5th Edition)",
+        "definition": "A six-membered heterocyclic compound, such as pyridine, that contains one or more atoms of nitrogen with a ring structure resembling that of benzene. (The American HeritageÂ® Dictionary of the English Language, 5th Edition)",
         "smarts": {
             "[$(*[#7r6,$([#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6])])]": 1
         },
@@ -1898,7 +1910,7 @@
         "name": "benzodioxole",
         "alias": "benzodioxole",
         "id": 49,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
@@ -1922,15 +1934,14 @@
                 "c1cc2OC(F)(F)Oc2cc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
                 "c1c2OC(F)(F)Oc2ccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F"
             ],
-            "counter-examples": [
-            ]
+            "counter-examples": []
         }
     },
     {
         "name": "amine",
         "alias": "amine",
         "id": 50,
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -1963,7 +1974,7 @@
         "name": "perfluoroalkyl",
         "alias": "perfluoroalkyl",
         "id": 51,
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {},
@@ -1989,7 +2000,7 @@
         "name": "polyfluoroalkyl",
         "alias": "polyfluoroalkyl",
         "id": 52,
-        "smartsPath": "Polyfluoroalkyl",
+        "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {},
@@ -2015,7 +2026,7 @@
         "name": "alkene",
         "alias": "alkene",
         "id": 53,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 0,
         "linker_smarts": null,
         "constraints": {},
@@ -2044,7 +2055,7 @@
         "name": "alkyne",
         "alias": "alkyne",
         "id": 54,
-        "smartsPath": null,
+        "componentSmarts": null,
         "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {},
@@ -2073,7 +2084,7 @@
         "id": 55,
         "name": "Side-chain aromatics",
         "alias": "Side-chain aromatics",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -2101,7 +2112,7 @@
         "id": 56,
         "name": "Perfluoro cyclic compounds",
         "alias": "Perfluoro cyclic compounds",
-        "smartsPath": "cyclic",
+        "componentSmarts": "cyclic",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -2129,7 +2140,7 @@
         "id": 57,
         "name": "Polyfluoro cyclic compounds",
         "alias": "Polyfluoro cyclic compounds",
-        "smartsPath": "cyclic",
+        "componentSmarts": "cyclic",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -2157,7 +2168,7 @@
         "id": 58,
         "name": "Perfluoroaryl compounds",
         "alias": "Perfluoroaryl compounds",
-        "smartsPath": "cyclic",
+        "componentSmarts": "cyclic",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -2185,7 +2196,7 @@
         "id": 59,
         "name": "Polyfluoroaryl compounds",
         "alias": "Polyfluoroaryl compounds",
-        "smartsPath": "cyclic",
+        "componentSmarts": "cyclic",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -2213,7 +2224,7 @@
         "id": 60,
         "name": "Peroxydes",
         "alias": "Peroxydes",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -2246,7 +2257,7 @@
         "id": 61,
         "name": "Benzoyl peroxydes",
         "alias": "Benzoyl peroxydes",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -2274,7 +2285,7 @@
         "id": 62,
         "name": "Silane",
         "alias": "Silane",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2293,7 +2304,8 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)[SiH3]",
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)[SiH3]",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)[SiH3]",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)[SiH3]"
             ],
@@ -2307,7 +2319,7 @@
         "id": 63,
         "name": "Trichlorosilane",
         "alias": "Trichlorosilane",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2340,7 +2352,7 @@
         "id": 64,
         "name": "Acrylate",
         "alias": "Acrylate",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2373,7 +2385,7 @@
         "id": 65,
         "name": "Methacrylate",
         "alias": "Methacrylate",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2406,7 +2418,7 @@
         "id": 66,
         "name": "Betaine",
         "alias": "Betaine",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2425,7 +2437,9 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": ["OC(=O)C[N+](C)(C)C(F)(F)C(F)(F)C(F)(F)F"],
+            "examples": [
+                "OC(=O)C[N+](C)(C)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
             "counter-examples": [
                 "OC(=O)C[N+](C)(C)CCCCCCF",
                 "FC(F)(F)C(F)(F)C(F)(F)[N+]CCC(=O)O"
@@ -2436,7 +2450,7 @@
         "id": 67,
         "name": "Thiocyanic acid",
         "alias": "Thiocyanic acid",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2455,7 +2469,9 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)SC#N"],
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)SC#N"
+            ],
             "counter-examples": [
                 "FCCCCSC#N",
                 "FC(F)(F)C(F)(F)C(F)(F)SCN",
@@ -2467,7 +2483,7 @@
         "id": 68,
         "name": "Thia keto propanoic acid",
         "alias": "Thia keto propanoic acid",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2486,7 +2502,9 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(=O)SC(=O)C(O)C(=O)O"],
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(=O)SC(=O)C(O)C(=O)O"
+            ],
             "counter-examples": [
                 "FCCCCC(=O)SC(=O)C(O)C(=O)O",
                 "FC(F)(F)C(F)(F)C(F)(F)C(=O)SCC(O)C(=O)O",
@@ -2500,7 +2518,7 @@
         "id": 69,
         "name": "Glucuronate",
         "alias": "Glucuronate",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2518,7 +2536,9 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)OC1C(O)C(OC(C1O)C(=O)O)O"],
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)OC1C(O)C(OC(C1O)C(=O)O)O"
+            ],
             "counter-examples": [
                 "FCCCCCOC1C(O)C(OC(C1O)C(=O)O)O",
                 "FC(F)(F)C(F)(F)C(F)(F)OC1C(O)C(OC(C1O)CO)O",
@@ -2532,7 +2552,7 @@
         "id": 70,
         "name": "Glycine",
         "alias": "Glycine",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2551,7 +2571,9 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C[NH2+]CC(=O)O"],
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C[NH2+]CC(=O)O"
+            ],
             "counter-examples": [
                 "FCCCCCC[NH2+]CC(=O)O",
                 "FC(F)(F)C(F)(F)C(F)(F)C[NH2+]C(=O)O"
@@ -2562,7 +2584,7 @@
         "id": 71,
         "name": "Sulfonamidoethanol",
         "alias": "Sulfonamidoethanol",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2597,7 +2619,7 @@
         "id": 72,
         "name": "Sulfonyl propanoic acid",
         "alias": "Sulfonyl propanoic acid",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2630,7 +2652,7 @@
         "id": 73,
         "name": "Sulfinyl amido sulfonic acid",
         "alias": "Sulfinyl amido sulfonic acid",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 0,
         "constraints": {
@@ -2664,7 +2686,7 @@
         "id": 74,
         "name": "Fluorotelomer silane",
         "alias": "Fluorotelomer silane",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -2695,7 +2717,7 @@
         "id": 75,
         "name": "Fluorotelomer trichlorosilane",
         "alias": "Fluorotelomer trichlorosilane",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 6,
         "constraints": {
@@ -2726,7 +2748,7 @@
         "id": 76,
         "name": "Fluorotelomer iodide",
         "alias": "FTI",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -2764,7 +2786,7 @@
         "id": 77,
         "name": "Fluorotelomer aldehyde",
         "alias": "FTUCA",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -2802,7 +2824,7 @@
         "id": 78,
         "name": "Fluorotelomer carboxylic acids",
         "alias": "FTCA",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -2840,7 +2862,7 @@
         "id": 79,
         "name": "Fluorotelomer ethoxylates",
         "alias": "FTEO",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4,O$(O([CH2])[CH2])]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -2858,7 +2880,9 @@
                 "smiles": "CCCCOCCCCO",
                 "mode": "attach",
                 "is_telomer": true,
-                "linker_extra": ["O"]
+                "linker_extra": [
+                    "O"
+                ]
             },
             "examples": [
                 "C(O)CCOC(F)(F)C(F)(F)C(F)(F)F",
@@ -2880,7 +2904,7 @@
         "id": 80,
         "name": "Fluorotelomer sulfonic acid",
         "alias": "FTSA",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -2919,7 +2943,7 @@
         "id": 81,
         "name": "Fluorotelomer monophosphate",
         "alias": "monoPAP",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -2957,7 +2981,7 @@
         "id": 82,
         "name": "Fluorotelomer diphosphate",
         "alias": "diPAP",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -2995,7 +3019,7 @@
         "id": 83,
         "name": "Fluorotelomer triphosphate",
         "alias": "triPAP",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3033,7 +3057,7 @@
         "id": 84,
         "name": "Fluorotelomer acrylate",
         "alias": "FTAC",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3071,7 +3095,7 @@
         "id": 85,
         "name": "Fluorotelomer methacrylate",
         "alias": "FTMAC",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3106,7 +3130,7 @@
         "id": 86,
         "name": "Fluorotelomer alcohol",
         "alias": "FTO",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3144,7 +3168,7 @@
         "id": 87,
         "name": "Fluorotelomer sulfure",
         "alias": "FTS",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3182,7 +3206,7 @@
         "id": 88,
         "name": "Fluorotelomer sulfonamide",
         "alias": "FTS",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3222,7 +3246,7 @@
         "id": 89,
         "name": "Fluorotelomer silyl",
         "alias": "FTSi",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3253,7 +3277,7 @@
         "id": 90,
         "name": "Fluorotelomer betaine",
         "alias": "FTB",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3292,7 +3316,7 @@
         "id": 91,
         "name": "Fluorotelomer ester",
         "alias": "FTEs",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3326,7 +3350,7 @@
         "id": 92,
         "name": "Fluorotelomer thiocyanic acid",
         "alias": "Fluorotelomer thiocyanic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3359,7 +3383,7 @@
         "id": 93,
         "name": "Fluorotelomer alkene",
         "alias": "Fluorotelomer alkene",
-        "smartsPath": null,
+        "componentSmarts": null,
         "linker_smarts": null,
         "max_dist_from_CF": 16,
         "constraints": {},
@@ -3372,7 +3396,9 @@
                 "smiles": "CCCCC=C",
                 "mode": "insert",
                 "is_telomer": true,
-                "linker_extra": ["C=C"]
+                "linker_extra": [
+                    "C=C"
+                ]
             },
             "examples": [
                 "C=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
@@ -3389,7 +3415,7 @@
         "id": 94,
         "name": "Fluorotelomer trimethylamine",
         "alias": "Fluorotelomer trimethylamine",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3427,7 +3453,7 @@
         "id": 95,
         "name": "Fluorotelomer sulfinic acid",
         "alias": "Fluorotelomer sulfinic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3466,7 +3492,7 @@
         "id": 96,
         "name": "Fluorotelomer sulfenic acid",
         "alias": "Fluorotelomer sulfenic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3505,7 +3531,7 @@
         "id": 97,
         "name": "Fluorotelomer sulfuric acid",
         "alias": "Fluorotelomer sulfuric acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3544,7 +3570,7 @@
         "id": 98,
         "name": "Fluorotelomer methyl",
         "alias": "Fluorotelomer methyl",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {},
@@ -3572,7 +3598,7 @@
         "id": 99,
         "name": "Fluorotelomer glucuronic acid",
         "alias": "Fluorotelomer glucuronic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3608,7 +3634,7 @@
         "id": 100,
         "name": "Fluorotelomer formaldehyde bisulfite",
         "alias": "Fluorotelomer formaldehyde bisulfite",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3647,7 +3673,7 @@
         "id": 101,
         "name": "Fluorotelomer unsaturated carboxylic acids",
         "alias": "FTUCA",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4,CX3H1]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3665,7 +3691,9 @@
                 "smiles": "CCCCC(=O)O",
                 "mode": "attach",
                 "is_telomer": true,
-                "linker_extra": ["C=C"]
+                "linker_extra": [
+                    "C=C"
+                ]
             },
             "examples": [
                 "O=C(O)C=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
@@ -3685,7 +3713,7 @@
         "id": 102,
         "name": "Fluorotelomer thia keto propanoic acid",
         "alias": "Fluorotelomer thia keto propanoic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3723,7 +3751,7 @@
         "id": 103,
         "name": "Fluorotelomer glycine",
         "alias": "Fluorotelomer glycine",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4,CH1X4$(C(F))]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3762,7 +3790,7 @@
         "id": 104,
         "name": "Fluorotelomer sulfonamidoethanol",
         "alias": "FOSE",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3802,7 +3830,7 @@
         "id": 105,
         "name": "Fluorotelomer ether carboxylic acids",
         "alias": "FTCA",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4,OH0X2]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3841,7 +3869,7 @@
         "id": 106,
         "name": "Fluorotelomer sulfonyl propanoic acid",
         "alias": "Fluorotelomer sulfonyl propanoic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3880,7 +3908,7 @@
         "id": 107,
         "name": "Fluorotelomer sulfinyl amido sulfonic acid",
         "alias": "Fluorotelomer sulfinyl amido sulfonic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3920,7 +3948,7 @@
         "id": 108,
         "name": "Fluorotelomer sulfinyl",
         "alias": "Fluorotelomer sulfinyl",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3957,7 +3985,7 @@
         "id": 109,
         "name": "Fluorotelomer sulfone",
         "alias": "Fluorotelomer sulfone",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -3996,7 +4024,7 @@
         "id": 110,
         "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid",
         "alias": "Fluorotelomer acetylsulfanylhydroxypropanoic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -4035,7 +4063,7 @@
         "id": 111,
         "name": "Fluorotelomer acetylhydroxyethanethioate",
         "alias": "Fluorotelomer acetylhydroxyethanethioate",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -4074,7 +4102,7 @@
         "id": 112,
         "name": "Fluorotelomer amino propanoic acid",
         "alias": "Fluorotelomer amino propanoic acid",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -4113,7 +4141,7 @@
         "id": 113,
         "name": "Fluorotelomer amino ethyl trimethyl ammonium",
         "alias": "Fluorotelomer amino ethyl trimethyl ammonium",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -4151,11 +4179,10 @@
         "id": 114,
         "name": "Fluorotelomer unsaturated methyl",
         "alias": "FTI",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4,CX3H1]",
         "max_dist_from_CF": 16,
-        "constraints": {
-        },
+        "constraints": {},
         "smarts": {
             "[C$(C~[CH2,CH1]~[CH3,CH2!$(C([CH2])[CH2]),CH1!$(C([CH2])=C)])]": 1
         },
@@ -4165,7 +4192,9 @@
                 "smiles": "CC",
                 "mode": "attach",
                 "is_telomer": true,
-                "linker_extra": ["C=C"]
+                "linker_extra": [
+                    "C=C"
+                ]
             },
             "examples": [
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC=CC",
@@ -4185,7 +4214,7 @@
         "id": 115,
         "name": "Fluorotelomer unsaturated iodide",
         "alias": "FTI",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": "[CH2X4,CX3H1]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -4195,7 +4224,7 @@
         },
         "smarts": {
             "[C$(C~[CH2,CH1]I)]": 1,
-            "[CH1]=[C]":1
+            "[CH1]=[C]": 1
         },
         "test": {
             "category": "telomer",
@@ -4203,7 +4232,9 @@
                 "smiles": "CI",
                 "mode": "attach",
                 "is_telomer": true,
-                "linker_extra": ["C=C"]
+                "linker_extra": [
+                    "C=C"
+                ]
             },
             "examples": [
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C=CI",
@@ -4225,7 +4256,7 @@
         "id": 116,
         "name": "Telomers",
         "alias": "Telomers",
-        "smartsPath": "Perfluoroalkyl",
+        "componentSmarts": "Perfluoroalkyl",
         "constraints": {},
         "compute": false,
         "re_search": "telomer"

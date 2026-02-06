@@ -239,7 +239,7 @@ def get_substruct(_mol:Chem.Mol,struct:Chem.Mol):
 
 
 # --- Add SMARTS paths to function ---
-def add_smartsPath(filename = FPATHS_FILE):
+def add_componentSmarts(filename = FPATHS_FILE):
     """Yields SMARTS for chains"""
     paths = {}
     with open(filename,'r') as f:
@@ -259,7 +259,7 @@ def add_smartsPath(filename = FPATHS_FILE):
         paths[n] = [smol,emol]
     def inner(func):
         def wrapper(*args,**kwargs):
-            kwargs["smartsPaths"] = kwargs.get("smartsPaths",paths)
+            kwargs["componentSmartss"] = kwargs.get("componentSmartss",paths)
             return func(*args, **kwargs)
         return wrapper
     return inner

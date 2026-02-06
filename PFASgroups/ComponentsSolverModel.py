@@ -1,11 +1,11 @@
 import networkx as nx
-from .core import add_smartsPath, mol_to_nx
+from .core import add_componentSmarts, mol_to_nx
 
 class ComponentsSolver:
     """Class to hold components information with comprehensive graph metrics."""
-    @add_smartsPath()
+    @add_componentSmarts()
     def __init__(self, mol, **kwargs):
-        self.smartsPaths = kwargs.get('smartsPaths')
+        self.componentSmartss = kwargs.get('componentSmartss')
         self.mol = mol
         self.mol_size = mol.GetNumAtoms()  # Total atoms in molecule for fraction calculation
         self.total_carbons = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')  # Total carbon atoms
@@ -65,7 +65,7 @@ class ComponentsSolver:
     def get_fluorinated_subgraph(self, **kwargs):
         """Get the fluorinated indices by connected components of a molecule based on path SMARTS."""
         subsets = {}
-        for pathName, d in self.smartsPaths.items():
+        for pathName, d in self.componentSmartss.items():
             path_smarts = d[0] # chain
             matches = self.mol.GetSubstructMatches(path_smarts)
             subset = [y for x in matches for y in x]

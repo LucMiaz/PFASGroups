@@ -1,9 +1,9 @@
-from .parser import add_smartsPath, load_PFASGroups, load_PFASDefinitions
+from .parser import add_componentSmarts, load_PFASGroups, load_PFASDefinitions
 from .core import PFAS_GROUPS_FILE,PFAS_DEFINITIONS_FILE
 import json
-@add_smartsPath()
-def get_smartsPaths(**kwargs):
-    return kwargs.get('smartsPaths')
+@add_componentSmarts()
+def get_componentSmartss(**kwargs):
+    return kwargs.get('componentSmartss')
 
 @load_PFASGroups()
 def get_PFASGroups(**kwargs):

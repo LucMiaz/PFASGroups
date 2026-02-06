@@ -59,7 +59,7 @@ class EnhancedPFASBenchmark:
         with open(specificity_path, 'r') as f:
             self.specificity_groups = json.load(f)
         
-        # Target groups 29-73 (excluding 49, 50 which are smartsPath-only groups)
+        # Target groups 29-73 (excluding 49, 50 which are componentSmarts-only groups)
         self.target_groups = [g for g in range(29, 74) if g not in [49, 50]]
         
         # OECD target groups 1-28

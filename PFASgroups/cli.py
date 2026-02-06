@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from .parser import parse_smiles, generate_fingerprint, get_smartsPaths, get_PFASGroups
+from .parser import parse_smiles, generate_fingerprint, get_componentSmartss, get_PFASGroups
 from rdkit import Chem
 
 
@@ -45,7 +45,7 @@ Examples:
   # List available path types
   pfasgroups list-paths
   
-Note: Use get_smartsPaths() and get_PFASGroups() in Python to extend defaults.
+Note: Use get_componentSmartss() and get_PFASGroups() in Python to extend defaults.
         """
     )
     
@@ -169,7 +169,7 @@ Note: Use get_smartsPaths() and get_PFASGroups() in Python to extend defaults.
     # List paths command
     list_paths_parser = subparsers.add_parser(
         'list-paths',
-        help='List available path types (use in Python to extend with get_smartsPaths)'
+        help='List available path types (use in Python to extend with get_componentSmartss)'
     )
     list_paths_parser.add_argument(
         '-o', '--output',
@@ -220,7 +220,7 @@ def cmd_parse(args):
     # Load custom configuration if provided
     kwargs = {}
     if args.fpaths_file:
-        kwargs['smartsPaths'] = get_smartsPaths(filename=args.fpaths_file)
+        kwargs['componentSmartss'] = get_componentSmartss(filename=args.fpaths_file)
     if args.groups_file:
         kwargs['pfas_groups'] = get_PFASGroups(filename=args.groups_file)
     
@@ -294,7 +294,7 @@ def cmd_fingerprint(args):
     # Load custom configuration if provided
     kwargs = {}
     if args.fpaths_file:
-        kwargs['smartsPaths'] = get_smartsPaths(filename=args.fpaths_file)
+        kwargs['componentSmartss'] = get_componentSmartss(filename=args.fpaths_file)
     if args.groups_file:
         kwargs['pfas_groups'] = get_PFASGroups(filename=args.groups_file)
     
@@ -413,7 +413,7 @@ def cmd_list_groups(args):
             'name': group.name,
             'smarts1': group.smarts1,
             'smarts2': group.smarts2,
-            'smartsPath': group.smartsPath
+            'componentSmarts': group.componentSmarts
         })
     
     output_data = {
@@ -438,9 +438,9 @@ def cmd_list_paths(args):
     """Execute list-paths command."""
     # Load paths (custom or default)
     if args.fpaths_file:
-        paths = get_smartsPaths(filename=args.fpaths_file)
+        paths = get_componentSmartss(filename=args.fpaths_file)
     else:
-        paths = get_smartsPaths()
+        paths = get_componentSmartss()
     
     # Create output - convert RDKit mols to SMARTS strings for display
     paths_list = []
@@ -454,7 +454,7 @@ def cmd_list_paths(args):
     output_data = {
         'total_paths': len(paths),
         'paths': paths_list,
-        'note': 'Use get_smartsPaths() in Python to load and extend these paths'
+        'note': 'Use get_componentSmartss() in Python to load and extend these paths'
     }
     
     # Output results
@@ -476,7 +476,7 @@ def cmd_validate_config(args):
         
         # Validate fpaths if provided
         if args.fpaths_file:
-            paths = get_smartsPaths(filename=args.fpaths_file)
+            paths = get_componentSmartss(filename=args.fpaths_file)
             print(f"✓ fpaths.json loaded successfully from: {args.fpaths_file}")
             print(f"  Found {len(paths)} path types")
         
@@ -488,7 +488,7 @@ def cmd_validate_config(args):
         
         if not args.fpaths_file and not args.groups_file:
             # Validate defaults
-            paths = get_smartsPaths()
+            paths = get_componentSmartss()
             groups = get_PFASGroups()
             print(f"✓ Default configuration loaded successfully")
             print(f"  Path types: {len(paths)}")

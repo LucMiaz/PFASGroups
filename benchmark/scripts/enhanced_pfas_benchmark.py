@@ -74,7 +74,7 @@ class EnhancedPFASBenchmark:
         print(f"✅ Loaded {len(self.pfas_groups)} PFAS groups (max ID: {max_group_id})")
         print(f"✅ Identified {len(self.telomer_groups)} telomer groups: {sorted(self.telomer_groups)}")
         
-        # Target groups 29-max_id (excluding 49, 50, 51 which are smartsPath-only groups)
+        # Target groups 29-max_id (excluding 49, 50, 51 which are componentSmarts-only groups)
         # Automatically includes all functional groups and telomers
         self.target_groups = [g for g in range(29, max_group_id + 1) if g not in [49, 50, 51]]
         

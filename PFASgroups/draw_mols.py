@@ -6,7 +6,7 @@ from io import BytesIO
 import svgutils.transform as sg
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from .core import add_smartsPath
+from .core import add_componentSmarts
 from .parser import parse_groups_in_mol
 from typing import Union
 def merge_raster(imgs,buffer,ncols):
@@ -238,7 +238,7 @@ def plot_mols(mols,**kwargs):
         imgs = [Image.open(BytesIO(img)) for img in imgs]
     return draw_images(imgs, buffer = kwargs.get('buffer',2), ncols = kwargs.get('ncols',1), svg = kwargs.get('svg',False))
 
-@add_smartsPath()
+@add_componentSmarts()
 def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, **kwargs):
     """
     Plot PFAS group assignments for a list of SMILES strings.
@@ -262,7 +262,7 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
     if isinstance(smiles, str):
         smiles = [smiles]
     imgs = []
-    path_names = list(kwargs.get('smartsPaths',{'Perfluoroalkyl':'Perfluoroalkyl','Polyfluoroalkyl':'Polyfluoroalkyl'}).keys())
+    path_names = list(kwargs.get('componentSmartss',{'Perfluoroalkyl':'Perfluoroalkyl','Polyfluoroalkyl':'Polyfluoroalkyl'}).keys())
     for i, s in enumerate(paths):
         if isinstance(s, int):
             paths[i] = path_names[s]

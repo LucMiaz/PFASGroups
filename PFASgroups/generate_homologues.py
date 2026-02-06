@@ -1,4 +1,4 @@
-from .core import add_smarts, add_smartsPath, get_substruct, remove_atoms, mol_to_nx
+from .core import add_smarts, add_componentSmarts, get_substruct, remove_atoms, mol_to_nx
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 import networkx as nx
@@ -83,8 +83,8 @@ def find_chain(mol,pathsmarts,endsmarts, repeating = 'C(F)(F)'):
     return chains
 
 
-@add_smartsPath()
-def generate_homologues(mol, smartsPathName = 'Perfluoroalkyl', smartsPaths=None, repeating = 'C(F)F', base_repeating = ['C']):
+@add_componentSmarts()
+def generate_homologues(mol, componentSmartsName = 'Perfluoroalkyl', componentSmartss=None, repeating = 'C(F)F', base_repeating = ['C']):
     """Generate homologous series by systematically removing repeating units from fluorinated chains.
     
     Finds fluorinated chains with repeating units (e.g., -CF2-) and generates all possible
@@ -94,14 +94,14 @@ def generate_homologues(mol, smartsPathName = 'Perfluoroalkyl', smartsPaths=None
     ----------
     mol : rdkit.Chem.Mol
         Parent molecule to generate homologues from
-    smartsPathName : str, default='Perfluoroalkyl'
+    componentSmartsName : str, default='Perfluoroalkyl'
         Type of fluorinated chain to search for:
         - 'Perfluoroalkyl': Fully fluorinated chains (-CF2-CF2-)
         - 'Polyfluoroalkyl': Partially fluorinated chains
-        - Custom: User-defined in smartsPaths
-    smartsPaths : dict, optional
+        - Custom: User-defined in componentSmartss
+    componentSmartss : dict, optional
         Dictionary of {name: (path_smarts, end_smarts)} patterns.
-        Provided by @add_smartsPath decorator if not specified.
+        Provided by @add_componentSmarts decorator if not specified.
     repeating : str, default='C(F)F'
         SMARTS pattern for repeating unit to remove:
         - 'C(F)F' for perfluoroalkyl (-CF2-)
@@ -126,7 +126,7 @@ def generate_homologues(mol, smartsPathName = 'Perfluoroalkyl', smartsPaths=None
     >>> # For polyfluoroalkyl chains
     >>> homologues = generate_homologues(
     ...     mol, 
-    ...     smartsPathName='Polyfluoroalkyl',
+    ...     componentSmartsName='Polyfluoroalkyl',
     ...     repeating='C([F,H])[F,H]'
     ... )
     
@@ -158,7 +158,7 @@ def generate_homologues(mol, smartsPathName = 'Perfluoroalkyl', smartsPaths=None
     find_chain : Identifies chains before homologue generation
     remove_atoms : Performs the actual atom removal with connectivity preservation
     """
-    path,endSmarts = smartsPaths[smartsPathName]
+    path,endSmarts = componentSmartss[componentSmartsName]
     removable = [x for x in set(re.findall(r'[A-Z][a-z]?',repeating)) if x not in base_repeating]
     subchains = lambda x: [x[0:i] for i in range(1,len(x)+1)]
     chains = find_chain(mol, path, endSmarts, repeating = repeating)
