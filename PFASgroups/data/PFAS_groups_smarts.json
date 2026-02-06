@@ -99,6 +99,7 @@
         "name": "Perfluoroalkyl dicarboxylic acids",
         "alias": "PFdiCAs",
         "smartsPath": "Perfluoroalkyl",
+        "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -121,7 +122,7 @@
             }
         },
         "smarts": {
-            "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]": 2
+            "[#6](=O)[OH1,Oh1,O-]": 2
         },
         "test": {
             "category": "OECD",
@@ -129,7 +130,8 @@
                 "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(O)=O",
                 "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(O)=O",
                 "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(O)=O",
-                "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(O)=O"
+                "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(O)=O",
+                "OC(=O)C(C(O)=O)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ],
             "counter-examples": [
                 "O=C(OC)C(F)(F)C(F)(F)F",
@@ -340,6 +342,7 @@
         "name": "Perfluoroalkyl disulfonic acids",
         "alias": "PFdiSAs",
         "smartsPath": "Perfluoroalkyl",
+        "max_dist_from_CF": 1,
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -367,7 +370,7 @@
             }
         },
         "smarts": {
-            "[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]": 2
+            "[#16](=O)(=O)[OH1,Oh1,O-]": 2
         },
         "test": {
             "category": "OECD",
@@ -401,9 +404,6 @@
                 "C",
                 "F",
                 "H",
-                "Cl",
-                "Br",
-                "I",
                 "S",
                 "O"
             ],
@@ -418,11 +418,26 @@
             }
         },
         "smarts": {
-            "[#6$([#6][#16](=O)(=O)([OH]))]": 1
+            "[#6$([#6][#16](=O)(=O)([OH]))]": 1,
+            "[#8$([#8](C)C)]":1
         },
         "test": {
             "category": "OECD",
-            "examples": []
+            "examples": [
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)OC(F)(F)OC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)OC(F)(F)C(F)(F)OC(F)(F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(O)C(F)(F)OC(F)(F)F",
+                "OS(=O)(=O)OC(F)(F)F",
+                "S(=O)(=O)(O)CCOCC",
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "[O-]S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ]
         }
     },
     {
@@ -467,7 +482,21 @@
         },
         "test": {
             "category": "OECD",
-            "examples": []
+            "examples": [
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)OC(F)(F)OC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)OC(F)(F)CC(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)OC(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)OC(F)(F)C(F)(F)OC(F)(F)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(O)C(F)(F)OC(F)F",
+                "OS(=O)(=O)OC(F)F",
+                "S(=O)(=O)(O)CCOCC",
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "[O-]S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ]
         }
     },
     {
@@ -502,7 +531,17 @@
         },
         "test": {
             "category": "OECD",
-            "examples": []
+            "examples": [
+                "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "[O-]S(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(=O)(O)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)OC(F)(F)F",
+                "S(=O)(O)CCCC"
+            ]
         }
     },
     {
@@ -546,7 +585,7 @@
             ],
             "counter-examples": [
                 "OP(O)(=O)CCCCCCCCF",
-                "CCCCCC"
+                "OP(=O)C(F)(F)C(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -583,7 +622,16 @@
         },
         "test": {
             "category": "OECD",
-            "examples": []
+            "examples": [
+                "OP(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OP(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OP(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "OP(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "OP(O)(=O)C(F)(F)C(F)(F)CCCCCCF",
+                "OP(O)CCCC(F)CCCC"
+            ]
         }
     },
     {
@@ -650,7 +698,12 @@
                 "mode": "insert",
                 "is_telomer": true
             },
-            "examples": []
+            "examples": ["OCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F"],
+            "counter-examples": [
+                "OC=CC(F)(F)C(F)(F)C(F)(F)F",
+                "OCC=C(F)C(F)(F)F",
+                "OCCCCC"
+            ]
         }
     },
     {
@@ -687,7 +740,7 @@
                 "FC(F)(F)C(F)(F)C(F)(F)OC(F)(C(F)(F)F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)OC(F)(C(F)(F)F)C(F)(F)OC(F)(C(F)(F)F)C(F)(OC(F)(F)C(F)(OC(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
                 "FC(F)(F)OC(F)(F)C(F)(OC(F)(F)F)C(F)(F)F",
-                "FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F |lp:0:3,2:3,3:3,5:3,6:3,7:2,9:3,10:3,12:3,13:3,15:3,16:3,17:2,19:3,20:3,22:3,23:3,25:3,26:3,27:3,Sg:n:10,9,13,12,16,15,8,11,14,17::ht|"
+                "FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)C(F)(F)F"
             ],
             "counter-examples": [
                 "OC(F)(F)C(F)(F)F",
@@ -746,6 +799,7 @@
         "name": "Perfluoroalkene",
         "alias": "Perfluoroalkene",
         "smartsPath": null,
+        "max_dist_from_CF": 16,
         "linker_smarts": null,
         "constraints": {
             "only": [
@@ -764,11 +818,15 @@
             }
         },
         "smarts": {
-            "[#6X3$([#6]=[#6X3])]": 1
+            "[#6$([#6H0](F)=[#6H0]F)]": 1
         },
         "test": {
             "category": "OECD",
-            "examples": []
+            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)=C(F)C(F)(F)C(F)(F)F",
+                        "FC(F)(F)C(F)=C(F)F"],
+            "counter-examples": ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                                "FC(F)(F)C(F)C(F)(F)C(F)C(F)=C(F)C(F)C(F)(F)F",
+                                "FC(F)(F)C(F)=CF"]
         }
     },
     {
@@ -776,8 +834,8 @@
         "name": "Hydrofluoroolefins",
         "alias": "HFOs",
         "smartsPath": "Polyfluoroalkyl",
-        "max_dist_from_CF": 1,
-        "linker_smarts": null,
+        "max_dist_from_CF": 16,
+        "linker_smarts": "[CH2]",
         "constraints": {
             "gte": {
                 "F": 1
@@ -788,14 +846,25 @@
                 "C",
                 "F",
                 "H"
-            ]
+            ],
+            "rel": {
+                "C": {
+                    "atoms": [
+                        "F",
+                        "H"
+                    ],
+                    "add": 0,
+                    "div": 2
+                }
+            }
         },
-        "smarts": {
-            "[#6X4$([#6X3]=[#6X3])]": 1
-        },
+        "smarts": {"[C$(C=C)]": 1},
         "test": {
             "category": "OECD",
-            "examples": []
+            "examples": ["FC(F)(F)CCC=C(F)CCCCC"],
+            "counter-examples":["CC(F)CCCC(F)",
+                                "C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
+                                "C(F)(F)C(F)=COF"]
         }
     },
     {
@@ -1443,7 +1512,8 @@
             "counter-examples": [
                 "O=S(O)C(F)(F)C(F)(F)F",
                 "OS(=O)(=O)OC(F)(F)F",
-                "S(=O)(=O)(O)CCCC"
+                "S(=O)(=O)(O)CCCC",
+                "OSC(F)(F)C(F)(F)F"
             ]
         }
     },
@@ -1470,7 +1540,16 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": [
+                "OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "[O-]SC(F)(F)C(F)(F)C(F)(F)C(F)(F)F.CC(C)(C)C1=CC=C([I+]C2=CC=C(C=C2)C(C)(C)C)C=C1",
+                "[K+].[O-]SC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(O)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)OC(F)(F)F",
+                "S(=O)(=O)(O)CCCC"
+            ]
         }
     },
     {
@@ -1502,8 +1581,9 @@
                 "[Na+].[O-]S(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ],
             "counter-examples": [
-                "[Zn++].[O-]S(=O)CCCCCCF.[O-]S(=O)CCCCCCF",
-                "CCCCCC"
+                "OSC(F)(F)C(F)(F)F",
+                "OS(=O)(=O)OC(F)(F)F",
+                "S(=O)(=O)(O)CCCC"
             ]
         }
     },
@@ -1521,7 +1601,7 @@
             }
         },
         "smarts": {
-            "[#6$([#6]O[#16](=O)(=O)[OX2])]": 1
+            "[#6$([#6]O[#16](=O)(=O)O)]": 1
         },
         "test": {
             "category": "generic",
@@ -1530,7 +1610,17 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": [
+                "OS(=O)(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "OS(=O)(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F.CC(C)(C)C1=CC=C([I+]C2=CC=C(C=C2)C(C)(C)C)C=C1",
+                "OS(=O)(=O)OC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "O=S(O)C(F)(F)C(F)(F)F",
+                "OS(=O)(=O)C(F)(F)F",
+                "S(=O)(=O)(O)CCCC",
+                "OSC(F)(F)C(F)(F)F"
+            ]
         }
     },
     {
@@ -1818,7 +1908,7 @@
         },
         "definition": "Fluorinated Benzodioxole. Generic SMARTS was [$([#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1),$([#6r6,#7r6,#8r6,#16r6]~[#6r6,#7r6,#8r6,#16r6]~[#6]1~[#6,#7,#8,#16]~[#6$([#6](F)(F)),#6$([#6][#6](F)F)]~[#6,#7,#8,#16]~[#6]1)]",
         "smarts": {
-            "[$([#6]1[#6][#6]([#6]2[#6]([#6]1)[#8][#6][#8]2))]": 1
+            "[C$(C[c$(c1ccc2OC(F)(F)Oc2c1),c$(c1cc2OC(F)(F)Oc2cc1),c$(c1c2OC(F)(F)Oc2ccc1)]),C$(C(F)(F)(Oc2c1)Oc2ccc1)]": 1
         },
         "test": {
             "category": "generic",
@@ -1827,7 +1917,13 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": [
+                "c1ccc2OC(F)(F)Oc2c1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "c1cc2OC(F)(F)Oc2cc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+                "c1c2OC(F)(F)Oc2ccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F"
+            ],
+            "counter-examples": [
+            ]
         }
     },
     {
@@ -1924,7 +2020,7 @@
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
-            "[#6$([#6X3]=[#6])]": 1
+            "[#6$(C[#6]=[#6])]": 1
         },
         "test": {
             "category": "generic",
@@ -1933,7 +2029,15 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(I)=C(Cl)C(F)(F)F",
+                "[H]C=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+                "CC(F)(F)C=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FC(F)(F)CCCCCC=C(I)C",
+                "CCC=CCC"
+            ]
         }
     },
     {
@@ -2189,7 +2293,14 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)[SiH3]",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)[SiH3]",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)[SiH3]"
+            ],
+            "counter-examples": [
+                "FCCCC[SiH3]",
+                "CCCCCC"
+            ]
         }
     },
     {
@@ -2314,7 +2425,11 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": ["OC(=O)C[N+](C)(C)C(F)(F)C(F)(F)C(F)(F)F"],
+            "counter-examples": [
+                "OC(=O)C[N+](C)(C)CCCCCCF",
+                "FC(F)(F)C(F)(F)C(F)(F)[N+]CCC(=O)O"
+            ]
         }
     },
     {
@@ -2340,7 +2455,12 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)SC#N"],
+            "counter-examples": [
+                "FCCCCSC#N",
+                "FC(F)(F)C(F)(F)C(F)(F)SCN",
+                "FC(F)(F)C(F)(F)C(F)(F)SC=N"
+            ]
         }
     },
     {
@@ -2366,7 +2486,14 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(=O)SC(=O)C(O)C(=O)O"],
+            "counter-examples": [
+                "FCCCCC(=O)SC(=O)C(O)C(=O)O",
+                "FC(F)(F)C(F)(F)C(F)(F)C(=O)SCC(O)C(=O)O",
+                "FC(F)(F)C(F)(F)C(F)(F)C(=O)C(=O)C(O)C(=O)O",
+                "FC(F)(F)C(F)(F)C(F)(F)C(=O)C(=O)SC(=O)CC(=O)O",
+                "FC(F)(F)C(F)(F)C(F)(F)C(=O)O"
+            ]
         }
     },
     {
@@ -2391,7 +2518,14 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)OC1C(O)C(OC(C1O)C(=O)O)O"],
+            "counter-examples": [
+                "FCCCCCOC1C(O)C(OC(C1O)C(=O)O)O",
+                "FC(F)(F)C(F)(F)C(F)(F)OC1C(O)C(OC(C1O)CO)O",
+                "FC(F)(F)C(F)(F)C(F)(F)OC1C(O)C(OC(C1O)C(=O)O)",
+                "FC(F)(F)C(F)(F)C(F)(F)OC1CC(OC(C1O)C(=O)O)O",
+                "FC(F)(F)C(F)(F)C(F)(F)OC1C(O)C(OC(C1)C(=O)O)O"
+            ]
         }
     },
     {
@@ -2417,7 +2551,11 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": ["FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C[NH2+]CC(=O)O"],
+            "counter-examples": [
+                "FCCCCCC[NH2+]CC(=O)O",
+                "FC(F)(F)C(F)(F)C(F)(F)C[NH2+]C(=O)O"
+            ]
         }
     },
     {
@@ -2478,7 +2616,14 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)CCC(=O)O",
+                "CCCCN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(S(=O)(=O)CCC(=O)O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "[K+].CN(CC([O-])=O)S(=O)(=O)C(F)(F)C(F)(F)C(S(=O)(=O)CCC(=O)O)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FCCCCCS(=O)(=O)CCC(=O)O"
+            ]
         }
     },
     {
@@ -2505,7 +2650,14 @@
                 "mode": "attach",
                 "is_telomer": false
             },
-            "examples": []
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(CCC(=O)NC(C)(C)CS(=O)(=O)O)",
+                "CCCCN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(S(=O)(CCC(=O)NC(C)(C)CS(=O)(=O)O))C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "[K+].CN(CC([O-])=O)S(=O)(=O)C(F)(F)C(F)(F)C(S(=O)(CCC(=O)NC(C)(C)CS(=O)(=O)O))(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            ],
+            "counter-examples": [
+                "FCCCCCS(=O)(CCC(=O)NC(C)(C)CS(=O)(=O)O)"
+            ]
         }
     },
     {
@@ -2531,7 +2683,12 @@
                 "mode": "attach",
                 "is_telomer": true
             },
-            "examples": []
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC[Si]([H])([H])[H]"
+            ],
+            "counter-examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)[Si](Cl)Cl"
+            ]
         }
     },
     {
@@ -3392,7 +3549,7 @@
         "max_dist_from_CF": 16,
         "constraints": {},
         "smarts": {
-            "[C$(C[CH2][CH3])]": 1
+            "[C$(C[CH2][CH3,CH2!$(C([CH2])[CH2])])]": 1
         },
         "test": {
             "category": "telomer",
@@ -3491,7 +3648,7 @@
         "name": "Fluorotelomer unsaturated carboxylic acids",
         "alias": "FTUCA",
         "smartsPath": "Perfluoroalkyl",
-        "linker_smarts": "[CH2X4,CX3$(C[H,F]=C[H,F])]",
+        "linker_smarts": "[CH2X4,CX3$([CH1]=C[H,F])]",
         "max_dist_from_CF": 16,
         "constraints": {
             "gte": {
@@ -3499,8 +3656,7 @@
             }
         },
         "smarts": {
-            "C(=O)[OH1,Oh1,O-]": 1,
-            "C=C": 1
+            "C(=O)[OH1,Oh1,O-]": 1
         },
         "test": {
             "category": "telomer",
@@ -3992,6 +4148,83 @@
     },
     {
         "id": 114,
+        "name": "Fluorotelomer unsaturated methyl",
+        "alias": "FTI",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4,CX3$([CH1]=C[H,F])]",
+        "max_dist_from_CF": 16,
+        "constraints": {
+            "gte": {
+                "I": 1
+            }
+        },
+        "smarts": {
+            "[C$(C~[CH2,CH1][CH3,CH2!$(C([CH2])[CH2]),CH1!$(C([CH2])=C)])]": 1
+        },
+        "test": {
+            "category": "telomer",
+            "generate": {
+                "smiles": "CC",
+                "mode": "attach",
+                "is_telomer": true,
+                "linker_extra": ["C=C"]
+            },
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC=CC",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC=CCCCCC(=O)O",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC=CCCCCCCc1ccccc1"
+            ],
+            "counter-examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCC",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCI",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCOCCC",
+                "FC(F)(F)C(F)(F)C(F)(F)CCCCC#C",
+                "FC(F)(F)C(F)(F)CCCCC(F)=CCCC"
+            ]
+        }
+    },
+    {
+        "id": 115,
+        "name": "Fluorotelomer unsaturated iodide",
+        "alias": "FTI",
+        "smartsPath": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4,CX3$([CH1]=C[H,F])]",
+        "max_dist_from_CF": 16,
+        "constraints": {
+            "gte": {
+                "I": 1
+            }
+        },
+        "smarts": {
+            "[C$(C~[CH2,CH1]I)]": 1,
+            "[CX3$([CH1]=C[H,F])]":1
+        },
+        "test": {
+            "category": "telomer",
+            "generate": {
+                "smiles": "CI",
+                "mode": "attach",
+                "is_telomer": true,
+                "linker_extra": ["C=C"]
+            },
+            "examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C=CI",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C=CCI",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCC=CI",
+                "FC(F)(F)C(F)(F)C(F)(F)C=CCCCCI",
+                "FC(F)(F)C(F)(F)CC=CI"
+            ],
+            "counter-examples": [
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCI",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)=CCCCCCI",
+                "FC(F)(F)C(F)(F)C(F)(F)CCC=COCCI",
+                "FC(F)(F)C(F)(F)CCCCCC(=O)C=CCI"
+            ]
+        }
+    },
+    {
+        "id": 116,
         "name": "Telomers",
         "alias": "Telomers",
         "smartsPath": "Perfluoroalkyl",
