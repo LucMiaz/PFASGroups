@@ -3383,31 +3383,34 @@
         "id": 93,
         "name": "Fluorotelomer alkene",
         "alias": "Fluorotelomer alkene",
-        "componentSmarts": null,
-        "linker_smarts": null,
+        "componentSmarts": "Perfluoroalkyl",
+        "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
         "max_dist_from_CF": 16,
         "constraints": {},
         "smarts": {
-            "[C$(C[CH2][CH1]=[C$([CH1,CH2])!$(CC(F))])]": 1
+            "[C$([CH1$(C(=C)C),CH2]=[CH1])]": 1
         },
         "test": {
             "category": "telomer",
             "generate": {
-                "smiles": "CCCCC=C",
-                "mode": "insert",
+                "smiles": "CC",
+                "mode": "attach",
                 "is_telomer": true,
                 "linker_extra": [
                     "C=C"
                 ]
             },
             "examples": [
-                "C=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "C=CCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "C=CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+                "CC=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "C(=O)(O)CC=CCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "c1ccccc1CC=CCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
             ],
             "counter-examples": [
-                "C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "CCCCC=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+                "CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "ICOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)",
+                "FC(F)(F)C(F)(F)C(F)(F)",
+                "FC(F)(F)C(F)(F)"
             ]
         }
     },
@@ -4177,19 +4180,19 @@
     },
     {
         "id": 114,
-        "name": "Fluorotelomer unsaturated methyl",
-        "alias": "FTI",
+        "name": "Fluorotelomer unsaturated halogen",
+        "alias": "Fluorotelomer unsaturated halogen",
         "componentSmarts": "Perfluoroalkyl",
-        "linker_smarts": "[CH2X4,CH1!$(CO)]",
+        "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
         "max_dist_from_CF": 16,
         "constraints": {},
         "smarts": {
-            "[C$([CH1$(C(=C)C),CH2]=[CH1])]": 1
+            "[C$([CH2,CH1$(C=C)](~[CH2])[I,F,Cl,Br])]": 1
         },
         "test": {
             "category": "telomer",
             "generate": {
-                "smiles": "CC",
+                "smiles": "CCCl",
                 "mode": "attach",
                 "is_telomer": true,
                 "linker_extra": [
@@ -4197,14 +4200,15 @@
                 ]
             },
             "examples": [
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC=CC",
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC=CCCCCC(=O)O",
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC=CCCCCCCc1ccccc1"
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCl",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCCCCBr",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCCI",
+                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCCF"
             ],
             "counter-examples": [
-                "CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "FCOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "ICOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)",
+                "FCCOCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)",
                 "FC(F)(F)C(F)(F)C(F)(F)",
                 "FC(F)(F)C(F)(F)"
             ]
@@ -4215,7 +4219,7 @@
         "name": "Fluorotelomer unsaturated iodide",
         "alias": "FTI",
         "componentSmarts": "Perfluoroalkyl",
-        "linker_smarts": "[CH2X4,CX3H1]",
+        "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
         "max_dist_from_CF": 16,
         "constraints": {
             "gte": {
@@ -4223,8 +4227,7 @@
             }
         },
         "smarts": {
-            "[C$(C~[CH2,CH1$(C=C)]I)]": 1,
-            "[CH1]=[C]": 1
+            "[C$(C~[CH2,CH1$(C=C)]I)]": 1
         },
         "test": {
             "category": "telomer",
@@ -4245,7 +4248,7 @@
             ],
             "counter-examples": [
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
-                "ICCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "ICCCOCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "ICCC=CCOCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "ICCC=COCCC(F)(F)C(F)(F)C(F)(F)F",
                 "IC(=O)C=CCCCCCC(F)(F)C(F)(F)F"
