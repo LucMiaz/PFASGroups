@@ -26,7 +26,7 @@ from typing import List
 
 from rdkit import Chem
 
-from .draw_mols import plot_pfasgroups
+from .draw_mols import plot_pfasgroups, draw_images
 
 
 # ---------------------------------------------------------------------------
@@ -94,6 +94,7 @@ def generate_main_text_figure(output_dir: Path) -> Path:
         addAtomIndices=False,
         addBondIndices=False,
         bycomponent=True,
+        panel_labels=["A: PFCA example"],
     )
 
     output_path = output_dir / "pfasgroups_main_example.png"
@@ -172,10 +173,74 @@ def generate_si_figure(output_dir: Path) -> Path:
         addAtomIndices=False,
         addBondIndices=False,
         bycomponent=True,
+        panel_labels=["A: Linear PFAS", "B: Branched PFAS"]
+        if len(smiles_list) == 2
+        else ["A: Linear PFAS", "B: Branched PFAS", "C: Fluorotelomer"],
     )
 
     output_path = output_dir / "pfasgroups_SI_components.png"
     fig.save(output_path)
+    return output_path
+
+
+def generate_advanced_si_figure(output_dir: Path) -> Path:
+    """Generate an advanced SI figure illustrating components and path types.
+
+    Panels:
+    - A: Molecule with two disjoint fluorinated components.
+    - B: Same-type example highlighting only perfluoroalkyl paths.
+    - C: Same-type example highlighting only polyfluoroalkyl paths.
+    """
+
+    # Molecule with two fluorinated components attached to an aromatic ring
+    smiles_two_components = "FC(F)(F)C(F)(F)C1=CC(=CC=C1)C(F)(F)C(F)(F)F"
+
+    fig_A, _, _ = plot_pfasgroups(
+        [smiles_two_components],
+        svg=False,
+        subwidth=350,
+        subheight=280,
+        ncols=1,
+        addAtomIndices=False,
+        addBondIndices=False,
+        bycomponent=True,
+        panel_labels=["A: Two fluorinated components"],
+    )
+
+    # Mixed perfluoro/polyfluoro example (one CF2 and one CHF in the chain)
+    smiles_mixed = "C(=O)(O)C(F)(F)C(F)(F)C(F)(H)F"
+
+    fig_B, _, _ = plot_pfasgroups(
+        [smiles_mixed],
+        svg=False,
+        subwidth=350,
+        subheight=280,
+        ncols=1,
+        addAtomIndices=False,
+        addBondIndices=False,
+        bycomponent=True,
+        paths=["Perfluoroalkyl"],
+        panel_labels=["B: Perfluoroalkyl paths"],
+    )
+
+    fig_C, _, _ = plot_pfasgroups(
+        [smiles_mixed],
+        svg=False,
+        subwidth=350,
+        subheight=280,
+        ncols=1,
+        addAtomIndices=False,
+        addBondIndices=False,
+        bycomponent=True,
+        paths=["Polyfluoroalkyl"],
+        panel_labels=["C: Polyfluoroalkyl paths"],
+    )
+
+    # Combine the three panels into a single row
+    combined_fig, _, _ = draw_images([fig_A, fig_B, fig_C], buffer=10, ncols=3, svg=False)
+
+    output_path = output_dir / "pfasgroups_SI_components_advanced.png"
+    combined_fig.save(output_path)
     return output_path
 
 
@@ -192,9 +257,11 @@ def main() -> None:
 
     main_fig = generate_main_text_figure(imgs_dir)
     si_fig = generate_si_figure(imgs_dir)
+    si_adv_fig = generate_advanced_si_figure(imgs_dir)
 
     print("Generated main-text figure:", main_fig)
     print("Generated SI figure:", si_fig)
+    print("Generated advanced SI figure:", si_adv_fig)
 
 
 if __name__ == "__main__":  # pragma: no cover

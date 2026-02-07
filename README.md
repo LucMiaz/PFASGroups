@@ -150,6 +150,7 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 ## Summary of changes by version
 
 - **Version 2.2 (Feb 2026)**: Added linked_smarts option to specify a restriction on path between smarts groups and fluorinated component. Added new PFASgroups (telomers). **v2.2.2** Fixed telomers and added examples and counter-examples to each PFASgroup. Removed boundary O in fluorinated components (for both Per and Polyalkyl components).
+**v2.2.3** Added resultsModel to offer easier plotting and summarising capabilities for results.
 
 - **Version 2.1 (Jan 2026)**: Added support for multiple smarts, with individual minimum count, per PFASgroup.
 

@@ -9,6 +9,7 @@ from .getter import get_componentSmartss, get_PFASGroups, get_PFASDefinitions
 from .fingerprints import generate_fingerprint
 from .generate_homologues import generate_homologues
 from .fragmentation import generate_degradation_products
+from .results_model import ResultsModel
 # Optional imports for testing
 try:
     from . import test_examples
@@ -19,3 +20,4 @@ except ImportError:
 
 __version__ = "2.2.1"
 __all__ = ['PFASGroup', 'PFASDefinition', 'parse_smiles', 'parse_mols','parse_mol', 'parse_groups_in_mol', 'plot_pfasgroups', 'plot_mol','plot_mols',"generate_fingerprint", 'get_componentSmartss', 'get_PFASGroups', 'get_PFASDefinitions' ,'compile_componentSmarts', 'compile_componentSmartss','ComponentsSolver', 'generate_homologues', 'generate_degradation_products',"rdkit_disable_log"]
+__all__.append('ResultsModel')

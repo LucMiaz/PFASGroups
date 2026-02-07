@@ -257,8 +257,16 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     kwargs['compute_component_metrics'] = compute_component_metrics
     return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, **kwargs)
 
+from .results_model import ResultsModel
+
+
 def parse_mol(mol, **kwargs):
-    """Wrapper for parse_mols to handle single molecule input."""
+    """Wrapper for parse_mols to handle single molecule input.
+
+    Returns a single ``MoleculeResult`` when ``output_format='list'``
+    (default), preserving backwards-compatible dict behaviour while
+    enabling richer navigation helpers.
+    """
     return parse_mols([mol], **kwargs)[0]
 
 def parse_mols(mols, output_format='list', include_PFAS_definitions=True, 
@@ -433,13 +441,13 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                             'id': definition.id,
                             'definition_name': definition.name,
                             'type':'PFASdefinition'} for definition in definitions])
-    # Convert results to list format
-    results = [r for r in results.values()]
+    # Convert results to list format (one entry per molecule)
+    results_list = [r for r in results.values()]
     # Format output based on requested format
     if output_format in ['dataframe', 'csv']:
         import pandas as pd
         rows = []
-        for entry in results:
+        for entry in results_list:
             for match in entry['matches']:
                 if match['type'] == 'PFASgroup':
                     rows.append({
@@ -460,7 +468,11 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                     })
         df = pd.DataFrame(rows)
         return df.to_csv(index=False) if output_format == 'csv' else df
-    return results
+
+    # Default: list-like container with navigation helpers that
+    # remains JSON-serialisable and behaves like a normal list of
+    # dicts for existing consumers.
+    return ResultsModel(results_list)
 
 def compile_componentSmarts(chain_smarts, end_smarts):
     """

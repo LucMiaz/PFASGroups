@@ -10,8 +10,8 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'PFASgroups'
 copyright = '2026, Luc T. Miaz'
 author = 'Luc T. Miaz'
-release = '2.2.2'
-version = '2.2'
+release = '2.2.3'
+version = '2.2.3'
 
 # -- General configuration ---------------------------------------------------
 extensions = [

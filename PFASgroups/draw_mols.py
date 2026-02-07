@@ -239,7 +239,7 @@ def plot_mols(mols,**kwargs):
     return draw_images(imgs, buffer = kwargs.get('buffer',2), ncols = kwargs.get('ncols',1), svg = kwargs.get('svg',False))
 
 @add_componentSmarts()
-def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, **kwargs):
+def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, panel_labels=None, **kwargs):
     """
     Plot PFAS group assignments for a list of SMILES strings.
 
@@ -256,6 +256,8 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
     :params paths: List of PFAS group indices or names to include in the plot.
     :params split_matches: Whether to create separate images for each match.
     :params SMARTS: Optional SMARTS pattern to highlight in the plots.
+    :params panel_labels: Optional list of labels (one per input SMILES) to
+        use as legend text under each panel when split_matches is False.
     :params kwargs: Additional keyword arguments for customization.
     """
     from rdkit.Chem import Draw
@@ -277,6 +279,7 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
         else:
             normalised_paths.append(s)
     paths = normalised_paths
+    panel_labels = panel_labels or []
     def draw_subfig(legend, atoms=[]):
         if svg is True:
             d2d = Draw.MolDraw2DSVG(subwidth, subheight)
@@ -292,22 +295,50 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
         d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
         d2d.FinishDrawing()
         return d2d.GetDrawingText()
+    last_valid_mol = None
     for i, s in enumerate(smiles):
         mol = Chem.MolFromSmiles(s)
+        # Skip invalid SMILES strings that RDKit cannot parse
+        if mol is None:
+            continue
+        last_valid_mol = mol
         mol = Chem.AddHs(mol)
-        matches = parse_groups_in_mol(mol, CalcMolFormula(mol), bycomponent=kwargs.get('bycomponent',False))
+        # Pass molecular formula as a keyword to avoid colliding with
+        # the fluorinated_components_dict argument injected by the
+        # load_componentsSolver decorator.
+        matches = parse_groups_in_mol(
+            mol,
+            formula=CalcMolFormula(mol),
+            bycomponent=kwargs.get('bycomponent', False),
+        )
         highlight_atoms = []
         for pf, n, n_cfchains, match_indices in matches:
             for match in match_indices:
+                # Optional filtering by component path type (e.g. Perfluoroalkyl vs Polyfluoroalkyl)
+                if paths and match.get('SMARTS') not in paths:
+                    continue
+                # Optional filtering by SMARTS label
                 if SMARTS is None or match['SMARTS'] in SMARTS:
                     highlight_atoms.extend(match['component'])
                     if split_matches is True:
                         new_img = draw_subfig(f"{pf.name}, {match['SMARTS']}", atoms=match['component'])
                         imgs.append(new_img)
         if split_matches is False:
-            new_img = draw_subfig(f"{SMARTS if SMARTS is not None else ''}", atoms=highlight_atoms)
+            if panel_labels and i < len(panel_labels):
+                legend_text = panel_labels[i]
+            else:
+                legend_text = f"{SMARTS if SMARTS is not None else ''}"
+            new_img = draw_subfig(legend_text, atoms=highlight_atoms)
             imgs.append(new_img)
     if len(imgs) == 0:
+        # Fallback: draw a simple molecule so that the function still
+        # returns a valid image even if no matches were found or all
+        # SMILES failed to parse.
+        fallback_mol = last_valid_mol
+        if fallback_mol is None and smiles:
+            # Try to parse the first SMILES again; if still invalid,
+            # fall back to a simple methane molecule.
+            fallback_mol = Chem.MolFromSmiles(smiles[0]) or Chem.MolFromSmiles("C")
         if svg is True:
             d2d = Draw.MolDraw2DSVG(subwidth, subheight)
         else:
@@ -319,7 +350,7 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
         dopts.addBondIndices = addBondIndices
         dopts.maxFontSize = 16
         dopts.minFontSize = 13
-        d2d.DrawMolecule(mol)
+        d2d.DrawMolecule(fallback_mol)
         d2d.FinishDrawing()
         imgs.append(d2d.GetDrawingText())
     # For now, just return the images as PIL Images

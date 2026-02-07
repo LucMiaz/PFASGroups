@@ -2300,7 +2300,7 @@
         "test": {
             "category": "generic",
             "generate": {
-                "smiles": "[SiH3]",
+                "smiles": "Si",
                 "mode": "attach",
                 "is_telomer": false
             },
@@ -2334,7 +2334,7 @@
         "test": {
             "category": "generic",
             "generate": {
-                "smiles": "[Si](Cl)(Cl)Cl",
+                "smiles": "Si(Cl)(Cl)Cl",
                 "mode": "attach",
                 "is_telomer": false
             },
@@ -2732,7 +2732,7 @@
         "test": {
             "category": "telomer",
             "generate": {
-                "smiles": "[Si](Cl)(Cl)Cl",
+                "smiles": "Si(Cl)(Cl)Cl",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -4180,11 +4180,11 @@
         "name": "Fluorotelomer unsaturated methyl",
         "alias": "FTI",
         "componentSmarts": "Perfluoroalkyl",
-        "linker_smarts": "[CH2X4,CX3H1]",
+        "linker_smarts": "[CH2X4,CH1!$(CO)]",
         "max_dist_from_CF": 16,
         "constraints": {},
         "smarts": {
-            "[C$(C~[CH2,CH1]~[CH3,CH2!$(C([CH2])[CH2]),CH1!$(C([CH2])=C)])]": 1
+            "[C$([CH1$(C(=C)C),CH2]=[CH1])]": 1
         },
         "test": {
             "category": "telomer",
@@ -4202,8 +4202,8 @@
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CC=CCCCCCCc1ccccc1"
             ],
             "counter-examples": [
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C",
-                "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)COCI",
+                "CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                "ICOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                 "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)",
                 "FC(F)(F)C(F)(F)C(F)(F)",
                 "FC(F)(F)C(F)(F)"
@@ -4223,7 +4223,7 @@
             }
         },
         "smarts": {
-            "[C$(C~[CH2,CH1]I)]": 1,
+            "[C$(C~[CH2,CH1$(C=C)]I)]": 1,
             "[CH1]=[C]": 1
         },
         "test": {
