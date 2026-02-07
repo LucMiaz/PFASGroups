@@ -262,10 +262,21 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
     if isinstance(smiles, str):
         smiles = [smiles]
     imgs = []
-    path_names = list(kwargs.get('componentSmartss',{'Perfluoroalkyl':'Perfluoroalkyl','Polyfluoroalkyl':'Polyfluoroalkyl'}).keys())
-    for i, s in enumerate(paths):
+    # Normalise component path selection if provided; ignore invalid indices.
+    componentSmartss = kwargs.get('componentSmartss', {
+        'Perfluoroalkyl': 'Perfluoroalkyl',
+        'Polyfluoroalkyl': 'Polyfluoroalkyl',
+    })
+    path_names = list(componentSmartss.keys())
+    normalised_paths = []
+    for s in paths:
         if isinstance(s, int):
-            paths[i] = path_names[s]
+            if 0 <= s < len(path_names):
+                normalised_paths.append(path_names[s])
+            # silently drop out-of-range indices
+        else:
+            normalised_paths.append(s)
+    paths = normalised_paths
     def draw_subfig(legend, atoms=[]):
         if svg is True:
             d2d = Draw.MolDraw2DSVG(subwidth, subheight)
