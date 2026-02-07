@@ -73,7 +73,7 @@ Use custom pathtype definitions and PFAS groups:
 # Load custom files entirely
 from PFASgroups import get_componentSmartss, get_PFASGroups, parse_smiles
 
-custom_paths = get_componentSmartss(filename='my_fpaths.json')
+custom_paths = get_componentSmartss(filename='my_component_smartss.json')
 custom_groups = get_PFASGroups(filename='my_groups.json')
 
 results = parse_smiles(

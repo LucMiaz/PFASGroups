@@ -327,7 +327,7 @@ compile_componentSmartss
 
    Compile multiple SMARTS path definitions from a dictionary.
 
-   :param paths_dict: Dictionary with 'chain' and 'end' keys for each pathway
+   :param paths_dict: Dictionary with 'component' and 'end' keys for each pathway
    :type paths_dict: dict
    :returns: Dictionary mapping path names to [chain_mol, end_mol] pairs
    :rtype: dict

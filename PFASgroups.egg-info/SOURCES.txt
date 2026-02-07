@@ -22,7 +22,7 @@ PFASgroups.egg-info/requires.txt
 PFASgroups.egg-info/top_level.txt
 PFASgroups/data/PFAS_definitions_smarts.json
 PFASgroups/data/PFAS_groups_smarts.json
-PFASgroups/data/fpaths.json
+PFASgroups/data/component_smarts.json
 tests/test_component_fractions.py
 tests/test_component_ratios.py
 tests/test_comprehensive_metrics.py

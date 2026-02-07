@@ -27,7 +27,7 @@ def find_chain(mol,pathsmarts,endsmarts, repeating = 'C(F)(F)'):
     -------
     list of dict
         Each chain dictionary contains:
-        - 'chain' (set): All atom indices in the complete chain
+        - 'component' (set): All atom indices in the complete chain
         - 'start' (int): Atom index of one terminal group
         - 'end' (int): Atom index of other terminal group
         - 'belly' (set): Atom indices of repeating unit sections
@@ -74,10 +74,10 @@ def find_chain(mol,pathsmarts,endsmarts, repeating = 'C(F)(F)'):
                         part = []
             chain["consecutive_parts"]=parts
             chains.append(chain)
-    chains = sorted(chains, key=lambda x: len(x['chain']), reverse=True)
+    chains = sorted(chains, key=lambda x: len(x['component']), reverse=True)
     remove = []
     for i in range(0,len(chains)):
-        if sum([chains[i]['chain'].issubset(x['chain']) for x in chains[0:i]])>0:
+        if sum([chains[i]['component'].issubset(x['component']) for x in chains[0:i]])>0:
             remove.append(i)
     chains = [x for i,x in enumerate(chains) if i not in remove]
     return chains

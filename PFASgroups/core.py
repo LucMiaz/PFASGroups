@@ -8,12 +8,12 @@ from typing import Union, List, Dict
 from rdkit import rdBase
 
 PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl']
-# --- Load SMARTS paths from fpaths.json ---
+# --- Load SMARTS paths from component_smarts.json ---
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(MODULE_DIR, 'data')
 PFAS_GROUPS_FILE = os.path.join(DATA_DIR, 'PFAS_groups_smarts.json')
 PFAS_DEFINITIONS_FILE = os.path.join(DATA_DIR, 'PFAS_definitions_smarts.json')
-FPATHS_FILE = os.path.join(DATA_DIR, 'fpaths.json')
+FCOMPONENTS_FILE = os.path.join(DATA_DIR, 'component_smarts.json')
 
 def rdkit_disable_log(level='warning'):
     """Disable RDKit warnings and errors logging to stderr"""
@@ -239,15 +239,15 @@ def get_substruct(_mol:Chem.Mol,struct:Chem.Mol):
 
 
 # --- Add SMARTS paths to function ---
-def add_componentSmarts(filename = FPATHS_FILE):
+def add_componentSmarts(filename = FCOMPONENTS_FILE):
     """Yields SMARTS for chains"""
     paths = {}
     with open(filename,'r') as f:
-        fpaths = json.load(f)
-    names = fpaths.keys()
+        fcomponents = json.load(f)
+    names = fcomponents.keys()
     for n in names:
-        s = fpaths[n]['chain']
-        e = fpaths[n]['end']
+        s = fcomponents[n]['component']
+        e = fcomponents[n]['end']
         smol = Chem.MolFromSmarts(s)
         smol.UpdatePropertyCache()
         Chem.GetSymmSSSR(smol)

@@ -166,17 +166,17 @@ def find_fluorinated_chains(mol, componentSmartsName='Perfluoroalkyl'):
     Find fluorinated chains in a molecule using SMARTS patterns.
     Returns atom indices that are part of fluorinated chains.
     """
-    # Load SMARTS paths from fpaths.json
+    # Load SMARTS paths from component_smarts.json
     MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
     DATA_DIR = os.path.join(MODULE_DIR, 'data')
-    FPATHS_FILE = os.path.join(DATA_DIR, 'fpaths.json')
+    COMPONENTS_SMARTS_FILE = os.path.join(DATA_DIR, 'component_smarts.json')
     
     try:
-        with open(FPATHS_FILE, 'r') as f:
-            fpaths = json.load(f)
+        with open(COMPONENTS_SMARTS_FILE, 'r') as f:
+            component_smarts = json.load(f)
     except FileNotFoundError:
         # Fallback SMARTS patterns if file not found
-        fpaths = {
+        component_smarts = {
             'Perfluoroalkyl': '[#6]([#9])([#9])[#6]([#9])([#9])',
             'Perfluoroalkyl_end': '[#6]([#9])([#9])([#6,#9,#17,#35,#53])',
             'Polyfluoroalkyl': '[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])',
@@ -184,8 +184,8 @@ def find_fluorinated_chains(mol, componentSmartsName='Perfluoroalkyl'):
         }
     
     # Get SMARTS patterns
-    path_smarts = fpaths.get(componentSmartsName)
-    end_smarts = fpaths.get(componentSmartsName + '_end')
+    path_smarts = component_smarts.get(componentSmartsName)
+    end_smarts = component_smarts.get(componentSmartsName + '_end')
     
     if not path_smarts or not end_smarts:
         return set()

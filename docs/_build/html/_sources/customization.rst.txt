@@ -273,17 +273,17 @@ Create custom fluorinated pathways:
 Loading Pathways from JSON
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**fpaths.json:**
+**component_smarts.json:**
 
 .. code-block:: json
 
    {
      "Perfluoroalkyl": {
-       "chain": "[C;X4;H0](F)(F)!@!=!#[C;X4;H0](F)(F)",
+       "component": "[C;X4;H0](F)(F)!@!=!#[C;X4;H0](F)(F)",
        "end": "[C;X4;H0](F)(F)F"
      },
      "Perchlorinated": {
-       "chain": "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
+       "component": "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
        "end": "[C;X4](Cl)(Cl)Cl"
      }
    }
@@ -296,7 +296,7 @@ Loading Pathways from JSON
    import json
    
    # Load custom pathways
-   with open('fpaths.json', 'r') as f:
+   with open('component_smarts.json', 'r') as f:
        paths_dict = json.load(f)
    
    paths = compile_componentSmartss(paths_dict)

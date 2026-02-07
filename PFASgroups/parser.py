@@ -505,7 +505,7 @@ def compile_componentSmartss(paths_dict):
     """
     Compile multiple SMARTS path definitions from a dictionary.
     
-    This function takes a dictionary of path definitions (with 'chain' and 'end' keys)
+    This function takes a dictionary of path definitions (with 'component' and 'end' keys)
     and preprocesses them for use in PFAS parsing functions.
     
     Parameters
@@ -514,7 +514,7 @@ def compile_componentSmartss(paths_dict):
         Dictionary with structure::
         
             {
-                'PathName': {'chain': 'SMARTS', 'end': 'SMARTS'},
+                'PathName': {'component': 'SMARTS', 'end': 'SMARTS'},
                 ...
             }
     
@@ -527,11 +527,11 @@ def compile_componentSmartss(paths_dict):
     --------
     >>> custom_paths = {
     ...     'Perchlorinated': {
-    ...         'chain': '[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)',
+    ...         'component': '[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)',
     ...         'end': '[C;X4](Cl)(Cl)Cl'
     ...     },
     ...     'MixedHalo': {
-    ...         'chain': '[C;X4]([F,Cl])([F,Cl])!@!=!#[C;X4]([F,Cl])',
+    ...         'component': '[C;X4]([F,Cl])([F,Cl])!@!=!#[C;X4]([F,Cl])',
     ...         'end': '[C;X4]([F,Cl])([F,Cl])[F,Cl]'
     ...     }
     ... }
@@ -540,8 +540,8 @@ def compile_componentSmartss(paths_dict):
     """
     compiled = {}
     for name, patterns in paths_dict.items():
-        if isinstance(patterns, dict) and 'chain' in patterns and 'end' in patterns:
-            compiled[name] = compile_componentSmarts(patterns['chain'], patterns['end'])
+        if isinstance(patterns, dict) and 'component' in patterns and 'end' in patterns:
+            compiled[name] = compile_componentSmarts(patterns['component'], patterns['end'])
         else:
-            raise ValueError(f"Path '{name}' must have 'chain' and 'end' keys")
+            raise ValueError(f"Path '{name}' must have 'component' and 'end' keys")
     return compiled

@@ -709,7 +709,7 @@ to fluorinated chains.</p>
 </section>
 <section id="loading-pathways-from-json">
 <h3>Loading Pathways from JSON<a class="headerlink" href="#loading-pathways-from-json" title="Link to this heading"></a></h3>
-<p><strong>fpaths.json:</strong></p>
+<p><strong>component_smarts.json:</strong></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;Perfluoroalkyl&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;chain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[C;X4;H0](F)(F)!@!=!#[C;X4;H0](F)(F)&quot;</span><span class="p">,</span>
@@ -727,7 +727,7 @@ to fluorinated chains.</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="c1"># Load custom pathways</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;fpaths.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;component_smarts.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">paths_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
 <span class="n">paths</span> <span class="o">=</span> <span class="n">compile_componentSmartss</span><span class="p">(</span><span class="n">paths_dict</span><span class="p">)</span>

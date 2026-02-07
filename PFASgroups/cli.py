@@ -51,9 +51,9 @@ Note: Use get_componentSmartss() and get_PFASGroups() in Python to extend defaul
     
     # Global options
     parser.add_argument(
-        '--fpaths-file',
+        '--component_smarts-file',
         type=str,
-        help='Path to custom fpaths.json file (default: use package default)'
+        help='Path to custom component_smarts.json file (default: use package default)'
     )
     parser.add_argument(
         '--groups-file',
@@ -219,8 +219,8 @@ def cmd_parse(args):
     """Execute parse command."""
     # Load custom configuration if provided
     kwargs = {}
-    if args.fpaths_file:
-        kwargs['componentSmartss'] = get_componentSmartss(filename=args.fpaths_file)
+    if args.component_smarts_file:
+        kwargs['componentSmartss'] = get_componentSmartss(filename=args.component_smarts_file)
     if args.groups_file:
         kwargs['pfas_groups'] = get_PFASGroups(filename=args.groups_file)
     
@@ -293,8 +293,8 @@ def cmd_fingerprint(args):
     """Execute fingerprint command."""
     # Load custom configuration if provided
     kwargs = {}
-    if args.fpaths_file:
-        kwargs['componentSmartss'] = get_componentSmartss(filename=args.fpaths_file)
+    if args.component_smarts_file:
+        kwargs['componentSmartss'] = get_componentSmartss(filename=args.component_smarts_file)
     if args.groups_file:
         kwargs['pfas_groups'] = get_PFASGroups(filename=args.groups_file)
     
@@ -437,8 +437,8 @@ def cmd_list_groups(args):
 def cmd_list_paths(args):
     """Execute list-paths command."""
     # Load paths (custom or default)
-    if args.fpaths_file:
-        paths = get_componentSmartss(filename=args.fpaths_file)
+    if args.component_smarts_file:
+        paths = get_componentSmartss(filename=args.component_smarts_file)
     else:
         paths = get_componentSmartss()
     
@@ -474,10 +474,10 @@ def cmd_validate_config(args):
     try:
         print("Validating configuration files...")
         
-        # Validate fpaths if provided
-        if args.fpaths_file:
-            paths = get_componentSmartss(filename=args.fpaths_file)
-            print(f"✓ fpaths.json loaded successfully from: {args.fpaths_file}")
+        # Validate component_smarts if provided
+        if args.component_smarts_file:
+            paths = get_componentSmartss(filename=args.component_smarts_file)
+            print(f"✓ component_smarts.json loaded successfully from: {args.component_smarts_file}")
             print(f"  Found {len(paths)} path types")
         
         # Validate groups if provided
@@ -486,7 +486,7 @@ def cmd_validate_config(args):
             print(f"✓ PFAS_groups_smarts.json loaded successfully from: {args.groups_file}")
             print(f"  Found {len(groups)} PFAS groups")
         
-        if not args.fpaths_file and not args.groups_file:
+        if not args.component_smarts_file and not args.groups_file:
             # Validate defaults
             paths = get_componentSmartss()
             groups = get_PFASGroups()

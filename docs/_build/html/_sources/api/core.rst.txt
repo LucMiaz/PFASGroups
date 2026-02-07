@@ -427,7 +427,7 @@ Dictionary with keys: 'Perfluoroalkyl', 'Polyfluoroalkyl', 'Polyfluoro', 'Polyfl
    
    # Inspect perfluoroalkyl pathway
    print(paths['Perfluoroalkyl'])
-   # Output: {'chain': <rdkit.Chem.rdchem.Mol>, 'end': <rdkit.Chem.rdchem.Mol>}
+   # Output: {'component': <rdkit.Chem.rdchem.Mol>, 'end': <rdkit.Chem.rdchem.Mol>}
 
 compile_componentSmarts
 ~~~~~~~~~~~~~~~~~~
@@ -445,7 +445,7 @@ Compile SMARTS patterns for custom pathway definitions.
 
 **Returns:**
 
-Dictionary: ``{'chain': <Mol>, 'end': <Mol>}``
+Dictionary: ``{'component': <Mol>, 'end': <Mol>}``
 
 **Examples:**
 
@@ -460,7 +460,7 @@ Dictionary: ``{'chain': <Mol>, 'end': <Mol>}``
    )
    
    print(perchlorinated)
-   # {'chain': <rdkit.Chem.rdchem.Mol>, 'end': <rdkit.Chem.rdchem.Mol>}
+   # {'component': <rdkit.Chem.rdchem.Mol>, 'end': <rdkit.Chem.rdchem.Mol>}
 
 compile_componentSmartss
 ~~~~~~~~~~~~~~~~~~~
@@ -473,7 +473,7 @@ Compile multiple pathway definitions from a dictionary.
 
 **Parameters:**
 
-- **paths_dict** (*dict*): Dictionary with pathway names as keys and {'chain': str, 'end': str} as values
+- **paths_dict** (*dict*): Dictionary with pathway names as keys and {'component': str, 'end': str} as values
 
 **Returns:**
 
@@ -488,11 +488,11 @@ Dictionary of compiled pathways
    # Define custom pathways
    custom_paths = {
        'Perchlorinated': {
-           'chain': '[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)',
+           'component': '[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)',
            'end': '[C;X4](Cl)(Cl)Cl'
        },
        'Perbrominated': {
-           'chain': '[C;X4](Br)(Br)!@!=!#[C;X4](Br)(Br)',
+           'component': '[C;X4](Br)(Br)!@!=!#[C;X4](Br)(Br)',
            'end': '[C;X4](Br)(Br)Br'
        }
    }

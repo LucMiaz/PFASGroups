@@ -289,9 +289,9 @@ def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False
         for pf, n, n_cfchains, match_indices in matches:
             for match in match_indices:
                 if SMARTS is None or match['SMARTS'] in SMARTS:
-                    highlight_atoms.extend(match['chain'])
+                    highlight_atoms.extend(match['component'])
                     if split_matches is True:
-                        new_img = draw_subfig(f"{pf.name}, {match['SMARTS']}", atoms=match['chain'])
+                        new_img = draw_subfig(f"{pf.name}, {match['SMARTS']}", atoms=match['component'])
                         imgs.append(new_img)
         if split_matches is False:
             new_img = draw_subfig(f"{SMARTS if SMARTS is not None else ''}", atoms=highlight_atoms)
