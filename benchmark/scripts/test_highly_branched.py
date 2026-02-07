@@ -9,6 +9,7 @@ Compares PFASGroups and PFAS-Atlas detection
 import sys
 import os
 import json
+from pathlib import Path
 from datetime import datetime
 
 # Add parent directory to path to import pfasgroups
@@ -25,16 +26,16 @@ except ImportError:
     sys.exit(1)
 
 # Try to import PFAS-Atlas
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-atlas_dir = os.path.join(os.path.dirname(parent_dir), 'PFAS-atlas')
+repo_root = Path(__file__).resolve().parents[2]
+atlas_dir = repo_root.parent / 'PFAS-atlas'
 try:
-    sys.path.append(atlas_dir)
+    sys.path.append(str(atlas_dir))
     from classification_helper.classify_pfas import classify_pfas_molecule
     ATLAS_AVAILABLE = True
     print("✅ PFAS-Atlas available")
 except ImportError:
     try:
-        sys.path.append(os.path.join(atlas_dir, 'classification_helper'))
+        sys.path.append(str(atlas_dir / 'classification_helper'))
         from classify_pfas import classify_pfas_molecule
         ATLAS_AVAILABLE = True
         print("✅ PFAS-Atlas available (fallback import)")
@@ -70,6 +71,11 @@ FUNCTIONAL_GROUPS = {
     59: { "name": 'peroxydes', "smarts": 'OO', "distance": [0, 1, 2] },
     60: { "name": 'benzoyl peroxydes', "smarts": 'c1ccccc1C(=O)OOC(=O)', "distance": [0, 1, 2] }
 }
+
+QUICK_RUN = os.getenv("PFAS_BENCH_QUICK") == "1"
+BRANCHED_GROUP_LIMIT = int(os.getenv("PFAS_BENCH_BRANCHED_GROUPS", "0") or "0")
+BRANCHED_COMPONENT_MAX = int(os.getenv("PFAS_BENCH_BRANCHED_COMPONENTS", "5") or "5")
+BRANCHED_DISTANCE_MAX = int(os.getenv("PFAS_BENCH_BRANCHED_DISTANCE_MAX", "2") or "2")
 
 
 def attach_functional_group(component_size, func_group, distance):
@@ -127,9 +133,15 @@ def run_benchmark():
     """Run the highly branched compounds benchmark"""
     print("🧪 PFAS Highly Branched Compounds Benchmark")
     print("=" * 80)
-    print(f"Testing {len(FUNCTIONAL_GROUPS)} functional groups")
-    print("Component sizes: 1-5 CF2 units")
-    print("Distances: 0, 1, 2 bonds from component start")
+    group_items = list(FUNCTIONAL_GROUPS.items())
+    if BRANCHED_GROUP_LIMIT > 0:
+        group_items = group_items[:BRANCHED_GROUP_LIMIT]
+    component_max = max(1, BRANCHED_COMPONENT_MAX)
+    distance_max = max(0, BRANCHED_DISTANCE_MAX)
+    
+    print(f"Testing {len(group_items)} functional groups")
+    print(f"Component sizes: 1-{component_max} CF2 units")
+    print(f"Distances: 0-{distance_max} bonds from component start")
     if ATLAS_AVAILABLE:
         print("Comparing PFASGroups and PFAS-Atlas detection")
     else:
@@ -147,12 +159,13 @@ def run_benchmark():
     }
     
     # Test each component size
-    for component_size in range(1, 6):
+    for component_size in range(1, component_max + 1):
         print(f"\n📊 Testing component size {component_size}")
         print("-" * 80)
         
-        for group_id, group_info in FUNCTIONAL_GROUPS.items():
-            for distance in group_info['distance']:
+        for group_id, group_info in group_items:
+            distances = [d for d in group_info['distance'] if d <= distance_max]
+            for distance in distances:
                 results['total'] += 1
                 smiles = attach_functional_group(component_size, group_info['smarts'], distance)
                 

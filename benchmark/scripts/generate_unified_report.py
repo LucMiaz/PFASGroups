@@ -270,6 +270,12 @@ def load_oecd_csv_data():
     try:
         import pandas as pd
         df = pd.read_csv(oecd_csv_path)
+        limit = os.getenv("PFAS_BENCH_OECD_LIMIT")
+        if limit:
+            try:
+                df = df.head(int(limit))
+            except ValueError:
+                pass
         
         # Convert to list of dictionaries for consistency
         molecules = []
@@ -296,10 +302,19 @@ def analyze_oecd_robustness(oecd_molecules):
     try:
         # Import required modules
         sys.path.append('/home/luc/git/PFAS-atlas')
-        from classification_helper import classify_pfas_molecule
+        try:
+            from classification_helper import classify_pfas_molecule
+        except ImportError as e:
+            print(f"⚠️  Skipping OECD robustness analysis (missing dependency): {e}")
+            return None
         
         sys.path.append('/home/luc/git/PFASGroups')
         from PFASgroups import parse_smiles
+        from rdkit import RDLogger
+        import re
+        
+        # Suppress RDKit parse errors for invalid SMILES
+        RDLogger.DisableLog('rdApp.error')
         
         total_molecules = len(oecd_molecules)
         atlas_agreements = 0
@@ -307,6 +322,9 @@ def analyze_oecd_robustness(oecd_molecules):
         pfasgroups_detections = 0
         pfasgroups_mismatches = []
         pfasgroups_errors = 0
+        invalid_rdkit_smiles = 0
+        fallback_used = 0
+        fallback_failed = 0
         
         # Track OECD group (type < 29) correspondence for Sankey
         oecd_groups_correspondence = defaultdict(lambda: defaultdict(int))
@@ -318,9 +336,17 @@ def analyze_oecd_robustness(oecd_molecules):
                 print(f"Progress: {i}/{total_molecules}")
             
             smiles = mol['rdkit_smiles']
+            original_smiles = mol.get('original_smiles')
             expected_first = mol['first_class']
             expected_second = mol['second_class']
             expected_type = mol['type']
+            
+            # If rdkit_smiles contains known invalid patterns, prefer original_smiles
+            if smiles and re.search(r'\[(SiH\(F\)|NH\(F\)\+)\]', smiles):
+                invalid_rdkit_smiles += 1
+                if original_smiles:
+                    smiles = original_smiles
+                    fallback_used += 1
             
             # Run PFAS-Atlas predictions
             try:
@@ -342,6 +368,29 @@ def analyze_oecd_robustness(oecd_molecules):
                     })
                     
             except Exception as e:
+                # Fallback: try original SMILES if RDKIT_SMILES fails
+                if original_smiles and original_smiles != smiles:
+                    try:
+                        atlas_result = classify_pfas_molecule(original_smiles)
+                        atlas_first = atlas_result[0] if len(atlas_result) > 0 else 'Not detected'
+                        atlas_second = atlas_result[1] if len(atlas_result) > 1 else 'Not detected'
+                        if atlas_first == expected_first and atlas_second == expected_second:
+                            atlas_agreements += 1
+                        else:
+                            atlas_mismatches.append({
+                                'index': i,
+                                'smiles': original_smiles,
+                                'expected_first': expected_first,
+                                'expected_second': expected_second,
+                                'predicted_first': atlas_first,
+                                'predicted_second': atlas_second,
+                                'fallback_from': smiles
+                            })
+                        fallback_used += 1
+                        continue
+                    except Exception as fallback_error:
+                        e = fallback_error
+                        fallback_failed += 1
                 atlas_mismatches.append({
                     'index': i,
                     'smiles': smiles,
@@ -359,8 +408,13 @@ def analyze_oecd_robustness(oecd_molecules):
                 from rdkit import Chem
                 
                 mol = Chem.MolFromSmiles(smiles)
+                used_smiles = smiles
+                if mol is None and original_smiles and original_smiles != smiles:
+                    mol = Chem.MolFromSmiles(original_smiles)
+                    used_smiles = original_smiles
+                    fallback_used += 1
                 if mol is None:
-                    raise ValueError(f"Could not parse SMILES: {smiles}")
+                    raise ValueError(f"Could not parse SMILES: {smiles}" + (f" (fallback also failed: {original_smiles})" if original_smiles else ""))
                 
                 formula = CalcMolFormula(mol)
                 pfas_matches = parse_groups_in_mol(mol, formula)
@@ -383,7 +437,7 @@ def analyze_oecd_robustness(oecd_molecules):
                     # No PFAS detection
                     pfasgroups_mismatches.append({
                         'index': i,
-                        'smiles': smiles,
+                        'smiles': used_smiles,
                         'expected_type': expected_type,
                         'expected_first': expected_first,
                         'expected_second': expected_second,
@@ -394,7 +448,7 @@ def analyze_oecd_robustness(oecd_molecules):
             except Exception as e:
                 pfasgroups_mismatches.append({
                     'index': i,
-                    'smiles': smiles,
+                        'smiles': used_smiles,
                     'expected_type': expected_type,
                     'expected_first': expected_first,
                     'expected_second': expected_second,
@@ -407,6 +461,8 @@ def analyze_oecd_robustness(oecd_molecules):
         pfasgroups_detection_rate = (pfasgroups_detections / total_molecules) * 100 if total_molecules > 0 else 0
         
         print(f"Analysis complete: {atlas_agreements}/{total_molecules} Atlas agreements, {pfasgroups_detections} PFASGroups detections")
+        if invalid_rdkit_smiles or fallback_used or fallback_failed:
+            print(f"⚠️  OECD SMILES fallbacks: invalid_rdkit={invalid_rdkit_smiles}, used={fallback_used}, failed={fallback_failed}")
         
         return {
             'total_molecules': total_molecules,

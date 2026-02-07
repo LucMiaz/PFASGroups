@@ -2121,7 +2121,7 @@
         "test": {
             "category": "generic",
             "generate": {
-                "smiles": "C1(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)(F)",
+                "smiles": "C1(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)(F)",
                 "mode": "attach",
                 "is_telomer": false
             },

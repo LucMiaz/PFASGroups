@@ -1195,7 +1195,7 @@ class PFASDefinitionBenchmark:
         results = convert_for_json(results)
         
         # Save results
-        output_dir = os.path.join(script_dir, 'data')
+        output_dir = os.path.join(parent_dir, 'data')
         os.makedirs(output_dir, exist_ok=True)
         output_file = os.path.join(output_dir, f'pfas_definitions_benchmark_{timestamp}.json')
         

@@ -331,6 +331,87 @@ def create_scaling_analysis_plot(timing_results):
     
     return fig
 
+def compute_runtime_ratios(timing_results):
+    """Compute PFASGroups/Atlas runtime ratios and return valid list."""
+    ratios = []
+    for row in timing_results:
+        if 'pfasgroups_time_avg' in row:
+            pfas_time = row.get('pfasgroups_time_avg')
+            atlas_time = row.get('atlas_time_avg')
+        else:
+            pfas_time = row.get('pfasgroups_time')
+            atlas_time = row.get('atlas_time')
+
+        if pfas_time is None or atlas_time is None or atlas_time <= 0:
+            continue
+        ratios.append(pfas_time / atlas_time)
+    return ratios
+
+def create_ratio_histogram_plot(timing_results):
+    """Create histogram of PFASGroups/Atlas runtime ratios."""
+    ratios = compute_runtime_ratios(timing_results)
+    if not ratios:
+        return go.Figure().update_layout(title="No data available for ratio histogram")
+
+    fig = go.Figure()
+    fig.add_trace(
+        go.Histogram(
+            x=ratios,
+            nbinsx=40,
+            name='PFASGroups/Atlas ratio',
+            marker_color='mediumpurple'
+        )
+    )
+
+    fig.update_layout(
+        title="Runtime Ratio Distribution<br><sub>PFASGroups / PFAS-Atlas (log scale)</sub>",
+        width=1000,
+        height=600
+    )
+    fig.update_xaxes(title_text="Runtime Ratio (log scale)", type='log')
+    fig.update_yaxes(title_text="Count")
+    return fig
+
+def create_ratio_summary_table(timing_results):
+    """Create a summary table for PFASGroups/Atlas runtime ratios."""
+    ratios = compute_runtime_ratios(timing_results)
+    if not ratios:
+        return go.Figure().update_layout(title="No data available for ratio summary")
+
+    ratios_sorted = sorted(ratios)
+    n = len(ratios_sorted)
+    mean_ratio = float(np.mean(ratios_sorted))
+    median_ratio = float(np.median(ratios_sorted))
+    p10 = float(np.percentile(ratios_sorted, 10))
+    p90 = float(np.percentile(ratios_sorted, 90))
+    thresholds = [10, 50, 100, 200, 500, 1000]
+    rows = [
+        ("N molecules", f"{n}"),
+        ("Mean ratio", f"{mean_ratio:.2f}x"),
+        ("Median ratio", f"{median_ratio:.2f}x"),
+        ("P10 ratio", f"{p10:.2f}x"),
+        ("P90 ratio", f"{p90:.2f}x"),
+    ]
+    for threshold in thresholds:
+        count = sum(1 for r in ratios_sorted if r >= threshold)
+        pct = (count / n * 100) if n else 0
+        rows.append((f"Ratio ≥ {threshold}x", f"{count} ({pct:.1f}%)"))
+
+    fig = go.Figure(
+        data=[
+            go.Table(
+                header=dict(values=["Metric", "Value"], fill_color='lightgrey'),
+                cells=dict(values=[[r[0] for r in rows], [r[1] for r in rows]])
+            )
+        ]
+    )
+    fig.update_layout(
+        title="Runtime Ratio Summary Table",
+        width=700,
+        height=500
+    )
+    return fig
+
 def create_timing_html_report(timing_results, stats, timestamp):
     """Create comprehensive HTML report for timing analysis with system specs"""
     
@@ -338,11 +419,15 @@ def create_timing_html_report(timing_results, stats, timestamp):
     scatter_plot = create_timing_scatter_plot(timing_results)
     distribution_plot = create_timing_distribution_plot(timing_results)
     scaling_plot = create_scaling_analysis_plot(timing_results)
+    ratio_hist_plot = create_ratio_histogram_plot(timing_results)
+    ratio_table_plot = create_ratio_summary_table(timing_results)
     
     # Convert plots to HTML
     scatter_html = scatter_plot.to_html(include_plotlyjs='cdn', div_id="timing-scatter")
     distribution_html = distribution_plot.to_html(include_plotlyjs='cdn', div_id="timing-distribution")
     scaling_html = scaling_plot.to_html(include_plotlyjs='cdn', div_id="timing-scaling")
+    ratio_hist_html = ratio_hist_plot.to_html(include_plotlyjs='cdn', div_id="timing-ratio-hist")
+    ratio_table_html = ratio_table_plot.to_html(include_plotlyjs='cdn', div_id="timing-ratio-table")
     
     # System specifications section
     system_specs = stats.get('system_specs', {})
@@ -582,6 +667,15 @@ def create_timing_html_report(timing_results, stats, timestamp):
             {distribution_html}
         </div>
 
+        <h2>🧮 Relative Performance (Ratio)</h2>
+        <div class="visualization-container">
+            <div style="margin-bottom: 20px;">
+                <strong>Analysis:</strong> Distribution and summary of PFASGroups/Atlas runtime ratios.
+            </div>
+            {ratio_hist_html}
+            {ratio_table_html}
+        </div>
+
         <h2>⚖️ Scaling Performance Analysis</h2>
         <div class="visualization-container">
             <div style="margin-bottom: 20px;">
@@ -656,52 +750,70 @@ def main():
     scaling_plot = create_scaling_analysis_plot(timing_results)
     scaling_plot.write_image(f"{imgs_dir}/timing_scaling_{timestamp}.png", width=1200, height=800)
     scaling_plot.write_html(f"{reports_dir}/timing_scaling_{timestamp}.html")
+
+    ratio_hist_plot = create_ratio_histogram_plot(timing_results)
+    ratio_hist_plot.write_image(f"{imgs_dir}/timing_ratio_hist_{timestamp}.png", width=1000, height=600)
+    ratio_hist_plot.write_html(f"{reports_dir}/timing_ratio_hist_{timestamp}.html")
+
+    ratio_table_plot = create_ratio_summary_table(timing_results)
+    ratio_table_plot.write_image(f"{imgs_dir}/timing_ratio_table_{timestamp}.png", width=700, height=500)
+    ratio_table_plot.write_html(f"{reports_dir}/timing_ratio_table_{timestamp}.html")
     
     # Create comprehensive HTML report
     html_content = create_timing_html_report(timing_results, stats, timestamp)
-    html_filename = f\"{reports_dir}/timing_analysis_{timestamp}.html\"
+    html_filename = f"{reports_dir}/timing_analysis_{timestamp}.html"
     
     with open(html_filename, 'w', encoding='utf-8') as f:
         f.write(html_content)
     
     # Save JSON report to data directory
-    data_dir = \"../data\" if os.path.exists(\"../data\") else \"data\"
+    data_dir = "../data" if os.path.exists("../data") else "data"
     os.makedirs(data_dir, exist_ok=True)
     
     # Create JSON report
     json_report = {
-        \"summary\": {
-            \"total_molecules\": len(timing_results),
-            \"pfasgroups_avg_time\": stats['pfasgroups_avg_time'],
-            \"pfasgroups_std_time\": stats['pfasgroups_std_time'],
-            \"atlas_avg_time\": stats['atlas_avg_time'],
-            \"atlas_std_time\": stats['atlas_std_time'],
-            \"speed_ratio\": stats['speed_ratio'],
-            \"iterations\": timing_results[0].get('iterations', 1),
-            \"timestamp\": timestamp
+        "summary": {
+            "total_molecules": len(timing_results),
+            "pfasgroups_avg_time": stats['pfasgroups_avg_time'],
+            "pfasgroups_std_time": stats['pfasgroups_std_time'],
+            "atlas_avg_time": stats['atlas_avg_time'],
+            "atlas_std_time": stats['atlas_std_time'],
+            "speed_ratio": stats['speed_ratio'],
+            "iterations": timing_results[0].get('iterations', 1),
+            "timestamp": timestamp
         },
-        \"system_specs\": timing_results[0].get('system_specs', {}),
-        \"figures\": [
+        "system_specs": timing_results[0].get('system_specs', {}),
+        "figures": [
             {
-                \"title\": \"Timing Scatter Plot\",
-                \"url\": f\"/imgs/timing_scatter_{timestamp}.png\",
-                \"description\": \"Scatter plot showing execution times vs molecular properties\"
+                "title": "Timing Scatter Plot",
+                "url": f"/imgs/timing_scatter_{timestamp}.png",
+                "description": "Scatter plot showing execution times vs molecular properties"
             },
             {
-                \"title\": \"Timing Distribution\",
-                \"url\": f\"/imgs/timing_distribution_{timestamp}.png\",
-                \"description\": \"Distribution of execution times for both systems\"
+                "title": "Timing Distribution",
+                "url": f"/imgs/timing_distribution_{timestamp}.png",
+                "description": "Distribution of execution times for both systems"
             },
             {
-                \"title\": \"Scaling Analysis\",
-                \"url\": f\"/imgs/timing_scaling_{timestamp}.png\",
-                \"description\": \"Performance scaling with molecular complexity\"
+                "title": "Scaling Analysis",
+                "url": f"/imgs/timing_scaling_{timestamp}.png",
+                "description": "Performance scaling with molecular complexity"
+            },
+            {
+                "title": "Runtime Ratio Histogram",
+                "url": f"/imgs/timing_ratio_hist_{timestamp}.png",
+                "description": "Distribution of PFASGroups/Atlas runtime ratios"
+            },
+            {
+                "title": "Runtime Ratio Summary Table",
+                "url": f"/imgs/timing_ratio_table_{timestamp}.png",
+                "description": "Summary statistics for PFASGroups/Atlas runtime ratios"
             }
         ],
-        \"html_report\": f\"/reports/timing_analysis_{timestamp}.html\"
+        "html_report": f"/reports/timing_analysis_{timestamp}.html"
     }
     
-    json_filename = f\"{data_dir}/timing_analysis_{timestamp}.json\"
+    json_filename = f"{data_dir}/timing_analysis_{timestamp}.json"
     with open(json_filename, 'w', encoding='utf-8') as f:
         json.dump(json_report, f, indent=2)
     

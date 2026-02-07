@@ -16,13 +16,14 @@ import networkx as nx
 from rdkit.Chem import Descriptors
 
 
-# Add parent directory to path to import PFASGroups
+# Resolve repo root and prefer local PFASgroups
 script_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(os.path.dirname(script_dir))
+benchmark_dir = os.path.dirname(script_dir)
+repo_root = os.path.dirname(benchmark_dir)
 
-if parent_dir not in sys.path:
+if repo_root not in sys.path:
     # Prefer local PFASgroups over any installed package
-    sys.path.insert(0, parent_dir)
+    sys.path.insert(0, repo_root)
 
 try:
     from PFASgroups.parser import parse_mol
@@ -34,7 +35,7 @@ except ImportError:
     PFASGROUPS_AVAILABLE = False
 
 # Try to import PFAS-Atlas
-atlas_dir = os.path.join(os.path.dirname(parent_dir), 'PFAS-atlas')
+atlas_dir = os.path.join(os.path.dirname(repo_root), 'PFAS-atlas')
 try:
     sys.path.append(atlas_dir)  
     from classification_helper.classify_pfas import classify_pfas_molecule
@@ -55,12 +56,12 @@ class EnhancedPFASBenchmark:
     
     def __init__(self):
         # Load PFAS groups definitions
-        pfas_groups_path = os.path.join(parent_dir, 'PFASgroups', 'data', 'PFAS_groups_smarts.json')
+        pfas_groups_path = os.path.join(repo_root, 'PFASgroups', 'data', 'PFAS_groups_smarts.json')
         with open(pfas_groups_path, 'r') as f:
             self.pfas_groups = json.load(f)
         
         # Load specificity test groups for OECD connections
-        specificity_path = os.path.join(parent_dir, 'tests', 'specificity_test_groups.json')
+        specificity_path = os.path.join(repo_root, 'tests', 'specificity_test_groups.json')
         with open(specificity_path, 'r') as f:
             self.specificity_groups = json.load(f)
         
@@ -78,7 +79,7 @@ class EnhancedPFASBenchmark:
         
         # Target groups 29-max_id (excluding 49, 50, 51 which are componentSmarts-only groups)
         # Automatically includes all functional groups and telomers
-        self.target_groups = [g for g in range(29, max_group_id + 1) if g not in [49, 50, 51]]
+        self.target_groups = [g for g in range(29, max_group_id + 1)]
         
         # OECD target groups 1-28
         self.oecd_target_groups = list(range(1, 29))
@@ -126,7 +127,7 @@ class EnhancedPFASBenchmark:
                         if is_telomer:
                             entry['telomer'] = True
                             entry['ch2_range'] = generate_info.get('ch2_range', (2, 8))  # Default CH2 linker range for telomers
-                            entry['linker_extra'] = generate_info.get('linker_extra', ['CH2'])  # Default linker is CH2
+                            entry['linker_extra'] = generate_info.get('linker_extra', ['C'])  # Default linker is CH2
                         
                         self.functional_smarts[group_id] = entry
                     else:
@@ -244,6 +245,18 @@ class EnhancedPFASBenchmark:
                 
                 if mol is not None:
                     smiles = Chem.MolToSmiles(mol)
+
+                    # Validate round-trip SMILES to avoid downstream parse errors
+                    mol = Chem.MolFromSmiles(smiles)
+                    if mol is None:
+                        excluded_molecules.append({
+                            'smiles': smiles,
+                            'chain_length': chain_length,
+                            'target_group_id': group_id,
+                            'target_group_name': group_info['name'],
+                            'reason': 'invalid_smiles_roundtrip'
+                        })
+                        continue
                     
                     molecule_data = {
                         'group_id': group_id,
@@ -341,6 +354,8 @@ class EnhancedPFASBenchmark:
                 
                 # Vary CH2 linker length within specified range
                 ch2_min, ch2_max = ch2_range
+                ch2_min = max(2, ch2_min)
+                ch2_max = max(ch2_min, ch2_max)
                 n_ch2 = ch2_min + (i % (ch2_max - ch2_min + 1))
                 
                 # Build perfluorinated chain: FC(F)(F)C(F)(F)...C(F)(F)
@@ -354,11 +369,14 @@ class EnhancedPFASBenchmark:
                 # For ethoxylates, add oxygen atoms between some CH2 groups
                 # Pattern: -CH2-O-CH2-O-CH2- (ethylene oxide units)
                 linker_parts = ["C"]
-                for j, part in enumerate(linker_extra):
+                j = 0
+                for part in linker_extra:
                     linker_parts.append(part)
                     linker_parts.append("C")
-                j+=1
-                linker_parts.extend(["C"] * (n_ch2 - j))  # Add remaining CH2 groups if any
+                    j += 1
+                ch2_remaining = n_ch2 - (1 + j)
+                if ch2_remaining > 0:
+                    linker_parts.extend(["C"] * ch2_remaining)
                 linker_smiles = "".join(linker_parts)
                 
                 # Add functional group
@@ -753,8 +771,8 @@ class EnhancedPFASBenchmark:
             json.dump(all_results, f, indent=2, default=str)
         
         total_molecules = len(all_results)
-        enhanced_single_molecules = len(self.target_groups) * replicates
-        oecd_molecules = len(self.oecd_target_groups) * oecd_replicates
+        enhanced_single_molecules = sum(1 for r in all_results if r['molecule_data'].get('generation_type') == 'single_group')
+        oecd_molecules = sum(1 for r in all_results if r['molecule_data'].get('generation_type') == 'oecd_molecule')
         multi_molecules = total_molecules - enhanced_single_molecules - oecd_molecules
         
         print(f"\n💾 Enhanced Benchmark Complete!")
@@ -769,20 +787,36 @@ class EnhancedPFASBenchmark:
     def get_system_specifications(self):
         """Collect system specifications for reproducibility"""
         import platform
-        import psutil
-        import cpuinfo
+        try:
+            import psutil
+        except ImportError:
+            psutil = None
+        try:
+            import cpuinfo
+        except ImportError:
+            cpuinfo = None
         
         try:
-            cpu_info = cpuinfo.get_cpu_info()
+            cpu_info = cpuinfo.get_cpu_info() if cpuinfo else {}
             cpu_name = cpu_info.get('brand_raw', 'Unknown CPU')
-            cpu_count = psutil.cpu_count(logical=True)
-            cpu_count_physical = psutil.cpu_count(logical=False)
-        except:
+            if psutil:
+                cpu_count = psutil.cpu_count(logical=True)
+                cpu_count_physical = psutil.cpu_count(logical=False)
+            else:
+                cpu_count = os.cpu_count()
+                cpu_count_physical = os.cpu_count()
+        except Exception:
             cpu_name = platform.processor()
             cpu_count = os.cpu_count()
             cpu_count_physical = os.cpu_count()
         
-        memory = psutil.virtual_memory()
+        if psutil:
+            memory = psutil.virtual_memory()
+            total_memory_gb = round(memory.total / (1024**3), 2)
+            available_memory_gb = round(memory.available / (1024**3), 2)
+        else:
+            total_memory_gb = 0
+            available_memory_gb = 0
         
         specs = {
             'system': platform.system(),
@@ -792,8 +826,8 @@ class EnhancedPFASBenchmark:
             'cpu_name': cpu_name,
             'cpu_cores_logical': cpu_count,
             'cpu_cores_physical': cpu_count_physical,
-            'total_memory_gb': round(memory.total / (1024**3), 2),
-            'available_memory_gb': round(memory.available / (1024**3), 2)
+            'total_memory_gb': total_memory_gb,
+            'available_memory_gb': available_memory_gb
         }
         
         return specs
@@ -902,7 +936,7 @@ class EnhancedPFASBenchmark:
             print(f"⚠️  Failed to load previous results: {e}")
             return []
     
-    def run_timing_benchmark(self, max_molecules=2500, iterations=5, reuse_previous=False):
+    def run_timing_benchmark(self, max_molecules=4000, iterations=5, reuse_previous=False):
         """Run timing benchmark comparing PFASGroups vs PFAS-Atlas with diverse functional groups
         
         Args:
@@ -915,12 +949,15 @@ class EnhancedPFASBenchmark:
         system_specs = self.get_system_specifications()
         
         # Get available functional groups (IDs 29-114)
+        excluded_timing_groups = {62, 103}
         available_groups = []
         for group_id in range(29, 115):
             if group_id in self.functional_smarts:
                 group_info = self.functional_smarts[group_id]
                 # Check if group has test generation data
                 if 'smiles' in group_info and 'mode' in group_info:
+                    if group_id in excluded_timing_groups:
+                        continue
                     available_groups.append(group_id)
         
         print("\n🚀 TIMING PERFORMANCE BENCHMARK WITH GRAPH COMPLEXITY METRICS")
@@ -993,14 +1030,22 @@ class EnhancedPFASBenchmark:
                 }
                 
                 # Generate molecule with random structural features
-                mol = generate_random_mol(
-                    n=chain_length,
-                    functional_groups=functional_group_spec,
-                    perfluorinated=True,
-                    cycle=(random.random() < 0.2),  # 20% chance of cycle
-                    alkene=(random.random() < 0.15),  # 15% chance of alkene
-                    alkyne=(random.random() < 0.1)   # 10% chance of alkyne
-                )
+                if group_id in self.telomer_groups:
+                    telomer_mols = self.generate_fluorotelomer_molecules(group_id, count=1)
+                    if telomer_mols:
+                        smiles = telomer_mols[0]['smiles']
+                        mol = Chem.MolFromSmiles(smiles)
+                    else:
+                        mol = None
+                else:
+                    mol = generate_random_mol(
+                        n=chain_length,
+                        functional_groups=functional_group_spec,
+                        perfluorinated=True,
+                        cycle=(random.random() < 0.2),  # 20% chance of cycle
+                        alkene=(random.random() < 0.15),  # 15% chance of alkene
+                        alkyne=(random.random() < 0.1)   # 10% chance of alkyne
+                    )
                 
                 if mol is not None:
                     smiles = Chem.MolToSmiles(mol)
@@ -1587,7 +1632,7 @@ class EnhancedPFASBenchmark:
         
         return all_results, output_file
     
-    def run_oecd_benchmark(self):
+    def run_oecd_benchmark(self, max_molecules=None):
         """Run benchmark on OECD data using groups 1-28"""
         
         print("\n🚀 OECD PFAS BENCHMARK (Groups 1-28)")
@@ -1601,6 +1646,8 @@ class EnhancedPFASBenchmark:
         try:
             import pandas as pd
             oecd_data = pd.read_csv(oecd_file)
+            if max_molecules:
+                oecd_data = oecd_data.head(max_molecules)
             print(f"📊 Loaded {len(oecd_data)} OECD molecules")
         except Exception as e:
             print(f"❌ Error loading OECD data: {e}")
@@ -1662,7 +1709,26 @@ class EnhancedPFASBenchmark:
 def main():
     """Main function to run enhanced benchmark"""
     
+    def env_int(name, default):
+        value = os.getenv(name)
+        if value is None or value == "":
+            return default
+        try:
+            return int(value)
+        except ValueError:
+            return default
+    
     benchmark = EnhancedPFASBenchmark()
+    
+    # Environment overrides for quick runs
+    replicates = env_int("PFAS_BENCH_REPLICATES", 40)
+    timing_molecules = env_int("PFAS_BENCH_TIMING_MOLECULES", 2500)
+    timing_iterations = env_int("PFAS_BENCH_TIMING_ITERATIONS", 5)
+    nonfluor_count = env_int("PFAS_BENCH_NONFLUOR", 50)
+    complex_count = env_int("PFAS_BENCH_COMPLEX", 50)
+    oecd_limit = env_int("PFAS_BENCH_OECD_LIMIT", 0)
+    if oecd_limit == 0:
+        oecd_limit = None
     
     # Ask user what benchmarks to run
     print("🚀 PFAS Benchmark Suite")
@@ -1678,13 +1744,13 @@ def main():
     
     if choice in ['1', '6', '']:
         print("\nRunning Enhanced Functional Groups Benchmark...")
-        enhanced_results, enhanced_file = benchmark.run_enhanced_benchmark()
+        enhanced_results, enhanced_file = benchmark.run_enhanced_benchmark(replicates)
     else:
         enhanced_results, enhanced_file = None, None
     
     if choice in ['2', '6', '']:
         print("\nRunning OECD Benchmark...")
-        oecd_results, oecd_file = benchmark.run_oecd_benchmark()
+        oecd_results, oecd_file = benchmark.run_oecd_benchmark(oecd_limit)
     else:
         oecd_results, oecd_file = None, None
     
@@ -1695,19 +1761,19 @@ def main():
         reuse = input("⏪ Reuse previous timing results and add more? (y/N): ").strip().lower()
         reuse_previous = reuse in ['y', 'yes']
         
-        timing_results, timing_file = benchmark.run_timing_benchmark(2500, 5, reuse_previous=reuse_previous)  # 2500 molecules, 5 iterations
+        timing_results, timing_file = benchmark.run_timing_benchmark(timing_molecules, timing_iterations, reuse_previous=reuse_previous)
     else:
         timing_results, timing_file = None, None
     
     if choice in ['4', '6', '']:
         print("\nRunning Non-Fluorinated Exclusion Benchmark...")
-        nonfluor_results, nonfluor_file = benchmark.run_non_fluorinated_benchmark(50)
+        nonfluor_results, nonfluor_file = benchmark.run_non_fluorinated_benchmark(nonfluor_count)
     else:
         nonfluor_results, nonfluor_file = None, None
     
     if choice in ['5', '6', '']:
         print("\nRunning Complex Branched PFAS Benchmark...")
-        complex_results, complex_file = benchmark.run_complex_branched_benchmark(50)
+        complex_results, complex_file = benchmark.run_complex_branched_benchmark(complex_count)
     else:
         complex_results, complex_file = None, None
     

@@ -1,0 +1,90 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-07T16:19:34.176285",
+    "source_file": "/home/luc/git/PFASGroups/benchmark/data/pfas_complex_branched_benchmark_20260207_161628.json",
+    "analysis_type": "complex_branched"
+  },
+  "summary": {
+    "total_molecules": 300,
+    "pfasgroups_detected": 300,
+    "atlas_detected": 300,
+    "pfasgroups_correct": 300,
+    "pfasgroups_detection_rate": 100.0,
+    "atlas_detection_rate": 100.0,
+    "pfasgroups_correct_rate": 100.0
+  },
+  "cases": [
+    {
+      "test_name": "highly_branched_carboxylic_acid",
+      "description": "Highly branched perfluorocarboxylic acid",
+      "complexity": "very_high",
+      "molecules": 50,
+      "pfasgroups_detected": 50,
+      "atlas_detected": 50,
+      "pfasgroups_correct": 50,
+      "pfasgroups_rate": 100.0,
+      "atlas_rate": 100.0,
+      "pfasgroups_correct_rate": 100.0
+    },
+    {
+      "test_name": "branched_sulfonic_acid",
+      "description": "Branched perfluorosulfonic acid",
+      "complexity": "high",
+      "molecules": 50,
+      "pfasgroups_detected": 50,
+      "atlas_detected": 50,
+      "pfasgroups_correct": 50,
+      "pfasgroups_rate": 100.0,
+      "atlas_rate": 100.0,
+      "pfasgroups_correct_rate": 100.0
+    },
+    {
+      "test_name": "branched_ether_chain",
+      "description": "Branched perfluoroether",
+      "complexity": "high",
+      "molecules": 50,
+      "pfasgroups_detected": 50,
+      "atlas_detected": 50,
+      "pfasgroups_correct": 50,
+      "pfasgroups_rate": 100.0,
+      "atlas_rate": 100.0,
+      "pfasgroups_correct_rate": 100.0
+    },
+    {
+      "test_name": "multi_functional_branched",
+      "description": "Multi-functional branched PFAS (carboxylic acid + ether + sulfonic acid)",
+      "complexity": "very_high",
+      "molecules": 50,
+      "pfasgroups_detected": 50,
+      "atlas_detected": 50,
+      "pfasgroups_correct": 50,
+      "pfasgroups_rate": 100.0,
+      "atlas_rate": 100.0,
+      "pfasgroups_correct_rate": 100.0
+    },
+    {
+      "test_name": "cyclic_branched",
+      "description": "Cyclic branched perfluorocarboxylic acid",
+      "complexity": "high",
+      "molecules": 50,
+      "pfasgroups_detected": 50,
+      "atlas_detected": 50,
+      "pfasgroups_correct": 50,
+      "pfasgroups_rate": 100.0,
+      "atlas_rate": 100.0,
+      "pfasgroups_correct_rate": 100.0
+    },
+    {
+      "test_name": "aromatic_branched",
+      "description": "Aromatic branched PFAS with carboxylic acid",
+      "complexity": "very_high",
+      "molecules": 50,
+      "pfasgroups_detected": 50,
+      "atlas_detected": 50,
+      "pfasgroups_correct": 50,
+      "pfasgroups_rate": 100.0,
+      "atlas_rate": 100.0,
+      "pfasgroups_correct_rate": 100.0
+    }
+  ]
+}

@@ -23,8 +23,11 @@ def main():
     print("Telomer Detection Validation")
     print("="*60)
     
+    script_dir = Path(__file__).resolve().parent
+    data_dir = script_dir.parent / 'data'
+
     # Input file
-    sdf_file = Path('../data/PubChem_fluorotelomers.sdf')
+    sdf_file = data_dir / 'PubChem_fluorotelomers.sdf'
     
     if not sdf_file.exists():
         print(f"Error: SDF file not found: {sdf_file}")
@@ -133,7 +136,7 @@ def main():
             print(f"  {i:2d}. ID {data['id']:2d}: {data['name']:<45s} ({data['count']:3d} detections)")
     
     # Save results
-    output_file = Path('../data/telomer_validation_results.json')
+    output_file = data_dir / 'telomer_validation_results.json'
     output_data = {
         'test_date': datetime.now().isoformat(),
         'dataset': 'PubChem_fluorotelomers.sdf',

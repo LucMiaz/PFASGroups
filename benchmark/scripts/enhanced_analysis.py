@@ -500,7 +500,7 @@ def create_atlas_classification_flow(single_analysis):
             title="PFAS-Atlas Classification Flow<br><sub>No classification data available</sub>",
             annotations=[{"text": "No PFAS-Atlas classification data found", 
                          "xref": "paper", "yref": "paper", "x": 0.5, "y": 0.5, 
-                         "xanchor": "center", "yanchor": "center", "showarrow": False}]
+                         "xanchor": "center", "yanchor": "middle", "showarrow": False}]
         )
     
     # Build nodes and links for actual Atlas classification flow
@@ -1477,23 +1477,31 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
     timing_heatmap_html = timing_heatmap.to_html(include_plotlyjs=False, div_id="timing-heatmap")
     timing_stats_html = timing_stats.to_html(include_plotlyjs=False, div_id="timing-stats")
     
-    # Save individual visualizations
-    heatmap_comparison.write_image(f"imgs/comparison_heatmap_{timestamp}.png", width=1400, height=500, scale=2)
-    heatmap_comparison.write_image(f"imgs/comparison_heatmap_{timestamp}.svg")
-    heatmap_multi.write_image(f"imgs/multigroup_privilege_heatmap_{timestamp}.png", width=1200, height=600, scale=2)
-    heatmap_multi.write_image(f"imgs/multigroup_privilege_heatmap_{timestamp}.svg")
-    sankey_comparison[0].write_image(f"imgs/atlas_sankey_{timestamp}.png", width=1200, height=600, scale=2)
-    sankey_comparison[0].write_image(f"imgs/atlas_sankey_{timestamp}.svg")
-    sankey_comparison[1].write_image(f"imgs/pfasgroups_sankey_{timestamp}.png", width=1200, height=600, scale=2)
-    sankey_comparison[1].write_image(f"imgs/pfasgroups_sankey_{timestamp}.svg")
-    sankey_comparison[2].write_image(f"imgs/pfasgroups_oecd_sankey_{timestamp}.png", width=1200, height=600, scale=2)
-    sankey_comparison[2].write_image(f"imgs/pfasgroups_oecd_sankey_{timestamp}.svg")
-    sankey_privilege.write_image(f"imgs/privilege_hierarchy_sankey_{timestamp}.png", width=1000, height=600, scale=2)
-    sankey_privilege.write_image(f"imgs/privilege_hierarchy_sankey_{timestamp}.svg")
-    timing_heatmap.write_image(f"imgs/timing_comparison_heatmap_{timestamp}.png", width=1400, height=500, scale=2)
-    timing_heatmap.write_image(f"imgs/timing_comparison_heatmap_{timestamp}.svg")
-    timing_stats.write_image(f"imgs/timing_statistics_{timestamp}.png", width=1200, height=800, scale=2)
-    timing_stats.write_image(f"imgs/timing_statistics_{timestamp}.svg")
+    # Save individual visualizations (skip if kaleido is missing)
+    def safe_write_image(fig, path, **kwargs):
+        try:
+            fig.write_image(path, **kwargs)
+            return True
+        except Exception as e:
+            print(f"⚠️  Skipping image export ({os.path.basename(path)}): {e}")
+            return False
+
+    safe_write_image(heatmap_comparison, f"imgs/comparison_heatmap_{timestamp}.png", width=1400, height=500, scale=2)
+    safe_write_image(heatmap_comparison, f"imgs/comparison_heatmap_{timestamp}.svg")
+    safe_write_image(heatmap_multi, f"imgs/multigroup_privilege_heatmap_{timestamp}.png", width=1200, height=600, scale=2)
+    safe_write_image(heatmap_multi, f"imgs/multigroup_privilege_heatmap_{timestamp}.svg")
+    safe_write_image(sankey_comparison[0], f"imgs/atlas_sankey_{timestamp}.png", width=1200, height=600, scale=2)
+    safe_write_image(sankey_comparison[0], f"imgs/atlas_sankey_{timestamp}.svg")
+    safe_write_image(sankey_comparison[1], f"imgs/pfasgroups_sankey_{timestamp}.png", width=1200, height=600, scale=2)
+    safe_write_image(sankey_comparison[1], f"imgs/pfasgroups_sankey_{timestamp}.svg")
+    safe_write_image(sankey_comparison[2], f"imgs/pfasgroups_oecd_sankey_{timestamp}.png", width=1200, height=600, scale=2)
+    safe_write_image(sankey_comparison[2], f"imgs/pfasgroups_oecd_sankey_{timestamp}.svg")
+    safe_write_image(sankey_privilege, f"imgs/privilege_hierarchy_sankey_{timestamp}.png", width=1000, height=600, scale=2)
+    safe_write_image(sankey_privilege, f"imgs/privilege_hierarchy_sankey_{timestamp}.svg")
+    safe_write_image(timing_heatmap, f"imgs/timing_comparison_heatmap_{timestamp}.png", width=1400, height=500, scale=2)
+    safe_write_image(timing_heatmap, f"imgs/timing_comparison_heatmap_{timestamp}.svg")
+    safe_write_image(timing_stats, f"imgs/timing_statistics_{timestamp}.png", width=1200, height=800, scale=2)
+    safe_write_image(timing_stats, f"imgs/timing_statistics_{timestamp}.svg")
     
     html_content = f"""
 <!DOCTYPE html>

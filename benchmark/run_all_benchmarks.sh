@@ -2,21 +2,27 @@
 # Unified PFAS Benchmark Runner (Linux/macOS)
 # Runs all benchmark types and generates unified HTML report
 # Now includes database integration for the review app
-# Usage: ./run_all_benchmarks.sh [--reuse-timing]
+# Usage: ./run_all_benchmarks.sh [--reuse-timing] [--quick]
 
 # Parse command line arguments
 REUSE_TIMING=false
+QUICK_RUN=false
 for arg in "$@"; do
     case $arg in
         --reuse-timing)
             REUSE_TIMING=true
             shift
             ;;
+        --quick)
+            QUICK_RUN=true
+            shift
+            ;;
         --help)
-            echo "Usage: ./run_all_benchmarks.sh [--reuse-timing]"
+            echo "Usage: ./run_all_benchmarks.sh [--reuse-timing] [--quick]"
             echo ""
             echo "Options:"
             echo "  --reuse-timing    Load and extend previous timing benchmark results"
+            echo "  --quick           Run a reduced-size benchmark for smoke testing"
             echo "  --help           Show this help message"
             exit 0
             ;;
@@ -28,7 +34,33 @@ echo "========================================="
 if [ "$REUSE_TIMING" = true ]; then
     echo "♻️  Reusing previous timing results mode enabled"
 fi
+if [ "$QUICK_RUN" = true ]; then
+    echo "⚡ Quick-run mode enabled (reduced sizes)"
+    export PFAS_BENCH_QUICK=1
+    export PFAS_BENCH_REPLICATES=3
+    export PFAS_BENCH_TIMING_MOLECULES=80
+    export PFAS_BENCH_TIMING_ITERATIONS=2
+    export PFAS_BENCH_NONFLUOR=5
+    export PFAS_BENCH_COMPLEX=5
+    export PFAS_BENCH_OECD_LIMIT=200
+    export PFAS_BENCH_BRANCHED_COMPONENTS=2
+    export PFAS_BENCH_BRANCHED_GROUPS=6
+    export PFAS_BENCH_BRANCHED_DISTANCE_MAX=1
+fi
 echo ""
+
+# Ensure pfasatlas environment is active (mamba/conda)
+if [ -z "$CONDA_DEFAULT_ENV" ] || [ "$CONDA_DEFAULT_ENV" != "pfasatlas" ]; then
+    if command -v mamba >/dev/null 2>&1; then
+        eval "$(mamba shell.bash hook)"
+        mamba activate pfasatlas
+    elif command -v conda >/dev/null 2>&1; then
+        eval "$(conda shell.bash hook)"
+        conda activate pfasatlas
+    else
+        echo "⚠️  mamba/conda not found; please activate 'pfasatlas' manually"
+    fi
+fi
 
 # Check if we're in the right directory
 if [ ! -f "scripts/enhanced_pfas_benchmark.py" ]; then
@@ -140,9 +172,13 @@ echo ""
 
 # Add Test Metadata to JSON files
 echo "🏷️  Adding test metadata to PFAS groups and definitions..."
-python scripts/add_test_metadata.py
-if [ $? -ne 0 ]; then
-    echo "⚠️  Test metadata addition failed (non-critical)"
+if [ -f "scripts/add_test_metadata.py" ]; then
+    python scripts/add_test_metadata.py
+    if [ $? -ne 0 ]; then
+        echo "⚠️  Test metadata addition failed (non-critical)"
+    fi
+else
+    echo "⚠️  add_test_metadata.py not found (non-critical)"
 fi
 echo ""
 
@@ -216,11 +252,15 @@ echo ""
 echo "🧬 Analyzing complex branched structures..."
 COMPLEX_FILE=$(ls data/pfas_complex_branched_benchmark_*.json 2>/dev/null | tail -1)
 if [ -f "$COMPLEX_FILE" ]; then
-    python scripts/analyze_complex.py "$COMPLEX_FILE"
-    if [ $? -eq 0 ]; then
-        echo "✅ Complex branched analysis completed"
+    if [ -f "scripts/analyze_complex.py" ]; then
+        python scripts/analyze_complex.py "$COMPLEX_FILE"
+        if [ $? -eq 0 ]; then
+            echo "✅ Complex branched analysis completed"
+        else
+            echo "⚠️  Complex branched analysis failed"
+        fi
     else
-        echo "⚠️  Complex branched analysis failed"
+        echo "⚠️  analyze_complex.py not found (non-critical)"
     fi
 else
     echo "⚠️  No complex branched benchmark file found"
@@ -289,11 +329,15 @@ echo ""
 
 # Comprehensive Benchmark Analysis
 echo "📊 Generating comprehensive benchmark statistics..."
-python scripts/analyze_benchmarks_simple.py
-if [ $? -eq 0 ]; then
-    echo "✅ Comprehensive benchmark analysis completed"
+if [ -f "scripts/analyze_benchmarks_simple.py" ]; then
+    python scripts/analyze_benchmarks_simple.py
+    if [ $? -eq 0 ]; then
+        echo "✅ Comprehensive benchmark analysis completed"
+    else
+        echo "⚠️  Comprehensive benchmark analysis failed"
+    fi
 else
-    echo "⚠️  Comprehensive benchmark analysis failed"
+    echo "⚠️  analyze_benchmarks_simple.py not found (non-critical)"
 fi
 echo ""
 
@@ -323,16 +367,10 @@ echo ""
 echo "💾 Importing data to Review App database..."
 cd review-app
 
-# Check if database exists and backup if needed
+# Delete existing database if present (fresh schema on import)
 if [ -f "database/pfas_benchmark.db" ]; then
-    echo "📦 Backing up existing database..."
-    BACKUP_NAME="database/pfas_benchmark.db.backup_$(date +%Y%m%d_%H%M%S)"
-    cp database/pfas_benchmark.db "$BACKUP_NAME"
-    echo "✅ Backup created: $BACKUP_NAME"
-    
-    # Clear existing data
-    echo "🗑️  Clearing old data from database..."
-    node -e "const db = require('./database/database'); const d = new db(); d.waitForReady().then(() => { return Promise.all([d.run('DELETE FROM manual_reviews'), d.run('DELETE FROM pfasgroups_results'), d.run('DELETE FROM pfasgroups_results_bycomponent'), d.run('DELETE FROM atlas_results'), d.run('DELETE FROM molecules')]); }).then(() => { console.log('✅ Database cleared'); process.exit(0); });"
+    echo "🗑️  Deleting existing database: database/pfas_benchmark.db"
+    rm -f database/pfas_benchmark.db
 fi
 
 # Import benchmark data
@@ -362,7 +400,12 @@ echo "📊 Database Update Complete!"
 echo "   • Database: review-app/database/pfas_benchmark.db"
 echo "   • Analysis reports: reports"
 echo ""
-echo "📄 Unified Report: html/$(ls html/unified_pfas_benchmark_report_*.html | tail -1 | xargs basename)"
+REPORT_FILE=$(ls reports/unified_pfas_benchmark_report_*.html 2>/dev/null | tail -1)
+if [ -n "$REPORT_FILE" ]; then
+    echo "📄 Unified Report: $REPORT_FILE"
+else
+    echo "📄 Unified Report: reports/ (no report found)"
+fi
 echo "🌐 Open the HTML file in your browser to view detailed results"
 echo "📁 Files organized in: data/ (JSON), html/ (reports), imgs/ (plots)"
 echo ""
