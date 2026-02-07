@@ -21,7 +21,7 @@ The primary function for detecting PFAS groups in molecules from SMILES strings.
 - **bycomponent** (*bool*, optional): Use component-based analysis for cyclic structures (default: False)
 - **output_format** (*str*, optional): Output format - 'list', 'dataframe', or 'csv' (default: 'list')
 - **pfas_groups** (*list*, optional): Custom PFAS group definitions (default: uses built-in groups)
-- **smartsPaths** (*dict*, optional): Custom pathway definitions (default: uses built-in paths)
+- **componentSmartss** (*dict*, optional): Custom pathway definitions (default: uses built-in paths)
 - **formula** (*str*, optional): Pre-computed molecular formula (for optimization)
 - **include_PFAS_definitions** (*bool*, optional): Include PFAS definition checks (default: False)
 
@@ -65,7 +65,7 @@ Parse an RDKit molecule object directly, useful when you already have a molecule
 - **bycomponent** (*bool*, optional): Use component-based analysis (default: False)
 - **formula** (*str*, optional): Pre-computed molecular formula
 - **pfas_groups** (*list*, optional): Custom PFAS group definitions
-- **smartsPaths** (*dict*, optional): Custom pathway definitions
+- **componentSmartss** (*dict*, optional): Custom pathway definitions
 
 **Returns:**
 
@@ -329,7 +329,7 @@ Visualize PFAS group assignments on molecular structures with color-coded highli
 - **ncols** (*int*, optional): Number of columns in grid layout (default: 2)
 - **addAtomIndices** (*bool*, optional): Add atom index numbers to visualization (default: False)
 - **pfas_groups** (*list*, optional): Custom PFAS group definitions
-- **smartsPaths** (*dict*, optional): Custom pathway definitions
+- **componentSmartss** (*dict*, optional): Custom pathway definitions
 
 **Returns:**
 
@@ -398,10 +398,10 @@ List of PFASGroup objects
    # Load custom groups
    custom_groups = get_PFASGroups(custom_groups_file='my_groups.json')
 
-get_smartsPaths
+get_componentSmartss
 ~~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.getter.get_smartsPaths
+.. autofunction:: PFASgroups.getter.get_componentSmartss
 
 **Description:**
 
@@ -419,20 +419,20 @@ Dictionary with keys: 'Perfluoroalkyl', 'Polyfluoroalkyl', 'Polyfluoro', 'Polyfl
 
 .. code-block:: python
 
-   from PFASgroups import get_smartsPaths
+   from PFASgroups import get_componentSmartss
    
    # Get default paths
-   paths = get_smartsPaths()
+   paths = get_componentSmartss()
    print(paths.keys())  # dict_keys(['Perfluoroalkyl', 'Polyfluoroalkyl', ...])
    
    # Inspect perfluoroalkyl pathway
    print(paths['Perfluoroalkyl'])
-   # Output: {'chain': <rdkit.Chem.rdchem.Mol>, 'end': <rdkit.Chem.rdchem.Mol>}
+   # Output: {'component': <rdkit.Chem.rdchem.Mol>, 'end': <rdkit.Chem.rdchem.Mol>}
 
-compile_smartsPath
+compile_componentSmarts
 ~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.parser.compile_smartsPath
+.. autofunction:: PFASgroups.parser.compile_componentSmarts
 
 **Description:**
 
@@ -445,27 +445,27 @@ Compile SMARTS patterns for custom pathway definitions.
 
 **Returns:**
 
-Dictionary: ``{'chain': <Mol>, 'end': <Mol>}``
+Dictionary: ``{'component': <Mol>, 'end': <Mol>}``
 
 **Examples:**
 
 .. code-block:: python
 
-   from PFASgroups import compile_smartsPath
+   from PFASgroups import compile_componentSmarts
    
    # Create perchlorinated pathway (analogous to perfluorinated)
-   perchlorinated = compile_smartsPath(
+   perchlorinated = compile_componentSmarts(
        "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # Chain segment
        "[C;X4](Cl)(Cl)Cl"  # Terminal
    )
    
    print(perchlorinated)
-   # {'chain': <rdkit.Chem.rdchem.Mol>, 'end': <rdkit.Chem.rdchem.Mol>}
+   # {'component': <rdkit.Chem.rdchem.Mol>, 'end': <rdkit.Chem.rdchem.Mol>}
 
-compile_smartsPaths
+compile_componentSmartss
 ~~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: PFASgroups.parser.compile_smartsPaths
+.. autofunction:: PFASgroups.parser.compile_componentSmartss
 
 **Description:**
 
@@ -473,7 +473,7 @@ Compile multiple pathway definitions from a dictionary.
 
 **Parameters:**
 
-- **paths_dict** (*dict*): Dictionary with pathway names as keys and {'chain': str, 'end': str} as values
+- **paths_dict** (*dict*): Dictionary with pathway names as keys and {'component': str, 'end': str} as values
 
 **Returns:**
 
@@ -483,22 +483,22 @@ Dictionary of compiled pathways
 
 .. code-block:: python
 
-   from PFASgroups import compile_smartsPaths
+   from PFASgroups import compile_componentSmartss
    
    # Define custom pathways
    custom_paths = {
        'Perchlorinated': {
-           'chain': '[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)',
+           'component': '[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)',
            'end': '[C;X4](Cl)(Cl)Cl'
        },
        'Perbrominated': {
-           'chain': '[C;X4](Br)(Br)!@!=!#[C;X4](Br)(Br)',
+           'component': '[C;X4](Br)(Br)!@!=!#[C;X4](Br)(Br)',
            'end': '[C;X4](Br)(Br)Br'
        }
    }
    
    # Compile all pathways
-   compiled_paths = compile_smartsPaths(custom_paths)
+   compiled_paths = compile_componentSmartss(custom_paths)
    print(compiled_paths.keys())
 
 Internal Functions

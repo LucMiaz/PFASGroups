@@ -193,16 +193,16 @@
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#get-smartspaths">get_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-componentSmartss">get_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.getter.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#compile-smartspath">compile_smartsPath</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-componentSmarts">compile_componentSmarts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.parser.compile_componentSmarts"><code class="docutils literal notranslate"><span class="pre">compile_componentSmarts()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#compile-smartspaths">compile_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-componentSmartss">compile_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.parser.compile_componentSmartss"><code class="docutils literal notranslate"><span class="pre">compile_componentSmartss()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -217,7 +217,7 @@
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.smartsPath"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smartsPath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.componentSmarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
@@ -484,7 +484,7 @@
 <li><p><strong>bycomponent</strong> (<em>bool</em>, optional): Use component-based analysis for cyclic structures (default: False)</p></li>
 <li><p><strong>output_format</strong> (<em>str</em>, optional): Output format - ‘list’, ‘dataframe’, or ‘csv’ (default: ‘list’)</p></li>
 <li><p><strong>pfas_groups</strong> (<em>list</em>, optional): Custom PFAS group definitions (default: uses built-in groups)</p></li>
-<li><p><strong>smartsPaths</strong> (<em>dict</em>, optional): Custom pathway definitions (default: uses built-in paths)</p></li>
+<li><p><strong>componentSmartss</strong> (<em>dict</em>, optional): Custom pathway definitions (default: uses built-in paths)</p></li>
 <li><p><strong>formula</strong> (<em>str</em>, optional): Pre-computed molecular formula (for optimization)</p></li>
 <li><p><strong>include_PFAS_definitions</strong> (<em>bool</em>, optional): Include PFAS definition checks (default: False)</p></li>
 </ul>
@@ -527,7 +527,7 @@
 <li><p><strong>bycomponent</strong> (<em>bool</em>, optional): Use component-based analysis (default: False)</p></li>
 <li><p><strong>formula</strong> (<em>str</em>, optional): Pre-computed molecular formula</p></li>
 <li><p><strong>pfas_groups</strong> (<em>list</em>, optional): Custom PFAS group definitions</p></li>
-<li><p><strong>smartsPaths</strong> (<em>dict</em>, optional): Custom pathway definitions</p></li>
+<li><p><strong>componentSmartss</strong> (<em>dict</em>, optional): Custom pathway definitions</p></li>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>List of tuples: <code class="docutils literal notranslate"><span class="pre">[(PFASGroup,</span> <span class="pre">match_count,</span> <span class="pre">chain_lengths,</span> <span class="pre">matched_chains),</span> <span class="pre">...]</span></code></p>
@@ -786,7 +786,7 @@ generic chemical features. This enables:</p>
 <li><p><strong>ncols</strong> (<em>int</em>, optional): Number of columns in grid layout (default: 2)</p></li>
 <li><p><strong>addAtomIndices</strong> (<em>bool</em>, optional): Add atom index numbers to visualization (default: False)</p></li>
 <li><p><strong>pfas_groups</strong> (<em>list</em>, optional): Custom PFAS group definitions</p></li>
-<li><p><strong>smartsPaths</strong> (<em>dict</em>, optional): Custom pathway definitions</p></li>
+<li><p><strong>componentSmartss</strong> (<em>dict</em>, optional): Custom pathway definitions</p></li>
 </ul>
 <p><strong>Returns:</strong></p>
 <p>Image object (in Jupyter) or None</p>
@@ -849,11 +849,11 @@ generic chemical features. This enables:</p>
 </pre></div>
 </div>
 </section>
-<section id="get-smartspaths">
-<h3>get_smartsPaths<a class="headerlink" href="#get-smartspaths" title="Link to this heading"></a></h3>
+<section id="get-componentSmartss">
+<h3>get_componentSmartss<a class="headerlink" href="#get-componentSmartss" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="PFASgroups.getter.get_smartsPaths">
-<span class="sig-prename descclassname"><span class="pre">PFASgroups.getter.</span></span><span class="sig-name descname"><span class="pre">get_smartsPaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASgroups.getter.get_smartsPaths" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASgroups.getter.get_componentSmartss">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.getter.</span></span><span class="sig-name descname"><span class="pre">get_componentSmartss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASgroups.getter.get_componentSmartss" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <p><strong>Description:</strong></p>
@@ -865,10 +865,10 @@ generic chemical features. This enables:</p>
 <p><strong>Returns:</strong></p>
 <p>Dictionary with keys: ‘Perfluoroalkyl’, ‘Polyfluoroalkyl’, ‘Polyfluoro’, ‘Polyfluorobr’</p>
 <p><strong>Examples:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_smartsPaths</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_componentSmartss</span>
 
 <span class="c1"># Get default paths</span>
-<span class="n">paths</span> <span class="o">=</span> <span class="n">get_smartsPaths</span><span class="p">()</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="n">get_componentSmartss</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">paths</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>  <span class="c1"># dict_keys([&#39;Perfluoroalkyl&#39;, &#39;Polyfluoroalkyl&#39;, ...])</span>
 
 <span class="c1"># Inspect perfluoroalkyl pathway</span>
@@ -877,11 +877,11 @@ generic chemical features. This enables:</p>
 </pre></div>
 </div>
 </section>
-<section id="compile-smartspath">
-<h3>compile_smartsPath<a class="headerlink" href="#compile-smartspath" title="Link to this heading"></a></h3>
+<section id="compile-componentSmarts">
+<h3>compile_componentSmarts<a class="headerlink" href="#compile-componentSmarts" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="PFASgroups.parser.compile_smartsPath">
-<span class="sig-prename descclassname"><span class="pre">PFASgroups.parser.</span></span><span class="sig-name descname"><span class="pre">compile_smartsPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chain_smarts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_smarts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/parser.html#compile_smartsPath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.parser.compile_smartsPath" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASgroups.parser.compile_componentSmarts">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.parser.</span></span><span class="sig-name descname"><span class="pre">compile_componentSmarts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chain_smarts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_smarts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/parser.html#compile_componentSmarts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.parser.compile_componentSmarts" title="Link to this definition"></a></dt>
 <dd><p>Compile a pair of SMARTS patterns into a ready-to-use path definition.</p>
 <p>This function preprocesses SMARTS patterns for chain and end groups,
 preparing them for use in PFAS parsing functions.</p>
@@ -900,7 +900,7 @@ preparing them for use in PFAS parsing functions.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span> <span class="o">=</span> <span class="n">compile_smartsPath</span><span class="p">(</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span> <span class="o">=</span> <span class="n">compile_componentSmarts</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s2">&quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s2">&quot;[C;X4](Cl)(Cl)Cl&quot;</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -917,12 +917,12 @@ preparing them for use in PFAS parsing functions.</p>
 <li><p><strong>end_smarts</strong> (<em>str</em>): SMARTS pattern for chain terminals</p></li>
 </ul>
 <p><strong>Returns:</strong></p>
-<p>Dictionary: <code class="docutils literal notranslate"><span class="pre">{'chain':</span> <span class="pre">&lt;Mol&gt;,</span> <span class="pre">'end':</span> <span class="pre">&lt;Mol&gt;}</span></code></p>
+<p>Dictionary: <code class="docutils literal notranslate"><span class="pre">{'component':</span> <span class="pre">&lt;Mol&gt;,</span> <span class="pre">'end':</span> <span class="pre">&lt;Mol&gt;}</span></code></p>
 <p><strong>Examples:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_smartsPath</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_componentSmarts</span>
 
 <span class="c1"># Create perchlorinated pathway (analogous to perfluorinated)</span>
-<span class="n">perchlorinated</span> <span class="o">=</span> <span class="n">compile_smartsPath</span><span class="p">(</span>
+<span class="n">perchlorinated</span> <span class="o">=</span> <span class="n">compile_componentSmarts</span><span class="p">(</span>
     <span class="s2">&quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;</span><span class="p">,</span>  <span class="c1"># Chain segment</span>
     <span class="s2">&quot;[C;X4](Cl)(Cl)Cl&quot;</span>  <span class="c1"># Terminal</span>
 <span class="p">)</span>
@@ -932,11 +932,11 @@ preparing them for use in PFAS parsing functions.</p>
 </pre></div>
 </div>
 </section>
-<section id="compile-smartspaths">
-<h3>compile_smartsPaths<a class="headerlink" href="#compile-smartspaths" title="Link to this heading"></a></h3>
+<section id="compile-componentSmartss">
+<h3>compile_componentSmartss<a class="headerlink" href="#compile-componentSmartss" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="PFASgroups.parser.compile_smartsPaths">
-<span class="sig-prename descclassname"><span class="pre">PFASgroups.parser.</span></span><span class="sig-name descname"><span class="pre">compile_smartsPaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/parser.html#compile_smartsPaths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.parser.compile_smartsPaths" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASgroups.parser.compile_componentSmartss">
+<span class="sig-prename descclassname"><span class="pre">PFASgroups.parser.</span></span><span class="sig-name descname"><span class="pre">compile_componentSmartss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASgroups/parser.html#compile_componentSmartss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASgroups.parser.compile_componentSmartss" title="Link to this definition"></a></dt>
 <dd><p>Compile multiple SMARTS path definitions from a dictionary.</p>
 <p>This function takes a dictionary of path definitions (with ‘chain’ and ‘end’ keys)
 and preprocesses them for use in PFAS parsing functions.</p>
@@ -969,8 +969,8 @@ and preprocesses them for use in PFAS parsing functions.</p>
 <span class="gp">... </span>        <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="s1">&#39;[C;X4]([F,Cl])([F,Cl])[F,Cl]&#39;</span>
 <span class="gp">... </span>    <span class="p">}</span>
 <span class="gp">... </span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compiled</span> <span class="o">=</span> <span class="n">compile_smartsPaths</span><span class="p">(</span><span class="n">custom_paths</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">smartsPaths</span><span class="o">=</span><span class="n">compiled</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compiled</span> <span class="o">=</span> <span class="n">compile_componentSmartss</span><span class="p">(</span><span class="n">custom_paths</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">componentSmartss</span><span class="o">=</span><span class="n">compiled</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -984,7 +984,7 @@ and preprocesses them for use in PFAS parsing functions.</p>
 <p><strong>Returns:</strong></p>
 <p>Dictionary of compiled pathways</p>
 <p><strong>Examples:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_smartsPaths</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_componentSmartss</span>
 
 <span class="c1"># Define custom pathways</span>
 <span class="n">custom_paths</span> <span class="o">=</span> <span class="p">{</span>
@@ -999,7 +999,7 @@ and preprocesses them for use in PFAS parsing functions.</p>
 <span class="p">}</span>
 
 <span class="c1"># Compile all pathways</span>
-<span class="n">compiled_paths</span> <span class="o">=</span> <span class="n">compile_smartsPaths</span><span class="p">(</span><span class="n">custom_paths</span><span class="p">)</span>
+<span class="n">compiled_paths</span> <span class="o">=</span> <span class="n">compile_componentSmartss</span><span class="p">(</span><span class="n">custom_paths</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">compiled_paths</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </pre></div>
 </div>

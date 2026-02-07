@@ -23,8 +23,8 @@ class PFASGroup():
         Human-readable group name (e.g., "Perfluoroalkyl carboxylic acid")
     smarts : Chem.Mol or None
         SMARTS patterns (compiled RDKit molecule) for functional group detection.
-        None if group is defined by smartsPath alone.
-    smartsPath : str or None
+        None if group is defined by componentSmarts alone.
+    componentSmarts : str or None
         Type of fluorinated component to search:
         - 'Perfluoroalkyl': Fully fluorinated carbon chains
         - 'Polyfluoroalkyl': Partially fluorinated carbon chains  
@@ -54,7 +54,7 @@ class PFASGroup():
     ...     id=1,
     ...     name="Perfluoroalkyl carboxylic acid",
     ...     smarts={"C(=O)O":1},  # Carboxylic acid group
-    ...     smartsPath="Perfluoroalkyl",
+    ...     componentSmarts="Perfluoroalkyl",
     ...     constraints={"only": ["C", "F", "O", "H"]},
     ...     max_dist_from_CF=0,
     ...     linker_smarts=None
@@ -78,7 +78,7 @@ class PFASGroup():
             self.smarts_str = None
             self.smarts_count = None
         self.smarts = [] if self.smarts_str else None
-        self.smartsPath = kwargs.get('smartsPath',None)
+        self.componentSmarts = kwargs.get('componentSmarts',None)
         self.max_dist_from_CF = kwargs.get('max_dist_from_CF', 0)
         # Compile linker_smarts pattern if provided
         linker_smarts_str = kwargs.get('linker_smarts', None)
@@ -428,8 +428,8 @@ class PFASGroup():
         
         Notes
         -----
-        - Matches are determined based on smartsPath and max_dist_from_CF attributes.
-        - If smartsPath is None, all components are considered.
+        - Matches are determined based on componentSmarts and max_dist_from_CF attributes.
+        - If componentSmarts is None, all components are considered.
         - max_dist_from_CF allows extending the search radius for functional groups.
         """
         if not self.find_matched_atoms(mol):
@@ -438,8 +438,8 @@ class PFASGroup():
         # Clear component-specific extra atoms list for this matching attempt
         self.component_specific_extra_atoms = []
         
-        if self.smartsPath is None:
-            # If no smartsPath specified, only check alkyl components (not cyclic)
+        if self.componentSmarts is None:
+            # If no componentSmarts specified, only check alkyl components (not cyclic)
             # This ensures functional groups like carboxylic acid (group 33) are only
             # detected when attached to perfluoroalkyl or polyfluoroalkyl chains,
             # not when attached directly to cyclic structures
@@ -450,27 +450,27 @@ class PFASGroup():
             components = all_components
         else:
             # Get components for the specified path type, fallback to Polyfluoroalkyl if not found
-            components = component_solver.get(self.smartsPath, max_dist = self.max_dist_from_CF, default = component_solver.get("Polyfluoroalkyl", max_dist = self.max_dist_from_CF, default=[]))
+            components = component_solver.get(self.componentSmarts, max_dist = self.max_dist_from_CF, default = component_solver.get("Polyfluoroalkyl", max_dist = self.max_dist_from_CF, default=[]))
         
-        if self.smartsPath is not None:
-            smartsPaths = [self.smartsPath]
+        if self.componentSmarts is not None:
+            componentSmartss = [self.componentSmarts]
         else:
-            smartsPaths = component_solver.smartsPaths.keys()
+            componentSmartss = component_solver.componentSmartss.keys()
         
         # Filter components connected to the smarts and get augmented versions
         augmented_matched_components = []
-        for _smartsPath in smartsPaths:
-            extended_components = component_solver.get(_smartsPath, self.max_dist_from_CF, [])
+        for _componentSmarts in componentSmartss:
+            extended_components = component_solver.get(_componentSmarts, self.max_dist_from_CF, [])
             for i, comp in enumerate(extended_components):
                 # Check if this component is connected to SMARTS matches
                 if self.component_satisfies_all_smarts(comp):
                     augmented = component_solver.get_augmented_component(
-                        _smartsPath, self.max_dist_from_CF, i, self.subset, self.linker_smarts
+                        _componentSmarts, self.max_dist_from_CF, i, self.subset, self.linker_smarts
                     )
                     # Accept augmented component if valid (linker validation already done in get_augmented_component)
                     if augmented is not None and len(augmented) > 0:
                         augmented_matched_components.append(
-                        component_solver.get_matched_component_dict(augmented, self.subset, _smartsPath, self, comp_id = i)
+                        component_solver.get_matched_component_dict(augmented, self.subset, _componentSmarts, self, comp_id = i)
                         )
         
         if len(augmented_matched_components) == 0:
@@ -514,16 +514,16 @@ class PFASGroup():
             # Create molecular graph once for this fragment
             G = mol_to_nx(mol)
             kwargs['G'] = G
-            if self.smartsPath =='cyclic':
+            if self.componentSmarts =='cyclic':
                 # treat cyclic groups separately
                 # Use first SMARTS pattern for cyclic
                 match_count, component_sizes, matched1_len, matched_components = self.find_aryl_components(mol, component_solver=component_solver, **kwargs)
             elif self.smarts is not None and len(self.smarts) > 0:
                 # Handle groups with SMARTS patterns
                 match_count, component_sizes, matched1_len, matched_components = self.find_alkyl_components(mol, component_solver, **kwargs)
-            elif self.smartsPath is not None:
-                # treat cases with only smartsPath defined (no SMARTS patterns), find all components of that path type
-                path_components = component_solver.get(self.smartsPath, max_dist = self.max_dist_from_CF, default = component_solver.get("Polyfluoroalkyl", max_dist = self.max_dist_from_CF, default=[]))
+            elif self.componentSmarts is not None:
+                # treat cases with only componentSmarts defined (no SMARTS patterns), find all components of that path type
+                path_components = component_solver.get(self.componentSmarts, max_dist = self.max_dist_from_CF, default = component_solver.get("Polyfluoroalkyl", max_dist = self.max_dist_from_CF, default=[]))
                 match_count = len(path_components)
                 component_sizes = [len(x) for x in path_components]
                 matched1_len = len(path_components)  # Set matched1_len to enable group matching
@@ -531,7 +531,7 @@ class PFASGroup():
                 for comp in path_components:
                     # Use get_matched_component_dict with no SMARTS matches
                     matched_components.append(
-                        component_solver.get_matched_component_dict(comp, None, self.smartsPath, self)
+                        component_solver.get_matched_component_dict(comp, None, self.componentSmarts, self)
                     )
             else:
                 # treat cases with no SMARTS patterns, just formula constraints

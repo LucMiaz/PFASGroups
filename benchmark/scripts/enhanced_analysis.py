@@ -1647,7 +1647,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
                 Large-scale systematic evaluation with {total_single_molecules + total_multi_molecules} molecules<br>
                 Analysis Date: {datetime.now().strftime('%B %d, %Y at %H:%M')}
             </p>
-            <p>Target: PFAS functional groups 29-59 (excluding groups 49 and 50 which are smartsPath-only) | Enhanced dataset sizes | Detailed privilege analysis</p>
+            <p>Target: PFAS functional groups 29-59 (excluding groups 49 and 50 which are componentSmarts-only) | Enhanced dataset sizes | Detailed privilege analysis</p>
         </div>
 
         <div class="summary-grid">

@@ -22,7 +22,7 @@ parse_smiles
    :type bycomponent: bool, optional
    :param output_format: Output format - 'list', 'dataframe', or 'csv'
    :type output_format: str, optional
-   :param kwargs: Additional parameters (pfas_groups, smartsPaths, etc.)
+   :param kwargs: Additional parameters (pfas_groups, componentSmartss, etc.)
    :returns: Parsed results in specified format
    :rtype: list, pandas.DataFrame, or str
 
@@ -52,13 +52,13 @@ parse_groups_in_mol
    :type mol: rdkit.Chem.Mol
    :param bycomponent: Whether to use component-based analysis
    :type bycomponent: bool, optional
-   :param kwargs: Additional parameters (formula, pfas_groups, smartsPaths, etc.)
+   :param kwargs: Additional parameters (formula, pfas_groups, componentSmartss, etc.)
    :returns: List of (PFASGroup, match_count, chain_lengths, matched_chains) tuples
    :rtype: list[tuple]
 
    **Processing Logic:**
 
-   1. **Cyclic groups** (smartsPath='cyclic'): Search for connected component matching smarts1
+   1. **Cyclic groups** (componentSmarts='cyclic'): Search for connected component matching smarts1
    2. **Both SMARTS defined**: Find shortest path between pairs of matches
    3. **Only smarts1, no constraints**: Use default smarts2 for each pathway type
    4. **Only smarts1 with constraints**: Substructure match with component analysis
@@ -251,10 +251,10 @@ plot_pfasgroups
 Configuration Functions
 -----------------------
 
-get_smartsPaths
+get_componentSmartss
 ^^^^^^^^^^^^^^^
 
-.. py:function:: get_smartsPaths(**kwargs)
+.. py:function:: get_componentSmartss(**kwargs)
 
    Get the default pathway SMARTS definitions.
 
@@ -294,10 +294,10 @@ get_PFASDefinitions
    :returns: List of PFASDefinition objects
    :rtype: list[PFASDefinition]
 
-compile_smartsPath
+compile_componentSmarts
 ^^^^^^^^^^^^^^^^^^
 
-.. py:function:: compile_smartsPath(chain_smarts, end_smarts)
+.. py:function:: compile_componentSmarts(chain_smarts, end_smarts)
 
    Compile a pair of SMARTS patterns into a ready-to-use path definition.
 
@@ -312,22 +312,22 @@ compile_smartsPath
 
    .. code-block:: python
 
-      from PFASgroups import compile_smartsPath, get_smartsPaths
+      from PFASgroups import compile_componentSmarts, get_componentSmartss
 
-      paths = get_smartsPaths()
-      paths['Perchlorinated'] = compile_smartsPath(
+      paths = get_componentSmartss()
+      paths['Perchlorinated'] = compile_componentSmarts(
           "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
           "[C;X4](Cl)(Cl)Cl"
       )
 
-compile_smartsPaths
+compile_componentSmartss
 ^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: compile_smartsPaths(paths_dict)
+.. py:function:: compile_componentSmartss(paths_dict)
 
    Compile multiple SMARTS path definitions from a dictionary.
 
-   :param paths_dict: Dictionary with 'chain' and 'end' keys for each pathway
+   :param paths_dict: Dictionary with 'component' and 'end' keys for each pathway
    :type paths_dict: dict
    :returns: Dictionary mapping path names to [chain_mol, end_mol] pairs
    :rtype: dict

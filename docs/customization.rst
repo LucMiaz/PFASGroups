@@ -23,7 +23,7 @@ Define a completely new PFAS group:
        alias="PFANs",
        smarts1=Chem.MolFromSmarts("[C]-[O]-[N+](=O)[O-]"),
        smarts2=None,  # Optional secondary pattern
-       smartsPath="Perfluoroalkyl",  # Require perfluorinated chain
+       componentSmarts="Perfluoroalkyl",  # Require perfluorinated chain
        constraints={
            "eq": {"N": 1, "O": 3},  # Exactly 1 N and 3 O
            "gte": {"F": 1},  # At least 1 fluorine
@@ -73,14 +73,14 @@ Understanding Atom Reference Requirements
    When defining custom PFAS groups, the SMARTS pattern must match an atom that satisfies 
    the component criteria. This is crucial for non-telomer groups:
 
-   **Non-Telomer Groups** (``smartsPath`` without ``linker_smarts``):
+   **Non-Telomer Groups** (``componentSmarts`` without ``linker_smarts``):
    
    - The matched atom must be part of or directly connected to the fluorinated component
    - The matched atom should be a carbon that is per- or polyfluorinated, OR
    - The matched atom must be within ``max_dist_from_CF`` distance from a C-F carbon
    - Example: ``[C$(C(=O)O)]`` where ``C`` is bonded to ``CF2`` groups
    
-   **Telomer Groups** (``smartsPath`` with ``linker_smarts``):
+   **Telomer Groups** (``componentSmarts`` with ``linker_smarts``):
    
    - These groups explicitly allow non-fluorinated linkers (e.g., ``[CH2X4]``)
    - The functional group can be separated from the perfluorinated chain
@@ -100,7 +100,7 @@ Understanding Atom Reference Requirements
        id=100,
        name="My carboxylic acid",
        smarts1=Chem.MolFromSmarts("[C$(C(=O)[OH1,O-])]"),  # Matches the C=O carbon
-       smartsPath="Perfluoroalkyl",
+       componentSmarts="Perfluoroalkyl",
        max_dist_from_CF=0  # Must be directly on fluorinated carbon
    )
 
@@ -113,7 +113,7 @@ Understanding Atom Reference Requirements
        id=101,
        name="My carboxylic acid",
        smarts1=Chem.MolFromSmarts("[OH1]"),  # Matches the O-H oxygen
-       smartsPath="Perfluoroalkyl",
+       componentSmarts="Perfluoroalkyl",
        max_dist_from_CF=0  # The oxygen is 2 bonds away from the CF carbon!
    )
    # This won't detect most carboxylic acids because the matched atom (O)
@@ -135,7 +135,7 @@ Store custom groups in a JSON file:
        "alias": "PFANs",
        "smarts1": "[C]-[O]-[N+](=O)[O-]",
        "smarts2": null,
-       "smartsPath": "Perfluoroalkyl",
+       "componentSmarts": "Perfluoroalkyl",
        "constraints": {
          "eq": {"N": 1, "O": 3},
          "gte": {"F": 1},
@@ -148,7 +148,7 @@ Store custom groups in a JSON file:
        "name": "Perfluoroalkyl thiols",
        "alias": "PFATs",
        "smarts1": "[C]-[SH1]",
-       "smartsPath": "Perfluoroalkyl",
+       "componentSmarts": "Perfluoroalkyl",
        "constraints": {
          "eq": {"S": 1},
          "gte": {"F": 1}
@@ -233,19 +233,19 @@ Create custom fluorinated pathways:
 
 .. code-block:: python
 
-   from PFASgroups import compile_smartsPath, get_smartsPaths, parse_smiles
+   from PFASgroups import compile_componentSmarts, get_componentSmartss, parse_smiles
    
    # Get default pathways
-   paths = get_smartsPaths()
+   paths = get_componentSmartss()
    
    # Add perchlorinated pathway (Cl instead of F)
-   paths['Perchlorinated'] = compile_smartsPath(
+   paths['Perchlorinated'] = compile_componentSmarts(
        "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # Chain segment
        "[C;X4](Cl)(Cl)Cl"  # Terminal CCl3
    )
    
    # Add perbrominated pathway
-   paths['Perbrominated'] = compile_smartsPath(
+   paths['Perbrominated'] = compile_componentSmarts(
        "[C;X4](Br)(Br)!@!=!#[C;X4](Br)(Br)",
        "[C;X4](Br)(Br)Br"
    )
@@ -258,7 +258,7 @@ Create custom fluorinated pathways:
        id=200,
        name="Perchlorinated carboxylic acids",
        smarts1=Chem.MolFromSmarts("[#6$([#6][#6](=O)([OH1,O-]))]"),
-       smartsPath="Perchlorinated",
+       componentSmarts="Perchlorinated",
        constraints={"eq": {"O": 2}, "gte": {"Cl": 1}}
    )
    
@@ -267,23 +267,23 @@ Create custom fluorinated pathways:
    results = parse_smiles(
        smiles,
        pfas_groups=[chlorinated_acid],
-       smartsPaths=paths
+       componentSmartss=paths
    )
 
 Loading Pathways from JSON
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**fpaths.json:**
+**component_smartss.json:**
 
 .. code-block:: json
 
    {
      "Perfluoroalkyl": {
-       "chain": "[C;X4;H0](F)(F)!@!=!#[C;X4;H0](F)(F)",
+       "component": "[C;X4;H0](F)(F)!@!=!#[C;X4;H0](F)(F)",
        "end": "[C;X4;H0](F)(F)F"
      },
      "Perchlorinated": {
-       "chain": "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
+       "component": "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
        "end": "[C;X4](Cl)(Cl)Cl"
      }
    }
@@ -292,17 +292,17 @@ Loading Pathways from JSON
 
 .. code-block:: python
 
-   from PFASgroups import compile_smartsPaths, parse_smiles
+   from PFASgroups import compile_componentSmartss, parse_smiles
    import json
    
    # Load custom pathways
-   with open('fpaths.json', 'r') as f:
+   with open('component_smarts.json', 'r') as f:
        paths_dict = json.load(f)
    
-   paths = compile_smartsPaths(paths_dict)
+   paths = compile_componentSmartss(paths_dict)
    
    # Use in parsing
-   results = parse_smiles(smiles, smartsPaths=paths)
+   results = parse_smiles(smiles, componentSmartss=paths)
 
 SMARTS Pattern Guide
 ~~~~~~~~~~~~~~~~~~~~
@@ -423,14 +423,14 @@ Use custom groups, pathways, and definitions together:
 
    from PFASgroups import (
        PFASGroup, PFASDefinition,
-       compile_smartsPath, get_PFASGroups,
+       compile_componentSmarts, get_PFASGroups,
        parse_smiles
    )
    from rdkit import Chem
    
    # 1. Custom pathway
    paths = {
-       'PartiallyFluorinated': compile_smartsPath(
+       'PartiallyFluorinated': compile_componentSmarts(
            "[C;X4](F)!@!=!#[C;X4]",  # One F per carbon
            "[C;X4](F)F"  # Terminal
        )
@@ -441,7 +441,7 @@ Use custom groups, pathways, and definitions together:
        id=300,
        name="Partially fluorinated carboxylic acids",
        smarts1=Chem.MolFromSmarts("[C]-[C](=O)O"),
-       smartsPath="PartiallyFluorinated",
+       componentSmarts="PartiallyFluorinated",
        constraints={"eq": {"O": 2}, "gte": {"F": 1}}
    )
    
@@ -460,7 +460,7 @@ Use custom groups, pathways, and definitions together:
    results = parse_smiles(
        smiles,
        pfas_groups=[partial_f_acid],
-       smartsPaths=paths
+       componentSmartss=paths
    )
    
    mol = Chem.MolFromSmiles(smiles)
@@ -477,7 +477,7 @@ Manage multiple configuration sets:
 .. code-block:: python
 
    import json
-   from PFASgroups import compile_smartsPaths, get_PFASGroups
+   from PFASgroups import compile_componentSmartss, get_PFASGroups
    
    class PFASConfig:
        """Manage PFAS analysis configuration."""
@@ -497,7 +497,7 @@ Manage multiple configuration sets:
            """Load pathways from JSON file."""
            with open(json_file, 'r') as f:
                paths_dict = json.load(f)
-           self.paths = compile_smartsPaths(paths_dict)
+           self.paths = compile_componentSmartss(paths_dict)
            return self
        
        def save_config(self, output_file):
@@ -516,7 +516,7 @@ Manage multiple configuration sets:
            return parse_smiles(
                smiles,
                pfas_groups=self.groups,
-               smartsPaths=self.paths
+               componentSmartss=self.paths
            )
    
    # Use it
@@ -563,7 +563,7 @@ Validate custom PFAS groups:
        id=100,
        name="Test Group",
        smarts1=Chem.MolFromSmarts("[C](F)(F)F"),
-       smartsPath="Perfluoroalkyl",
+       componentSmarts="Perfluoroalkyl",
        constraints={"gte": {"F": 3}}
    )
    
@@ -663,7 +663,7 @@ Document your custom groups:
        name="My Custom Group",
        alias="MCG",
        smarts1=pattern,
-       smartsPath="Perfluoroalkyl",
+       componentSmarts="Perfluoroalkyl",
        constraints=constraints,
        # Add description in comments
        # Purpose: Detect specific fluorinated compounds

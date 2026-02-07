@@ -170,16 +170,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-smartspaths">get_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-componentSmartss">get_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.getter.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspath">compile_smartsPath</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-componentSmarts">compile_componentSmarts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_componentSmarts"><code class="docutils literal notranslate"><span class="pre">compile_componentSmarts()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-smartspaths">compile_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#compile-componentSmartss">compile_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASgroups.parser.compile_componentSmartss"><code class="docutils literal notranslate"><span class="pre">compile_componentSmartss()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -194,7 +194,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smartsPath"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smartsPath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.componentSmarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
@@ -447,7 +447,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.PFASGroupModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASGroup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.PFASDefinitionModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASDefinition</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.ComponentsSolverModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentsSolver</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">,</span> <span class="n">n_from_formula</span><span class="p">,</span> <span class="n">add_smartsPath</span><span class="p">,</span> <span class="n">PFAS_DEFINITIONS_FILE</span><span class="p">,</span> <span class="n">PFAS_GROUPS_FILE</span><span class="p">,</span> <span class="n">rdkit_disable_log</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">,</span> <span class="n">n_from_formula</span><span class="p">,</span> <span class="n">add_componentSmarts</span><span class="p">,</span> <span class="n">PFAS_DEFINITIONS_FILE</span><span class="p">,</span> <span class="n">PFAS_GROUPS_FILE</span><span class="p">,</span> <span class="n">rdkit_disable_log</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 
@@ -539,7 +539,7 @@
 
 
 <span class="c1"># --- Main PFAS group parsing functions ---</span>
-<span class="nd">@add_smartsPath</span><span class="p">()</span>
+<span class="nd">@add_componentSmarts</span><span class="p">()</span>
 <span class="nd">@load_PFASGroups</span><span class="p">()</span>
 <span class="nd">@load_componentsSolver</span><span class="p">()</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_groups_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fluorinated_components_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pfas_groups</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -552,7 +552,7 @@
 <span class="sd">    bycomponent : bool, optional</span>
 <span class="sd">        Whether to look for fluorinated components or for chains between functional groups</span>
 <span class="sd">    **kwargs : dict</span>
-<span class="sd">        Additional parameters (formula, pfas_groups, smartsPaths, etc.)</span>
+<span class="sd">        Additional parameters (formula, pfas_groups, componentSmartss, etc.)</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -574,10 +574,10 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    For PFASgroups </span>
-<span class="sd">    1. with smartsPath = &#39;cyclic&#39;, search for connected component matching first smarts</span>
+<span class="sd">    1. with componentSmarts = &#39;cyclic&#39;, search for connected component matching first smarts</span>
 <span class="sd">    2. with multiple smarts patterns or counts &gt; 1: Find components containing all required SMARTS matches with minimum counts</span>
 <span class="sd">    3. with single smarts pattern: Search for connected components of fluorinated atoms (for each pathType) where smarts match is in the component</span>
-<span class="sd">    4. with smarts defined and formula constraints: search for substructure matches of smarts, and for given smartsPath for the PFASgroup, search for connected components of fluorinated atoms where smarts match is in the component</span>
+<span class="sd">    4. with smarts defined and formula constraints: search for substructure matches of smarts, and for given componentSmarts for the PFASgroup, search for connected components of fluorinated atoms where smarts match is in the component</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
@@ -623,7 +623,7 @@
                         <span class="n">all_components</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">matched_components</span><span class="p">)</span>
                 
                 <span class="c1"># Deduplicate components by atom set while keeping different SMARTS types</span>
-                <span class="c1"># Filter by smartsPath if aggregate has one</span>
+                <span class="c1"># Filter by componentSmarts if aggregate has one</span>
                 <span class="n">unique_components</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">seen_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># Track (atom_set, SMARTS_type) combinations</span>
                 
@@ -631,8 +631,8 @@
                     <span class="n">atoms_key</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;component&#39;</span><span class="p">,</span> <span class="p">[]))</span>
                     <span class="n">smarts_type</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SMARTS&#39;</span><span class="p">)</span>
                     
-                    <span class="c1"># Filter by smartsPath if aggregate has one (not None)</span>
-                    <span class="k">if</span> <span class="n">agg_group</span><span class="o">.</span><span class="n">smartsPath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">smarts_type</span> <span class="o">!=</span> <span class="n">agg_group</span><span class="o">.</span><span class="n">smartsPath</span><span class="p">:</span>
+                    <span class="c1"># Filter by componentSmarts if aggregate has one (not None)</span>
+                    <span class="k">if</span> <span class="n">agg_group</span><span class="o">.</span><span class="n">componentSmarts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">smarts_type</span> <span class="o">!=</span> <span class="n">agg_group</span><span class="o">.</span><span class="n">componentSmarts</span><span class="p">:</span>
                         <span class="k">continue</span>
                     
                     <span class="c1"># Deduplicate by (atoms, SMARTS_type) key</span>
@@ -677,7 +677,7 @@
 <span class="sd">        - True: Compute all metrics (default)</span>
 <span class="sd">        - False: Only compute component size, skip all other metrics</span>
 <span class="sd">    **kwargs : dict</span>
-<span class="sd">        Additional parameters (pfas_groups, smartsPaths, etc.)</span>
+<span class="sd">        Additional parameters (pfas_groups, componentSmartss, etc.)</span>
 <span class="sd">    </span>
 <span class="sd">    Returns:</span>
 <span class="sd">    --------</span>
@@ -723,7 +723,7 @@
 <span class="sd">        - True: Compute all metrics (default)</span>
 <span class="sd">        - False: Only compute component size, skip all other metrics</span>
 <span class="sd">    **kwargs : dict</span>
-<span class="sd">        Additional parameters (pfas_groups, smartsPaths, etc.)</span>
+<span class="sd">        Additional parameters (pfas_groups, componentSmartss, etc.)</span>
 <span class="sd">    </span>
 <span class="sd">    Returns:</span>
 <span class="sd">    --------</span>
@@ -898,9 +898,9 @@
         <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="n">output_format</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span> <span class="k">else</span> <span class="n">df</span>
     <span class="k">return</span> <span class="n">results</span>
 
-<div class="viewcode-block" id="compile_smartsPath">
-<a class="viewcode-back" href="../../api/core.html#PFASgroups.fingerprints.compile_smartsPath">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">compile_smartsPath</span><span class="p">(</span><span class="n">chain_smarts</span><span class="p">,</span> <span class="n">end_smarts</span><span class="p">):</span>
+<div class="viewcode-block" id="compile_componentSmarts">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.fingerprints.compile_componentSmarts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compile_componentSmarts</span><span class="p">(</span><span class="n">chain_smarts</span><span class="p">,</span> <span class="n">end_smarts</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compile a pair of SMARTS patterns into a ready-to-use path definition.</span>
 <span class="sd">    </span>
@@ -921,7 +921,7 @@
 <span class="sd">    </span>
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; chain = compile_smartsPath(</span>
+<span class="sd">    &gt;&gt;&gt; chain = compile_componentSmarts(</span>
 <span class="sd">    ...     &quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;,</span>
 <span class="sd">    ...     &quot;[C;X4](Cl)(Cl)Cl&quot;</span>
 <span class="sd">    ... )</span>
@@ -940,9 +940,9 @@
     <span class="k">return</span> <span class="p">[</span><span class="n">chain_mol</span><span class="p">,</span> <span class="n">end_mol</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="compile_smartsPaths">
-<a class="viewcode-back" href="../../api/core.html#PFASgroups.fingerprints.compile_smartsPaths">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">compile_smartsPaths</span><span class="p">(</span><span class="n">paths_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="compile_componentSmartss">
+<a class="viewcode-back" href="../../api/core.html#PFASgroups.fingerprints.compile_componentSmartss">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compile_componentSmartss</span><span class="p">(</span><span class="n">paths_dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compile multiple SMARTS path definitions from a dictionary.</span>
 <span class="sd">    </span>
@@ -976,13 +976,13 @@
 <span class="sd">    ...         &#39;end&#39;: &#39;[C;X4]([F,Cl])([F,Cl])[F,Cl]&#39;</span>
 <span class="sd">    ...     }</span>
 <span class="sd">    ... }</span>
-<span class="sd">    &gt;&gt;&gt; compiled = compile_smartsPaths(custom_paths)</span>
-<span class="sd">    &gt;&gt;&gt; results = parse_smiles(smiles, smartsPaths=compiled)</span>
+<span class="sd">    &gt;&gt;&gt; compiled = compile_componentSmartss(custom_paths)</span>
+<span class="sd">    &gt;&gt;&gt; results = parse_smiles(smiles, componentSmartss=compiled)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">compiled</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">patterns</span> <span class="ow">in</span> <span class="n">paths_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">patterns</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;chain&#39;</span> <span class="ow">in</span> <span class="n">patterns</span> <span class="ow">and</span> <span class="s1">&#39;end&#39;</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">:</span>
-            <span class="n">compiled</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">compile_smartsPath</span><span class="p">(</span><span class="n">patterns</span><span class="p">[</span><span class="s1">&#39;chain&#39;</span><span class="p">],</span> <span class="n">patterns</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">])</span>
+            <span class="n">compiled</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">compile_componentSmarts</span><span class="p">(</span><span class="n">patterns</span><span class="p">[</span><span class="s1">&#39;chain&#39;</span><span class="p">],</span> <span class="n">patterns</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; must have &#39;chain&#39; and &#39;end&#39; keys&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">compiled</span></div>

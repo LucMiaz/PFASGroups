@@ -21,7 +21,7 @@ Represents a PFAS functional group definition with SMARTS patterns, pathway requ
 - **alias** (*str*, optional): Short name or abbreviation (e.g., "PFCAs")
 - **smarts1** (*rdkit.Chem.Mol*): Primary SMARTS pattern (compiled RDKit Mol object)
 - **smarts2** (*rdkit.Chem.Mol*, optional): Secondary SMARTS pattern for additional specificity
-- **smartsPath** (*str*): Pathway type - 'Perfluoroalkyl', 'Polyfluoroalkyl', 'cyclic', or None
+- **componentSmarts** (*str*): Pathway type - 'Perfluoroalkyl', 'Polyfluoroalkyl', 'cyclic', or None
 - **constraints** (*dict*): Molecular formula constraints
 - **max_dist_from_CF** (*int*): Maximum bond distance from fluorinated carbon terminal (default: 2)
 - **base_functional_groups** (*list*, optional): Base functional group categories
@@ -88,7 +88,7 @@ Creating a custom PFAS group:
        alias="PFANs",
        smarts1=Chem.MolFromSmarts("[C]-[O]-[N+](=O)[O-]"),
        smarts2=None,
-       smartsPath="Perfluoroalkyl",
+       componentSmarts="Perfluoroalkyl",
        constraints={
            "eq": {"N": 1, "O": 3},  # One N and three O (nitrate)
            "gte": {"F": 1},  # At least one F
@@ -239,7 +239,7 @@ Both PFASGroup and PFASDefinition integrate with the core parsing functions:
        id=100,
        name="My Custom Group",
        smarts1=Chem.MolFromSmarts("[custom_pattern]"),
-       smartsPath="Perfluoroalkyl",
+       componentSmarts="Perfluoroalkyl",
        constraints={"gte": {"F": 1}}
    ))
    
@@ -276,7 +276,7 @@ Both models support JSON serialization for configuration files:
        "alias": "PFCAs",
        "smarts1": "[#6$([#6][#6](=O)([OH1,O-]))]",
        "smarts2": null,
-       "smartsPath": "Perfluoroalkyl",
+       "componentSmarts": "Perfluoroalkyl",
        "constraints": {
          "eq": {"O": 2},
          "gte": {"F": 1},

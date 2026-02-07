@@ -314,7 +314,7 @@ Generate shorter-chain analogues:
    mol = Chem.MolFromSmiles("FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O")
    
    # Generate homologues (C7, C6, C5, C4)
-   homologues = generate_homologues(mol, smartsPathName='Perfluoroalkyl')
+   homologues = generate_homologues(mol, componentSmartsName='Perfluoroalkyl')
    
    print(f"Generated {len(homologues)} homologues:")
    for inchikey, formulas in homologues.items():
@@ -341,7 +341,7 @@ Define custom groups:
        name="Perfluoroalkyl nitrates",
        alias="PFANs",
        smarts1=Chem.MolFromSmarts("[C]-[O]-[N+](=O)[O-]"),
-       smartsPath="Perfluoroalkyl",
+       componentSmarts="Perfluoroalkyl",
        constraints={
            "eq": {"N": 1, "O": 3},
            "gte": {"F": 1}

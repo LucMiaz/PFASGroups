@@ -194,16 +194,16 @@
 <li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-smartspaths">get_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-componentSmartss">get_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-smartspath">compile_smartsPath</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-componentSmarts">compile_componentSmarts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_componentSmarts"><code class="docutils literal notranslate"><span class="pre">compile_componentSmarts()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-smartspaths">compile_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-componentSmartss">compile_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_componentSmartss"><code class="docutils literal notranslate"><span class="pre">compile_componentSmartss()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -218,7 +218,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smartsPath"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smartsPath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.componentSmarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
@@ -591,7 +591,7 @@ the nearest C-F carbon)</p></li>
 <li><p>✅ <strong>Valid</strong>: <code class="docutils literal notranslate"><span class="pre">[CH2$(COC(=O))]</span></code> where the <code class="docutils literal notranslate"><span class="pre">CH2</span></code> is within <code class="docutils literal notranslate"><span class="pre">max_dist_from_CF</span></code> of fluorinated carbons</p></li>
 <li><p>❌ <strong>Invalid</strong>: Functional group atoms isolated from the fluorinated chain</p></li>
 </ul>
-<p><strong>Telomer groups</strong> are exceptions: they use <code class="docutils literal notranslate"><span class="pre">smartsPath</span></code> with <code class="docutils literal notranslate"><span class="pre">linker_smarts</span></code> to
+<p><strong>Telomer groups</strong> are exceptions: they use <code class="docutils literal notranslate"><span class="pre">componentSmarts</span></code> with <code class="docutils literal notranslate"><span class="pre">linker_smarts</span></code> to
 explicitly define a non-fluorinated linker (e.g., <code class="docutils literal notranslate"><span class="pre">[CH2X4]</span></code>) between the perfluorinated
 chain and the functional group. These groups can detect functional groups separated by
 methylene spacers.</p>
@@ -651,7 +651,7 @@ chains = remove_subset_chains(chains)
 <section id="step-4b-fluorinated-connected-components-cyclic">
 <h3>Step 4b: Fluorinated Connected Components (Cyclic)<a class="headerlink" href="#step-4b-fluorinated-connected-components-cyclic" title="Link to this heading"></a></h3>
 <p><strong>Purpose</strong>: Handle cyclic and complex fluorinated structures</p>
-<p>For PFAS groups with <code class="docutils literal notranslate"><span class="pre">smartsPath=&quot;cyclic&quot;</span></code>:</p>
+<p>For PFAS groups with <code class="docutils literal notranslate"><span class="pre">componentSmarts=&quot;cyclic&quot;</span></code>:</p>
 <ol class="arabic simple">
 <li><p><strong>Extract fluorinated subgraph</strong>: All carbon and fluorine atoms</p></li>
 <li><p><strong>Find connected components</strong>: Using NetworkX graph analysis</p></li>

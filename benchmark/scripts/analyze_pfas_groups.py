@@ -48,10 +48,10 @@ for g in compute_groups:
     # OECD groups typically have specific aliases and strict constraints
     alias = g.get('alias', '')
     constraints = g.get('constraints', {})
-    smartsPath = g.get('smartsPath')
+    componentSmarts = g.get('componentSmarts')
     
     # Heuristic: OECD groups have acronyms in alias and strict pathways
-    if smartsPath and 'fluoroalkyl' in smartsPath.lower() and constraints:
+    if componentSmarts and 'fluoroalkyl' in componentSmarts.lower() and constraints:
         if any(k in alias for k in ['PF', 'Poly', 'Per']) or 'acid' in g.get('name', '').lower():
             oecd_like.append(g)
         else:

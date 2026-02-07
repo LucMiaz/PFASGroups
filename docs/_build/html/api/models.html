@@ -194,16 +194,16 @@
 <li class="toctree-l4"><a class="reference internal" href="core.html#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="core.html#get-smartspaths">get_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="core.html#PFASgroups.getter.get_smartsPaths"><code class="docutils literal notranslate"><span class="pre">get_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#get-componentSmartss">get_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#PFASgroups.getter.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="core.html#compile-smartspath">compile_smartsPath</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="core.html#PFASgroups.parser.compile_smartsPath"><code class="docutils literal notranslate"><span class="pre">compile_smartsPath()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#compile-componentSmarts">compile_componentSmarts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#PFASgroups.parser.compile_componentSmarts"><code class="docutils literal notranslate"><span class="pre">compile_componentSmarts()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="core.html#compile-smartspaths">compile_smartsPaths</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="core.html#PFASgroups.parser.compile_smartsPaths"><code class="docutils literal notranslate"><span class="pre">compile_smartsPaths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#compile-componentSmartss">compile_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#PFASgroups.parser.compile_componentSmartss"><code class="docutils literal notranslate"><span class="pre">compile_componentSmartss()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -218,7 +218,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.smartsPath"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smartsPath</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.componentSmarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
@@ -503,7 +503,7 @@ molecules into specific categories (e.g., “Perfluoroalkyl carboxylic acid”).
 <dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.smarts">
 <span class="sig-name descname"><span class="pre">smarts</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.smarts" title="Link to this definition"></a></dt>
 <dd><p>SMARTS patterns (compiled RDKit molecule) for functional group detection.
-None if group is defined by smartsPath alone.</p>
+None if group is defined by componentSmarts alone.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Chem.Mol or None</p>
@@ -512,8 +512,8 @@ None if group is defined by smartsPath alone.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.smartsPath">
-<span class="sig-name descname"><span class="pre">smartsPath</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.smartsPath" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASgroups.PFASGroupModel.PFASGroup.componentSmarts">
+<span class="sig-name descname"><span class="pre">componentSmarts</span></span><a class="headerlink" href="#PFASgroups.PFASGroupModel.PFASGroup.componentSmarts" title="Link to this definition"></a></dt>
 <dd><p>Type of fluorinated component to search:
 - ‘Perfluoroalkyl’: Fully fluorinated carbon chains
 - ‘Polyfluoroalkyl’: Partially fluorinated carbon chains
@@ -575,7 +575,7 @@ Only used when max_dist_from_CF &gt; 0.</p>
 <span class="gp">... </span>    <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl carboxylic acid&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">smarts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;C(=O)O&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span>  <span class="c1"># Carboxylic acid group</span>
-<span class="gp">... </span>    <span class="n">smartsPath</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;only&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">]},</span>
 <span class="gp">... </span>    <span class="n">max_dist_from_CF</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">linker_smarts</span><span class="o">=</span><span class="kc">None</span>
@@ -845,8 +845,8 @@ Stops evaluation at first failure for efficiency.</p>
 </dl>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li><p>Matches are determined based on smartsPath and max_dist_from_CF attributes.</p></li>
-<li><p>If smartsPath is None, all components are considered.</p></li>
+<li><p>Matches are determined based on componentSmarts and max_dist_from_CF attributes.</p></li>
+<li><p>If componentSmarts is None, all components are considered.</p></li>
 <li><p>max_dist_from_CF allows extending the search radius for functional groups.</p></li>
 </ul>
 </dd></dl>
@@ -918,7 +918,7 @@ entry in PFAS_groups_smarts.json. Expected structure:
 <li><p><strong>alias</strong> (<em>str</em>, optional): Short name or abbreviation (e.g., “PFCAs”)</p></li>
 <li><p><strong>smarts1</strong> (<em>rdkit.Chem.Mol</em>): Primary SMARTS pattern (compiled RDKit Mol object)</p></li>
 <li><p><strong>smarts2</strong> (<em>rdkit.Chem.Mol</em>, optional): Secondary SMARTS pattern for additional specificity</p></li>
-<li><p><strong>smartsPath</strong> (<em>str</em>): Pathway type - ‘Perfluoroalkyl’, ‘Polyfluoroalkyl’, ‘cyclic’, or None</p></li>
+<li><p><strong>componentSmarts</strong> (<em>str</em>): Pathway type - ‘Perfluoroalkyl’, ‘Polyfluoroalkyl’, ‘cyclic’, or None</p></li>
 <li><p><strong>constraints</strong> (<em>dict</em>): Molecular formula constraints</p></li>
 <li><p><strong>max_dist_from_CF</strong> (<em>int</em>): Maximum bond distance from fluorinated carbon terminal (default: 2)</p></li>
 <li><p><strong>base_functional_groups</strong> (<em>list</em>, optional): Base functional group categories</p></li>
@@ -972,7 +972,7 @@ entry in PFAS_groups_smarts.json. Expected structure:
     <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;PFANs&quot;</span><span class="p">,</span>
     <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[C]-[O]-[N+](=O)[O-]&quot;</span><span class="p">),</span>
     <span class="n">smarts2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">smartsPath</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
     <span class="n">constraints</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>  <span class="c1"># One N and three O (nitrate)</span>
         <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>  <span class="c1"># At least one F</span>
@@ -1334,7 +1334,7 @@ entry in PFAS_definitions_smarts.json. Expected structure:
     <span class="nb">id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Custom Group&quot;</span><span class="p">,</span>
     <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[custom_pattern]&quot;</span><span class="p">),</span>
-    <span class="n">smartsPath</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
     <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
 <span class="p">))</span>
 
@@ -1368,7 +1368,7 @@ entry in PFAS_definitions_smarts.json. Expected structure:
 <span class="w">    </span><span class="nt">&quot;alias&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PFCAs&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;smarts1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[#6$([#6][#6](=O)([OH1,O-]))]&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;smarts2&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;smartsPath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;componentSmarts&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;constraints&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;eq&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;O&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;gte&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;F&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span>

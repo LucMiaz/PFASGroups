@@ -161,22 +161,22 @@ def fragment_to_distribution(mol, bde_dict, max_depth=4, nb_breakingpoints=5):
         return np.array([]), np.array([])
 
 
-def find_fluorinated_chains(mol, smartsPathName='Perfluoroalkyl'):
+def find_fluorinated_chains(mol, componentSmartsName='Perfluoroalkyl'):
     """
     Find fluorinated chains in a molecule using SMARTS patterns.
     Returns atom indices that are part of fluorinated chains.
     """
-    # Load SMARTS paths from fpaths.json
+    # Load SMARTS paths from component_smarts.json
     MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
     DATA_DIR = os.path.join(MODULE_DIR, 'data')
-    FPATHS_FILE = os.path.join(DATA_DIR, 'fpaths.json')
+    COMPONENTS_SMARTS_FILE = os.path.join(DATA_DIR, 'component_smarts.json')
     
     try:
-        with open(FPATHS_FILE, 'r') as f:
-            fpaths = json.load(f)
+        with open(COMPONENTS_SMARTS_FILE, 'r') as f:
+            component_smarts = json.load(f)
     except FileNotFoundError:
         # Fallback SMARTS patterns if file not found
-        fpaths = {
+        component_smarts = {
             'Perfluoroalkyl': '[#6]([#9])([#9])[#6]([#9])([#9])',
             'Perfluoroalkyl_end': '[#6]([#9])([#9])([#6,#9,#17,#35,#53])',
             'Polyfluoroalkyl': '[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])[#6]([#9,#1,#17,#35,#53])([#9,#1,#17,#35,#53])',
@@ -184,8 +184,8 @@ def find_fluorinated_chains(mol, smartsPathName='Perfluoroalkyl'):
         }
     
     # Get SMARTS patterns
-    path_smarts = fpaths.get(smartsPathName)
-    end_smarts = fpaths.get(smartsPathName + '_end')
+    path_smarts = component_smarts.get(componentSmartsName)
+    end_smarts = component_smarts.get(componentSmartsName + '_end')
     
     if not path_smarts or not end_smarts:
         return set()
@@ -218,20 +218,20 @@ def find_fluorinated_chains(mol, smartsPathName='Perfluoroalkyl'):
     return fluorinated_atoms
 
 
-def get_non_fluorinated_bonds(mol, fluorinated_atoms=None, smartsPathName='Perfluoroalkyl'):
+def get_non_fluorinated_bonds(mol, fluorinated_atoms=None, componentSmartsName='Perfluoroalkyl'):
     """
     Get bond indices that are not part of the fluorinated chain.
     
     Args:
         mol: RDKit molecule object
         fluorinated_atoms: Set of atom indices that are part of fluorinated chains
-        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains
+        componentSmartsName: Name of the SMARTS pattern to use for identifying fluorinated chains
     
     Returns:
         List of bond indices that are not in the fluorinated chain
     """
     if fluorinated_atoms is None:
-        fluorinated_atoms = find_fluorinated_chains(mol, smartsPathName)
+        fluorinated_atoms = find_fluorinated_chains(mol, componentSmartsName)
     
     non_fluorinated_bonds = []
     
@@ -250,20 +250,20 @@ def get_non_fluorinated_bonds(mol, fluorinated_atoms=None, smartsPathName='Perfl
     return non_fluorinated_bonds
 
 
-def get_bonds_connected_to_fluorinated_path(mol, fluorinated_atoms=None, smartsPathName='Perfluoroalkyl'):
+def get_bonds_connected_to_fluorinated_path(mol, fluorinated_atoms=None, componentSmartsName='Perfluoroalkyl'):
     """
     Get bond indices that are connected to (but not part of) the fluorinated path.
     
     Args:
         mol: RDKit molecule object
         fluorinated_atoms: Set of atom indices that are part of fluorinated chains
-        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains
+        componentSmartsName: Name of the SMARTS pattern to use for identifying fluorinated chains
     
     Returns:
         List of bond indices that are connected to but not part of the fluorinated chain
     """
     if fluorinated_atoms is None:
-        fluorinated_atoms = find_fluorinated_chains(mol, smartsPathName)
+        fluorinated_atoms = find_fluorinated_chains(mol, componentSmartsName)
     
     connected_bonds = []
     
@@ -284,14 +284,14 @@ def get_bonds_connected_to_fluorinated_path(mol, fluorinated_atoms=None, smartsP
     return connected_bonds
 
 
-def generate_degradation_products(mol, smartsPathName='Perfluoroalkyl', max_breaks=3, 
+def generate_degradation_products(mol, componentSmartsName='Perfluoroalkyl', max_breaks=3, 
                                 min_fragment_size=2, include_original=True):
     """
     Generate degradation products by breaking bonds that are connected to but not part of the fluorinated chain.
     
     Args:
         mol: RDKit molecule object
-        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains
+        componentSmartsName: Name of the SMARTS pattern to use for identifying fluorinated chains
         max_breaks: Maximum number of bonds to break simultaneously
         min_fragment_size: Minimum number of atoms in a fragment to keep it
         include_original: Whether to include the original molecule in results
@@ -303,10 +303,10 @@ def generate_degradation_products(mol, smartsPathName='Perfluoroalkyl', max_brea
         raise TypeError("Input mol must be an rdkit.Chem.Mol object")
     
     # Find fluorinated chain atoms
-    fluorinated_atoms = find_fluorinated_chains(mol, smartsPathName)
+    fluorinated_atoms = find_fluorinated_chains(mol, componentSmartsName)
     
     # Get bonds that can be broken (connected to but not part of fluorinated chain)
-    breakable_bonds = get_bonds_connected_to_fluorinated_path(mol, fluorinated_atoms, smartsPathName)
+    breakable_bonds = get_bonds_connected_to_fluorinated_path(mol, fluorinated_atoms, componentSmartsName)
     
     if not breakable_bonds:
         # No breakable bonds found, return original molecule
@@ -377,7 +377,7 @@ def generate_degradation_products(mol, smartsPathName='Perfluoroalkyl', max_brea
     return degradation_products
 
 
-def generate_systematic_degradation_products(mol, smartsPathName='Perfluoroalkyl', 
+def generate_systematic_degradation_products(mol, componentSmartsName='Perfluoroalkyl', 
                                            preserve_fluorinated_chain=True, 
                                            min_fragment_size=2, 
                                            max_combinations=1000):
@@ -386,7 +386,7 @@ def generate_systematic_degradation_products(mol, smartsPathName='Perfluoroalkyl
     
     Args:
         mol: RDKit molecule object
-        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains
+        componentSmartsName: Name of the SMARTS pattern to use for identifying fluorinated chains
         preserve_fluorinated_chain: If True, only break bonds connected to (not part of) fluorinated chain
         min_fragment_size: Minimum number of atoms in a fragment to keep it
         max_combinations: Maximum number of bond combinations to explore
@@ -398,14 +398,14 @@ def generate_systematic_degradation_products(mol, smartsPathName='Perfluoroalkyl
         raise TypeError("Input mol must be an rdkit.Chem.Mol object")
     
     # Find fluorinated chain atoms
-    fluorinated_atoms = find_fluorinated_chains(mol, smartsPathName)
+    fluorinated_atoms = find_fluorinated_chains(mol, componentSmartsName)
     
     # Get all bonds in the molecule
     all_bonds = list(range(mol.GetNumBonds()))
     
     if preserve_fluorinated_chain:
         # Only consider bonds connected to but not part of the fluorinated chain
-        breakable_bonds = get_bonds_connected_to_fluorinated_path(mol, fluorinated_atoms, smartsPathName)
+        breakable_bonds = get_bonds_connected_to_fluorinated_path(mol, fluorinated_atoms, componentSmartsName)
     else:
         # Consider all bonds
         breakable_bonds = all_bonds
@@ -477,13 +477,13 @@ def generate_systematic_degradation_products(mol, smartsPathName='Perfluoroalkyl
     return degradation_products
 
 
-def analyze_degradation_pathways(mol, smartsPathName='Perfluoroalkyl', max_breaks=3):
+def analyze_degradation_pathways(mol, componentSmartsName='Perfluoroalkyl', max_breaks=3):
     """
     Analyze possible degradation pathways and return detailed information about fragments.
     
     Args:
         mol: RDKit molecule object
-        smartsPathName: Name of the SMARTS pattern to use for identifying fluorinated chains
+        componentSmartsName: Name of the SMARTS pattern to use for identifying fluorinated chains
         max_breaks: Maximum number of bonds to break
     
     Returns:
@@ -494,7 +494,7 @@ def analyze_degradation_pathways(mol, smartsPathName='Perfluoroalkyl', max_break
     
     # Get degradation products
     degradation_products = generate_degradation_products(
-        mol, smartsPathName=smartsPathName, max_breaks=max_breaks
+        mol, componentSmartsName=componentSmartsName, max_breaks=max_breaks
     )
     
     # Analyze the results
@@ -503,7 +503,7 @@ def analyze_degradation_pathways(mol, smartsPathName='Perfluoroalkyl', max_break
             'smiles': Chem.MolToSmiles(mol),
             'formula': CalcMolFormula(mol),
             'molecular_weight': ExactMolWt(mol),
-            'fluorinated_atoms': len(find_fluorinated_chains(mol, smartsPathName))
+            'fluorinated_atoms': len(find_fluorinated_chains(mol, componentSmartsName))
         },
         'degradation_summary': {
             'total_products': len(degradation_products),
@@ -523,7 +523,7 @@ def analyze_degradation_pathways(mol, smartsPathName='Perfluoroalkyl', max_break
             analysis['degradation_summary']['products_by_breaks'][n_breaks] += 1
             
             # Analyze fragment
-            frag_fluorinated_atoms = find_fluorinated_chains(frag_mol, smartsPathName)
+            frag_fluorinated_atoms = find_fluorinated_chains(frag_mol, componentSmartsName)
             
             product_info = {
                 'inchi_key': inchi_key,
