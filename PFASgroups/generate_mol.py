@@ -418,7 +418,14 @@ def fluorinate_mol(mol, perfluorinated=True, p=0.3, phigh=1):
     mol = Chem.AddHs(mol)
     rwm = Chem.RWMol(mol)
     nF = 0
-    atomsH_index = [x.GetIdx() for x in rwm.GetAtoms() if x.GetSymbol() == 'H']
+    # Only fluorinate hydrogens attached to carbon atoms.
+    # This avoids converting heteroatom-H bonds (e.g., Si-H, N-H) into Si-F/N-F.
+    atomsH_index = []
+    for atom in rwm.GetAtoms():
+        if atom.GetSymbol() == 'H':
+            neighbors = atom.GetNeighbors()
+            if any(n.GetSymbol() == 'C' for n in neighbors):
+                atomsH_index.append(atom.GetIdx())
     nH = len(atomsH_index)
     np.random.shuffle(atomsH_index)
     prob = []

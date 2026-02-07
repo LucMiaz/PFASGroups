@@ -20,7 +20,9 @@ from rdkit.Chem import Descriptors
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(os.path.dirname(script_dir))
 
-sys.path.append(parent_dir)
+if parent_dir not in sys.path:
+    # Prefer local PFASgroups over any installed package
+    sys.path.insert(0, parent_dir)
 
 try:
     from PFASgroups.parser import parse_mol
