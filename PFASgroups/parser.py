@@ -333,6 +333,9 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 mean_mean_eccentricity = sum([c['mean_eccentricity'] for c in matched_components])/len(matched_components)
                 mean_median_eccentricity = sum([c['median_eccentricity'] for c in matched_components])/len(matched_components)
                 mean_component_fraction = sum([c['component_fraction'] for c in matched_components])/len(matched_components)
+                total_branching = matched_components[0].get('total_branching', 0.0)
+                sum_component_branching = sum([c['branching'] for c in matched_components])
+                sum_component_branching_ratio = sum_component_branching / total_branching if total_branching > 0 else 0.0
                 
                 # Calculate total fraction covered by union of all carbon atoms in components
                 union_carbon_atoms = set()
@@ -384,6 +387,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 
                 summary_metrics = {
                     'mean_branching': mean_branching,
+                    'total_branching': total_branching,
+                    'sum_component_branching_ratio': sum_component_branching_ratio,
                     'mean_smarts_centrality': mean_smarts_centrality,
                     'mean_component_fraction': mean_component_fraction,
                     'total_components_fraction': total_components_fraction,
@@ -399,6 +404,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
             else:
                 summary_metrics = {
                     'mean_branching': 0.0,
+                    'total_branching': 0.0,
+                    'sum_component_branching_ratio': 0.0,
                     'mean_smarts_centrality': 0.0,
                     'mean_component_fraction': 0.0,
                     'total_components_fraction': 0.0,

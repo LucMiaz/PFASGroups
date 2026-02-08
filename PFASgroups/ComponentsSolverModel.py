@@ -12,6 +12,7 @@ class ComponentsSolver:
         self.G = mol_to_nx(mol)
         self.limit_effective_graph_resistance = kwargs.get('limit_effective_graph_resistance',None)
         self.skip_component_metrics = not kwargs.get('compute_component_metrics', True)
+        self.total_branching = self._compute_total_branching()
         self.components = self.get_fluorinated_subgraph()
         self.extended_components = {k:{0:v} for k,v in self.components.items()}
         # Mapping from (pathType, max_dist, extended_component_index) -> original_component_index
@@ -75,6 +76,16 @@ class ComponentsSolver:
             components = self._connected_components(subset)
             subsets[pathName] = components
         return subsets
+
+    def _compute_total_branching(self):
+        non_hf_atoms = [
+            atom.GetIdx()
+            for atom in self.mol.GetAtoms()
+            if atom.GetSymbol() not in ['H', 'F']
+        ]
+        if not non_hf_atoms:
+            return 0.0
+        return calculate_branching(self.G, non_hf_atoms)
     
     def get_full_component_atoms(self, component):
         """Get all atoms in a component including those attached (H, F, halogens).
@@ -585,6 +596,8 @@ class ComponentsSolver:
             'SMARTS': smarts_type,
             # Basic metrics
             'branching': basic_metrics['branching'],
+            'branching_ratio_to_molecule': basic_metrics['branching'] / self.total_branching if self.total_branching > 0 else 0.0,
+            'total_branching': self.total_branching,
             'smarts_centrality': basic_metrics['smarts_centrality'],
             # Graph structure metrics
             'diameter': comp_metrics.get('diameter', float('nan')),
@@ -619,6 +632,20 @@ class ComponentsSolver:
         return result
     
 
+def calculate_branching(G, subset):
+    # Calculate branching: measure of branching vs linearity
+    # For linear chains: branching → 1.0
+    # For highly branched: branching → 0.0
+    try:
+        subG = G.subgraph(subset)
+        # Count branch points (degree > 2)
+        branch_points = sum(1 for node in subG.nodes() if subG.degree(node) > 2)
+        # Normalize by component size
+        branching = 1.0 - (branch_points / max(1, len(subset) - 2))  # -2 to account for endpoints
+        branching = max(0.0, min(1.0, branching))  # Clamp to [0, 1]
+    except:
+        branching = 0.0
+    return branching
 
 def calculate_component_metrics(G, component, smarts_matches):
     """Calculate branching and centrality metrics for a component.
@@ -643,17 +670,8 @@ def calculate_component_metrics(G, component, smarts_matches):
     # Create subgraph for this component
     subG = G.subgraph(component)
     
-    # Calculate branching: measure of branching vs linearity
-    # For linear chains: branching → 1.0
-    # For highly branched: branching → 0.0
-    try:
-        # Count branch points (degree > 2)
-        branch_points = sum(1 for node in subG.nodes() if subG.degree(node) > 2)
-        # Normalize by component size
-        branching = 1.0 - (branch_points / max(1, len(component) - 2))  # -2 to account for endpoints
-        branching = max(0.0, min(1.0, branching))  # Clamp to [0, 1]
-    except:
-        branching = 0.0
+    # Calculate branching: fraction of nodes with degree > 2
+    branching = calculate_branching(subG, component)
     
     # Calculate SMARTS centrality: how central the matched atoms are
     smarts_in_component = smarts_matches.intersection(component)

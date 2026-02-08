@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: PFASgroups
-Version: 2.2.2
+Version: 2.2.3
 Summary: A comprehensive cheminformatics package for automated detection, classification, and analysis of per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 55 PFAS group classifications (28 OECD-defined groups and 27 generic categories) with fluorinated chain length determination.
 Author: Luc Miaz
 Author-email: Luc Miaz <luc@miaz.ch>
@@ -111,7 +111,7 @@ Use custom pathtype definitions and PFAS groups:
 # Load custom files entirely
 from PFASgroups import get_componentSmartss, get_PFASGroups, parse_smiles
 
-custom_paths = get_componentSmartss(filename='my_component_smarts.json')
+custom_paths = get_componentSmartss(filename='my_component_smartss.json')
 custom_groups = get_PFASGroups(filename='my_groups.json')
 
 results = parse_smiles(
@@ -188,6 +188,7 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 ## Summary of changes by version
 
 - **Version 2.2 (Feb 2026)**: Added linked_smarts option to specify a restriction on path between smarts groups and fluorinated component. Added new PFASgroups (telomers). **v2.2.2** Fixed telomers and added examples and counter-examples to each PFASgroup. Removed boundary O in fluorinated components (for both Per and Polyalkyl components).
+**v2.2.3** Added resultsModel to offer easier plotting and summarising capabilities for results.
 
 - **Version 2.1 (Jan 2026)**: Added support for multiple smarts, with individual minimum count, per PFASgroup.
 

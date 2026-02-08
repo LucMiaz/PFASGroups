@@ -12,8 +12,10 @@ PFASgroups/fingerprints.py
 PFASgroups/fragmentation.py
 PFASgroups/generate_homologues.py
 PFASgroups/generate_mol.py
+PFASgroups/generate_paper_figures.py
 PFASgroups/getter.py
 PFASgroups/parser.py
+PFASgroups/results_model.py
 PFASgroups.egg-info/PKG-INFO
 PFASgroups.egg-info/SOURCES.txt
 PFASgroups.egg-info/dependency_links.txt

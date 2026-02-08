@@ -95,19 +95,56 @@ fi
 echo "✅ OECD Validation Benchmark completed"
 echo ""
 
-# Timing Performance Benchmark
-echo "3️⃣ Running Timing Performance Benchmark..."
+# Timing Performance Benchmarks (3 profiles)
+echo "3️⃣ Running Timing Performance Benchmarks (3 profiles)..."
+
+echo "   • Profile: full (all features)"
 if [ "$REUSE_TIMING" = true ]; then
     echo "♻️  Reusing previous timing results..."
-    printf "3\ny\n" | python scripts/enhanced_pfas_benchmark.py
+    printf "3\ny\n" | env PFAS_BENCH_TIMING_PROFILE=full python scripts/enhanced_pfas_benchmark.py
 else
-    printf "3\nn\n" | python scripts/enhanced_pfas_benchmark.py
+    printf "3\nn\n" | env PFAS_BENCH_TIMING_PROFILE=full python scripts/enhanced_pfas_benchmark.py
 fi
 if [ $? -ne 0 ]; then
-    echo "❌ Timing Performance Benchmark failed"
+    echo "❌ Timing Performance Benchmark failed (full profile)"
     exit 1
 fi
-echo "✅ Timing Performance Benchmark completed"
+
+echo "   • Profile: no_resistance (skip effective graph resistance)"
+if [ "$REUSE_TIMING" = true ]; then
+    echo "♻️  Reusing previous timing results..."
+    printf "3\ny\n" | env PFAS_BENCH_TIMING_PROFILE=no_resistance python scripts/enhanced_pfas_benchmark.py
+else
+    printf "3\nn\n" | env PFAS_BENCH_TIMING_PROFILE=no_resistance python scripts/enhanced_pfas_benchmark.py
+fi
+if [ $? -ne 0 ]; then
+    echo "❌ Timing Performance Benchmark failed (no_resistance profile)"
+    exit 1
+fi
+
+echo "   • Profile: no_metrics (skip component graph metrics)"
+if [ "$REUSE_TIMING" = true ]; then
+    echo "♻️  Reusing previous timing results..."
+    printf "3\ny\n" | env PFAS_BENCH_TIMING_PROFILE=no_metrics python scripts/enhanced_pfas_benchmark.py
+else
+    printf "3\nn\n" | env PFAS_BENCH_TIMING_PROFILE=no_metrics python scripts/enhanced_pfas_benchmark.py
+fi
+if [ $? -ne 0 ]; then
+    echo "❌ Timing Performance Benchmark failed (no_metrics profile)"
+    exit 1
+fi
+
+echo "✅ Timing Performance Benchmarks completed"
+echo ""
+
+# Timing Profile Comparison (plots + LaTeX)
+echo "🧪 Analyzing timing profiles (comparison + LaTeX)..."
+python scripts/compare_timing_profiles.py
+if [ $? -ne 0 ]; then
+    echo "❌ Timing profile comparison failed"
+    exit 1
+fi
+echo "✅ Timing profile comparison completed"
 echo ""
 
 # Non-Fluorinated Exclusion Benchmark

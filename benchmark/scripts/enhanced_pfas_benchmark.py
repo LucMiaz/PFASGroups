@@ -488,12 +488,16 @@ class EnhancedPFASBenchmark:
         
         return molecules
     
-    def test_with_pfasgroups(self, smiles, include_PFAS_definitions=True):
+    def test_with_pfasgroups(self, smiles, include_PFAS_definitions=True,
+                             limit_effective_graph_resistance=None,
+                             compute_component_metrics=True):
         """Test molecule with PFASGroups detection
         
         Args:
             smiles: SMILES string
             include_PFAS_definitions: Whether to include PFAS definitions (True for accuracy, False for specificity)
+            limit_effective_graph_resistance: Limit or disable graph resistance computation (None=all, False/0=skip)
+            compute_component_metrics: Whether to compute component graph metrics
         """
         
         start_time = time.perf_counter()
@@ -515,7 +519,12 @@ class EnhancedPFASBenchmark:
             mol = Chem.MolFromSmiles(smiles)
             if mol is not None:
                 # Use parse_mol which returns dict with new format
-                results = parse_mol(mol, include_PFAS_definitions=include_PFAS_definitions)
+                results = parse_mol(
+                    mol,
+                    include_PFAS_definitions=include_PFAS_definitions,
+                    limit_effective_graph_resistance=limit_effective_graph_resistance,
+                    compute_component_metrics=compute_component_metrics
+                )
                 
                 # Extract groups and definitions from the new dictionary format
                 # results is a dict with 'matches' key containing list of match dicts
@@ -907,7 +916,7 @@ class EnhancedPFASBenchmark:
                 'complexity_score': 0
             }
     
-    def load_latest_timing_results(self):
+    def load_latest_timing_results(self, profile_label=None):
         """Load the most recent timing benchmark results from data directory
         
         Returns:
@@ -916,7 +925,10 @@ class EnhancedPFASBenchmark:
         import glob
         
         # Find all timing benchmark JSON files
-        pattern = os.path.join(script_dir, '..', 'data', 'pfas_timing_benchmark_*.json')
+        if profile_label:
+            pattern = os.path.join(script_dir, '..', 'data', f'pfas_timing_benchmark_{profile_label}_*.json')
+        else:
+            pattern = os.path.join(script_dir, '..', 'data', 'pfas_timing_benchmark_*.json')
         files = glob.glob(pattern)
         
         if not files:
@@ -936,13 +948,19 @@ class EnhancedPFASBenchmark:
             print(f"⚠️  Failed to load previous results: {e}")
             return []
     
-    def run_timing_benchmark(self, max_molecules=4000, iterations=5, reuse_previous=False):
+    def run_timing_benchmark(self, max_molecules=4000, iterations=5, reuse_previous=False,
+                             limit_effective_graph_resistance=None,
+                             compute_component_metrics=True,
+                             profile_label="full"):
         """Run timing benchmark comparing PFASGroups vs PFAS-Atlas with diverse functional groups
         
         Args:
             max_molecules: Number of molecules to test (default 2500)
             iterations: Number of iterations for averaging (default 5)
             reuse_previous: If True, load previous results and add new ones (default False)
+            limit_effective_graph_resistance: Limit or disable graph resistance computation (None=all, False/0=skip)
+            compute_component_metrics: Whether to compute component graph metrics
+            profile_label: Label for this timing profile (used in output file name)
         """
         
         # Get system specifications
@@ -962,11 +980,16 @@ class EnhancedPFASBenchmark:
         
         print("\n🚀 TIMING PERFORMANCE BENCHMARK WITH GRAPH COMPLEXITY METRICS")
         print("=" * 70)
+        print(f"🧪 Timing profile: {profile_label}")
         print(f"📊 Testing {max_molecules} molecules using grid-based sampling (IDs 29-114)")
         print(f"🔄 Running {iterations} iterations per molecule for statistical averaging")
         print(f"📏 Chain length range: 5-200 carbon atoms (binned for systematic coverage)")
         print(f"🧬 Available functional groups: {len(available_groups)} groups")
         print(f"📈 Using graph metrics for complexity: eccentricity, diameter, betweenness, etc.")
+        if not compute_component_metrics:
+            print("⚙️  Component graph metrics disabled")
+        if limit_effective_graph_resistance is False or limit_effective_graph_resistance == 0:
+            print("⚙️  Effective graph resistance disabled")
         print(f"\n💻 System Specifications:")
         print(f"   • OS: {system_specs['system']} ({system_specs['architecture']})")
         print(f"   • CPU: {system_specs['cpu_name']}")
@@ -996,7 +1019,7 @@ class EnhancedPFASBenchmark:
         
         # Load previous results if requested
         if reuse_previous:
-            timing_results = self.load_latest_timing_results()
+            timing_results = self.load_latest_timing_results(profile_label)
             if timing_results:
                 print(f"🔄 Starting from {len(timing_results)} previous results, will add {max_molecules} more")
                 print(f"📊 Target total: {len(timing_results) + max_molecules} molecules")
@@ -1051,7 +1074,12 @@ class EnhancedPFASBenchmark:
                     smiles = Chem.MolToSmiles(mol)
                     
                     # Pre-validate: Check that PFASGroups detects the molecule
-                    validation_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
+                    validation_result = self.test_with_pfasgroups(
+                        smiles,
+                        include_PFAS_definitions=True,
+                        limit_effective_graph_resistance=limit_effective_graph_resistance,
+                        compute_component_metrics=compute_component_metrics
+                    )
                     if not validation_result['success'] or group_id not in validation_result['detected_groups']:
                         excluded_wrong_detection += 1
                         # Save excluded molecule for review
@@ -1090,7 +1118,12 @@ class EnhancedPFASBenchmark:
                     
                     for iteration in range(iterations):
                         # Test with PFASGroups - accuracy test
-                        pfas_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
+                        pfas_result = self.test_with_pfasgroups(
+                            smiles,
+                            include_PFAS_definitions=True,
+                            limit_effective_graph_resistance=limit_effective_graph_resistance,
+                            compute_component_metrics=compute_component_metrics
+                        )
                         pfas_times.append(pfas_result['execution_time'])
                         if pfas_result['success'] and group_id in pfas_result['detected_groups']:
                             pfas_success_count += 1
@@ -1118,6 +1151,9 @@ class EnhancedPFASBenchmark:
                     
                     timing_data = {
                         'molecule_id': len(timing_results) + 1,
+                        'timing_profile': profile_label,
+                        'compute_component_metrics': compute_component_metrics,
+                        'limit_effective_graph_resistance': limit_effective_graph_resistance,
                         'chain_length': chain_length,
                         'target_group_id': group_id,
                         'target_group_name': group_info['name'],
@@ -1178,7 +1214,7 @@ class EnhancedPFASBenchmark:
         
         # Save timing results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"data/pfas_timing_benchmark_{timestamp}.json"
+        output_file = f"data/pfas_timing_benchmark_{profile_label}_{timestamp}.json"
         
         with open(output_file, 'w') as f:
             json.dump(timing_results, f, indent=2, default=str)
@@ -1717,6 +1753,27 @@ def main():
             return int(value)
         except ValueError:
             return default
+
+    def timing_profile_options(profile_label):
+        profile_key = (profile_label or "full").strip().lower()
+        profiles = {
+            "full": {
+                "limit_effective_graph_resistance": None,
+                "compute_component_metrics": True
+            },
+            "no_resistance": {
+                "limit_effective_graph_resistance": False,
+                "compute_component_metrics": True
+            },
+            "no_metrics": {
+                "limit_effective_graph_resistance": False,
+                "compute_component_metrics": False
+            }
+        }
+        if profile_key not in profiles:
+            print(f"⚠️  Unknown timing profile '{profile_label}', defaulting to 'full'")
+            profile_key = "full"
+        return profile_key, profiles[profile_key]
     
     benchmark = EnhancedPFASBenchmark()
     
@@ -1760,8 +1817,18 @@ def main():
         # Ask if user wants to reuse previous results
         reuse = input("⏪ Reuse previous timing results and add more? (y/N): ").strip().lower()
         reuse_previous = reuse in ['y', 'yes']
+
+        timing_profile_env = os.getenv("PFAS_BENCH_TIMING_PROFILE", "full")
+        timing_profile, timing_options = timing_profile_options(timing_profile_env)
+        print(f"🧪 Using timing profile: {timing_profile}")
         
-        timing_results, timing_file = benchmark.run_timing_benchmark(timing_molecules, timing_iterations, reuse_previous=reuse_previous)
+        timing_results, timing_file = benchmark.run_timing_benchmark(
+            timing_molecules,
+            timing_iterations,
+            reuse_previous=reuse_previous,
+            profile_label=timing_profile,
+            **timing_options
+        )
     else:
         timing_results, timing_file = None, None
     
