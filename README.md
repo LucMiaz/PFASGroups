@@ -39,7 +39,7 @@ After installation, the `pfasgroups` command will be available in your terminal.
 
 ## Benchmark Summary (Feb 2026)
 
-Benchmarks were run on an Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz (4C/8T), 15.5 GB RAM, Python 3.9.23, RDKit 2023.x, NetworkX 3.x.
+Benchmarks were run on an Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz (4C/8T), 15.5 GB RAM, Python 3.9.23, RDKit 2025.09.2, NetworkX 3.2.1 (the old version of Python was taken for compatibility with PFAS-atlas).
 
 | Dataset/Profile | Count | Atom range | PFASgroups mean/median (ms) | PFAS-Atlas mean/median (ms) | Relative speed | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
