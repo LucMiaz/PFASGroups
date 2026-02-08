@@ -37,6 +37,49 @@ pip install -e .
 
 After installation, the `pfasgroups` command will be available in your terminal.
 
+## Benchmark Summary (Feb 2026)
+
+Benchmarks were run on an Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz (4C/8T), 15.5 GB RAM, Python 3.9.23, RDKit 2023.x, NetworkX 3.x.
+
+| Dataset/Profile | Count | Atom range | PFASgroups mean/median (ms) | PFAS-Atlas mean/median (ms) | Relative speed | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| OECD reference (real compounds) | 3,414 | Typical small/medium | 19.2 / 14.8 | 38.8 / 37.7 | 2.02x faster | Real-world dataset representing existing compounds. |
+| Timing stress-test (full metrics) | 2,500 | 11-625 | 251.8 / 24.4 | 58.5 / 34.2 | 0.23x | Synthetic stress-test with large molecules; heavy-tail runtime. |
+| Timing stress-test (no resistance) | 2,500 | 11-619 | 176.7 / 24.8 | N/A | 1.43x faster vs full | Disables effective graph resistance only. |
+| Timing stress-test (no metrics) | 2,500 | 11-619 | 97.7 / 19.7 | N/A | 2.58x faster vs full | Disables all component graph metrics. |
+
+Timing profile plots (full vs no resistance vs no metrics):
+- [benchmark/reports/timing_profiles_comparison.png](benchmark/reports/timing_profiles_comparison.png)
+- [benchmark/reports/timing_profiles_residuals.png](benchmark/reports/timing_profiles_residuals.png)
+
+Disable or limit graph metrics in the Python API:
+
+```python
+from PFASgroups import parse_smiles
+
+# Skip all component graph metrics (fastest)
+parse_smiles(smiles_list, compute_component_metrics=False)
+
+# Keep metrics but skip effective graph resistance entirely
+parse_smiles(smiles_list, limit_effective_graph_resistance=0)
+
+# Compute resistance only for components below a size threshold
+parse_smiles(smiles_list, limit_effective_graph_resistance=200)
+```
+
+CLI equivalents:
+
+```bash
+# Skip all component graph metrics (fastest)
+pfasgroups parse --no-component-metrics "C(C(F)(F)F)F"
+
+# Skip effective graph resistance entirely
+pfasgroups parse --limit-effective-graph-resistance 0 "C(C(F)(F)F)F"
+
+# Compute resistance only for components below a size threshold
+pfasgroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
+```
+
 ## Quick Start
 
 ### Python API

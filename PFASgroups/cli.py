@@ -89,6 +89,16 @@ Note: Use get_componentSmartss() and get_PFASGroups() in Python to extend defaul
         help='Use component-based analysis (provides comprehensive metrics including component_fraction, branching, eccentricity)'
     )
     parse_parser.add_argument(
+        '--no-component-metrics',
+        action='store_true',
+        help='Skip all component graph metrics (fastest)'
+    )
+    parse_parser.add_argument(
+        '--limit-effective-graph-resistance',
+        type=int,
+        help='Only compute effective graph resistance for components smaller than this size (0 disables it)'
+    )
+    parse_parser.add_argument(
         '--format',
         choices=['json', 'csv'],
         default='json',
@@ -223,6 +233,8 @@ def cmd_parse(args):
         kwargs['componentSmartss'] = get_componentSmartss(filename=args.component_smarts_file)
     if args.groups_file:
         kwargs['pfas_groups'] = get_PFASGroups(filename=args.groups_file)
+    kwargs['compute_component_metrics'] = not args.no_component_metrics
+    kwargs['limit_effective_graph_resistance'] = args.limit_effective_graph_resistance
     
     # Get SMILES from command line or file
     if args.input:
