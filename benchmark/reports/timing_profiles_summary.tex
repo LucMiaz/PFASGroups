@@ -1,0 +1,25 @@
+%% Timing profile comparison summary
+\section*{Timing Profile Comparison}
+Exponential model: $t = a \cdot e^{b n}$, where $t$ is time (s) and $n$ is atom count.
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+\toprule
+Profile & $a$ (s) & $b$ (atoms$^{-1}$) & $R^2$ & Mean (ms) & Median (ms) \
+\midrule
+All metrics & 9.09e-02 & 0.0053 & 0.7706 & 251.8 & 24.4 \
+No resistance & 5.79e-02 & 0.0055 & 0.8749 & 176.7 & 24.8 \
+No metrics & 3.00e-02 & 0.0057 & 0.8736 & 97.7 & 19.7 \
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\linewidth]{reports/timing_profiles_comparison.png}
+\caption{Timing comparison across profiles with exponential fits.}
+\end{figure}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\linewidth]{reports/timing_profiles_residuals.png}
+\caption{Residuals for exponential fits across profiles.}
+\end{figure}

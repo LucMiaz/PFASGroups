@@ -1,0 +1,51 @@
+{
+  "summary": {
+    "total_molecules": 2500,
+    "pfasgroups_avg_time": 176.72681267927257,
+    "pfasgroups_std_time": 349.13253842136726,
+    "atlas_avg_time": 63.91974044318049,
+    "atlas_std_time": 78.88097741173196,
+    "speed_ratio": 0.36168671563823956,
+    "iterations": 5,
+    "timestamp": "20260208_105645"
+  },
+  "system_specs": {
+    "system": "Linux",
+    "platform": "Linux-6.14.0-37-generic-x86_64-with-glibc2.39",
+    "architecture": "64bit",
+    "python_version": "3.9.23",
+    "cpu_name": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
+    "cpu_cores_logical": 8,
+    "cpu_cores_physical": 4,
+    "total_memory_gb": 15.5,
+    "available_memory_gb": 8.25
+  },
+  "figures": [
+    {
+      "title": "Timing Scatter Plot",
+      "url": "/imgs/timing_scatter_20260208_105645.png",
+      "description": "Scatter plot showing execution times vs molecular properties"
+    },
+    {
+      "title": "Timing Distribution",
+      "url": "/imgs/timing_distribution_20260208_105645.png",
+      "description": "Distribution of execution times for both systems"
+    },
+    {
+      "title": "Scaling Analysis",
+      "url": "/imgs/timing_scaling_20260208_105645.png",
+      "description": "Performance scaling with molecular complexity"
+    },
+    {
+      "title": "Runtime Ratio Histogram",
+      "url": "/imgs/timing_ratio_hist_20260208_105645.png",
+      "description": "Distribution of PFASGroups/Atlas runtime ratios"
+    },
+    {
+      "title": "Runtime Ratio Summary Table",
+      "url": "/imgs/timing_ratio_table_20260208_105645.png",
+      "description": "Summary statistics for PFASGroups/Atlas runtime ratios"
+    }
+  ],
+  "html_report": "/reports/timing_analysis_20260208_105645.html"
+}

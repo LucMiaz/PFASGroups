@@ -1,9 +1,9 @@
 {
-  "test_date": "2026-02-07T16:17:16.121608",
+  "test_date": "2026-02-08T10:54:41.903251",
   "dataset": "PubChem_fluorotelomers.sdf",
   "total_molecules": 785,
-  "telomer_detected": 750,
-  "detection_rate": 95.54140127388536,
+  "telomer_detected": 734,
+  "detection_rate": 93.5031847133758,
   "group_counts": [
     {
       "id": 86,
@@ -16,14 +16,14 @@
       "count": 589
     },
     {
-      "id": 114,
-      "name": "Fluorotelomer unsaturated methyl",
-      "count": 652
-    },
-    {
       "id": 76,
       "name": "Fluorotelomer iodide",
       "count": 7
+    },
+    {
+      "id": 114,
+      "name": "Fluorotelomer unsaturated halogen",
+      "count": 8
     },
     {
       "id": 85,
@@ -34,6 +34,11 @@
       "id": 84,
       "name": "Fluorotelomer acrylate",
       "count": 9
+    },
+    {
+      "id": 93,
+      "name": "Fluorotelomer alkene",
+      "count": 3
     },
     {
       "id": 81,
@@ -242,10 +247,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -261,10 +262,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -280,10 +277,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -299,10 +292,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -321,7 +310,7 @@
         },
         {
           "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "name": "Fluorotelomer unsaturated halogen"
         }
       ]
     },
@@ -340,7 +329,7 @@
         },
         {
           "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "name": "Fluorotelomer unsaturated halogen"
         }
       ]
     },
@@ -356,10 +345,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -375,10 +360,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -394,10 +375,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -413,10 +390,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -426,8 +399,8 @@
       "detected": true,
       "telomer_groups": [
         {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "id": 93,
+          "name": "Fluorotelomer alkene"
         }
       ]
     },
@@ -443,10 +416,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -462,10 +431,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -481,10 +446,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -503,7 +464,7 @@
         },
         {
           "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "name": "Fluorotelomer unsaturated halogen"
         }
       ]
     },
@@ -519,10 +480,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -538,10 +495,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -557,10 +510,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -576,10 +525,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -595,10 +540,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -617,7 +558,7 @@
         },
         {
           "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "name": "Fluorotelomer unsaturated halogen"
         }
       ]
     },
@@ -636,7 +577,7 @@
         },
         {
           "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "name": "Fluorotelomer unsaturated halogen"
         }
       ]
     },
@@ -656,10 +597,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -679,10 +616,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -710,10 +643,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -729,10 +658,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -748,10 +673,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -767,10 +688,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -786,10 +703,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -805,10 +718,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -835,10 +744,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -887,10 +792,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -906,10 +807,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -925,10 +822,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -940,10 +833,6 @@
         {
           "id": 77,
           "name": "Fluorotelomer aldehyde"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -970,10 +859,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1011,10 +896,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1030,10 +911,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1049,10 +926,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1068,10 +941,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1099,10 +968,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1118,10 +983,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1137,10 +998,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1160,10 +1017,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1187,10 +1040,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1214,10 +1063,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1241,10 +1086,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1260,10 +1101,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1279,10 +1116,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1298,10 +1131,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1317,10 +1146,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1332,10 +1157,6 @@
         {
           "id": 77,
           "name": "Fluorotelomer aldehyde"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1351,10 +1172,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1366,10 +1183,6 @@
         {
           "id": 77,
           "name": "Fluorotelomer aldehyde"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1381,10 +1194,6 @@
         {
           "id": 77,
           "name": "Fluorotelomer aldehyde"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1408,10 +1217,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1435,10 +1240,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1476,10 +1277,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1495,10 +1292,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1525,10 +1318,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1544,10 +1333,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1563,10 +1348,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1586,10 +1367,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1605,10 +1382,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1635,10 +1408,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1661,10 +1430,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1680,10 +1445,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1699,10 +1460,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1718,10 +1475,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1737,10 +1490,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1756,10 +1505,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1775,10 +1520,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1794,10 +1535,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1813,10 +1550,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1891,10 +1624,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1910,10 +1639,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1929,10 +1654,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1948,10 +1669,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1967,10 +1684,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -1986,10 +1699,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2005,10 +1714,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2024,10 +1729,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2043,10 +1744,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2062,10 +1759,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2093,10 +1786,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2116,10 +1805,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2139,10 +1824,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2166,10 +1847,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2196,10 +1873,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2215,10 +1888,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2234,10 +1903,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2253,10 +1918,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2272,10 +1933,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2325,10 +1982,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2356,10 +2009,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2375,10 +2024,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2398,10 +2043,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2429,10 +2070,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2460,10 +2097,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2491,10 +2124,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2510,10 +2139,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2552,10 +2177,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2571,10 +2192,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2602,10 +2219,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2633,10 +2246,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2664,10 +2273,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2683,10 +2288,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2714,10 +2315,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2745,10 +2342,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2764,10 +2357,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2795,10 +2384,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2814,10 +2399,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2833,10 +2414,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2852,10 +2429,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2871,10 +2444,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2902,10 +2471,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2921,10 +2486,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2940,10 +2501,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2959,10 +2516,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2978,10 +2531,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -2997,10 +2546,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3016,10 +2561,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3039,10 +2580,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3058,10 +2595,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3077,10 +2610,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3100,10 +2629,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3123,10 +2648,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3146,10 +2667,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3169,10 +2686,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3188,10 +2701,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3207,10 +2716,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3222,10 +2727,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3241,10 +2742,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3260,10 +2757,6 @@
         {
           "id": 99,
           "name": "Fluorotelomer glucuronic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3279,10 +2772,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3298,10 +2787,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3317,10 +2802,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3348,10 +2829,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3375,10 +2852,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3417,10 +2890,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3448,10 +2917,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3489,10 +2954,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3508,10 +2969,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3549,10 +3006,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3572,10 +3025,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3603,10 +3052,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3626,10 +3071,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3649,10 +3090,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3672,10 +3109,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3695,10 +3128,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3714,10 +3143,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3737,23 +3162,13 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
     {
       "index": 181,
       "smiles": "O=C/C=C(/F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 182,
@@ -3770,7 +3185,7 @@
         },
         {
           "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "name": "Fluorotelomer unsaturated halogen"
         }
       ]
     },
@@ -3786,10 +3201,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3805,10 +3216,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3824,10 +3231,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3843,10 +3246,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3862,10 +3261,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3881,10 +3276,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3900,10 +3291,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3919,10 +3306,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3938,10 +3321,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3957,10 +3336,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3976,10 +3351,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -3995,10 +3366,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4014,10 +3381,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4033,10 +3396,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4052,10 +3411,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4071,10 +3426,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4090,10 +3441,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4113,10 +3460,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4144,10 +3487,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4175,10 +3514,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4194,10 +3529,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4207,12 +3538,12 @@
       "detected": true,
       "telomer_groups": [
         {
-          "id": 101,
-          "name": "Fluorotelomer unsaturated carboxylic acids"
+          "id": 93,
+          "name": "Fluorotelomer alkene"
         },
         {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "id": 101,
+          "name": "Fluorotelomer unsaturated carboxylic acids"
         }
       ]
     },
@@ -4232,10 +3563,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4251,10 +3578,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4270,10 +3593,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4289,10 +3608,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4308,10 +3623,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4327,10 +3638,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4346,10 +3653,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4365,10 +3668,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4384,10 +3683,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4403,10 +3698,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4422,10 +3713,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4441,10 +3728,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4460,10 +3743,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4479,10 +3758,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4510,10 +3785,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4533,10 +3804,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4556,10 +3823,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4575,23 +3838,13 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
     {
       "index": 223,
       "smiles": "CC(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 224,
@@ -4616,10 +3869,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4635,10 +3884,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4654,10 +3899,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4673,10 +3914,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4692,10 +3929,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4711,10 +3944,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4738,10 +3967,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4757,10 +3982,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4776,10 +3997,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4795,10 +4012,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4814,10 +4027,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4841,10 +4050,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4860,10 +4065,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4879,10 +4080,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4906,10 +4103,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4929,10 +4122,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4952,10 +4141,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4975,10 +4160,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -4998,10 +4179,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5017,10 +4194,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5044,10 +4217,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5063,10 +4232,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5082,10 +4247,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5101,10 +4262,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5120,10 +4277,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5139,10 +4292,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5158,10 +4307,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5181,10 +4326,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5200,10 +4341,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5219,10 +4356,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5238,10 +4371,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5257,10 +4386,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5276,10 +4401,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5295,10 +4416,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5314,10 +4431,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5333,10 +4446,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5356,10 +4465,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5379,10 +4484,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5402,10 +4503,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5425,10 +4522,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5444,10 +4537,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5463,10 +4552,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5482,10 +4567,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5501,10 +4582,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5528,10 +4605,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5547,10 +4620,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5566,10 +4635,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5585,10 +4650,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5604,10 +4665,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5623,10 +4680,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5642,10 +4695,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5661,10 +4710,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5680,10 +4725,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5707,10 +4748,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5730,10 +4767,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5749,10 +4782,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5768,10 +4797,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5799,10 +4824,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5830,10 +4851,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5861,10 +4878,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5892,10 +4905,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5923,10 +4932,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5942,10 +4947,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5961,10 +4962,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5976,10 +4973,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -5995,10 +4988,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6014,10 +5003,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6041,10 +5026,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6079,10 +5060,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6098,10 +5075,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6125,10 +5098,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6152,10 +5121,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6171,10 +5136,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6194,10 +5155,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6209,10 +5166,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6228,10 +5181,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6255,10 +5204,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6274,10 +5219,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6301,10 +5242,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6328,10 +5265,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6355,10 +5288,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6374,10 +5303,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6400,10 +5325,6 @@
         {
           "id": 77,
           "name": "Fluorotelomer aldehyde"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6419,10 +5340,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6442,10 +5359,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6461,10 +5374,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6487,10 +5396,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6510,10 +5415,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6540,10 +5441,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6559,10 +5456,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6574,10 +5467,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6593,10 +5482,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6616,10 +5501,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6635,10 +5516,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6654,10 +5531,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6699,10 +5572,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6714,10 +5583,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6750,10 +5615,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6781,10 +5642,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6812,10 +5669,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6831,10 +5684,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6857,10 +5706,6 @@
         {
           "id": 101,
           "name": "Fluorotelomer unsaturated carboxylic acids"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6889,35 +5734,17 @@
     {
       "index": 337,
       "smiles": "O=C/C=C(/F)C(F)(F)C(F)(F)C(F)(F)F",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 338,
       "smiles": "O=C/C=C(/F)C(F)(F)F",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 339,
       "smiles": "O=C/C=C(\\F)C(F)(F)F",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 340,
@@ -6931,10 +5758,6 @@
         {
           "id": 99,
           "name": "Fluorotelomer glucuronic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6950,10 +5773,6 @@
         {
           "id": 99,
           "name": "Fluorotelomer glucuronic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6969,10 +5788,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -6988,10 +5803,6 @@
         {
           "id": 99,
           "name": "Fluorotelomer glucuronic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7018,10 +5829,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7033,10 +5840,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7048,10 +5851,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7063,10 +5862,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7078,10 +5873,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7093,10 +5884,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7108,10 +5895,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7123,10 +5906,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7138,10 +5917,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7153,10 +5928,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7180,10 +5951,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7207,10 +5974,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7234,10 +5997,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7261,10 +6020,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7288,10 +6043,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7315,10 +6066,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7342,10 +6089,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7369,10 +6112,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7388,10 +6127,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7419,10 +6154,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7450,10 +6181,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7469,10 +6196,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7488,10 +6211,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7507,10 +6226,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7526,10 +6241,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7549,10 +6260,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7572,10 +6279,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7595,10 +6298,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7614,10 +6313,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7633,10 +6328,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7652,10 +6343,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7671,10 +6358,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7690,10 +6373,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7709,10 +6388,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7728,10 +6403,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7747,10 +6418,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7766,10 +6433,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7789,10 +6452,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7812,10 +6471,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7835,10 +6490,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7858,10 +6509,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7881,10 +6528,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7900,10 +6543,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7919,10 +6558,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7938,10 +6573,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7957,10 +6588,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7976,10 +6603,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -7995,10 +6618,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8014,10 +6633,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8033,10 +6648,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8052,10 +6663,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8071,10 +6678,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8090,10 +6693,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8109,10 +6708,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8128,10 +6723,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8143,10 +6734,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8158,10 +6745,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8173,10 +6756,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8188,10 +6767,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8203,10 +6778,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8218,10 +6789,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8233,10 +6800,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8248,10 +6811,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8263,10 +6822,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8278,10 +6833,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8293,10 +6844,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8316,10 +6863,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8339,10 +6882,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8362,10 +6901,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8385,10 +6920,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8408,10 +6939,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8431,10 +6958,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8454,10 +6977,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8477,10 +6996,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8500,10 +7015,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8523,10 +7034,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8546,10 +7053,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8569,10 +7072,6 @@
         {
           "id": 110,
           "name": "Fluorotelomer acetylsulfanylhydroxypropanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8588,10 +7087,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8607,10 +7102,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8626,10 +7117,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8645,10 +7132,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8664,10 +7147,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8683,10 +7162,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8706,10 +7181,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8729,10 +7200,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8760,10 +7227,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8791,10 +7254,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8822,10 +7281,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8853,10 +7308,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8884,10 +7335,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8915,10 +7362,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8946,10 +7389,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -8977,10 +7416,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9008,10 +7443,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9039,10 +7470,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9066,10 +7493,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9093,10 +7516,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9120,10 +7539,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9147,10 +7562,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9174,10 +7585,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9201,10 +7608,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9228,10 +7631,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9255,10 +7654,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9282,10 +7677,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9305,10 +7696,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9328,10 +7715,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9351,10 +7734,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9374,10 +7753,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9393,10 +7768,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9412,10 +7783,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9431,10 +7798,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9450,10 +7813,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9469,10 +7828,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9488,10 +7843,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9507,10 +7858,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9526,10 +7873,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9545,10 +7888,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9564,10 +7903,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9583,10 +7918,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9602,10 +7933,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9621,10 +7948,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9648,10 +7971,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9675,10 +7994,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9702,10 +8017,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9729,10 +8040,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9756,10 +8063,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9783,10 +8086,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9810,10 +8109,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9837,10 +8132,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9864,10 +8155,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9891,10 +8178,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9910,10 +8193,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9929,10 +8208,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9948,10 +8223,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9967,10 +8238,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -9986,10 +8253,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10005,10 +8268,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10024,10 +8283,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10047,10 +8302,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10070,10 +8321,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10093,10 +8340,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10116,10 +8359,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10139,10 +8378,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10162,10 +8397,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10185,10 +8416,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10208,10 +8435,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10687,10 +8910,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10706,10 +8925,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10725,10 +8940,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10744,10 +8955,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10763,10 +8970,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10782,10 +8985,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10801,10 +9000,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10824,10 +9019,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10850,10 +9041,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10881,10 +9068,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10904,10 +9087,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10927,10 +9106,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10946,10 +9121,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10969,10 +9140,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -10988,10 +9155,6 @@
         {
           "id": 112,
           "name": "Fluorotelomer amino propanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11007,10 +9170,6 @@
         {
           "id": 112,
           "name": "Fluorotelomer amino propanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11026,10 +9185,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11045,10 +9200,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11064,10 +9215,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11083,10 +9230,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11102,10 +9245,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11121,10 +9260,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11140,10 +9275,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11159,10 +9290,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11178,10 +9305,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11197,10 +9320,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11216,10 +9335,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11235,10 +9350,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11254,10 +9365,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11273,10 +9380,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11292,10 +9395,6 @@
         {
           "id": 112,
           "name": "Fluorotelomer amino propanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11311,10 +9410,6 @@
         {
           "id": 112,
           "name": "Fluorotelomer amino propanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11330,10 +9425,6 @@
         {
           "id": 112,
           "name": "Fluorotelomer amino propanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11349,10 +9440,6 @@
         {
           "id": 112,
           "name": "Fluorotelomer amino propanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11372,10 +9459,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11395,10 +9478,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11414,10 +9493,6 @@
         {
           "id": 112,
           "name": "Fluorotelomer amino propanoic acid"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11437,10 +9512,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11460,10 +9531,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11483,10 +9550,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11506,10 +9569,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11529,10 +9588,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11552,10 +9607,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11571,10 +9622,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11590,10 +9637,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11609,10 +9652,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11628,10 +9667,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11647,10 +9682,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11666,10 +9697,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11685,10 +9712,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11704,10 +9727,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11723,10 +9742,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11742,10 +9757,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11761,10 +9772,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11780,10 +9787,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11799,10 +9802,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11818,10 +9817,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11837,10 +9832,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11856,10 +9847,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11875,10 +9862,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11894,10 +9877,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11913,10 +9892,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11932,10 +9907,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11951,10 +9922,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11970,10 +9937,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -11989,10 +9952,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12008,10 +9967,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12043,112 +9998,52 @@
     {
       "index": 615,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 616,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 617,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 618,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 619,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 620,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 621,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 622,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 623,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 624,
       "smiles": "CC(C)OP(=O)(F)OC(C)C(F)(F)C(F)(F)C(F)(F)C(F)SF",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 625,
@@ -12219,13 +10114,7 @@
     {
       "index": 631,
       "smiles": "O=C(F)C(F)(F)C(F)(F)CC(O)O",
-      "detected": true,
-      "telomer_groups": [
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
-        }
-      ]
+      "detected": false
     },
     {
       "index": 632,
@@ -12243,10 +10132,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12273,10 +10158,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12292,10 +10173,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12307,10 +10184,6 @@
         {
           "id": 87,
           "name": "Fluorotelomer sulfure"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12331,10 +10204,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12360,10 +10229,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12378,7 +10243,7 @@
         },
         {
           "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "name": "Fluorotelomer unsaturated halogen"
         }
       ]
     },
@@ -12399,10 +10264,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12414,10 +10275,6 @@
         {
           "id": 87,
           "name": "Fluorotelomer sulfure"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12433,10 +10290,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12452,10 +10305,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12471,10 +10320,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12490,10 +10335,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12513,10 +10354,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12536,10 +10373,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12559,10 +10392,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12582,10 +10411,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12647,10 +10472,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12676,10 +10497,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12695,10 +10512,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12714,10 +10527,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12733,10 +10542,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12752,10 +10557,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12771,10 +10572,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12790,10 +10587,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12809,10 +10602,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12828,10 +10617,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12847,10 +10632,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12866,10 +10647,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12888,7 +10665,7 @@
         },
         {
           "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "name": "Fluorotelomer unsaturated halogen"
         }
       ]
     },
@@ -12904,10 +10681,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12923,10 +10696,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12942,10 +10711,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12961,10 +10726,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12980,10 +10741,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -12999,10 +10756,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13018,10 +10771,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13037,10 +10786,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13056,10 +10801,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13075,10 +10816,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13094,10 +10831,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13113,10 +10846,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13132,10 +10861,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13151,10 +10876,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13170,10 +10891,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13189,10 +10906,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13208,10 +10921,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13227,10 +10936,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13246,10 +10951,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13265,10 +10966,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13284,10 +10981,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13307,10 +11000,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13330,10 +11019,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13353,10 +11038,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13376,10 +11057,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13399,10 +11076,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13422,10 +11095,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13445,10 +11114,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13468,10 +11133,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13491,10 +11152,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13514,10 +11171,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13537,10 +11190,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13560,10 +11209,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13583,10 +11228,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13602,10 +11243,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13621,10 +11258,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13645,10 +11278,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13668,10 +11297,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13691,10 +11316,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13706,10 +11327,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13725,10 +11342,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13744,10 +11357,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13759,10 +11368,6 @@
         {
           "id": 101,
           "name": "Fluorotelomer unsaturated carboxylic acids"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13785,10 +11390,6 @@
         {
           "id": 101,
           "name": "Fluorotelomer unsaturated carboxylic acids"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13811,10 +11412,6 @@
         {
           "id": 101,
           "name": "Fluorotelomer unsaturated carboxylic acids"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13826,10 +11423,6 @@
         {
           "id": 101,
           "name": "Fluorotelomer unsaturated carboxylic acids"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13841,10 +11434,6 @@
         {
           "id": 101,
           "name": "Fluorotelomer unsaturated carboxylic acids"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13854,8 +11443,8 @@
       "detected": true,
       "telomer_groups": [
         {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
+          "id": 93,
+          "name": "Fluorotelomer alkene"
         }
       ]
     },
@@ -13871,10 +11460,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13894,10 +11479,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13917,10 +11498,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13940,10 +11517,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13967,10 +11540,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -13986,10 +11555,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14001,10 +11566,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14032,10 +11593,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14063,10 +11620,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14078,10 +11631,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14093,10 +11642,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14108,10 +11653,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14123,10 +11664,6 @@
         {
           "id": 86,
           "name": "Fluorotelomer alcohol"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14138,10 +11675,6 @@
         {
           "id": 86,
           "name": "Fluorotelomer alcohol"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14153,10 +11686,6 @@
         {
           "id": 86,
           "name": "Fluorotelomer alcohol"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14168,10 +11697,6 @@
         {
           "id": 86,
           "name": "Fluorotelomer alcohol"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14183,10 +11708,6 @@
         {
           "id": 86,
           "name": "Fluorotelomer alcohol"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14198,10 +11719,6 @@
         {
           "id": 86,
           "name": "Fluorotelomer alcohol"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14213,10 +11730,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14240,10 +11753,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14370,10 +11879,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14385,10 +11890,6 @@
         {
           "id": 100,
           "name": "Fluorotelomer formaldehyde bisulfite"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14546,10 +12047,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14569,10 +12066,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14588,10 +12081,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14607,10 +12096,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14626,10 +12111,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14645,10 +12126,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14664,10 +12141,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14683,10 +12156,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14702,10 +12171,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14721,10 +12186,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14740,10 +12201,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14759,10 +12216,6 @@
         {
           "id": 108,
           "name": "Fluorotelomer sulfinyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14778,10 +12231,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14793,10 +12242,6 @@
         {
           "id": 87,
           "name": "Fluorotelomer sulfure"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14812,10 +12257,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14831,10 +12272,6 @@
         {
           "id": 98,
           "name": "Fluorotelomer methyl"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14846,10 +12283,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14861,10 +12294,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14876,10 +12305,6 @@
         {
           "id": 103,
           "name": "Fluorotelomer glycine"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14899,10 +12324,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14922,10 +12343,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14949,10 +12366,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },
@@ -14976,10 +12389,6 @@
         {
           "id": 109,
           "name": "Fluorotelomer sulfone"
-        },
-        {
-          "id": 114,
-          "name": "Fluorotelomer unsaturated methyl"
         }
       ]
     },

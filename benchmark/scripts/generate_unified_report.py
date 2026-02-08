@@ -1213,7 +1213,7 @@ def analyze_timing_benchmark(data):
     
     # Analyze performance by molecule size bins
     df['size_bin'] = pd.cut(df['num_atoms'], bins=5, labels=['Small', 'Medium-Small', 'Medium', 'Medium-Large', 'Large'])
-    size_analysis = df.groupby('size_bin').agg({
+    size_analysis = df.groupby('size_bin',observed=False).agg({
         'pfasgroups_time_avg': ['mean', 'std', 'count'],
         'atlas_time_avg': ['mean', 'std', 'count'],
         'pfasgroups_success_rate': 'mean',

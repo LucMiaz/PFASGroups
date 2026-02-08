@@ -207,15 +207,29 @@ class DataImporter {
             data = allMolecules;
         }
         
+        let records = data;
+        if (!Array.isArray(records)) {
+            if (data && Array.isArray(data.records)) {
+                records = data.records;
+            } else if (data && Array.isArray(data.results)) {
+                records = data.results;
+            } else if (data && Array.isArray(data.data)) {
+                records = data.data;
+            } else {
+                console.warn(`Skipping ${filename}: unsupported data structure`);
+                return;
+            }
+        }
+
         // Deduplicate records based on SMILES and classification results
-        const originalCount = data.length;
-        data = this.deduplicateRecords(data);
-        const duplicatesRemoved = originalCount - data.length;
+        const originalCount = records.length;
+        records = this.deduplicateRecords(records);
+        const duplicatesRemoved = originalCount - records.length;
         if (duplicatesRemoved > 0) {
             console.log(`  Removed ${duplicatesRemoved} duplicate(s) from ${filename}`);
         }
-        
-        for (const record of data) {
+
+        for (const record of records) {
             try {
                 // Insert molecule data
                 const moleculeData = record.molecule_data || record;
@@ -243,7 +257,7 @@ class DataImporter {
             }
         }
         
-        console.log(`✓ Imported ${data.length} records from ${filename}`);
+        console.log(`✓ Imported ${records.length} records from ${filename}`);
     }
 
     async importTimingData(filePath, filename) {
