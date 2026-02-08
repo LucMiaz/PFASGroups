@@ -7,6 +7,7 @@ Group 15 has linker_smarts set to "[#6H2X4]" (only CH2 groups allowed as linkers
 and max_dist_from_CF=12 to allow for various chain lengths.
 """
 
+import pytest
 from rdkit import Chem
 from PFASgroups import parse_smiles
 
@@ -28,47 +29,18 @@ test_cases = [
     ("C(F)(F)CO", "CF2-CH2-OH (too short perfluoro chain)", 1, False),
 ]
 
-print("Testing Fluorotelomer Alcohols (Group 15) with linker_smarts validation")
-print("Group 15 linker_smarts: '[#6H2X4]' (only CH2 groups allowed)")
-print("=" * 80)
-
-for smiles, description, ch2_count, should_match in test_cases:
-    print(f"\n{description}")
-    print(f"  SMILES: {smiles}")
-    
+@pytest.mark.parametrize("smiles,description,ch2_count,should_match", test_cases)
+def test_linker_smarts_group_15(smiles, description, ch2_count, should_match):
     mol = Chem.MolFromSmiles(smiles)
-    if not mol:
-        print("  ERROR: Invalid SMILES")
-        continue
-    
-    # Parse the molecule
+    assert mol is not None
+
     result = parse_smiles(smiles)
-    
     if len(result) == 0 or 'matches' not in result[0] or len(result[0]['matches']) == 0:
-        print("  Result: No PFAS groups found")
         group_15_found = False
     else:
-        # Check if group 15 (fluorotelomer alcohols) was found
         matches = result[0]['matches']
         pfas_groups = [m for m in matches if m['type'] == 'PFASgroup']
         group_15_found = any(m['id'] == 15 for m in pfas_groups)
-        
-        print(f"  Result: {len(pfas_groups)} PFAS group(s) found")
-        for match in pfas_groups:
-            if match['id'] == 15:
-                print(f"    ✓ Group 15 (fluorotelomer alcohols) - MATCHED")
-                print(f"      Match count: {match['match_count']}")
-                print(f"      Component sizes: {match['components_sizes']}")
-    
-    # Validate expected result
-    status = "✓ PASS" if group_15_found == should_match else "✗ FAIL"
-    expected = "MATCH" if should_match else "NO MATCH"
-    actual = "MATCH" if group_15_found else "NO MATCH"
-    print(f"  {status}: Expected {expected}, Got {actual}")
 
-print("\n" + "=" * 80)
-print("\nSummary:")
-print("  • Fluorotelomer alcohols require CH2 linkers only (linker_smarts: '[#6H2X4]')")
-print("  • Molecules with O or other atom types in the linker should NOT match Group 15")
-print("  • Different CH2 chain lengths (1-4+) should all match if structure is valid")
+    assert group_15_found == should_match, f"{description}"
 

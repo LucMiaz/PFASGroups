@@ -1,42 +1,20 @@
-import sys
-print("Starting telomer validation test...")
+from pathlib import Path
 
-try:
-    from pathlib import Path
-    print("✓ Path imported")
-    
-    from rdkit import Chem
-    print("✓ RDKit imported")
-    
-    # Test SDF reading
+import pytest
+from rdkit import Chem
+
+from PFASgroups import parse_smiles
+
+
+def test_telomer_validation_sdf():
     sdf_path = Path('benchmark/data/PubChem_fluorotelomers.sdf')
-    print(f"Looking for: {sdf_path.absolute()}")
-    print(f"Exists: {sdf_path.exists()}")
-    
-    if sdf_path.exists():
-        supplier = Chem.SDMolSupplier(str(sdf_path))
-        mols = []
-        for i, mol in enumerate(supplier):
-            if mol is not None:
-                mols.append(mol)
-        print(f"✓ Found {len(mols)} molecules in SDF file")
-        
-        # Test PFASgroups import
-        from PFASgroups import parse_smiles
-        print("✓ PFASgroups imported")
-        
-        # Test on first molecule
-        if mols:
-            smiles = Chem.MolToSmiles(mols[0])
-            print(f"\nTesting first molecule: {smiles[:50]}...")
-            result = parse_smiles(smiles)
-            print(f"✓ Parse successful, got {len(result) if result else 0} results")
-        
-        print("\n✅ All tests passed! Script should work.")
-    else:
-        print("✗ SDF file not found!")
+    if not sdf_path.exists():
+        pytest.skip("Telomer SDF not available")
 
-except Exception as e:
-    print(f"\n✗ Error: {e}")
-    import traceback
-    traceback.print_exc()
+    supplier = Chem.SDMolSupplier(str(sdf_path))
+    mols = [mol for mol in supplier if mol is not None]
+    assert mols
+
+    smiles = Chem.MolToSmiles(mols[0])
+    result = parse_smiles(smiles)
+    assert result

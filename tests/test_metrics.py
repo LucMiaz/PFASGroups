@@ -1,54 +1,23 @@
 from rdkit import Chem
 from PFASgroups.parser import parse_groups_in_mol
-from numpy import nan as np_na
-# Test with PFOA (linear chain)
-print("Testing PFOA (linear chain):")
-mol1 = Chem.MolFromSmiles('C(C(C(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(=O)O')
-matches1 = parse_groups_in_mol(mol1)
 
-for pfas_group, count, comp_lengths, components in matches1:
-    if components and len(components) > 0:
-        comp = components[0]
-        print(f"  {pfas_group.name}:")
-        print(f"    Length: {comp['size']}")
-        print(f"    Eccentricity: {comp.get('eccentricity', np_na):.3f}")
-        print(f"    SMARTS Centrality: {comp.get('smarts_centrality', np_na):.3f}")
-        if len(components) > 1:
-            print(f"    (showing first of {len(components)} components)")
-        break
 
-# Test with branched PFAS
-print("\nTesting Branched PFAS:")
-mol2 = Chem.MolFromSmiles('FC(F)(C(F)(F)F)C(F)(C(F)(F)F)C(=O)O')
-matches2 = parse_groups_in_mol(mol2)
+def _first_component(mol):
+    matches = parse_groups_in_mol(mol)
+    for _, _, _, components in matches:
+        if components:
+            return components[0]
+    return None
 
-for pfas_group, count, comp_lengths, components in matches2:
-    if components and len(components) > 0:
-        comp = components[0]
-        print(f"  {pfas_group.name}:")
-        print(f"    Length: {comp['size']}")
-        print(f"    Eccentricity: {comp.get('eccentricity', np_na):.3f}")
-        print(f"    SMARTS Centrality: {comp.get('smarts_centrality', np_na):.3f}")
-        if len(components) > 1:
-            print(f"    (showing first of {len(components)} components)")
-        break
 
-# Test with PFOS (sulfonic acid at end)
-print("\nTesting PFOS (terminal functional group):")
-mol3 = Chem.MolFromSmiles('FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O')
-matches3 = parse_groups_in_mol(mol3)
+def test_basic_metrics_presence():
+    mol1 = Chem.MolFromSmiles('C(C(C(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(=O)O')
+    mol2 = Chem.MolFromSmiles('FC(F)(C(F)(F)F)C(F)(C(F)(F)F)C(=O)O')
+    mol3 = Chem.MolFromSmiles('FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O')
 
-for pfas_group, count, comp_lengths, components in matches3:
-    if components and len(components) > 0:
-        comp = components[0]
-        print(f"  {pfas_group.name}:")
-        print(f"    Length: {comp['size']}")
-        print(f"    Eccentricity: {comp.get('eccentricity', np_na):.3f}")
-        print(f"    SMARTS Centrality: {comp.get('smarts_centrality', np_na):.3f}")
-        if len(components) > 1:
-            print(f"    (showing first of {len(components)} components)")
-        break
-
-print("\nMetrics explanation:")
-print("- Eccentricity: 1.0 = linear chain, 0.0 = highly branched")
-print("- SMARTS Centrality: 1.0 = functional group at center, 0.0 = at periphery")
+    for mol in [mol1, mol2, mol3]:
+        assert mol is not None
+        comp = _first_component(mol)
+        assert comp is not None
+        assert 'size' in comp
+        assert 'smarts_centrality' in comp
