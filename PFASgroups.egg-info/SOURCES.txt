@@ -25,6 +25,7 @@ PFASgroups.egg-info/top_level.txt
 PFASgroups/data/PFAS_definitions_smarts.json
 PFASgroups/data/PFAS_groups_smarts.json
 PFASgroups/data/component_smarts.json
+tests/test_PFASgroups_smarts.py
 tests/test_component_fractions.py
 tests/test_component_ratios.py
 tests/test_comprehensive_metrics.py
@@ -33,7 +34,8 @@ tests/test_fraction_analysis.py
 tests/test_linker_smarts.py
 tests/test_metrics.py
 tests/test_metrics_detailed.py
-tests/test_pytest.py
+tests/test_results_model.py
+tests/test_run_groups_definitions_tests.py
 tests/test_smarts_atom_count.py
 tests/test_smarts_matching.py
 tests/test_smarts_precompute.py
