@@ -1507,7 +1507,7 @@
             }
         },
         "smarts": {
-            "[#6$([#6][#16](=O)(=O)[O-,OH1,Oh1])]": 1
+            "[#6$([#6][#16](=O)(=O)O)]": 1
         },
         "test": {
             "category": "generic",
@@ -1519,7 +1519,8 @@
             "examples": [
                 "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
                 "[O-]S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F.CC(C)(C)C1=CC=C([I+]C2=CC=C(C=C2)C(C)(C)C)C=C1",
-                "[K+].[O-]S(=O)(=O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F"
+                "[K+].[O-]S(=O)(=O)C(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
+                "O=S(=O)(OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)F"
             ],
             "counter-examples": [
                 "O=S(O)C(F)(F)C(F)(F)F",

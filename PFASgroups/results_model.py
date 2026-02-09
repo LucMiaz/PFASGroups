@@ -125,6 +125,19 @@ class MoleculeResult(dict):
         return self.get("smiles", "")
 
     @property
+    def mol_with_h(self):
+        """Get the molecule with explicit hydrogens used for component detection.
+        
+        This reconstructs the molecule from the stored SMILES with explicit hydrogens,
+        ensuring atom indices match those used during component detection.
+        """
+        smiles_h = self.get("smiles_with_h")
+        if smiles_h:
+            return Chem.MolFromSmiles(smiles_h)
+        # Fallback for backwards compatibility
+        return self.get("mol_with_h")
+
+    @property
     def matches(self) -> List[MatchView]:
         return [MatchView(m) for m in self.get("matches", [])]
 
@@ -155,6 +168,218 @@ class MoleculeResult(dict):
                 seen.add(idx)
                 deduped.append(idx)
         return deduped
+
+    def summarise(self) -> str:
+        """Return a text summary of this molecule's results.
+
+        The summary includes:
+        - SMILES representation
+        - counts of PFAS group and definition matches
+        - total number of components across all group matches
+        - list of matched PFAS groups
+        """
+
+        total_group_matches = 0
+        total_definition_matches = 0
+        total_components = 0
+        group_counts: Dict[str, int] = {}
+
+        for m in self.matches:
+            if m.is_group:
+                total_group_matches += 1
+                total_components += len(m.components)
+                name = m.group_name or str(m.get("match_id", ""))
+                group_counts[name] = group_counts.get(name, 0) + 1
+            elif m.is_definition:
+                total_definition_matches += 1
+
+        lines: List[str] = []
+        lines.append("MoleculeResult summary")
+        lines.append(f"- SMILES: {self.smiles}")
+        lines.append(f"- PFAS group matches: {total_group_matches}")
+        lines.append(f"- PFAS definition matches: {total_definition_matches}")
+        lines.append(f"- Total components: {total_components}")
+
+        if group_counts:
+            lines.append("- Matched PFAS groups:")
+            for name, count in sorted(group_counts.items(), key=lambda kv: kv[1], reverse=True):
+                lines.append(f"  * {name}: {count} match(es)")
+
+        return "\n".join(lines)
+
+    def table(self) -> str:
+        """Return a text table with one row per match.
+
+        Columns:
+        - match_index: 1-based match index
+        - type: 'group' or 'definition'
+        - name: PFAS group name or definition name
+        - components: number of components (for groups)
+        """
+
+        lines: List[str] = []
+        lines.append("match_index\ttype\tname\tcomponents")
+
+        for idx, m in enumerate(self.matches, start=1):
+            match_type = "group" if m.is_group else "definition"
+            if m.is_group:
+                name = m.group_name or str(m.get("match_id", ""))
+                components = len(m.components)
+            else:
+                name = m.get("definition_name") or m.get("name") or str(m.get("match_id", ""))
+                components = 0
+
+            lines.append(f"{idx}\t{match_type}\t{name}\t{components}")
+
+        return "\n".join(lines)
+
+    def show(
+        self,
+        display: bool = True,
+        subwidth: int = 300,
+        subheight: int = 300,
+        ncols: int = 4,
+    ) -> Image.Image:
+        """Show all component combinations for this molecule in a grid plot.
+
+        Each panel corresponds to one combination of:
+        - matched PFAS group
+        - SMARTS/component type
+        - individual component instance
+
+        Parameters
+        ----------
+        display : bool, default True
+            Whether to display the image immediately.
+        subwidth : int, default 300
+            Width of each sub-image in pixels.
+        subheight : int, default 300
+            Height of each sub-image in pixels.
+        ncols : int, default 4
+            Number of columns in the grid.
+
+        Returns
+        -------
+        PIL.Image.Image
+            Grid image containing all component visualizations.
+        """
+
+        # Use the molecule with hydrogens that was used during component detection
+        mol = self.mol_with_h
+        if mol is None:
+            # Fallback to reconstructing from SMILES if not available
+            mol = Chem.MolFromSmiles(self.smiles)
+            if mol is None:
+                raise ValueError(f"Cannot parse SMILES: {self.smiles}")
+            mol = Chem.AddHs(mol)
+
+        imgs: List[Image.Image] = []
+
+        for match in self.matches:
+            if not match.is_group:
+                continue
+            base_label = match.group_name or match.get("match_id", "")
+            for comp_idx, comp in enumerate(match.components, start=1):
+                atoms = comp.atoms
+                if not atoms:
+                    continue
+                smarts_label = comp.smarts_label or ""
+                legend = f"{base_label} | {smarts_label} | comp#{comp_idx}"
+
+                d2d = Draw.MolDraw2DCairo(subwidth, subheight)
+                dopts = d2d.drawOptions()
+                dopts.useBWAtomPalette()
+                dopts.fixedBondLength = 20
+                dopts.addAtomIndices = True
+                dopts.addBondIndices = False
+                dopts.maxFontSize = 16
+                dopts.minFontSize = 13
+                d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
+                d2d.FinishDrawing()
+                png = d2d.GetDrawingText()
+                imgs.append(Image.open(BytesIO(png)))
+
+        if not imgs:
+            raise ValueError("No PFAS group components found to display.")
+
+        grid, _, _ = _grid_images(imgs, buffer=4, ncols=ncols)
+        if display:
+            grid.show()
+        return grid
+
+    def svg(
+        self,
+        filename: str,
+        subwidth: int = 300,
+        subheight: int = 300,
+        ncols: int = 4,
+    ) -> str:
+        """Export all component combinations to an SVG file (vector graphics).
+
+        Parameters
+        ----------
+        filename : str
+            Path to the output SVG file.
+        subwidth : int, default 300
+            Width of each sub-image in pixels.
+        subheight : int, default 300
+            Height of each sub-image in pixels.
+        ncols : int, default 4
+            Number of columns in the grid.
+
+        Returns
+        -------
+        str
+            Path to the created SVG file.
+        """
+        import svgutils.transform as sg
+        
+        # Use the molecule with hydrogens that was used during component detection
+        mol = self.mol_with_h
+        if mol is None:
+            # Fallback to reconstructing from SMILES if not available
+            mol = Chem.MolFromSmiles(self.smiles)
+            if mol is None:
+                raise ValueError(f"Cannot parse SMILES: {self.smiles}")
+            mol = Chem.AddHs(mol)
+
+        imgs: List[str] = []
+
+        for match in self.matches:
+            if not match.is_group:
+                continue
+            base_label = match.group_name or match.get("match_id", "")
+            for comp_idx, comp in enumerate(match.components, start=1):
+                atoms = comp.atoms
+                if not atoms:
+                    continue
+                smarts_label = comp.smarts_label or ""
+                legend = f"{base_label} | {smarts_label} | comp#{comp_idx}"
+
+                d2d = Draw.MolDraw2DSVG(subwidth, subheight)
+                dopts = d2d.drawOptions()
+                dopts.useBWAtomPalette()
+                dopts.fixedBondLength = 20
+                dopts.addAtomIndices = True
+                dopts.addBondIndices = False
+                dopts.maxFontSize = 16
+                dopts.minFontSize = 13
+                d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
+                d2d.FinishDrawing()
+                imgs.append(d2d.GetDrawingText())
+
+        if not imgs:
+            raise ValueError("No PFAS group components found to display.")
+
+        # Convert SVG strings to svgutils figures
+        svg_figs = [sg.fromstring(img) for img in imgs]
+        
+        # Merge into grid
+        from .draw_mols import merge_svg
+        grid, _, _ = merge_svg(svg_figs, buffer=4, ncols=ncols)
+        
+        grid.save(filename)
+        return filename
 
 
 class ResultsModel(list):
@@ -243,6 +468,7 @@ class ResultsModel(list):
             mol = Chem.MolFromSmiles(smiles)
             if mol is None:
                 continue
+            # IMPORTANT: Add hydrogens to match atom numbering used in parse_groups_in_mol
             mol = Chem.AddHs(mol)
 
             # Try to infer a label from the first matching group
@@ -283,11 +509,15 @@ class ResultsModel(list):
         imgs: List[Image.Image] = []
 
         for mol_index, mol_res in enumerate(self):  # type: ignore[assignment]
-            smiles = mol_res.smiles
-            mol = Chem.MolFromSmiles(smiles)
+            # Use the molecule with hydrogens from parsing
+            mol = mol_res.mol_with_h
             if mol is None:
-                continue
-            mol = Chem.AddHs(mol)
+                # Fallback to SMILES
+                smiles = mol_res.smiles
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    continue
+                mol = Chem.AddHs(mol)
 
             for match in mol_res.matches:
                 if not match.is_group:
@@ -315,6 +545,82 @@ class ResultsModel(list):
         if display:
             grid.show()
         return grid
+
+    def svg(
+        self,
+        filename: str,
+        subwidth: int = 300,
+        subheight: int = 300,
+        ncols: int = 4,
+    ) -> str:
+        """Export all component combinations to an SVG file (vector graphics).
+
+        Parameters
+        ----------
+        filename : str
+            Path to the output SVG file.
+        subwidth : int, default 300
+            Width of each sub-image in pixels.
+        subheight : int, default 300
+            Height of each sub-image in pixels.
+        ncols : int, default 4
+            Number of columns in the grid.
+
+        Returns
+        -------
+        str
+            Path to the created SVG file.
+        """
+        import svgutils.transform as sg
+        
+        imgs: List[str] = []
+
+        for mol_index, mol_res in enumerate(self):  # type: ignore[assignment]
+            # Use the molecule with hydrogens from parsing
+            mol = mol_res.mol_with_h
+            if mol is None:
+                # Fallback to SMILES
+                smiles = mol_res.smiles
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    continue
+                mol = Chem.AddHs(mol)
+
+            for match in mol_res.matches:
+                if not match.is_group:
+                    continue
+                base_label = match.group_name or match.get("match_id", "")
+                for comp_idx, comp in enumerate(match.components, start=1):
+                    atoms = comp.atoms
+                    if not atoms:
+                        continue
+                    smarts_label = comp.smarts_label or ""
+                    legend = f"{base_label} | {smarts_label} | mol#{mol_index+1} comp#{comp_idx}"
+                    
+                    d2d = Draw.MolDraw2DSVG(subwidth, subheight)
+                    dopts = d2d.drawOptions()
+                    dopts.useBWAtomPalette()
+                    dopts.fixedBondLength = 20
+                    dopts.addAtomIndices = True
+                    dopts.addBondIndices = False
+                    dopts.maxFontSize = 16
+                    dopts.minFontSize = 13
+                    d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
+                    d2d.FinishDrawing()
+                    imgs.append(d2d.GetDrawingText())
+
+        if not imgs:
+            raise ValueError("No PFAS group components found to display.")
+
+        # Convert SVG strings to svgutils figures
+        svg_figs = [sg.fromstring(img) for img in imgs]
+        
+        # Merge into grid
+        from .draw_mols import merge_svg
+        grid, _, _ = merge_svg(svg_figs, buffer=4, ncols=ncols)
+        
+        grid.save(filename)
+        return filename
     
     def summarise(self) -> str:
         """Return a more detailed text summary of the results.
@@ -427,11 +733,15 @@ class ResultsModel(list):
             if max_molecules is not None and count >= max_molecules:
                 break
 
-            smiles = mol_res.smiles
-            mol = Chem.MolFromSmiles(smiles)
+            # Use the molecule with hydrogens from parsing
+            mol = mol_res.mol_with_h
             if mol is None:
-                continue
-            mol = Chem.AddHs(mol)
+                # Fallback to SMILES
+                smiles = mol_res.smiles
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    continue
+                mol = Chem.AddHs(mol)
 
             # Build colour map per group
             atom_colours: Dict[int, Color] = {}

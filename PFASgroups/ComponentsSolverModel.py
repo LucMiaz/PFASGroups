@@ -588,10 +588,10 @@ class ComponentsSolver:
         component_fraction = total_carbons_in_component / self.total_carbons if self.total_carbons > 0 else 0.0
         
         result = {
-            'component': list(component), 
+            'component': sorted(list(component)), 
             'size': len(component), 
             'component_fraction': component_fraction,  # Fraction of molecule covered by component
-            'smarts_matches': list(smarts_matches) if smarts_matches is not None else None,  # Store for union calculation
+            'smarts_matches': sorted(list(smarts_matches)) if smarts_matches is not None else None,  # Store for union calculation
             'smarts_extra_atoms': smarts_extra_atoms,  # Extra carbons from functional group
             'SMARTS': smarts_type,
             # Basic metrics

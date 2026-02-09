@@ -211,7 +211,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                     match_count = len(unique_components)
                     group_matches.append((agg_group, match_count, component_sizes, unique_components))
 
-    return group_matches
+    return group_matches, mol
 
 
 @rdkit_disable_log(level='warning')
@@ -313,14 +313,17 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         # Pass through component metric options
         kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
         kwargs['compute_component_metrics'] = compute_component_metrics
-        matches = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
+        matches, mol_with_h = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
         inchikey = Chem.MolToInchiKey(mol)
         inchi = Chem.MolToInchi(mol)
         smi = Chem.MolToSmiles(mol)
+        # Store SMILES with explicit H for efficient atom index mapping during visualization
+        smiles_with_h = Chem.MolToSmiles(mol_with_h)
         results.setdefault(inchikey,{}).update({"smiles": smi,
                         "inchikey": inchikey,
                         "inchi": inchi,
-                        "formula": formula})
+                        "formula": formula,
+                        "smiles_with_h": smiles_with_h})
         
         # Build match results with comprehensive summary metrics
         match_results = []

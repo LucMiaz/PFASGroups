@@ -47,7 +47,7 @@ def test_parse_mols_output_structure():
                 
                 component_fields = [
                     'component', 'size', 'SMARTS',
-                    'eccentricity', 'smarts_centrality',
+                    'eccentricity_values', 'smarts_centrality',
                     'diameter', 'radius', 'effective_graph_resistance',
                     'center', 'periphery', 'barycenter',
                     'min_dist_to_barycenter', 'min_dist_to_center',
@@ -94,7 +94,7 @@ def simulate_database_save():
                 'indices': comp['component'],
                 'length': comp.get('size', len(comp['component'])),
                 'SMARTS': comp['SMARTS'],
-                'eccentricity': comp['eccentricity'],
+                'eccentricity_values': comp['eccentricity_values'],
                 'smarts_centrality': comp['smarts_centrality'],
                 'diameter': comp.get('diameter'),
                 'radius': comp.get('radius'),
