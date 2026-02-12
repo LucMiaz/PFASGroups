@@ -53,6 +53,9 @@ dev = [
     "pytest",
     "pytest-cov",
 ]
+database = [
+    "sqlalchemy>=1.4.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/lucmiaz/PFASGroups"

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple, Union
+import os
 
 from rdkit import Chem
 from rdkit.Chem import Draw
@@ -381,6 +382,112 @@ class MoleculeResult(dict):
         grid.save(filename)
         return filename
 
+    def to_sql(
+        self,
+        filename: Optional[str] = None,
+        dbname: Optional[str] = None,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        components_table: str = "components",
+        groups_table: str = "pfas_groups_in_compound",
+        if_exists: str = "append",
+    ) -> None:
+        """Export this molecule result to a SQL database.
+
+        Can write to either SQLite (via filename) or PostgreSQL/MySQL (via connection parameters).
+
+        Parameters
+        ----------
+        filename : str, optional
+            Path to SQLite database file. If provided, uses SQLite.
+        dbname : str, optional
+            Database name (for PostgreSQL/MySQL).
+        user : str, optional
+            Database username. Defaults to os.environ['DB_USER'] if not provided.
+        password : str, optional
+            Database password. Defaults to os.environ['DB_PASSWORD'] if not provided.
+        host : str, optional
+            Database host. Defaults to os.environ.get('DB_HOST', 'localhost').
+        port : int, optional
+            Database port. Defaults to os.environ.get('DB_PORT', 5432 for PostgreSQL).
+        components_table : str, default "components"
+            Name of the table to store component-level data.
+        groups_table : str, default "pfas_groups_in_compound"
+            Name of the table to store PFAS group matches.
+        if_exists : str, default "append"
+            How to behave if tables exist: 'fail', 'replace', or 'append'.
+        """
+        try:
+            import pandas as pd
+            import sqlalchemy
+        except ImportError:
+            raise ImportError("pandas and sqlalchemy are required for to_sql. Install with: pip install pandas sqlalchemy")
+
+        # Determine connection
+        if filename:
+            engine = sqlalchemy.create_engine(f"sqlite:///{filename}")
+        elif dbname:
+            # Get credentials from environment if not provided
+            if user is None:
+                user = os.environ.get('DB_USER')
+            if password is None:
+                password = os.environ.get('DB_PASSWORD')
+            if host is None:
+                host = os.environ.get('DB_HOST', 'localhost')
+            if port is None:
+                port = int(os.environ.get('DB_PORT', 5432))
+            
+            if not user or not password:
+                raise ValueError("Database credentials required. Provide user/password or set DB_USER/DB_PASSWORD environment variables.")
+            
+            # Assuming PostgreSQL; adjust for MySQL if needed
+            connection_string = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
+            engine = sqlalchemy.create_engine(connection_string)
+        else:
+            raise ValueError("Either filename (for SQLite) or dbname (for PostgreSQL) must be provided.")
+
+        # Prepare components data
+        components_data = []
+        for match in self.matches:
+            if not match.is_group:
+                continue
+            for comp in match.components:
+                components_data.append({
+                    'smiles': self.smiles,
+                    'group_id': match.group_id,
+                    'group_name': match.group_name,
+                    'smarts_label': comp.smarts_label,
+                    'component_atoms': ','.join(map(str, comp.atoms)),
+                })
+        
+        # Prepare groups data
+        groups_data = []
+        group_counts: Dict[Tuple[Optional[int], str], int] = {}
+        for match in self.matches:
+            if not match.is_group:
+                continue
+            key = (match.group_id, match.group_name or '')
+            group_counts[key] = group_counts.get(key, 0) + 1
+        
+        for (group_id, group_name), count in group_counts.items():
+            groups_data.append({
+                'smiles': self.smiles,
+                'group_id': group_id,
+                'group_name': group_name,
+                'match_count': count,
+            })
+        
+        # Write to database
+        if components_data:
+            df_components = pd.DataFrame(components_data)
+            df_components.to_sql(components_table, engine, if_exists=if_exists, index=False)
+        
+        if groups_data:
+            df_groups = pd.DataFrame(groups_data)
+            df_groups.to_sql(groups_table, engine, if_exists=if_exists, index=False)
+
 
 class ResultsModel(list):
     """List-like container for PFASGroups results.
@@ -545,6 +652,112 @@ class ResultsModel(list):
         if display:
             grid.show()
         return grid
+
+    def to_sql(
+        self,
+        filename: Optional[str] = None,
+        dbname: Optional[str] = None,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        components_table: str = "components",
+        groups_table: str = "pfas_groups_in_compound",
+        if_exists: str = "append",
+    ) -> None:
+        """Export this molecule result to a SQL database.
+
+        Can write to either SQLite (via filename) or PostgreSQL/MySQL (via connection parameters).
+
+        Parameters
+        ----------
+        filename : str, optional
+            Path to SQLite database file. If provided, uses SQLite.
+        dbname : str, optional
+            Database name (for PostgreSQL/MySQL).
+        user : str, optional
+            Database username. Defaults to os.environ['DB_USER'] if not provided.
+        password : str, optional
+            Database password. Defaults to os.environ['DB_PASSWORD'] if not provided.
+        host : str, optional
+            Database host. Defaults to os.environ.get('DB_HOST', 'localhost').
+        port : int, optional
+            Database port. Defaults to os.environ.get('DB_PORT', 5432 for PostgreSQL).
+        components_table : str, default "components"
+            Name of the table to store component-level data.
+        groups_table : str, default "pfas_groups_in_compound"
+            Name of the table to store PFAS group matches.
+        if_exists : str, default "append"
+            How to behave if tables exist: 'fail', 'replace', or 'append'.
+        """
+        try:
+            import pandas as pd
+            import sqlalchemy
+        except ImportError:
+            raise ImportError("pandas and sqlalchemy are required for to_sql. Install with: pip install pandas sqlalchemy")
+
+        # Determine connection
+        if filename:
+            engine = sqlalchemy.create_engine(f"sqlite:///{filename}")
+        elif dbname:
+            # Get credentials from environment if not provided
+            if user is None:
+                user = os.environ.get('DB_USER')
+            if password is None:
+                password = os.environ.get('DB_PASSWORD')
+            if host is None:
+                host = os.environ.get('DB_HOST', 'localhost')
+            if port is None:
+                port = int(os.environ.get('DB_PORT', 5432))
+            
+            if not user or not password:
+                raise ValueError("Database credentials required. Provide user/password or set DB_USER/DB_PASSWORD environment variables.")
+            
+            # Assuming PostgreSQL; adjust for MySQL if needed
+            connection_string = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
+            engine = sqlalchemy.create_engine(connection_string)
+        else:
+            raise ValueError("Either filename (for SQLite) or dbname (for PostgreSQL) must be provided.")
+
+        # Prepare components data
+        components_data = []
+        for match in self.matches:
+            if not match.is_group:
+                continue
+            for comp in match.components:
+                components_data.append({
+                    'smiles': self.smiles,
+                    'group_id': match.group_id,
+                    'group_name': match.group_name,
+                    'smarts_label': comp.smarts_label,
+                    'component_atoms': ','.join(map(str, comp.atoms)),
+                })
+        
+        # Prepare groups data
+        groups_data = []
+        group_counts: Dict[Tuple[int, str], int] = {}
+        for match in self.matches:
+            if not match.is_group:
+                continue
+            key = (match.group_id, match.group_name or '')
+            group_counts[key] = group_counts.get(key, 0) + 1
+        
+        for (group_id, group_name), count in group_counts.items():
+            groups_data.append({
+                'smiles': self.smiles,
+                'group_id': group_id,
+                'group_name': group_name,
+                'match_count': count,
+            })
+        
+        # Write to database
+        if components_data:
+            df_components = pd.DataFrame(components_data)
+            df_components.to_sql(components_table, engine, if_exists=if_exists, index=False)
+        
+        if groups_data:
+            df_groups = pd.DataFrame(groups_data)
+            df_groups.to_sql(groups_table, engine, if_exists=if_exists, index=False)
 
     def svg(
         self,
@@ -790,3 +1003,112 @@ class ResultsModel(list):
             raise ValueError("No PFAS group components found in results.")
 
         return _grid_images(imgs, buffer=4, ncols=ncols)
+
+    def to_sql(
+        self,
+        filename: Optional[str] = None,
+        dbname: Optional[str] = None,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        components_table: str = "components",
+        groups_table: str = "pfas_groups_in_compound",
+        if_exists: str = "append",
+    ) -> None:
+        """Export all molecule results to a SQL database.
+
+        Can write to either SQLite (via filename) or PostgreSQL/MySQL (via connection parameters).
+        This method efficiently batches all molecules into the database in a single operation.
+
+        Parameters
+        ----------
+        filename : str, optional
+            Path to SQLite database file. If provided, uses SQLite.
+        dbname : str, optional
+            Database name (for PostgreSQL/MySQL).
+        user : str, optional
+            Database username. Defaults to os.environ['DB_USER'] if not provided.
+        password : str, optional
+            Database password. Defaults to os.environ['DB_PASSWORD'] if not provided.
+        host : str, optional
+            Database host. Defaults to os.environ.get('DB_HOST', 'localhost').
+        port : int, optional
+            Database port. Defaults to os.environ.get('DB_PORT', 5432 for PostgreSQL).
+        components_table : str, default "components"
+            Name of the table to store component-level data.
+        groups_table : str, default "pfas_groups_in_compound"
+            Name of the table to store PFAS group matches.
+        if_exists : str, default "append"
+            How to behave if tables exist: 'fail', 'replace', or 'append'.
+        """
+        try:
+            import pandas as pd
+            import sqlalchemy
+        except ImportError:
+            raise ImportError("pandas and sqlalchemy are required for to_sql. Install with: pip install pandas sqlalchemy")
+
+        # Determine connection
+        if filename:
+            engine = sqlalchemy.create_engine(f"sqlite:///{filename}")
+        elif dbname:
+            # Get credentials from environment if not provided
+            if user is None:
+                user = os.environ.get('DB_USER')
+            if password is None:
+                password = os.environ.get('DB_PASSWORD')
+            if host is None:
+                host = os.environ.get('DB_HOST', 'localhost')
+            if port is None:
+                port = int(os.environ.get('DB_PORT', 5432))
+            
+            if not user or not password:
+                raise ValueError("Database credentials required. Provide user/password or set DB_USER/DB_PASSWORD environment variables.")
+            
+            # Assuming PostgreSQL; adjust for MySQL if needed
+            connection_string = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
+            engine = sqlalchemy.create_engine(connection_string)
+        else:
+            raise ValueError("Either filename (for SQLite) or dbname (for PostgreSQL) must be provided.")
+
+        # Prepare components data for all molecules
+        components_data = []
+        for mol_res in self:  # type: ignore[assignment]
+            for match in mol_res.matches:
+                if not match.is_group:
+                    continue
+                for comp in match.components:
+                    components_data.append({
+                        'smiles': mol_res.smiles,
+                        'group_id': match.group_id,
+                        'group_name': match.group_name,
+                        'smarts_label': comp.smarts_label,
+                        'component_atoms': ','.join(map(str, comp.atoms)),
+                    })
+        
+        # Prepare groups data for all molecules
+        groups_data = []
+        for mol_res in self:  # type: ignore[assignment]
+            group_counts: Dict[Tuple[Optional[int], str], int] = {}
+            for match in mol_res.matches:
+                if not match.is_group:
+                    continue
+                key = (match.group_id, match.group_name or '')
+                group_counts[key] = group_counts.get(key, 0) + 1
+            
+            for (group_id, group_name), count in group_counts.items():
+                groups_data.append({
+                    'smiles': mol_res.smiles,
+                    'group_id': group_id,
+                    'group_name': group_name,
+                    'match_count': count,
+                })
+        
+        # Write to database
+        if components_data:
+            df_components = pd.DataFrame(components_data)
+            df_components.to_sql(components_table, engine, if_exists=if_exists, index=False)
+        
+        if groups_data:
+            df_groups = pd.DataFrame(groups_data)
+            df_groups.to_sql(groups_table, engine, if_exists=if_exists, index=False)
