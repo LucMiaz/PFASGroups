@@ -112,6 +112,8 @@
                 "negatives": [
                     "CCCCCC",
                     "C(F)CC",
+                    "C(F)(F)C(F)(F)C",
+                    "CC(F)(F)CC",
                     "C(F)(F)(Cl)C",
                     "C(F)(F)(Br)C",
                     "CC(F)C",
