@@ -1,8 +1,101 @@
 Changelog
 =========
 
-Version 2.2.3 (Current)
------------------------
+Version 2.2.4 (February 2026)
+------------------------------
+
+**Released:** February 13, 2026
+
+**New Features:**
+
+- **ResultsFingerprint Class**: New comprehensive fingerprint analysis class with:
+  
+  - Flexible group selection: 'all', 'oecd', 'generic', 'telomers', or custom groups
+  - Multiple encoding modes: 'binary', 'count', 'max_component'
+  - Conversion method: ``ResultsModel.to_fingerprint()``
+
+- **Dimensionality Reduction Methods**:
+  
+  - **PCA** (``perform_pca()``): Linear dimensionality reduction with explained variance analysis and scree plots
+  - **Kernel PCA** (``perform_kernel_pca()``): Non-linear dimensionality reduction with multiple kernel options (RBF, polynomial, sigmoid, cosine)
+  - **t-SNE** (``perform_tsne()``): Excellent for visualization and cluster identification with configurable perplexity
+  - **UMAP** (``perform_umap()``): Fast, scalable non-linear reduction that preserves global structure (requires umap-learn)
+  - All methods include automatic plot generation with customizable output
+
+- **Statistical Comparison**:
+  
+  - **KL Divergence** (``compare_kld()``): Compare fingerprint distributions between datasets
+  - Multiple comparison modes: 'minmax' (normalized 0-1), 'forward', 'reverse', 'symmetric'
+  - Quantitative assessment of compositional similarity between chemical inventories
+
+- **Database Persistence**:
+  
+  - ``ResultsFingerprint.to_sql()`` / ``from_sql()``: Efficient save/load with sparse storage
+  - ``ResultsModel.from_sql()``: Load previously saved parsing results
+  - Support for SQLite and PostgreSQL databases
+  - Metadata preservation across save/load cycles
+
+- **Comprehensive Documentation**:
+  
+  - Complete API reference in ``docs/ResultsFingerprint_Guide.md``
+  - Scientific background for each dimensionality reduction method
+  - Parameter tuning guidelines and best practices
+  - Working examples in ``examples/results_fingerprint_analysis.py``
+  - Quick reference guide in ``RESULTS_FINGERPRINT_QUICKREF.md``
+
+**New API Methods:**
+
+.. code-block:: python
+
+   # Convert results to fingerprints
+   fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
+   
+   # Dimensionality reduction
+   pca_results = fp.perform_pca(n_components=5, plot=True)
+   kpca_results = fp.perform_kernel_pca(kernel='rbf', plot=True)
+   tsne_results = fp.perform_tsne(perplexity=30, plot=True)
+   umap_results = fp.perform_umap(n_neighbors=15, plot=True)
+   
+   # Compare datasets
+   kl_divergence = fp1.compare_kld(fp2, method='minmax')
+   
+   # Save/load
+   fp.to_sql(filename='fingerprints.db')
+   results.to_sql(filename='results.db')
+   fp_loaded = ResultsFingerprint.from_sql(filename='fingerprints.db')
+   results_loaded = ResultsModel.from_sql(filename='results.db')
+
+**Use Cases:**
+
+- Exploratory data analysis of large PFAS inventories
+- Database comparison and compositional analysis  
+- Cluster identification and structural pattern recognition
+- Machine learning feature extraction and preprocessing
+- Visualization of chemical space
+- Quantitative similarity assessment between datasets
+
+**Testing:**
+
+- 100+ comprehensive unit tests covering all new functionality
+- Integration tests for complete workflows
+- Performance tests for dimensionality reduction methods
+- SQL roundtrip tests for data integrity
+- Edge case handling and numerical stability tests
+
+**Dependencies:**
+
+- Required: numpy, pandas, scipy, scikit-learn, matplotlib, sqlalchemy
+- Optional: umap-learn (for UMAP analysis)
+
+**Documentation Files:**
+
+- ``docs/ResultsFingerprint_Guide.md`` - Complete API documentation
+- ``examples/results_fingerprint_analysis.py`` - Working examples
+- ``tests/test_results_fingerprint.py`` - Test suite
+- ``RESULTS_FINGERPRINT_QUICKREF.md`` - Quick reference
+
+Version 2.2.3 (February 2026)
+------------------------------
 
 **Released:** February 2026
 

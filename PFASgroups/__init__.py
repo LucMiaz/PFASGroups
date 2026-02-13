@@ -10,6 +10,7 @@ from .fingerprints import generate_fingerprint
 from .generate_homologues import generate_homologues
 from .fragmentation import generate_degradation_products
 from .results_model import ResultsModel
+from .prioritise import prioritise_molecules, prioritize_molecules, get_priority_statistics
 # Optional imports for testing
 try:
     from . import test_examples
@@ -18,6 +19,6 @@ except ImportError:
     # These modules might not be available in all environments
     pass
 
-__version__ = "2.2.1"
+__version__ = "2.2.4"
 __all__ = ['PFASGroup', 'PFASDefinition', 'parse_smiles', 'parse_mols','parse_mol', 'parse_groups_in_mol', 'parse_from_database', 'setup_pfas_groups_database', 'plot_pfasgroups', 'plot_mol','plot_mols',"generate_fingerprint", 'get_componentSmartss', 'get_PFASGroups', 'get_PFASDefinitions' ,'compile_componentSmarts', 'compile_componentSmartss','ComponentsSolver', 'generate_homologues', 'generate_degradation_products',"rdkit_disable_log","load_PFASGroups", "PFAS_GROUPS_FILE"]
-__all__.append('ResultsModel')
+__all__.extend(['ResultsModel', 'prioritise_molecules', 'prioritize_molecules', 'get_priority_statistics'])

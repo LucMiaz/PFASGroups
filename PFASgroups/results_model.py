@@ -3,11 +3,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple, Union
 import os
+import warnings
 
 from rdkit import Chem
 from rdkit.Chem import Draw
 from PIL import Image
 from io import BytesIO
+import numpy as np
+import pandas as pd
+from scipy.stats import entropy
 
 
 Color = Tuple[float, float, float]
@@ -207,6 +211,70 @@ class MoleculeResult(dict):
                 lines.append(f"  * {name}: {count} match(es)")
 
         return "\n".join(lines)
+
+    def summary(self) -> None:
+        """Print a detailed summary of matched groups and components.
+        
+        The summary includes:
+        - List of matched group IDs and names
+        - Number of components by SMARTS type for each group
+        - Component sizes (number of atoms)
+        """
+        print("=" * 80)
+        print(f"MOLECULE: {self.smiles}")
+        print("=" * 80)
+        
+        if not self.matches:
+            print("No PFAS groups matched.")
+            return
+        
+        # Collect group information
+        groups_info: Dict[Tuple[Optional[int], str], List[ComponentView]] = {}
+        
+        for m in self.matches:
+            if not m.is_group:
+                continue
+            key = (m.group_id, m.group_name or "Unknown")
+            if key not in groups_info:
+                groups_info[key] = []
+            groups_info[key].extend(m.components)
+        
+        if not groups_info:
+            print("No PFAS groups matched.")
+            return
+        
+        print(f"\nMatched {len(groups_info)} PFAS group(s):")
+        print()
+        
+        for (group_id, group_name), components in sorted(groups_info.items(), key=lambda x: x[0][0] or 0):
+            print(f"Group {group_id}: {group_name}")
+            
+            # Group components by SMARTS type
+            by_smarts: Dict[Optional[str], List[ComponentView]] = {}
+            for comp in components:
+                smarts = comp.smarts_label
+                if smarts not in by_smarts:
+                    by_smarts[smarts] = []
+                by_smarts[smarts].append(comp)
+            
+            # Display components by SMARTS type
+            for smarts_label, comps in sorted(by_smarts.items(), key=lambda x: x[0] or ""):
+                if smarts_label:
+                    print(f"  SMARTS: {smarts_label}")
+                else:
+                    print(f"  SMARTS: (no label)")
+                
+                print(f"    Components: {len(comps)}")
+                
+                # Show sizes of each component
+                sizes = [len(comp.atoms) for comp in comps]
+                if sizes:
+                    sizes_str = ", ".join(map(str, sorted(sizes, reverse=True)))
+                    print(f"    Sizes (atoms): {sizes_str}")
+            
+            print()
+        
+        print("=" * 80)
 
     def table(self) -> str:
         """Return a text table with one row per match.
@@ -925,6 +993,75 @@ class ResultsModel(list):
             )
 
         return "\n".join(lines)
+
+    def summary(self) -> None:
+        """Print a detailed summary of matched groups and components across all molecules.
+        
+        The summary includes:
+        - Total number of molecules
+        - List of all matched group IDs and names
+        - For each group: number of components by SMARTS type
+        - Component size statistics (min, max, mean)
+        """
+        print("=" * 80)
+        print(f"RESULTS SUMMARY: {len(self)} molecule(s)")
+        print("=" * 80)
+        
+        if not self:
+            print("No molecules in results.")
+            return
+        
+        # Collect all group matches across all molecules
+        all_groups_info: Dict[Tuple[Optional[int], str], List[ComponentView]] = {}
+        
+        for mol_res in self:  # type: ignore[assignment]
+            for m in mol_res.matches:
+                if not m.is_group:
+                    continue
+                key = (m.group_id, m.group_name or "Unknown")
+                if key not in all_groups_info:
+                    all_groups_info[key] = []
+                all_groups_info[key].extend(m.components)
+        
+        if not all_groups_info:
+            print("\nNo PFAS groups matched across all molecules.")
+            return
+        
+        print(f"\nMatched {len(all_groups_info)} unique PFAS group(s) across all molecules:")
+        print()
+        
+        for (group_id, group_name), components in sorted(all_groups_info.items(), key=lambda x: x[0][0] or 0):
+            print(f"Group {group_id}: {group_name}")
+            
+            # Group components by SMARTS type
+            by_smarts: Dict[Optional[str], List[ComponentView]] = {}
+            for comp in components:
+                smarts = comp.smarts_label
+                if smarts not in by_smarts:
+                    by_smarts[smarts] = []
+                by_smarts[smarts].append(comp)
+            
+            # Display components by SMARTS type
+            for smarts_label, comps in sorted(by_smarts.items(), key=lambda x: x[0] or ""):
+                if smarts_label:
+                    print(f"  SMARTS: {smarts_label}")
+                else:
+                    print(f"  SMARTS: (no label)")
+                
+                print(f"    Total components: {len(comps)}")
+                
+                # Calculate size statistics
+                sizes = [len(comp.atoms) for comp in comps]
+                if sizes:
+                    min_size = min(sizes)
+                    max_size = max(sizes)
+                    mean_size = sum(sizes) / len(sizes)
+                    print(f"    Size range (atoms): {min_size} - {max_size} (mean: {mean_size:.1f})")
+            
+            print()
+        
+        print("=" * 80)
+    
     def plot_all_components_with_group_colours(
         self,
         max_molecules: Optional[int] = None,
@@ -1108,3 +1245,759 @@ class ResultsModel(list):
         if groups_data:
             df_groups = pd.DataFrame(groups_data)
             df_groups.to_sql(groups_table, engine, if_exists=if_exists, index=False)
+
+    def to_fingerprint(
+        self,
+        group_selection: str = 'all',
+        count_mode: str = 'binary',
+        selected_group_ids: Optional[List[int]] = None,
+    ) -> 'ResultsFingerprint':
+        """Convert ResultsModel to ResultsFingerprint for dimensionality reduction.
+
+        Parameters
+        ----------
+        group_selection : str, default 'all'
+            Which groups to include in fingerprint:
+            - 'all': All 55 groups
+            - 'generic': Generic groups only (groups 29-55)
+            - 'oecd': OECD groups only (groups 1-28)
+            - 'telomers': Telomer-related groups only
+            - 'generic+telomers': Combination of generic and telomer groups
+        count_mode : str, default 'binary'
+            How to encode group matches:
+            - 'binary': 1 if present, 0 if absent
+            - 'count': Number of matches
+            - 'max_component': Maximum component size
+        selected_group_ids : list of int, optional
+            Explicit list of group IDs to include (overrides group_selection)
+
+        Returns
+        -------
+        ResultsFingerprint
+            Fingerprint representation of the results
+        """
+        from .fingerprints import generate_fingerprint
+        
+        # Extract SMILES from results
+        smiles_list = [mol_res.smiles for mol_res in self]  # type: ignore[assignment]
+        
+        # Define group selections
+        if selected_group_ids is not None:
+            selected_groups = selected_group_ids
+        elif group_selection == 'all':
+            selected_groups = None  # Use all groups
+        elif group_selection == 'oecd':
+            selected_groups = list(range(1, 29))  # OECD groups 1-28
+        elif group_selection == 'generic':
+            selected_groups = list(range(29, 56))  # Generic groups 29-55
+        elif group_selection == 'telomers':
+            # Telomer-related group IDs (example - adjust based on actual group definitions)
+            selected_groups = [24, 25, 26]  # Adjust as needed
+        elif group_selection == 'generic+telomers':
+            selected_groups = list(range(29, 56)) + [24, 25, 26]  # Adjust as needed
+        else:
+            raise ValueError(
+                f"Unknown group_selection: {group_selection}. "
+                f"Choose from: 'all', 'generic', 'oecd', 'telomers', 'generic+telomers'"
+            )
+        
+        # Generate fingerprints
+        fps, info = generate_fingerprint(
+            smiles_list,
+            selected_groups=selected_groups,
+            representation='vector',
+            count_mode=count_mode,
+        )
+        
+        return ResultsFingerprint(
+            fingerprints=fps,
+            smiles=smiles_list,
+            group_names=info['group_names'],
+            group_selection=group_selection,
+            count_mode=count_mode,
+        )
+
+    @classmethod
+    def from_sql(
+        cls,
+        conn: Optional[Union[str, 'sqlalchemy.engine.Engine']] = None,
+        filename: Optional[str] = None,
+        components_table: str = "components",
+        groups_table: str = "pfas_groups_in_compound",
+        limit: Optional[int] = None,
+    ) -> "ResultsModel":
+        """Load results from SQL database.
+
+        Parameters
+        ----------
+        conn : str or SQLAlchemy Engine, optional
+            Database connection string or engine
+        filename : str, optional
+            SQLite database filename (alternative to conn)
+        components_table : str, default "components"
+            Name of the components table
+        groups_table : str, default "pfas_groups_in_compound"
+            Name of the groups table
+        limit : int, optional
+            Limit number of molecules to load
+
+        Returns
+        -------
+        ResultsModel
+            Loaded results
+        """
+        try:
+            import sqlalchemy
+        except ImportError:
+            raise ImportError("sqlalchemy is required for SQL operations. Install with: pip install sqlalchemy")
+        
+        # Create engine
+        if conn is not None:
+            if isinstance(conn, str):
+                engine = sqlalchemy.create_engine(conn)
+            else:
+                engine = conn
+        elif filename is not None:
+            engine = sqlalchemy.create_engine(f"sqlite:///{filename}")
+        else:
+            raise ValueError("Either conn or filename must be provided")
+        
+        # Load groups data
+        query = f"SELECT * FROM {groups_table}"
+        if limit is not None:
+            query += f" LIMIT {limit}"
+        
+        df_groups = pd.read_sql(query, engine)
+        
+        # Reconstruct results
+        results = []
+        for smiles in df_groups['smiles'].unique():
+            mol_groups = df_groups[df_groups['smiles'] == smiles]
+            
+            matches = []
+            for _, row in mol_groups.iterrows():
+                matches.append({
+                    'type': 'PFASgroup',
+                    'match_id': row['group_id'],
+                    'group_id': row['group_id'],
+                    'group_name': row['group_name'],
+                    'match_count': row['match_count'],
+                    'components': [],  # Components not stored in basic SQL format
+                })
+            
+            results.append({
+                'smiles': smiles,
+                'matches': matches,
+            })
+        
+        return cls(results)
+
+
+class ResultsFingerprint:
+    """Container for PFAS group fingerprints with dimensionality reduction analysis.
+    
+    This class encapsulates fingerprint representations of PFASGroups results and
+    provides methods for performing dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP)
+    and comparison between fingerprint sets using KL divergence.
+    
+    Parameters
+    ----------
+    fingerprints : np.ndarray
+        Fingerprint matrix (n_molecules, n_groups)
+    smiles : list of str
+        SMILES strings for each molecule
+    group_names : list of str
+        Names of the PFAS groups in fingerprint
+    group_selection : str
+        Type of group selection used
+    count_mode : str
+        Encoding mode used (binary, count, max_component)
+    """
+    
+    def __init__(
+        self,
+        fingerprints: np.ndarray,
+        smiles: List[str],
+        group_names: List[str],
+        group_selection: str = 'all',
+        count_mode: str = 'binary',
+    ):
+        self.fingerprints = np.array(fingerprints)
+        self.smiles = smiles
+        self.group_names = group_names
+        self.group_selection = group_selection
+        self.count_mode = count_mode
+        
+        if len(self.fingerprints) != len(self.smiles):
+            raise ValueError(
+                f"Fingerprints and SMILES length mismatch: "
+                f"{len(self.fingerprints)} != {len(self.smiles)}"
+            )
+    
+    def __len__(self) -> int:
+        return len(self.fingerprints)
+    
+    def __repr__(self) -> str:
+        return (
+            f"ResultsFingerprint(n_molecules={len(self)}, "
+            f"n_groups={len(self.group_names)}, "
+            f"group_selection='{self.group_selection}', "
+            f"count_mode='{self.count_mode}')"
+        )
+    
+    def summary(self) -> str:
+        """Return text summary of fingerprint statistics."""
+        lines = []
+        lines.append("ResultsFingerprint Summary")
+        lines.append("=" * 50)
+        lines.append(f"Molecules: {len(self)}")
+        lines.append(f"Groups: {len(self.group_names)}")
+        lines.append(f"Group selection: {self.group_selection}")
+        lines.append(f"Count mode: {self.count_mode}")
+        lines.append(f"Fingerprint shape: {self.fingerprints.shape}")
+        lines.append(f"Non-zero entries: {np.count_nonzero(self.fingerprints)}")
+        lines.append(f"Sparsity: {1 - np.count_nonzero(self.fingerprints) / self.fingerprints.size:.2%}")
+        
+        # Group frequency statistics
+        group_frequencies = np.sum(self.fingerprints > 0, axis=0)
+        lines.append("\nMost common groups:")
+        top_indices = np.argsort(group_frequencies)[::-1][:10]
+        for idx in top_indices:
+            if group_frequencies[idx] > 0:
+                lines.append(f"  {self.group_names[idx]}: {group_frequencies[idx]} molecules "
+                           f"({100 * group_frequencies[idx] / len(self):.1f}%)")
+        
+        return "\n".join(lines)
+    
+    def perform_pca(
+        self,
+        n_components: int = 2,
+        plot: bool = True,
+        output_file: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Perform PCA analysis on fingerprints.
+        
+        Parameters
+        ----------
+        n_components : int, default 2
+            Number of principal components
+        plot : bool, default True
+            Whether to create visualization
+        output_file : str, optional
+            Path to save plot (if None, displays interactively)
+        
+        Returns
+        -------
+        dict
+            Dictionary containing:
+            - 'transformed': PCA-transformed data
+            - 'explained_variance': Explained variance ratio
+            - 'components': Principal component vectors
+            - 'pca_model': Fitted PCA model
+        """
+        try:
+            from sklearn.decomposition import PCA
+            from sklearn.preprocessing import StandardScaler
+            import matplotlib.pyplot as plt
+        except ImportError:
+            raise ImportError(
+                "scikit-learn and matplotlib required. Install with: "
+                "pip install scikit-learn matplotlib"
+            )
+        
+        # Standardize features
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(self.fingerprints)
+        
+        # Perform PCA
+        pca = PCA(n_components=n_components)
+        X_pca = pca.fit_transform(X_scaled)
+        
+        # Create plot if requested
+        if plot and n_components >= 2:
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+            
+            # Scatter plot
+            scatter = ax1.scatter(X_pca[:, 0], X_pca[:, 1], alpha=0.6, s=50)
+            ax1.set_xlabel(f'PC1 ({pca.explained_variance_ratio_[0]:.1%} variance)')
+            ax1.set_ylabel(f'PC2 ({pca.explained_variance_ratio_[1]:.1%} variance)')
+            ax1.set_title('PCA of PFAS Group Fingerprints')
+            ax1.grid(True, alpha=0.3)
+            
+            # Scree plot
+            ax2.bar(range(1, n_components + 1), pca.explained_variance_ratio_)
+            ax2.set_xlabel('Principal Component')
+            ax2.set_ylabel('Explained Variance Ratio')
+            ax2.set_title('Scree Plot')
+            ax2.grid(True, alpha=0.3)
+            
+            plt.tight_layout()
+            
+            if output_file:
+                plt.savefig(output_file, dpi=300, bbox_inches='tight')
+                print(f"PCA plot saved to {output_file}")
+            else:
+                plt.show()
+            
+            plt.close()
+        
+        return {
+            'transformed': X_pca,
+            'explained_variance': pca.explained_variance_ratio_,
+            'components': pca.components_,
+            'pca_model': pca,
+            'scaler': scaler,
+        }
+    
+    def perform_kernel_pca(
+        self,
+        n_components: int = 2,
+        kernel: str = 'rbf',
+        gamma: Optional[float] = None,
+        plot: bool = True,
+        output_file: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Perform kernel PCA analysis on fingerprints.
+        
+        Parameters
+        ----------
+        n_components : int, default 2
+            Number of components
+        kernel : str, default 'rbf'
+            Kernel type: 'linear', 'poly', 'rbf', 'sigmoid', 'cosine'
+        gamma : float, optional
+            Kernel coefficient (if None, uses 1/n_features)
+        plot : bool, default True
+            Whether to create visualization
+        output_file : str, optional
+            Path to save plot
+        
+        Returns
+        -------
+        dict
+            Dictionary containing transformed data and model
+        """
+        try:
+            from sklearn.decomposition import KernelPCA
+            from sklearn.preprocessing import StandardScaler
+            import matplotlib.pyplot as plt
+        except ImportError:
+            raise ImportError(
+                "scikit-learn and matplotlib required. Install with: "
+                "pip install scikit-learn matplotlib"
+            )
+        
+        # Standardize features
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(self.fingerprints)
+        
+        # Perform kernel PCA
+        if gamma is None:
+            gamma = 1.0 / X_scaled.shape[1]
+        
+        kpca = KernelPCA(n_components=n_components, kernel=kernel, gamma=gamma)
+        X_kpca = kpca.fit_transform(X_scaled)
+        
+        # Create plot if requested
+        if plot and n_components >= 2:
+            fig, ax = plt.subplots(figsize=(8, 6))
+            
+            scatter = ax.scatter(X_kpca[:, 0], X_kpca[:, 1], alpha=0.6, s=50)
+            ax.set_xlabel('Kernel PC1')
+            ax.set_ylabel('Kernel PC2')
+            ax.set_title(f'Kernel PCA ({kernel} kernel) of PFAS Group Fingerprints')
+            ax.grid(True, alpha=0.3)
+            
+            plt.tight_layout()
+            
+            if output_file:
+                plt.savefig(output_file, dpi=300, bbox_inches='tight')
+                print(f"Kernel PCA plot saved to {output_file}")
+            else:
+                plt.show()
+            
+            plt.close()
+        
+        return {
+            'transformed': X_kpca,
+            'kpca_model': kpca,
+            'scaler': scaler,
+            'kernel': kernel,
+            'gamma': gamma,
+        }
+    
+    def perform_tsne(
+        self,
+        n_components: int = 2,
+        perplexity: float = 30.0,
+        learning_rate: float = 200.0,
+        n_iter: int = 1000,
+        plot: bool = True,
+        output_file: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Perform t-SNE analysis on fingerprints.
+        
+        Parameters
+        ----------
+        n_components : int, default 2
+            Number of dimensions for embedding
+        perplexity : float, default 30.0
+            t-SNE perplexity parameter (5-50 typical)
+        learning_rate : float, default 200.0
+            Learning rate for optimization
+        n_iter : int, default 1000
+            Number of iterations
+        plot : bool, default True
+            Whether to create visualization
+        output_file : str, optional
+            Path to save plot
+        
+        Returns
+        -------
+        dict
+            Dictionary containing transformed data and model
+        """
+        try:
+            from sklearn.manifold import TSNE
+            from sklearn.preprocessing import StandardScaler
+            import matplotlib.pyplot as plt
+        except ImportError:
+            raise ImportError(
+                "scikit-learn and matplotlib required. Install with: "
+                "pip install scikit-learn matplotlib"
+            )
+        
+        # Standardize features
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(self.fingerprints)
+        
+        # Perform t-SNE
+        tsne = TSNE(
+            n_components=n_components,
+            perplexity=perplexity,
+            learning_rate=learning_rate,
+            n_iter=n_iter,
+            random_state=42,
+        )
+        X_tsne = tsne.fit_transform(X_scaled)
+        
+        # Create plot if requested
+        if plot and n_components >= 2:
+            fig, ax = plt.subplots(figsize=(8, 6))
+            
+            scatter = ax.scatter(X_tsne[:, 0], X_tsne[:, 1], alpha=0.6, s=50)
+            ax.set_xlabel('t-SNE 1')
+            ax.set_ylabel('t-SNE 2')
+            ax.set_title(f't-SNE of PFAS Group Fingerprints (perplexity={perplexity})')
+            ax.grid(True, alpha=0.3)
+            
+            plt.tight_layout()
+            
+            if output_file:
+                plt.savefig(output_file, dpi=300, bbox_inches='tight')
+                print(f"t-SNE plot saved to {output_file}")
+            else:
+                plt.show()
+            
+            plt.close()
+        
+        return {
+            'transformed': X_tsne,
+            'tsne_model': tsne,
+            'scaler': scaler,
+            'perplexity': perplexity,
+        }
+    
+    def perform_umap(
+        self,
+        n_components: int = 2,
+        n_neighbors: int = 15,
+        min_dist: float = 0.1,
+        metric: str = 'euclidean',
+        plot: bool = True,
+        output_file: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Perform UMAP analysis on fingerprints.
+        
+        Parameters
+        ----------
+        n_components : int, default 2
+            Number of dimensions for embedding
+        n_neighbors : int, default 15
+            Number of neighbors to consider
+        min_dist : float, default 0.1
+            Minimum distance between points
+        metric : str, default 'euclidean'
+            Distance metric
+        plot : bool, default True
+            Whether to create visualization
+        output_file : str, optional
+            Path to save plot
+        
+        Returns
+        -------
+        dict
+            Dictionary containing transformed data and model
+        """
+        try:
+            import umap
+            from sklearn.preprocessing import StandardScaler
+            import matplotlib.pyplot as plt
+        except ImportError:
+            raise ImportError(
+                "umap-learn and matplotlib required. Install with: "
+                "pip install umap-learn matplotlib"
+            )
+        
+        # Standardize features
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(self.fingerprints)
+        
+        # Perform UMAP
+        reducer = umap.UMAP(
+            n_components=n_components,
+            n_neighbors=n_neighbors,
+            min_dist=min_dist,
+            metric=metric,
+            random_state=42,
+        )
+        X_umap = reducer.fit_transform(X_scaled)
+        
+        # Create plot if requested
+        if plot and n_components >= 2:
+            fig, ax = plt.subplots(figsize=(8, 6))
+            
+            scatter = ax.scatter(X_umap[:, 0], X_umap[:, 1], alpha=0.6, s=50)
+            ax.set_xlabel('UMAP 1')
+            ax.set_ylabel('UMAP 2')
+            ax.set_title(f'UMAP of PFAS Group Fingerprints (n_neighbors={n_neighbors})')
+            ax.grid(True, alpha=0.3)
+            
+            plt.tight_layout()
+            
+            if output_file:
+                plt.savefig(output_file, dpi=300, bbox_inches='tight')
+                print(f"UMAP plot saved to {output_file}")
+            else:
+                plt.show()
+            
+            plt.close()
+        
+        return {
+            'transformed': X_umap,
+            'umap_model': reducer,
+            'scaler': scaler,
+            'n_neighbors': n_neighbors,
+            'min_dist': min_dist,
+        }
+    
+    def compare_kld(self, other: 'ResultsFingerprint', method: str = 'minmax') -> float:
+        """Compare two fingerprint sets using KL divergence.
+        
+        This implements the minmaxKLd method for comparing distributions of
+        PFAS group fingerprints between two datasets.
+        
+        Parameters
+        ----------
+        other : ResultsFingerprint
+            Other fingerprint set to compare against
+        method : str, default 'minmax'
+            Comparison method:
+            - 'minmax': Min-max normalized KL divergence (symmetric)
+            - 'forward': KL(self || other)
+            - 'reverse': KL(other || self)
+            - 'symmetric': (KL(self || other) + KL(other || self)) / 2
+        
+        Returns
+        -------
+        float
+            KL divergence value (lower = more similar)
+        """
+        if len(self.group_names) != len(other.group_names):
+            raise ValueError(
+                f"Fingerprints must have same number of groups: "
+                f"{len(self.group_names)} != {len(other.group_names)}"
+            )
+        
+        # Compute frequency distributions for each group
+        p_dist = self._compute_group_distribution()
+        q_dist = other._compute_group_distribution()
+        
+        # Add small constant to avoid log(0)
+        epsilon = 1e-10
+        p_dist = p_dist + epsilon
+        q_dist = q_dist + epsilon
+        
+        # Normalize
+        p_dist = p_dist / p_dist.sum()
+        q_dist = q_dist / q_dist.sum()
+        
+        if method == 'forward':
+            return entropy(p_dist, q_dist)
+        elif method == 'reverse':
+            return entropy(q_dist, p_dist)
+        elif method == 'symmetric':
+            return (entropy(p_dist, q_dist) + entropy(q_dist, p_dist)) / 2
+        elif method == 'minmax':
+            # Min-max normalized symmetric KL divergence
+            kl_forward = entropy(p_dist, q_dist)
+            kl_reverse = entropy(q_dist, p_dist)
+            kl_sym = (kl_forward + kl_reverse) / 2
+            
+            # Normalize by maximum possible KL divergence
+            # Max KL occurs when distributions are maximally different
+            max_kl = np.log(len(p_dist))  # Theoretical maximum
+            
+            return kl_sym / max_kl if max_kl > 0 else 0.0
+        else:
+            raise ValueError(f"Unknown method: {method}")
+    
+    def _compute_group_distribution(self) -> np.ndarray:
+        """Compute frequency distribution of groups across molecules."""
+        # Sum across molecules to get total count per group
+        group_counts = np.sum(self.fingerprints > 0, axis=0)
+        return group_counts.astype(float)
+    
+    def to_sql(
+        self,
+        conn: Optional[Union[str, 'sqlalchemy.engine.Engine']] = None,
+        filename: Optional[str] = None,
+        table_name: str = "fingerprints",
+        metadata_table: str = "fingerprint_metadata",
+        if_exists: str = "append",
+    ) -> None:
+        """Save fingerprints to SQL database.
+        
+        Parameters
+        ----------
+        conn : str or SQLAlchemy Engine, optional
+            Database connection string or engine
+        filename : str, optional
+            SQLite database filename (alternative to conn)
+        table_name : str, default "fingerprints"
+            Name of the table for fingerprint data
+        metadata_table : str, default "fingerprint_metadata"
+            Name of the table for metadata
+        if_exists : str, default "append"
+            How to behave if table exists: 'fail', 'replace', 'append'
+        """
+        try:
+            import sqlalchemy
+        except ImportError:
+            raise ImportError("sqlalchemy required. Install with: pip install sqlalchemy")
+        
+        # Create engine
+        if conn is not None:
+            if isinstance(conn, str):
+                engine = sqlalchemy.create_engine(conn)
+            else:
+                engine = conn
+        elif filename is not None:
+            engine = sqlalchemy.create_engine(f"sqlite:///{filename}")
+        else:
+            raise ValueError("Either conn or filename must be provided")
+        
+        # Prepare fingerprint data
+        data = []
+        for i, smiles in enumerate(self.smiles):
+            for j, group_name in enumerate(self.group_names):
+                value = self.fingerprints[i, j]
+                if value > 0:  # Only store non-zero values for efficiency
+                    data.append({
+                        'smiles': smiles,
+                        'group_name': group_name,
+                        'group_index': j,
+                        'value': float(value),
+                    })
+        
+        df_fingerprints = pd.DataFrame(data)
+        df_fingerprints.to_sql(table_name, engine, if_exists=if_exists, index=False)
+        
+        # Save metadata
+        metadata = pd.DataFrame([{
+            'group_selection': self.group_selection,
+            'count_mode': self.count_mode,
+            'n_molecules': len(self),
+            'n_groups': len(self.group_names),
+        }])
+        metadata.to_sql(metadata_table, engine, if_exists=if_exists, index=False)
+        
+        print(f"Saved {len(df_fingerprints)} fingerprint entries to {table_name}")
+        print(f"Saved metadata to {metadata_table}")
+    
+    @classmethod
+    def from_sql(
+        cls,
+        conn: Optional[Union[str, 'sqlalchemy.engine.Engine']] = None,
+        filename: Optional[str] = None,
+        table_name: str = "fingerprints",
+        metadata_table: str = "fingerprint_metadata",
+        limit: Optional[int] = None,
+    ) -> 'ResultsFingerprint':
+        """Load fingerprints from SQL database.
+        
+        Parameters
+        ----------
+        conn : str or SQLAlchemy Engine, optional
+            Database connection string or engine
+        filename : str, optional
+            SQLite database filename
+        table_name : str, default "fingerprints"
+            Name of the fingerprints table
+        metadata_table : str, default "fingerprint_metadata"
+            Name of the metadata table
+        limit : int, optional
+            Limit number of molecules to load
+        
+        Returns
+        -------
+        ResultsFingerprint
+            Loaded fingerprints
+        """
+        try:
+            import sqlalchemy
+        except ImportError:
+            raise ImportError("sqlalchemy required. Install with: pip install sqlalchemy")
+        
+        # Create engine
+        if conn is not None:
+            if isinstance(conn, str):
+                engine = sqlalchemy.create_engine(conn)
+            else:
+                engine = conn
+        elif filename is not None:
+            engine = sqlalchemy.create_engine(f"sqlite:///{filename}")
+        else:
+            raise ValueError("Either conn or filename must be provided")
+        
+        # Load metadata
+        df_metadata = pd.read_sql(f"SELECT * FROM {metadata_table} LIMIT 1", engine)
+        group_selection = df_metadata['group_selection'].iloc[0]
+        count_mode = df_metadata['count_mode'].iloc[0]
+        
+        # Load fingerprint data
+        query = f"SELECT * FROM {table_name}"
+        if limit is not None:
+            query += f" LIMIT {limit}"
+        
+        df_fingerprints = pd.read_sql(query, engine)
+        
+        # Reconstruct fingerprint matrix
+        smiles_list = sorted(df_fingerprints['smiles'].unique())
+        group_names = sorted(df_fingerprints['group_name'].unique())
+        
+        fingerprints = np.zeros((len(smiles_list), len(group_names)))
+        
+        for _, row in df_fingerprints.iterrows():
+            i = smiles_list.index(row['smiles'])
+            j = group_names.index(row['group_name'])
+            fingerprints[i, j] = row['value']
+        
+        return cls(
+            fingerprints=fingerprints,
+            smiles=smiles_list,
+            group_names=group_names,
+            group_selection=group_selection,
+            count_mode=count_mode,
+        )
+

@@ -91,8 +91,45 @@ from PFASgroups import parse_smiles, generate_fingerprint
 smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
 results = parse_smiles(smiles_list)
 
-# Generate fingerprints
+# Generate fingerprints for machine learning
 fingerprints, group_info = generate_fingerprint(smiles_list)
+
+# New in v2.2.4: Advanced fingerprint analysis
+fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
+
+# Dimensionality reduction
+pca_results = fp.perform_pca(n_components=5, plot=True)
+tsne_results = fp.perform_tsne(perplexity=30, plot=True)
+umap_results = fp.perform_umap(n_neighbors=15, plot=True)
+
+# Compare datasets using KL divergence
+other_results = parse_smiles(other_smiles_list)
+other_fp = other_results.to_fingerprint(group_selection='oecd')
+similarity = fp.compare_kld(other_fp, method='minmax')
+
+# Save/load to SQL database
+fp.to_sql(filename='fingerprints.db')
+results.to_sql(filename='results.db')
+
+# New in v2.2.4: Prioritization tool for screening and ranking
+from PFASgroups import prioritise_molecules
+
+# Prioritize by similarity to reference list (e.g., known persistent PFAS)
+reference = ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"]
+prioritized = prioritise_molecules(
+    molecules=smiles_list,
+    reference=reference,
+    method='minmax',
+    return_scores=True
+)
+
+# Prioritize by intrinsic fluorination properties (long chains, high F content)
+prioritized = prioritise_molecules(
+    molecules=smiles_list,
+    a=1.0,  # Weight for total fluorination
+    b=5.0,  # Weight for longest chains
+    percentile=90  # Focus on 90th percentile of component sizes
+)
 ```
 
 ### Command Line
@@ -192,12 +229,60 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 
 ## Summary of changes by version
 
+- **Version 2.2.4 (Feb 2026)**: Advanced fingerprint analysis with dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP), KL divergence comparison for dataset similarity assessment, and SQL persistence for fingerprints and results. Added molecule prioritization tool for screening applications, ranking by similarity to reference lists or by intrinsic fluorination properties. Includes new `ResultsFingerprint` class with comprehensive analysis methods, automated plot generation, and extensive documentation.
+
+- **Version 2.2.3 (Feb 2026)**: Added resultsModel to offer easier plotting and summarising capabilities for results.
+
 - **Version 2.2 (Feb 2026)**: Added linked_smarts option to specify a restriction on path between smarts groups and fluorinated component. Added new PFASgroups (telomers). **v2.2.2** Fixed telomers and added examples and counter-examples to each PFASgroup. Removed boundary O in fluorinated components (for both Per and Polyalkyl components).
-**v2.2.3** Added resultsModel to offer easier plotting and summarising capabilities for results.
 
 - **Version 2.1 (Jan 2026)**: Added support for multiple smarts, with individual minimum count, per PFASgroup.
 
 - **Version 2.0 (Jan 2026)**: Major expansion of graph‑based component metrics, new coverage statistics, schema updates, and richer per‑component outputs.
+
+### Version 2.2.4 (February 2026) - Advanced Fingerprint Analysis
+
+Major enhancement adding comprehensive dimensionality reduction and statistical comparison capabilities:
+
+**New Features:**
+- **ResultsFingerprint Class**: Advanced fingerprint analysis with flexible group selection
+- **Dimensionality Reduction**: PCA, kernel-PCA, t-SNE, and UMAP with automatic plotting
+- **Statistical Comparison**: KL divergence for comparing dataset compositions
+- **Database Persistence**: SQL save/load for fingerprints and results
+- **Molecule Prioritization**: Screening and ranking tool for PFAS datasets
+- **Comprehensive Documentation**: Complete API reference, examples, and 100+ tests
+
+**Key Methods:**
+- `ResultsModel.to_fingerprint()`: Convert results to analyzable fingerprints
+- `ResultsFingerprint.perform_pca()`: Principal Component Analysis
+- `ResultsFingerprint.perform_kernel_pca()`: Non-linear kernel PCA
+- `ResultsFingerprint.perform_tsne()`: t-SNE visualization
+- `ResultsFingerprint.perform_umap()`: Fast UMAP dimensionality reduction
+- `ResultsFingerprint.compare_kld()`: Dataset similarity via KL divergence
+- `prioritise_molecules()`: Rank molecules by similarity or fluorination properties
+- SQL operations: `to_sql()` and `from_sql()` for persistence
+
+**Prioritization Strategies:**
+- **Reference-based**: Rank by distributional similarity to known PFAS (e.g., persistent chemicals)
+- **Intrinsic properties**: Score by fluorination characteristics (total F content, chain length)
+- **Flexible weighting**: Tune parameters for different screening objectives
+
+**Use Cases:**
+- Exploratory data analysis of PFAS inventories
+- Database comparison and compositional analysis
+- Cluster identification and pattern recognition
+- Machine learning preprocessing
+- Chemical space visualization
+- Priority screening for environmental monitoring
+- Regulatory watchlist generation
+
+See `docs/ResultsFingerprint_Guide.md`, `docs/prioritization.rst`, `examples/results_fingerprint_analysis.py`, and `examples/prioritization_examples.py` for details.
+
+### Version 2.2.3 (February 2026) - ResultsModel Container
+
+**New Features:**
+- ResultsModel container with visualization helpers
+- Enhanced component plotting utilities
+- Improved documentation and examples
 
 ### Version 2.0 (January 2026) - Comprehensive Graph Metrics
 

@@ -79,6 +79,7 @@ Table of Contents
 
    api/core
    api/models
+   api/fingerprint_analysis
 
 .. toctree::
    :maxdepth: 2
@@ -86,6 +87,7 @@ Table of Contents
 
    customization
    benchmarking
+   prioritization
 
 .. toctree::
    :maxdepth: 1

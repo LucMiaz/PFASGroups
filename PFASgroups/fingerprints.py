@@ -2,6 +2,7 @@ from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from .parser import load_PFASGroups, parse_groups_in_mol
 from typing import Union, List
+import numpy as np
 
 
 @load_PFASGroups()
@@ -109,7 +110,10 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                 raise ValueError(f"Invalid SMILES: {smiles_str}")
             
             formula = CalcMolFormula(mol)
-            all_matches = parse_groups_in_mol(mol, formula=formula, pfas_groups=pfas_groups,include_PFAS_definitions=False, **kwargs)
+            # Remove pfas_groups from kwargs if present to avoid duplicate argument
+            kwargs_copy = {k: v for k, v in kwargs.items() if k != 'pfas_groups'}
+            # parse_groups_in_mol returns (matches, mol_with_h) tuple
+            all_matches, mol_with_h = parse_groups_in_mol(mol, formula=formula, pfas_groups=pfas_groups, include_PFAS_definitions=False, **kwargs_copy)
             
             # Create mapping from group ID to match information
             match_dict = {}
