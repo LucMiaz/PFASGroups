@@ -5,6 +5,9 @@ networkx
 tqdm
 svgutils
 
+[database]
+sqlalchemy>=1.4.0
+
 [dev]
 pytest
 pytest-cov
