@@ -35,6 +35,8 @@ Requires-Dist: svgutils
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: pytest-cov; extra == "dev"
+Provides-Extra: database
+Requires-Dist: sqlalchemy>=1.4.0; extra == "database"
 
 # PFASgroups
 
