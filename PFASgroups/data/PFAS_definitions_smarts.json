@@ -104,7 +104,7 @@
                 "positives": [
                     "C(F)(F)(F)C(F)(F)C(F)(F)F",
                     "C(F)(F)(F)C(F)(F)C",
-                    "C(F)(F)C(F)(F)C",
+                    "FC(F)(F)C(F)(F)C",
                     "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
                     "S(=O)(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                     "C(F)(F)(F)C(F)(F)OC(F)(F)C(F)(F)F"
@@ -112,6 +112,7 @@
                 "negatives": [
                     "CCCCCC",
                     "C(F)CC",
+                    "C(F)(F)C(F)(F)",
                     "C(F)(F)C(F)(F)C",
                     "CC(F)(F)CC",
                     "C(F)(F)(Cl)C",

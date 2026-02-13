@@ -5,6 +5,7 @@ This module provides functions for parsing and plotting PFAS groups.
 """
 
 import numpy as np
+from typing import Optional
 
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
@@ -258,6 +259,294 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, **kwargs)
 
 from .results_model import ResultsModel
+
+
+def parse_from_database(
+    conn,
+    query: Optional[str] = None,
+    table: Optional[str] = None,
+    mol_column: str = 'mol',
+    smiles_column: Optional[str] = 'smiles',
+    inchi_column: Optional[str] = 'inchi',
+    id_column: Optional[str] = 'id',
+    batch_size: int = 1000,
+    output_table: Optional[str] = None,
+    components_table: str = "components",
+    groups_table: str = "pfas_groups_in_compound",
+    write_results: bool = True,
+    **kwargs
+):
+    """Parse PFAS groups from molecules stored in a database.
+    
+    This function reads molecules from a database table, parses them for PFAS groups,
+    and optionally writes the results back to the database.
+    
+    Parameters
+    ----------
+    conn : str or sqlalchemy.engine.Engine
+        Database connection. Can be:
+        - SQLAlchemy Engine object
+        - Connection string (e.g., 'postgresql://user:pass@host:port/db')
+    query : str, optional
+        SQL query to select molecules. If not provided, selects all from table.
+    table : str, optional
+        Table name to query (used if query is not provided).
+    mol_column : str, default 'mol'
+        Column name containing RDKit mol objects (binary format).
+    smiles_column : str, optional, default 'smiles'
+        Fallback column with SMILES strings if mol parsing fails.
+    inchi_column : str, optional, default 'inchi'
+        Fallback column with InChI strings if both mol and SMILES fail.
+    id_column : str, optional, default 'id'
+        Column name for unique identifier (for tracking results).
+    batch_size : int, default 1000
+        Number of molecules to process in each batch.
+    output_table : str, optional
+        If provided, creates/updates this table with summary results.
+    components_table : str, default 'components'
+        Table name for detailed component data.
+    groups_table : str, default 'pfas_groups_in_compound'
+        Table name for PFAS group matches.
+    write_results : bool, default True
+        Whether to write results back to database.
+    **kwargs : dict
+        Additional parameters passed to parse_mols (e.g., pfas_groups, componentSmartss).
+        
+    Returns
+    -------
+    ResultsModel
+        Parsed results for all molecules.
+        
+    Examples
+    --------
+    >>> # Using connection string
+    >>> results = parse_from_database(
+    ...     conn='postgresql://user:pass@localhost/chem_db',
+    ...     table='molecules',
+    ...     mol_column='rdkit_mol',
+    ...     smiles_column='canonical_smiles'
+    ... )
+    >>> \n>>> # Using SQLAlchemy engine with custom query
+    >>> from sqlalchemy import create_engine
+    >>> engine = create_engine('sqlite:///chemicals.db')
+    >>> results = parse_from_database(
+    ...     conn=engine,
+    ...     query=\"SELECT id, mol, smiles FROM compounds WHERE molecular_weight < 1000\",
+    ...     batch_size=500
+    ... )
+    >>> \n>>> # Process and write back to database
+    >>> results = parse_from_database(
+    ...     conn='postgresql://user:pass@localhost/pfas_db',
+    ...     table='test_compounds',
+    ...     write_results=True,
+    ...     components_table='pfas_components',
+    ...     groups_table='pfas_groups'
+    ... )
+    """
+    try:
+        import pandas as pd
+        import sqlalchemy
+        from sqlalchemy import text
+    except ImportError:
+        raise ImportError("pandas and sqlalchemy are required. Install with: pip install pandas sqlalchemy")
+    
+    # Create engine if conn is a string
+    if isinstance(conn, str):
+        engine = sqlalchemy.create_engine(conn)
+    else:
+        engine = conn
+    
+    # Build query if not provided
+    if query is None:
+        if table is None:
+            raise ValueError("Either 'query' or 'table' must be provided.")
+        query = f"SELECT * FROM {table}"
+    
+    # Read data in batches
+    print(f"Reading molecules from database...")
+    df = pd.read_sql(query, engine)
+    total_rows = len(df)
+    print(f"Found {total_rows} molecules to process")
+    
+    all_results = []
+    
+    # Process in batches
+    for batch_start in range(0, total_rows, batch_size):
+        batch_end = min(batch_start + batch_size, total_rows)
+        batch_df = df.iloc[batch_start:batch_end]
+        
+        print(f"Processing batch {batch_start+1}-{batch_end} of {total_rows}...")
+        
+        mols = []
+        mol_ids = []
+        
+        for idx, row in batch_df.iterrows():
+            mol = None
+            mol_id = row.get(id_column) if id_column and id_column in row else idx
+            
+            # Try to parse mol from binary column
+            if mol_column in row and row[mol_column] is not None:
+                try:
+                    # Assuming mol is stored as binary or mol block
+                    if isinstance(row[mol_column], bytes):
+                        mol = Chem.Mol(row[mol_column])
+                    elif isinstance(row[mol_column], str):
+                        mol = Chem.MolFromMolBlock(row[mol_column])
+                except Exception as e:
+                    print(f"  Warning: Failed to parse mol for {mol_id}: {e}")
+            
+            # Fallback to SMILES
+            if mol is None and smiles_column and smiles_column in row and row[smiles_column]:
+                try:
+                    mol = Chem.MolFromSmiles(row[smiles_column])
+                except Exception as e:
+                    print(f"  Warning: Failed to parse SMILES for {mol_id}: {e}")
+            
+            # Fallback to InChI
+            if mol is None and inchi_column and inchi_column in row and row[inchi_column]:
+                try:
+                    mol = Chem.MolFromInchi(row[inchi_column])
+                except Exception as e:
+                    print(f"  Warning: Failed to parse InChI for {mol_id}: {e}")
+            
+            if mol is not None:
+                mols.append(mol)
+                mol_ids.append(mol_id)
+            else:
+                print(f"  Error: Could not parse molecule {mol_id}")
+        
+        # Parse this batch
+        if mols:
+            batch_results = parse_mols(mols, **kwargs)
+            all_results.extend(batch_results)
+    
+    # Combine all results
+    results = ResultsModel(all_results)
+    
+    # Write results to database if requested
+    if write_results and len(results) > 0:
+        print(f"Writing results to database...")
+        results.to_sql(
+            conn=engine,
+            components_table=components_table,
+            groups_table=groups_table,
+            if_exists='append'
+        )
+        print(f"✅ Successfully wrote {len(results)} results to database")
+    
+    return results
+
+
+def setup_pfas_groups_database(
+    conn,
+    groups_info_table: str = 'pfas_groups_info',
+    smarts_table: str = 'pfas_smarts',
+    if_exists: str = 'replace'
+):
+    """Set up PFAS groups metadata tables in a database.
+    
+    This function creates tables to store PFAS group definitions and SMARTS patterns,
+    similar to the load_pfas_groups function in zeropmdb.
+    
+    Parameters
+    ----------
+    conn : str or sqlalchemy.engine.Engine
+        Database connection.
+    groups_info_table : str, default 'pfas_groups_info'
+        Table name for PFAS group metadata.
+    smarts_table : str, default 'pfas_smarts'
+        Table name for SMARTS patterns used in groups.
+    if_exists : str, default 'replace'
+        How to behave if tables exist: 'fail', 'replace', or 'append'.
+        
+    Returns
+    -------
+    dict
+        Statistics about loaded groups.
+        
+    Examples
+    --------
+    >>> # Set up in PostgreSQL
+    >>> setup_pfas_groups_database(
+    ...     conn='postgresql://user:pass@localhost/pfas_db',
+    ...     groups_info_table='pfas_groups',
+    ...     smarts_table='pfas_smarts_patterns'
+    ... )
+    >>> 
+    >>> # Set up in SQLite
+    >>> from sqlalchemy import create_engine
+    >>> engine = create_engine('sqlite:///pfas_database.db')
+    >>> stats = setup_pfas_groups_database(engine)
+    >>> print(f"Loaded {stats['total_groups']} PFAS groups")
+    """
+    try:
+        import pandas as pd
+        import sqlalchemy
+    except ImportError:
+        raise ImportError("pandas and sqlalchemy required. Install with: pip install pandas sqlalchemy")
+    
+    # Create engine if conn is a string
+    if isinstance(conn, str):
+        engine = sqlalchemy.create_engine(conn)
+    else:
+        engine = conn
+    
+    # Load PFAS groups from the module
+    from .PFASGroupModel import PFASGroup
+    import json
+    
+    # Load groups from JSON file
+    from .core import PFAS_GROUPS_FILE
+    with open(PFAS_GROUPS_FILE, 'r') as f:
+        groups_data = json.load(f)
+    
+    # Prepare groups info data
+    groups_info = []
+    all_smarts = set()
+    
+    for group_data in groups_data:
+        group_info = {
+            'id': group_data['id'],
+            'name': group_data['name'],
+            'compute': group_data.get('compute', True),
+            'componentSmarts': group_data.get('componentSmarts'),
+            'pathType': group_data.get('pathType'),
+            'constraints': json.dumps(group_data.get('_constraints', {})),
+            'smarts_patterns': json.dumps(group_data.get('smarts', {})),
+        }
+        groups_info.append(group_info)
+        
+        # Collect unique SMARTS patterns
+        if 'smarts' in group_data:
+            for pattern in group_data['smarts'].keys():
+                all_smarts.add(pattern)
+    
+    # Create DataFrames
+    df_groups = pd.DataFrame(groups_info)
+    df_smarts = pd.DataFrame([
+        {'smarts': pattern, 'pattern_id': idx}
+        for idx, pattern in enumerate(sorted(all_smarts))
+    ])
+    
+    # Write to database
+    print(f"Writing {len(df_groups)} PFAS groups to table '{groups_info_table}'...")
+    df_groups.to_sql(groups_info_table, engine, if_exists=if_exists, index=False)
+    
+    print(f"Writing {len(df_smarts)} SMARTS patterns to table '{smarts_table}'...")
+    df_smarts.to_sql(smarts_table, engine, if_exists=if_exists, index=False)
+    
+    stats = {
+        'total_groups': len(df_groups),
+        'compute_groups': len(df_groups[df_groups['compute'] == True]),
+        'aggregate_groups': len(df_groups[df_groups['compute'] == False]),
+        'total_smarts': len(df_smarts),
+    }
+    
+    print(f"✅ Successfully set up PFAS groups database")
+    print(f"   - {stats['total_groups']} total groups ({stats['compute_groups']} compute, {stats['aggregate_groups']} aggregate)")
+    print(f"   - {stats['total_smarts']} unique SMARTS patterns")
+    
+    return stats
 
 
 def parse_mol(mol, **kwargs):

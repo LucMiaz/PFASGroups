@@ -1006,41 +1006,44 @@ class ResultsModel(list):
 
     def to_sql(
         self,
+        conn: Optional[Union[str, 'sqlalchemy.engine.Engine']] = None,
         filename: Optional[str] = None,
-        dbname: Optional[str] = None,
-        user: Optional[str] = None,
-        password: Optional[str] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
         components_table: str = "components",
         groups_table: str = "pfas_groups_in_compound",
         if_exists: str = "append",
     ) -> None:
         """Export all molecule results to a SQL database.
 
-        Can write to either SQLite (via filename) or PostgreSQL/MySQL (via connection parameters).
         This method efficiently batches all molecules into the database in a single operation.
 
         Parameters
         ----------
+        conn : str or sqlalchemy.engine.Engine, optional
+            Database connection. Can be:
+            - SQLAlchemy Engine object
+            - Connection string (e.g., 'postgresql://user:pass@host:port/db')
+            - SQLite path with 'sqlite:///' prefix
         filename : str, optional
-            Path to SQLite database file. If provided, uses SQLite.
-        dbname : str, optional
-            Database name (for PostgreSQL/MySQL).
-        user : str, optional
-            Database username. Defaults to os.environ['DB_USER'] if not provided.
-        password : str, optional
-            Database password. Defaults to os.environ['DB_PASSWORD'] if not provided.
-        host : str, optional
-            Database host. Defaults to os.environ.get('DB_HOST', 'localhost').
-        port : int, optional
-            Database port. Defaults to os.environ.get('DB_PORT', 5432 for PostgreSQL).
+            Path to SQLite database file (legacy parameter, use conn instead).
         components_table : str, default "components"
             Name of the table to store component-level data.
         groups_table : str, default "pfas_groups_in_compound"
             Name of the table to store PFAS group matches.
         if_exists : str, default "append"
             How to behave if tables exist: 'fail', 'replace', or 'append'.
+            
+        Examples
+        --------
+        >>> # Using connection string
+        >>> results.to_sql(conn='postgresql://user:pass@localhost/pfas_db')
+        >>> 
+        >>> # Using SQLAlchemy engine
+        >>> from sqlalchemy import create_engine
+        >>> engine = create_engine('sqlite:///pfas.db')
+        >>> results.to_sql(conn=engine)
+        >>> 
+        >>> # Using filename (legacy)
+        >>> results.to_sql(filename='pfas.db')
         """
         try:
             import pandas as pd
@@ -1049,27 +1052,20 @@ class ResultsModel(list):
             raise ImportError("pandas and sqlalchemy are required for to_sql. Install with: pip install pandas sqlalchemy")
 
         # Determine connection
-        if filename:
-            engine = sqlalchemy.create_engine(f"sqlite:///{filename}")
-        elif dbname:
-            # Get credentials from environment if not provided
-            if user is None:
-                user = os.environ.get('DB_USER')
-            if password is None:
-                password = os.environ.get('DB_PASSWORD')
-            if host is None:
-                host = os.environ.get('DB_HOST', 'localhost')
-            if port is None:
-                port = int(os.environ.get('DB_PORT', 5432))
-            
-            if not user or not password:
-                raise ValueError("Database credentials required. Provide user/password or set DB_USER/DB_PASSWORD environment variables.")
-            
-            # Assuming PostgreSQL; adjust for MySQL if needed
-            connection_string = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
-            engine = sqlalchemy.create_engine(connection_string)
+        if conn is None and filename is None:
+            raise ValueError("Either 'conn' or 'filename' must be provided.")
+        
+        if conn is not None:
+            # Handle conn parameter
+            if isinstance(conn, str):
+                # If it's a string, create engine from connection string
+                engine = sqlalchemy.create_engine(conn)
+            else:
+                # Assume it's already a SQLAlchemy engine
+                engine = conn
         else:
-            raise ValueError("Either filename (for SQLite) or dbname (for PostgreSQL) must be provided.")
+            # Legacy filename parameter
+            engine = sqlalchemy.create_engine(f"sqlite:///{filename}")
 
         # Prepare components data for all molecules
         components_data = []

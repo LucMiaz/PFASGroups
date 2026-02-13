@@ -3,7 +3,7 @@ from PFASgroups.parser import parse_groups_in_mol
 
 
 def _first_component(mol):
-    matches = parse_groups_in_mol(mol)
+    matches, _ = parse_groups_in_mol(mol)
     for _, _, _, components in matches[:1]:
         if components:
             return components[0]
