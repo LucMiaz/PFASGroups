@@ -29,60 +29,96 @@ def connect_db():
     )
 
 def fetch_data(conn):
-    """Fetch all PFAS groups results from database."""
+    """Fetch all PFAS groups results from new database schema."""
+    # Join pfasgroups_in_molecules with components_in_molecules to get full details
     query = """
     SELECT 
-        molecule_id,
-        group_id,
-        group_name,
-        match_count,
-        chain_lengths,
-        component_smarts,
-        num_components,
-        substituted,
-        substitutions,
-        parse_time_seconds,
-        status
-    FROM pfasgroups_results
-    WHERE group_id IS NOT NULL
-    ORDER BY group_id, molecule_id
+        pm.molecule_id,
+        pm.smiles,
+        pm.group_id,
+        pm.group_name,
+        pm.match_count,
+        COUNT(cm.id) as num_components,
+        STRING_AGG(DISTINCT cm.smarts_label, '; ') as component_smarts,
+        ARRAY_AGG(LENGTH(cm.component_atoms) - LENGTH(REPLACE(cm.component_atoms, ',', '')) + 1) as component_sizes
+    FROM pfasgroups_in_molecules pm
+    LEFT JOIN components_in_molecules cm ON pm.smiles = cm.smiles AND pm.group_id = cm.group_id
+    WHERE pm.group_id IS NOT NULL
+    GROUP BY pm.molecule_id, pm.smiles, pm.group_id, pm.group_name, pm.match_count
+    ORDER BY pm.group_id, pm.molecule_id
     """
     return pd.read_sql_query(query, conn)
 
 def classify_group(row):
-    """Classify group saturation and halogen type."""
+    """Classify group saturation (per/poly) and halogen type (F/Cl/Br/I/Mixed).
+    
+    Saturation:
+    - 'Per' = fully saturated (all H replaced by halogens)
+    - 'Poly' = partially saturated (some H replaced by halogens)
+    
+    Halogen:
+    - 'F' = contains fluorine
+    - 'Cl' = contains chlorine
+    - 'Br' = contains bromine
+    - 'I' = contains iodine
+    - 'Mixed' = contains multiple halogen types
+    - 'Unknown' = cannot determine
+    """
     group_name = str(row['group_name']).lower()
+    comp_smarts = str(row['component_smarts']) if pd.notna(row['component_smarts']) else ''
     
-    # Saturation
-    if 'perfluoro' in group_name or 'per-' in group_name:
-        saturation = 'Perfluorinated'
-    elif 'polyfluoro' in group_name or 'poly-' in group_name or 'semi-fluor' in group_name:
-        saturation = 'Polyfluorinated'
+    # Saturation: per vs poly (independent of halogen type)
+    # Per = all carbons fully halogenated (perfluoro, perchloro, etc.)
+    # Poly = partial halogenation (polyfluoro, polychloro, etc.)
+    if 'per' in group_name and 'poly' not in group_name:
+        # Could be perfluoro, perchloro, etc.
+        saturation = 'Per'
+    elif 'poly' in group_name or 'semi' in group_name:
+        saturation = 'Poly'
     else:
-        saturation = 'Other'
+        saturation = 'Unknown'
     
-    # Halogen type (from component_smarts or group name)
-    comp_smarts = str(row['component_smarts'])
-    if 'fluor' in group_name or 'F' in comp_smarts:
-        halogen = 'Fluorine'
-    elif 'chlor' in group_name or 'Cl' in comp_smarts:
-        halogen = 'Chlorine'
-    elif 'brom' in group_name or 'Br' in comp_smarts:
-        halogen = 'Bromine'
-    elif 'iod' in group_name or 'I' in comp_smarts:
-        halogen = 'Iodine'
+    # Halogen type: which halogen(s) are in the component
+    # Check component_smarts for element patterns
+    halogens_found = set()
+    
+    # Check for fluorine
+    if 'fluor' in group_name or '[F]' in comp_smarts or '#9' in comp_smarts or 'F' in group_name:
+        halogens_found.add('F')
+    # Check for chlorine
+    if 'chlor' in group_name or '[Cl]' in comp_smarts or '#17' in comp_smarts:
+        halogens_found.add('Cl')
+    # Check for bromine
+    if 'brom' in group_name or '[Br]' in comp_smarts or '#35' in comp_smarts:
+        halogens_found.add('Br')
+    # Check for iodine
+    if 'iod' in group_name or '[I]' in comp_smarts or '#53' in comp_smarts:
+        halogens_found.add('I')
+    
+    # Determine halogen classification
+    if len(halogens_found) == 0:
+        halogen = 'Unknown'
+    elif len(halogens_found) == 1:
+        halogen = list(halogens_found)[0]
     else:
         halogen = 'Mixed'
     
     return pd.Series({'saturation': saturation, 'halogen': halogen})
 
-def extract_component_sizes(chain_lengths_json):
-    """Extract component sizes from JSON array."""
+def extract_component_sizes(component_sizes_array):
+    """Extract component sizes from PostgreSQL array."""
     try:
-        if pd.isna(chain_lengths_json) or chain_lengths_json == '[]':
+        if pd.isna(component_sizes_array):
             return []
-        data = json.loads(chain_lengths_json) if isinstance(chain_lengths_json, str) else chain_lengths_json
-        return data if isinstance(data, list) else []
+        # PostgreSQL returns arrays as strings like '{1,2,3}' or as lists
+        if isinstance(component_sizes_array, str):
+            # Parse PostgreSQL array format
+            sizes_str = component_sizes_array.strip('{}').split(',')
+            return [int(s) for s in sizes_str if s and s != 'NULL']
+        elif isinstance(component_sizes_array, list):
+            return [int(s) for s in component_sizes_array if s is not None]
+        else:
+            return []
     except:
         return []
 
@@ -97,7 +133,7 @@ def analyze_groups(df, focus_groups_only=True):
     df_focus[['saturation', 'halogen']] = df_focus.apply(classify_group, axis=1)
     
     # Extract component sizes
-    df_focus['component_sizes'] = df_focus['chain_lengths'].apply(extract_component_sizes)
+    df_focus['component_sizes'] = df_focus['component_sizes'].apply(extract_component_sizes)
     df_focus['avg_component_size'] = df_focus['component_sizes'].apply(
         lambda x: np.mean(x) if len(x) > 0 else 0
     )
@@ -123,15 +159,18 @@ def create_visualizations(df_focus, output_dir='/home/luc/git/classification_art
     plt.title('PFAS Groups Distribution (id > 28)')
     plt.tight_layout()
     
-    # 2. Saturation vs Halogen
+    # 2. Saturation vs Halogen Cross-tabulation
     plt.subplot(1, 2, 2)
-    saturation_counts = df_focus.drop_duplicates(subset=['molecule_id', 'group_id']).groupby(['saturation', 'halogen']).size().unstack(fill_value=0)
-    saturation_counts.plot(kind='bar', stacked=True, ax=plt.gca())
-    plt.xlabel('Saturation Type')
-    plt.ylabel('Number of Matches')
-    plt.title('Saturation vs Halogen Type')
-    plt.legend(title='Halogen', bbox_to_anchor=(1.05, 1))
-    plt.xticks(rotation=45, ha='right')
+    unique_matches = df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])
+    sat_hal_table = pd.crosstab(unique_matches['saturation'], unique_matches['halogen'])
+    
+    # Create grouped bar chart
+    sat_hal_table.plot(kind='bar', ax=plt.gca())
+    plt.xlabel('Saturation (Per=Fully halogenated, Poly=Partially halogenated)')
+    plt.ylabel('Number of Group Matches')
+    plt.title('Saturation vs. Component Halogen Type')
+    plt.legend(title='Halogen Element', bbox_to_anchor=(1.05, 1))
+    plt.xticks(rotation=0)
     plt.tight_layout()
     
     plt.savefig(f'{output_dir}/pfasgroups_distribution.pdf', dpi=300, bbox_inches='tight')
@@ -179,34 +218,6 @@ def create_visualizations(df_focus, output_dir='/home/luc/git/classification_art
     plt.savefig(f'{output_dir}/pfasgroups_components.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 4. Timing analysis
-    plt.figure(figsize=(12, 5))
-    
-    plt.subplot(1, 2, 1)
-    plt.hist(df_focus['parse_time_seconds'] * 1000, bins=50, edgecolor='black', alpha=0.7)
-    plt.xlabel('Parse Time (ms)')
-    plt.ylabel('Frequency')
-    plt.title('Distribution of Parse Times')
-    median_time = df_focus['parse_time_seconds'].median() * 1000
-    plt.axvline(median_time, color='red', linestyle='--', label=f'Median: {median_time:.2f} ms')
-    plt.legend()
-    
-    plt.subplot(1, 2, 2)
-    time_by_group = df_focus.groupby('group_id').agg({
-        'parse_time_seconds': 'mean',
-        'group_name': 'first'
-    }).sort_values('parse_time_seconds', ascending=False).head(10)
-    
-    plt.barh(range(len(time_by_group)), time_by_group['parse_time_seconds'].values * 1000, color='orange')
-    plt.yticks(range(len(time_by_group)), [f"{idx}: {name[:25]}" for idx, name in zip(time_by_group.index, time_by_group['group_name'])], fontsize=8)
-    plt.xlabel('Average Parse Time (ms)')
-    plt.title('Top 10 Groups by Parse Time')
-    
-    plt.tight_layout()
-    plt.savefig(f'{output_dir}/pfasgroups_timing.pdf', dpi=300, bbox_inches='tight')
-    plt.savefig(f'{output_dir}/pfasgroups_timing.png', dpi=300, bbox_inches='tight')
-    plt.close()
-    
     print(f"Plots saved to {output_dir}")
 
 def create_latex_tables(df_focus, output_file='/home/luc/git/classification_article/pfasgroups_tables.tex'):
@@ -218,47 +229,77 @@ def create_latex_tables(df_focus, output_file='/home/luc/git/classification_arti
     latex_content.append("\\centering")
     latex_content.append("\\caption{Top 15 PFAS Groups (ID > 28) by Molecule Frequency}")
     latex_content.append("\\label{tab:pfas_groups_freq}")
-    latex_content.append("\\begin{tabular}{llrrrr}")
+    latex_content.append("\\begin{tabular}{llrrr}")
     latex_content.append("\\hline")
-    latex_content.append("ID & Group Name & Molecules & Total Matches & Avg Comp. Size & Avg Parse Time (ms) \\\\")
+    latex_content.append("ID & Group Name & Molecules & Total Matches & Avg Comp. Size \\\\")
     latex_content.append("\\hline")
     
     top_groups = df_focus.groupby('group_id').agg({
         'molecule_id': 'nunique',
         'group_name': 'first',
         'match_count': 'sum',
-        'avg_component_size': 'mean',
-        'parse_time_seconds': 'mean'
+        'avg_component_size': 'mean'
     }).sort_values('molecule_id', ascending=False).head(15)
     
     for idx, row in top_groups.iterrows():
         name = row['group_name'][:35] + ('...' if len(row['group_name']) > 35 else '')
         name = name.replace('_', '\\_')
-        latex_content.append(f"{idx} & {name} & {int(row['molecule_id'])} & {int(row['match_count'])} & {row['avg_component_size']:.1f} & {row['parse_time_seconds']*1000:.2f} \\\\")
+        latex_content.append(f"{idx} & {name} & {int(row['molecule_id'])} & {int(row['match_count'])} & {row['avg_component_size']:.1f} \\\\")
     
     latex_content.append("\\hline")
     latex_content.append("\\end{tabular}")
     latex_content.append("\\end{table}")
     latex_content.append("")
     
-    # Table 2: Saturation vs Halogen breakdown
+    # Table 2: Saturation vs Halogen cross-tabulation
     latex_content.append("\\begin{table}[h]")
     latex_content.append("\\centering")
-    latex_content.append("\\caption{PFAS Group Classification by Saturation and Halogen Type}")
+    latex_content.append("\\caption{PFAS Group Classification: Saturation (Per/Poly) vs. Halogen Element}")
     latex_content.append("\\label{tab:pfas_saturation_halogen}")
-    latex_content.append("\\begin{tabular}{lrrrr}")
-    latex_content.append("\\hline")
-    latex_content.append("Saturation & Fluorine & Other Halogens & Mixed & Total \\\\")
-    latex_content.append("\\hline")
+    latex_content.append("\\small")
     
     sat_hal = df_focus.drop_duplicates(subset=['molecule_id', 'group_id']).groupby(['saturation', 'halogen']).size().unstack(fill_value=0)
-    for sat in sat_hal.index:
-        fluor = sat_hal.loc[sat, 'Fluorine'] if 'Fluorine' in sat_hal.columns else 0
-        other_cols = [col for col in sat_hal.columns if col not in ['Fluorine', 'Mixed']]
-        other = sum([sat_hal.loc[sat, col] for col in other_cols])
-        mixed = sat_hal.loc[sat, 'Mixed'] if 'Mixed' in sat_hal.columns else 0
-        total = sat_hal.loc[sat].sum()
-        latex_content.append(f"{sat} & {int(fluor)} & {int(other)} & {int(mixed)} & {int(total)} \\\\")
+    
+    # Build dynamic column header
+    columns = sorted([col for col in sat_hal.columns if col != 'Unknown'])
+    if 'Unknown' in sat_hal.columns:
+        columns.append('Unknown')
+    
+    col_spec = 'l' + 'r' * (len(columns) + 1)
+    latex_content.append(f"\\begin{{tabular}}{{{col_spec}}}")
+    latex_content.append("\\hline")
+    
+    header = "Saturation"
+    for col in columns:
+        header += f" & {col}"
+    header += " & Total \\\\"
+    latex_content.append(header)
+    latex_content.append("\\hline")
+    
+    # Add note about saturation
+    latex_content.append("\\multicolumn{" + str(len(columns) + 2) + "}{l}{\\textit{Per = fully halogenated; Poly = partially halogenated}} \\\\")
+    latex_content.append("\\hline")
+    
+    for sat in ['Per', 'Poly', 'Unknown']:
+        if sat in sat_hal.index:
+            row = sat
+            total = 0
+            for col in columns:
+                val = int(sat_hal.loc[sat, col]) if col in sat_hal.columns else 0
+                row += f" & {val}"
+                total += val
+            row += f" & {total} \\\\"
+            latex_content.append(row)
+    
+    # Add totals row
+    total_row = "\\hline\nTotal"
+    grand_total = 0
+    for col in columns:
+        col_sum = int(sat_hal[col].sum()) if col in sat_hal.columns else 0
+        total_row += f" & {col_sum}"
+        grand_total += col_sum
+    total_row += f" & {grand_total} \\\\"
+    latex_content.append(total_row)
     
     latex_content.append("\\hline")
     latex_content.append("\\end{tabular}")
@@ -282,9 +323,6 @@ def create_latex_text(df_focus, df_all, output_file='/home/luc/git/classificatio
     molecules_in_focus = df_focus['molecule_id'].nunique()
     total_matches_focus = len(df_focus)
     
-    avg_parse_time_ms = df_focus['parse_time_seconds'].mean() * 1000
-    median_parse_time_ms = df_focus['parse_time_seconds'].median() * 1000
-    
     top_group = df_focus.groupby('group_id').agg({
         'molecule_id': 'nunique',
         'group_name': 'first'
@@ -293,8 +331,22 @@ def create_latex_text(df_focus, df_all, output_file='/home/luc/git/classificatio
     avg_component_size = df_focus['avg_component_size'].mean()
     max_component_size = df_focus['max_component_size'].max()
     
-    perf_count = len(df_focus[df_focus['saturation'] == 'Perfluorinated'].drop_duplicates(subset=['molecule_id', 'group_id']))
-    poly_count = len(df_focus[df_focus['saturation'] == 'Polyfluorinated'].drop_duplicates(subset=['molecule_id', 'group_id']))
+    # Saturation analysis (Per vs Poly)
+    unique_matches = df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])
+    per_count = len(unique_matches[unique_matches['saturation'] == 'Per'])
+    poly_count = len(unique_matches[unique_matches['saturation'] == 'Poly'])
+    
+    # Halogen analysis
+    f_count = len(unique_matches[unique_matches['halogen'] == 'F'])
+    cl_count = len(unique_matches[unique_matches['halogen'] == 'Cl'])
+    br_count = len(unique_matches[unique_matches['halogen'] == 'Br'])
+    i_count = len(unique_matches[unique_matches['halogen'] == 'I'])
+    mixed_count = len(unique_matches[unique_matches['halogen'] == 'Mixed'])
+    
+    # Cross-tabulation
+    sat_hal_crosstab = pd.crosstab(unique_matches['saturation'], unique_matches['halogen'])
+    per_f = sat_hal_crosstab.loc['Per', 'F'] if 'Per' in sat_hal_crosstab.index and 'F' in sat_hal_crosstab.columns else 0
+    poly_f = sat_hal_crosstab.loc['Poly', 'F'] if 'Poly' in sat_hal_crosstab.index and 'F' in sat_hal_crosstab.columns else 0
     
     text = f"""\\subsection{{PFASGroups Classification Results}}
 
@@ -304,17 +356,17 @@ def create_latex_text(df_focus, df_all, output_file='/home/luc/git/classificatio
     
     \\subsubsection{{Structural Characteristics}}
     
-    Component size analysis revealed an average component size of {avg_component_size:.1f} carbons, with the largest component containing {int(max_component_size)} carbons. The distribution of component sizes (Figure~\\ref{{fig:pfasgroups_components}}) shows that most PFAS groups consist of small to medium-sized fluorinated chains, with a notable tail extending to larger structures.
+    Component size analysis revealed an average component size of {avg_component_size:.1f} atoms, with the largest component containing {int(max_component_size)} atoms. The distribution of component sizes (Figure~\\ref{{fig:pfasgroups_components}}) shows that most PFAS groups consist of small to medium-sized halogenated chains, with a notable tail extending to larger structures.
     
-    Classification by saturation patterns showed {perf_count} matches for perfluorinated groups and {poly_count} for polyfluorinated groups. The preponderance of polyfluorinated groups ({poly_count/(perf_count+poly_count)*100:.1f}\\%) indicates that the majority of PFAS in the inventory contain both fluorinated and non-fluorinated portions, suggesting diverse chemical structures and properties.
+    \\subsubsection{{Saturation and Halogen Composition}}
     
-    \\subsubsection{{Algorithm Performance}}
+    Classification by saturation patterns revealed {per_count} matches for fully saturated (per-halogenated) groups and {poly_count} for partially saturated (poly-halogenated) groups. The ratio of {poly_count/(per_count+poly_count)*100:.1f}\\% polyfluorinated indicates that most detected PFAS contain partially halogenated carbon chains rather than fully halogenated structures.
     
-    The PFASGroups parsing algorithm demonstrated excellent computational performance, with a median parse time of {median_parse_time_ms:.2f} ms per molecule and a mean of {avg_parse_time_ms:.2f} ms (Figure~\\ref{{fig:pfasgroups_timing}}). This efficiency enables high-throughput screening of large chemical databases. The parse times were largely independent of molecule complexity, with the graph-based matching approach maintaining consistent performance across different PFAS architectures.
+    Regarding halogen composition, fluorine-containing groups dominate with {f_count} matches ({f_count/len(unique_matches)*100:.1f}\\% of total), followed by chlorine ({cl_count} matches), bromine ({br_count} matches), and iodine ({i_count} matches). Mixed-halogen compounds (containing multiple halogen types) account for {mixed_count} matches. Notably, perfluorinated groups (fully saturated with fluorine) comprise {per_f} matches, while polyfluorinated groups (partially fluorinated) comprise {poly_f} matches, reflecting the diversity of fluorination patterns in the chemical inventory.
     
-    The algorithm's ability to identify structural motifs beyond simple perfluoroalkyl chains (as evidenced by the diversity of groups detected) demonstrates its utility for comprehensive PFAS characterization. The component-level analysis provides insights into chain lengths, branching patterns, and functional group connectivity that would be challenging to obtain through substructure searches alone.
+    The algorithm detected groups across a range of structural complexities, enabling comprehensive characterization of halogenated substances in the inventory beyond simple fluorinated compounds.
     
-    See Tables~\\ref{{tab:pfas_groups_freq}} and \\ref{{tab:pfas_saturation_halogen}} for detailed breakdowns of group frequencies and chemical classifications. Figures~\\ref{{fig:pfasgroups_distribution}}, \\ref{{fig:pfasgroups_components}}, and \\ref{{fig:pfasgroups_timing}} illustrate the distribution patterns, structural characteristics, and computational performance of the classification system.
+    See Tables~\\ref{{tab:pfas_groups_freq}} and \\ref{{tab:pfas_saturation_halogen}} for detailed breakdowns of group frequencies and chemical classifications. Figures~\\ref{{fig:pfasgroups_distribution}} and \\ref{{fig:pfasgroups_components}} illustrate the distribution patterns and structural characteristics of the classification system.
     """
     
     with open(output_file, 'w') as f:
@@ -359,11 +411,6 @@ def main():
     print(df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])['saturation'].value_counts())
     print(f"\nHalogen breakdown:")
     print(df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])['halogen'].value_counts())
-    print(f"\nParse time statistics (ms):")
-    print(f"  Mean: {df_focus['parse_time_seconds'].mean() * 1000:.2f}")
-    print(f"  Median: {df_focus['parse_time_seconds'].median() * 1000:.2f}")
-    print(f"  Min: {df_focus['parse_time_seconds'].min() * 1000:.2f}")
-    print(f"  Max: {df_focus['parse_time_seconds'].max() * 1000:.2f}")
     
     print("\n✓ Analysis complete!")
 
