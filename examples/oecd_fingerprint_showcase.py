@@ -164,7 +164,7 @@ def demonstrate_tsne(fp, output_dir='oecd_analysis'):
             n_components=2,
             perplexity=perp,
             learning_rate=200.0,
-            n_iter=1000,
+            max_iter=1000,
             plot=True,
             output_file=os.path.join(output_dir, f'oecd_tsne_perp{perp}.png')
         )

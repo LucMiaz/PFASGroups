@@ -1631,7 +1631,7 @@ class ResultsFingerprint:
         n_components: int = 2,
         perplexity: float = 30.0,
         learning_rate: float = 200.0,
-        n_iter: int = 1000,
+        max_iter: int = 1000,
         plot: bool = True,
         output_file: Optional[str] = None,
     ) -> Dict[str, Any]:
@@ -1645,8 +1645,8 @@ class ResultsFingerprint:
             t-SNE perplexity parameter (5-50 typical)
         learning_rate : float, default 200.0
             Learning rate for optimization
-        n_iter : int, default 1000
-            Number of iterations
+        max_iter : int, default 1000
+            Maximum number of iterations
         plot : bool, default True
             Whether to create visualization
         output_file : str, optional
@@ -1676,7 +1676,7 @@ class ResultsFingerprint:
             n_components=n_components,
             perplexity=perplexity,
             learning_rate=learning_rate,
-            n_iter=n_iter,
+            max_iter=max_iter,
             random_state=42,
         )
         X_tsne = tsne.fit_transform(X_scaled)

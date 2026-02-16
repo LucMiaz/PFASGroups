@@ -2111,8 +2111,8 @@
     },
     {
         "id": 56,
-        "name": "Perfluoro cyclic compounds",
-        "alias": "Perfluoro cyclic compounds",
+        "name": "Perhalogenated cyclic compounds",
+        "alias": "Perhalogenated cyclic compounds",
         "componentSmarts": "cyclic",
         "linker_smarts": null,
         "constraints": {},
@@ -2139,8 +2139,8 @@
     },
     {
         "id": 57,
-        "name": "Polyfluoro cyclic compounds",
-        "alias": "Polyfluoro cyclic compounds",
+        "name": "Polyhalogenated cyclic compounds",
+        "alias": "Polyhalogenated cyclic compounds",
         "componentSmarts": "cyclic",
         "linker_smarts": null,
         "constraints": {},
