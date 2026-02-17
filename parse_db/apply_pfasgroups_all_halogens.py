@@ -106,6 +106,12 @@ def parse_args() -> argparse.Namespace:
     )
     
     parser.add_argument(
+        "--all-molecules",
+        action="store_true",
+        help="Process ALL molecules in the table, not just halogenated ones",
+    )
+    
+    parser.add_argument(
         "--output-json",
         type=Path,
         help="Path to save results as JSON file",
@@ -251,7 +257,7 @@ def add_molecule_id_to_results(results_model, compound_id_map):
     return compound_id_map
 
 
-def fetch_halogenated_compounds(
+def fetch_compounds(
     conn,
     halogens: List[str],
     table_name: str,
@@ -261,16 +267,21 @@ def fetch_halogenated_compounds(
     limit: Optional[int],
     offset: int,
     use_halogen_columns: bool = False,
+    all_molecules: bool = False,
 ) -> List[Tuple[int, str, str]]:
-    """Fetch compounds containing specified halogens.
+    """Fetch compounds from database.
     
     Args:
         use_halogen_columns: If True, use numeric columns (F, Cl, Br, I).
                            If False, use regex pattern matching on formula column.
+        all_molecules: If True, fetch ALL molecules. If False, fetch only halogenated ones.
     """
     
-    # Build WHERE clause for halogens
-    if use_halogen_columns:
+    # Build WHERE clause
+    if all_molecules:
+        # Fetch all molecules with valid SMILES
+        where_clause = "1=1"  # Always true
+    elif use_halogen_columns:
         # For databases with numeric halogen columns (like zeropmdbwp2)
         halogen_conditions = []
         for halogen in halogens:
@@ -331,6 +342,96 @@ def substitute_halogens_in_smiles(smiles: str) -> Tuple[str, Dict[str, int]]:
     except Exception as e:
         print(f"Warning: Failed to substitute halogens in {smiles}: {e}")
         return smiles, substitutions
+
+
+def save_batch_to_database(molecule_results, compound_id_map, engine):
+    """Save a batch of results to the database.
+    
+    Args:
+        molecule_results: List of MoleculeResult dicts to save
+        compound_id_map: Dict mapping SMILES to molecule_id
+        engine: SQLAlchemy engine for database connection
+        
+    Returns:
+        Tuple of (num_groups_saved, num_components_saved)
+    """
+    import pandas as pd
+    
+    components_data = []
+    groups_data = []
+    
+    for mol_result in molecule_results:
+        smiles = mol_result.get('smiles', '')
+        mol_id = compound_id_map.get(smiles)
+        
+        if not mol_result.get('matches'):
+            # No matches for this molecule - skip
+            continue
+        
+        # Process each match
+        for match in mol_result.get('matches', []):
+            # Only process PFAS groups, not definitions
+            if match.get('type') != 'PFASgroup':
+                continue
+            
+            group_id = match.get('id')
+            group_name = match.get('group_name', '')
+            
+            # Count components for this group
+            components = match.get('components', [])
+            
+            # Add group entry
+            groups_data.append({
+                'smiles': smiles,
+                'molecule_id': mol_id,
+                'group_id': group_id,
+                'group_name': group_name,
+                'match_count': len(components),
+            })
+            
+            # Add component entries
+            for comp in components:
+                component_atoms = comp.get('component', [])
+                smarts_label = comp.get('SMARTS', '')
+                
+                components_data.append({
+                    'smiles': smiles,
+                    'molecule_id': mol_id,
+                    'group_id': group_id,
+                    'group_name': group_name,
+                    'smarts_label': smarts_label,
+                    'component_atoms': ','.join(map(str, component_atoms)),
+                })
+    
+    # Save to database
+    num_groups = 0
+    num_components = 0
+    
+    if groups_data:
+        df_groups = pd.DataFrame(groups_data)
+        df_groups.to_sql(
+            'pfasgroups_in_molecules',
+            engine,
+            if_exists='append',
+            index=False,
+            method='multi',
+            chunksize=1000
+        )
+        num_groups = len(groups_data)
+    
+    if components_data:
+        df_components = pd.DataFrame(components_data)
+        df_components.to_sql(
+            'components_in_molecules',
+            engine,
+            if_exists='append',
+            index=False,
+            method='multi',
+            chunksize=1000
+        )
+        num_components = len(components_data)
+    
+    return num_groups, num_components
 
 
 def parse_one_compound(
@@ -394,7 +495,10 @@ def main() -> int:
     
     # Parse halogen list
     halogens = [h.strip() for h in args.halogens.split(',')]
-    print(f"Processing compounds with halogens: {', '.join(halogens)}")
+    if args.all_molecules:
+        print(f"Processing ALL molecules in database")
+    else:
+        print(f"Processing compounds with halogens: {', '.join(halogens)}")
     print(f"Database: {db_config.dbname} (table: {args.table_name})")
     
     # Import PFASGroups
@@ -419,7 +523,7 @@ def main() -> int:
             initialize_database_tables(conn, pfas_groups)
             print("Database tables ready")
         # Fetch compounds
-        compounds = fetch_halogenated_compounds(
+        compounds = fetch_compounds(
             conn,
             halogens=halogens,
             table_name=args.table_name,
@@ -429,6 +533,7 @@ def main() -> int:
             limit=args.limit,
             offset=args.offset,
             use_halogen_columns=args.use_halogen_columns,
+            all_molecules=args.all_molecules,
         )
         
         total = len(compounds)
@@ -436,12 +541,24 @@ def main() -> int:
         if total == 0:
             return 0
         
+        # Set up database connection if saving to DB
+        engine = None
+        if args.save_to_db:
+            import pandas as pd
+            import sqlalchemy
+            
+            conn_string = f"postgresql://{db_config.user}:{db_config.password}@{db_config.host}:{db_config.port}/{db_config.dbname}"
+            engine = sqlalchemy.create_engine(conn_string)
+            print(f"Database connection established for batch commits")
+        
         all_results = []
-        molecule_results_list = []  # For ResultsModel
-        compound_id_map = {}  # Map SMILES to molecule_id
+        batch_results = []  # Current batch to save
+        batch_id_map = {}  # SMILES->ID mapping for current batch
         success = 0
         failed = 0
         with_groups = 0
+        total_groups_saved = 0
+        total_components_saved = 0
         
         t_run0 = time.perf_counter()
         
@@ -457,20 +574,47 @@ def main() -> int:
             
             if result['status'] == 'success':
                 success += 1
-                if result['result'] and result['result'].get('matches'):
-                    with_groups += 1
-                    molecule_results_list.append(result['result'])
-                    compound_id_map[smiles] = compound_id
+                # Store successful parses in current batch
+                if result['result']:
+                    batch_results.append(result['result'])
+                    batch_id_map[smiles] = compound_id
+                    if result['result'].get('matches'):
+                        with_groups += 1
             else:
                 failed += 1
             
+            # Save batch to database and clear memory
             if idx % args.batch_size == 0:
-                print(f"Processed {idx}/{total} (success={success}, failed={failed}, with_groups={with_groups})")
+                if args.save_to_db and batch_results and engine:
+                    num_groups, num_components = save_batch_to_database(
+                        batch_results, batch_id_map, engine
+                    )
+                    total_groups_saved += num_groups
+                    total_components_saved += num_components
+                    print(f"Processed {idx}/{total} (success={success}, failed={failed}, with_groups={with_groups}) | Saved: {num_groups} groups, {num_components} components | Total: {total_groups_saved} groups, {total_components_saved} components")
+                    # Clear batch to free memory
+                    batch_results = []
+                    batch_id_map = {}
+                else:
+                    print(f"Processed {idx}/{total} (success={success}, failed={failed}, with_groups={with_groups})")
+        
+        # Save any remaining results in final batch
+        if args.save_to_db and batch_results and engine:
+            num_groups, num_components = save_batch_to_database(
+                batch_results, batch_id_map, engine
+            )
+            total_groups_saved += num_groups
+            total_components_saved += num_components
+            print(f"Final batch: Saved {num_groups} groups, {num_components} components")
+            batch_results = []
+            batch_id_map = {}
         
         duration = time.perf_counter() - t_run0
         
         # Print summary
-        print("\nRun complete")
+        print("\n" + "="*70)
+        print("RUN COMPLETE")
+        print("="*70)
         print(f"  run_id: {args.run_id}")
         print(f"  processed: {total}")
         print(f"  success: {success}")
@@ -478,50 +622,15 @@ def main() -> int:
         print(f"  compounds_with_groups: {with_groups}")
         print(f"  wall_time_seconds: {duration:.3f}")
         
-        # Calculate statistics
-        total_matches = 0
-        if molecule_results_list:
-            for mol_res in molecule_results_list:
-                total_matches += len(mol_res.get('matches', []))
+        if args.save_to_db:
+            print(f"\nDatabase Statistics:")
+            print(f"  total_groups_saved: {total_groups_saved}")
+            print(f"  total_components_saved: {total_components_saved}")
+            if with_groups > 0:
+                avg_groups = total_groups_saved / with_groups
+                print(f"  avg_groups_per_molecule: {avg_groups:.2f}")
         
-        if with_groups > 0:
-            avg_groups = total_matches / with_groups
-            print(f"  total_pfas_group_matches: {total_matches}")
-            print(f"  avg_matches_per_molecule: {avg_groups:.2f}")
-        
-        # Save to database if requested
-        if args.save_to_db and molecule_results_list:
-            print(f"\nSaving results to database using ResultsModel.to_sql()...")
-            
-            # Create ResultsModel from results
-            results_model = ResultsModel(molecule_results_list)
-            
-            # Build PostgreSQL connection string
-            conn_string = f"postgresql://{db_config.user}:{db_config.password}@{db_config.host}:{db_config.port}/{db_config.dbname}"
-            
-            # Save to database using to_sql method
-            results_model.to_sql(
-                conn=conn_string,
-                components_table="components_in_molecules",
-                groups_table="pfasgroups_in_molecules",
-                if_exists="append"
-            )
-            
-            # Update molecule_id column based on SMILES mapping
-            print("Updating molecule_id columns...")
-            with conn.cursor() as cur:
-                for smiles, mol_id in compound_id_map.items():
-                    cur.execute(
-                        "UPDATE pfasgroups_in_molecules SET molecule_id = %s WHERE smiles = %s AND molecule_id IS NULL",
-                        (mol_id, smiles)
-                    )
-                    cur.execute(
-                        "UPDATE components_in_molecules SET molecule_id = %s WHERE smiles = %s AND molecule_id IS NULL",
-                        (mol_id, smiles)
-                    )
-                conn.commit()
-            
-            print(f"Saved {with_groups} molecules ({total_matches} matches) to database")
+        print("="*70)
         
         # Optionally save to JSON
         if args.output_json:

@@ -115,7 +115,17 @@ class PFASGroup():
             except Exception as e:
                 raise Exception(f"Error for agg Group {self.id}: {self.name}\n {e}")
         self.test_dict = kwargs.get('test',None)# test dict for unit tests
-    
+    def set_path_types(self, pathTypes = None):
+        """Set path types to search based on componentSmarts, componentSaturation and componentHalogen"""
+        if pathTypes is not None:
+            self.path_types = pathTypes
+        elif self.componentSmarts is None:
+            self.path_types = []
+        elif self.componentSmarts == 'cyclic':
+            self.path_types = ['cyclic']
+        else:
+            self.path_types = [self.componentSmarts]
+
     def _count_smarts_extra_atoms(self, smarts_str):
         """Count number of extra carbon atoms in functional group beyond what's captured by component.
         
@@ -444,7 +454,7 @@ class PFASGroup():
             # detected when attached to perfluoroalkyl or polyfluoroalkyl chains,
             # not when attached directly to cyclic structures
             all_components = []
-            for path_type in ['Perfluoroalkyl', 'Polyfluoroalkyl']:
+            for path_type in self.path_types:
                 path_comps = component_solver.get(path_type, max_dist = self.max_dist_from_CF, default=[])
                 all_components.extend(path_comps)
             components = all_components
