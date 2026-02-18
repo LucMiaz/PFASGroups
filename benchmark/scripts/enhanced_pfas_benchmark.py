@@ -56,7 +56,7 @@ class EnhancedPFASBenchmark:
     
     def __init__(self):
         # Load PFAS groups definitions
-        pfas_groups_path = os.path.join(repo_root, 'HalogenGroups', 'data', 'PFAS_groups_smarts.json')
+        pfas_groups_path = os.path.join(repo_root, 'HalogenGroups', 'data', 'Halogen_groups_smarts.json')
         with open(pfas_groups_path, 'r') as f:
             self.pfas_groups = json.load(f)
         
@@ -967,7 +967,7 @@ class EnhancedPFASBenchmark:
         system_specs = self.get_system_specifications()
         
         # Get available functional groups (IDs 29-114)
-        excluded_timing_groups = {62, 103}
+        excluded_timing_groups = []#{62, 103}
         available_groups = []
         for group_id in range(29, 115):
             if group_id in self.functional_smarts:

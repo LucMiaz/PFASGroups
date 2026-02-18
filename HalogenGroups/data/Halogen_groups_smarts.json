@@ -3377,6 +3377,11 @@
         },
         "test": {
             "category": "generic",
+            "generate": {
+                "smiles": "F",
+                "mode": "attach",
+                "is_telomer": false
+            },
             "Cl": {
                 "examples": [
                     "OC(CCl)(C1=C(Cl)C=C(Cl)C=C1)C(Cl)(Cl)C(Cl)(Cl)C(Cl)(Cl)Cl",
@@ -4657,7 +4662,7 @@
                 ]
             },
             "generate": {
-                "smiles": "Si",
+                "smiles": "[SiH3]",
                 "mode": "attach",
                 "is_telomer": false
             },
@@ -4725,7 +4730,7 @@
                 ]
             },
             "generate": {
-                "smiles": "Si(Cl)(Cl)Cl",
+                "smiles": "[Si](Cl)(Cl)Cl",
                 "mode": "attach",
                 "is_telomer": false
             },
@@ -5459,7 +5464,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCC[Si]([H])([H])[H]",
+                "smiles": "C[Si]([H])([H])[H]",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -5517,7 +5522,7 @@
                 ]
             },
             "generate": {
-                "smiles": "Si(Cl)(Cl)Cl",
+                "smiles": "[Si](Cl)(Cl)Cl",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -5582,7 +5587,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCI",
+                "smiles": "CI",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -5671,7 +5676,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCC(=O)[H]",
+                "smiles": "CC(=O)[H]",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -5760,7 +5765,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCC(=O)O",
+                "smiles": "CC(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -5849,7 +5854,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCOCCCCO",
+                "smiles": "COCCCCO",
                 "mode": "attach",
                 "is_telomer": true,
                 "linker_extra": [
@@ -5942,7 +5947,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCS(=O)(=O)O",
+                "smiles": "S(=O)(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6031,7 +6036,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCOP(=O)(O)O",
+                "smiles": "COP(=O)(O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6120,7 +6125,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCOP(=O)(O)OP(=O)(O)O",
+                "smiles": "COP(=O)(O)OP(=O)(O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6209,7 +6214,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCOP(=O)(O)OP(=O)(O)OP(=O)(O)O",
+                "smiles": "COP(=O)(O)OP(=O)(O)OP(=O)(O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6298,7 +6303,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCOC(=O)C=C",
+                "smiles": "COC(=O)C=C",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6384,7 +6389,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCOC(=O)C(=C)C",
+                "smiles": "COC(=O)C(=C)C",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6461,7 +6466,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCO",
+                "smiles": "CO",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6550,7 +6555,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCS",
+                "smiles": "CS",
                 "mode": "insert",
                 "is_telomer": true
             },
@@ -6641,7 +6646,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCS(=O)(=O)N",
+                "smiles": "CS(=O)(=O)N",
                 "mode": "insert",
                 "is_telomer": true
             },
@@ -6723,7 +6728,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCC[Si](OC)(OC)OC",
+                "smiles": "C[Si](OC)(OC)OC",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6789,7 +6794,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCC[N+](C)(C)CC(=O)O",
+                "smiles": "C[N+](C)(C)CC(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6874,7 +6879,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCOC(=O)C",
+                "smiles": "COC(=O)C",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -6946,7 +6951,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCSC#N",
+                "smiles": "CSC#N",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -7097,7 +7102,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCC[N+](C)(C)C",
+                "smiles": "C[N+](C)(C)C",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -7187,7 +7192,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCS(=O)O",
+                "smiles": "CS(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -7277,7 +7282,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCSO",
+                "smiles": "CSO",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -7446,7 +7451,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCC",
+                "smiles": "CC",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -7515,7 +7520,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCOC1C(O)C(OC(C1O)C(=O)O)O",
+                "smiles": "COC1C(O)C(OC(C1O)C(=O)O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -7599,7 +7604,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCC(O)S(=O)(=O)O",
+                "smiles": "CC(O)S(=O)(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -7687,7 +7692,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCC(=O)O",
+                "smiles": "CC(=O)O",
                 "mode": "attach",
                 "is_telomer": true,
                 "linker_extra": [
@@ -7773,7 +7778,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCC(=O)SC(=O)C(O)C(=O)O",
+                "smiles": "CC(=O)SC(=O)C(O)C(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -7863,7 +7868,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCNCC(=O)O",
+                "smiles": "CNCC(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -8044,7 +8049,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCOCC(=O)O",
+                "smiles": "COCC(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -8134,7 +8139,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCS(=O)(=O)CCC(=O)O",
+                "smiles": "CS(=O)(=O)CCC(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -8225,7 +8230,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCS(=O)CCC(=O)NC(C)(C)CS(=O)(=O)O",
+                "smiles": "CS(=O)CCC(=O)NC(C)(C)CS(=O)(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -8313,7 +8318,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCS(=O)",
+                "smiles": "CS(=O)",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -8397,7 +8402,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCS(=O)(=O)",
+                "smiles": "CS(=O)(=O)",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -8487,7 +8492,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCC(=O)SCC(O)C(=O)O",
+                "smiles": "CC(=O)SCC(O)C(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -8577,7 +8582,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCC(=O)SC(O)C(=O)O",
+                "smiles": "CC(=O)SC(O)C(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -8667,7 +8672,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCNCCC(=O)O",
+                "smiles": "CNCCC(=O)O",
                 "mode": "attach",
                 "is_telomer": true
             },
@@ -8756,7 +8761,7 @@
                 ]
             },
             "generate": {
-                "smiles": "CCCCNCC[N+](C)(C)C",
+                "smiles": "CNCC[N+](C)(C)C",
                 "mode": "attach",
                 "is_telomer": true
             },
