@@ -32,7 +32,7 @@ jobs:
       run: |
         conda install -y -c conda-forge rdkit
         pip install -e ".[dev,database]"
-        pip install scipy Pillow svgutils flake8
+        pip install scipy Pillow svgutils flake8 pytest-timeout
 
     - name: Lint with flake8
       shell: bash -el {0}
