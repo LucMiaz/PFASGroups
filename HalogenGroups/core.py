@@ -4,8 +4,14 @@ import networkx as nx
 import re
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from typing import Union, List, Dict
+from typing import Union, List, Dict, TYPE_CHECKING
 from rdkit import rdBase
+
+if TYPE_CHECKING:
+    try:
+        from rdkit.Chem.Draw import plot_mols
+    except ImportError:
+        pass
 
 # --- Load SMARTS paths from component_smarts.json ---
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))

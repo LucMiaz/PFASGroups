@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple, Union
 import os
 import warnings
+
+if TYPE_CHECKING:
+    try:
+        import sqlalchemy
+    except ImportError:
+        pass
 
 from rdkit import Chem
 from rdkit.Chem import Draw

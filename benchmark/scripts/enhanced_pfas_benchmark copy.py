@@ -1087,22 +1087,22 @@ class EnhancedPFASBenchmark:
                     mol = Chem.MolFromSmiles(smiles)
                     if mol is not None and 'F' not in smiles:
                         
-                        test_results['molecules_tested'] += 1
+                        group_results['molecules_tested'] += 1
                         
                         # Test with HalogenGroups - specificity test (should NOT detect target group)
                         pfas_result = self.test_with_HalogenGroups(smiles, include_PFAS_definitions=False)
                         
                         # Check if target functional group was incorrectly detected
                         if pfas_result['success'] and group_id in pfas_result['detected_groups']:
-                            test_results['HalogenGroups_detections'] += 1
+                            group_results['HalogenGroups_detections'] += 1
                         
                         # Test with PFAS-Atlas - should NOT detect as PFAS
                         atlas_result = self.test_with_atlas(smiles)
                         
                         if atlas_result['success']:
-                            test_results['atlas_detections'] += 1
+                            group_results['atlas_detections'] += 1
                         
-                        test_results['molecules'].append({
+                        group_results['molecules'].append({
                             'smiles': smiles,
                             'HalogenGroups_detected': pfas_result['success'],
                             'HalogenGroups_detected_groups': pfas_result['detected_groups'],

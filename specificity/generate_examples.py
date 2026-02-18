@@ -50,13 +50,11 @@ try:
     # Add pytest hooks for better integration
     def pytest_sessionstart(session):
         """Called after the Session object has been created."""
-        global TEST_SUMMARY_DATA
         TEST_SUMMARY_DATA['test_start_time'] = datetime.now()
         print(f"Starting PFAS Groups test session at {TEST_SUMMARY_DATA['test_start_time']}")
     
     def pytest_sessionfinish(session, exitstatus):
         """Called after whole test run finished."""
-        global TEST_SUMMARY_DATA
         try:
             summary = generate_test_summary()
             # Save detailed results
@@ -173,7 +171,6 @@ def generate_test_summary(output_file=f'{tests_folder}/results/test_summary_repo
     Returns:
         dict: Summary statistics
     """
-    global TEST_SUMMARY_DATA
     
     if TEST_SUMMARY_DATA['test_start_time'] is None:
         TEST_SUMMARY_DATA['test_start_time'] = datetime.now()
@@ -378,14 +375,12 @@ class TestHalogenGroups:
     @classmethod
     def setup_class(cls):
         """Set up test class - called once before any tests in this class."""
-        global TEST_SUMMARY_DATA
         TEST_SUMMARY_DATA['test_start_time'] = datetime.now()
         print(f"Starting PFAS Groups tests at {TEST_SUMMARY_DATA['test_start_time']}")
     
     @classmethod
     def teardown_class(cls):
         """Clean up after all tests - called once after all tests in this class."""
-        global TEST_SUMMARY_DATA
         if PYTEST_AVAILABLE:
             # Generate summary when running with pytest
             summary = generate_test_summary()
@@ -406,7 +401,6 @@ class TestHalogenGroups:
     
     def test_oecd_pfas_groups(self):
         """Test OECD PFAS group detection with synthetic compounds."""
-        global TEST_SUMMARY_DATA
         print("Testing OECD PFAS groups...")
         test_results = []
         
@@ -478,7 +472,6 @@ class TestHalogenGroups:
     
     def test_generic_pfas_groups(self):
         """Test generic PFAS group detection with synthetic compounds."""
-        global TEST_SUMMARY_DATA
         print("Testing generic PFAS groups...")
         test_results = []
         
@@ -557,7 +550,6 @@ class TestHalogenGroups:
 
     def run_all_tests(self):
         """Run all tests manually (for when pytest is not available)."""
-        global TEST_SUMMARY_DATA
         TEST_SUMMARY_DATA['test_start_time'] = datetime.now()
         print("Running all PFAS group tests...")
         
@@ -616,7 +608,6 @@ class TestHalogenGroups:
 
     def test_specificity(self):
         """Test PFAS group specificity using the dedicated test function."""
-        global TEST_SUMMARY_DATA
         print("Testing PFAS group specificity...")
         try:
             results_df = df_test_pfas_group_specificity(verbose=False)

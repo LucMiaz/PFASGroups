@@ -5,6 +5,7 @@ Provides command-line tools for parsing PFAS structures and generating fingerpri
 """
 
 import argparse
+import csv
 import sys
 import json
 from pathlib import Path

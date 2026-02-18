@@ -774,8 +774,8 @@ def main():
     json_report = {
         "summary": {
             "total_molecules": len(timing_results),
-            "HalogenGroup_avg_time": statHalogenGroupnGroups_avg_time'],
-            "HalogenGroup_std_time": statHalogenGroupnGroups_std_time'],
+            "HalogenGroup_avg_time": stats['HalogenGroups_avg_time'],
+            "HalogenGroup_std_time": stats['HalogenGroups_std_time'],
             "atlas_avg_time": stats['atlas_avg_time'],
             "atlas_std_time": stats['atlas_std_time'],
             "speed_ratio": stats['speed_ratio'],

@@ -25,6 +25,8 @@ import os
 from datetime import datetime
 from collections import defaultdict, Counter
 from typing import List, Dict, Tuple, Optional
+from rdkit import Chem
+from rdkit.Chem import Descriptors, rdMolDescriptors
 # Add parent directory to path
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
@@ -472,8 +474,6 @@ class PFASDefinitionBenchmark:
         Returns:
             Dictionary with test results
         """
-        from rdkit import Chem
-        from rdkit.Chem import Descriptors, rdMolDescriptors
         from HalogenGroups.parser import parse_mol
 
         mol = Chem.MolFromSmiles(smiles)

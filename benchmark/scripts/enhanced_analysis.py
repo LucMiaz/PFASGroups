@@ -202,7 +202,7 @@ def analyze_system_comparison(results):
         
         # Collect timing data
         if 'execution_time' in result['HalogenGroup_result']:
-            single_analysis[group_id]['HalogenGroup_times'].append(resulHalogenGroupnGroups_result']['execution_time'])
+            single_analysis[group_id]['HalogenGroup_times'].append(result['HalogenGroups_result']['execution_time'])
         if 'execution_time' in result['atlas_result']:
             single_analysis[group_id]['atlas_times'].append(result['atlas_result']['execution_time'])
     
