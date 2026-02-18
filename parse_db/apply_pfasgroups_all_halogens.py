@@ -155,8 +155,7 @@ def import_HalogenGroups(HalogenGroups_path: Path):
     from rdkit import RDLogger
     RDLogger.DisableLog('rdApp.*')
     
-    from HalogenGroups import parse_mol, get_HalogenGroups  # type: ignore
-    from HalogenGroups.results_model import ResultsModel  # type: ignore
+    from HalogenGroups import parse_mol, get_HalogenGroups, ResultsModel
 
     return parse_mol, get_HalogenGroups, ResultsModel
 

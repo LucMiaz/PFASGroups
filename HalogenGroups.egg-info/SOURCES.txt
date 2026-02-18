@@ -14,6 +14,7 @@ HalogenGroups/generate_homologues.py
 HalogenGroups/generate_mol.py
 HalogenGroups/generate_paper_figures.py
 HalogenGroups/getter.py
+HalogenGroups/homologue_series.py
 HalogenGroups/parser.py
 HalogenGroups/prioritise.py
 HalogenGroups/results_model.py
@@ -35,6 +36,7 @@ tests/test_comprehensive_metrics.py
 tests/test_database_integration.py
 tests/test_definition_comparison.py
 tests/test_fraction_analysis.py
+tests/test_generate_homologues.py
 tests/test_halogen_groups_smarts.py
 tests/test_linker_smarts.py
 tests/test_metrics.py
