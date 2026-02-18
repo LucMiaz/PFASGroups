@@ -43,7 +43,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--db-name", default=os.environ.get("DATABASE_NAME", "clinventory"))
     parser.add_argument("--db-user", default=os.environ.get("DATABASE_USER", "django"))
-    parser.add_argument("--db-password", default=os.environ.get("DJANGO_USER", ""))
+    parser.add_argument("--db-password", default=None, help="DB password (env: DJANGO_USER; prompted if omitted)")
     parser.add_argument("--db-host", default=os.environ.get("DATABASE_HOST", "localhost"))
     parser.add_argument("--db-port", type=int, default=int(os.environ.get("DATABASE_PORT", "5432")))
 
@@ -118,9 +118,9 @@ def parse_args() -> argparse.Namespace:
     )
     
     parser.add_argument(
-        "--save-to-db",
+        "--no-save-to-db",
         action="store_true",
-        help="Save results to database table HalogenGroups_results",
+        help="Disable saving results to the database (only useful together with --output-json)",
     )
     
     parser.add_argument(
@@ -135,10 +135,18 @@ def parse_args() -> argparse.Namespace:
 
 
 def build_db_config(args: argparse.Namespace) -> DBConfig:
+    import getpass
+    # If --db-password was explicitly provided, use it.
+    # Otherwise always prompt — do NOT silently fall back to an env var,
+    # since the env var may belong to a different DB user.
+    if args.db_password is not None:
+        password = args.db_password
+    else:
+        password = getpass.getpass(f"Password for DB user '{args.db_user}': ")
     return DBConfig(
         dbname=args.db_name,
         user=args.db_user,
-        password=args.db_password,
+        password=password,
         host=args.db_host,
         port=args.db_port,
     )
@@ -161,7 +169,7 @@ def import_HalogenGroups(HalogenGroups_path: Path):
 
 
 def initialize_database_tables(conn, pfas_groups_list):
-    """Initialize the three required tables: HalogenGroups, HalogenGroups_in_molecules, components_in_molecules."""
+    """Initialize the three required tables: HalogenGroups, halogengroups_in_molecules, components_in_molecules."""
     
     with conn.cursor() as cur:
         # Table 1: HalogenGroups - PFAS group definitions
@@ -178,9 +186,9 @@ def initialize_database_tables(conn, pfas_groups_list):
         );
         """)
         
-        # Table 2: HalogenGroups_in_molecules - PFAS group matches in molecules
+        # Table 2: halogengroups_in_molecules - PFAS group matches in molecules
         cur.execute("""
-        CREATE TABLE IF NOT EXISTS HalogenGroups_in_molecules (
+        CREATE TABLE IF NOT EXISTS halogengroups_in_molecules (
             id SERIAL PRIMARY KEY,
             smiles TEXT NOT NULL,
             molecule_id INTEGER,
@@ -190,12 +198,12 @@ def initialize_database_tables(conn, pfas_groups_list):
             created_at TIMESTAMP DEFAULT NOW()
         );
         
-        CREATE INDEX IF NOT EXISTS idx_HalogenGroups_in_molecules_smiles 
-            ON HalogenGroups_in_molecules(smiles);
-        CREATE INDEX IF NOT EXISTS idx_HalogenGroups_in_molecules_molecule_id 
-            ON HalogenGroups_in_molecules(molecule_id);
-        CREATE INDEX IF NOT EXISTS idx_HalogenGroups_in_molecules_group_id 
-            ON HalogenGroups_in_molecules(group_id);
+        CREATE INDEX IF NOT EXISTS idx_halogengroups_in_molecules_smiles 
+            ON halogengroups_in_molecules(smiles);
+        CREATE INDEX IF NOT EXISTS idx_halogengroups_in_molecules_molecule_id 
+            ON halogengroups_in_molecules(molecule_id);
+        CREATE INDEX IF NOT EXISTS idx_halogengroups_in_molecules_group_id 
+            ON halogengroups_in_molecules(group_id);
         """)
         
         # Table 3: components_in_molecules - Component details
@@ -230,18 +238,40 @@ def initialize_database_tables(conn, pfas_groups_list):
         if count == 0:
             print(f"Populating HalogenGroups table with {len(pfas_groups_list)} group definitions...")
             for group in pfas_groups_list:
+                if isinstance(group, dict):
+                    gid = group.get('id')
+                    name = group.get('name')
+                    alias = group.get('alias')
+                    # category / pathway_type may live inside 'test'
+                    test = group.get('test') or {}
+                    category = group.get('category') or test.get('category')
+                    pathway_type = group.get('pathway_type')
+                    smarts_raw = group.get('smarts')
+                    smarts_primary = json_module.dumps(smarts_raw) if isinstance(smarts_raw, dict) else (str(smarts_raw) if smarts_raw is not None else None)
+                    smarts2_raw = group.get('smarts2')
+                    smarts_secondary = json_module.dumps(smarts2_raw) if isinstance(smarts2_raw, dict) else (str(smarts2_raw) if smarts2_raw is not None else None)
+                else:
+                    gid = group.id
+                    name = group.name
+                    alias = getattr(group, 'alias', None)
+                    category = getattr(group, 'category', None)
+                    pathway_type = getattr(group, 'pathway_type', None)
+                    smarts_raw = group.smarts if hasattr(group, 'smarts') else None
+                    smarts_primary = json_module.dumps(smarts_raw) if isinstance(smarts_raw, dict) else (str(smarts_raw) if smarts_raw is not None else None)
+                    smarts2_raw = getattr(group, 'smarts2', None)
+                    smarts_secondary = json_module.dumps(smarts2_raw) if isinstance(smarts2_raw, dict) else (str(smarts2_raw) if smarts2_raw is not None else None)
                 cur.execute("""
                 INSERT INTO HalogenGroups (id, name, alias, category, pathway_type, smarts_primary, smarts_secondary)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (id) DO NOTHING
                 """, (
-                    group.id,
-                    group.name,
-                    getattr(group, 'alias', None),
-                    getattr(group, 'category', None),
-                    getattr(group, 'pathway_type', None),
-                    str(group.smarts) if hasattr(group, 'smarts') else None,
-                    str(getattr(group, 'smarts2', None)) if hasattr(group, 'smarts2') else None,
+                    gid,
+                    name,
+                    alias,
+                    category,
+                    pathway_type,
+                    smarts_primary,
+                    smarts_secondary,
                 ))
             conn.commit()
             print(f"Populated HalogenGroups table with {len(pfas_groups_list)} groups")
@@ -409,7 +439,7 @@ def save_batch_to_database(molecule_results, compound_id_map, engine):
     if groups_data:
         df_groups = pd.DataFrame(groups_data)
         df_groups.to_sql(
-            'HalogenGroups_in_molecules',
+            'halogengroups_in_molecules',
             engine,
             if_exists='append',
             index=False,
@@ -517,8 +547,8 @@ def main() -> int:
         port=db_config.port,
     ) as conn:
         # Initialize database tables if saving to database
-        if args.save_to_db:
-            print("Initializing database tables (HalogenGroups, HalogenGroups_in_molecules, components_in_molecules)...")
+        if not args.no_save_to_db:
+            print("Initializing database tables (HalogenGroups, halogengroups_in_molecules, components_in_molecules)...")
             initialize_database_tables(conn, pfas_groups)
             print("Database tables ready")
         # Fetch compounds
@@ -542,7 +572,7 @@ def main() -> int:
         
         # Set up database connection if saving to DB
         engine = None
-        if args.save_to_db:
+        if not args.no_save_to_db:
             import pandas as pd
             import sqlalchemy
             
@@ -584,7 +614,7 @@ def main() -> int:
             
             # Save batch to database and clear memory
             if idx % args.batch_size == 0:
-                if args.save_to_db and batch_results and engine:
+                if not args.no_save_to_db and batch_results and engine:
                     num_groups, num_components = save_batch_to_database(
                         batch_results, batch_id_map, engine
                     )
@@ -598,7 +628,7 @@ def main() -> int:
                     print(f"Processed {idx}/{total} (success={success}, failed={failed}, with_groups={with_groups})")
         
         # Save any remaining results in final batch
-        if args.save_to_db and batch_results and engine:
+        if not args.no_save_to_db and batch_results and engine:
             num_groups, num_components = save_batch_to_database(
                 batch_results, batch_id_map, engine
             )
@@ -621,7 +651,7 @@ def main() -> int:
         print(f"  compounds_with_groups: {with_groups}")
         print(f"  wall_time_seconds: {duration:.3f}")
         
-        if args.save_to_db:
+        if not args.no_save_to_db:
             print(f"\nDatabase Statistics:")
             print(f"  total_groups_saved: {total_groups_saved}")
             print(f"  total_components_saved: {total_components_saved}")
