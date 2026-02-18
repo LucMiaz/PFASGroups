@@ -4,7 +4,6 @@ HalogenGroups core functions.
 This module provides functions for parsing and plotting halogen groups.
 """
 
-import numpy as np
 from typing import Optional
 
 from rdkit import Chem
@@ -109,7 +108,7 @@ def parse_definitions_in_mol(mol, **kwargs):
 @load_componentsSolver()
 def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = None, **kwargs):
     """Iterates over halogen groups and finds the ones that match the molecule.
-    
+
     Parameters
     ----------
     mol : rdkit.Chem.Mol
@@ -118,7 +117,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
         Whether to look for fluorinated components or for chains between functional groups
     **kwargs : dict
         Additional parameters (formula, pfas_groups, componentSmartss, etc.)
-    
+
     Returns
     -------
     list of tuples
@@ -135,10 +134,10 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
             - 'smarts_centrality': float [0-1], 1.0 = functional group at center, 0.0 = at periphery
             - 'mean_eccentricity': float, mean graph eccentricity across nodes in component
             - 'median_eccentricity': float, median graph eccentricity across nodes in component
-    
+
     Notes
     -----
-    For HalogenGroups 
+    For HalogenGroups
     1. with componentSmarts = 'cyclic', search for connected component matching first smarts
     2. with multiple smarts patterns or counts > 1: Find components containing all required SMARTS matches with minimum counts
     3. with single smarts pattern: Search for connected components of fluorinated atoms (for each pathType) where smarts match is in the component
@@ -171,31 +170,31 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
             if match is not None and len(match)>0:
                 group_matches.extend(match)
                 group_id_to_matches.setdefault(pf.id, []).extend(match)
-    
+
     # Process aggregate halogen groups efficiently
     if agg_pfas_groups:
-        
+
         # For each aggregate group, collect and deduplicate components
         for agg_group, component_group_ids in agg_pfas_groups.items():
             # Check if any component groups were matched
             matched_component_ids = [gid for gid in component_group_ids if gid in group_id_to_matches]
-            
+
             if matched_component_ids:
                 # Collect all components from matched groups
                 all_components = []
                 for gid in matched_component_ids:
                     for _, match_count, component_sizes, matched_components in group_id_to_matches[gid]:
                         all_components.extend(matched_components)
-                
+
                 # Deduplicate components by atom set while keeping different SMARTS types
                 # Filter by componentSmarts if aggregate has one
                 unique_components = []
                 seen_keys = set()  # Track (atom_set, SMARTS_type) combinations
-                
+
                 for comp in all_components:
                     atoms_key = frozenset(comp.get('component', []))
                     smarts_type = comp.get('SMARTS')
-                    
+
                     # Filter by componentSmarts if aggregate has one (not None)
                     if agg_group.componentSmarts is not None:
                         allowed = agg_group.componentSmarts
@@ -204,13 +203,13 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                                 continue
                         elif smarts_type != allowed:
                             continue
-                    
+
                     # Deduplicate by (atoms, SMARTS_type) key
                     key = (atoms_key, smarts_type)
                     if key not in seen_keys:
                         seen_keys.add(key)
                         unique_components.append(comp)
-                
+
                 # Create match entry for aggregate group if we have unique components
                 if unique_components:
                     component_sizes = [comp.get('size', 0) for comp in unique_components]
@@ -221,12 +220,12 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
 
 
 @rdkit_disable_log(level='warning')
-def parse_smiles(smiles, bycomponent=False, output_format='list', 
+def parse_smiles(smiles, bycomponent=False, output_format='list',
                   limit_effective_graph_resistance=None, compute_component_metrics=True,
                   halogens=None, form=None, saturation=None, **kwargs):
     """
     Parse SMILES string(s) and return halogen group information.
-    
+
     Parameters:
     -----------
     smiles : str or list of str
@@ -255,7 +254,7 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
         Filter components by saturation (e.g., 'per', 'poly', or None for all)
     **kwargs : dict
         Additional parameters (pfas_groups, componentSmartss, etc.)
-    
+
     Returns:
     --------
     list, pandas.DataFrame, or str
@@ -292,10 +291,10 @@ def parse_from_database(
     **kwargs
 ):
     """Parse halogen groups from molecules stored in a database.
-    
+
     This function reads molecules from a database table, parses them for halogen groups,
     and optionally writes the results back to the database.
-    
+
     Parameters
     ----------
     conn : str or sqlalchemy.engine.Engine
@@ -326,12 +325,12 @@ def parse_from_database(
         Whether to write results back to database.
     **kwargs : dict
         Additional parameters passed to parse_mols (e.g., pfas_groups, componentSmartss).
-        
+
     Returns
     -------
     ResultsModel
         Parsed results for all molecules.
-        
+
     Examples
     --------
     >>> # Using connection string
@@ -362,43 +361,42 @@ def parse_from_database(
         import pandas as pd
         import sqlalchemy
         from sqlalchemy import text
-    except ImportError:
-        raise ImportError("pandas and sqlalchemy are required. Install with: pip install pandas sqlalchemy")
-    
+    except ImportError as exc:
+        raise ImportError("pandas and sqlalchemy are required. Install with: pip install pandas sqlalchemy") from exc
     # Create engine if conn is a string
     if isinstance(conn, str):
         engine = sqlalchemy.create_engine(conn)
     else:
         engine = conn
-    
+
     # Build query if not provided
     if query is None:
         if table is None:
             raise ValueError("Either 'query' or 'table' must be provided.")
         query = f"SELECT * FROM {table}"
-    
+
     # Read data in batches
     print(f"Reading molecules from database...")
     df = pd.read_sql(query, engine)
     total_rows = len(df)
     print(f"Found {total_rows} molecules to process")
-    
+
     all_results = []
-    
+
     # Process in batches
     for batch_start in range(0, total_rows, batch_size):
         batch_end = min(batch_start + batch_size, total_rows)
         batch_df = df.iloc[batch_start:batch_end]
-        
+
         print(f"Processing batch {batch_start+1}-{batch_end} of {total_rows}...")
-        
+
         mols = []
         mol_ids = []
-        
+
         for idx, row in batch_df.iterrows():
             mol = None
             mol_id = row.get(id_column) if id_column and id_column in row else idx
-            
+
             # Try to parse mol from binary column
             if mol_column in row and row[mol_column] is not None:
                 try:
@@ -409,38 +407,38 @@ def parse_from_database(
                         mol = Chem.MolFromMolBlock(row[mol_column])
                 except Exception as e:
                     print(f"  Warning: Failed to parse mol for {mol_id}: {e}")
-            
+
             # Fallback to SMILES
             if mol is None and smiles_column and smiles_column in row and row[smiles_column]:
                 try:
                     mol = Chem.MolFromSmiles(row[smiles_column])
                 except Exception as e:
                     print(f"  Warning: Failed to parse SMILES for {mol_id}: {e}")
-            
+
             # Fallback to InChI
             if mol is None and inchi_column and inchi_column in row and row[inchi_column]:
                 try:
                     mol = Chem.MolFromInchi(row[inchi_column])
                 except Exception as e:
                     print(f"  Warning: Failed to parse InChI for {mol_id}: {e}")
-            
+
             if mol is not None:
                 mols.append(mol)
                 mol_ids.append(mol_id)
             else:
                 print(f"  Error: Could not parse molecule {mol_id}")
-        
+
         # Parse this batch
         if mols:
             batch_results = parse_mols(mols, **kwargs)
             all_results.extend(batch_results)
-    
+
     # Combine all results
     results = ResultsModel(all_results)
-    
+
     # Write results to database if requested
     if write_results and len(results) > 0:
-        print(f"Writing results to database...")
+        print("Writing results to database...")
         results.to_sql(
             conn=engine,
             components_table=components_table,
@@ -448,7 +446,7 @@ def parse_from_database(
             if_exists='append'
         )
         print(f"✅ Successfully wrote {len(results)} results to database")
-    
+
     return results
 
 
@@ -459,10 +457,10 @@ def setup_halogen_groups_database(
     if_exists: str = 'replace'
 ):
     """Set up halogen groups metadata tables in a database.
-    
+
     This function creates tables to store halogen group definitions and SMARTS patterns,
     similar to the load_pfas_groups function in zeropmdb.
-    
+
     Parameters
     ----------
     conn : str or sqlalchemy.engine.Engine
@@ -473,12 +471,12 @@ def setup_halogen_groups_database(
         Table name for SMARTS patterns used in groups.
     if_exists : str, default 'replace'
         How to behave if tables exist: 'fail', 'replace', or 'append'.
-        
+
     Returns
     -------
     dict
         Statistics about loaded groups.
-        
+
     Examples
     --------
     >>> # Set up in PostgreSQL
@@ -487,7 +485,7 @@ def setup_halogen_groups_database(
     ...     groups_info_table='halogen_groups',
     ...     smarts_table='halogen_smarts_patterns'
     ... )
-    >>> 
+    >>>
     >>> # Set up in SQLite
     >>> from sqlalchemy import create_engine
     >>> engine = create_engine('sqlite:///halogen_database.db')
@@ -497,28 +495,27 @@ def setup_halogen_groups_database(
     try:
         import pandas as pd
         import sqlalchemy
-    except ImportError:
-        raise ImportError("pandas and sqlalchemy required. Install with: pip install pandas sqlalchemy")
-    
+    except ImportError as exc:
+        raise ImportError("pandas and sqlalchemy required. Install with: pip install pandas sqlalchemy") from exc
     # Create engine if conn is a string
     if isinstance(conn, str):
         engine = sqlalchemy.create_engine(conn)
     else:
         engine = conn
-    
+
     # Load halogen groups from the module
     from .HalogenGroupModel import HalogenGroup
     import json
-    
+
     # Load groups from JSON file
     from .core import HALOGEN_GROUPS_FILE_GROUPS_FILE
     with open(HALOGEN_GROUPS_FILE, 'r') as f:
         groups_data = json.load(f)
-    
+
     # Prepare groups info data
     groups_info = []
     all_smarts = set()
-    
+
     for group_data in groups_data:
         group_info = {
             'id': group_data['id'],
@@ -530,37 +527,37 @@ def setup_halogen_groups_database(
             'smarts_patterns': json.dumps(group_data.get('smarts', {})),
         }
         groups_info.append(group_info)
-        
+
         # Collect unique SMARTS patterns
         if 'smarts' in group_data:
             for pattern in group_data['smarts'].keys():
                 all_smarts.add(pattern)
-    
+
     # Create DataFrames
     df_groups = pd.DataFrame(groups_info)
     df_smarts = pd.DataFrame([
         {'smarts': pattern, 'pattern_id': idx}
         for idx, pattern in enumerate(sorted(all_smarts))
     ])
-    
+
     # Write to database
     print(f"Writing {len(df_groups)} halogen groups to table '{groups_info_table}'...")
     df_groups.to_sql(groups_info_table, engine, if_exists=if_exists, index=False)
-    
+
     print(f"Writing {len(df_smarts)} SMARTS patterns to table '{smarts_table}'...")
     df_smarts.to_sql(smarts_table, engine, if_exists=if_exists, index=False)
-    
+
     stats = {
         'total_groups': len(df_groups),
-        'compute_groups': len(df_groups[df_groups['compute'] == True]),
-        'aggregate_groups': len(df_groups[df_groups['compute'] == False]),
+        'compute_groups': len(df_groups[df_groups['compute'].astype(bool)]),
+        'aggregate_groups': len(df_groups[~df_groups['compute'].astype(bool)]),
         'total_smarts': len(df_smarts),
     }
-    
-    print(f"✅ Successfully set up halogen groups database")
+
+    print("✅ Successfully set up halogen groups database")
     print(f"   - {stats['total_groups']} total groups ({stats['compute_groups']} compute, {stats['aggregate_groups']} aggregate)")
     print(f"   - {stats['total_smarts']} unique SMARTS patterns")
-    
+
     return stats
 
 
@@ -573,12 +570,12 @@ def parse_mol(mol, **kwargs):
     """
     return parse_mols([mol], **kwargs)[0]
 
-def parse_mols(mols, output_format='list', include_PFAS_definitions=True, 
+def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                limit_effective_graph_resistance=None, compute_component_metrics=True,
                halogens=None, form=None, saturation=None, **kwargs):
     """
     Parse RDKit molecule(s) and return halogen group information.
-    
+
     Parameters:
     -----------
     mols : list of rdkit.Chem.Mol
@@ -607,13 +604,13 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         Filter components by saturation (e.g., 'per', 'poly', or None for all)
     **kwargs : dict
         Additional parameters (halogen_groups, componentSmartss, etc.)
-    
+
     Returns:
     --------
     list, pandas.DataFrame, or str
         Depends on output_format parameter
     """
-    
+
     # Parse all molecules
     results = {}
     for mol in mols:
@@ -638,7 +635,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                         "inchi": inchi,
                         "formula": formula,
                         "smiles_with_h": smiles_with_h})
-        
+
         # Build match results with comprehensive summary metrics
         match_results = []
         for group, match_count, components_sizes, matched_components in matches:
@@ -653,55 +650,55 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 total_branching = matched_components[0].get('total_branching', 0.0)
                 sum_component_branching = sum([c['branching'] for c in matched_components])
                 sum_component_branching_ratio = sum_component_branching / total_branching if total_branching > 0 else 0.0
-                
+
                 # Calculate total fraction covered by union of all carbon atoms in components
                 union_carbon_atoms = set()
                 # Use molecule with hydrogens for consistent atom indexing
                 total_carbons = sum(1 for atom in mol_with_h.GetAtoms() if atom.GetSymbol() == 'C')
                 extra_carbons_count = 0
-                
+
                 for comp_dict in matched_components:
                     component = set(comp_dict.get('component', []))
                     smarts_matches = comp_dict.get('smarts_matches')
-                    
+
                     # Add carbon atoms from component
                     for atom_idx in component:
                         if mol_with_h.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
                             union_carbon_atoms.add(atom_idx)
-                    
+
                     # Add carbon atoms from SMARTS matches
                     if smarts_matches is not None:
                         for atom_idx in smarts_matches:
                             if mol_with_h.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
                                 union_carbon_atoms.add(atom_idx)
-                    
+
                     # Add extra carbons from functional groups
                     if 'smarts_extra_atoms' in comp_dict:
                         extra_carbons_count += comp_dict['smarts_extra_atoms']
-                
+
                 # Total = union of matched carbons + extra functional group carbons
                 # Cap at total_carbons to avoid exceeding 1.0
                 total_carbon_count = min(len(union_carbon_atoms) + extra_carbons_count, total_carbons)
                 total_components_fraction = total_carbon_count / total_carbons if total_carbons > 0 else 0.0
-                
+
                 # Graph structure metrics summaries
                 diameters = [c['diameter'] for c in matched_components if not (isinstance(c['diameter'], float) and (c['diameter'] != c['diameter'] or c['diameter'] == float('inf')))]
                 radii = [c['radius'] for c in matched_components if not (isinstance(c['radius'], float) and (c['radius'] != c['radius'] or c['radius'] == float('inf')))]
                 resistances = [c['effective_graph_resistance'] for c in matched_components if not (isinstance(c['effective_graph_resistance'], float) and (c['effective_graph_resistance'] != c['effective_graph_resistance'] or c['effective_graph_resistance'] == float('inf')))]
-                
+
                 mean_diameter = sum(diameters)/len(diameters) if len(diameters) > 0 else float('nan')
                 mean_radius = sum(radii)/len(radii) if len(radii) > 0 else float('nan')
                 mean_resistance = sum(resistances)/len(resistances) if len(resistances) > 0 else float('nan')
-                
+
                 # Distance metrics summaries
                 min_dists_bc = [c['min_dist_to_barycenter'] for c in matched_components if c['min_dist_to_barycenter'] < float('inf')]
                 min_dists_center = [c['min_dist_to_center'] for c in matched_components if c['min_dist_to_center'] < float('inf')]
                 max_dists_periph = [c['max_dist_to_periphery'] for c in matched_components if c['max_dist_to_periphery'] > 0]
-                
+
                 mean_dist_to_barycenter = sum(min_dists_bc)/len(min_dists_bc) if len(min_dists_bc) > 0 else 0
                 mean_dist_to_center = sum(min_dists_center)/len(min_dists_center) if len(min_dists_center) > 0 else 0
                 mean_dist_to_periphery = sum(max_dists_periph)/len(max_dists_periph) if len(max_dists_periph) > 0 else 0
-                
+
                 summary_metrics = {
                     'mean_branching': mean_branching,
                     'total_branching': total_branching,
@@ -735,7 +732,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                     'mean_dist_to_center': 0,
                     'mean_dist_to_periphery': 0
                 }
-            
+
             match_results.append({
                 'match_id': f"G{group.id}",
                 'id': group.id,
@@ -748,7 +745,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 'type':'HalogenGroup',
                 **summary_metrics
             })
-        
+
         results[inchikey].setdefault('matches',[]).extend(match_results)
     if include_PFAS_definitions is True:
         for i, mol in enumerate(mols):
@@ -801,22 +798,22 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
 def compile_componentSmarts(chain_smarts, end_smarts):
     """
     Compile a pair of SMARTS patterns into a ready-to-use path definition.
-    
+
     This function preprocesses SMARTS patterns for chain and end groups,
     preparing them for use in PFAS parsing functions.
-    
+
     Parameters
     ----------
     chain_smarts : str
         SMARTS pattern for the repeating chain unit
     end_smarts : str
         SMARTS pattern for the terminal group
-    
+
     Returns
     -------
     list
         List containing [chain_mol, end_mol] where both are preprocessed RDKit Mol objects
-    
+
     Examples
     --------
     >>> chain = compile_componentSmarts(
@@ -829,36 +826,36 @@ def compile_componentSmarts(chain_smarts, end_smarts):
     chain_mol.UpdatePropertyCache()
     Chem.GetSymmSSSR(chain_mol)
     chain_mol.GetRingInfo().NumRings()
-    
+
     end_mol = Chem.MolFromSmarts(end_smarts)
     end_mol.UpdatePropertyCache()
     Chem.GetSymmSSSR(end_mol)
     end_mol.GetRingInfo().NumRings()
-    
+
     return [chain_mol, end_mol]
 
 def compile_componentSmartss(paths_dict):
     """
     Compile multiple SMARTS path definitions from a dictionary.
-    
+
     This function takes a dictionary of path definitions (with 'component' and 'end' keys)
     and preprocesses them for use in PFAS parsing functions.
-    
+
     Parameters
     ----------
     paths_dict : dict
         Dictionary with structure::
-        
+
             {
                 'PathName': {'component': 'SMARTS', 'end': 'SMARTS'},
                 ...
             }
-    
+
     Returns
     -------
     dict
         Dictionary mapping path names to [chain_mol, end_mol] pairs
-    
+
     Examples
     --------
     >>> custom_paths = {

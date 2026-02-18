@@ -6,7 +6,7 @@ import numpy as np
 
 
 @load_HalogenGroups()
-def generate_fingerprint(smiles: Union[str, List[str]], 
+def generate_fingerprint(smiles: Union[str, List[str]],
                              selected_groups: Union[List[int], range, None] = None,
                              representation: str = 'vector',
                              count_mode: str = 'binary',
@@ -15,13 +15,13 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                              **kwargs):
     """
     Generate PFAS group fingerprints from SMILES strings.
-    
+
     Parameters:
     -----------
     smiles : str or list of str
         SMILES string(s) to generate fingerprints for
     selected_groups : list of int, range, or None
-        Indices of PFAS groups to include in fingerprint. 
+        Indices of PFAS groups to include in fingerprint.
         If None, all groups are used. Examples: [28, 29, 30], range(28, 52)
     representation : str, default 'vector'
         Type of fingerprint representation:
@@ -51,7 +51,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
         Groups without component SMARTS (generic/telomer) are unaffected.
     pfas_groups : list, optional
         Custom list of PFAS groups. If None, uses default groups.
-    
+
     Returns:
     --------
     fingerprints : numpy.ndarray, dict, or list
@@ -67,17 +67,17 @@ def generate_fingerprint(smiles: Union[str, List[str]],
         - 'selected_indices': Indices of selected groups
         - 'halogens': Halogen(s) used
         - 'saturation': Saturation filter used
-    
+
     Examples:
     ---------
     >>> # Binary vector for all groups, fluorine only (default)
     >>> fp, info = generate_fingerprint('CC(F)(F)C(=O)O')
-    
+
     >>> # Stacked fingerprint for F and Cl
     >>> fp, info = generate_fingerprint('CC(F)(F)C(=O)O', halogens=['F', 'Cl'])
-    
+
     >>> # Count-based dictionary representation
-    >>> fp, info = generate_fingerprint(['CCF', 'CCFF'], 
+    >>> fp, info = generate_fingerprint(['CCF', 'CCFF'],
     ...                                  representation='dict',
     ...                                  count_mode='count')
     """
@@ -95,7 +95,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
     else:
         smiles_list = smiles
         single_input = False
-    
+
     # Determine which groups to use
     if selected_groups is None:
         # Use all groups
@@ -107,16 +107,16 @@ def generate_fingerprint(smiles: Union[str, List[str]],
             selected_indices = list(selected_groups)
         else:
             selected_indices = selected_groups
-            
+
         # Validate indices
         max_index = len(pfas_groups) - 1
         invalid_indices = [i for i in selected_indices if i < 0 or i > max_index]
         if invalid_indices:
             raise ValueError(f"Invalid group indices {invalid_indices}. "
                            f"Valid range is 0-{max_index}")
-        
+
         selected_pfas_groups = [pfas_groups[i] for i in selected_indices]
-    
+
     # Build group names/ids, suffixed with halogen tag when multiple halogens
     multi_halogen = len(halogens_list) > 1
     if multi_halogen:
@@ -135,7 +135,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
         'halogens': halogens_list,
         'saturation': saturation,
     }
-    
+
     # Base kwargs without injected keys
     kwargs_base = {k: v for k, v in kwargs.items() if k != 'pfas_groups'}
 
@@ -160,20 +160,20 @@ def generate_fingerprint(smiles: Union[str, List[str]],
         return match_dict
 
     fingerprints = []
-    
+
     for smiles_str in smiles_list:
         try:
             mol = Chem.MolFromSmiles(smiles_str)
             if mol is None:
                 raise ValueError(f"Invalid SMILES: {smiles_str}")
-            
+
             formula = CalcMolFormula(mol)
 
             # Collect match dicts per halogen
             match_dicts = {h: _parse_for_halogen(mol, formula, h) for h in halogens_list}
             # First halogen's match_dict used for non-stacked repr (dict/sparse/detailed)
             match_dict = match_dicts[halogens_list[0]]
-            
+
             def _build_vector(md, groups):
                 """Build a count/binary vector for one match_dict + group list."""
                 vec = np.zeros(len(groups), dtype=int)
@@ -206,7 +206,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                     fingerprints.append(int(''.join([str(x) for x in fingerprint]), 2))
                 else:
                     fingerprints.append(fingerprint)
-                
+
             elif representation == 'dict':
                 # Create dictionary with all groups (including zeros)
                 fingerprint = {}
@@ -225,7 +225,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                     else:
                         fingerprint[group.name] = 0
                 fingerprints.append(fingerprint)
-                
+
             elif representation == 'sparse':
                 # Create dictionary with only non-zero entries
                 fingerprint = {}
@@ -242,11 +242,11 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                                 value = max([comp['size'] for comp in match_info['matched_components']])
                             else:
                                 value = match_info['match_count'] if match_info['match_count'] > 0 else 0
-                        
+
                         if value > 0:
                             fingerprint[group.name] = value
                 fingerprints.append(fingerprint)
-                
+
             elif representation == 'detailed':
                 # Return full match information for selected groups
                 fingerprint = {}
@@ -263,10 +263,10 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                 fingerprints.append(fingerprint)
             else:
                 raise ValueError(f"Unknown representation: {representation}")
-                
+
         except Exception as e:
             raise ValueError(f"Error processing SMILES '{smiles_str}': {str(e)}")
-    
+
     # Return single fingerprint for single input, list for multiple inputs
     if single_input:
         return fingerprints[0], group_info

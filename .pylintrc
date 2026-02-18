@@ -1,0 +1,82 @@
+[MASTER]
+# Directories/files to ignore
+ignore=benchmark,specificity,build,dist,docs
+ignore-patterns=.*\.egg-info,__pycache__
+
+# Use multiple processes
+jobs=1
+
+[MESSAGES CONTROL]
+# Disable messages that are noisy or not applicable for this scientific codebase
+disable=
+    # Style / convention
+    C0103,  # invalid-name: allow short names like mol, fp, n, df
+    C0114,  # missing-module-docstring
+    C0115,  # missing-class-docstring
+    C0116,  # missing-function-docstring
+    C0301,  # line-too-long (handled by flake8)
+    C0302,  # too-many-lines
+    C0303,  # trailing-whitespace (handled by editors/formatters)
+    C0415,  # import-not-at-top (used for optional/conditional imports)
+    # Refactoring
+    R0801,  # duplicate-code
+    R0902,  # too-many-instance-attributes
+    R0903,  # too-few-public-methods
+    R0904,  # too-many-public-methods
+    R0912,  # too-many-branches
+    R0913,  # too-many-arguments
+    R0914,  # too-many-locals
+    R0915,  # too-many-statements
+    R1702,  # too-many-nested-blocks
+    R0401,  # cyclic-import (inherent in rdkit-heavy package)
+    # Warnings
+    W0105,  # pointless-string-statement (docstring-style comments)
+    W0212,  # protected-access
+    W0511,  # fixme/todo comments
+    W0603,  # global-statement
+    W1514,  # unspecified-encoding
+    # False positives from third-party libraries
+    E0401,  # import-error (third-party libs not available in pylint env)
+    E0611,  # no-name-in-module (rdkit dynamic attributes)
+    E1101,  # no-member (rdkit C++ extensions often not resolvable)
+    W0404,  # reimported (used for optional/fallback import pattern)
+    W0621,  # redefined-outer-name (common in scientific scripts)
+
+[FORMAT]
+max-line-length=127
+indent-string='    '
+
+[VARIABLES]
+# Allow common short names used in cheminformatics / scientific code
+good-names=
+    i,j,k,n,m,
+    f,g,h,
+    df,fp,
+    mol,mw,
+    ax,fig,
+    e,ex,
+    _
+
+[DESIGN]
+max-args=10
+max-attributes=15
+max-bool-expr=5
+max-branches=15
+max-locals=20
+max-returns=10
+max-statements=60
+
+[IMPORTS]
+# Allow rdkit and other optional imports to be checked loosely
+known-third-party=rdkit,numpy,pandas,networkx,scipy,matplotlib,PIL,sqlalchemy,tqdm,svgutils
+
+[SIMILARITIES]
+min-similarity-lines=10
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
+
+[TYPECHECK]
+# rdkit attributes are not always resolvable statically
+ignored-modules=rdkit,rdkit.Chem,rdkit.Chem.Draw,rdkit.Chem.rdMolDescriptors
+ignored-classes=rdkit.Chem.rdchem.Mol,rdkit.Chem.rdchem.RWMol,RDKit

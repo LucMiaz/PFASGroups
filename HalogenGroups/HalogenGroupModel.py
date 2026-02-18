@@ -1,20 +1,18 @@
 from rdkit import Chem
-import numpy as np
+from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 import re
-import networkx as nx
 from .core import mol_to_nx, add_componentSmarts
-import logging
 
 
 
 
 class HalogenGroup():
     """Model class representing a specific halogenated functional group with structural patterns.
-    
+
     A HalogenGroup defines a specific halogenated functional group using SMARTS patterns,
     component path types, and molecular formula constraints. Groups are used to classify
     molecules into specific categories (e.g., "Perfluoroalkyl carboxylic acid").
-    
+
     Attributes
     ----------
     id : int
@@ -42,7 +40,7 @@ class HalogenGroup():
         - 'lte': Maximum element counts (e.g., {'O': 2})
         - 'eq': Exact element counts (e.g., {'N': 1})
         - 'rel': Relational constraints (e.g., {'O': {'atoms': ['C'], 'div': 2, 'add': 0}})
-    
+
     Examples
     --------
     >>> # Perfluoroalkyl carboxylic acid: R_F-COOH
@@ -55,7 +53,7 @@ class HalogenGroup():
     ...     max_dist_from_CF=0,
     ...     linker_smarts=None
     ... )
-    
+
     Notes
     -----
     - SMARTS patterns are compiled on initialization for efficient matching
@@ -174,7 +172,7 @@ class HalogenGroup():
         return self.set_component_smarts(componentSmartss)
     def _count_smarts_extra_atoms(self, smarts_str):
         """Count number of extra carbon atoms in functional group beyond what's captured by component.
-        
+
         Parameters
         ----------
         smarts_str : str or None
@@ -183,37 +181,37 @@ class HalogenGroup():
         -------
         int
             Number of extra carbon atoms beyond the matched atom
-        
+
         Notes
         -----
         The component fraction calculation is now based on carbon atoms only:
         1. Carbon atoms in component
         2. Carbon atoms in SMARTS matches
         3. Additional carbon atoms from SMARTS (this return value)
-        
-        
+
+
         For automatic counting (when manual_size is None), this returns 0 since we now focus only
         on carbons and they are already counted in the component and SMARTS matches.
         """
         PAT_c = re.compile(r'((C(?![adeflmnorsu]))|((?<![TAS])c)|(\#6))')  # Match 'C' not followed by a letter, or c not preceded by T,A,S or #6
         return [max(0,len(PAT_c.findall(s))-1) for s in smarts_str] if smarts_str is not None else None
 
-    
+
     def __str__(self):
         return self.name
     def constraint_gte(self, formula_dict):
         """Check 'greater than or equal' constraints on element counts.
-        
+
         Parameters
         ----------
         formula_dict : dict
             Molecular formula as {element: count} dictionary
-        
+
         Returns
         -------
         bool
             True if all 'gte' constraints are satisfied, False otherwise
-        
+
         Examples
         --------
         >>> # Requires at least 2 carbons and 3 fluorines
@@ -227,17 +225,17 @@ class HalogenGroup():
         return success
     def constraint_lte(self, formula_dict):
         """Check 'less than or equal' constraints on element counts.
-        
+
         Parameters
         ----------
         formula_dict : dict
             Molecular formula as {element: count} dictionary
-        
+
         Returns
         -------
         bool
             True if all 'lte' constraints are satisfied, False otherwise
-        
+
         Examples
         --------
         >>> # Requires at most 2 oxygens
@@ -251,17 +249,17 @@ class HalogenGroup():
         return success
     def constraint_eq(self, formula_dict):
         """Check 'equal to' constraints on element counts.
-        
+
         Parameters
         ----------
         formula_dict : dict
             Molecular formula as {element: count} dictionary
-        
+
         Returns
         -------
         bool
             True if all 'eq' constraints are satisfied, False otherwise
-        
+
         Examples
         --------
         >>> # Requires exactly 1 nitrogen
@@ -275,24 +273,24 @@ class HalogenGroup():
         return success
     def constraint_only(self, formula_dict):
         """Check 'only' constraint - molecule must contain only specified elements.
-        
+
         Parameters
         ----------
         formula_dict : dict
             Molecular formula as {element: count} dictionary
-        
+
         Returns
         -------
         bool
             True if molecule contains only the allowed elements, False otherwise
-        
+
         Examples
         --------
         >>> # Molecule must contain only C, F, O, H
         >>> group.constraints = {'only': ['C', 'F', 'O', 'H']}
         >>> group.constraint_only({'C': 8, 'F': 15, 'O': 2, 'H': 1})  # True
         >>> group.constraint_only({'C': 8, 'F': 15, 'O': 2, 'S': 1})  # False (S not allowed)
-        
+
         Notes
         -----
         Checks that sum of allowed elements equals total atoms in molecule.
@@ -307,24 +305,24 @@ class HalogenGroup():
         return success
     def constraint_rel(self, formula_dict):
         """Check relational constraints between element counts.
-        
+
         Validates relationships of the form: count(element) = f(other_elements)
         where f can include division, addition, and summing other element counts.
-        
+
         Parameters
         ----------
         formula_dict : dict
             Molecular formula as {element: count} dictionary
-        
+
         Returns
         -------
         bool
             True if all relational constraints are satisfied, False otherwise
-        
+
         Notes
         -----
         Constraint Format::
-        
+
             'rel': {
                 'ElementA': {
                     'atoms': ['ElementB', 'ElementC'],  # Elements to sum
@@ -333,16 +331,16 @@ class HalogenGroup():
                     'add_atoms': ['ElementD']  # Additional elements to add
                 }
             }
-        
+
         Formula: count(ElementA) = (sum(atoms) / div) + add + sum(add_atoms)
-        
+
         Examples
         --------
         >>> # Carbon count must equal half the fluorine count
         >>> group.constraints = {'rel': {'C': {'atoms': ['F'], 'div': 2, 'add': 0}}}
         >>> group.constraint_rel({'C': 4, 'F': 8, 'O': 2})  # True (4 == 8/2)
         >>> group.constraint_rel({'C': 3, 'F': 8, 'O': 2})  # False (3 != 8/2)
-        
+
         >>> # Oxygen count must equal carbon count plus 1
         >>> group.constraints = {'rel': {'O': {'atoms': ['C'], 'div': 1, 'add': 1}}}
         >>> group.constraint_rel({'C': 3, 'F': 7, 'O': 4})  # True (4 == 3 + 1)
@@ -354,20 +352,20 @@ class HalogenGroup():
         return success
     def formula_dict_satisfies_constraints(self,formula_dict):
         """Check if a molecular formula satisfies all constraints for this PFAS group.
-        
+
         Evaluates all constraint types in order: relational → only → equal → lte → gte.
         Stops evaluation at first failure for efficiency.
-        
+
         Parameters
         ----------
         formula_dict : dict
             Molecular formula as {element: count} dictionary (e.g., {'C': 8, 'F': 17, 'O': 2})
-        
+
         Returns
         -------
         bool
             True if all constraints are satisfied, False if any constraint fails
-        
+
         Constraint Evaluation Order
         ---------------------------
         1. Relational constraints ('rel') - element count relationships
@@ -375,7 +373,7 @@ class HalogenGroup():
         3. Equality constraints ('eq') - exact element counts
         4. Upper bound constraints ('lte') - maximum element counts
         5. Lower bound constraints ('gte') - minimum element counts
-        
+
         Examples
         --------
         >>> # Perfluoroalkyl carboxylic acid constraints
@@ -388,7 +386,7 @@ class HalogenGroup():
         True
         >>> group.formula_dict_satisfies_constraints({'C': 8, 'F': 15, 'O': 3, 'H': 1})
         False  # Fails 'eq': {'O': 2}
-        
+
         Notes
         -----
         - Returns True immediately if no constraints are defined
@@ -406,17 +404,17 @@ class HalogenGroup():
         return success
     def find_matched_atoms(self, mol):
         """Find all substructure matches of this PFAS group's SMARTS patterns in a molecule.
-        
+
         Parameters
         ----------
         mol : Chem.Mol
             RDKit molecule object to search for matches
-        
+
         Returns
         -------
         List[List[int]]
             List of matches, where each match is a list of atom indices in the molecule
-        
+
         Notes
         -----
         - If no SMARTS patterns are defined, returns an empty list.
@@ -437,17 +435,17 @@ class HalogenGroup():
         return True
     def component_satisfies_all_smarts(self, component):
         """Check if a fluorinated component matches all SMARTS patterns of this PFAS group.
-        
+
         Parameters
         ----------
         component : PFASComponent
             PFASComponent object representing a fluorinated component in the molecule
-        
+
         Returns
         -------
         bool
             True if the component matches all SMARTS patterns, False otherwise
-        
+
         Notes
         -----
         - If no SMARTS patterns are defined for this group, returns True.
@@ -459,29 +457,29 @@ class HalogenGroup():
             # matches is a set of tuples, each tuple represents one SMARTS match
             component_set = set(component)
             found = sum(1 for match_tuple in matches if any(atom_idx in component_set for atom_idx in match_tuple))
-            
+
             if found < min_count:
                 self.component_specific_extra_atoms.append(0)
                 return False
             atom_count += found * self.smarts_extra_atoms[i]
         self.component_specific_extra_atoms.append(atom_count)
         return True
-    
+
     def find_alkyl_components(self, mol, component_solver, **kwargs):
         """Find fluorinated components in a molecule that match this PFAS group's criteria.
-        
+
         Parameters
         ----------
         mol : Chem.Mol
             RDKit molecule object to search
         components : List[PFASComponent]
             List of PFASComponent objects representing fluorinated components in the molecule
-        
+
         Returns
         -------
         List[PFASComponent]
             List of PFASComponent objects that match this PFAS group's criteria
-        
+
         Notes
         -----
         - Matches are determined based on componentSmarts and max_dist_from_CF attributes.
@@ -490,10 +488,10 @@ class HalogenGroup():
         """
         if not self.find_matched_atoms(mol):
             return 0, [], 0, []
-        
+
         # Clear component-specific extra atoms list for this matching attempt
         self.component_specific_extra_atoms = []
-        
+
         if self.componentSmarts is None:
             # If no componentSmarts specified, only check alkyl components (not cyclic)
             # This ensures functional groups like carboxylic acid (group 33) are only
@@ -516,7 +514,7 @@ class HalogenGroup():
             if not comps and comp_type != "Polyfluoroalkyl":
                 comps = component_solver.get("Polyfluoroalkyl", max_dist=self.max_dist_from_CF, default=[])
             components.extend(comps)
-        
+
         # Filter components connected to the smarts and get augmented versions
         augmented_matched_components = []
         for _componentSmarts in componentSmartss:
@@ -532,10 +530,10 @@ class HalogenGroup():
                         augmented_matched_components.append(
                             component_solver.get_matched_component_dict(augmented, self.subset, _componentSmarts, self, comp_id = i)
                         )
-        
+
         if len(augmented_matched_components) == 0:
             return 0, [], 0, []
-        
+
         # Get all component sizes from all path types
         all_components = list(set([comp for comps in augmented_matched_components for comp in comps]))
         component_sizes = [len(x) for x in all_components]
@@ -543,29 +541,29 @@ class HalogenGroup():
         self.all_matches = []  # Clear matches after use
         self.component_specific_extra_atoms = []
         return max([0] + component_sizes), component_sizes, len(all_components), augmented_matched_components
-    
+
     def find_aryl_components(self,mol, component_solver=None, **kwargs):
         """Find aryl components in a molecule with comprehensive metrics."""
         matches = mol.GetSubstructMatches(self.smarts[0])
         subset = [y for x in matches for y in x]
         if len(subset)==0:
             return 0, [], 0, []
-        
+
         components = component_solver._connected_components(subset)
         component_sizes = [len(x) for x in components]
-        
+
         # Get molecular graph for metrics calculation
         subset_set = set(subset)
-        
+
         # Convert components to the same format as other functions return with comprehensive metrics
         matched_components = []
         for comp in components:
             matched_components.append(
                 component_solver.get_matched_component_dict(comp, subset_set, 'cyclic', self)
             )
-        
+
         return max([0]+[len(x) for x in components]), component_sizes, len(components), matched_components
-        
+
     def find_components(self, mol, fd, component_solver, **kwargs):
         """Find fluorinated components in a molecule that match this PFAS group's criteria."""
         group_matches = []
@@ -614,13 +612,13 @@ class HalogenGroup():
                 return None
             return group_matches
         return None
-    
+
     def test(self, test_data=None):
         """Test this PFAS group against test molecules from metadata.
-        
+
         Validates that the group correctly identifies positive examples and
         rejects negative examples based on test metadata in PFAS_groups_smarts.json.
-        
+
         Parameters
         ----------
         test_data : dict, optional
@@ -631,7 +629,7 @@ class HalogenGroup():
                 'examples': [smiles_string, ...],
                 'generate': {'smiles_pattern': str, 'mode': str}  # for telomers/generic
             }
-        
+
         Returns
         -------
         dict
@@ -642,7 +640,7 @@ class HalogenGroup():
                 'failures': [{'smiles': str, 'expected': bool, 'got': bool, 'error': str}, ...],
                 'category': str
             }
-        
+
         Notes
         -----
         - For OECD groups: Tests against curated positive examples
@@ -650,13 +648,11 @@ class HalogenGroup():
         - For generic groups: Tests both positive and negative examples
         - Returns detailed failure information for debugging
         """
-        from rdkit import Chem
-        from rdkit.Chem.rdMolDescriptors import CalcMolFormula
         from .core import n_from_formula
         from .ComponentsSolverModel import ComponentsSolver
-        
-        
-        
+
+
+
         results = {
             'passed': True,
             'total_tests': 0,
@@ -681,20 +677,20 @@ class HalogenGroup():
                         'error': 'Invalid SMILES'
                     })
                     continue
-                
+
                 # Add hydrogens as done in parser
                 mol = Chem.AddHs(mol)
-                
+
                 # Create ComponentsSolver for this molecule
                 with ComponentsSolver(mol) as component_solver:
                     # Get formula dict
                     formula = CalcMolFormula(mol)
                     fd = n_from_formula(formula)
-                    
+
                     # Use find_components to check if group matches
                     matches = self.find_components(mol, fd, component_solver)
                     is_match = matches is not None and len(matches) > 0
-                
+
                 if not is_match:
                     results['passed'] = False
                     results['failures'].append({
@@ -726,20 +722,20 @@ class HalogenGroup():
                         'error': 'Invalid SMILES'
                     })
                     continue
-                
+
                 # Add hydrogens as done in parser
                 mol = Chem.AddHs(mol)
-                
+
                 # Create ComponentsSolver for this molecule
                 with ComponentsSolver(mol) as component_solver:
                     # Get formula dict
                     formula = CalcMolFormula(mol)
                     fd = n_from_formula(formula)
-                    
+
                     # Use find_components to check if group matches
                     matches = self.find_components(mol, fd, component_solver)
                     is_match = matches is not None and len(matches) > 0
-                
+
                 if is_match:
                     results['passed'] = False
                     results['failures'].append({

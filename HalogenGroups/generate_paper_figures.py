@@ -24,8 +24,6 @@ from __future__ import annotations
 from pathlib import Path
 from typing import List
 
-from rdkit import Chem
-
 from .draw_mols import plot_HalogenGroups, draw_images
 
 

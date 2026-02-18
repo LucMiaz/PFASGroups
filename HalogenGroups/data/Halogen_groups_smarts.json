@@ -5441,7 +5441,6 @@
         "alias": "Telomer silane",
         "componentSmarts": null,
         "componentSaturation": "per",
-        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {

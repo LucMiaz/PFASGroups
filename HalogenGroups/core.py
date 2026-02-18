@@ -3,15 +3,8 @@ import json
 import networkx as nx
 import re
 from rdkit import Chem
-from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from typing import Union, List, Dict, TYPE_CHECKING
+from typing import Union
 from rdkit import rdBase
-
-if TYPE_CHECKING:
-    try:
-        from rdkit.Chem.Draw import plot_mols
-    except ImportError:
-        pass
 
 # --- Load SMARTS paths from component_smarts.json ---
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -45,45 +38,45 @@ def rdkit_disable_log(level='warning'):
 
 def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error = False):
     """Remove atoms by indices and maintain connectivity.
-    
+
     This function removes the specified atoms and their removable neighbors,
     then reconnects the remaining structure to maintain molecular integrity.
     """
     if not idxs:
         return mol
-    
+
     to_remove = set()
     # Map each removed atom to its non-removable neighbors
     removed_to_neighbors = {}
-    
+
     # First pass: identify all atoms to remove and their connections
     for idx in idxs:
         atom = mol.GetAtomWithIdx(idx)
         neighbors_r = [x.GetIdx() for x in atom.GetNeighbors() if x.GetSymbol() in removable]
         neighbors_c = [x.GetIdx() for x in atom.GetNeighbors() if x.GetSymbol() not in removable]
-        
+
         # Add the atom and its removable neighbors to removal list
         to_remove.add(idx)
         to_remove.update(neighbors_r)
-        
+
         # Store non-removable neighbors for reconnection
         if neighbors_c:
             removed_to_neighbors[idx] = neighbors_c
-    
+
     # Build a graph of connectivity between removed atoms and their neighbors
     # to determine how to reconnect the structure
     new_bonds = []
     processed_chains = set()
-    
+
     # Process each chain of consecutive removed atoms
     for start_idx in idxs:
         if start_idx in processed_chains:
             continue
-            
+
         # Find the chain of consecutive removed atoms containing start_idx
         chain = [start_idx]
         processed_chains.add(start_idx)
-        
+
         # Extend chain in both directions
         queue = [start_idx]
         while queue:
@@ -93,7 +86,7 @@ def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error =
                     chain.append(neighbor_idx)
                     processed_chains.add(neighbor_idx)
                     queue.append(neighbor_idx)
-        
+
         # Find the endpoints of this chain (atoms that connect to non-removable parts)
         chain_endpoints = []
         for atom_idx in chain:
@@ -101,7 +94,7 @@ def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error =
                 non_removable_neighbors = [n for n in removed_to_neighbors[atom_idx] if n not in to_remove]
                 if non_removable_neighbors:
                     chain_endpoints.extend(non_removable_neighbors)
-        
+
         # Connect the endpoints if there are exactly 2
         if len(chain_endpoints) == 2 and chain_endpoints[0] != chain_endpoints[1]:
             new_bonds.append((chain_endpoints[0], chain_endpoints[1]))
@@ -109,16 +102,16 @@ def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error =
             # For branched structures, don't create connections that would change topology
             # This prevents fragmentation but may not be chemically meaningful
             pass
-    
+
     # Create new molecule without removed atoms
     rwm = Chem.RWMol()
     _rwm = Chem.RWMol(mol)
     Chem.Kekulize(_rwm)
-    
+
     # Map from old atom indices to new atom indices
     old_to_new = {}
     charged_atoms = []
-    
+
     # Add all atoms except those to be removed
     for i, atom in enumerate(_rwm.GetAtoms()):
         if i not in to_remove:
@@ -143,25 +136,26 @@ def remove_atoms(mol, idxs, removable = ['H','F','Cl','Br','I'], show_on_error =
             existing_bond = rwm.GetBondBetweenAtoms(old_to_new[a], old_to_new[b])
             if existing_bond is None:
                 rwm.AddBond(old_to_new[a], old_to_new[b], Chem.BondType.SINGLE)
-    
+
     # Restore formal charges
     for idx in charged_atoms:
         if idx in old_to_new:
             atom = rwm.GetAtomWithIdx(old_to_new[idx])
             atom.SetFormalCharge(_rwm.GetAtomWithIdx(idx).GetFormalCharge())
-    
+
     try:
         Chem.SanitizeMol(rwm)
     except Exception as e:
         if show_on_error is True:
             _mol = rwm.GetMol()
             try:
-                img,_,_ = plot_mols([Chem.MolToSmiles(_mol)], subwidth=600, subheight=600, svg=False, addAtomIndices=True, bondLineWidth=0.5, fixedBondLength=15, minFontSize=12)
+                from .draw_mols import plot_mols  # pylint: disable=import-outside-toplevel
+                img, _, _ = plot_mols([Chem.MolToSmiles(_mol)], subwidth=600, subheight=600, svg=False, addAtomIndices=True, bondLineWidth=0.5, fixedBondLength=15, minFontSize=12)
                 img.show()
-            except:
+            except Exception:  # pylint: disable=broad-exception-caught
                 pass
         raise e
-    
+
     return rwm.GetMol()
 
 
@@ -196,7 +190,7 @@ def fragment_on_bond(mol, a1, a2):
 
 def fragment_until_valence_is_correct(mol, frags):
     """Iterate over the molecule and fragment it until  valence is corrected"""
-    try:    
+    try:
         Chem.SanitizeMol(mol)
     except Chem.AtomValenceException as e:
         all = [int(x) for x in re.findall(r"(?<=#\s)(\d)",str(e))]
@@ -210,7 +204,7 @@ def fragment_until_valence_is_correct(mol, frags):
                 frags = fragment_until_valence_is_correct(m, frags)
             except IndexError:
                 # assume that element in frag is actually isolated
-                return frags 
+                return frags
         return frags
     else:
         return frags + [mol]
@@ -249,7 +243,7 @@ def preprocess_componentsSmarts(components):
     _paths={}
     for halogen, parts in components.items():
         for form, saturations in parts.items():
-            for saturation, names in saturations.items():        
+            for saturation, names in saturations.items():
                 s = names['component']
                 n = names['name']
                 smol = Chem.MolFromSmarts(s)
@@ -262,7 +256,7 @@ def preprocess_componentsSmarts(components):
 # --- Add SMARTS paths to function ---
 def add_componentSmarts(filename = COMPONENTS_FILE):
     """Yields SMARTS for chains
-    
+
     Supports filtering by halogen, form, and saturation via kwargs:
     - halogens: str or list of str, element symbols (e.g., 'F', ['F', 'Cl'])
     - form: str or list of str, form types (e.g., 'alkyl', ['alkyl', 'cyclic'])
@@ -278,7 +272,7 @@ def add_componentSmarts(filename = COMPONENTS_FILE):
             halogens = kwargs.pop('halogens', None)
             form = kwargs.pop('form', None)
             saturation = kwargs.pop('saturation', None)
-            
+
             # Normalize filters to lists
             if halogens is not None:
                 halogens = [halogens] if isinstance(halogens, str) else list(halogens)
@@ -286,7 +280,7 @@ def add_componentSmarts(filename = COMPONENTS_FILE):
                 form = [form] if isinstance(form, str) else list(form)
             if saturation is not None:
                 saturation = [saturation] if isinstance(saturation, str) else list(saturation)
-            
+
             # Filter paths if any filters are specified
             filtered_paths = paths
             if halogens or form or saturation:
@@ -302,7 +296,7 @@ def add_componentSmarts(filename = COMPONENTS_FILE):
                     if saturation is not None and path_info['saturation'] not in saturation:
                         continue
                     filtered_paths[name] = path_info
-            
+
             kwargs["componentSmartss"] = kwargs.get("componentSmartss", filtered_paths)
             return func(*args, **kwargs)
         return wrapper

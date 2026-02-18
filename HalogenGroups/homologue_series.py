@@ -23,19 +23,17 @@ Example
 
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass
 from io import BytesIO
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, List, Optional, Tuple, Union
 
-import numpy as np
 from PIL import Image
 from rdkit import Chem
 from rdkit.Chem import Draw
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 
 # Re-use ANSI helpers and grid utility from results_model
-from .results_model import _ansi, _ANSI_BOLD, _ANSI_RESET, _ANSI_HALOGEN, _grid_images
+from .results_model import _ansi, _ANSI_BOLD, _ANSI_HALOGEN, _grid_images
 
 Color = Tuple[float, float, float]
 
@@ -419,11 +417,11 @@ class HomologueSeries(dict):
         try:
             import pandas as pd
             import sqlalchemy
-        except ImportError:
+        except ImportError as exc:
             raise ImportError(
                 "pandas and sqlalchemy are required for to_sql. "
                 "Install with: pip install pandas sqlalchemy"
-            )
+            ) from exc
 
         if conn is None and filename is None:
             raise ValueError("Either 'conn' or 'filename' must be provided.")

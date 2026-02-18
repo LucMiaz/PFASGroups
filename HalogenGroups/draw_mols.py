@@ -11,7 +11,7 @@ from .parser import parse_groups_in_mol
 from typing import Union
 def merge_raster(imgs,buffer,ncols):
     """Merge multiple raster images into a grid layout.
-    
+
     Parameters
     ----------
     imgs : list of PIL.Image
@@ -20,14 +20,14 @@ def merge_raster(imgs,buffer,ncols):
         Spacing (in pixels) between images
     ncols : int
         Number of columns in the grid
-    
+
     Returns
     -------
     tuple of (PIL.Image, int, int)
         - Merged image containing all input images in grid layout
         - Total width of the merged image
         - Total height of the merged image
-    
+
     Notes
     -----
     Images are arranged left-to-right, top-to-bottom. Row height is determined
@@ -50,7 +50,7 @@ def merge_raster(imgs,buffer,ncols):
 
 def merge_svg(imgs,buffer, ncols):
     """Merge multiple SVG images into a single SVG with grid layout.
-    
+
     Parameters
     ----------
     imgs : list of svgutils.transform.SVGFigure
@@ -59,14 +59,14 @@ def merge_svg(imgs,buffer, ncols):
         Spacing (in pixels) between images
     ncols : int
         Number of columns in the grid
-    
+
     Returns
     -------
     tuple of (svgutils.transform.SVGFigure, int, int)
         - Merged SVG figure containing all input SVGs
         - Total width of the merged figure
         - Total height of the merged figure
-    
+
     Notes
     -----
     SVG dimensions are extracted from width/height attributes (supports 'px' and 'pt' units).
@@ -94,9 +94,9 @@ def merge_svg(imgs,buffer, ncols):
 
 def draw_images(imgs, buffer = 1 ,ncols = 2, svg = False):
     """Merge images into a grid layout (SVG or raster).
-    
+
     Dispatcher function that calls either merge_svg or merge_raster based on image type.
-    
+
     Parameters
     ----------
     imgs : list
@@ -107,7 +107,7 @@ def draw_images(imgs, buffer = 1 ,ncols = 2, svg = False):
         Number of columns in grid layout
     svg : bool, default=False
         If True, treats images as SVG figures. If False, treats as PIL Images.
-    
+
     Returns
     -------
     tuple of (figure, int, int)
@@ -123,7 +123,7 @@ def draw_images(imgs, buffer = 1 ,ncols = 2, svg = False):
 
 def plot_mol(mol,**kwargs):
     """Plot a single RDKit molecule with customizable drawing options.
-    
+
     Parameters
     ----------
     mol : rdkit.Chem.Mol
@@ -141,14 +141,14 @@ def plot_mol(mol,**kwargs):
         - minFontSize (int): Minimum font size, default=13
         - buffer (int): Spacing for grid (single molecule, so unused), default=2
         - ncols (int): Grid columns (single molecule, so unused), default=1
-    
+
     Returns
     -------
     tuple of (figure, int, int)
         - Figure object (SVGFigure or PIL.Image)
         - Total width
         - Total height
-    
+
     Notes
     -----
     Uses black-and-white atom palette (useBWAtomPalette). Returns result from
@@ -178,7 +178,7 @@ def plot_mol(mol,**kwargs):
 
 def plot_mols(mols,**kwargs):
     """Plot multiple RDKit molecules in a grid with customizable drawing options.
-    
+
     Parameters
     ----------
     mols : list of rdkit.Chem.Mol
@@ -196,20 +196,20 @@ def plot_mols(mols,**kwargs):
         - minFontSize (int): Minimum font size, default=13
         - buffer (int): Spacing between molecules in pixels, default=2
         - ncols (int): Number of columns in grid, default=1
-    
+
     Returns
     -------
     tuple of (figure, int, int)
         - Merged figure (SVGFigure or PIL.Image) with all molecules
         - Total width
         - Total height
-    
+
     Examples
     --------
     >>> from rdkit import Chem
     >>> mols = [Chem.MolFromSmiles("CCF"), Chem.MolFromSmiles("CC(F)F")]
     >>> fig, width, height = plot_mols(mols, ncols=2, svg=True)
-    
+
     Notes
     -----
     All molecules use black-and-white atom palette. Each molecule is drawn
@@ -312,7 +312,7 @@ def plot_HalogenGroups(smiles: Union[list, str], display=True, path=None, svg=Fa
             bycomponent=kwargs.get('bycomponent', False),
         )
         highlight_atoms = []
-        for pf, n, n_cfchains, match_indices in matches:
+        for pf, n, _n_cfchains, match_indices in matches:
             for match in match_indices:
                 # Optional filtering by component path type (e.g. Perfluoroalkyl vs Polyfluoroalkyl)
                 if paths and match.get('SMARTS') not in paths:

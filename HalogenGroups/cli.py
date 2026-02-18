@@ -8,8 +8,7 @@ import argparse
 import csv
 import sys
 import json
-from pathlib import Path
-from typing import Optional
+
 
 from .parser import parse_smiles, generate_fingerprint, get_componentSmartss, get_HalogenGroups
 from rdkit import Chem
@@ -24,32 +23,32 @@ def parse_args():
 Examples:
   # Parse SMILES from command line
   HalogenGroups parse "C(C(F)(F)F)F" "FC(F)(F)C(F)(F)C(=O)O"
-  
+
   # Parse with component metrics
   HalogenGroups parse --bycomponent "FC(F)(F)C(F)(F)C(=O)O" --pretty
-  
+
   # Parse SMILES from file
   HalogenGroups parse --input smiles.txt --output results.json
-  
+
   # Use custom configuration files
   HalogenGroups parse --groups-file custom_groups.json "CCF"
-  
+
   # Generate fingerprints
   HalogenGroups fingerprint "C(C(F)(F)F)F" --output fp.json
-  
+
   # Generate fingerprints with custom groups
   HalogenGroups fingerprint --input smiles.txt --groups 28-52 --format dict
-  
+
   # List available groups
   HalogenGroups list-groups
-  
+
   # List available path types
   HalogenGroups list-paths
-  
+
 Note: Use get_componentSmartss() and get_HalogenGroups() in Python to extend defaults.
         """
     )
-    
+
     # Global options
     parser.add_argument(
         '--component_smarts-file',
@@ -61,9 +60,9 @@ Note: Use get_componentSmartss() and get_HalogenGroups() in Python to extend def
         type=str,
         help='Path to custom PFAS_groups_smarts.json file (default: use package default)'
     )
-    
+
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
-    
+
     # Parse command
     parse_parser = subparsers.add_parser(
         'parse',
@@ -127,7 +126,7 @@ Note: Use get_componentSmartss() and get_HalogenGroups() in Python to extend def
         action='store_true',
         help='Pretty-print JSON output (only for JSON format)'
     )
-    
+
     # Fingerprint command
     fp_parser = subparsers.add_parser(
         'fingerprint',
@@ -176,7 +175,7 @@ Note: Use get_componentSmartss() and get_HalogenGroups() in Python to extend def
         action='store_true',
         help='Pretty-print JSON output (only for JSON format)'
     )
-    
+
     # List groups command
     list_parser = subparsers.add_parser(
         'list-groups',
@@ -193,7 +192,7 @@ Note: Use get_componentSmartss() and get_HalogenGroups() in Python to extend def
         default=True,
         help='Pretty-print JSON output'
     )
-    
+
     # List paths command
     list_paths_parser = subparsers.add_parser(
         'list-paths',
@@ -210,13 +209,13 @@ Note: Use get_componentSmartss() and get_HalogenGroups() in Python to extend def
         default=True,
         help='Pretty-print JSON output'
     )
-    
+
     # Validate config command
-    validate_parser = subparsers.add_parser(
+    validate_parser = subparsers.add_parser(  # pylint: disable=unused-variable
         'validate-config',
         help='Validate custom configuration files'
     )
-    
+
     return parser.parse_args()
 
 
@@ -229,7 +228,7 @@ def read_smiles_file(filepath: str) -> list:
 def parse_group_selection(groups_str: str) -> list:
     """
     Parse group selection string.
-    
+
     Examples:
         "28-52" -> range(28, 53)
         "28,29,30" -> [28, 29, 30]
@@ -237,7 +236,7 @@ def parse_group_selection(groups_str: str) -> list:
     if '-' in groups_str:
         start, end = groups_str.split('-')
         return list(range(int(start), int(end) + 1))
-    elif ',' in groups_str:
+    if ',' in groups_str:
         return [int(x.strip()) for x in groups_str.split(',')]
     else:
         return [int(groups_str)]
@@ -259,7 +258,7 @@ def cmd_parse(args):
         kwargs['form'] = args.form
     if args.saturation:
         kwargs['saturation'] = args.saturation
-    
+
     # Get SMILES from command line or file
     if args.input:
         smiles_list = read_smiles_file(args.input)
@@ -268,21 +267,19 @@ def cmd_parse(args):
     else:
         print("Error: Provide SMILES as arguments or use --input", file=sys.stderr)
         sys.exit(1)
-    
+
     # Determine output format
     if args.format == 'csv':
         output_format = 'csv'
-    elif args.format == 'json':
-        output_format = 'list'
     else:
-        output_format = 'list'
-    
+        output_format = 'list'  # pylint: disable=unused-variable
+
     # Parse PFAS with specified output format
     if args.format == 'csv':
         # Use CSV output format from parse_smiles
-        result = parse_smiles(smiles_list, bycomponent=args.bycomponent, 
+        result = parse_smiles(smiles_list, bycomponent=args.bycomponent,
                             output_format='csv', **kwargs)
-        
+
         if args.output:
             with open(args.output, 'w', encoding='utf-8') as f:
                 f.write(result)
@@ -291,9 +288,9 @@ def cmd_parse(args):
             print(result, end='')
     else:
         # Use list output format and convert to JSON
-        results = parse_smiles(smiles_list, bycomponent=args.bycomponent, 
+        results = parse_smiles(smiles_list, bycomponent=args.bycomponent,
                              output_format='list', **kwargs)
-        
+
         # Convert to JSON format
         output_data = []
         for smiles, matches in zip(smiles_list, results):
@@ -301,7 +298,7 @@ def cmd_parse(args):
                 'smiles': smiles,
                 'groups': []
             }
-            
+
             for group, match_count, chain_lengths, matched_chains in matches:
                 result_entry['groups'].append({
                     'name': group.name,
@@ -310,13 +307,13 @@ def cmd_parse(args):
                     'chain_lengths': chain_lengths,
                     'num_chains': len(matched_chains)
                 })
-            
+
             output_data.append(result_entry)
-        
+
         # Output JSON
         indent = 2 if args.pretty else None
         output_json = json.dumps(output_data, indent=indent)
-        
+
         if args.output:
             with open(args.output, 'w') as f:
                 f.write(output_json)
@@ -333,7 +330,7 @@ def cmd_fingerprint(args):
         kwargs['componentSmartss'] = get_componentSmartss(filename=args.component_smarts_file)
     if args.groups_file:
         kwargs['pfas_groups'] = get_HalogenGroups(filename=args.groups_file)
-    
+
     # Get SMILES from command line or file
     if args.input:
         smiles_list = read_smiles_file(args.input)
@@ -342,12 +339,12 @@ def cmd_fingerprint(args):
     else:
         print("Error: Provide SMILES as arguments or use --input", file=sys.stderr)
         sys.exit(1)
-    
+
     # Parse group selection
     selected_groups = None
     if args.groups:
         selected_groups = parse_group_selection(args.groups)
-    
+
     # Generate fingerprints
     fps, group_info = generate_fingerprint(
         smiles_list,
@@ -356,13 +353,13 @@ def cmd_fingerprint(args):
         count_mode=args.count_mode,
         **kwargs
     )
-    
+
     # Prepare output
     output_data = {
         'fingerprints': [],
         'group_info': group_info
     }
-    
+
     # Handle different representations
     if args.format == 'vector':
         # Convert numpy arrays to lists
@@ -375,10 +372,10 @@ def cmd_fingerprint(args):
         output_data['fingerprints'] = fps if isinstance(fps, list) else [fps]
     else:  # dict, sparse, detailed
         output_data['fingerprints'] = fps if isinstance(fps, list) else [fps]
-    
+
     # Add SMILES to output for reference
     output_data['smiles'] = smiles_list
-    
+
     # Output based on requested format
     if args.output_format == 'csv':
         # CSV output for fingerprints
@@ -387,7 +384,7 @@ def cmd_fingerprint(args):
             # For vector representation, create columns for each group
             import numpy as np
             fps_list = fps if isinstance(fps, list) else [fps]
-            for i, (smiles, fp) in enumerate(zip(smiles_list, fps_list)):
+            for _, (smiles, fp) in enumerate(zip(smiles_list, fps_list)):
                 row = {'smiles': smiles}
                 fp_array = fp.tolist() if isinstance(fp, np.ndarray) else fp
                 for j, val in enumerate(fp_array):
@@ -405,7 +402,7 @@ def cmd_fingerprint(args):
         else:
             print(f"Warning: CSV output not optimized for '{args.format}' representation, using JSON", file=sys.stderr)
             args.output_format = 'json'
-        
+
         if args.output_format == 'csv':
             fieldnames = list(csv_rows[0].keys()) if csv_rows else ['smiles']
             if args.output:
@@ -419,11 +416,11 @@ def cmd_fingerprint(args):
                 writer.writeheader()
                 writer.writerows(csv_rows)
             return
-    
+
     # JSON output (default or fallback)
     indent = 2 if args.pretty else None
     output_json = json.dumps(output_data, indent=indent)
-    
+
     if args.output:
         with open(args.output, 'w') as f:
             f.write(output_json)
@@ -439,7 +436,7 @@ def cmd_list_groups(args):
         groups = get_HalogenGroups(filename=args.groups_file)
     else:
         groups = get_HalogenGroups()
-    
+
     # Create output
     groups_list = []
     for i, group in enumerate(groups):
@@ -451,17 +448,17 @@ def cmd_list_groups(args):
             'smarts2': group.smarts2,
             'componentSmarts': group.componentSmarts
         })
-    
+
     output_data = {
         'total_groups': len(groups),
         'groups': groups_list,
         'note': 'Use get_HalogenGroups() in Python to load and extend these groups'
     }
-    
+
     # Output results
     indent = 2 if args.pretty else None
     output_json = json.dumps(output_data, indent=indent)
-    
+
     if args.output:
         with open(args.output, 'w') as f:
             f.write(output_json)
@@ -477,7 +474,7 @@ def cmd_list_paths(args):
         paths = get_componentSmartss(filename=args.component_smarts_file)
     else:
         paths = get_componentSmartss()
-    
+
     # Create output - convert RDKit mols to SMARTS strings for display
     paths_list = []
     for name, (chain_mol, end_mol) in paths.items():
@@ -486,17 +483,17 @@ def cmd_list_paths(args):
             'chain_smarts': Chem.MolToSmarts(chain_mol),
             'end_smarts': Chem.MolToSmarts(end_mol)
         })
-    
+
     output_data = {
         'total_paths': len(paths),
         'paths': paths_list,
         'note': 'Use get_componentSmartss() in Python to load and extend these paths'
     }
-    
+
     # Output results
     indent = 2 if args.pretty else None
     output_json = json.dumps(output_data, indent=indent)
-    
+
     if args.output:
         with open(args.output, 'w') as f:
             f.write(output_json)
@@ -509,44 +506,38 @@ def cmd_validate_config(args):
     """Execute validate-config command."""
     try:
         print("Validating configuration files...")
-        
+
         # Validate component_smarts if provided
         if args.component_smarts_file:
             paths = get_componentSmartss(filename=args.component_smarts_file)
             print(f"✓ component_smarts.json loaded successfully from: {args.component_smarts_file}")
             print(f"  Found {len(paths)} path types")
-        
+
         # Validate groups if provided
         if args.groups_file:
             groups = get_HalogenGroups(filename=args.groups_file)
             print(f"✓ PFAS_groups_smarts.json loaded successfully from: {args.groups_file}")
             print(f"  Found {len(groups)} PFAS groups")
-        
+
         if not args.component_smarts_file and not args.groups_file:
             # Validate defaults
             paths = get_componentSmartss()
             groups = get_HalogenGroups()
-            print(f"✓ Default configuration loaded successfully")
+            print("✓ Default configuration loaded successfully")
             print(f"  Path types: {len(paths)}")
             print(f"  PFAS groups: {len(groups)}")
-        
+
         print("\nConfiguration is valid!")
-        
+
     except FileNotFoundError as e:
-        print(f"✗ Error: {e}", file=sys.stderr)
-        sys.exit(1)
-    except json.JSONDecodeError as e:
-        print(f"✗ JSON parsing error: {e}", file=sys.stderr)
-        sys.exit(1)
-    except Exception as e:
-        print(f"✗ Validation error: {e}", file=sys.stderr)
+        print("✗ Error: " + str(e), file=sys.stderr)
         sys.exit(1)
 
 
 def main():
     """Main CLI entry point."""
     args = parse_args()
-    
+
     if args.command == 'parse':
         cmd_parse(args)
     elif args.command == 'fingerprint':
