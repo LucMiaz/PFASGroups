@@ -260,7 +260,7 @@ def analyze_system_comparison(results):
     # Calculate average timing statistics for single groups
     for group_id, data in single_analysis.items():
         if data['HalogenGroup_times']:
-            data['HalogenGroup_avg_time'] = sum(datHalogenGroupnGroups_times']) / len(HalogenGroupogenGroups_times'])
+            data['HalogenGroup_avg_time'] = sum(data['HalogenGroups_times']) / len(data['HalogenGroups_times'])
         if data['atlas_times']:
             data['atlas_avg_time'] = sum(data['atlas_times']) / len(data['atlas_times'])
     

@@ -836,7 +836,7 @@ def main():
     else:
         print(f"   • Both systems have comparable performance ({stats['speed_ratio']:.1f}x ratio)")
     
-    if stats['HalogenGroup_std_time'] > statHalogenGroupnGroups_avg_time'] * 0.5:
+    if stats['HalogenGroup_std_time'] > stats['HalogenGroups_avg_time'] * 0.5:
         print(f"   • HalogenGroup shows high timing variability - consider profiling edge cases")
     if stats['atlas_std_time'] > stats['atlas_avg_time'] * 0.5:
         print(f"   • PFAS-Atlas shows high timing variability - consider profiling edge cases")
