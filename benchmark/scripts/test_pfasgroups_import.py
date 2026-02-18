@@ -1,14 +1,14 @@
-print("Testing PFASgroups imports...")
+print("Testing HalogenGroups imports...")
 import sys
-sys.path.append('c:/Users/luc/git/PFASGroups')
+sys.path.append('c:/Users/luc/git/HalogenGroups')
 
 try:
     print("1. Importing parse_mol...")
-    from PFASgroups.parser import parse_mol
+    from HalogenGroups.parser import parse_mol
     print("   Success!")
     
     print("2. Importing PFASDefinition...")
-    from PFASgroups.PFASDefinitionModel import PFASDefinition  
+    from HalogenGroups.PFASDefinitionModel import PFASDefinition  
     print("   Success!")
     
     print("All imports successful!")

@@ -8,7 +8,7 @@ This script:
 3. Compares Windows vs Linux performance
 4. Generates comparative analysis plots
 
-Author: PFASGroups Benchmark Team
+Author: HalogenGroups Benchmark Team
 Date: 2026-01-29
 """
 
@@ -22,10 +22,10 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from scipy import stats
 
-# Add PFASGroups to path
+# Add HalogenGroups to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 
 def exponential_model(n, a, b):

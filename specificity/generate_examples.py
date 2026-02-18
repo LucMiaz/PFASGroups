@@ -1,5 +1,5 @@
 """
-Test cases for PFASgroups based on example generation scripts.
+Test cases for HalogenGroups based on example generation scripts.
 
 This module provides comprehensive test generation for both OECD-defined and generic PFAS groups,
 combining functionality from generate_OECD_pfas_examples.py and generate_generic_pfas_examples.py.
@@ -36,10 +36,10 @@ except ImportError:
         from .generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
     except ImportError:
         try:
-            from PFASgroups.parser import parse_groups_in_mol
-            from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
+            from HalogenGroups.parser import parse_groups_in_mol
+            from HalogenGroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
         except ImportError as e:
-            print(f"Error importing PFASgroups modules: {e}")
+            print(f"Error importing HalogenGroups modules: {e}")
             raise e
 
 # Try to import pytest, but make it optional
@@ -372,7 +372,7 @@ def generate_test_summary(output_file=f'{tests_folder}/results/test_summary_repo
     
     return summary
 
-class TestPFASGroups:
+class TestHalogenGroups:
     """Test class for PFAS group classification using synthetic examples."""
     
     @classmethod
@@ -1399,7 +1399,7 @@ def run_quick_test():
     
     try:
         # Test basic functionality
-        tester = TestPFASGroups()
+        tester = TestHalogenGroups()
         
         # Run a simplified version of the tests
         print("Testing basic PFAS group detection...")
@@ -1420,7 +1420,7 @@ def run_quick_test():
         assert False,f"✗ Quick test FAILED with error: {e}"
 
 if __name__ == "__main__":
-    print("PFASgroups Test Examples Module")
+    print("HalogenGroups Test Examples Module")
     print("=" * 40)
     
     # Check command line arguments
@@ -1433,7 +1433,7 @@ if __name__ == "__main__":
         
         elif command == "full":
             # Run full test suite
-            tester = TestPFASGroups()
+            tester = TestHalogenGroups()
             tester.run_all_tests()
         
         elif command == "generate":

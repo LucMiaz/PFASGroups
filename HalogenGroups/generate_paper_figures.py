@@ -1,6 +1,6 @@
-"""Generate publication figures for PFASgroups.
+"""Generate publication figures for HalogenGroups.
 
-This small driver script creates example figures for the PFASgroups
+This small driver script creates example figures for the HalogenGroups
 manuscript and supplementary information using the existing
 plotting and parsing utilities.
 
@@ -13,7 +13,7 @@ It produces two main outputs:
   optionally a fluorotelomer example if benchmark data is present.
 
 The script is designed to be run from a local clone of the
-PFASgroups repository, alongside the overleaf_PFASgroups_article
+HalogenGroups repository, alongside the overleaf_HalogenGroups_article
 project. By default, it writes PNG files directly into the
 "imgs" directory of the Overleaf project so that the LaTeX
 manuscript can include them without manual renaming.
@@ -26,7 +26,7 @@ from typing import List
 
 from rdkit import Chem
 
-from .draw_mols import plot_pfasgroups, draw_images
+from .draw_mols import plot_HalogenGroups, draw_images
 
 
 # ---------------------------------------------------------------------------
@@ -39,21 +39,21 @@ def _get_overleaf_imgs_dir() -> Path:
     The expected directory layout (as on the author's machine) is::
 
         .../git/
-            PFASGroups/
-            overleaf_PFASgroups_article/
+            HalogenGroups/
+            overleaf_HalogenGroups_article/
 
     This function walks up from this file until it reaches the
     shared parent directory and then constructs the path to
-    ``overleaf_PFASgroups_article/imgs``. If that directory does
+    ``overleaf_HalogenGroups_article/imgs``. If that directory does
     not exist, it is created.
     """
 
-    # This file lives in .../PFASGroups/PFASgroups/generate_paper_figures.py
+    # This file lives in .../HalogenGroups/HalogenGroups/generate_paper_figures.py
     this_file = Path(__file__).resolve()
-    pfasgroups_repo = this_file.parents[1]  # .../PFASGroups
-    workspace_root = pfasgroups_repo.parent  # .../git
+    HalogenGroups_repo = this_file.parents[1]  # .../HalogenGroups
+    workspace_root = HalogenGroups_repo.parent  # .../git
 
-    overleaf_root = workspace_root / "overleaf_PFASgroups_article"
+    overleaf_root = workspace_root / "overleaf_HalogenGroups_article"
     imgs_dir = overleaf_root / "imgs"
     imgs_dir.mkdir(parents=True, exist_ok=True)
     return imgs_dir
@@ -69,7 +69,7 @@ def generate_main_text_figure(output_dir: Path) -> Path:
 
     Uses a linear perfluoroalkyl carboxylic acid (PFOA-like) example
     that is already employed in the test suite and highlights the
-    fluorinated component detected by PFASgroups.
+    fluorinated component detected by HalogenGroups.
 
     Parameters
     ----------
@@ -85,7 +85,7 @@ def generate_main_text_figure(output_dir: Path) -> Path:
     # PFOA-like linear perfluoroalkyl carboxylic acid (from tests)
     smiles = "C(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
 
-    fig, _, _ = plot_pfasgroups(
+    fig, _, _ = plot_HalogenGroups(
         smiles,
         svg=False,
         subwidth=400,
@@ -97,7 +97,7 @@ def generate_main_text_figure(output_dir: Path) -> Path:
         panel_labels=["A: PFCA example"],
     )
 
-    output_path = output_dir / "pfasgroups_main_example.png"
+    output_path = output_dir / "HalogenGroups_main_example.png"
     # fig is a PIL.Image when svg=False
     fig.save(output_path)
     return output_path
@@ -111,10 +111,10 @@ def _get_telomer_example_from_sdf() -> str | None:
     or no molecule can be read, returns ``None``.
     """
 
-    # The benchmark data lives in the PFASGroups repository
+    # The benchmark data lives in the HalogenGroups repository
     this_file = Path(__file__).resolve()
-    pfasgroups_repo = this_file.parents[1]
-    sdf_path = pfasgroups_repo / "benchmark" / "data" / "PubChem_fluorotelomers.sdf"
+    HalogenGroups_repo = this_file.parents[1]
+    sdf_path = HalogenGroups_repo / "benchmark" / "data" / "PubChem_fluorotelomers.sdf"
 
     if not sdf_path.exists():
         return None
@@ -164,7 +164,7 @@ def generate_si_figure(output_dir: Path) -> Path:
     if telomer_smiles is not None:
         smiles_list.append(telomer_smiles)
 
-    fig, _, _ = plot_pfasgroups(
+    fig, _, _ = plot_HalogenGroups(
         smiles_list,
         svg=False,
         subwidth=400,
@@ -178,7 +178,7 @@ def generate_si_figure(output_dir: Path) -> Path:
         else ["A: Linear PFAS", "B: Branched PFAS", "C: Fluorotelomer"],
     )
 
-    output_path = output_dir / "pfasgroups_SI_components.png"
+    output_path = output_dir / "HalogenGroups_SI_components.png"
     fig.save(output_path)
     return output_path
 
@@ -195,7 +195,7 @@ def generate_advanced_si_figure(output_dir: Path) -> Path:
     # Molecule with two fluorinated components attached to an aromatic ring
     smiles_two_components = "FC(F)(F)C(F)(F)C1=CC(=CC=C1)C(F)(F)C(F)(F)F"
 
-    fig_A, _, _ = plot_pfasgroups(
+    fig_A, _, _ = plot_HalogenGroups(
         [smiles_two_components],
         svg=False,
         subwidth=350,
@@ -210,7 +210,7 @@ def generate_advanced_si_figure(output_dir: Path) -> Path:
     # Mixed perfluoro/polyfluoro example (one CF2 and one CHF in the chain)
     smiles_mixed = "C(=O)(O)C(F)(F)C(F)(F)C(F)(H)F"
 
-    fig_B, _, _ = plot_pfasgroups(
+    fig_B, _, _ = plot_HalogenGroups(
         [smiles_mixed],
         svg=False,
         subwidth=350,
@@ -223,7 +223,7 @@ def generate_advanced_si_figure(output_dir: Path) -> Path:
         panel_labels=["B: Perfluoroalkyl paths"],
     )
 
-    fig_C, _, _ = plot_pfasgroups(
+    fig_C, _, _ = plot_HalogenGroups(
         [smiles_mixed],
         svg=False,
         subwidth=350,
@@ -239,7 +239,7 @@ def generate_advanced_si_figure(output_dir: Path) -> Path:
     # Combine the three panels into a single row
     combined_fig, _, _ = draw_images([fig_A, fig_B, fig_C], buffer=10, ncols=3, svg=False)
 
-    output_path = output_dir / "pfasgroups_SI_components_advanced.png"
+    output_path = output_dir / "HalogenGroups_SI_components_advanced.png"
     combined_fig.save(output_path)
     return output_path
 
@@ -247,8 +247,8 @@ def generate_advanced_si_figure(output_dir: Path) -> Path:
 def main() -> None:
     """Entry point for script-style execution.
 
-    When run as ``python -m PFASgroups.generate_paper_figures`` or
-    ``python PFASgroups/generate_paper_figures.py``, this will generate
+    When run as ``python -m HalogenGroups.generate_paper_figures`` or
+    ``python HalogenGroups/generate_paper_figures.py``, this will generate
     both the main-text and SI figures in the Overleaf ``imgs``
     directory and print their locations.
     """

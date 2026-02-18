@@ -2,7 +2,7 @@
 """
 Simple Windows timing test - run a quick test and compare with Linux
 
-Author: PFASGroups Benchmark Team
+Author: HalogenGroups Benchmark Team
 Date: 2026-01-29
 """
 
@@ -16,16 +16,16 @@ import json
 print("Starting Windows timing test...")
 print(f"Python: {sys.version}")
 
-# Add PFASGroups to path
-pfas_path = r'c:\Users\luc\git\PFASGroups'
+# Add HalogenGroups to path
+pfas_path = r'c:\Users\luc\git\HalogenGroups'
 sys.path.insert(0, pfas_path)
 print(f"Added to path: {pfas_path}")
 
 try:
-    from PFASgroups import parse_smiles
-    print("✓ Successfully imported PFASgroups")
+    from HalogenGroups import parse_smiles
+    print("✓ Successfully imported HalogenGroups")
 except Exception as e:
-    print(f"✗ Failed to import PFASgroups: {e}")
+    print(f"✗ Failed to import HalogenGroups: {e}")
     import traceback
     traceback.print_exc()
     sys.exit(1)

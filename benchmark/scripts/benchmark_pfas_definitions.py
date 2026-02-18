@@ -28,9 +28,9 @@ from typing import List, Dict, Tuple, Optional
 # Add parent directory to path
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
-root_dir = os.path.dirname(parent_dir)  # Go up to the PFASGroups root
+root_dir = os.path.dirname(parent_dir)  # Go up to the HalogenGroups root
 sys.path.append(parent_dir)
-sys.path.append(root_dir)  # Add root to path for PFASgroups imports
+sys.path.append(root_dir)  # Add root to path for HalogenGroups imports
 
 
 class PFASDefinitionBenchmark:
@@ -52,9 +52,9 @@ class PFASDefinitionBenchmark:
 
         # Load PFAS definitions (lazy import to allow export without RDKit/Numpy)
         if load_definitions:
-            from PFASgroups.PFASDefinitionModel import PFASDefinition
-            # Use relative path from benchmark/scripts to PFASgroups/data
-            definitions_path = os.path.join(script_dir, '..', '..', 'PFASgroups', 'data', 'PFAS_definitions_smarts.json')
+            from HalogenGroups.PFASDefinitionModel import PFASDefinition
+            # Use relative path from benchmark/scripts to HalogenGroups/data
+            definitions_path = os.path.join(script_dir, '..', '..', 'HalogenGroups', 'data', 'PFAS_definitions_smarts.json')
             with open(definitions_path, 'r') as f:
                 definitions_data = json.load(f)
             
@@ -474,7 +474,7 @@ class PFASDefinitionBenchmark:
         """
         from rdkit import Chem
         from rdkit.Chem import Descriptors, rdMolDescriptors
-        from PFASgroups.parser import parse_mol
+        from HalogenGroups.parser import parse_mol
 
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
@@ -946,7 +946,7 @@ class PFASDefinitionBenchmark:
         print(f"PERFORMANCE BENCHMARK ({num_molecules} molecules)")
         print("="*80)
         
-        from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol
+        from HalogenGroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol
         
         results = {
             'category': 'performance',

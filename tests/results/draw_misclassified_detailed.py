@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate molecular structure drawings for misclassified molecules in PFASGroups testing.
+Generate molecular structure drawings for misclassified molecules in HalogenGroups testing.
 """
 
 import pandas as pd
@@ -16,7 +16,7 @@ from io import BytesIO
 
 # Load group names mapping
 try:
-    with open('/home/luc/git/PFASGroups/PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+    with open('/home/luc/git/HalogenGroups/HalogenGroups/data/PFAS_groups_smarts.json', 'r') as f:
         groups_data = json.load(f)
     group_names = {int(g['id']): g['name'] for g in groups_data}
 except:
@@ -126,7 +126,7 @@ def generate_misclassification_table():
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PFASGroups Misclassified Molecules</title>
+    <title>HalogenGroups Misclassified Molecules</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; }
@@ -143,7 +143,7 @@ def generate_misclassification_table():
     </style>
 </head>
 <body>
-    <h1>PFASGroups Misclassified Molecules Analysis</h1>
+    <h1>HalogenGroups Misclassified Molecules Analysis</h1>
     <p><strong>Generated:</strong> """ + pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S') + """</p>
     <p><strong>Total Misclassified:</strong> """ + str(len(df)) + """ molecules</p>
     
@@ -196,7 +196,7 @@ def generate_misclassification_table():
     
     <h2>Notes</h2>
     <ul>
-        <li><strong>False Negative:</strong> Expected group not detected by PFASGroups</li>
+        <li><strong>False Negative:</strong> Expected group not detected by HalogenGroups</li>
         <li><strong>OECD Tests:</strong> Perfluoroalkyl disulfonic acids (Group 8) consistently misclassified as polyfluoroalkyl sulfonic acid</li>
         <li><strong>Generic Tests:</strong> One alkane group missed due to complex polyfluoroalkyl structure</li>
         <li><strong>Specificity Tests:</strong> Many cases where alkane groups (Group 48) are not detected due to complex fluorination patterns</li>

@@ -1,7 +1,7 @@
 """
 Test the new summary methods for ResultsModel and MoleculeResult
 """
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 # Test molecule - perfluorooctane sulfonic acid
 test_smiles = "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O"

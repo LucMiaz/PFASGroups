@@ -40,12 +40,12 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
             m.complexity_diameter,
             m.complexity_avg_eccentricity,
             m.complexity_num_cycles,
-            p.execution_time as pfasgroups_time,
+            p.execution_time as HalogenGroups_time,
             p.detected_groups,
             p.matched_path_types,
             a.execution_time as atlas_time
         FROM molecules m
-        LEFT JOIN pfasgroups_results p ON m.id = p.molecule_id
+        LEFT JOIN HalogenGroups_results p ON m.id = p.molecule_id
         LEFT JOIN atlas_results a ON m.id = a.molecule_id
         WHERE (p.execution_time IS NOT NULL OR a.execution_time IS NOT NULL)
           AND m.dataset_type NOT IN ('complex_branched', 'definitions', 'non_fluorinated', 'highly_branched')
@@ -61,13 +61,13 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
     print(f"✓ Found {len(rows)} molecules with timing data")
     
     # Organize data with enhanced categorization
-    data_by_dataset = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
-    data_by_size = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
-    data_by_chain_type = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
-    data_by_atoms = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
-    data_by_complexity = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
+    data_by_dataset = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
+    data_by_size = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
+    data_by_chain_type = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
+    data_by_atoms = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
+    data_by_complexity = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
     
-    all_pfasgroups = []
+    all_HalogenGroups = []
     all_atlas = []
     complexity_scores = []
     has_complexity_data = False
@@ -112,15 +112,15 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
         
         # Store times
         if pfas_time is not None:
-            data_by_dataset[dataset]['pfasgroups'].append(pfas_time)
-            data_by_size[size_cat]['pfasgroups'].append(pfas_time)
-            data_by_chain_type[chain_type]['pfasgroups'].append(pfas_time)
-            all_pfasgroups.append(pfas_time)
+            data_by_dataset[dataset]['HalogenGroups'].append(pfas_time)
+            data_by_size[size_cat]['HalogenGroups'].append(pfas_time)
+            data_by_chain_type[chain_type]['HalogenGroups'].append(pfas_time)
+            all_HalogenGroups.append(pfas_time)
             if num_atoms:
-                data_by_atoms[num_atoms]['pfasgroups'].append(pfas_time)
+                data_by_atoms[num_atoms]['HalogenGroups'].append(pfas_time)
             if complexity_score is not None:
                 # Store with complexity score for later categorization
-                data_by_complexity[('pfasgroups', complexity_score)] = pfas_time
+                data_by_complexity[('HalogenGroups', complexity_score)] = pfas_time
         
         if atlas_time is not None:
             data_by_dataset[dataset]['atlas'].append(atlas_time)
@@ -140,10 +140,10 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
         
         # Categorize by quartiles
         complexity_quartile_data = {
-            'Low (Q1)': {'pfasgroups': [], 'atlas': []},
-            'Medium-Low (Q2)': {'pfasgroups': [], 'atlas': []},
-            'Medium-High (Q3)': {'pfasgroups': [], 'atlas': []},
-            'High (Q4)': {'pfasgroups': [], 'atlas': []}
+            'Low (Q1)': {'HalogenGroups': [], 'atlas': []},
+            'Medium-Low (Q2)': {'HalogenGroups': [], 'atlas': []},
+            'Medium-High (Q3)': {'HalogenGroups': [], 'atlas': []},
+            'High (Q4)': {'HalogenGroups': [], 'atlas': []}
         }
         
         for (system, score), time in data_by_complexity.items():
@@ -167,7 +167,7 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
         data_by_chain_type,
         data_by_atoms,
         complexity_quartile_data,
-        all_pfasgroups, 
+        all_HalogenGroups, 
         all_atlas, 
         len(rows)
     )
@@ -193,27 +193,27 @@ def calc_stats(times):
     }
 
 def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, data_by_atoms, 
-                          complexity_quartile_data, all_pfasgroups, all_atlas, total_molecules):
+                          complexity_quartile_data, all_HalogenGroups, all_atlas, total_molecules):
     """Generate HTML content with embedded charts and tables"""
     
-    overall_pfasgroups = calc_stats(all_pfasgroups)
+    overall_HalogenGroups = calc_stats(all_HalogenGroups)
     overall_atlas = calc_stats(all_atlas)
     
     # Calculate speedup
-    speedup = overall_atlas['mean'] / overall_pfasgroups['mean'] if overall_pfasgroups and overall_atlas else 0
+    speedup = overall_atlas['mean'] / overall_HalogenGroups['mean'] if overall_HalogenGroups and overall_atlas else 0
     
     # Build dataset statistics
     dataset_stats = []
     for dataset in sorted(data_by_dataset.keys()):
         d = data_by_dataset[dataset]
-        pfas_stats = calc_stats(d['pfasgroups'])
+        pfas_stats = calc_stats(d['HalogenGroups'])
         atlas_stats = calc_stats(d['atlas'])
         
         dataset_stats.append({
             'name': dataset,
             'pfas_stats': pfas_stats,
             'atlas_stats': atlas_stats,
-            'count': len(d['pfasgroups']) or len(d['atlas'])
+            'count': len(d['HalogenGroups']) or len(d['atlas'])
         })
     
     # Build size statistics
@@ -221,28 +221,28 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
     for size in ['small', 'medium', 'large']:
         if size in data_by_size:
             d = data_by_size[size]
-            pfas_stats = calc_stats(d['pfasgroups'])
+            pfas_stats = calc_stats(d['HalogenGroups'])
             atlas_stats = calc_stats(d['atlas'])
             
             size_stats.append({
                 'name': size.capitalize(),
                 'pfas_stats': pfas_stats,
                 'atlas_stats': atlas_stats,
-                'count': len(d['pfasgroups']) or len(d['atlas'])
+                'count': len(d['HalogenGroups']) or len(d['atlas'])
             })
     
     # Build chain type statistics
     chain_type_stats = []
     for chain_type in sorted(data_by_chain_type.keys()):
         d = data_by_chain_type[chain_type]
-        pfas_stats = calc_stats(d['pfasgroups'])
+        pfas_stats = calc_stats(d['HalogenGroups'])
         atlas_stats = calc_stats(d['atlas'])
         
         chain_type_stats.append({
             'name': chain_type.capitalize(),
             'pfas_stats': pfas_stats,
             'atlas_stats': atlas_stats,
-            'count': len(d['pfasgroups']) or len(d['atlas'])
+            'count': len(d['HalogenGroups']) or len(d['atlas'])
         })
     
     # Build complexity statistics if available
@@ -250,7 +250,7 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
     if complexity_quartile_data:
         for quartile in ['Low (Q1)', 'Medium-Low (Q2)', 'Medium-High (Q3)', 'High (Q4)']:
             d = complexity_quartile_data[quartile]
-            pfas_stats = calc_stats(d['pfasgroups'])
+            pfas_stats = calc_stats(d['HalogenGroups'])
             atlas_stats = calc_stats(d['atlas'])
             
             if pfas_stats or atlas_stats:  # Only include if we have data
@@ -258,7 +258,7 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
                     'name': quartile,
                     'pfas_stats': pfas_stats,
                     'atlas_stats': atlas_stats,
-                    'count': len(d['pfasgroups']) or len(d['atlas'])
+                    'count': len(d['HalogenGroups']) or len(d['atlas'])
                 })
     
     # Build atom count statistics
@@ -273,7 +273,7 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
         
         for atoms, times_dict in data_by_atoms.items():
             if bin_start < atoms <= bin_end:
-                pfas_times.extend(times_dict['pfasgroups'])
+                pfas_times.extend(times_dict['HalogenGroups'])
                 atlas_times.extend(times_dict['atlas'])
         
         if pfas_times or atlas_times:
@@ -289,7 +289,7 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
     chain_type_chart_js = generate_chain_type_chart_js(chain_type_stats)
     complexity_chart_js = generate_complexity_chart_js(complexity_stats) if complexity_stats else ""
     atom_chart_js = generate_atom_chart_js(atom_stats)
-    distribution_chart_js = generate_distribution_chart_js(all_pfasgroups, all_atlas)
+    distribution_chart_js = generate_distribution_chart_js(all_HalogenGroups, all_atlas)
     
     # Build HTML
     html = f"""<!DOCTYPE html>
@@ -443,12 +443,12 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
         <h2>📊 Overall Performance</h2>
         <div class="summary-grid">
             <div class="summary-card">
-                <div class="summary-number">{overall_pfasgroups['mean']*1000:.1f}ms</div>
-                <div class="summary-label">PFASgroups<br>Mean Time</div>
+                <div class="summary-number">{overall_HalogenGroups['mean']*1000:.1f}ms</div>
+                <div class="summary-label">HalogenGroups<br>Mean Time</div>
             </div>
             <div class="summary-card">
-                <div class="summary-number">{overall_pfasgroups['median']*1000:.1f}ms</div>
-                <div class="summary-label">PFASgroups<br>Median Time</div>
+                <div class="summary-number">{overall_HalogenGroups['median']*1000:.1f}ms</div>
+                <div class="summary-label">HalogenGroups<br>Median Time</div>
             </div>
             <div class="summary-card">
                 <div class="summary-number">{overall_atlas['mean']*1000:.1f}ms</div>
@@ -456,7 +456,7 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
             </div>
             <div class="summary-card">
                 <div class="summary-number">{speedup:.2f}x</div>
-                <div class="summary-label">Relative Speed<br>(Atlas/PFASgroups)</div>
+                <div class="summary-label">Relative Speed<br>(Atlas/HalogenGroups)</div>
             </div>
         </div>
         
@@ -496,7 +496,7 @@ def generate_html_content(data_by_dataset, data_by_size, data_by_chain_type, dat
         
         <div class="info-box">
             <strong>Key Findings:</strong><br>
-            • PFASgroups provides detailed component analysis, metrics, and full customizability<br>
+            • HalogenGroups provides detailed component analysis, metrics, and full customizability<br>
             • Execution time increases with molecular complexity as expected for comprehensive analysis<br>
             • Performance is consistent across different dataset types and molecule sizes<br>
             • The additional computational cost enables detection of multiple functional groups, chain length determination, and graph-theoretical metrics
@@ -550,8 +550,8 @@ def generate_table_html(stats_list, category_name, is_atom_table=False):
         <tr>
             <th>{category_name}</th>
             <th>Count</th>
-            <th>PFASgroups Mean</th>
-            <th>PFASgroups Median</th>
+            <th>HalogenGroups Mean</th>
+            <th>HalogenGroups Median</th>
             <th>PFAS-Atlas Mean</th>
             <th>Relative Speed</th>
         </tr>
@@ -569,7 +569,7 @@ def generate_dataset_chart_js(dataset_stats):
     var datasetTrace1 = {{
         x: {json.dumps(datasets)},
         y: {json.dumps(pfas_means)},
-        name: 'PFASgroups',
+        name: 'HalogenGroups',
         type: 'bar',
         marker: {{color: '#667eea'}}
     }};
@@ -602,7 +602,7 @@ def generate_size_chart_js(size_stats):
     var sizeTrace1 = {{
         x: {json.dumps(sizes)},
         y: {json.dumps(pfas_means)},
-        name: 'PFASgroups',
+        name: 'HalogenGroups',
         type: 'bar',
         marker: {{color: '#667eea'}}
     }};
@@ -635,7 +635,7 @@ def generate_chain_type_chart_js(chain_type_stats):
     var chainTrace1 = {{
         x: {json.dumps(chain_types)},
         y: {json.dumps(pfas_means)},
-        name: 'PFASgroups',
+        name: 'HalogenGroups',
         type: 'bar',
         marker: {{color: '#667eea'}}
     }};
@@ -671,7 +671,7 @@ def generate_complexity_chart_js(complexity_stats):
     var complexityTrace1 = {{
         x: {json.dumps(quartiles)},
         y: {json.dumps(pfas_means)},
-        name: 'PFASgroups',
+        name: 'HalogenGroups',
         type: 'bar',
         marker: {{color: '#667eea'}}
     }};
@@ -704,7 +704,7 @@ def generate_atom_chart_js(atom_stats):
     var atomTrace1 = {{
         x: {json.dumps(ranges)},
         y: {json.dumps(pfas_means)},
-        name: 'PFASgroups',
+        name: 'HalogenGroups',
         type: 'scatter',
         mode: 'lines+markers',
         marker: {{color: '#667eea', size: 8}},
@@ -730,12 +730,12 @@ def generate_atom_chart_js(atom_stats):
     Plotly.newPlot('atom-chart', [atomTrace1, atomTrace2], atomLayout);
     """
 
-def generate_distribution_chart_js(pfasgroups_times, atlas_times):
+def generate_distribution_chart_js(HalogenGroups_times, atlas_times):
     """Generate Plotly.js code for time distribution histograms"""
     return f"""
     var distTrace1 = {{
-        x: {json.dumps([t*1000 for t in pfasgroups_times])},
-        name: 'PFASgroups',
+        x: {json.dumps([t*1000 for t in HalogenGroups_times])},
+        name: 'HalogenGroups',
         type: 'histogram',
         opacity: 0.7,
         marker: {{color: '#667eea'}},

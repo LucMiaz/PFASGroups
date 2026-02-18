@@ -33,9 +33,9 @@ def save_to_database(benchmark_data, dataset_type, benchmark_date):
                 moleculeData = record.get('molecule_data', record)
                 moleculeId = importer.insertMolecule(moleculeData, dataset_type, benchmark_date)
                 
-                # Insert PFASGroups result if exists
-                if 'pfasgroups_result' in record:
-                    importer.insertPFASGroupsResult(moleculeId, record['pfasgroups_result'])
+                # Insert HalogenGroups result if exists
+                if 'HalogenGroups_result' in record:
+                    importer.insertHalogenGroupsResult(moleculeId, record['HalogenGroups_result'])
                 
                 # Insert Atlas result if exists
                 if 'atlas_result' in record:

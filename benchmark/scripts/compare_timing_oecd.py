@@ -2,7 +2,7 @@
 """
 Compare timing benchmark vs OECD benchmark timings.
 
-Creates a side-by-side comparison for PFASGroups and PFAS-Atlas:
+Creates a side-by-side comparison for HalogenGroups and PFAS-Atlas:
 - Timing benchmark (synthetic coverage over wide size range)
 - OECD benchmark (real dataset)
 """
@@ -51,17 +51,17 @@ def extract_timing_benchmark(path: Path) -> Dict[str, List[Tuple[int, float]]]:
         atoms = row.get("num_atoms")
         if atoms is None:
             continue
-        if "pfasgroups_time_avg" in row:
-            p_time = row.get("pfasgroups_time_avg")
+        if "HalogenGroups_time_avg" in row:
+            p_time = row.get("HalogenGroups_time_avg")
             a_time = row.get("atlas_time_avg")
         else:
-            p_time = row.get("pfasgroups_time")
+            p_time = row.get("HalogenGroups_time")
             a_time = row.get("atlas_time")
         if p_time is not None:
             pfas.append((atoms, p_time * 1000))
         if a_time is not None:
             atlas.append((atoms, a_time * 1000))
-    return {"pfasgroups": pfas, "atlas": atlas}
+    return {"HalogenGroups": pfas, "atlas": atlas}
 
 
 def extract_oecd_benchmark(path: Path) -> Dict[str, List[Tuple[int, float]]]:
@@ -73,13 +73,13 @@ def extract_oecd_benchmark(path: Path) -> Dict[str, List[Tuple[int, float]]]:
         atoms = atoms_from_smiles(smiles) if smiles else None
         if atoms is None:
             continue
-        p_time = row.get("pfasgroups_result", {}).get("execution_time")
+        p_time = row.get("HalogenGroups_result", {}).get("execution_time")
         a_time = row.get("atlas_result", {}).get("execution_time")
         if p_time is not None:
             pfas.append((atoms, p_time * 1000))
         if a_time is not None:
             atlas.append((atoms, a_time * 1000))
-    return {"pfasgroups": pfas, "atlas": atlas}
+    return {"HalogenGroups": pfas, "atlas": atlas}
 
 
 def percentile_band(data: List[Tuple[int, float]], percentiles=(10, 50, 90)):
@@ -191,7 +191,7 @@ def main() -> int:
     fig = make_subplots(
         rows=1,
         cols=2,
-        subplot_titles=("PFASGroups", "PFAS-Atlas"),
+        subplot_titles=("HalogenGroups", "PFAS-Atlas"),
         horizontal_spacing=0.08,
     )
 
@@ -199,9 +199,9 @@ def main() -> int:
         fig,
         1,
         1,
-        timing_data["pfasgroups"],
-        oecd_data["pfasgroups"],
-        "PFASGroups",
+        timing_data["HalogenGroups"],
+        oecd_data["HalogenGroups"],
+        "HalogenGroups",
     )
     add_dataset_traces(
         fig,

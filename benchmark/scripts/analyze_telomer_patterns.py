@@ -24,7 +24,7 @@ for group, count in end_groups.most_common():
 print()
 
 # Load PFAS groups to analyze patterns
-pfas_json = r'c:\Users\luc\git\PFASGroups\PFASgroups\data\PFAS_groups_smarts.json'
+pfas_json = r'c:\Users\luc\git\HalogenGroups\HalogenGroups\data\PFAS_groups_smarts.json'
 with open(pfas_json) as f:
     groups = json.load(f)
 

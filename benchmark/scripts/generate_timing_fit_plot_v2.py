@@ -102,7 +102,7 @@ ax.grid(True, alpha=0.3, linestyle='--', linewidth=0.5)
 # Labels and title
 ax.set_xlabel('Number of Atoms', fontsize=12, fontweight='bold')
 ax.set_ylabel('Execution Time (ms)', fontsize=12, fontweight='bold')
-ax.set_title('PFASGroups Execution Time: Exponential Scaling with Molecular Size', 
+ax.set_title('HalogenGroups Execution Time: Exponential Scaling with Molecular Size', 
              fontsize=14, fontweight='bold', pad=20)
 
 # Add statistics text box

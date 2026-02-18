@@ -14,7 +14,7 @@ def get_latest_file(pattern):
     return files[0] if files else None
 
 print("="*80)
-print("PFASGROUPS BENCHMARK ANALYSIS")
+print("HalogenGroupS BENCHMARK ANALYSIS")
 print("="*80)
 
 # Load all benchmark data
@@ -79,7 +79,7 @@ print(f"  Telomer validation: {len(telomer_data)} molecules")
 # Analyze timing model
 print("\n2. Analyzing timing model (exponential fit)...")
 timing_atoms = np.array([d['num_atoms'] for d in timing_data])
-timing_avg = np.array([d['pfasgroups_time_avg'] for d in timing_data])
+timing_avg = np.array([d['HalogenGroups_time_avg'] for d in timing_data])
 
 # Log-linear regression for exponential model: t = a * exp(b * n)
 log_timing = np.log(timing_avg)
@@ -114,7 +114,7 @@ print("\n3. Analyzing enhanced benchmark...")
 enhanced_detected = []
 enhanced_unique_groups = set()
 for mol in enhanced_data:
-    detected = mol['pfasgroups_result']['detected_groups']
+    detected = mol['HalogenGroups_result']['detected_groups']
     enhanced_detected.append(len(detected) > 0)
     enhanced_unique_groups.update(detected)
 
@@ -127,7 +127,7 @@ print(f"  Unique groups found: {len(enhanced_unique_groups)}")
 # Count group frequencies
 group_counts = {}
 for mol in enhanced_data:
-    for gid in mol['pfasgroups_result']['detected_groups']:
+    for gid in mol['HalogenGroups_result']['detected_groups']:
         group_counts[gid] = group_counts.get(gid, 0) + 1
 
 top_groups = sorted(group_counts.items(), key=lambda x: x[1], reverse=True)[:5]
@@ -140,7 +140,7 @@ print("\n4. Analyzing complex branched benchmark...")
 complex_detected = []
 complex_unique_groups = set()
 for mol in complex_data:
-    detected = mol['pfasgroups_result']['detected_groups']
+    detected = mol['HalogenGroups_result']['detected_groups']
     complex_detected.append(len(detected) > 0)
     complex_unique_groups.update(detected)
 
@@ -155,7 +155,7 @@ print("\n5. Analyzing highly branched benchmark...")
 hb_detected = []
 hb_unique_groups = set()
 for mol in highly_branched_data:
-    detected = mol['pfasgroups_result']['detected_groups']
+    detected = mol['HalogenGroups_result']['detected_groups']
     hb_detected.append(len(detected) > 0)
     hb_unique_groups.update(detected)
 

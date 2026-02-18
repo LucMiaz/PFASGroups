@@ -12,7 +12,7 @@ The `ResultsFingerprint` class provides powerful tools for analyzing PFAS group 
 ## Quick Start
 
 ```python
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 # Parse some PFAS molecules
 smiles_list = [
@@ -22,15 +22,18 @@ smiles_list = [
 
 results = parse_smiles(smiles_list)
 
-# Convert to fingerprints
-fp = results.to_fingerprint(group_selection='all', count_mode='binary')
+# Default fingerprint: F only, per-saturation, 116 groups → shape (2, 116)
+fp = results.to_fingerprint()
 
-# Perform PCA analysis
+# Stacked F + Cl fingerprint → shape (2, 232)
+fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'])
+
+# PCA analysis
 pca_results = fp.perform_pca(n_components=2, plot=True, output_file='pca.png')
 
 # Compare with another dataset
 results2 = parse_smiles(other_smiles_list)
-fp2 = results2.to_fingerprint(group_selection='all', count_mode='binary')
+fp2 = results2.to_fingerprint()
 kl_div = fp.compare_kld(fp2, method='minmax')
 print(f"KL divergence: {kl_div:.4f}")
 ```
@@ -42,24 +45,60 @@ print(f"KL divergence: {kl_div:.4f}")
 Convert a `ResultsModel` to a `ResultsFingerprint` for analysis.
 
 **Parameters:**
-- `group_selection` (str): Which groups to include
-  - `'all'`: All 55 groups (default)
-  - `'oecd'`: OECD groups only (groups 1-28)
-  - `'generic'`: Generic groups only (groups 29-55)
-  - `'telomers'`: Telomer-related groups only
-  - `'generic+telomers'`: Combination of generic and telomer groups
-- `count_mode` (str): Encoding method
-  - `'binary'`: 1 if present, 0 if absent (default)
-  - `'count'`: Number of matches
-  - `'max_component'`: Maximum component size
-- `selected_group_ids` (list): Explicit list of group IDs (overrides group_selection)
 
-**Returns:** `ResultsFingerprint` object
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `group_selection` | `str` | `'all'` | Which groups to include (see table below) |
+| `count_mode` | `str` | `'binary'` | Encoding method (`'binary'`, `'count'`, `'max_component'`) |
+| `selected_group_ids` | `list` | `None` | Explicit group IDs — overrides `group_selection` |
+| `halogens` | `str` or `list` | `'F'` | Halogen(s) for component SMARTS matching (see below) |
+| `saturation` | `str` or `None` | `'per'` | Saturation filter: `'per'`, `'poly'`, or `None` |
 
-**Example:**
+**Group selection options:**
+
+| Value | Groups included | Count |
+|-------|----------------|-------|
+| `'all'` | All computable groups | 116 |
+| `'oecd'` | OECD-defined groups (IDs 1–28) | 28 |
+| `'generic'` | Generic functional groups (IDs 29–55) | 27 |
+| `'telomers'` | Telomer-related groups (IDs 74–116) | 42 |
+| `'generic+telomers'` | Generic + telomers combined | 69 |
+
+**Halogen filtering:**
+
+- **Single halogen** (e.g. `halogens='F'`): standard fingerprint of length *n_groups*.
+- **Multiple halogens** (e.g. `halogens=['F', 'Cl']`): one fingerprint vector per halogen,
+  **concatenated** into a single vector of length *n_groups × n_halogens*. Group names
+  are automatically suffixed with `[F]`, `[Cl]`, etc.
+- Available values: `'F'`, `'Cl'`, `'Br'`, `'I'`
+
+**Saturation filtering** (applies only to groups with component SMARTS — OECD groups 1–28):
+
+- `'per'`: perfluorinated / perhalogenated components only (default)
+- `'poly'`: polyfluorinated / polyhalogenated components only
+- `None`: no saturation filter
+
+Groups without a component SMARTS (generic, telomer groups) are unaffected by the saturation filter.
+
+**Returns:** `ResultsFingerprint`
+
+**Examples:**
+
 ```python
-# Binary encoding with all groups
-fp = results.to_fingerprint(group_selection='all', count_mode='binary')
+# Default: fluorine only, perfluorinated, all 116 groups → shape (n, 116)
+fp = results.to_fingerprint()
+
+# Stacked F + Cl fingerprint → shape (n, 232), names suffixed [F] / [Cl]
+fp = results.to_fingerprint(halogens=['F', 'Cl'])
+
+# F + Cl + Br → shape (n, 348)
+fp = results.to_fingerprint(halogens=['F', 'Cl', 'Br'])
+
+# Polyfluorinated components only
+fp = results.to_fingerprint(halogens='F', saturation='poly')
+
+# No saturation filter
+fp = results.to_fingerprint(halogens='F', saturation=None)
 
 # Count encoding with OECD groups only
 fp_oecd = results.to_fingerprint(group_selection='oecd', count_mode='count')

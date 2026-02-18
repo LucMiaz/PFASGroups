@@ -71,9 +71,9 @@ for name, path in datasets.items():
             total_molecules += len(molecules)
             
             for mol in molecules:
-                if mol.get('pfasgroups_detected', False):
+                if mol.get('HalogenGroups_detected', False):
                     detected += 1
-                    groups = mol.get('pfasgroups_groups', [])
+                    groups = mol.get('HalogenGroups_groups', [])
                     for gid in groups:
                         group_counts[gid] += 1
         
@@ -96,13 +96,13 @@ for name, path in datasets.items():
         
         total = len(molecules)
         
-        # Count molecules with PFASgroups detections
+        # Count molecules with HalogenGroups detections
         detected = 0
         group_counts = Counter()
         
         for mol in molecules:
             # Handle different formats
-            pfas_results = mol.get('pfasgroups_result', mol.get('pfasgroups_results', {}))
+            pfas_results = mol.get('HalogenGroups_result', mol.get('HalogenGroups_results', {}))
             if isinstance(pfas_results, dict):
                 # Check for detected_groups (enhanced format) or matches
                 detected_groups = pfas_results.get('detected_groups', [])
@@ -117,7 +117,7 @@ for name, path in datasets.items():
                     
                     # Or count from matches
                     for match in matches:
-                        if match.get('type') in ['PFASgroup', 'group']:
+                        if match.get('type') in ['HalogenGroup', 'group']:
                             group_counts[match['id']] += 1
         
         print(f'  Total molecules: {total}')
@@ -174,9 +174,9 @@ for name, path in datasets.items():
             total_molecules += len(molecules)
             
             for mol in molecules:
-                if mol.get('pfasgroups_detected', False):
+                if mol.get('HalogenGroups_detected', False):
                     detected += 1
-                    groups = mol.get('pfasgroups_groups', [])
+                    groups = mol.get('HalogenGroups_groups', [])
                     for gid in groups:
                         group_counts[gid] += 1
         
@@ -195,7 +195,7 @@ for name, path in datasets.items():
         group_counts = Counter()
         
         for mol in molecules:
-            pfas_results = mol.get('pfasgroups_result', mol.get('pfasgroups_results', {}))
+            pfas_results = mol.get('HalogenGroups_result', mol.get('HalogenGroups_results', {}))
             if isinstance(pfas_results, dict):
                 detected_groups = pfas_results.get('detected_groups', [])
                 matches = pfas_results.get('matches', [])
@@ -205,7 +205,7 @@ for name, path in datasets.items():
                     for gid in detected_groups:
                         group_counts[gid] += 1
                     for match in matches:
-                        if match.get('type') in ['PFASgroup', 'group']:
+                        if match.get('type') in ['HalogenGroup', 'group']:
                             group_counts[match['id']] += 1
         
         unique = len(group_counts)

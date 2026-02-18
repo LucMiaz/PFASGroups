@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Comprehensive test script for PFASGroups and PFASDefinitions.
+Comprehensive test script for HalogenGroups and PFASDefinitions.
 
 This script validates all PFAS groups and definitions against their test metadata,
 ensuring that patterns correctly identify positive examples and reject negative examples.
@@ -35,25 +35,24 @@ from collections import defaultdict
 
 import pytest
 
-# Add parent directory to path to import PFASgroups
+# Add parent directory to path to import HalogenGroups
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from PFASgroups.PFASGroupModel import PFASGroup
-from PFASgroups.PFASDefinitionModel import PFASDefinition
+from HalogenGroups import HalogenGroup, PFASDefinition
 
 
-def load_groups(groups_file: Path) -> List[PFASGroup]:
+def load_groups(groups_file: Path) -> List[HalogenGroup]:
     """Load all PFAS groups from JSON file.
     
     Parameters
     ----------
     groups_file : Path
-        Path to PFAS_groups_smarts.json
+        Path to Halogen_groups_smarts.json
     
     Returns
     -------
-    List[PFASGroup]
-        List of PFASGroup model instances
+    List[HalogenGroup]
+        List of HalogenGroup model instances
     """
     with open(groups_file, 'r') as f:
         groups_data = json.load(f)
@@ -61,8 +60,8 @@ def load_groups(groups_file: Path) -> List[PFASGroup]:
     groups = []
     for data in groups_data:
         try:
-            # Initialize PFASGroup directly from JSON data - no ComponentsSolver needed
-            group = PFASGroup(**data)
+            # Initialize HalogenGroup directly from JSON data - no ComponentsSolver needed
+            group = HalogenGroup(**data)
             groups.append(group)
         except Exception as e:
             print(f"Warning: Failed to load group {data.get('id', '?')}: {e}")
@@ -115,13 +114,13 @@ def data_dir():
     """Get path to data directory."""
     script_dir = Path(__file__).parent
     root_dir = script_dir.parent
-    return root_dir / 'PFASgroups' / 'data'
+    return root_dir / 'HalogenGroups' / 'data'
 
 
 @pytest.fixture(scope='session')
 def groups(data_dir):
     """Load all PFAS groups for testing."""
-    groups_file = data_dir / 'PFAS_groups_smarts.json'
+    groups_file = data_dir / 'Halogen_groups_smarts.json'
     return load_groups(groups_file)
 
 
@@ -136,12 +135,12 @@ def definitions(data_dir):
 # VALIDATION FUNCTIONS (used by both pytest and standalone)
 # ============================================================================
 
-def validate_groups(groups: List[PFASGroup], verbose: bool = False, specific_id: int = None) -> Tuple[int, int, List[Dict]]:
+def validate_groups(groups: List[HalogenGroup], verbose: bool = False, specific_id: int = None) -> Tuple[int, int, List[Dict]]:
     """Test all PFAS groups against their test metadata.
     
     Parameters
     ----------
-    groups : List[PFASGroup]
+    groups : List[HalogenGroup]
         List of PFAS groups to test
     verbose : bool
         If True, print detailed output for each test
@@ -451,9 +450,9 @@ def main():
     # Determine paths
     script_dir = Path(__file__).parent
     root_dir = script_dir.parent
-    data_dir = root_dir / 'PFASgroups' / 'data'
+    data_dir = root_dir / 'HalogenGroups' / 'data'
     
-    groups_file = data_dir / 'PFAS_groups_smarts.json'
+    groups_file = data_dir / 'Halogen_groups_smarts.json'
     definitions_file = data_dir / 'PFAS_definitions_smarts.json'
     
     # Check files exist

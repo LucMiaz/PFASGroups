@@ -14,8 +14,8 @@ import numpy as np
 import tempfile
 import os
 from pathlib import Path
-from PFASgroups import parse_smiles
-from PFASgroups.results_model import ResultsFingerprint, ResultsModel
+from HalogenGroups import parse_smiles
+from HalogenGroups.results_model import ResultsFingerprint, ResultsModel
 
 
 # Test SMILES - diverse set of PFAS compounds
@@ -62,7 +62,7 @@ class TestResultsModelToFingerprint:
         """Test different group selections."""
         # All groups
         fp_all = results.to_fingerprint(group_selection='all')
-        assert len(fp_all.group_names) == 115  # Total PFAS groups (increased with halogen support)
+        assert len(fp_all.group_names) == 116  # 117 total, but 1 is aggregate-only (compute=False)
         
         # OECD groups
         fp_oecd = results.to_fingerprint(group_selection='oecd')
@@ -91,6 +91,44 @@ class TestResultsModelToFingerprint:
         custom_ids = [1, 2, 5, 10]
         fp = results.to_fingerprint(selected_group_ids=custom_ids)
         assert len(fp.group_names) == len(custom_ids)
+
+    def test_halogen_default(self, results):
+        """Default halogen='F' gives 117 group names, no suffix."""
+        fp = results.to_fingerprint(halogens='F')
+        assert fp.halogens == ['F']
+        assert fp.saturation == 'per'
+        assert len(fp.group_names) == 116
+        assert not any('[' in name for name in fp.group_names)
+
+    def test_halogen_stacking(self, results):
+        """Multiple halogens double (or triple) fingerprint width."""
+        fp_f = results.to_fingerprint(halogens='F')
+        fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'])
+        n_groups = len(fp_f.group_names)
+        assert len(fp_fcl.group_names) == n_groups * 2
+        assert fp_fcl.fingerprints.shape == (len(results), n_groups * 2)
+        # Names should be suffixed
+        assert all(name.endswith('[F]') or name.endswith('[Cl]')
+                   for name in fp_fcl.group_names)
+        # First half = F section, second half = Cl section
+        assert fp_fcl.group_names[0].endswith('[F]')
+        assert fp_fcl.group_names[n_groups].endswith('[Cl]')
+
+    def test_saturation_poly(self, results):
+        """Saturation='poly' is accepted and stored."""
+        fp = results.to_fingerprint(halogens='F', saturation='poly')
+        assert fp.saturation == 'poly'
+        assert fp.fingerprints.shape[0] == len(results)
+
+    def test_saturation_none(self, results):
+        """Saturation=None disables the saturation filter."""
+        fp = results.to_fingerprint(halogens='F', saturation=None)
+        assert fp.saturation is None
+
+    def test_halogen_telomers_selection(self, results):
+        """Telomers selection uses correct ID range."""
+        fp = results.to_fingerprint(group_selection='telomers')
+        assert len(fp.group_names) == 42
 
 
 class TestResultsFingerprint:
@@ -124,6 +162,8 @@ class TestResultsFingerprint:
         assert 'ResultsFingerprint' in repr_str
         assert 'n_molecules' in repr_str
         assert 'n_groups' in repr_str
+        assert 'halogens' in repr_str
+        assert 'saturation' in repr_str
     
     def test_summary(self, fingerprint):
         """Test summary method."""
@@ -131,6 +171,8 @@ class TestResultsFingerprint:
         assert 'Molecules:' in summary
         assert 'Groups:' in summary
         assert 'Sparsity:' in summary
+        assert 'Halogens:' in summary
+        assert 'Saturation:' in summary
 
 
 class TestDimensionalityReduction:

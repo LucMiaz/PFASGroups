@@ -7,11 +7,11 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
-project = 'PFASgroups'
+project = 'HalogenGroups'
 copyright = '2026, Luc T. Miaz'
 author = 'Luc T. Miaz'
-release = '2.2.4'
-version = '2.2.4'
+release = '3.1.0'
+version = '3.1.0'
 
 # -- General configuration ---------------------------------------------------
 extensions = [

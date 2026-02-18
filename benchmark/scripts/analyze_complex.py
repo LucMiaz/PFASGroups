@@ -28,9 +28,9 @@ def analyze_complex(data):
         total_case = len(molecules)
         total += total_case
 
-        case_pfas = sum(1 for mol in molecules if mol.get("pfasgroups_detected") is True)
+        case_pfas = sum(1 for mol in molecules if mol.get("HalogenGroups_detected") is True)
         case_atlas = sum(1 for mol in molecules if mol.get("atlas_detected") is True)
-        case_correct = sum(1 for mol in molecules if mol.get("pfasgroups_correct") is True)
+        case_correct = sum(1 for mol in molecules if mol.get("HalogenGroups_correct") is True)
 
         pfas_detected += case_pfas
         atlas_detected += case_atlas
@@ -41,22 +41,22 @@ def analyze_complex(data):
             "description": test_case.get("description"),
             "complexity": test_case.get("complexity"),
             "molecules": total_case,
-            "pfasgroups_detected": case_pfas,
+            "HalogenGroups_detected": case_pfas,
             "atlas_detected": case_atlas,
-            "pfasgroups_correct": case_correct,
-            "pfasgroups_rate": (case_pfas / total_case) * 100 if total_case else 0.0,
+            "HalogenGroups_correct": case_correct,
+            "HalogenGroups_rate": (case_pfas / total_case) * 100 if total_case else 0.0,
             "atlas_rate": (case_atlas / total_case) * 100 if total_case else 0.0,
-            "pfasgroups_correct_rate": (case_correct / total_case) * 100 if total_case else 0.0,
+            "HalogenGroups_correct_rate": (case_correct / total_case) * 100 if total_case else 0.0,
         })
 
     summary = {
         "total_molecules": total,
-        "pfasgroups_detected": pfas_detected,
+        "HalogenGroups_detected": pfas_detected,
         "atlas_detected": atlas_detected,
-        "pfasgroups_correct": pfas_correct,
-        "pfasgroups_detection_rate": (pfas_detected / total) * 100 if total else 0.0,
+        "HalogenGroups_correct": pfas_correct,
+        "HalogenGroups_detection_rate": (pfas_detected / total) * 100 if total else 0.0,
         "atlas_detection_rate": (atlas_detected / total) * 100 if total else 0.0,
-        "pfasgroups_correct_rate": (pfas_correct / total) * 100 if total else 0.0,
+        "HalogenGroups_correct_rate": (pfas_correct / total) * 100 if total else 0.0,
     }
 
     return summary, case_stats
@@ -99,7 +99,7 @@ def main() -> int:
 
     print("Complex branched analysis complete")
     print(f"  Total molecules: {summary['total_molecules']}")
-    print(f"  PFASGroups detection rate: {summary['pfasgroups_detection_rate']:.1f}%")
+    print(f"  HalogenGroups detection rate: {summary['HalogenGroups_detection_rate']:.1f}%")
     print(f"  Atlas detection rate: {summary['atlas_detection_rate']:.1f}%")
     print(f"  Output: {output_file}")
 

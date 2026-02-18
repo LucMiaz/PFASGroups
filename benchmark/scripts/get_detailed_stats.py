@@ -13,7 +13,7 @@ c.execute('''
         a.execution_time as atlas_time,
         m.num_atoms
     FROM molecules m
-    LEFT JOIN pfasgroups_results p ON m.id = p.molecule_id
+    LEFT JOIN HalogenGroups_results p ON m.id = p.molecule_id
     LEFT JOIN atlas_results a ON m.id = a.molecule_id
     WHERE p.execution_time IS NOT NULL 
       AND a.execution_time IS NOT NULL
@@ -56,7 +56,7 @@ for dataset in sorted(by_dataset.keys()):
     count = len(d['pfas'])
     print(f"\n{dataset.upper()}:")
     print(f"  Count: {count}")
-    print(f"  PFASgroups Mean: {pfas_mean:.1f}ms, Median: {pfas_median:.1f}ms")
+    print(f"  HalogenGroups Mean: {pfas_mean:.1f}ms, Median: {pfas_median:.1f}ms")
     print(f"  Atlas Mean: {atlas_mean:.1f}ms")
     print(f"  Ratio: {ratio:.2f}x")
 
@@ -73,7 +73,7 @@ for size in ['small', 'medium', 'large']:
         count = len(d['pfas'])
         print(f"\n{size.upper()}:")
         print(f"  Count: {count}")
-        print(f"  PFASgroups Mean: {pfas_mean:.1f}ms, Median: {pfas_median:.1f}ms")
+        print(f"  HalogenGroups Mean: {pfas_mean:.1f}ms, Median: {pfas_median:.1f}ms")
         print(f"  Atlas Mean: {atlas_mean:.1f}ms")
         print(f"  Ratio: {ratio:.2f}x")
 

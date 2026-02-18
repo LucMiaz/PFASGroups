@@ -36,13 +36,13 @@ def analyze_benchmark_correspondences():
     """Analyze OECD benchmark correspondences."""
     
     # Load OECD benchmark data
-    benchmark_file = '/home/luc/git/PFASGroups/benchmark/data/pfas_oecd_benchmark_20251217_142445.json'
+    benchmark_file = '/home/luc/git/HalogenGroups/benchmark/data/pfas_oecd_benchmark_20251217_142445.json'
     with open(benchmark_file, 'r') as f:
         oecd_data = json.load(f)
     
     # Load group names
     try:
-        with open('/home/luc/git/PFASGroups/PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+        with open('/home/luc/git/HalogenGroups/HalogenGroups/data/PFAS_groups_smarts.json', 'r') as f:
             groups_data = json.load(f)
         group_names = {int(g['id']): g['name'] for g in groups_data}
     except:
@@ -55,10 +55,10 @@ def analyze_benchmark_correspondences():
     success_count = 0
     
     for entry in oecd_data:
-        if entry['pfasgroups_result']['success'] and entry['atlas_result']['success']:
+        if entry['HalogenGroups_result']['success'] and entry['atlas_result']['success']:
             success_count += 1
             atlas_class = f"{entry['atlas_result']['first_class']} / {entry['atlas_result']['second_class']}"
-            pfas_groups = entry['pfasgroups_result']['detected_groups']
+            pfas_groups = entry['HalogenGroups_result']['detected_groups']
             pfas_names = [group_names.get(g, f'Group_{g}') for g in pfas_groups]
             pfas_class = ', '.join(pfas_names) if pfas_names else 'No groups detected'
             
@@ -67,17 +67,17 @@ def analyze_benchmark_correspondences():
             # Track significant disagreements for examples
             if len(pfas_groups) == 0:
                 disagreement_examples.append({
-                    'type': 'No_PFASGroups_Detected',
+                    'type': 'No_HalogenGroups_Detected',
                     'smiles': entry['molecule_data']['smiles'],
                     'atlas': atlas_class,
-                    'pfasgroups': pfas_class,
-                    'pfasgroups_ids': pfas_groups
+                    'HalogenGroups': pfas_class,
+                    'HalogenGroups_ids': pfas_groups
                 })
     
     return sankey_data, disagreement_examples, success_count, total_molecules
 
 def create_sankey_diagram(sankey_data):
-    """Create a Sankey diagram for Atlas vs PFASGroups correspondence."""
+    """Create a Sankey diagram for Atlas vs HalogenGroups correspondence."""
     
     # Prepare data for Sankey
     atlas_classes = list(set(pair[0] for pair in sankey_data.keys()))
@@ -114,7 +114,7 @@ def create_sankey_diagram(sankey_data):
     )])
     
     fig.update_layout(
-        title_text="PFAS Classification Correspondence: PFAS-Atlas vs PFASGroups",
+        title_text="PFAS Classification Correspondence: PFAS-Atlas vs HalogenGroups",
         font_size=10,
         width=1200,
         height=800
@@ -126,12 +126,12 @@ def analyze_disulfonic_acid_failures():
     """Analyze the perfluoroalkyl disulfonic acid classification failures."""
     
     # Load test results
-    oecd_df = pd.read_csv('/home/luc/git/PFASGroups/PFASgroups/tests/results/oecd_test_results.csv')
+    oecd_df = pd.read_csv('/home/luc/git/HalogenGroups/HalogenGroups/tests/results/oecd_test_results.csv')
     oecd_df['all_matches'] = oecd_df['all_matches'].apply(ast.literal_eval)
     
     # Load group names
     try:
-        with open('/home/luc/git/PFASGroups/PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+        with open('/home/luc/git/HalogenGroups/HalogenGroups/data/PFAS_groups_smarts.json', 'r') as f:
             groups_data = json.load(f)
         group_names = {int(g['id']): g['name'] for g in groups_data}
     except:
@@ -255,7 +255,7 @@ def generate_validation_report():
         json.dump({k: v for k, v in results.items() if k != 'sankey_html'}, f, indent=2, default=str)
     
     # Save Sankey HTML separately
-    with open('atlas_pfasgroups_sankey.html', 'w') as f:
+    with open('atlas_HalogenGroups_sankey.html', 'w') as f:
         f.write(sankey_html)
     
     print(f"Generated benchmark validation analysis:")
@@ -263,7 +263,7 @@ def generate_validation_report():
     print(f"- Success rate: {success_count/total_count:.1%}")
     print(f"- Disulfonic acid failures: {n_failed}/{n_failed+n_success}")
     print(f"- Saved to: benchmark_validation_analysis.json")
-    print(f"- Sankey diagram: atlas_pfasgroups_sankey.html")
+    print(f"- Sankey diagram: atlas_HalogenGroups_sankey.html")
     
     return results
 

@@ -3928,7 +3928,7 @@
         "alias": "perhalogenated alkyl",
         "id": 51,
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {},
@@ -4239,9 +4239,11 @@
     },
     {
         "id": 56,
-        "name": "Perfluoro cyclic compounds",
-        "alias": "Perfluoro cyclic compounds",
-        "componentSmarts": "cyclic",
+        "name": "Perhalogenated cyclic compounds",
+        "alias": "Perhalogenated cyclic compounds",
+        "componentSmarts": null,
+        "componentForm": "cyclic",
+        "componentSaturation": "per",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -4302,9 +4304,11 @@
     },
     {
         "id": 57,
-        "name": "Polyfluoro cyclic compounds",
-        "alias": "Polyfluoro cyclic compounds",
-        "componentSmarts": "cyclic",
+        "name": "Polyhalogenated cyclic compounds",
+        "alias": "Polyhalogenated cyclic compounds",
+        "componentSmarts": null,
+        "componentForm": "cyclic",
+        "componentSaturation": "poly",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -5431,7 +5435,8 @@
         "name": "Telomer silane",
         "alias": "Telomer silane",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -5489,7 +5494,7 @@
         "name": "Telomer trichlorosilane",
         "alias": "Telomer trichlorosilane",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 6,
         "constraints": {
@@ -5547,7 +5552,7 @@
         "name": "Telomer iodide",
         "alias": "FTI",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -5636,7 +5641,7 @@
         "name": "Telomer aldehyde",
         "alias": "FTUCA",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -5725,7 +5730,7 @@
         "name": "Telomer carboxylic acids",
         "alias": "FTCA",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -5906,7 +5911,7 @@
         "name": "Telomer sulfonic acid",
         "alias": "FTSA",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -5996,7 +6001,7 @@
         "name": "Telomer monophosphate",
         "alias": "monoPAP",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6085,7 +6090,7 @@
         "name": "Telomer diphosphate",
         "alias": "diPAP",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6174,7 +6179,7 @@
         "name": "Telomer triphosphate",
         "alias": "triPAP",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6263,7 +6268,7 @@
         "name": "Telomer acrylate",
         "alias": "FTAC",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6352,7 +6357,7 @@
         "name": "Telomer methacrylate",
         "alias": "FTMAC",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6426,7 +6431,7 @@
         "name": "Telomer alcohol",
         "alias": "FTO",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6515,7 +6520,7 @@
         "name": "Telomer sulfure",
         "alias": "FTS",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6604,7 +6609,7 @@
         "name": "Telomer sulfonamide",
         "alias": "FTS",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6695,7 +6700,7 @@
         "name": "Telomer silyl",
         "alias": "FTSi",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6753,7 +6758,7 @@
         "name": "Telomer betaine",
         "alias": "FTB",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6843,7 +6848,7 @@
         "name": "Telomer ester",
         "alias": "FTEs",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6916,7 +6921,7 @@
         "name": "Telomer thiocyanic acid",
         "alias": "Telomer thiocyanic acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -6982,7 +6987,7 @@
         "name": "Telomer alkene",
         "alias": "Telomer alkene",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
         "max_dist_from_CF": 16,
         "constraints": {},
@@ -7062,7 +7067,7 @@
         "name": "Telomer trimethylamine",
         "alias": "Telomer trimethylamine",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -7151,7 +7156,7 @@
         "name": "Telomer sulfinic acid",
         "alias": "Telomer sulfinic acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -7241,7 +7246,7 @@
         "name": "Telomer sulfenic acid",
         "alias": "Telomer sulfenic acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -7331,7 +7336,7 @@
         "name": "Telomer sulfuric acid",
         "alias": "Telomer sulfuric acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -7421,7 +7426,7 @@
         "name": "Telomer methyl",
         "alias": "Telomer methyl",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {},
@@ -7482,7 +7487,7 @@
         "name": "Telomer glucuronic acid",
         "alias": "Telomer glucuronic acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -7563,7 +7568,7 @@
         "name": "Telomer formaldehyde bisulfite",
         "alias": "Telomer formaldehyde bisulfite",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -7653,7 +7658,7 @@
         "name": "Telomer unsaturated carboxylic acids",
         "alias": "FTUCA",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -7738,7 +7743,7 @@
         "name": "Telomer thia keto propanoic acid",
         "alias": "Telomer thia keto propanoic acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -7827,7 +7832,7 @@
         "name": "Telomer glycine",
         "alias": "Telomer glycine",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CH1X4$(C(F))]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -7917,7 +7922,7 @@
         "name": "Telomer sulfonamidoethanol",
         "alias": "FOSE",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8008,7 +8013,7 @@
         "name": "Telomer ether carboxylic acids",
         "alias": "FTCA",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4,OH0X2]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8098,7 +8103,7 @@
         "name": "Telomer sulfonyl propanoic acid",
         "alias": "Telomer sulfonyl propanoic acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8188,7 +8193,7 @@
         "name": "Telomer sulfinyl amido sulfonic acid",
         "alias": "Telomer sulfinyl amido sulfonic acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8279,7 +8284,7 @@
         "name": "Telomer sulfinyl",
         "alias": "Telomer sulfinyl",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8361,7 +8366,7 @@
         "name": "Telomer sulfone",
         "alias": "Telomer sulfone",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8451,7 +8456,7 @@
         "name": "Telomer acetylsulfanylhydroxypropanoic acid",
         "alias": "Telomer acetylsulfanylhydroxypropanoic acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8541,7 +8546,7 @@
         "name": "Telomer acetylhydroxyethanethioate",
         "alias": "Telomer acetylhydroxyethanethioate",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8631,7 +8636,7 @@
         "name": "Telomer amino propanoic acid",
         "alias": "Telomer amino propanoic acid",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8721,7 +8726,7 @@
         "name": "Telomer amino ethyl trimethyl ammonium",
         "alias": "Telomer amino ethyl trimethyl ammonium",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
         "max_dist_from_CF": 16,
         "constraints": {
@@ -8810,7 +8815,7 @@
         "name": "Telomer unsaturated halogen",
         "alias": "Telomer unsaturated halogen",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
         "max_dist_from_CF": 16,
         "constraints": {},
@@ -8894,7 +8899,7 @@
         "name": "Telomer unsaturated iodide",
         "alias": "FTI",
         "componentSmarts": null,
-        "saturation": "per",
+        "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
         "max_dist_from_CF": 16,
         "constraints": {

@@ -15,7 +15,7 @@ for dataset in datasets:
             p.execution_time as pfas_time,
             a.execution_time as atlas_time
         FROM molecules m
-        LEFT JOIN pfasgroups_results p ON m.id = p.molecule_id
+        LEFT JOIN HalogenGroups_results p ON m.id = p.molecule_id
         LEFT JOIN atlas_results a ON m.id = a.molecule_id
         WHERE p.execution_time IS NOT NULL 
           AND a.execution_time IS NOT NULL
@@ -44,7 +44,7 @@ for dataset in datasets:
         print(f"{dataset.upper()} DATASET")
         print(f"{'='*60}")
         print(f"Count: {len(rows)}")
-        print(f"\nPFASgroups:")
+        print(f"\nHalogenGroups:")
         print(f"  Mean:   {pfas_mean:.1f}ms")
         print(f"  Median: {pfas_median:.1f}ms")
         print(f"  StdDev: {pfas_stdev:.1f}ms")
@@ -53,7 +53,7 @@ for dataset in datasets:
         print(f"  Mean:   {atlas_mean:.1f}ms")
         print(f"  Median: {atlas_median:.1f}ms")
         print(f"  StdDev: {atlas_stdev:.1f}ms")
-        print(f"\nPerformance Ratio: {ratio:.2f}x (PFASgroups/Atlas)")
+        print(f"\nPerformance Ratio: {ratio:.2f}x (HalogenGroups/Atlas)")
         print(f"Speed difference: {(ratio-1)*100:+.1f}%")
 
 conn.close()

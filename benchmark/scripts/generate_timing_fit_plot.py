@@ -108,7 +108,7 @@ ax.fill_between(x_grid, ci_lower, ci_upper, alpha=0.2, color='red',
 # Labels and formatting
 ax.set_xlabel('Atom count ($n$)', fontsize=14, fontweight='bold')
 ax.set_ylabel('Execution time (ms)', fontsize=14, fontweight='bold')
-ax.set_title('PFASgroups Timing Dataset: Exponential Scaling with Molecular Size', 
+ax.set_title('HalogenGroups Timing Dataset: Exponential Scaling with Molecular Size', 
              fontsize=15, fontweight='bold', pad=20)
 ax.legend(fontsize=12, loc='upper left', framealpha=0.95)
 ax.grid(True, alpha=0.3, linestyle='--')

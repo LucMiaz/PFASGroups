@@ -13,7 +13,7 @@ from pathlib import Path
 # Setup paths
 script_dir = Path(__file__).parent
 root_dir = script_dir.parent.parent
-data_dir = root_dir / 'PFASgroups' / 'data'
+data_dir = root_dir / 'HalogenGroups' / 'data'
 
 DEFINITIONS_FILE = data_dir / 'PFAS_definitions_smarts.json'
 PFASSTRUCT_TSV = script_dir.parent / 'data' / 'test_set_for_PFASSTRUCTv5.tsv'

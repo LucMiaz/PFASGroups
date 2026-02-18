@@ -7,7 +7,7 @@ cursor = conn.cursor()
 cursor.execute('''
     SELECT m.id, p.success
     FROM molecules m
-    LEFT JOIN pfasgroups_results p ON m.id = p.molecule_id
+    LEFT JOIN HalogenGroups_results p ON m.id = p.molecule_id
     WHERE m.dataset_type='highly_branched'
     ORDER BY m.id
 ''')

@@ -58,11 +58,11 @@ def export_timing_figures():
             m.num_atoms,
             m.group_id,
             m.generation_type,
-            p.execution_time as pfasgroups_time,
+            p.execution_time as HalogenGroups_time,
             p.detected_groups,
             a.execution_time as atlas_time
         FROM molecules m
-        LEFT JOIN pfasgroups_results p ON m.id = p.molecule_id
+        LEFT JOIN HalogenGroups_results p ON m.id = p.molecule_id
         LEFT JOIN atlas_results a ON m.id = a.molecule_id
         WHERE (p.execution_time IS NOT NULL OR a.execution_time IS NOT NULL)
           AND m.dataset_type NOT IN ('complex_branched', 'definitions', 'non_fluorinated', 'highly_branched')
@@ -78,12 +78,12 @@ def export_timing_figures():
     print(f"✓ Found {len(rows)} molecules")
     
     # Organize data
-    data_by_dataset = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
-    data_by_size = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
-    data_by_chain_type = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
-    data_by_atoms = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
+    data_by_dataset = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
+    data_by_size = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
+    data_by_chain_type = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
+    data_by_atoms = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
     
-    all_pfasgroups = []
+    all_HalogenGroups = []
     all_atlas = []
     
     for mol_id, dataset, num_atoms, group_id, gen_type, pfas_time, detected_groups, atlas_time in rows:
@@ -107,12 +107,12 @@ def export_timing_figures():
         
         # Store times
         if pfas_time is not None:
-            data_by_dataset[dataset]['pfasgroups'].append(pfas_time)
-            data_by_size[size_cat]['pfasgroups'].append(pfas_time)
-            data_by_chain_type[chain_type]['pfasgroups'].append(pfas_time)
-            all_pfasgroups.append(pfas_time)
+            data_by_dataset[dataset]['HalogenGroups'].append(pfas_time)
+            data_by_size[size_cat]['HalogenGroups'].append(pfas_time)
+            data_by_chain_type[chain_type]['HalogenGroups'].append(pfas_time)
+            all_HalogenGroups.append(pfas_time)
             if num_atoms:
-                data_by_atoms[num_atoms]['pfasgroups'].append(pfas_time)
+                data_by_atoms[num_atoms]['HalogenGroups'].append(pfas_time)
         
         if atlas_time is not None:
             data_by_dataset[dataset]['atlas'].append(atlas_time)
@@ -129,7 +129,7 @@ def export_timing_figures():
     dataset_stats = []
     for dataset in sorted(data_by_dataset.keys()):
         d = data_by_dataset[dataset]
-        pfas_stats = calc_stats(d['pfasgroups'])
+        pfas_stats = calc_stats(d['HalogenGroups'])
         atlas_stats = calc_stats(d['atlas'])
         if pfas_stats and atlas_stats:
             dataset_stats.append({
@@ -142,7 +142,7 @@ def export_timing_figures():
     fig1.add_trace(go.Bar(
         x=[d['name'] for d in dataset_stats],
         y=[d['pfas_mean'] for d in dataset_stats],
-        name='PFASgroups',
+        name='HalogenGroups',
         marker_color='#667eea'
     ))
     fig1.add_trace(go.Bar(
@@ -169,7 +169,7 @@ def export_timing_figures():
     for size in ['small', 'medium', 'large']:
         if size in data_by_size:
             d = data_by_size[size]
-            pfas_stats = calc_stats(d['pfasgroups'])
+            pfas_stats = calc_stats(d['HalogenGroups'])
             atlas_stats = calc_stats(d['atlas'])
             if pfas_stats and atlas_stats:
                 size_stats.append({
@@ -182,7 +182,7 @@ def export_timing_figures():
     fig2.add_trace(go.Bar(
         x=[s['name'] for s in size_stats],
         y=[s['pfas_mean'] for s in size_stats],
-        name='PFASgroups',
+        name='HalogenGroups',
         marker_color='#667eea'
     ))
     fig2.add_trace(go.Bar(
@@ -208,7 +208,7 @@ def export_timing_figures():
     chain_stats = []
     for chain_type in sorted(data_by_chain_type.keys()):
         d = data_by_chain_type[chain_type]
-        pfas_stats = calc_stats(d['pfasgroups'])
+        pfas_stats = calc_stats(d['HalogenGroups'])
         atlas_stats = calc_stats(d['atlas'])
         if pfas_stats and atlas_stats:
             chain_stats.append({
@@ -221,7 +221,7 @@ def export_timing_figures():
     fig3.add_trace(go.Bar(
         x=[c['name'] for c in chain_stats],
         y=[c['pfas_mean'] for c in chain_stats],
-        name='PFASgroups',
+        name='HalogenGroups',
         marker_color='#667eea'
     ))
     fig3.add_trace(go.Bar(
@@ -255,7 +255,7 @@ def export_timing_figures():
         
         for atoms, times_dict in data_by_atoms.items():
             if bin_start < atoms <= bin_end:
-                pfas_times.extend(times_dict['pfasgroups'])
+                pfas_times.extend(times_dict['HalogenGroups'])
                 atlas_times.extend(times_dict['atlas'])
         
         if pfas_times and atlas_times:
@@ -271,7 +271,7 @@ def export_timing_figures():
     fig4.add_trace(go.Scatter(
         x=[a['range'] for a in atom_stats],
         y=[a['pfas_mean'] for a in atom_stats],
-        name='PFASgroups',
+        name='HalogenGroups',
         mode='lines+markers',
         marker=dict(color='#667eea', size=8),
         line=dict(color='#667eea', width=2)
@@ -299,8 +299,8 @@ def export_timing_figures():
     print("📈 Generating distribution figure...")
     fig5 = go.Figure()
     fig5.add_trace(go.Histogram(
-        x=[t*1000 for t in all_pfasgroups],
-        name='PFASgroups',
+        x=[t*1000 for t in all_HalogenGroups],
+        name='HalogenGroups',
         opacity=0.7,
         marker_color='#667eea',
         xbins=dict(size=10)

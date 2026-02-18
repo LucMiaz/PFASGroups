@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Pytest-compatible test suite for PFASGroups and PFASDefinitions.
+Pytest-compatible test suite for HalogenGroupoups and PFASDefinitions.
 
 This module provides pytest test functions for validating PFAS groups and definitions.
 Can be run with pytest or the standalone run_groups_definitions_tests.py script.
@@ -25,32 +25,31 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from PFASgroups.PFASGroupModel import PFASGroup
-from PFASgroups.PFASDefinitionModel import PFASDefinition
+from HalogenGroups import HalogenGroup, PFASDefinition
 
 
 @pytest.fixture(scope="module")
 def groups_file():
-    """Path to PFAS groups JSON file."""
-    return Path(__file__).parent.parent / 'PFASgroups' / 'data' / 'PFAS_groups_smarts.json'
+    """Path to Halogen groups JSON file."""
+    return Path(__file__).parent.parent / 'HalogenGroups' / 'data' / 'halogen_groups_smarts.json'
 
 
 @pytest.fixture(scope="module")
 def definitions_file():
     """Path to PFAS definitions JSON file."""
-    return Path(__file__).parent.parent / 'PFASgroups' / 'data' / 'PFAS_definitions_smarts.json'
+    return Path(__file__).parent.parent / 'HalogenGroups' / 'data' / 'PFAS_definitions_smarts.json'
 
 
 @pytest.fixture(scope="module")
 def all_groups(groups_file):
-    """Load all PFAS groups from JSON."""
+    """Load all Halogen groups from JSON."""
     with open(groups_file, 'r') as f:
         groups_data = json.load(f)
     
     groups = []
     for data in groups_data:
         try:
-            group = PFASGroup(**data)
+            group = HalogenGroup(**data)
             groups.append(group)
         except Exception as e:
             pytest.fail(f"Failed to load group {data.get('id', '?')}: {e}")
@@ -86,7 +85,7 @@ def all_definitions(definitions_file):
 @pytest.mark.groups
 @pytest.mark.parametrize("group_id", range(1, 116))  # Test groups 1-113
 def test_individual_group(all_groups, group_id):
-    """Test individual PFAS group by ID."""
+    """Test individual Halogen group by ID."""
     # Find the group
     group = next((g for g in all_groups if g.id == group_id), None)
     
@@ -115,7 +114,7 @@ def test_individual_group(all_groups, group_id):
 
 @pytest.mark.groups
 def test_all_groups(all_groups):
-    """Test all PFAS groups at once."""
+    """Test all Halogen groups at once."""
     failed_groups = []
     
     for group in all_groups:
@@ -237,8 +236,8 @@ def test_can_load_definitions(definitions_file):
 
 @pytest.mark.smoke
 def test_group_model_has_test_method():
-    """Smoke test: PFASGroup has test() method."""
-    assert hasattr(PFASGroup, 'test'), "PFASGroup should have test() method"
+    """Smoke test: HalogenGroup has test() method."""
+    assert hasattr(HalogenGroup, 'test'), "HalogenGroup should have test() method"
 
 
 @pytest.mark.smoke

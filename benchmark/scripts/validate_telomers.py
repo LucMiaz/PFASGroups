@@ -8,9 +8,9 @@ from pathlib import Path
 import json
 from datetime import datetime
 
-from PFASgroups.parser import parse_mol
-from PFASgroups.core import rdkit_disable_log
-# Import Chem after PFASgroups to avoid conflicts
+from HalogenGroups.parser import parse_mol
+from HalogenGroups.core import rdkit_disable_log
+# Import Chem after HalogenGroups to avoid conflicts
 from rdkit import Chem
 
 # Telomer group IDs (62-87)
@@ -62,7 +62,7 @@ def main():
             print(f"  [{i}/{len(molecules)}] processed...", end='\r')
         
         try:
-            # Parse with PFASgroups
+            # Parse with HalogenGroups
             parse_results = parse_mol(mol)
             
             if parse_results and len(parse_results) > 0:
@@ -73,7 +73,7 @@ def main():
                 
                 if isinstance(mol_result, dict) and 'matches' in mol_result:
                     for match in mol_result['matches']:
-                        if match.get('type') == 'PFASgroup':
+                        if match.get('type') == 'HalogenGroup':
                             group_id = match['id']
                             if group_id in TELOMER_GROUP_IDS:
                                 detected_telomers.append({

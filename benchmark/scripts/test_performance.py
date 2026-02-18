@@ -1,5 +1,5 @@
 import sys
-sys.path.append('c:/Users/luc/git/PFASGroups')
+sys.path.append('c:/Users/luc/git/HalogenGroups')
 
 from benchmark_pfas_definitions import PFASDefinitionBenchmark
 

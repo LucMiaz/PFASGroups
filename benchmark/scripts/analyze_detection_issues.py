@@ -5,7 +5,7 @@ import json
 import sys
 
 # Load the most recent benchmark data
-with open('/home/luc/git/PFASGroups/benchmark/data/pfas_enhanced_benchmark_20260201_181935.json', 'r') as f:
+with open('/home/luc/git/HalogenGroups/benchmark/data/pfas_enhanced_benchmark_20260201_181935.json', 'r') as f:
     results = json.load(f)
 
 # Analyze detection rates for groups 67, 104, 106 and others with issues
@@ -27,7 +27,7 @@ for group_id in target_groups:
     
     for mol_result in group_molecules:
         mol_data = mol_result.get('molecule_data', {})
-        pfas_result = mol_result.get('pfasgroups_result', {})
+        pfas_result = mol_result.get('HalogenGroups_result', {})
         detected_groups = pfas_result.get('detected_groups', [])
         
         smiles = mol_data.get('smiles', 'N/A')
@@ -80,7 +80,7 @@ for r in results:
     
     groups_summary[group_id]['total'] += 1
     
-    pfas_result = r.get('pfasgroups_result', {})
+    pfas_result = r.get('HalogenGroups_result', {})
     detected_groups = pfas_result.get('detected_groups', [])
     
     if group_id in detected_groups:

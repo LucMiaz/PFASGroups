@@ -1,7 +1,7 @@
 import json
 
 # Load the PFAS groups data
-with open('../../PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+with open('../../HalogenGroups/data/PFAS_groups_smarts.json', 'r') as f:
     data = json.load(f)
 
 # Create the mapping

@@ -4,12 +4,12 @@ Test fluorotelomer detection on PubChem fluorotelomer dataset.
 
 This script:
 1. Reads PubChem_fluorotelomers.sdf (molecules from PubChem search "fluorotelomer")
-2. Tests detection with PFASgroups
+2. Tests detection with HalogenGroups
 3. Calculates true/false positives/negatives
 4. Saves results to review-app database
 5. Generates summary statistics
 
-Author: PFASGroups Benchmark Team
+Author: HalogenGroups Benchmark Team
 Date: 2026-01-29
 """
 
@@ -20,7 +20,7 @@ import sqlite3
 from datetime import datetime
 
 from rdkit import Chem
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 
 def load_telomer_groups():
@@ -30,7 +30,7 @@ def load_telomer_groups():
     'telomer' in their name (case-insensitive).
     """
     script_dir = Path(__file__).parent.parent.parent
-    json_path = script_dir / 'PFASgroups' / 'data' / 'PFAS_groups_smarts.json'
+    json_path = script_dir / 'HalogenGroups' / 'data' / 'PFAS_groups_smarts.json'
     
     telomer_groups = {}
     
@@ -102,7 +102,7 @@ def test_telomer_detection(molecules):
         print(f"[{i}/{len(molecules)}] Testing molecule...", end='\r')
         
         try:
-            # Parse with PFASgroups
+            # Parse with HalogenGroups
             parse_results = parse_smiles(smiles)
             
             if parse_results and len(parse_results) > 0:
@@ -114,7 +114,7 @@ def test_telomer_detection(molecules):
                 
                 if isinstance(mol_result, dict) and 'matches' in mol_result:
                     for match in mol_result['matches']:
-                        if match.get('type') == 'PFASgroup':
+                        if match.get('type') == 'HalogenGroup':
                             group_id = match['id']
                             group_name = match['group_name']
                             

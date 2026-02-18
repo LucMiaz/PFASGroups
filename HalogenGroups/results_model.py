@@ -16,8 +16,70 @@ from scipy.stats import entropy
 
 Color = Tuple[float, float, float]
 
+# ---------------------------------------------------------------------------
+# ANSI terminal styling helpers
+# ---------------------------------------------------------------------------
 
-# Simple color palette to distinguish PFAS groups in highlight plots
+_ANSI_RESET  = "\033[0m"
+_ANSI_BOLD   = "\033[1m"
+
+_ANSI_HALOGEN: Dict[str, str] = {
+    "F":  "\033[96m",   # bright cyan
+    "Cl": "\033[92m",   # bright green
+    "Br": "\033[93m",   # bright yellow
+    "I":  "\033[95m",   # bright magenta
+}
+_ANSI_FORM: Dict[str, str] = {
+    "alkyl":  "\033[34m",  # blue
+    "cyclic": "\033[35m",  # magenta
+}
+_ANSI_SAT: Dict[str, str] = {
+    "per":  "\033[31m",  # red
+    "poly": "\033[33m",  # yellow
+}
+
+def _ansi(text: str, *codes: str) -> str:
+    """Wrap *text* with ANSI escape codes and reset afterwards."""
+    return "".join(codes) + text + _ANSI_RESET
+
+
+# ---------------------------------------------------------------------------
+# Molecule-highlight colour palettes (RGB float triples, 0–1)
+# ---------------------------------------------------------------------------
+
+# Highlight colours by halogen element
+_HALOGEN_COLORS: Dict[str, Color] = {
+    "F":  (0.20, 0.70, 0.95),  # cyan-blue
+    "Cl": (0.20, 0.80, 0.30),  # green
+    "Br": (0.95, 0.75, 0.10),  # amber
+    "I":  (0.80, 0.20, 0.85),  # violet
+}
+_HALOGEN_COLOR_DEFAULT: Color = (0.75, 0.75, 0.75)  # grey for unknown
+
+# Tint modifiers for form (shift hue slightly)
+_FORM_TINT: Dict[str, Tuple[float, float, float]] = {
+    "alkyl":  (0.0,  0.0,  0.0),   # no change
+    "cyclic": (0.12, -0.08, 0.05), # warm shift
+}
+
+# Brightness modifiers for saturation
+_SAT_BRIGHTNESS: Dict[str, float] = {
+    "per":  1.0,   # full saturation → bright
+    "poly": 0.65,  # partial saturation → dimmer
+}
+
+def _component_color(halogen: Optional[str], form: Optional[str], saturation: Optional[str]) -> Color:
+    """Return an RGB highlight colour encoding halogen, form and saturation."""
+    base = _HALOGEN_COLORS.get(halogen or "", _HALOGEN_COLOR_DEFAULT)
+    tint = _FORM_TINT.get(form or "", (0.0, 0.0, 0.0))
+    brightness = _SAT_BRIGHTNESS.get(saturation or "", 0.85)
+    r = min(1.0, max(0.0, (base[0] + tint[0]) * brightness))
+    g = min(1.0, max(0.0, (base[1] + tint[1]) * brightness))
+    b = min(1.0, max(0.0, (base[2] + tint[2]) * brightness))
+    return (r, g, b)
+
+
+# Simple color palette to distinguish PFAS groups in highlight plots (legacy fallback)
 _GROUP_COLORS: List[Color] = [
     (0.90, 0.10, 0.10),  # red
     (0.10, 0.40, 0.90),  # blue
@@ -26,6 +88,37 @@ _GROUP_COLORS: List[Color] = [
     (0.60, 0.10, 0.70),  # purple
     (0.00, 0.70, 0.70),  # teal
 ]
+
+# ---------------------------------------------------------------------------
+# Component-SMARTS metadata cache
+# ---------------------------------------------------------------------------
+
+_COMPONENT_META_CACHE: Optional[Dict[str, Dict[str, Optional[str]]]] = None
+
+
+def _get_component_meta() -> Dict[str, Dict[str, Optional[str]]]:
+    """Return a dict mapping component SMARTS name → {halogen, form, saturation}.
+
+    Built from the same preprocessed component dictionary used by the parser,
+    so names are guaranteed to match the SMARTS labels stored in match results.
+    """
+    global _COMPONENT_META_CACHE
+    if _COMPONENT_META_CACHE is not None:
+        return _COMPONENT_META_CACHE
+    try:
+        from .core import get_componentSmartss
+        raw = get_componentSmartss()
+        _COMPONENT_META_CACHE = {
+            name: {
+                "halogen":    info.get("halogen"),
+                "form":       info.get("form"),
+                "saturation": info.get("saturation"),
+            }
+            for name, info in raw.items()
+        }
+    except Exception:
+        _COMPONENT_META_CACHE = {}
+    return _COMPONENT_META_CACHE
 
 
 def _grid_images(imgs: Sequence[Image.Image], buffer: int = 4, ncols: int = 3) -> Tuple[Image.Image, int, int]:
@@ -99,7 +192,7 @@ class MatchView(dict):
 
     @property
     def is_group(self) -> bool:
-        return self.get("type") == "PFASgroup"
+        return self.get("type") == "HalogenGroup"
 
     @property
     def is_definition(self) -> bool:
@@ -175,14 +268,15 @@ class MoleculeResult(dict):
         return deduped
 
     def summarise(self) -> str:
-        """Return a text summary of this molecule's results.
+        """Return a coloured text summary of this molecule's results.
 
         The summary includes:
         - SMILES representation
         - counts of PFAS group and definition matches
         - total number of components across all group matches
-        - list of matched PFAS groups
+        - list of matched PFAS groups (colour-coded by halogen)
         """
+        meta = _get_component_meta()
 
         total_group_matches = 0
         total_definition_matches = 0
@@ -199,7 +293,7 @@ class MoleculeResult(dict):
                 total_definition_matches += 1
 
         lines: List[str] = []
-        lines.append("MoleculeResult summary")
+        lines.append(_ansi("MoleculeResult summary", _ANSI_BOLD))
         lines.append(f"- SMILES: {self.smiles}")
         lines.append(f"- PFAS group matches: {total_group_matches}")
         lines.append(f"- PFAS definition matches: {total_definition_matches}")
@@ -208,29 +302,44 @@ class MoleculeResult(dict):
         if group_counts:
             lines.append("- Matched PFAS groups:")
             for name, count in sorted(group_counts.items(), key=lambda kv: kv[1], reverse=True):
-                lines.append(f"  * {name}: {count} match(es)")
+                # Determine halogen from first matching component of this group
+                halogen: Optional[str] = None
+                for m in self.matches:
+                    if m.is_group and (m.group_name or "") == name:
+                        for comp in m.components:
+                            sl = comp.smarts_label
+                            sl_str = str(sl) if isinstance(sl, list) else sl
+                            info = meta.get(sl_str or "", {})
+                            halogen = info.get("halogen")
+                            break
+                        break
+                hal_code = _ANSI_HALOGEN.get(halogen or "", "")
+                lines.append(f"  * {hal_code}{_ANSI_BOLD}{name}{_ANSI_RESET}: {count} match(es)")
 
         return "\n".join(lines)
 
     def summary(self) -> None:
-        """Print a detailed summary of matched groups and components.
-        
-        The summary includes:
-        - List of matched group IDs and names
-        - Number of components by SMARTS type for each group
-        - Component sizes (number of atoms)
+        """Print a detailed coloured summary of matched groups and components.
+
+        Colour coding:
+        - Group name: **bold**
+        - Halogen label: cyan (F), green (Cl), yellow (Br), magenta (I)
+        - Form label: blue (alkyl), magenta (cyclic)
+        - Saturation label: red (per), yellow (poly)
         """
+        meta = _get_component_meta()
+
         print("=" * 80)
-        print(f"MOLECULE: {self.smiles}")
+        print(f"{_ANSI_BOLD}MOLECULE:{_ANSI_RESET} {self.smiles}")
         print("=" * 80)
-        
+
         if not self.matches:
             print("No PFAS groups matched.")
             return
-        
+
         # Collect group information
         groups_info: Dict[Tuple[Optional[int], str], List[ComponentView]] = {}
-        
+
         for m in self.matches:
             if not m.is_group:
                 continue
@@ -238,43 +347,47 @@ class MoleculeResult(dict):
             if key not in groups_info:
                 groups_info[key] = []
             groups_info[key].extend(m.components)
-        
+
         if not groups_info:
             print("No PFAS groups matched.")
             return
-        
+
         print(f"\nMatched {len(groups_info)} PFAS group(s):")
         print()
-        
+
         for (group_id, group_name), components in sorted(groups_info.items(), key=lambda x: x[0][0] or 0):
-            print(f"Group {group_id}: {group_name}")
-            
+            print(f"{_ANSI_BOLD}Group {group_id}: {group_name}{_ANSI_RESET}")
+
             # Group components by SMARTS type
             by_smarts: Dict[Optional[str], List[ComponentView]] = {}
             for comp in components:
                 smarts = comp.smarts_label
-                if smarts not in by_smarts:
-                    by_smarts[smarts] = []
-                by_smarts[smarts].append(comp)
-            
+                smarts_key = str(smarts) if isinstance(smarts, list) else smarts
+                if smarts_key not in by_smarts:
+                    by_smarts[smarts_key] = []
+                by_smarts[smarts_key].append(comp)
+
             # Display components by SMARTS type
             for smarts_label, comps in sorted(by_smarts.items(), key=lambda x: x[0] or ""):
-                if smarts_label:
-                    print(f"  SMARTS: {smarts_label}")
-                else:
-                    print(f"  SMARTS: (no label)")
-                
+                info = meta.get(smarts_label or "", {})
+                halogen    = info.get("halogen")
+                form       = info.get("form")
+                saturation = info.get("saturation")
+
+                hal_str = _ansi(halogen or "?",    _ANSI_HALOGEN.get(halogen or "", ""))
+                frm_str = _ansi(form or "?",       _ANSI_FORM.get(form or "", ""))
+                sat_str = _ansi(saturation or "?", _ANSI_SAT.get(saturation or "", ""))
+
+                label = smarts_label or "(no label)"
+                print(f"  SMARTS: {label}  [{hal_str} | {frm_str} | {sat_str}]")
                 print(f"    Components: {len(comps)}")
-                
-                # Show sizes of each component
+
                 sizes = [len(comp.atoms) for comp in comps]
                 if sizes:
                     sizes_str = ", ".join(map(str, sorted(sizes, reverse=True)))
                     print(f"    Sizes (atoms): {sizes_str}")
-            
+
             print()
-        
-        print("=" * 80)
 
     def table(self) -> str:
         """Return a text table with one row per match.
@@ -316,6 +429,12 @@ class MoleculeResult(dict):
         - SMARTS/component type
         - individual component instance
 
+        Atoms are highlighted with a colour encoding three dimensions
+        simultaneously:
+        - **Halogen**: cyan (F), green (Cl), amber (Br), violet (I)
+        - **Form**: alkyl (full base colour) vs cyclic (warm-shifted tint)
+        - **Saturation**: per- (full brightness) vs poly- (dimmed)
+
         Parameters
         ----------
         display : bool, default True
@@ -332,6 +451,7 @@ class MoleculeResult(dict):
         PIL.Image.Image
             Grid image containing all component visualizations.
         """
+        meta = _get_component_meta()
 
         # Use the molecule with hydrogens that was used during component detection
         mol = self.mol_with_h
@@ -352,9 +472,24 @@ class MoleculeResult(dict):
                 atoms = comp.atoms
                 if not atoms:
                     continue
-                smarts_label = comp.smarts_label or ""
-                legend = f"{base_label} | {smarts_label} | comp#{comp_idx}"
+                sl = comp.smarts_label
+                sl_str = str(sl) if isinstance(sl, list) else (sl or "")
+                info = meta.get(sl_str, {})
+                halogen    = info.get("halogen")
+                form       = info.get("form")
+                saturation = info.get("saturation")
+                colour = _component_color(halogen, form, saturation)
 
+                # Build legend with metadata badges
+                hal_tag = halogen or "?"
+                frm_tag = form or "?"
+                sat_tag = saturation or "?"
+                legend = (
+                    f"{base_label} | {sl_str} | comp#{comp_idx}\n"
+                    f"[{hal_tag}] [{frm_tag}] [{sat_tag}]"
+                )
+
+                atom_colours: Dict[int, Color] = {a: colour for a in atoms}
                 d2d = Draw.MolDraw2DCairo(subwidth, subheight)
                 dopts = d2d.drawOptions()
                 dopts.useBWAtomPalette()
@@ -363,7 +498,12 @@ class MoleculeResult(dict):
                 dopts.addBondIndices = False
                 dopts.maxFontSize = 16
                 dopts.minFontSize = 13
-                d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
+                d2d.DrawMolecule(
+                    mol,
+                    legend=legend,
+                    highlightAtoms=atoms,
+                    highlightAtomColors=atom_colours,
+                )
                 d2d.FinishDrawing()
                 png = d2d.GetDrawingText()
                 imgs.append(Image.open(BytesIO(png)))
@@ -375,6 +515,9 @@ class MoleculeResult(dict):
         if display:
             grid.show()
         return grid
+
+    # Alias so callers can use either mol_result.show() or mol_result.plot()
+    plot = show
 
     def svg(
         self,
@@ -522,11 +665,12 @@ class MoleculeResult(dict):
             if not match.is_group:
                 continue
             for comp in match.components:
+                smarts = comp.smarts_label
                 components_data.append({
                     'smiles': self.smiles,
                     'group_id': match.group_id,
                     'group_name': match.group_name,
-                    'smarts_label': comp.smarts_label,
+                    'smarts_label': str(smarts) if isinstance(smarts, list) else smarts,
                     'component_atoms': ','.join(map(str, comp.atoms)),
                 })
         
@@ -558,7 +702,7 @@ class MoleculeResult(dict):
 
 
 class ResultsModel(list):
-    """List-like container for PFASGroups results.
+    """List-like container for HalogenGroups results.
 
     This subclasses ``list`` of molecule result dicts, so existing code
     that iterates over a list of results continues to work. It adds
@@ -596,8 +740,17 @@ class ResultsModel(list):
         legend: str = "",
         subwidth: int = 300,
         subheight: int = 300,
+        atom_colours: Optional[Dict[int, Color]] = None,
     ) -> Image.Image:
-        """Draw a single molecule with highlighted atoms as a PIL image."""
+        """Draw a single molecule with highlighted atoms as a PIL image.
+
+        Parameters
+        ----------
+        atom_colours : dict, optional
+            Mapping of atom index → (R, G, B) float colour. When provided,
+            individual atoms are highlighted with their assigned colour.
+            When ``None`` the default highlight colour is used for all atoms.
+        """
 
         d2d = Draw.MolDraw2DCairo(subwidth, subheight)
         dopts = d2d.drawOptions()
@@ -607,7 +760,15 @@ class ResultsModel(list):
         dopts.addBondIndices = False
         dopts.maxFontSize = 16
         dopts.minFontSize = 13
-        d2d.DrawMolecule(mol, legend=legend, highlightAtoms=highlight_atoms)
+        if atom_colours:
+            d2d.DrawMolecule(
+                mol,
+                legend=legend,
+                highlightAtoms=highlight_atoms,
+                highlightAtomColors=atom_colours,
+            )
+        else:
+            d2d.DrawMolecule(mol, legend=legend, highlightAtoms=highlight_atoms)
         d2d.FinishDrawing()
         png = d2d.GetDrawingText()
         return Image.open(BytesIO(png))
@@ -677,9 +838,16 @@ class ResultsModel(list):
         - SMARTS/component type
         - individual component instance
 
-        This is intended for detailed inspection of how PFASgroups and
+        Atoms are highlighted with a colour encoding three dimensions
+        simultaneously:
+        - **Halogen**: cyan (F), green (Cl), amber (Br), violet (I)
+        - **Form**: alkyl (full base colour) vs cyclic (warm-shifted tint)
+        - **Saturation**: per- (full brightness) vs poly- (dimmed)
+
+        This is intended for detailed inspection of how HalogenGroups and
         component SMARTSs decompose the molecules.
         """
+        meta = _get_component_meta()
 
         imgs: List[Image.Image] = []
 
@@ -702,14 +870,29 @@ class ResultsModel(list):
                     atoms = comp.atoms
                     if not atoms:
                         continue
-                    smarts_label = comp.smarts_label or ""
-                    legend = f"{base_label} | {smarts_label} | mol#{mol_index+1} comp#{comp_idx}"
+                    sl = comp.smarts_label
+                    sl_str = str(sl) if isinstance(sl, list) else (sl or "")
+                    info = meta.get(sl_str, {})
+                    halogen    = info.get("halogen")
+                    form       = info.get("form")
+                    saturation = info.get("saturation")
+                    colour = _component_color(halogen, form, saturation)
+
+                    hal_tag = halogen or "?"
+                    frm_tag = form or "?"
+                    sat_tag = saturation or "?"
+                    legend = (
+                        f"{base_label} | {sl_str} | mol#{mol_index+1} comp#{comp_idx}\n"
+                        f"[{hal_tag}] [{frm_tag}] [{sat_tag}]"
+                    )
+                    atom_colours: Dict[int, Color] = {a: colour for a in atoms}
                     img = self._draw_single_molecule(
                         mol,
                         atoms,
                         legend=legend,
                         subwidth=subwidth,
                         subheight=subheight,
+                        atom_colours=atom_colours,
                     )
                     imgs.append(img)
 
@@ -720,6 +903,9 @@ class ResultsModel(list):
         if display:
             grid.show()
         return grid
+
+    # Alias so callers can use either results.show() or results.plot()
+    plot = show
 
     def to_sql(
         self,
@@ -793,11 +979,12 @@ class ResultsModel(list):
             if not match.is_group:
                 continue
             for comp in match.components:
+                smarts = comp.smarts_label
                 components_data.append({
                     'smiles': self.smiles,
                     'group_id': match.group_id,
                     'group_name': match.group_name,
-                    'smarts_label': comp.smarts_label,
+                    'smarts_label': str(smarts) if isinstance(smarts, list) else smarts,
                     'component_atoms': ','.join(map(str, comp.atoms)),
                 })
         
@@ -904,20 +1091,23 @@ class ResultsModel(list):
         return filename
     
     def summarise(self) -> str:
-        """Return a more detailed text summary of the results.
+        """Return a coloured text summary of the results.
 
         The summary includes:
         - number of molecules
         - counts of PFAS group and definition matches
         - total number of components across all group matches
-        - the most frequent PFAS groups by number of matches
+        - the most frequent PFAS groups (colour-coded by halogen)
         """
+        meta = _get_component_meta()
 
         total_molecules = len(self)
         total_group_matches = 0
         total_definition_matches = 0
         total_components = 0
         group_counts: Dict[str, int] = {}
+        # map group name → first halogen seen
+        group_halogen: Dict[str, Optional[str]] = {}
 
         for mol_res in self:  # type: ignore[assignment]
             for m in mol_res.matches:
@@ -926,13 +1116,20 @@ class ResultsModel(list):
                     total_components += len(m.components)
                     name = m.group_name or str(m.get("match_id", ""))
                     group_counts[name] = group_counts.get(name, 0) + 1
+                    if name not in group_halogen:
+                        for comp in m.components:
+                            sl = comp.smarts_label
+                            sl_str = str(sl) if isinstance(sl, list) else sl
+                            info = meta.get(sl_str or "", {})
+                            group_halogen[name] = info.get("halogen")
+                            break
                 elif m.is_definition:
                     total_definition_matches += 1
 
         unique_groups = len(group_counts)
 
         lines: List[str] = []
-        lines.append("ResultsModel summary")
+        lines.append(_ansi("ResultsModel summary", _ANSI_BOLD))
         lines.append(f"- Molecules: {total_molecules}")
         lines.append(
             f"- PFAS group matches: {total_group_matches} (unique groups: {unique_groups})"
@@ -947,7 +1144,9 @@ class ResultsModel(list):
             for name, count in sorted(
                 group_counts.items(), key=lambda kv: kv[1], reverse=True
             )[:10]:
-                lines.append(f"  * {name}: {count} matches")
+                halogen = group_halogen.get(name)
+                hal_code = _ANSI_HALOGEN.get(halogen or "", "")
+                lines.append(f"  * {hal_code}{_ANSI_BOLD}{name}{_ANSI_RESET}: {count} match(es)")
 
         return "\n".join(lines)
 
@@ -995,25 +1194,33 @@ class ResultsModel(list):
         return "\n".join(lines)
 
     def summary(self) -> None:
-        """Print a detailed summary of matched groups and components across all molecules.
-        
+        """Print a detailed coloured summary of matched groups across all molecules.
+
+        Colour coding:
+        - Group name: **bold**
+        - Halogen label: cyan (F), green (Cl), yellow (Br), magenta (I)
+        - Form label: blue (alkyl), magenta (cyclic)
+        - Saturation label: red (per), yellow (poly)
+
         The summary includes:
         - Total number of molecules
         - List of all matched group IDs and names
-        - For each group: number of components by SMARTS type
+        - For each group: number of components by SMARTS type + metadata badge
         - Component size statistics (min, max, mean)
         """
+        meta = _get_component_meta()
+
         print("=" * 80)
-        print(f"RESULTS SUMMARY: {len(self)} molecule(s)")
+        print(f"{_ANSI_BOLD}RESULTS SUMMARY:{_ANSI_RESET} {len(self)} molecule(s)")
         print("=" * 80)
-        
+
         if not self:
             print("No molecules in results.")
             return
-        
+
         # Collect all group matches across all molecules
         all_groups_info: Dict[Tuple[Optional[int], str], List[ComponentView]] = {}
-        
+
         for mol_res in self:  # type: ignore[assignment]
             for m in mol_res.matches:
                 if not m.is_group:
@@ -1022,44 +1229,50 @@ class ResultsModel(list):
                 if key not in all_groups_info:
                     all_groups_info[key] = []
                 all_groups_info[key].extend(m.components)
-        
+
         if not all_groups_info:
             print("\nNo PFAS groups matched across all molecules.")
             return
-        
+
         print(f"\nMatched {len(all_groups_info)} unique PFAS group(s) across all molecules:")
         print()
-        
+
         for (group_id, group_name), components in sorted(all_groups_info.items(), key=lambda x: x[0][0] or 0):
-            print(f"Group {group_id}: {group_name}")
-            
+            print(f"{_ANSI_BOLD}Group {group_id}: {group_name}{_ANSI_RESET}")
+
             # Group components by SMARTS type
             by_smarts: Dict[Optional[str], List[ComponentView]] = {}
             for comp in components:
                 smarts = comp.smarts_label
-                if smarts not in by_smarts:
-                    by_smarts[smarts] = []
-                by_smarts[smarts].append(comp)
-            
+                smarts_key = str(smarts) if isinstance(smarts, list) else smarts
+                if smarts_key not in by_smarts:
+                    by_smarts[smarts_key] = []
+                by_smarts[smarts_key].append(comp)
+
             # Display components by SMARTS type
             for smarts_label, comps in sorted(by_smarts.items(), key=lambda x: x[0] or ""):
-                if smarts_label:
-                    print(f"  SMARTS: {smarts_label}")
-                else:
-                    print(f"  SMARTS: (no label)")
-                
+                info = meta.get(smarts_label or "", {})
+                halogen    = info.get("halogen")
+                form       = info.get("form")
+                saturation = info.get("saturation")
+
+                hal_str = _ansi(halogen or "?",    _ANSI_HALOGEN.get(halogen or "", ""))
+                frm_str = _ansi(form or "?",       _ANSI_FORM.get(form or "", ""))
+                sat_str = _ansi(saturation or "?", _ANSI_SAT.get(saturation or "", ""))
+
+                label = smarts_label or "(no label)"
+                print(f"  SMARTS: {label}  [{hal_str} | {frm_str} | {sat_str}]")
                 print(f"    Total components: {len(comps)}")
-                
-                # Calculate size statistics
+
                 sizes = [len(comp.atoms) for comp in comps]
                 if sizes:
                     min_size = min(sizes)
                     max_size = max(sizes)
                     mean_size = sum(sizes) / len(sizes)
                     print(f"    Size range (atoms): {min_size} - {max_size} (mean: {mean_size:.1f})")
-            
+
             print()
-        
+
         print("=" * 80)
     
     def plot_all_components_with_group_colours(
@@ -1211,11 +1424,12 @@ class ResultsModel(list):
                 if not match.is_group:
                     continue
                 for comp in match.components:
+                    smarts = comp.smarts_label
                     components_data.append({
                         'smiles': mol_res.smiles,
                         'group_id': match.group_id,
                         'group_name': match.group_name,
-                        'smarts_label': comp.smarts_label,
+                        'smarts_label': str(smarts) if isinstance(smarts, list) else smarts,
                         'component_atoms': ','.join(map(str, comp.atoms)),
                     })
         
@@ -1251,6 +1465,8 @@ class ResultsModel(list):
         group_selection: str = 'all',
         count_mode: str = 'binary',
         selected_group_ids: Optional[List[int]] = None,
+        halogens: Union[str, List[str]] = 'F',
+        saturation: Optional[str] = 'per',
     ) -> 'ResultsFingerprint':
         """Convert ResultsModel to ResultsFingerprint for dimensionality reduction.
 
@@ -1258,10 +1474,10 @@ class ResultsModel(list):
         ----------
         group_selection : str, default 'all'
             Which groups to include in fingerprint:
-            - 'all': All 55 groups
-            - 'generic': Generic groups only (groups 29-55)
-            - 'oecd': OECD groups only (groups 1-28)
-            - 'telomers': Telomer-related groups only
+            - 'all': All available groups
+            - 'oecd': OECD groups (IDs 1–28)
+            - 'generic': Generic functional-group groups (IDs 29–55)
+            - 'telomers': Telomer-related groups (IDs 74–116)
             - 'generic+telomers': Combination of generic and telomer groups
         count_mode : str, default 'binary'
             How to encode group matches:
@@ -1270,6 +1486,18 @@ class ResultsModel(list):
             - 'max_component': Maximum component size
         selected_group_ids : list of int, optional
             Explicit list of group IDs to include (overrides group_selection)
+        halogens : str or list of str, default 'F'
+            Which halogen(s) to match component SMARTS against.
+            - Single value (e.g. ``'F'``) → standard fingerprint of length n_groups.
+            - Multiple values (e.g. ``['F', 'Cl']``) → one fingerprint per halogen,
+              concatenated into a longer vector of length n_groups × n_halogens.
+              Group names are suffixed with ``[F]``, ``[Cl]``, etc.
+            Available: ``'F'``, ``'Cl'``, ``'Br'``, ``'I'``
+        saturation : str or None, default 'per'
+            Saturation filter applied to component SMARTS groups:
+            - ``'per'``: perfluorinated / perhalogenated only
+            - ``'poly'``: polyfluorinated / polyhalogenated only
+            - ``None``: no filter
 
         Returns
         -------
@@ -1277,24 +1505,30 @@ class ResultsModel(list):
             Fingerprint representation of the results
         """
         from .fingerprints import generate_fingerprint
+        from .getter import get_HalogenGroups
         
         # Extract SMILES from results
         smiles_list = [mol_res.smiles for mol_res in self]  # type: ignore[assignment]
         
-        # Define group selections
+        # Resolve selected_groups as 0-based indices from group IDs.
+        # Only computable groups (compute=True, or missing) are in pfas_groups.
+        all_groups_raw = get_HalogenGroups()  # list of raw dicts
+        compute_groups = [g for g in all_groups_raw if g.get('compute', True)]
+        id_to_index = {g['id']: i for i, g in enumerate(compute_groups)}
+
         if selected_group_ids is not None:
-            selected_groups = selected_group_ids
+            selected_indices = [id_to_index[gid] for gid in selected_group_ids if gid in id_to_index]
         elif group_selection == 'all':
-            selected_groups = None  # Use all groups
+            selected_indices = None  # Use all groups
         elif group_selection == 'oecd':
-            selected_groups = list(range(1, 29))  # OECD groups 1-28
+            selected_indices = [id_to_index[gid] for gid in range(1, 29) if gid in id_to_index]
         elif group_selection == 'generic':
-            selected_groups = list(range(29, 56))  # Generic groups 29-55
+            selected_indices = [id_to_index[gid] for gid in range(29, 56) if gid in id_to_index]
         elif group_selection == 'telomers':
-            # Telomer-related group IDs (example - adjust based on actual group definitions)
-            selected_groups = [24, 25, 26]  # Adjust as needed
+            selected_indices = [id_to_index[gid] for gid in range(74, 117) if gid in id_to_index]
         elif group_selection == 'generic+telomers':
-            selected_groups = list(range(29, 56)) + [24, 25, 26]  # Adjust as needed
+            ids = list(range(29, 56)) + list(range(74, 117))
+            selected_indices = [id_to_index[gid] for gid in ids if gid in id_to_index]
         else:
             raise ValueError(
                 f"Unknown group_selection: {group_selection}. "
@@ -1304,9 +1538,11 @@ class ResultsModel(list):
         # Generate fingerprints
         fps, info = generate_fingerprint(
             smiles_list,
-            selected_groups=selected_groups,
+            selected_groups=selected_indices,
             representation='vector',
             count_mode=count_mode,
+            halogens=halogens,
+            saturation=saturation,
         )
         
         return ResultsFingerprint(
@@ -1315,6 +1551,8 @@ class ResultsModel(list):
             group_names=info['group_names'],
             group_selection=group_selection,
             count_mode=count_mode,
+            halogens=info['halogens'],
+            saturation=saturation,
         )
 
     @classmethod
@@ -1377,7 +1615,7 @@ class ResultsModel(list):
             matches = []
             for _, row in mol_groups.iterrows():
                 matches.append({
-                    'type': 'PFASgroup',
+                    'type': 'HalogenGroup',
                     'match_id': row['group_id'],
                     'group_id': row['group_id'],
                     'group_name': row['group_name'],
@@ -1396,7 +1634,7 @@ class ResultsModel(list):
 class ResultsFingerprint:
     """Container for PFAS group fingerprints with dimensionality reduction analysis.
     
-    This class encapsulates fingerprint representations of PFASGroups results and
+    This class encapsulates fingerprint representations of HalogenGroups results and
     provides methods for performing dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP)
     and comparison between fingerprint sets using KL divergence.
     
@@ -1412,6 +1650,11 @@ class ResultsFingerprint:
         Type of group selection used
     count_mode : str
         Encoding mode used (binary, count, max_component)
+    halogens : list of str, optional
+        Halogen(s) used for component SMARTS matching. When multiple halogens
+        are given the fingerprint vectors are stacked.
+    saturation : str or None, optional
+        Saturation filter applied to component SMARTS groups.
     """
     
     def __init__(
@@ -1421,12 +1664,22 @@ class ResultsFingerprint:
         group_names: List[str],
         group_selection: str = 'all',
         count_mode: str = 'binary',
+        halogens: Optional[Union[str, List[str]]] = None,
+        saturation: Optional[str] = None,
     ):
         self.fingerprints = np.array(fingerprints)
         self.smiles = smiles
         self.group_names = group_names
         self.group_selection = group_selection
         self.count_mode = count_mode
+        # Normalise halogens to a list
+        if halogens is None:
+            self.halogens: List[str] = []
+        elif isinstance(halogens, str):
+            self.halogens = [halogens]
+        else:
+            self.halogens = list(halogens)
+        self.saturation = saturation
         
         if len(self.fingerprints) != len(self.smiles):
             raise ValueError(
@@ -1438,21 +1691,27 @@ class ResultsFingerprint:
         return len(self.fingerprints)
     
     def __repr__(self) -> str:
+        hal_str = "+".join(self.halogens) if self.halogens else "all"
         return (
             f"ResultsFingerprint(n_molecules={len(self)}, "
             f"n_groups={len(self.group_names)}, "
             f"group_selection='{self.group_selection}', "
+            f"halogens={hal_str!r}, "
+            f"saturation={self.saturation!r}, "
             f"count_mode='{self.count_mode}')"
         )
     
     def summary(self) -> str:
         """Return text summary of fingerprint statistics."""
+        hal_str = "+".join(self.halogens) if self.halogens else "all"
         lines = []
         lines.append("ResultsFingerprint Summary")
         lines.append("=" * 50)
         lines.append(f"Molecules: {len(self)}")
         lines.append(f"Groups: {len(self.group_names)}")
         lines.append(f"Group selection: {self.group_selection}")
+        lines.append(f"Halogens: {hal_str}")
+        lines.append(f"Saturation: {self.saturation}")
         lines.append(f"Count mode: {self.count_mode}")
         lines.append(f"Fingerprint shape: {self.fingerprints.shape}")
         lines.append(f"Non-zero entries: {np.count_nonzero(self.fingerprints)}")

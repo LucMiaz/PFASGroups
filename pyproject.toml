@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "PFASgroups"
-version = "2.2.4"
-description = "A comprehensive cheminformatics package for automated detection, classification, and analysis of per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 55 PFAS group classifications (28 OECD-defined groups and 27 generic categories) with fluorinated chain length determination."
+name = "HalogenGroups"
+version = "3.1.0"
+description = "A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, with a focus on per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 116 group classifications (28 OECD-defined PFAS groups, 45 generic groups and 43 telomers connected to halogenated components) with halogenated component size determination. Supports multi-halogen fingerprinting (F, Cl, Br, I) with per/poly saturation filtering and stackable fingerprint vectors."
 authors = [
-    { name = "Luc Miaz", email = "luc@miaz.ch" }
+    { name = "Luc T. Miaz", email = "luc@miaz.ch" }
 ]
 maintainers = [
-    { name = "Luc Miaz", email = "luc@miaz.ch" }
+    { name = "Luc T. Miaz", email = "luc@miaz.ch" }
 ]
 readme = "README.md"
 requires-python = ">=3.7"
@@ -29,14 +29,22 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Chemistry",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Environmental Science",
 ]
 keywords = [
     "PFAS",
+    "halogenated substances",
     "per- and polyfluoroalkyl substances",
     "chemical classification",
     "cheminformatics",
     "environmental chemistry",
     "molecular structure",
+    "fingerprint",
+    "multi-halogen",
+    "fluorine",
+    "chlorine",
+    "bromine",
+    "iodine",
 ]
 
 dependencies = [
@@ -67,10 +75,13 @@ Documentation = "https://pfasgroups.readthedocs.io"
 pfasgroups = "PFASgroups.cli:main"
 
 [tool.setuptools]
-packages = ["PFASgroups"]
+packages = ["HalogenGroups", "PFASGroups", "PFASgroups"]
+py-modules = ["PFASGroups"]
 
 [tool.setuptools.package-data]
+HalogenGroups = ["data/*.json", "data/*.txt"]
 PFASgroups = ["data/*.json", "data/*.txt"]
+PFASGroups = ["data/*.json", "data/*.txt"]
 
 # Pytest configuration
 [tool.pytest.ini_options]

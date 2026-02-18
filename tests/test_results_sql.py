@@ -6,8 +6,8 @@ import tempfile
 import pytest
 from pathlib import Path
 
-from PFASgroups.results_model import ResultsModel, MoleculeResult
-from PFASgroups import parse_smiles
+from HalogenGroups.results_model import ResultsModel, MoleculeResult
+from HalogenGroups import parse_smiles
 
 
 @pytest.fixture

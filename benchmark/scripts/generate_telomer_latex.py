@@ -55,7 +55,7 @@ def generate_telomer_latex():
     if not data:
         return None
     
-    # Define root_dir for accessing PFASgroups data
+    # Define root_dir for accessing HalogenGroups data
     script_dir = Path(__file__).parent
     root_dir = script_dir.parent.parent
     
@@ -65,7 +65,7 @@ def generate_telomer_latex():
     # Header
     latex_content.append(r"""%% LaTeX content for telomer validation results
 %% Generated: """ + timestamp + r"""
-%% Include in article with: \input{pfasgroups_telomer_validation.tex}
+%% Include in article with: \input{HalogenGroups_telomer_validation.tex}
 %%
 
 """)
@@ -82,7 +82,7 @@ def generate_telomer_latex():
     # Section: Fluorotelomer Validation
     latex_content.append(r"""\subsection*{Fluorotelomer Detection Validation}
 
-Fluorotelomer compounds represent a critical class of PFAS that contain telomer chains (perfluoroalkyl segments connected to non-fluorinated moieties via linking groups). To validate PFASgroups' ability to detect these important compounds, we conducted a comprehensive benchmark using """ + f"{total_tested:,}" + r""" fluorotelomer structures from the PubChem database.
+Fluorotelomer compounds represent a critical class of PFAS that contain telomer chains (perfluoroalkyl segments connected to non-fluorinated moieties via linking groups). To validate HalogenGroups' ability to detect these important compounds, we conducted a comprehensive benchmark using """ + f"{total_tested:,}" + r""" fluorotelomer structures from the PubChem database.
 
 \begin{table}[htbp]
 \centering
@@ -163,7 +163,7 @@ The fluorotelomer detection system demonstrates efficient performance across the
 The fluorotelomer validation benchmark demonstrates:
 
 \begin{enumerate}
-\item \textbf{High Detection Accuracy:} PFASgroups successfully identified """ + f"{detection_rate:.1f}" + r"""\% of fluorotelomer compounds from a diverse PubChem-derived dataset, validating the algorithm's capability to recognize telomer structural patterns.
+\item \textbf{High Detection Accuracy:} HalogenGroups successfully identified """ + f"{detection_rate:.1f}" + r"""\% of fluorotelomer compounds from a diverse PubChem-derived dataset, validating the algorithm's capability to recognize telomer structural patterns.
 
 \item \textbf{Functional Group Specificity:} The system correctly identified multiple telomer functional group classes including alcohols, carboxylic acids, sulfonic acids, and ethers, demonstrating robust pattern recognition across diverse chemical functionalities.
 
@@ -172,12 +172,12 @@ The fluorotelomer validation benchmark demonstrates:
 \item \textbf{Real-World Applicability:} Validation on PubChem data ensures the algorithm performs well on actual chemical structures likely to appear in environmental and industrial contexts.
 \end{enumerate}
 
-These results validate PFASgroups as a reliable tool for identifying fluorotelomer compounds in chemical databases and screening applications.
+These results validate HalogenGroups as a reliable tool for identifying fluorotelomer compounds in chemical databases and screening applications.
 
 """)
     
     # Save main content
-    output_file = reports_dir / 'pfasgroups_telomer_validation.tex'
+    output_file = reports_dir / 'HalogenGroups_telomer_validation.tex'
     with open(output_file, 'w') as f:
         f.writelines(latex_content)
     
@@ -188,12 +188,12 @@ These results validate PFASgroups as a reliable tool for identifying fluorotelom
         r"""%% Telomer Validation Summary for Abstract/Introduction
 %% Generated: """ + timestamp + r"""
 
-Fluorotelomer detection was validated on """ + f"{total_tested:,}" + r""" compounds from the PubChem database, achieving """ + f"{detection_rate:.1f}" + r"""\% detection rate with mean execution time of """ + f"{avg_time*1000:.2f}" + r""" ms per molecule. The validation confirmed PFASgroups' ability to identify diverse telomer functional groups and linking chemistries in real-world chemical structures.
+Fluorotelomer detection was validated on """ + f"{total_tested:,}" + r""" compounds from the PubChem database, achieving """ + f"{detection_rate:.1f}" + r"""\% detection rate with mean execution time of """ + f"{avg_time*1000:.2f}" + r""" ms per molecule. The validation confirmed HalogenGroups' ability to identify diverse telomer functional groups and linking chemistries in real-world chemical structures.
 
 """
     ]
     
-    summary_file = reports_dir / 'pfasgroups_telomer_summary.tex'
+    summary_file = reports_dir / 'HalogenGroups_telomer_summary.tex'
     with open(summary_file, 'w') as f:
         f.writelines(summary_content)
     

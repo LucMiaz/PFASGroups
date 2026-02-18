@@ -24,8 +24,8 @@ Overview
 
 **PFASgroups** provides three main capabilities:
 
-1. **PFAS Group Identification and Chain Analysis**: Automated detection of 55 functional groups directly connected to fluorinated chains, based on OECD terminology
-2. **Fluorinated Chain Length Quantification**: Determination of per- or polyfluorinated alkyl chain lengths connected to functional groups
+1. **PFAS Group Identification and Chain Analysis**: Automated detection of 116 functional groups connected to halogenated chains, based on OECD terminology (28 OECD groups, 27 generic groups, 42 telomer groups)
+2. **Halogenated Chain Length Quantification**: Determination of per- or poly-halogenated alkyl chain lengths connected to functional groups, supporting F, Cl, Br and I
 3. **Customization**: Both functional groups and pathway patterns can be customized via JSON configuration files
 
 The algorithm combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding using RDKit and NetworkX.
@@ -57,8 +57,11 @@ Basic Usage
        for group, n_matches, chain_lengths, chains in results[i]:
            print(f"  {group.name}: {n_matches} matches, chains: {chain_lengths}")
 
-   # Generate fingerprints for machine learning
+   # Generate fingerprints for machine learning (F only, per-saturation, 116 groups)
    fingerprints, group_info = generate_fingerprint(smiles_list)
+
+   # Multi-halogen stacked fingerprint (F + Cl → 232 columns)
+   fingerprints, group_info = generate_fingerprint(smiles_list, halogens=['F', 'Cl'])
 
 Table of Contents
 -----------------

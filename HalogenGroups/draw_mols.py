@@ -239,7 +239,7 @@ def plot_mols(mols,**kwargs):
     return draw_images(imgs, buffer = kwargs.get('buffer',2), ncols = kwargs.get('ncols',1), svg = kwargs.get('svg',False))
 
 @add_componentSmarts()
-def plot_pfasgroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, panel_labels=None, **kwargs):
+def plot_HalogenGroups(smiles: Union[list, str], display=True, path=None, svg=False, ipython=False, subwidth=300, subheight=300, ncols=2, addAtomIndices=True, addBondIndices=False, paths=[0, 1, 2, 3], split_matches = False, SMARTS=None, panel_labels=None, **kwargs):
     """
     Plot PFAS group assignments for a list of SMILES strings.
 

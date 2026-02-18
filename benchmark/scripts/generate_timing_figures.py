@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Generate timing analysis figures for PFASGroups paper.
+Generate timing analysis figures for HalogenGroups paper.
 
 This script generates:
-1. Exponential fit model for PFASgroups timing scaling
-2. Execution time comparison plot (PFASgroups vs PFAS-Atlas)
+1. Exponential fit model for HalogenGroups timing scaling
+2. Execution time comparison plot (HalogenGroups vs PFAS-Atlas)
 """
 
 import json
@@ -60,9 +60,9 @@ def generate_exponential_fit():
         
         for test_case in timing_data:
             for mol in test_case.get('molecules', []):
-                if 'num_atoms' in mol and 'pfasgroups_execution_time' in mol:
+                if 'num_atoms' in mol and 'HalogenGroups_execution_time' in mol:
                     atom_counts.append(mol['num_atoms'])
-                    exec_times.append(mol['pfasgroups_execution_time'] * 1000)  # Convert to ms
+                    exec_times.append(mol['HalogenGroups_execution_time'] * 1000)  # Convert to ms
         
         if len(atom_counts) > 0:
             atom_counts = np.array(atom_counts)
@@ -145,7 +145,7 @@ def generate_exponential_fit():
         
         ax.set_xlabel('Number of Atoms (n)', fontsize=12)
         ax.set_ylabel('Execution Time (ms)', fontsize=12)
-        ax.set_title('PFASgroups Execution Time Scaling', fontsize=14, fontweight='bold')
+        ax.set_title('HalogenGroups Execution Time Scaling', fontsize=14, fontweight='bold')
         ax.legend(loc='upper left', fontsize=10)
         ax.grid(True, alpha=0.3)
         
@@ -176,7 +176,7 @@ def generate_exponential_fit():
         return None, None, None
 
 def generate_execution_time_comparison():
-    """Generate execution time comparison plot (PFASgroups vs PFAS-Atlas)."""
+    """Generate execution time comparison plot (HalogenGroups vs PFAS-Atlas)."""
     print("\n" + "="*70)
     print("GENERATING EXECUTION TIME COMPARISON PLOT")
     print("="*70)
@@ -189,30 +189,30 @@ def generate_execution_time_comparison():
         return
     
     # Extract timing data
-    pfasgroups_times = []
+    HalogenGroups_times = []
     atlas_times = []
     num_atoms = []
     
     for test_case in complex_data:
         for mol in test_case.get('molecules', []):
-            if 'pfasgroups_execution_time' in mol and 'atlas_execution_time' in mol:
-                pfasgroups_times.append(mol['pfasgroups_execution_time'] * 1000)  # to ms
+            if 'HalogenGroups_execution_time' in mol and 'atlas_execution_time' in mol:
+                HalogenGroups_times.append(mol['HalogenGroups_execution_time'] * 1000)  # to ms
                 atlas_times.append(mol['atlas_execution_time'] * 1000)  # to ms
                 num_atoms.append(mol.get('num_atoms', 30))
     
-    pfasgroups_times = np.array(pfasgroups_times)
+    HalogenGroups_times = np.array(HalogenGroups_times)
     atlas_times = np.array(atlas_times)
     num_atoms = np.array(num_atoms)
     
-    print(f"Data points: {len(pfasgroups_times)}")
-    print(f"PFASgroups: {pfasgroups_times.min():.2f}-{pfasgroups_times.max():.2f} ms (mean: {pfasgroups_times.mean():.2f})")
+    print(f"Data points: {len(HalogenGroups_times)}")
+    print(f"HalogenGroups: {HalogenGroups_times.min():.2f}-{HalogenGroups_times.max():.2f} ms (mean: {HalogenGroups_times.mean():.2f})")
     print(f"PFAS-Atlas: {atlas_times.min():.2f}-{atlas_times.max():.2f} ms (mean: {atlas_times.mean():.2f})")
     
     # Create plot
     fig, ax = plt.subplots(figsize=(8, 7))
     
     # Create scatter plot with color mapped to atom count
-    scatter = ax.scatter(pfasgroups_times, atlas_times, 
+    scatter = ax.scatter(HalogenGroups_times, atlas_times, 
                         c=num_atoms, cmap='viridis', 
                         s=60, alpha=0.7, edgecolors='black', linewidth=0.5)
     
@@ -220,12 +220,12 @@ def generate_execution_time_comparison():
     cbar = plt.colorbar(scatter, ax=ax, label='Number of Atoms')
     
     # Add equal time diagonal line
-    max_time = max(pfasgroups_times.max(), atlas_times.max())
+    max_time = max(HalogenGroups_times.max(), atlas_times.max())
     ax.plot([0, max_time], [0, max_time], 'r--', alpha=0.5, linewidth=2, 
            label='Equal time', zorder=1)
     
     # Add labels and title
-    ax.set_xlabel('PFASgroups Execution Time (ms)', fontsize=12)
+    ax.set_xlabel('HalogenGroups Execution Time (ms)', fontsize=12)
     ax.set_ylabel('PFAS-Atlas Execution Time (ms)', fontsize=12)
     ax.set_title('Execution Time Comparison\n(Complex Branched PFAS Molecules)', 
                 fontsize=14, fontweight='bold')
@@ -233,9 +233,9 @@ def generate_execution_time_comparison():
     ax.grid(True, alpha=0.3)
     
     # Add statistics annotation
-    speedup = atlas_times.mean() / pfasgroups_times.mean()
-    stats_text = f'n = {len(pfasgroups_times)} molecules\n'
-    stats_text += f'PFASgroups: {pfasgroups_times.mean():.1f} ± {pfasgroups_times.std():.1f} ms\n'
+    speedup = atlas_times.mean() / HalogenGroups_times.mean()
+    stats_text = f'n = {len(HalogenGroups_times)} molecules\n'
+    stats_text += f'HalogenGroups: {HalogenGroups_times.mean():.1f} ± {HalogenGroups_times.std():.1f} ms\n'
     stats_text += f'PFAS-Atlas: {atlas_times.mean():.1f} ± {atlas_times.std():.1f} ms\n'
     stats_text += f'Speedup: {speedup:.2f}×'
     
@@ -258,7 +258,7 @@ def generate_execution_time_comparison():
     
     plt.close()
     
-    return pfasgroups_times, atlas_times, num_atoms
+    return HalogenGroups_times, atlas_times, num_atoms
 
 if __name__ == '__main__':
     print("="*70)
@@ -284,6 +284,6 @@ if __name__ == '__main__':
     
     if pfas_times is not None:
         print(f"\nTiming comparison:")
-        print(f"  PFASgroups mean: {pfas_times.mean():.2f} ms")
+        print(f"  HalogenGroups mean: {pfas_times.mean():.2f} ms")
         print(f"  PFAS-Atlas mean: {atlas_times.mean():.2f} ms")
         print(f"  Speedup: {atlas_times.mean() / pfas_times.mean():.2f}×")

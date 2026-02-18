@@ -5,7 +5,7 @@ Analyze PFAS groups structure and categorization.
 import json
 
 # Load PFAS groups
-with open('PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+with open('HalogenGroups/data/PFAS_groups_smarts.json', 'r') as f:
     pfas_groups = json.load(f)
 
 print("="*80)

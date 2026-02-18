@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Analyze PFASGroups results from clinventory database and generate plots/tables."""
+"""Analyze HalogenGroups results from clinventory database and generate plots/tables."""
 
 import sys
 import psycopg2
@@ -36,12 +36,12 @@ print("="*70)
 stats = {}
 
 # Total molecules with PFAS groups
-df = pd.read_sql('SELECT COUNT(DISTINCT molecule_id) FROM pfasgroups_in_molecules', conn)
+df = pd.read_sql('SELECT COUNT(DISTINCT molecule_id) FROM HalogenGroups_in_molecules', conn)
 stats['total_molecules'] = int(df.iloc[0, 0])
 print(f"Total molecules with PFAS groups: {stats['total_molecules']:,}")
 
 # Total group matches
-df = pd.read_sql('SELECT COUNT(*) FROM pfasgroups_in_molecules', conn)
+df = pd.read_sql('SELECT COUNT(*) FROM HalogenGroups_in_molecules', conn)
 stats['total_groups'] = int(df.iloc[0, 0])
 print(f"Total PFAS group matches: {stats['total_groups']:,}")
 
@@ -51,7 +51,7 @@ stats['total_components'] = int(df.iloc[0, 0])
 print(f"Total fluorinated components: {stats['total_components']:,}")
 
 # Unique group types
-df = pd.read_sql('SELECT COUNT(DISTINCT group_id) FROM pfasgroups_in_molecules', conn)
+df = pd.read_sql('SELECT COUNT(DISTINCT group_id) FROM HalogenGroups_in_molecules', conn)
 stats['unique_groups'] = int(df.iloc[0, 0])
 print(f"Unique PFAS group types detected: {stats['unique_groups']}")
 
@@ -66,7 +66,7 @@ print("="*70)
 
 df_top_groups = pd.read_sql('''
     SELECT group_name, COUNT(*) as count 
-    FROM pfasgroups_in_molecules 
+    FROM HalogenGroups_in_molecules 
     GROUP BY group_name 
     ORDER BY count DESC 
     LIMIT 15
@@ -82,7 +82,7 @@ df_groups_per_mol = pd.read_sql('''
     SELECT num_groups, COUNT(*) as num_molecules
     FROM (
         SELECT molecule_id, COUNT(DISTINCT group_id) as num_groups
-        FROM pfasgroups_in_molecules
+        FROM HalogenGroups_in_molecules
         GROUP BY molecule_id
     ) t
     GROUP BY num_groups
@@ -105,7 +105,7 @@ df_categories = pd.read_sql('''
         END as category,
         COUNT(*) as count,
         COUNT(DISTINCT molecule_id) as unique_molecules
-    FROM pfasgroups_in_molecules
+    FROM HalogenGroups_in_molecules
     GROUP BY category
     ORDER BY count DESC
 ''', conn)
@@ -214,7 +214,7 @@ print("="*70)
 # Table 1: Summary statistics
 latex_summary = f"""\\begin{{table}}[h]
 \\centering
-\\caption{{Summary statistics of PFASGroups analysis on Clinventory database}}
+\\caption{{Summary statistics of HalogenGroups analysis on Clinventory database}}
 \\label{{tab:clinventory_summary}}
 \\begin{{tabular}}{{lr}}
 \\toprule

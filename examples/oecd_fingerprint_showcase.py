@@ -5,7 +5,7 @@ OECD PFAS Dataset - ResultsFingerprint Showcase
 This script demonstrates the new ResultsFingerprint capabilities on the OECD PFAS dataset,
 showcasing dimensionality reduction, statistical comparison, and persistence features.
 
-Author: PFASgroups v2.2.4
+Author: HalogenGroups v2.2.4
 Date: February 2026
 """
 
@@ -15,8 +15,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-# Import PFASgroups
-from PFASgroups import parse_smiles
+# Import HalogenGroups
+from HalogenGroups import parse_smiles
 
 def load_oecd_dataset(filepath='tests/OECDPFAS_list_22012019.csv', limit=None):
     """Load OECD PFAS dataset and extract valid SMILES."""
@@ -385,7 +385,7 @@ def demonstrate_sql_persistence(results, fp, output_dir='oecd_analysis'):
     
     # Load back and verify
     print(f"\nLoading data back from databases...")
-    from PFASgroups.results_model import ResultsModel, ResultsFingerprint
+    from HalogenGroups.results_model import ResultsModel, ResultsFingerprint
     
     loaded_results = ResultsModel.from_sql(filename=results_db)
     loaded_fp = ResultsFingerprint.from_sql(filename=fingerprints_db)

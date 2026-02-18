@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Analyze PFASGroups results from clinventory database.
+"""Analyze HalogenGroups results from clinventory database.
 
 Creates statistical analysis, visualizations, and LaTeX output for groups with id > 28.
 """
@@ -29,8 +29,8 @@ def connect_db():
     )
 
 def fetch_data(conn):
-    """Fetch all PFAS groups results from new database schema."""
-    # Join pfasgroups_in_molecules with components_in_molecules to get full details
+    """Fetch all groups results from new database schema."""
+    # Join HalogenGroups_in_molecules with components_in_molecules to get full details
     query = """
     SELECT 
         pm.molecule_id,
@@ -41,7 +41,7 @@ def fetch_data(conn):
         COUNT(cm.id) as num_components,
         STRING_AGG(DISTINCT cm.smarts_label, '; ') as component_smarts,
         ARRAY_AGG(LENGTH(cm.component_atoms) - LENGTH(REPLACE(cm.component_atoms, ',', '')) + 1) as component_sizes
-    FROM pfasgroups_in_molecules pm
+    FROM HalogenGroups_in_molecules pm
     LEFT JOIN components_in_molecules cm ON pm.smiles = cm.smiles AND pm.group_id = cm.group_id
     WHERE pm.group_id IS NOT NULL
     GROUP BY pm.molecule_id, pm.smiles, pm.group_id, pm.group_name, pm.match_count
@@ -72,11 +72,11 @@ def classify_group(row):
     # Poly = partial halogenation (polyfluoro, polychloro, etc.)
     if 'per' in group_name and 'poly' not in group_name:
         # Could be perfluoro, perchloro, etc.
-        saturation = 'Per'
+        componentSaturation = 'Per'
     elif 'poly' in group_name or 'semi' in group_name:
-        saturation = 'Poly'
+        componentSaturation = 'Poly'
     else:
-        saturation = 'Unknown'
+        componentSaturation = 'Unknown'
     
     # Halogen type: which halogen(s) are in the component
     # Check component_smarts for element patterns
@@ -97,13 +97,13 @@ def classify_group(row):
     
     # Determine halogen classification
     if len(halogens_found) == 0:
-        halogen = 'Unknown'
+        componentHalogen = 'Unknown'
     elif len(halogens_found) == 1:
-        halogen = list(halogens_found)[0]
+        componentHalogen = list(halogens_found)[0]
     else:
-        halogen = 'Mixed'
+        componentHalogen = 'Mixed'
     
-    return pd.Series({'saturation': saturation, 'halogen': halogen})
+    return pd.Series({'componentSaturation': componentSaturation, 'componentHalogen': componentHalogen})
 
 def extract_component_sizes(component_sizes_array):
     """Extract component sizes from PostgreSQL array."""
@@ -123,14 +123,14 @@ def extract_component_sizes(component_sizes_array):
         return []
 
 def analyze_groups(df, focus_groups_only=True):
-    """Analyze PFAS groups focusing on id > 28."""
+    """Analyze groups focusing on id > 28."""
     if focus_groups_only:
         df_focus = df[df['group_id'] > 28].copy()
     else:
         df_focus = df.copy()
     
     # Add classifications
-    df_focus[['saturation', 'halogen']] = df_focus.apply(classify_group, axis=1)
+    df_focus[['componentSaturation', 'componentHalogen']] = df_focus.apply(classify_group, axis=1)
     
     # Extract component sizes
     df_focus['component_sizes'] = df_focus['component_sizes'].apply(extract_component_sizes)
@@ -156,13 +156,13 @@ def create_visualizations(df_focus, output_dir='/home/luc/git/classification_art
     plt.barh(range(len(group_counts)), group_counts.values, color='steelblue')
     plt.yticks(range(len(group_counts)), [f"{gid}: {name[:30]}" for gid, name in zip(group_counts.index, group_names)], fontsize=8)
     plt.xlabel('Number of Molecules')
-    plt.title('PFAS Groups Distribution (id > 28)')
+    plt.title('Groups Distribution (id > 28)')
     plt.tight_layout()
     
     # 2. Saturation vs Halogen Cross-tabulation
     plt.subplot(1, 2, 2)
     unique_matches = df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])
-    sat_hal_table = pd.crosstab(unique_matches['saturation'], unique_matches['halogen'])
+    sat_hal_table = pd.crosstab(unique_matches['componentSaturation'], unique_matches['componentHalogen'])
     
     # Create grouped bar chart
     sat_hal_table.plot(kind='bar', ax=plt.gca())
@@ -173,8 +173,8 @@ def create_visualizations(df_focus, output_dir='/home/luc/git/classification_art
     plt.xticks(rotation=0)
     plt.tight_layout()
     
-    plt.savefig(f'{output_dir}/pfasgroups_distribution.pdf', dpi=300, bbox_inches='tight')
-    plt.savefig(f'{output_dir}/pfasgroups_distribution.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{output_dir}/HalogenGroups_distribution.pdf', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{output_dir}/HalogenGroups_distribution.png', dpi=300, bbox_inches='tight')
     plt.close()
     
     # 3. Component sizes
@@ -214,20 +214,20 @@ def create_visualizations(df_focus, output_dir='/home/luc/git/classification_art
     axes[1, 1].set_xlim(0, min(100, df_focus['match_count'].max()))
     
     plt.tight_layout()
-    plt.savefig(f'{output_dir}/pfasgroups_components.pdf', dpi=300, bbox_inches='tight')
-    plt.savefig(f'{output_dir}/pfasgroups_components.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{output_dir}/HalogenGroups_components.pdf', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{output_dir}/HalogenGroups_components.png', dpi=300, bbox_inches='tight')
     plt.close()
     
     print(f"Plots saved to {output_dir}")
 
-def create_latex_tables(df_focus, output_file='/home/luc/git/classification_article/pfasgroups_tables.tex'):
+def create_latex_tables(df_focus, output_file='/home/luc/git/classification_article/HalogenGroups_tables.tex'):
     """Create LaTeX tables."""
     latex_content = []
     
     # Table 1: Top groups by frequency
     latex_content.append("\\begin{table}[h]")
     latex_content.append("\\centering")
-    latex_content.append("\\caption{Top 15 PFAS Groups (ID > 28) by Molecule Frequency}")
+    latex_content.append("\\caption{Top 15 Groups (ID > 28) by Molecule Frequency}")
     latex_content.append("\\label{tab:pfas_groups_freq}")
     latex_content.append("\\begin{tabular}{llrrr}")
     latex_content.append("\\hline")
@@ -254,11 +254,11 @@ def create_latex_tables(df_focus, output_file='/home/luc/git/classification_arti
     # Table 2: Saturation vs Halogen cross-tabulation
     latex_content.append("\\begin{table}[h]")
     latex_content.append("\\centering")
-    latex_content.append("\\caption{PFAS Group Classification: Saturation (Per/Poly) vs. Halogen Element}")
+    latex_content.append("\\caption{Group Classification: Saturation (Per/Poly) vs. Halogen Element}")
     latex_content.append("\\label{tab:pfas_saturation_halogen}")
     latex_content.append("\\small")
     
-    sat_hal = df_focus.drop_duplicates(subset=['molecule_id', 'group_id']).groupby(['saturation', 'halogen']).size().unstack(fill_value=0)
+    sat_hal = df_focus.drop_duplicates(subset=['molecule_id', 'group_id']).groupby(['componentSaturation', 'componentHalogen']).size().unstack(fill_value=0)
     
     # Build dynamic column header
     columns = sorted([col for col in sat_hal.columns if col != 'Unknown'])
@@ -312,7 +312,7 @@ def create_latex_tables(df_focus, output_file='/home/luc/git/classification_arti
     print(f"LaTeX tables saved to {output_file}")
     return '\n'.join(latex_content)
 
-def create_latex_text(df_focus, df_all, output_file='/home/luc/git/classification_article/pfasgroups_text.tex'):
+def create_latex_text(df_focus, df_all, output_file='/home/luc/git/classification_article/HalogenGroups_text.tex'):
     """Create LaTeX text describing results."""
     
     # Calculate statistics
@@ -333,30 +333,30 @@ def create_latex_text(df_focus, df_all, output_file='/home/luc/git/classificatio
     
     # Saturation analysis (Per vs Poly)
     unique_matches = df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])
-    per_count = len(unique_matches[unique_matches['saturation'] == 'Per'])
-    poly_count = len(unique_matches[unique_matches['saturation'] == 'Poly'])
+    per_count = len(unique_matches[unique_matches['componentSaturation'] == 'Per'])
+    poly_count = len(unique_matches[unique_matches['componentSaturation'] == 'Poly'])
     
     # Halogen analysis
-    f_count = len(unique_matches[unique_matches['halogen'] == 'F'])
-    cl_count = len(unique_matches[unique_matches['halogen'] == 'Cl'])
-    br_count = len(unique_matches[unique_matches['halogen'] == 'Br'])
-    i_count = len(unique_matches[unique_matches['halogen'] == 'I'])
-    mixed_count = len(unique_matches[unique_matches['halogen'] == 'Mixed'])
+    f_count = len(unique_matches[unique_matches['componentHalogen'] == 'F'])
+    cl_count = len(unique_matches[unique_matches['componentHalogen'] == 'Cl'])
+    br_count = len(unique_matches[unique_matches['componentHalogen'] == 'Br'])
+    i_count = len(unique_matches[unique_matches['componentHalogen'] == 'I'])
+    mixed_count = len(unique_matches[unique_matches['componentHalogen'] == 'Mixed'])
     
     # Cross-tabulation
-    sat_hal_crosstab = pd.crosstab(unique_matches['saturation'], unique_matches['halogen'])
+    sat_hal_crosstab = pd.crosstab(unique_matches['componentSaturation'], unique_matches['componentHalogen'])
     per_f = sat_hal_crosstab.loc['Per', 'F'] if 'Per' in sat_hal_crosstab.index and 'F' in sat_hal_crosstab.columns else 0
     poly_f = sat_hal_crosstab.loc['Poly', 'F'] if 'Poly' in sat_hal_crosstab.index and 'F' in sat_hal_crosstab.columns else 0
     
-    text = f"""\\subsection{{PFASGroups Classification Results}}
+    text = f"""\\subsection{{HalogenGroups Classification Results}}
 
-    We applied the PFASGroups algorithm to {total_molecules:,} halogenated molecules from the CL inventory database. The algorithm successfully identified PFAS groups in {molecules_with_groups:,} molecules ({molecules_with_groups/total_molecules*100:.1f}\\%), detecting a total of {total_groups_found} different PFAS group types.
+    We applied the HalogenGroups algorithm to {total_molecules:,} halogenated molecules from the CL inventory database. The algorithm successfully identified groups in {molecules_with_groups:,} molecules ({molecules_with_groups/total_molecules*100:.1f}\\%), detecting a total of {total_groups_found} different group types.
     
-    Focusing on advanced PFAS groups (ID > 28), we identified {groups_above_28} distinct groups in {molecules_in_focus:,} molecules, resulting in {total_matches_focus:,} total matches. The most prevalent group was \\textit{{{top_group['group_name'][:50]}}} (ID {top_group.name}), found in {int(top_group['molecule_id'])} molecules.
+    Focusing on advanced groups (ID > 28), we identified {groups_above_28} distinct groups in {molecules_in_focus:,} molecules, resulting in {total_matches_focus:,} total matches. The most prevalent group was \\textit{{{top_group['group_name'][:50]}}} (ID {top_group.name}), found in {int(top_group['molecule_id'])} molecules.
     
     \\subsubsection{{Structural Characteristics}}
     
-    Component size analysis revealed an average component size of {avg_component_size:.1f} atoms, with the largest component containing {int(max_component_size)} atoms. The distribution of component sizes (Figure~\\ref{{fig:pfasgroups_components}}) shows that most PFAS groups consist of small to medium-sized halogenated chains, with a notable tail extending to larger structures.
+    Component size analysis revealed an average component size of {avg_component_size:.1f} atoms, with the largest component containing {int(max_component_size)} atoms. The distribution of component sizes (Figure~\\ref{{fig:HalogenGroups_components}}) shows that most groups consist of small to medium-sized halogenated chains, with a notable tail extending to larger structures.
     
     \\subsubsection{{Saturation and Halogen Composition}}
     
@@ -366,7 +366,7 @@ def create_latex_text(df_focus, df_all, output_file='/home/luc/git/classificatio
     
     The algorithm detected groups across a range of structural complexities, enabling comprehensive characterization of halogenated substances in the inventory beyond simple fluorinated compounds.
     
-    See Tables~\\ref{{tab:pfas_groups_freq}} and \\ref{{tab:pfas_saturation_halogen}} for detailed breakdowns of group frequencies and chemical classifications. Figures~\\ref{{fig:pfasgroups_distribution}} and \\ref{{fig:pfasgroups_components}} illustrate the distribution patterns and structural characteristics of the classification system.
+    See Tables~\\ref{{tab:pfas_groups_freq}} and \\ref{{tab:pfas_saturation_halogen}} for detailed breakdowns of group frequencies and chemical classifications. Figures~\\ref{{fig:HalogenGroups_distribution}} and \\ref{{fig:HalogenGroups_components}} illustrate the distribution patterns and structural characteristics of the classification system.
     """
     
     with open(output_file, 'w') as f:
@@ -408,9 +408,9 @@ def main():
     print(f"\nGroups with ID > 28:")
     print(df_focus.groupby('group_id')['group_name'].first().to_string())
     print(f"\nSaturation breakdown:")
-    print(df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])['saturation'].value_counts())
+    print(df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])['componentSaturation'].value_counts())
     print(f"\nHalogen breakdown:")
-    print(df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])['halogen'].value_counts())
+    print(df_focus.drop_duplicates(subset=['molecule_id', 'group_id'])['componentHalogen'].value_counts())
     
     print("\n✓ Analysis complete!")
 

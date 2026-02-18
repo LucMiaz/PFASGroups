@@ -1,4 +1,5 @@
 import networkx as nx
+from rdkit import Chem
 from .core import add_componentSmarts, mol_to_nx
 
 class ComponentsSolver:
@@ -62,12 +63,33 @@ class ComponentsSolver:
         G = self.G.subgraph(subset)
         components = list(nx.connected_components(G))
         return components
+
+    @staticmethod
+    def _extract_component_smarts(entry):
+        if entry is None:
+            return None
+        if isinstance(entry, (list, tuple)):
+            return entry[0] if len(entry) > 0 else None
+        if isinstance(entry, dict):
+            return entry.get('smarts', entry.get('component', entry.get('chain')))
+        return entry
         
     def get_fluorinated_subgraph(self, **kwargs):
         """Get the fluorinated indices by connected components of a molecule based on path SMARTS."""
         subsets = {}
         for pathName, d in self.componentSmartss.items():
-            path_smarts = d[0] # chain
+            path_smarts = self._extract_component_smarts(d)
+            if path_smarts is None:
+                subsets[pathName] = []
+                continue
+            if isinstance(path_smarts, str):
+                path_smarts = Chem.MolFromSmarts(path_smarts)
+                if path_smarts is None:
+                    subsets[pathName] = []
+                    continue
+                path_smarts.UpdatePropertyCache()
+                Chem.GetSymmSSSR(path_smarts)
+                path_smarts.GetRingInfo().NumRings()
             matches = self.mol.GetSubstructMatches(path_smarts)
             subset = [y for x in matches for y in x]
             if len(subset)==0:
@@ -526,8 +548,8 @@ class ComponentsSolver:
             Set of atom indices matching the SMARTS pattern (None if no SMARTS)
         smarts_type : str
             Type identifier for the SMARTS pattern
-        pfas_group : PFASGroup or None
-            PFASGroup object with precomputed SMARTS atom counts
+        pfas_group : HalogenGroup or None
+            HalogenGroup object with precomputed SMARTS atom counts
             
         Returns
         -------

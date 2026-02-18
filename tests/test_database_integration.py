@@ -1,6 +1,6 @@
 """Test the updated utility_funcgroups with comprehensive metrics."""
 
-from PFASgroups.parser import parse_mols
+from HalogenGroups.parser import parse_mols
 from rdkit import Chem
 
 def test_parse_mols_output_structure():
@@ -22,7 +22,7 @@ def test_parse_mols_output_structure():
         assert isinstance(matches, list)
 
         for match in matches:
-            if match['type'] != 'PFASgroup':
+            if match['type'] != 'HalogenGroup':
                 continue
 
             # Check summary metrics
@@ -70,7 +70,7 @@ def simulate_database_save():
     matches = mol_result.get('matches', [])
 
     for match in matches:
-        if match['type'] != 'PFASgroup':
+        if match['type'] != 'HalogenGroup':
             continue
         summary_data = {
             'n': match['match_count'],

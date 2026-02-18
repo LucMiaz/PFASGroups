@@ -2,36 +2,32 @@ from rdkit import Chem
 import numpy as np
 import re
 import networkx as nx
-from .core import mol_to_nx
+from .core import mol_to_nx, add_componentSmarts
 import logging
 
 
 
 
-class PFASGroup():
-    """Model class representing a specific PFAS functional group with structural patterns.
+class HalogenGroup():
+    """Model class representing a specific halogenated functional group with structural patterns.
     
-    A PFASGroup defines a specific fluorinated functional group using SMARTS patterns,
+    A HalogenGroup defines a specific halogenated functional group using SMARTS patterns,
     component path types, and molecular formula constraints. Groups are used to classify
     molecules into specific categories (e.g., "Perfluoroalkyl carboxylic acid").
     
     Attributes
     ----------
     id : int
-        Unique identifier for this PFAS group
+        Unique identifier for this Halogen group
     name : str
         Human-readable group name (e.g., "Perfluoroalkyl carboxylic acid")
     smarts : Chem.Mol or None
         SMARTS patterns (compiled RDKit molecule) for functional group detection.
         None if group is defined by componentSmarts alone.
-    componentSmarts : str or None
-        Type of fluorinated component to search:
-        - 'Perfluoroalkyl': Fully fluorinated carbon chains
-        - 'Polyfluoroalkyl': Partially fluorinated carbon chains  
-        - 'Polyfluoro': General polyfluorinated structures
-        - 'Polyfluorobr': Polyfluorobromo structures
-        - 'cyclic': Aromatic/cyclic fluorinated structures
-        - None: Check all component types
+    componentSmarts : list, str or None
+    componentForm: str or None
+    componentHalogens: list, str or None
+    componentSaturation: str or None (-> both)
     max_dist_from_CF : int
         Maximum graph distance (number of bonds) from fluorinated component to functional group.
         When > 0, extends component search radius to find nearby functional groups.
@@ -50,7 +46,7 @@ class PFASGroup():
     Examples
     --------
     >>> # Perfluoroalkyl carboxylic acid: R_F-COOH
-    >>> pfaa = PFASGroup(
+    >>> pfaa = HalogenGroup(
     ...     id=1,
     ...     name="Perfluoroalkyl carboxylic acid",
     ...     smarts={"C(=O)O":1},  # Carboxylic acid group
@@ -67,6 +63,7 @@ class PFASGroup():
     - max_dist_from_CF allows finding functional groups connected via non-fluorinated linkers
     - linker_smarts restricts which atoms can be in the path between component and functional group
     """
+    @add_componentSmarts()
     def __init__(self, id, name,**kwargs):
         self.id = id
         self.name = name
@@ -79,6 +76,10 @@ class PFASGroup():
             self.smarts_count = None
         self.smarts = [] if self.smarts_str else None
         self.componentSmarts = kwargs.get('componentSmarts',None)
+        self.componentSaturation = kwargs.get('componentSaturation',None)
+        self.componentHalogens = kwargs.get('componentHalogens', None)
+        self.componentForm = kwargs.get("componentForm", None)
+        self.set_component_smarts(kwargs.get('componentSmartss', {}))
         self.max_dist_from_CF = kwargs.get('max_dist_from_CF', 0)
         # Compile linker_smarts pattern if provided
         linker_smarts_str = kwargs.get('linker_smarts', None)
@@ -90,7 +91,7 @@ class PFASGroup():
                 Chem.GetSymmSSSR(self.linker_smarts)
                 self.linker_smarts.GetRingInfo().NumRings()
             except:
-                raise ValueError(f"Invalid linker_smarts pattern '{linker_smarts_str}' for PFASGroup '{self.name}' (ID: {self.id})")
+                raise ValueError(f"Invalid linker_smarts pattern '{linker_smarts_str}' for HalogenGroup '{self.name}' (ID: {self.id})")
         if self.smarts_str is not None:
             for smarts_pattern in self.smarts_str:
                 if smarts_pattern and smarts_pattern != "":
@@ -101,13 +102,13 @@ class PFASGroup():
                         smarts_mol.GetRingInfo().NumRings()
                         self.smarts.append(smarts_mol)
                     except:
-                        raise ValueError(f"Invalid SMARTS pattern(s) for PFASGroup '{self.name}' (ID: {self.id})")
+                        raise ValueError(f"Invalid SMARTS pattern(s) for HalogenGroup '{self.name}' (ID: {self.id})")
         self.constraints = kwargs.get('constraints',{})
         # Precompute number of extra atoms in SMARTS patterns (beyond matched atom and H/F/Cl/Br/I)
         self.smarts_extra_atoms = self._count_smarts_extra_atoms(self.smarts_str)
         self.component_specific_extra_atoms = []
         self.all_matches = []
-        self.compute = kwargs.get('compute',True)# whether the pfasgroups needs to be parsed, or is an aggregate group, e.g. telomers
+        self.compute = kwargs.get('compute',True)# whether the HalogenGroups needs to be parsed, or is an aggregate group, e.g. telomers
         self.re_search = kwargs.get('re_search',None)# regex for aggregate groups, e.g. telomers
         if self.re_search is not None:
             try:
@@ -115,17 +116,62 @@ class PFASGroup():
             except Exception as e:
                 raise Exception(f"Error for agg Group {self.id}: {self.name}\n {e}")
         self.test_dict = kwargs.get('test',None)# test dict for unit tests
-    def set_path_types(self, pathTypes = None):
-        """Set path types to search based on componentSmarts, componentSaturation and componentHalogen"""
-        if pathTypes is not None:
-            self.path_types = pathTypes
-        elif self.componentSmarts is None:
-            self.path_types = []
-        elif self.componentSmarts == 'cyclic':
-            self.path_types = ['cyclic']
-        else:
-            self.path_types = [self.componentSmarts]
+    def set_component_smarts(self, componentSmartss):
+        """
+        Infers componentSmarts based on componentSmarts, componentSaturation, componentForm and componentHalogen
+        """
+        if not componentSmartss:
+            return
+        # if componentSmarts is None, or is not in (entirely) in the available componentSmartss
+        if self.componentSmarts is None or (isinstance(self.componentSmarts,list) and not set(self.componentSmarts).issubset(componentSmartss.keys()) or (isinstance(self.componentSmarts, str) and not self.componentSmarts in componentSmartss.keys())):
+            new_CS = []
+            try:
+                componentSmarts_dict = {}
+                for k,v in componentSmartss.items():
+                    if not isinstance(v, dict):
+                        continue
+                    halogen = v.get('halogen')
+                    form = v.get('form')
+                    saturation = v.get('saturation')
+                    if halogen is None or form is None or saturation is None:
+                        continue
+                    componentSmarts_dict.setdefault(halogen,{}).setdefault(form,{})[saturation]=k
+            except Exception as e:
+                raise ValueError(f"Error processing componentSmartss for HalogenGroup '{self.name}' (ID: {self.id}): {e}")
+            if not componentSmarts_dict:
+                # No metadata available to infer component SMARTS
+                return
+            # prepare halogens (accepts list, str or None)
+            if isinstance(self.componentHalogens,list) and len(set(self.componentHalogens).intersection(['F','Cl','Br','I'])) == 0:
+                raise ValueError(f"Invalid componentHalogens for HalogenGroup '{self.name}' (ID: {self.id})")
+            if self.componentHalogens is None:
+                self.componentHalogens = ['F','Cl','Br','I']
+            elif isinstance(self.componentHalogens, str) and self.componentHalogens in ['F','Cl','Br','I']:
+                self.componentHalogens = [self.componentHalogens]
+            if self.componentSaturation is None:
+                self.componentSaturation = ['per','poly']
+            elif isinstance(self.componentSaturation, str) and self.componentSaturation in ['per','poly','both']:
+                self.componentSaturation = ['per','poly'] if self.componentSaturation == 'both' else [self.componentSaturation]
+            elif isinstance(self.componentSaturation, list):
+                self.componentSaturation = self.componentSaturation
+            else:
+                raise ValueError(f"Invalid componentSaturation for HalogenGroup '{self.name}' (ID: {self.id}), expected 'per', 'poly', 'both' or null, got {self.componentSaturation}")
+            if self.componentForm is None:
+                self.componentForm = 'alkyl'
+            for halogen in self.componentHalogens:
+                if halogen not in componentSmarts_dict:
+                    raise ValueError(f"No component SMARTS available for halogen '{halogen}' in HalogenGroup '{self.name}' (ID: {self.id})")
+                if self.componentForm not in componentSmarts_dict[halogen]:
+                    raise ValueError(f"No component SMARTS available for form '{self.componentForm}' and halogen '{halogen}' in HalogenGroup '{self.name}' (ID: {self.id})")
+                for saturation in self.componentSaturation:
+                    if saturation not in componentSmarts_dict[halogen][self.componentForm]:
+                        raise ValueError(f"No component SMARTS available for saturation '{saturation}', form '{self.componentForm}', halogen '{halogen}' in HalogenGroup '{self.name}' (ID: {self.id})")
+                    new_CS.append(componentSmarts_dict[halogen][self.componentForm][saturation])
+            self.componentSmarts = new_CS
 
+    def set_componentSmarts(self, componentSmartss):
+        """Backward-compatible alias for set_component_smarts."""
+        return self.set_component_smarts(componentSmartss)
     def _count_smarts_extra_atoms(self, smarts_str):
         """Count number of extra carbon atoms in functional group beyond what's captured by component.
         
@@ -453,19 +499,23 @@ class PFASGroup():
             # This ensures functional groups like carboxylic acid (group 33) are only
             # detected when attached to perfluoroalkyl or polyfluoroalkyl chains,
             # not when attached directly to cyclic structures
-            all_components = []
-            for path_type in self.path_types:
-                path_comps = component_solver.get(path_type, max_dist = self.max_dist_from_CF, default=[])
-                all_components.extend(path_comps)
-            components = all_components
+            componentSmartss = []
+            for path_type, meta in component_solver.componentSmartss.items():
+                if isinstance(meta, dict) and meta.get('form') == 'cyclic':
+                    continue
+                componentSmartss.append(path_type)
+        elif isinstance(self.componentSmarts, (list, tuple, set)):
+            componentSmartss = list(self.componentSmarts)
         else:
-            # Get components for the specified path type, fallback to Polyfluoroalkyl if not found
-            components = component_solver.get(self.componentSmarts, max_dist = self.max_dist_from_CF, default = component_solver.get("Polyfluoroalkyl", max_dist = self.max_dist_from_CF, default=[]))
-        
-        if self.componentSmarts is not None:
             componentSmartss = [self.componentSmarts]
-        else:
-            componentSmartss = component_solver.componentSmartss.keys()
+
+        # Preload components (optional, not strictly required for filtering)
+        components = []
+        for comp_type in componentSmartss:
+            comps = component_solver.get(comp_type, max_dist=self.max_dist_from_CF, default=[])
+            if not comps and comp_type != "Polyfluoroalkyl":
+                comps = component_solver.get("Polyfluoroalkyl", max_dist=self.max_dist_from_CF, default=[])
+            components.extend(comps)
         
         # Filter components connected to the smarts and get augmented versions
         augmented_matched_components = []
@@ -480,7 +530,7 @@ class PFASGroup():
                     # Accept augmented component if valid (linker validation already done in get_augmented_component)
                     if augmented is not None and len(augmented) > 0:
                         augmented_matched_components.append(
-                        component_solver.get_matched_component_dict(augmented, self.subset, _componentSmarts, self, comp_id = i)
+                            component_solver.get_matched_component_dict(augmented, self.subset, _componentSmarts, self, comp_id = i)
                         )
         
         if len(augmented_matched_components) == 0:
@@ -533,7 +583,16 @@ class PFASGroup():
                 match_count, component_sizes, matched1_len, matched_components = self.find_alkyl_components(mol, component_solver, **kwargs)
             elif self.componentSmarts is not None:
                 # treat cases with only componentSmarts defined (no SMARTS patterns), find all components of that path type
-                path_components = component_solver.get(self.componentSmarts, max_dist = self.max_dist_from_CF, default = component_solver.get("Polyfluoroalkyl", max_dist = self.max_dist_from_CF, default=[]))
+                if isinstance(self.componentSmarts, (list, tuple, set)):
+                    component_types = list(self.componentSmarts)
+                else:
+                    component_types = [self.componentSmarts]
+                path_components = []
+                for comp_type in component_types:
+                    comps = component_solver.get(comp_type, max_dist=self.max_dist_from_CF, default=[])
+                    if not comps and comp_type != "Polyfluoroalkyl":
+                        comps = component_solver.get("Polyfluoroalkyl", max_dist=self.max_dist_from_CF, default=[])
+                    path_components.extend(comps)
                 match_count = len(path_components)
                 component_sizes = [len(x) for x in path_components]
                 matched1_len = len(path_components)  # Set matched1_len to enable group matching

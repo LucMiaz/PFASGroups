@@ -1,16 +1,17 @@
-# PFASgroups
+# HalogenGroups
 
-A comprehensive cheminformatics package for automated detection, classification, and analysis of per- and polyfluoroalkyl substances (PFAS) in chemical databases.
+A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, in particular per- and polyfluoroalkyl substances (PFAS) in chemical databases.
 
 ## Overview
 
-PFASgroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
+HalogenGroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
 
 ## Key Features
 
 ### Core Capabilities
-- **PFAS Group Identification**: Automated detection of 113 functional groups:
-  - 72 non-telomer groups (OECD-defined and generic categories)
+- **Halogen Group Identification**: Automated detection of 113 functional groups:
+  - 28 PFAS OECD groups
+  - 45 non-telomer groups
   - 40 fluorotelomer groups with linker validation (Groups 69-112)
   - 1 aggregate pattern-matching group (Group 113: Telomers)
 - **Atom Reference Requirement**: For non-telomer groups, SMARTS patterns must match atoms that are part of or directly connected to the fluorinated component (per/polyfluorinated carbons), respecting the `max_dist_from_CF` constraint
@@ -35,9 +36,9 @@ Clone the repository and install dependencies:
 pip install -e .
 ```
 
-After installation, the `pfasgroups` command will be available in your terminal.
+After installation, the `halogengroups` command will be available in your terminal.
 
-## Benchmark Summary (Feb 2026)
+## Benchmark Summary (Feb 2026, using v. 2.2.3 only on F groups)
 
 Benchmarks were run on an Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz (4C/8T), 15.5 GB RAM, Python 3.9.23, RDKit 2025.09.2, NetworkX 3.2.1 (the old version of Python was taken for compatibility with PFAS-atlas).
 
@@ -55,7 +56,7 @@ Timing profile plots (full vs no resistance vs no metrics):
 Disable or limit graph metrics in the Python API:
 
 ```python
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 # Skip all component graph metrics (fastest)
 parse_smiles(smiles_list, compute_component_metrics=False)
@@ -71,13 +72,13 @@ CLI equivalents:
 
 ```bash
 # Skip all component graph metrics (fastest)
-pfasgroups parse --no-component-metrics "C(C(F)(F)F)F"
+halogengroups parse --no-component-metrics "C(C(F)(F)F)F"
 
 # Skip effective graph resistance entirely
-pfasgroups parse --limit-effective-graph-resistance 0 "C(C(F)(F)F)F"
+halogengroups parse --limit-effective-graph-resistance 0 "C(C(F)(F)F)F"
 
 # Compute resistance only for components below a size threshold
-pfasgroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
+halogengroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
 ```
 
 ## Quick Start
@@ -85,7 +86,7 @@ pfasgroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
 ### Python API
 
 ```python
-from PFASgroups import parse_smiles, generate_fingerprint
+from HalogenGroups import parse_smiles, generate_fingerprint
 
 # Parse PFAS structures
 smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
@@ -96,6 +97,11 @@ fingerprints, group_info = generate_fingerprint(smiles_list)
 
 # New in v2.2.4: Advanced fingerprint analysis
 fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
+
+# Filter components by halogen, form, and saturation
+results_f = parse_smiles(smiles_list, halogens='F')  # Fluorine only
+results_pfa = parse_smiles(smiles_list, halogens='F', saturation='per', form='alkyl')  # Perfluoroalkyl only
+results_cyclic = parse_smiles(smiles_list, form='cyclic')  # Cyclic forms only
 
 # Dimensionality reduction
 pca_results = fp.perform_pca(n_components=5, plot=True)
@@ -136,13 +142,59 @@ prioritized = prioritise_molecules(
 
 ```bash
 # Parse SMILES strings
-pfasgroups parse "C(C(F)(F)F)F" "FC(F)(F)C(F)(F)C(=O)O"
+halogengroups parse "C(C(F)(F)F)F" "FC(F)(F)C(F)(F)C(=O)O"
 
 # Generate fingerprints
-pfasgroups fingerprint "C(C(F)(F)F)F" --format dict
+halogengroups fingerprint "C(C(F)(F)F)F" --format dict
 
 # List available PFAS groups
-pfasgroups list-groups
+halogengroups list-groups
+```
+
+### Filtering Components by Halogen, Form, and Saturation
+
+Filter component matches by specific halogens, chemical forms, or saturation levels:
+
+```python
+from HalogenGroups import parse_smiles
+
+smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O", "C(C(Cl)(Cl)Cl)Cl"]
+
+# Filter only fluorine components
+results_f = parse_smiles(smiles_list, halogens='F')
+
+# Filter perfluorinated alkyl compounds
+results_pfa = parse_smiles(smiles_list, halogens='F', saturation='per', form='alkyl')
+
+# Filter polyfluorinated cyclic compounds
+results_polyf_cyclic = parse_smiles(smiles_list, halogens='F', saturation='poly', form='cyclic')
+
+# Filter multiple halogens (F and Cl)
+results_multi = parse_smiles(smiles_list, halogens=['F', 'Cl'])
+
+# Valid filter options:
+# - halogens: 'F', 'Cl', 'Br', 'I', or list like ['F', 'Cl']
+# - saturation: 'per' or 'poly' (or list like ['per', 'poly'] for both)
+# - form: 'alkyl' or 'cyclic' (or list like ['alkyl', 'cyclic'] for both)
+```
+
+CLI equivalents:
+
+```bash
+# Filter for fluorine components only
+halogengroups parse --halogens F "C(C(F)(F)F)F"
+
+# Filter for perfluorinated alkyl
+halogengroups parse --halogens F --saturation per --form alkyl "FC(F)(F)C(F)(F)C(=O)O"
+
+# Filter for multiple halogens
+halogengroups parse --halogens F Cl "C(C(F)(F)F)Cl"
+
+# Filter for cyclic forms only
+halogengroups parse --form cyclic "your_smiles_here"
+
+# Filter for polyfluorinated components
+halogengroups parse --halogens F --saturation poly "FC(F)(F)C(C(F)(F)F)C(F)(F)F"
 ```
 
 ## Custom Configuration
@@ -151,10 +203,10 @@ Use custom pathtype definitions and PFAS groups:
 
 ```python
 # Load custom files entirely
-from PFASgroups import get_componentSmartss, get_PFASGroups, parse_smiles
+from HalogenGroups import get_componentSmartss, get_HalogenGroups, parse_smiles
 
 custom_paths = get_componentSmartss(filename='my_component_smartss.json')
-custom_groups = get_PFASGroups(filename='my_groups.json')
+custom_groups = get_HalogenGroups(filename='my_groups.json')
 
 results = parse_smiles(
     ["C(C(F)(F)F)F"],
@@ -165,17 +217,19 @@ results = parse_smiles(
 
 ```python
 # Or extend defaults with your custom groups
-from PFASgroups import get_PFASGroups, PFASGroup, parse_smiles, compile_componentSmarts, get_componentSmartss
+from HalogenGroups import get_HalogenGroups, HalogenGroup, parse_smiles, compile_componentSmarts, get_componentSmartss
 
 # Add custom PFAS groups
-groups = get_PFASGroups()  # Get defaults
-groups.append(PFASGroup(
+groups = get_HalogenGroups()  # Get defaults
+groups.append(HalogenGroup(
     id=999,
     name="My Custom Group",
-    smarts1="[C](F)(F)F",
-    smarts2="[N+](=O)[O-]",
-    componentSmarts="Perfluoroalkyl",
-    constraints={"nF": [3, None]}
+    smarts={"[C](F)(F)F":1}
+    componentSmarts="None,
+    componentSaturation="per",
+    componentHalogen="F",
+    componentForm="alkyl",
+    constraints={"gte":{"F":1}}
 ))
 
 results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
@@ -228,6 +282,7 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+- **Version 3.1.0**: Added support for other halogens, changed names to be more generic (with some support for backward compatibility). Added component smarts for other halogens, cyclic and alkyl components.
 
 - **Version 2.2.4 (Feb 2026)**: Advanced fingerprint analysis with dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP), KL divergence comparison for dataset similarity assessment, and SQL persistence for fingerprints and results. Added molecule prioritization tool for screening applications, ranking by similarity to reference lists or by intrinsic fluorination properties. Includes new `ResultsFingerprint` class with comprehensive analysis methods, automated plot generation, and extensive documentation.
 

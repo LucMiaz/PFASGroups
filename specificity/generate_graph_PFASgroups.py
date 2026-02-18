@@ -1,4 +1,4 @@
-# generate graph of PFASgroups based on file test/specificity_test_groups.json
+# generate graph of HalogenGroups based on file test/specificity_test_groups.json
 import json
 import networkx as nx
 import matplotlib.pyplot as plt

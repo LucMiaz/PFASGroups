@@ -7,13 +7,12 @@ from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from typing import Union, List, Dict
 from rdkit import rdBase
 
-PATH_NAMES = ['Perfluoroalkyl','Polyfluoroalkyl']
 # --- Load SMARTS paths from component_smarts.json ---
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(MODULE_DIR, 'data')
-PFAS_GROUPS_FILE = os.path.join(DATA_DIR, 'PFAS_groups_smarts.json')
+HALOGEN_GROUPS_FILE = os.path.join(DATA_DIR, 'Halogen_groups_smarts.json')
 PFAS_DEFINITIONS_FILE = os.path.join(DATA_DIR, 'PFAS_definitions_smarts.json')
-FCOMPONENTS_FILE = os.path.join(DATA_DIR, 'component_smarts.json')
+COMPONENTS_FILE = os.path.join(DATA_DIR, 'component_smarts_halogens.json')
 
 def rdkit_disable_log(level='warning'):
     """Disable RDKit warnings and errors logging to stderr"""
@@ -237,29 +236,68 @@ def get_substruct(_mol:Chem.Mol,struct:Chem.Mol):
     return set([x[0] for x in _mol.GetSubstructMatches(struct)])
 
 
+def preprocess_componentsSmarts(components):
+    """Preprocess component SMARTS to be ready to use in the algorithm
+    Used by default for groups in Halogen_groups_smarts.json
+    In case you submit your own components, they should follow the same structure, and you should preprocess your dictionary with this function before passing it to parse_mol"""
+    _paths={}
+    for halogen, parts in components.items():
+        for form, saturations in parts.items():
+            for saturation, names in saturations.items():        
+                s = names['component']
+                n = names['name']
+                smol = Chem.MolFromSmarts(s)
+                smol.UpdatePropertyCache()
+                Chem.GetSymmSSSR(smol)
+                smol.GetRingInfo().NumRings()
+                _paths[n] = {"component": smol, "halogen": halogen, "form": form, "saturation": saturation}
+    return _paths
 
 # --- Add SMARTS paths to function ---
-def add_componentSmarts(filename = FCOMPONENTS_FILE):
-    """Yields SMARTS for chains"""
+def add_componentSmarts(filename = COMPONENTS_FILE):
+    """Yields SMARTS for chains
+    
+    Supports filtering by halogen, form, and saturation via kwargs:
+    - halogens: str or list of str, element symbols (e.g., 'F', ['F', 'Cl'])
+    - form: str or list of str, form types (e.g., 'alkyl', ['alkyl', 'cyclic'])
+    - saturation: str or list of str, saturation types (e.g., 'per', 'poly')
+    """
     paths = {}
     with open(filename,'r') as f:
-        fcomponents = json.load(f)
-    names = fcomponents.keys()
-    for n in names:
-        s = fcomponents[n]['component']
-        e = fcomponents[n]['end']
-        smol = Chem.MolFromSmarts(s)
-        smol.UpdatePropertyCache()
-        Chem.GetSymmSSSR(smol)
-        smol.GetRingInfo().NumRings()
-        emol = Chem.MolFromSmarts(e)
-        emol.UpdatePropertyCache()
-        Chem.GetSymmSSSR(emol)
-        emol.GetRingInfo().NumRings()
-        paths[n] = [smol,emol]
+        Hcomponents = json.load(f)
+    paths = preprocess_componentsSmarts(Hcomponents)
     def inner(func):
         def wrapper(*args,**kwargs):
-            kwargs["componentSmartss"] = kwargs.get("componentSmartss",paths)
+            # Extract filter parameters
+            halogens = kwargs.pop('halogens', None)
+            form = kwargs.pop('form', None)
+            saturation = kwargs.pop('saturation', None)
+            
+            # Normalize filters to lists
+            if halogens is not None:
+                halogens = [halogens] if isinstance(halogens, str) else list(halogens)
+            if form is not None:
+                form = [form] if isinstance(form, str) else list(form)
+            if saturation is not None:
+                saturation = [saturation] if isinstance(saturation, str) else list(saturation)
+            
+            # Filter paths if any filters are specified
+            filtered_paths = paths
+            if halogens or form or saturation:
+                filtered_paths = {}
+                for name, path_info in paths.items():
+                    # Check halogen filter
+                    if halogens is not None and path_info['halogen'] not in halogens:
+                        continue
+                    # Check form filter
+                    if form is not None and path_info['form'] not in form:
+                        continue
+                    # Check saturation filter
+                    if saturation is not None and path_info['saturation'] not in saturation:
+                        continue
+                    filtered_paths[name] = path_info
+            
+            kwargs["componentSmartss"] = kwargs.get("componentSmartss", filtered_paths)
             return func(*args, **kwargs)
         return wrapper
     return inner

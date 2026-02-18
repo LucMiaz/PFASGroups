@@ -8,8 +8,8 @@ with open('../reports/timing_analysis.json', 'r') as f:
 
 print("Timing Analysis Data:")
 print(f"Total molecules: {data['summary']['total_molecules']}")
-print(f"PFASgroups avg: {data['summary']['pfasgroups_avg_time']:.1f} ms")
-print(f"PFASgroups std: {data['summary']['pfasgroups_std_time']:.1f} ms")
+print(f"HalogenGroups avg: {data['summary']['HalogenGroups_avg_time']:.1f} ms")
+print(f"HalogenGroups std: {data['summary']['HalogenGroups_std_time']:.1f} ms")
 print(f"Atlas avg: {data['summary']['atlas_avg_time']:.1f} ms")
 print(f"Atlas std: {data['summary']['atlas_std_time']:.1f} ms")
 print(f"Speed ratio: {data['summary']['speed_ratio']:.3f}")
@@ -44,9 +44,9 @@ if files:
             atlas_times = []
             
             for mol in molecules:
-                if 'num_atoms' in mol and 'pfasgroups_time' in mol and 'atlas_time' in mol:
+                if 'num_atoms' in mol and 'HalogenGroups_time' in mol and 'atlas_time' in mol:
                     atom_counts.append(mol['num_atoms'])
-                    pfas_times.append(mol['pfasgroups_time'] * 1000)  # Convert to ms
+                    pfas_times.append(mol['HalogenGroups_time'] * 1000)  # Convert to ms
                     atlas_times.append(mol['atlas_time'] * 1000)
             
             if atom_counts:
@@ -55,7 +55,7 @@ if files:
                 atlas_times = np.array(atlas_times)
                 
                 print(f"\nAtom count range: {atom_counts.min()}-{atom_counts.max()}")
-                print(f"PFASgroups time range: {pfas_times.min():.1f}-{pfas_times.max():.1f} ms")
+                print(f"HalogenGroups time range: {pfas_times.min():.1f}-{pfas_times.max():.1f} ms")
                 
                 # Define models
                 def exponential_model(x, a, b):
@@ -72,7 +72,7 @@ if files:
                 
                 # Fit models
                 print("\n" + "="*60)
-                print("PFASGROUPS SCALING ANALYSIS")
+                print("HalogenGroupS SCALING ANALYSIS")
                 print("="*60)
                 
                 try:
@@ -126,7 +126,7 @@ if files:
                     mask = (atom_counts >= low) & (atom_counts < high)
                     if np.sum(mask) > 0:
                         print(f"\n{low}-{high} atoms ({np.sum(mask)} molecules):")
-                        print(f"  PFASgroups: {pfas_times[mask].mean():.1f} ± {pfas_times[mask].std():.1f} ms")
+                        print(f"  HalogenGroups: {pfas_times[mask].mean():.1f} ± {pfas_times[mask].std():.1f} ms")
                         print(f"  Atlas:      {atlas_times[mask].mean():.1f} ± {atlas_times[mask].std():.1f} ms")
                         print(f"  Ratio:      {pfas_times[mask].mean() / atlas_times[mask].mean():.2f}×")
 else:

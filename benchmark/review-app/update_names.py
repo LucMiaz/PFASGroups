@@ -2,7 +2,7 @@ import json
 import os
 
 # Read the PFAS groups data
-json_path = os.path.join('..', '..', 'PFASgroups', 'data', 'PFAS_groups_smarts.json')
+json_path = os.path.join('..', '..', 'HalogenGroups', 'data', 'PFAS_groups_smarts.json')
 with open(json_path, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
@@ -18,8 +18,8 @@ for item in data:
 
 js_content += "};\n"
 
-# Write to the pfasGroupNames.js file
-output_path = os.path.join('client', 'src', 'data', 'pfasGroupNames.js')
+# Write to the HalogenGroupNames.js file
+output_path = os.path.join('client', 'src', 'data', 'HalogenGroupNames.js')
 with open(output_path, 'w', encoding='utf-8') as f:
     f.write(js_content)
 

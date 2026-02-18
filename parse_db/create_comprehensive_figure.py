@@ -28,7 +28,7 @@ conn = psycopg2.connect(
 # Get data
 df_top_groups = pd.read_sql('''
     SELECT group_name, COUNT(*) as count 
-    FROM pfasgroups_in_molecules 
+    FROM HalogenGroups_in_molecules 
     GROUP BY group_name 
     ORDER BY count DESC 
     LIMIT 10
@@ -38,7 +38,7 @@ df_groups_per_mol = pd.read_sql('''
     SELECT num_groups, COUNT(*) as num_molecules
     FROM (
         SELECT molecule_id, COUNT(DISTINCT group_id) as num_groups
-        FROM pfasgroups_in_molecules
+        FROM HalogenGroups_in_molecules
         GROUP BY molecule_id
     ) t
     GROUP BY num_groups
@@ -53,7 +53,7 @@ df_categories = pd.read_sql('''
             WHEN group_id BETWEEN 74 AND 116 THEN 'Telomer'
         END as category,
         COUNT(*) as count
-    FROM pfasgroups_in_molecules
+    FROM HalogenGroups_in_molecules
     GROUP BY category
 ''', conn)
 

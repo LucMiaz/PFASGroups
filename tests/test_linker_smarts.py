@@ -9,7 +9,7 @@ and max_dist_from_CF=12 to allow for various chain lengths.
 
 import pytest
 from rdkit import Chem
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 # Test cases for fluorotelomer alcohols with different CH2 chain lengths
 test_cases = [
@@ -39,7 +39,7 @@ def test_linker_smarts_group_15(smiles, description, ch2_count, should_match):
         group_15_found = False
     else:
         matches = result[0]['matches']
-        pfas_groups = [m for m in matches if m['type'] == 'PFASgroup']
+        pfas_groups = [m for m in matches if m['type'] == 'HalogenGroup']
         group_15_found = any(m['id'] == 15 for m in pfas_groups)
 
     assert group_15_found == should_match, f"{description}"

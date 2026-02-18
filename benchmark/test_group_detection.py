@@ -2,11 +2,11 @@
 """Test detection of problematic groups"""
 
 from rdkit import Chem
-from PFASgroups.parser import parse_mol
+from HalogenGroups.parser import parse_mol
 import json
 
 # Load group definitions
-with open('/home/luc/git/PFASGroups/PFASgroups/data/PFAS_groups_smarts.json', 'r') as f:
+with open('/home/luc/git/HalogenGroups/HalogenGroups/data/PFAS_groups_smarts.json', 'r') as f:
     groups_data = json.load(f)
     groups_dict = {g['id']: g for g in groups_data}
 

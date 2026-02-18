@@ -40,26 +40,36 @@ ResultsModel Methods
 to_fingerprint()
 ^^^^^^^^^^^^^^^^
 
-.. py:method:: ResultsModel.to_fingerprint(group_selection='all', count_mode='binary', selected_group_ids=None)
+.. py:method:: ResultsModel.to_fingerprint(group_selection='all', count_mode='binary', selected_group_ids=None, halogens='F', saturation='per')
 
    Convert ResultsModel to ResultsFingerprint for analysis.
    
    :param group_selection: Group selection mode
    :type group_selection: str
-   :param count_mode: Encoding mode ('binary', 'count', 'max_component')
+   :param count_mode: Encoding mode (``'binary'``, ``'count'``, ``'max_component'``)
    :type count_mode: str
-   :param selected_group_ids: Custom list of group IDs
+   :param selected_group_ids: Custom list of group IDs (overrides group_selection)
    :type selected_group_ids: list, optional
+   :param halogens: Halogen(s) to use for component SMARTS matching.
+       Single value → 116-column fingerprint.
+       List of values → vectors stacked per halogen (length 116 × n_halogens),
+       with group names suffixed ``[F]``, ``[Cl]``, etc.
+   :type halogens: str or list of str
+   :param saturation: Saturation filter for component SMARTS groups.
+       ``'per'`` (perfluorinated/perhalogenated), ``'poly'`` (polyfluorinated/
+       polyhalogenated), or ``None`` (no filter). Groups without component SMARTS
+       are unaffected.
+   :type saturation: str or None
    :returns: ResultsFingerprint object
    :rtype: ResultsFingerprint
    
    **Group Selection Options:**
    
-   - ``'all'`` (default): All 55 groups
-   - ``'oecd'``: OECD-defined groups (1-28)
-   - ``'generic'``: Generic functional groups (29-55)
-   - ``'telomers'``: Telomer-related groups
-   - ``'generic+telomers'``: Combined selection
+   - ``'all'`` (default): All 116 computable groups
+   - ``'oecd'``: OECD-defined groups (IDs 1–28, 28 groups)
+   - ``'generic'``: Generic functional groups (IDs 29–55, 27 groups)
+   - ``'telomers'``: Telomer-related groups (IDs 74–116, 42 groups)
+   - ``'generic+telomers'``: Combined selection (69 groups)
    
    **Count Modes:**
    
@@ -71,14 +81,20 @@ to_fingerprint()
    
    .. code-block:: python
    
-      # OECD groups with binary encoding
-      fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
+      # Default: F only, per-saturation, 116 groups → shape (n, 116)
+      fp = results.to_fingerprint()
       
-      # Custom groups with count encoding
-      fp = results.to_fingerprint(
-          selected_group_ids=[1, 2, 5, 10, 15],
-          count_mode='count'
-      )
+      # Stacked F + Cl fingerprint → shape (n, 232)
+      fp = results.to_fingerprint(halogens=['F', 'Cl'])
+      
+      # Polyfluorinated components only
+      fp = results.to_fingerprint(halogens='F', saturation='poly')
+      
+      # OECD groups with count encoding
+      fp = results.to_fingerprint(group_selection='oecd', count_mode='count')
+      
+      # Custom groups
+      fp = results.to_fingerprint(selected_group_ids=[1, 2, 5, 10, 15])
 
 from_sql()
 ^^^^^^^^^^

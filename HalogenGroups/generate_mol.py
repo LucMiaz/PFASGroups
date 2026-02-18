@@ -1,5 +1,5 @@
 """
-Molecule generation utilities for PFASgroups.
+Molecule generation utilities for HalogenGroups.
 
 This module provides functions to generate random PFAS-like molecules by:
 - Creating carbon chain backbones (linear, cyclic, with multiple bonds)

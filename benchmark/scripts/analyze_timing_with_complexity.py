@@ -73,11 +73,11 @@ def calculate_complexity_correlations(timing_results, complexity_data):
     """Calculate correlations between complexity metrics and timing"""
     
     # Extract timing data
-    if 'pfasgroups_time_avg' in timing_results[0]:
-        pfas_times = np.array([r['pfasgroups_time_avg'] * 1000 for r in timing_results])
+    if 'HalogenGroups_time_avg' in timing_results[0]:
+        pfas_times = np.array([r['HalogenGroups_time_avg'] * 1000 for r in timing_results])
         atlas_times = np.array([r['atlas_time_avg'] * 1000 for r in timing_results])
     else:
-        pfas_times = np.array([r['pfasgroups_time'] * 1000 for r in timing_results])
+        pfas_times = np.array([r['HalogenGroups_time'] * 1000 for r in timing_results])
         atlas_times = np.array([r['atlas_time'] * 1000 for r in timing_results])
     
     num_atoms = np.array([r['num_atoms'] for r in timing_results])
@@ -94,7 +94,7 @@ def calculate_complexity_correlations(timing_results, complexity_data):
     for metric, values in complexity_data.items():
         values_array = np.array(values)
         
-        # PFASGroups correlation
+        # HalogenGroups correlation
         pfas_corr, pfas_pval = scipy_stats.pearsonr(values_array, pfas_times)
         
         # Atlas correlation
@@ -119,7 +119,7 @@ def calculate_complexity_correlations(timing_results, complexity_data):
     corr_df = pd.DataFrame(correlations)
     
     print(f"\n🔗 Correlation Analysis (Complexity Metrics vs Timing):")
-    print(f"\nTop correlations with PFASGroups timing:")
+    print(f"\nTop correlations with HalogenGroups timing:")
     pfas_top = corr_df.nlargest(5, 'pfas_correlation')[['metric', 'pfas_correlation', 'pfas_pvalue']]
     for _, row in pfas_top.iterrows():
         sig = "***" if row['pfas_pvalue'] < 0.001 else "**" if row['pfas_pvalue'] < 0.01 else "*" if row['pfas_pvalue'] < 0.05 else ""
@@ -139,14 +139,14 @@ def create_complexity_scatter_plot(timing_results, complexity_data):
     complexity_scores = complexity_data['complexity_score']
     
     # Handle both old and new timing format
-    if 'pfasgroups_time_avg' in timing_results[0]:
-        pfas_times_ms = [r['pfasgroups_time_avg'] * 1000 for r in timing_results]
+    if 'HalogenGroups_time_avg' in timing_results[0]:
+        pfas_times_ms = [r['HalogenGroups_time_avg'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time_avg'] * 1000 for r in timing_results]
-        pfas_errors = [r.get('pfasgroups_time_std', 0) * 1000 for r in timing_results]
+        pfas_errors = [r.get('HalogenGroups_time_std', 0) * 1000 for r in timing_results]
         atlas_errors = [r.get('atlas_time_std', 0) * 1000 for r in timing_results]
         has_error_bars = any(pfas_errors) or any(atlas_errors)
     else:
-        pfas_times_ms = [r['pfasgroups_time'] * 1000 for r in timing_results]
+        pfas_times_ms = [r['HalogenGroups_time'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time'] * 1000 for r in timing_results]
         pfas_errors = None
         atlas_errors = None
@@ -156,12 +156,12 @@ def create_complexity_scatter_plot(timing_results, complexity_data):
     
     fig = go.Figure()
     
-    # PFASGroups scatter
+    # HalogenGroups scatter
     pfas_trace_args = {
         'x': complexity_scores,
         'y': pfas_times_ms,
         'mode': 'markers',
-        'name': 'PFASGroups',
+        'name': 'HalogenGroups',
         'marker': dict(
             color=num_atoms,
             colorscale='Blues',
@@ -172,7 +172,7 @@ def create_complexity_scatter_plot(timing_results, complexity_data):
         'text': [f"Complexity: {cs:.2f}, Atoms: {na}, Time: {pt:.2f}ms" + 
                 (f" ±{pe:.2f}ms" if has_error_bars and pe > 0 else "")
                 for cs, na, pt, pe in zip(complexity_scores, num_atoms, pfas_times_ms, pfas_errors or [0]*len(pfas_times_ms))],
-        'hovertemplate': '%{text}<extra>PFASGroups</extra>'
+        'hovertemplate': '%{text}<extra>HalogenGroups</extra>'
     }
     
     if has_error_bars and pfas_errors:
@@ -231,7 +231,7 @@ def create_correlation_heatmap(corr_df):
     fig = go.Figure(data=go.Heatmap(
         z=correlation_matrix,
         x=metrics,
-        y=['PFASGroups', 'PFAS-Atlas'],
+        y=['HalogenGroups', 'PFAS-Atlas'],
         colorscale='RdBu',
         zmid=0,
         text=correlation_matrix,
@@ -272,11 +272,11 @@ def create_complexity_breakdown_plot(timing_results, complexity_data):
             categories.append('High (Q4)')
     
     # Extract timing data
-    if 'pfasgroups_time_avg' in timing_results[0]:
-        pfas_times_ms = np.array([r['pfasgroups_time_avg'] * 1000 for r in timing_results])
+    if 'HalogenGroups_time_avg' in timing_results[0]:
+        pfas_times_ms = np.array([r['HalogenGroups_time_avg'] * 1000 for r in timing_results])
         atlas_times_ms = np.array([r['atlas_time_avg'] * 1000 for r in timing_results])
     else:
-        pfas_times_ms = np.array([r['pfasgroups_time'] * 1000 for r in timing_results])
+        pfas_times_ms = np.array([r['HalogenGroups_time'] * 1000 for r in timing_results])
         atlas_times_ms = np.array([r['atlas_time'] * 1000 for r in timing_results])
     
     # Calculate statistics by category
@@ -306,7 +306,7 @@ def create_complexity_breakdown_plot(timing_results, complexity_data):
     # Timing comparison
     fig.add_trace(
         go.Bar(
-            name='PFASGroups',
+            name='HalogenGroups',
             x=category_order,
             y=[s['mean'] for s in pfas_stats],
             error_y=dict(type='data', array=[s['std'] for s in pfas_stats]),
@@ -361,10 +361,10 @@ def create_multi_metric_analysis(timing_results, complexity_data):
         ('avg_betweenness', 'Avg Betweenness')
     ]
     
-    if 'pfasgroups_time_avg' in timing_results[0]:
-        pfas_times_ms = [r['pfasgroups_time_avg'] * 1000 for r in timing_results]
+    if 'HalogenGroups_time_avg' in timing_results[0]:
+        pfas_times_ms = [r['HalogenGroups_time_avg'] * 1000 for r in timing_results]
     else:
-        pfas_times_ms = [r['pfasgroups_time'] * 1000 for r in timing_results]
+        pfas_times_ms = [r['HalogenGroups_time'] * 1000 for r in timing_results]
     
     fig = make_subplots(
         rows=2, cols=2,
@@ -392,10 +392,10 @@ def create_multi_metric_analysis(timing_results, complexity_data):
         )
         
         fig.update_xaxes(title_text=metric_name, row=row, col=col)
-        fig.update_yaxes(title_text="PFASGroups Time (ms)", row=row, col=col)
+        fig.update_yaxes(title_text="HalogenGroups Time (ms)", row=row, col=col)
     
     fig.update_layout(
-        title="Individual Complexity Metrics vs Timing<br><sub>PFASGroups execution time vs different graph metrics</sub>",
+        title="Individual Complexity Metrics vs Timing<br><sub>HalogenGroups execution time vs different graph metrics</sub>",
         width=1400,
         height=900
     )
@@ -412,15 +412,15 @@ def analyze_timing_performance(timing_results):
     num_bonds = [r['num_bonds'] for r in timing_results]
     
     # Handle both old single-run and new multi-iteration format
-    if 'pfasgroups_time_avg' in timing_results[0]:  # New format with iterations
-        pfas_times_ms = [r['pfasgroups_time_avg'] * 1000 for r in timing_results]
+    if 'HalogenGroups_time_avg' in timing_results[0]:  # New format with iterations
+        pfas_times_ms = [r['HalogenGroups_time_avg'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time_avg'] * 1000 for r in timing_results]
-        pfas_stds_ms = [r.get('pfasgroups_time_std', 0) * 1000 for r in timing_results]
+        pfas_stds_ms = [r.get('HalogenGroups_time_std', 0) * 1000 for r in timing_results]
         atlas_stds_ms = [r.get('atlas_time_std', 0) * 1000 for r in timing_results]
         iterations = timing_results[0].get('iterations', 1)
         system_specs = timing_results[0].get('system_specs', {})
     else:  # Old format for backward compatibility
-        pfas_times_ms = [r['pfasgroups_time'] * 1000 for r in timing_results]
+        pfas_times_ms = [r['HalogenGroups_time'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time'] * 1000 for r in timing_results]
         pfas_stds_ms = [0] * len(timing_results)
         atlas_stds_ms = [0] * len(timing_results)
@@ -431,10 +431,10 @@ def analyze_timing_performance(timing_results):
     stats = {
         'total_molecules': len(timing_results),
         'iterations_per_molecule': iterations,
-        'pfasgroups_avg_time': np.mean(pfas_times_ms),
-        'pfasgroups_std_time': np.std(pfas_times_ms),
-        'pfasgroups_median_time': np.median(pfas_times_ms),
-        'pfasgroups_avg_std': np.mean(pfas_stds_ms),
+        'HalogenGroups_avg_time': np.mean(pfas_times_ms),
+        'HalogenGroups_std_time': np.std(pfas_times_ms),
+        'HalogenGroups_median_time': np.median(pfas_times_ms),
+        'HalogenGroups_avg_std': np.mean(pfas_stds_ms),
         'atlas_avg_time': np.mean(atlas_times_ms),
         'atlas_std_time': np.std(atlas_times_ms),
         'atlas_median_time': np.median(atlas_times_ms),
@@ -450,12 +450,12 @@ def analyze_timing_performance(timing_results):
     print(f"   • Total molecules tested: {stats['total_molecules']}")
     print(f"   • Iterations per molecule: {stats['iterations_per_molecule']}")
     if iterations > 1:
-        print(f"   • PFASGroups: {stats['pfasgroups_avg_time']:.2f}±{stats['pfasgroups_std_time']:.2f}ms avg (median: {stats['pfasgroups_median_time']:.2f}ms)")
+        print(f"   • HalogenGroups: {stats['HalogenGroups_avg_time']:.2f}±{stats['HalogenGroups_std_time']:.2f}ms avg (median: {stats['HalogenGroups_median_time']:.2f}ms)")
         print(f"   • PFAS-Atlas: {stats['atlas_avg_time']:.2f}±{stats['atlas_std_time']:.2f}ms avg (median: {stats['atlas_median_time']:.2f}ms)")
     else:
-        print(f"   • PFASGroups: {stats['pfasgroups_avg_time']:.2f}±{stats['pfasgroups_std_time']:.2f}ms avg")
+        print(f"   • HalogenGroups: {stats['HalogenGroups_avg_time']:.2f}±{stats['HalogenGroups_std_time']:.2f}ms avg")
         print(f"   • PFAS-Atlas: {stats['atlas_avg_time']:.2f}±{stats['atlas_std_time']:.2f}ms avg")
-    print(f"   • Speed ratio: {stats['speed_ratio']:.1f}x (Atlas/PFASGroups)")
+    print(f"   • Speed ratio: {stats['speed_ratio']:.1f}x (Atlas/HalogenGroups)")
     print(f"   • Atom count range: {stats['atom_count_range'][0]}-{stats['atom_count_range'][1]}")
     
     return stats
@@ -534,7 +534,7 @@ def main():
         "summary": {
             "total_molecules": stats['total_molecules'],
             "iterations": stats['iterations_per_molecule'],
-            "pfasgroups_avg_time": stats['pfasgroups_avg_time'],
+            "HalogenGroups_avg_time": stats['HalogenGroups_avg_time'],
             "atlas_avg_time": stats['atlas_avg_time'],
             "speed_ratio": stats['speed_ratio'],
             "timestamp": timestamp
@@ -585,7 +585,7 @@ def main():
     pfas_strongest = corr_df.loc[corr_df['pfas_correlation'].idxmax()]
     atlas_strongest = corr_df.loc[corr_df['atlas_correlation'].idxmax()]
     
-    print(f"   • Strongest predictor of PFASGroups timing: {pfas_strongest['metric']} (r={pfas_strongest['pfas_correlation']:.3f})")
+    print(f"   • Strongest predictor of HalogenGroups timing: {pfas_strongest['metric']} (r={pfas_strongest['pfas_correlation']:.3f})")
     print(f"   • Strongest predictor of Atlas timing: {atlas_strongest['metric']} (r={atlas_strongest['atlas_correlation']:.3f})")
     
     # Check if complexity is better than atom count
@@ -594,7 +594,7 @@ def main():
     
     if complexity_row['pfas_correlation'] > atom_row['pfas_correlation']:
         improvement = ((complexity_row['pfas_correlation'] - atom_row['pfas_correlation']) / atom_row['pfas_correlation']) * 100
-        print(f"   • Complexity score is {improvement:.1f}% better predictor than atom count for PFASGroups")
+        print(f"   • Complexity score is {improvement:.1f}% better predictor than atom count for HalogenGroups")
     
     if complexity_row['atlas_correlation'] > atom_row['atlas_correlation']:
         improvement = ((complexity_row['atlas_correlation'] - atom_row['atlas_correlation']) / atom_row['atlas_correlation']) * 100

@@ -1,5 +1,5 @@
 import json
-with open('../../PFASgroups/data/PFAS_groups_smarts.json','r') as f:
+with open('../../HalogenGroups/data/PFAS_groups_smarts.json','r') as f:
     data = json.load(f)
 print(f"Loaded {len(data)} PFAS groups")
 
@@ -34,11 +34,11 @@ for group in telomers:
     new_data.append({k:v for k,v in group.items() if k not in ['main_group','base_functional_groups']})
     id +=1
 
-with open('../../PFASgroups/data/PFAS_groups_smarts_old.json','w') as f:
+with open('../../HalogenGroups/data/PFAS_groups_smarts_old.json','w') as f:
     json.dump(data,f, indent=4)
-with open('../../PFASgroups/data/PFAS_groups_smarts.json','w') as f:
+with open('../../HalogenGroups/data/PFAS_groups_smarts.json','w') as f:
     json.dump(new_data,f, indent=4)
-with open('../../../PFASgroupsJS/data/PFAS_groups_smarts_reordered.json','w') as f:
+with open('../../../HalogenGroupsJS/data/PFAS_groups_smarts_reordered.json','w') as f:
     json.dump(new_data_JS,f, indent=4)
 print(f"Reordered PFAS groups saved. Total groups: {len(new_data)}")
 with open('../data/PFAS_group_id_mapping.json','w') as f:

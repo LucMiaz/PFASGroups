@@ -38,17 +38,17 @@ def analyze_timing_performance(timing_results):
     num_bonds = [r['num_bonds'] for r in timing_results]
     
     # Handle both old single-run and new multi-iteration format
-    if 'pfasgroups_time_avg' in timing_results[0]:  # New format with iterations
-        pfas_times_ms = [r['pfasgroups_time_avg'] * 1000 for r in timing_results]
+    if 'HalogenGroup_time_avg' in timing_results[0]:  # New format with iterations
+        pfas_times_ms = [r['HalogenGroup_time_avg'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time_avg'] * 1000 for r in timing_results]
-        pfas_stds_ms = [r.get('pfasgroups_time_std', 0) * 1000 for r in timing_results]
+        pfas_stds_ms = [r.get('HalogenGroup_time_std', 0) * 1000 for r in timing_results]
         atlas_stds_ms = [r.get('atlas_time_std', 0) * 1000 for r in timing_results]
         iterations = timing_results[0].get('iterations', 1)
         
         # Extract system specifications if available
         system_specs = timing_results[0].get('system_specs', {})
     else:  # Old format for backward compatibility
-        pfas_times_ms = [r['pfasgroups_time'] * 1000 for r in timing_results]
+        pfas_times_ms = [r['HalogenGroup_time'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time'] * 1000 for r in timing_results]
         pfas_stds_ms = [0] * len(timing_results)
         atlas_stds_ms = [0] * len(timing_results)
@@ -59,10 +59,10 @@ def analyze_timing_performance(timing_results):
     stats = {
         'total_molecules': len(timing_results),
         'iterations_per_molecule': iterations,
-        'pfasgroups_avg_time': np.mean(pfas_times_ms),
-        'pfasgroups_std_time': np.std(pfas_times_ms),
-        'pfasgroups_median_time': np.median(pfas_times_ms),
-        'pfasgroups_avg_std': np.mean(pfas_stds_ms),  # Average of individual std devs
+        'HalogenGroup_avg_time': np.mean(pfas_times_ms),
+        'HalogenGroup_std_time': np.std(pfas_times_ms),
+        'HalogenGroup_median_time': np.median(pfas_times_ms),
+        'HalogenGroup_avg_std': np.mean(pfas_stds_ms),  # Average of individual std devs
         'atlas_avg_time': np.mean(atlas_times_ms),
         'atlas_std_time': np.std(atlas_times_ms),
         'atlas_median_time': np.median(atlas_times_ms),
@@ -78,12 +78,12 @@ def analyze_timing_performance(timing_results):
     print(f"   • Total molecules tested: {stats['total_molecules']}")
     print(f"   • Iterations per molecule: {stats['iterations_per_molecule']}")
     if iterations > 1:
-        print(f"   • PFASGroups: {stats['pfasgroups_avg_time']:.2f}±{stats['pfasgroups_std_time']:.2f}ms avg (median: {stats['pfasgroups_median_time']:.2f}ms) | Individual std: {stats['pfasgroups_avg_std']:.2f}ms")
+        print(f"   • HalogenGroup: {statHalogenGroupnGroups_avg_time']:.2f}±{sHalogenGroupogenGroups_std_time']:.2f}ms avg (median:HalogenGroupHalogenGroups_median_time']:.2f}ms) | Individual sHalogenGroups['HalogenGroups_avg_std']:.2f}ms")
         print(f"   • PFAS-Atlas: {stats['atlas_avg_time']:.2f}±{stats['atlas_std_time']:.2f}ms avg (median: {stats['atlas_median_time']:.2f}ms) | Individual std: {stats['atlas_avg_std']:.2f}ms")
     else:
-        print(f"   • PFASGroups: {stats['pfasgroups_avg_time']:.2f}±{stats['pfasgroups_std_time']:.2f}ms avg (median: {stats['pfasgroups_median_time']:.2f}ms)")
+        print(f"   • HalogenGroup: {statHalogenGroupnGroups_avg_time']:.2f}±{sHalogenGroupogenGroups_std_time']:.2f}ms avg (median:HalogenGroupHalogenGroups_median_time']:.2f}ms)")
         print(f"   • PFAS-Atlas: {stats['atlas_avg_time']:.2f}±{stats['atlas_std_time']:.2f}ms avg (median: {stats['atlas_median_time']:.2f}ms)")
-    print(f"   • Speed ratio: {stats['speed_ratio']:.1f}x (Atlas/PFASGroups)")
+    print(f"   • Speed ratio: {stats['speed_ratio']:.1f}x (Atlas/HalogenGroup)")
     print(f"   • Chain length range: {stats['chain_length_range'][0]}-{stats['chain_length_range'][1]}")
     print(f"   • Molecular weight range: {stats['mol_weight_range'][0]:.1f}-{stats['mol_weight_range'][1]:.1f}")
     print(f"   • Atom count range: {stats['atom_count_range'][0]}-{stats['atom_count_range'][1]}")
@@ -124,14 +124,14 @@ def create_timing_scatter_plot(timing_results):
     chain_lengths = [r['chain_length'] for r in timing_results]
     
     # Handle both old single-run and new multi-iteration format
-    if 'pfasgroups_time_avg' in timing_results[0]:
-        pfas_times_ms = [r['pfasgroups_time_avg'] * 1000 for r in timing_results]
+    if 'HalogenGroup_time_avg' in timing_results[0]:
+        pfas_times_ms = [r['HalogenGroup_time_avg'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time_avg'] * 1000 for r in timing_results]
-        pfas_errors = [r.get('pfasgroups_time_std', 0) * 1000 for r in timing_results]
+        pfas_errors = [r.get('HalogenGroup_time_std', 0) * 1000 for r in timing_results]
         atlas_errors = [r.get('atlas_time_std', 0) * 1000 for r in timing_results]
         has_error_bars = any(pfas_errors) or any(atlas_errors)
     else:
-        pfas_times_ms = [r['pfasgroups_time'] * 1000 for r in timing_results]
+        pfas_times_ms = [r['HalogenGroup_time'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time'] * 1000 for r in timing_results]
         pfas_errors = None
         atlas_errors = None
@@ -139,12 +139,12 @@ def create_timing_scatter_plot(timing_results):
     
     fig = go.Figure()
     
-    # PFASGroups scatter with optional error bars
+    # HalogenGroup scatter with optional error bars
     pfas_trace_args = {
         'x': num_atoms,
         'y': pfas_times_ms,
         'mode': 'markers',
-        'name': 'PFASGroups',
+        'name': 'HalogenGroup',
         'marker': dict(
             color=chain_lengths,
             colorscale='Blues',
@@ -155,7 +155,7 @@ def create_timing_scatter_plot(timing_results):
         'text': [f"Chain: {cl}, Atoms: {na}, Time: {pt:.2f}ms" + 
                 (f" ±{pe:.2f}ms" if has_error_bars and pe > 0 else "")
                 for cl, na, pt, pe in zip(chain_lengths, num_atoms, pfas_times_ms, pfas_errors or [0]*len(pfas_times_ms))],
-        'hovertemplate': '%{text}<extra>PFASGroups</extra>'
+        'hovertemplate': '%{text}<extra>HalogenGroup</extra>'
     }
     
     if has_error_bars and pfas_errors:
@@ -204,22 +204,22 @@ def create_timing_distribution_plot(timing_results):
     """Create histogram showing timing distributions"""
     
     # Handle both old and new data formats
-    if 'pfasgroups_time' in timing_results[0]:
-        pfas_times_ms = [r['pfasgroups_time'] * 1000 for r in timing_results]
+    if 'HalogenGroup_time' in timing_results[0]:
+        pfas_times_ms = [r['HalogenGroup_time'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time'] * 1000 for r in timing_results]
     else:
-        pfas_times_ms = [r['pfasgroups_time_avg'] * 1000 for r in timing_results]
+        pfas_times_ms = [r['HalogenGroup_time_avg'] * 1000 for r in timing_results]
         atlas_times_ms = [r['atlas_time_avg'] * 1000 for r in timing_results]
     
     fig = make_subplots(
         rows=2, cols=1,
-        subplot_titles=['PFASGroups Execution Time Distribution', 'PFAS-Atlas Execution Time Distribution'],
+        subplot_titles=['HalogenGroup Execution Time Distribution', 'PFAS-Atlas Execution Time Distribution'],
         vertical_spacing=0.15
     )
     
-    # PFASGroups histogram
+    # HalogenGroup histogram
     fig.add_trace(
-        go.Histogram(x=pfas_times_ms, nbinsx=30, name='PFASGroups', marker_color='lightblue'),
+        go.Histogram(x=pfas_times_ms, nbinsx=30, name='HalogenGroup', marker_color='lightblue'),
         row=1, col=1
     )
     
@@ -264,11 +264,11 @@ def create_scaling_analysis_plot(timing_results):
         
         if molecules_in_bin:
             # Handle both old format (single timing) and new format (average from multiple iterations)
-            if 'pfasgroups_time_avg' in molecules_in_bin[0]:
-                pfas_times = [r['pfasgroups_time_avg'] * 1000 for r in molecules_in_bin]
+            if 'HalogenGroup_time_avg' in molecules_in_bin[0]:
+                pfas_times = [r['HalogenGroup_time_avg'] * 1000 for r in molecules_in_bin]
                 atlas_times = [r['atlas_time_avg'] * 1000 for r in molecules_in_bin]
             else:
-                pfas_times = [r['pfasgroups_time'] * 1000 for r in molecules_in_bin]
+                pfas_times = [r['HalogenGroup_time'] * 1000 for r in molecules_in_bin]
                 atlas_times = [r['atlas_time'] * 1000 for r in molecules_in_bin]
             
             bin_data.append({
@@ -299,7 +299,7 @@ def create_scaling_analysis_plot(timing_results):
     
     # Timing comparison with error bars
     fig.add_trace(
-        go.Bar(name='PFASGroups', x=size_ranges, y=pfas_avgs, 
+        go.Bar(name='HalogenGroup', x=size_ranges, y=pfas_avgs, 
                error_y=dict(type='data', array=pfas_stds),
                marker_color='lightblue'),
         row=1, col=1
@@ -332,14 +332,14 @@ def create_scaling_analysis_plot(timing_results):
     return fig
 
 def compute_runtime_ratios(timing_results):
-    """Compute PFASGroups/Atlas runtime ratios and return valid list."""
+    """Compute HalogenGroup/Atlas runtime ratios and return valid list."""
     ratios = []
     for row in timing_results:
-        if 'pfasgroups_time_avg' in row:
-            pfas_time = row.get('pfasgroups_time_avg')
+        if 'HalogenGroup_time_avg' in row:
+            pfas_time = row.get('HalogenGroup_time_avg')
             atlas_time = row.get('atlas_time_avg')
         else:
-            pfas_time = row.get('pfasgroups_time')
+            pfas_time = row.get('HalogenGroup_time')
             atlas_time = row.get('atlas_time')
 
         if pfas_time is None or atlas_time is None or atlas_time <= 0:
@@ -348,7 +348,7 @@ def compute_runtime_ratios(timing_results):
     return ratios
 
 def create_ratio_histogram_plot(timing_results):
-    """Create histogram of PFASGroups/Atlas runtime ratios."""
+    """Create histogram of HalogenGroup/Atlas runtime ratios."""
     ratios = compute_runtime_ratios(timing_results)
     if not ratios:
         return go.Figure().update_layout(title="No data available for ratio histogram")
@@ -358,13 +358,13 @@ def create_ratio_histogram_plot(timing_results):
         go.Histogram(
             x=ratios,
             nbinsx=40,
-            name='PFASGroups/Atlas ratio',
+            name='HalogenGroup/Atlas ratio',
             marker_color='mediumpurple'
         )
     )
 
     fig.update_layout(
-        title="Runtime Ratio Distribution<br><sub>PFASGroups / PFAS-Atlas (log scale)</sub>",
+        title="Runtime Ratio Distribution<br><sub>HalogenGroup / PFAS-Atlas (log scale)</sub>",
         width=1000,
         height=600
     )
@@ -373,7 +373,7 @@ def create_ratio_histogram_plot(timing_results):
     return fig
 
 def create_ratio_summary_table(timing_results):
-    """Create a summary table for PFASGroups/Atlas runtime ratios."""
+    """Create a summary table for HalogenGroup/Atlas runtime ratios."""
     ratios = compute_runtime_ratios(timing_results)
     if not ratios:
         return go.Figure().update_layout(title="No data available for ratio summary")
@@ -579,7 +579,7 @@ def create_timing_html_report(timing_results, stats, timestamp):
     <div class="container">
         <h1>🚀 PFAS Timing Performance Analysis</h1>
         <p style="text-align: center; font-size: 1.2em; color: #666; margin-bottom: 50px;">
-            Comprehensive timing comparison: PFASGroups vs PFAS-Atlas<br>
+            Comprehensive timing comparison: HalogenGroup vs PFAS-Atlas<br>
             Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
         </p>
 
@@ -591,8 +591,8 @@ def create_timing_html_report(timing_results, stats, timestamp):
                     <div class="summary-label">Molecules<br>Tested</div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-number">{stats['pfasgroups_avg_time']:.1f}ms</div>
-                    <div class="summary-label">PFASGroups<br>Average Time</div>
+                    <div class="summary-number">{stats['HalogenGroup_avg_time']:.1f}ms</div>
+                    <div class="summary-label">HalogenGroup<br>Average Time</div>
                 </div>
                 <div class="summary-card">
                     <div class="summary-number">{stats['atlas_avg_time']:.1f}ms</div>
@@ -600,7 +600,7 @@ def create_timing_html_report(timing_results, stats, timestamp):
                 </div>
                 <div class="summary-card">
                     <div class="summary-number">{stats['speed_ratio']:.1f}x</div>
-                    <div class="summary-label">Speed Ratio<br>(Atlas/PFASGroups)</div>
+                    <div class="summary-label">Speed Ratio<br>(Atlas/HalogenGroup)</div>
                 </div>
                 <div class="summary-card">
                     <div class="summary-number">{stats['atom_count_range'][0]}-{stats['atom_count_range'][1]}</div>
@@ -670,7 +670,7 @@ def create_timing_html_report(timing_results, stats, timestamp):
         <h2>🧮 Relative Performance (Ratio)</h2>
         <div class="visualization-container">
             <div style="margin-bottom: 20px;">
-                <strong>Analysis:</strong> Distribution and summary of PFASGroups/Atlas runtime ratios.
+                <strong>Analysis:</strong> Distribution and summary of HalogenGroup/Atlas runtime ratios.
             </div>
             {ratio_hist_html}
             {ratio_table_html}
@@ -688,9 +688,9 @@ def create_timing_html_report(timing_results, stats, timestamp):
         <div class="key-finding">
             <h3>🔍 Key Performance Insights</h3>
             <ul>
-                <li><strong>Speed Comparison:</strong> {"PFASGroups is faster" if stats['speed_ratio'] > 1 else "PFAS-Atlas is faster"} 
+                <li><strong>Speed Comparison:</strong> {"HalogenGroup is faster" if stats['speed_ratio'] > 1 else "PFAS-Atlas is faster"} 
                     by a factor of {abs(stats['speed_ratio'] - 1):.1f}x</li>
-                <li><strong>Consistency:</strong> PFASGroups std dev: {stats['pfasgroups_std_time']:.2f}ms, 
+                <li><strong>Consistency:</strong> HalogenGroup std dev: {statHalogenGroupnGroups_std_time']:.2f}ms, 
                     PFAS-Atlas std dev: {stats['atlas_std_time']:.2f}ms</li>
                 <li><strong>Molecule Range:</strong> Tested molecules from {stats['atom_count_range'][0]} to {stats['atom_count_range'][1]} atoms</li>
                 <li><strong>Performance Trend:</strong> {"Both systems show similar scaling patterns" if abs(stats['speed_ratio'] - 1) < 0.5 else "Significant performance difference observed"}</li>
@@ -701,7 +701,7 @@ def create_timing_html_report(timing_results, stats, timestamp):
             <h3>🎯 Benchmark Methodology</h3>
             <p>This timing benchmark tested {stats['total_molecules']} molecules with carboxylic acid functional groups, 
                varying in chain length from {stats['chain_length_range'][0]} to {stats['chain_length_range'][1]} carbons. 
-               Each molecule was processed by both PFASGroups and PFAS-Atlas detection systems, 
+               Each molecule was processed by both HalogenGroup and PFAS-Atlas detection systems, 
                measuring execution time with high precision timing.</p>
         </div>
     </div>
@@ -774,8 +774,8 @@ def main():
     json_report = {
         "summary": {
             "total_molecules": len(timing_results),
-            "pfasgroups_avg_time": stats['pfasgroups_avg_time'],
-            "pfasgroups_std_time": stats['pfasgroups_std_time'],
+            "HalogenGroup_avg_time": statHalogenGroupnGroups_avg_time'],
+            "HalogenGroup_std_time": statHalogenGroupnGroups_std_time'],
             "atlas_avg_time": stats['atlas_avg_time'],
             "atlas_std_time": stats['atlas_std_time'],
             "speed_ratio": stats['speed_ratio'],
@@ -802,12 +802,12 @@ def main():
             {
                 "title": "Runtime Ratio Histogram",
                 "url": f"/imgs/timing_ratio_hist_{timestamp}.png",
-                "description": "Distribution of PFASGroups/Atlas runtime ratios"
+                "description": "Distribution of HalogenGroup/Atlas runtime ratios"
             },
             {
                 "title": "Runtime Ratio Summary Table",
                 "url": f"/imgs/timing_ratio_table_{timestamp}.png",
-                "description": "Summary statistics for PFASGroups/Atlas runtime ratios"
+                "description": "Summary statistics for HalogenGroup/Atlas runtime ratios"
             }
         ],
         "html_report": f"/reports/timing_analysis_{timestamp}.html"
@@ -832,12 +832,12 @@ def main():
     elif stats['speed_ratio'] > 1.5:
         print(f"   • PFAS-Atlas is moderately slower ({stats['speed_ratio']:.1f}x) - acceptable for most use cases")
     elif stats['speed_ratio'] < 0.5:
-        print(f"   • PFASGroups is significantly slower ({1/stats['speed_ratio']:.1f}x) - investigate bottlenecks")
+        print(f"   • HalogenGroup is significantly slower ({1/stats['speed_ratio']:.1f}x) - investigate bottlenecks")
     else:
         print(f"   • Both systems have comparable performance ({stats['speed_ratio']:.1f}x ratio)")
     
-    if stats['pfasgroups_std_time'] > stats['pfasgroups_avg_time'] * 0.5:
-        print(f"   • PFASGroups shows high timing variability - consider profiling edge cases")
+    if stats['HalogenGroup_std_time'] > statHalogenGroupnGroups_avg_time'] * 0.5:
+        print(f"   • HalogenGroup shows high timing variability - consider profiling edge cases")
     if stats['atlas_std_time'] > stats['atlas_avg_time'] * 0.5:
         print(f"   • PFAS-Atlas shows high timing variability - consider profiling edge cases")
 

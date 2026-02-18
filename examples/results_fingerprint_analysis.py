@@ -9,7 +9,7 @@ This script demonstrates how to:
 """
 
 import numpy as np
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 # Example PFAS molecules
 smiles_list_1 = [
@@ -218,7 +218,7 @@ def example_results_model_sql():
     
     # Load back
     print(f"\nLoading results from {db_file}...")
-    from PFASgroups.results_model import ResultsModel
+    from HalogenGroups.results_model import ResultsModel
     results_loaded = ResultsModel.from_sql(filename=db_file)
     
     print(f"\nOriginal results: {len(results)} molecules")

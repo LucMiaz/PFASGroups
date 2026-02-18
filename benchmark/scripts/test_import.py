@@ -1,6 +1,6 @@
 print("Starting test...")
 import sys
-sys.path.append('c:/Users/luc/git/PFASGroups')
+sys.path.append('c:/Users/luc/git/HalogenGroups')
 print("Path appended")
 
 try:

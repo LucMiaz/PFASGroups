@@ -158,7 +158,14 @@ def generate_homologues(mol, componentSmartsName = 'Perfluoroalkyl', componentSm
     find_chain : Identifies chains before homologue generation
     remove_atoms : Performs the actual atom removal with connectivity preservation
     """
-    path,endSmarts = componentSmartss[componentSmartsName]
+    entry = componentSmartss[componentSmartsName]
+    if isinstance(entry, dict):
+        path = entry.get('smarts', entry.get('component'))
+        endSmarts = entry.get('end')
+    else:
+        path, endSmarts = entry
+    if path is None or endSmarts is None:
+        raise ValueError(f"Component '{componentSmartsName}' must define both path and end SMARTS for homologue generation.")
     removable = [x for x in set(re.findall(r'[A-Z][a-z]?',repeating)) if x not in base_repeating]
     subchains = lambda x: [x[0:i] for i in range(1,len(x)+1)]
     chains = find_chain(mol, path, endSmarts, repeating = repeating)

@@ -53,19 +53,19 @@ def update_benchmark_file(file_path: Path, id_mapping: Dict[int, int]):
     # Handle different structures
     if isinstance(data, list):
         for entry in data:
-            if 'pfasgroups_result' in entry:
-                update_benchmark_result(entry['pfasgroups_result'], id_mapping)
+            if 'HalogenGroups_result' in entry:
+                update_benchmark_result(entry['HalogenGroups_result'], id_mapping)
             elif 'expected_groups' in entry:
                 entry['expected_groups'] = update_group_ids_in_list(entry['expected_groups'], id_mapping)
             if 'detected_groups' in entry:
                 entry['detected_groups'] = update_group_ids_in_list(entry['detected_groups'], id_mapping)
-            if 'pfasgroups_expected_groups' in entry:
-                entry['pfasgroups_expected_groups'] = update_group_ids_in_list(entry['pfasgroups_expected_groups'], id_mapping)
-            if 'pfasgroups_groups' in entry:
-                entry['pfasgroups_groups'] = update_group_ids_in_list(entry['pfasgroups_groups'], id_mapping)
+            if 'HalogenGroups_expected_groups' in entry:
+                entry['HalogenGroups_expected_groups'] = update_group_ids_in_list(entry['HalogenGroups_expected_groups'], id_mapping)
+            if 'HalogenGroups_groups' in entry:
+                entry['HalogenGroups_groups'] = update_group_ids_in_list(entry['HalogenGroups_groups'], id_mapping)
     elif isinstance(data, dict):
-        if 'pfasgroups_result' in data:
-            update_benchmark_result(data['pfasgroups_result'], id_mapping)
+        if 'HalogenGroups_result' in data:
+            update_benchmark_result(data['HalogenGroups_result'], id_mapping)
         if 'expected_groups' in data:
             data['expected_groups'] = update_group_ids_in_list(data['expected_groups'], id_mapping)
         if 'detected_groups' in data:

@@ -14,7 +14,7 @@ for ds in datasets:
     c.execute('''
         SELECT COUNT(*)
         FROM molecules m
-        JOIN pfasgroups_results p ON m.id = p.molecule_id
+        JOIN HalogenGroups_results p ON m.id = p.molecule_id
         JOIN atlas_results a ON m.id = a.molecule_id
         WHERE m.dataset_type=? 
           AND p.execution_time IS NOT NULL 

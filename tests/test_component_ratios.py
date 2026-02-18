@@ -1,6 +1,6 @@
 """Test component ratio calculations"""
 from rdkit import Chem
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 def count_carbons(mol):
     """Count the number of carbon atoms in a molecule"""

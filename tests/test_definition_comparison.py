@@ -12,7 +12,7 @@ import csv
 from pathlib import Path
 from typing import Dict, List
 
-from PFASgroups.PFASDefinitionModel import PFASDefinition
+from HalogenGroups.PFASDefinitionModel import PFASDefinition
 
 
 @pytest.fixture(scope='session')
@@ -20,7 +20,7 @@ def data_dir():
     """Get path to data directory."""
     script_dir = Path(__file__).parent
     root_dir = script_dir.parent
-    return root_dir / 'PFASgroups' / 'data'
+    return root_dir / 'HalogenGroups' / 'data'
 
 
 @pytest.fixture(scope='session')

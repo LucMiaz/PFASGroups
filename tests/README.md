@@ -1,6 +1,6 @@
- # PFASGroups Tests
+ # HalogenGroups Tests
 
-This folder contains pytest-compatible tests for PFASGroups parsing, component metrics,
+This folder contains pytest-compatible tests for HalogenGroups parsing, component metrics,
 and group/definition metadata validation.
 
 ## Quick Start

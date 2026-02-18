@@ -1,6 +1,6 @@
 """
 Enhanced PFAS Benchmark System
-Comprehensive comparison between PFASGroups and PFAS-Atlas with larger datasets
+Comprehensive comparison between HalogenGroups and PFAS-Atlas with larger datasets
 """
 
 import json
@@ -13,18 +13,18 @@ from collections import defaultdict
 import sys
 import os
 
-# Add parent directory to path to import PFASGroups
+# Add parent directory to path to import HalogenGroups
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
 sys.path.append(parent_dir)
 
 try:
-    from PFASgroups.parser import parse_mol
-    from PFASgroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_groups
-    PFASGROUPS_AVAILABLE = True
+    from HalogenGroups.parser import parse_mol
+    from HalogenGroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_groups
+    HalogenGroupS_AVAILABLE = True
 except ImportError:
-    print("❌ PFASGroups not available")
-    PFASGROUPS_AVAILABLE = False
+    print("❌ HalogenGroups not available")
+    HalogenGroupS_AVAILABLE = False
 
 # Try to import PFAS-Atlas
 atlas_dir = os.path.join(os.path.dirname(parent_dir), 'PFAS-atlas')
@@ -50,7 +50,7 @@ class EnhancedPFASBenchmark:
         # Load PFAS groups definitions
         script_dir = os.path.dirname(os.path.abspath(__file__))
         parent_dir = os.path.dirname(script_dir)
-        pfas_groups_path = os.path.join(parent_dir, 'PFASgroups', 'data', 'PFAS_groups_smarts.json')
+        pfas_groups_path = os.path.join(parent_dir, 'HalogenGroups', 'data', 'PFAS_groups_smarts.json')
         with open(pfas_groups_path, 'r') as f:
             self.pfas_groups = json.load(f)
         
@@ -448,8 +448,8 @@ class EnhancedPFASBenchmark:
         
         return molecules
     
-    def test_with_pfasgroups(self, smiles, include_PFAS_definitions=True):
-        """Test molecule with PFASGroups detection
+    def test_with_HalogenGroups(self, smiles, include_PFAS_definitions=True):
+        """Test molecule with HalogenGroups detection
         
         Args:
             smiles: SMILES string
@@ -457,7 +457,7 @@ class EnhancedPFASBenchmark:
         """
         
         start_time = time.perf_counter()
-        pfasgroups_result = {
+        HalogenGroups_result = {
             'detected_groups': [],
             'detected_definitions': [],
             'matches': [],
@@ -467,9 +467,9 @@ class EnhancedPFASBenchmark:
             'include_definitions': include_PFAS_definitions
         }
         
-        if not PFASGROUPS_AVAILABLE:
-            pfasgroups_result['error'] = 'PFASGroups not available'
-            return pfasgroups_result
+        if not HalogenGroupS_AVAILABLE:
+            HalogenGroups_result['error'] = 'HalogenGroups not available'
+            return HalogenGroups_result
         
         try:
             mol = Chem.MolFromSmiles(smiles)
@@ -485,7 +485,7 @@ class EnhancedPFASBenchmark:
                 
                 if isinstance(results, dict) and 'matches' in results:
                     for match in results['matches']:
-                        if match.get('type') == 'PFASgroup':
+                        if match.get('type') == 'HalogenGroup':
                             group_ids.append(match['id'])
                             all_matches.append({
                                 'type': 'group',
@@ -510,17 +510,17 @@ class EnhancedPFASBenchmark:
                                 'name': match.get('definition_name')
                             })
                 
-                pfasgroups_result['detected_groups'] = group_ids
-                pfasgroups_result['detected_definitions'] = definition_ids
-                pfasgroups_result['matches'] = all_matches
-                pfasgroups_result['success'] = len(group_ids) > 0 or len(definition_ids) > 0
+                HalogenGroups_result['detected_groups'] = group_ids
+                HalogenGroups_result['detected_definitions'] = definition_ids
+                HalogenGroups_result['matches'] = all_matches
+                HalogenGroups_result['success'] = len(group_ids) > 0 or len(definition_ids) > 0
                 
         except Exception as e:
-            pfasgroups_result['error'] = str(e)
+            HalogenGroups_result['error'] = str(e)
         finally:
-            pfasgroups_result['execution_time'] = time.perf_counter() - start_time
+            HalogenGroups_result['execution_time'] = time.perf_counter() - start_time
         
-        return pfasgroups_result
+        return HalogenGroups_result
     
     def test_with_atlas(self, smiles):
         """Test molecule with PFAS-Atlas classification"""
@@ -588,15 +588,15 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups
-                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'])
+                    # Test with HalogenGroups
+                    pfas_result = self.test_with_HalogenGroups(mol_data['smiles'])
                     
                     # Test with PFAS-Atlas  
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result,
+                        'HalogenGroups_result': pfas_result,
                         'atlas_result': atlas_result
                     }
                     
@@ -642,15 +642,15 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups - accuracy test
-                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'], include_PFAS_definitions=True)
+                    # Test with HalogenGroups - accuracy test
+                    pfas_result = self.test_with_HalogenGroups(mol_data['smiles'], include_PFAS_definitions=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result,
+                        'HalogenGroups_result': pfas_result,
                         'atlas_result': atlas_result
                     }
                     
@@ -672,15 +672,15 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups - accuracy test
-                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'], include_PFAS_definitions=True)
+                    # Test with HalogenGroups - accuracy test
+                    pfas_result = self.test_with_HalogenGroups(mol_data['smiles'], include_PFAS_definitions=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result,
+                        'HalogenGroups_result': pfas_result,
                         'atlas_result': atlas_result
                     }
                     
@@ -706,15 +706,15 @@ class EnhancedPFASBenchmark:
                 if mol_data:
                     success_count += 1
                     
-                    # Test with PFASGroups - accuracy test
-                    pfas_result = self.test_with_pfasgroups(mol_data['smiles'], include_PFAS_definitions=True)
+                    # Test with HalogenGroups - accuracy test
+                    pfas_result = self.test_with_HalogenGroups(mol_data['smiles'], include_PFAS_definitions=True)
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_data['smiles'])
                     
                     result = {
                         'molecule_data': mol_data,
-                        'pfasgroups_result': pfas_result,
+                        'HalogenGroups_result': pfas_result,
                         'atlas_result': atlas_result
                     }
                     
@@ -777,7 +777,7 @@ class EnhancedPFASBenchmark:
         return specs
     
     def run_timing_benchmark(self, max_molecules=200, iterations=10):
-        """Run timing benchmark comparing PFASGroups vs PFAS-Atlas on increasingly large molecules
+        """Run timing benchmark comparing HalogenGroups vs PFAS-Atlas on increasingly large molecules
         
         Args:
             max_molecules: Number of molecules to test
@@ -837,8 +837,8 @@ class EnhancedPFASBenchmark:
                 if mol is not None:
                     smiles = Chem.MolToSmiles(mol)
                     
-                    # Pre-validate: Check that PFASGroups correctly identifies carboxylic acid (group 33)
-                    validation_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
+                    # Pre-validate: Check that HalogenGroups correctly identifies carboxylic acid (group 33)
+                    validation_result = self.test_with_HalogenGroups(smiles, include_PFAS_definitions=True)
                     if not validation_result['success'] or 33 not in validation_result['detected_groups']:
                         excluded_wrong_detection += 1
                         continue  # Skip molecules where carboxylic acid is not correctly identified
@@ -857,8 +857,8 @@ class EnhancedPFASBenchmark:
                     atlas_classifications = []
                     
                     for iteration in range(iterations):
-                        # Test with PFASGroups - accuracy test
-                        pfas_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
+                        # Test with HalogenGroups - accuracy test
+                        pfas_result = self.test_with_HalogenGroups(smiles, include_PFAS_definitions=True)
                         pfas_times.append(pfas_result['execution_time'])
                         if pfas_result['success'] and 33 in pfas_result['detected_groups']:  # Ensure carboxylic acid is detected
                             pfas_success_count += 1
@@ -892,17 +892,17 @@ class EnhancedPFASBenchmark:
                         'num_atoms': num_atoms,
                         'num_bonds': num_bonds,
                         'iterations': iterations,
-                        'pfasgroups_time_avg': pfas_time_avg,
-                        'pfasgroups_time_std': pfas_time_std,
-                        'pfasgroups_time_min': min(pfas_times),
-                        'pfasgroups_time_max': max(pfas_times),
+                        'HalogenGroups_time_avg': pfas_time_avg,
+                        'HalogenGroups_time_std': pfas_time_std,
+                        'HalogenGroups_time_min': min(pfas_times),
+                        'HalogenGroups_time_max': max(pfas_times),
                         'atlas_time_avg': atlas_time_avg,
                         'atlas_time_std': atlas_time_std,
                         'atlas_time_min': min(atlas_times),
                         'atlas_time_max': max(atlas_times),
-                        'pfasgroups_success_rate': pfas_success_rate,
+                        'HalogenGroups_success_rate': pfas_success_rate,
                         'atlas_success_rate': atlas_success_rate,
-                        'pfasgroups_detected': eval(most_common_groups) if most_common_groups != '[]' else [],
+                        'HalogenGroups_detected': eval(most_common_groups) if most_common_groups != '[]' else [],
                         'atlas_first_class': most_common_atlas[0],
                         'atlas_second_class': most_common_atlas[1],
                         'system_specs': system_specs
@@ -912,10 +912,10 @@ class EnhancedPFASBenchmark:
                     
                     if (i + 1) % 25 == 0:  # Report more frequently for longer tests
                         recent_results = timing_results[-25:]
-                        avg_pfas_time = sum(r['pfasgroups_time_avg'] for r in recent_results) / len(recent_results) * 1000
+                        avg_pfas_time = sum(r['HalogenGroups_time_avg'] for r in recent_results) / len(recent_results) * 1000
                         avg_atlas_time = sum(r['atlas_time_avg'] for r in recent_results) / len(recent_results) * 1000
                         avg_atoms = sum(r['num_atoms'] for r in recent_results) / len(recent_results)
-                        print(f"  ✅ Generated {i + 1}/{max_molecules} molecules | Avg times: PFASGroups {avg_pfas_time:.2f}ms, Atlas {avg_atlas_time:.2f}ms | Avg atoms: {avg_atoms:.1f}")
+                        print(f"  ✅ Generated {i + 1}/{max_molecules} molecules | Avg times: HalogenGroups {avg_pfas_time:.2f}ms, Atlas {avg_atlas_time:.2f}ms | Avg atoms: {avg_atoms:.1f}")
                 else:
                     failed_generations += 1
                     
@@ -944,7 +944,7 @@ class EnhancedPFASBenchmark:
         if timing_results:
             import numpy as np
             
-            avg_pfas_times = [r['pfasgroups_time_avg'] * 1000 for r in timing_results]
+            avg_pfas_times = [r['HalogenGroups_time_avg'] * 1000 for r in timing_results]
             avg_atlas_times = [r['atlas_time_avg'] * 1000 for r in timing_results]
             
             pfas_overall_avg = np.mean(avg_pfas_times)
@@ -953,9 +953,9 @@ class EnhancedPFASBenchmark:
             atlas_overall_std = np.std(avg_atlas_times)
             
             print(f"\n📈 Comprehensive Timing Summary ({iterations} iterations per molecule):")
-            print(f"   • PFASGroups: {pfas_overall_avg:.2f}±{pfas_overall_std:.2f}ms per molecule")
+            print(f"   • HalogenGroups: {pfas_overall_avg:.2f}±{pfas_overall_std:.2f}ms per molecule")
             print(f"   • PFAS-Atlas: {atlas_overall_avg:.2f}±{atlas_overall_std:.2f}ms per molecule")
-            print(f"   • Speed ratio: {atlas_overall_avg/pfas_overall_avg:.1f}x (Atlas/PFASGroups)")
+            print(f"   • Speed ratio: {atlas_overall_avg/pfas_overall_avg:.1f}x (Atlas/HalogenGroups)")
             
             # Enhanced scaling analysis with multiple size bins
             atom_ranges = [
@@ -971,18 +971,18 @@ class EnhancedPFASBenchmark:
             for min_atoms, max_atoms, label in atom_ranges:
                 molecules_in_range = [r for r in timing_results if min_atoms <= r['num_atoms'] <= max_atoms]
                 if molecules_in_range:
-                    pfas_avg = np.mean([r['pfasgroups_time_avg'] * 1000 for r in molecules_in_range])
+                    pfas_avg = np.mean([r['HalogenGroups_time_avg'] * 1000 for r in molecules_in_range])
                     atlas_avg = np.mean([r['atlas_time_avg'] * 1000 for r in molecules_in_range])
                     atom_avg = np.mean([r['num_atoms'] for r in molecules_in_range])
                     count = len(molecules_in_range)
                     
-                    print(f"   {label} ({min_atoms}-{max_atoms} atoms, n={count}, avg={atom_avg:.0f}): PFASGroups {pfas_avg:.2f}ms, Atlas {atlas_avg:.2f}ms")
+                    print(f"   {label} ({min_atoms}-{max_atoms} atoms, n={count}, avg={atom_avg:.0f}): HalogenGroups {pfas_avg:.2f}ms, Atlas {atlas_avg:.2f}ms")
             
             # Identify largest molecules tested
             largest_molecules = sorted(timing_results, key=lambda x: x['num_atoms'], reverse=True)[:5]
             print(f"\n🔬 Largest Molecules Tested:")
             for i, mol in enumerate(largest_molecules, 1):
-                print(f"   {i}. {mol['num_atoms']} atoms, MW={mol['molecular_weight']:.1f}: PFASGroups {mol['pfasgroups_time_avg']*1000:.2f}ms, Atlas {mol['atlas_time_avg']*1000:.2f}ms")
+                print(f"   {i}. {mol['num_atoms']} atoms, MW={mol['molecular_weight']:.1f}: HalogenGroups {mol['HalogenGroups_time_avg']*1000:.2f}ms, Atlas {mol['atlas_time_avg']*1000:.2f}ms")
         
         return timing_results, output_file
     
@@ -1018,7 +1018,7 @@ class EnhancedPFASBenchmark:
                 'group_id': group_id,
                 'group_name': group_info['name'],
                 'molecules_tested': 0,
-                'pfasgroups_detections': 0,
+                'HalogenGroups_detections': 0,
                 'atlas_detections': 0,
                 'molecules': []
             }
@@ -1089,12 +1089,12 @@ class EnhancedPFASBenchmark:
                         
                         test_results['molecules_tested'] += 1
                         
-                        # Test with PFASGroups - specificity test (should NOT detect target group)
-                        pfas_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=False)
+                        # Test with HalogenGroups - specificity test (should NOT detect target group)
+                        pfas_result = self.test_with_HalogenGroups(smiles, include_PFAS_definitions=False)
                         
                         # Check if target functional group was incorrectly detected
                         if pfas_result['success'] and group_id in pfas_result['detected_groups']:
-                            test_results['pfasgroups_detections'] += 1
+                            test_results['HalogenGroups_detections'] += 1
                         
                         # Test with PFAS-Atlas - should NOT detect as PFAS
                         atlas_result = self.test_with_atlas(smiles)
@@ -1104,9 +1104,9 @@ class EnhancedPFASBenchmark:
                         
                         test_results['molecules'].append({
                             'smiles': smiles,
-                            'pfasgroups_detected': pfas_result['success'],
-                            'pfasgroups_detected_groups': pfas_result['detected_groups'],
-                            'pfasgroups_target_group_detected': group_id in pfas_result['detected_groups'],
+                            'HalogenGroups_detected': pfas_result['success'],
+                            'HalogenGroups_detected_groups': pfas_result['detected_groups'],
+                            'HalogenGroups_target_group_detected': group_id in pfas_result['detected_groups'],
                             'atlas_detected': atlas_result['success'],
                             'atlas_first_class': atlas_result.get('first_class'),
                             'atlas_second_class': atlas_result.get('second_class')
@@ -1115,9 +1115,9 @@ class EnhancedPFASBenchmark:
                             'smiles': smiles,
                             'chain_length': len([atom for atom in mol.GetAtoms() if atom.GetSymbol() == 'C']),
                             'contains_fluorine': False,
-                            'pfasgroups_detected': pfas_result['success'],
-                            'pfasgroups_groups': pfas_result['detected_groups'],
-                            'pfasgroups_target_group_detected': group_id in pfas_result['detected_groups'] if pfas_result['success'] else False,
+                            'HalogenGroups_detected': pfas_result['success'],
+                            'HalogenGroups_groups': pfas_result['detected_groups'],
+                            'HalogenGroups_target_group_detected': group_id in pfas_result['detected_groups'] if pfas_result['success'] else False,
                             'atlas_detected': atlas_result['success'] and atlas_result['first_class'] != 'Not PFAS',
                             'atlas_first_class': atlas_result['first_class'],
                             'atlas_second_class': atlas_result['second_class']
@@ -1127,11 +1127,11 @@ class EnhancedPFASBenchmark:
                     print(f"Warning: Failed to generate non-fluorinated molecule {i+1} for group {group_id}: {e}")
                     continue
             
-            pfas_false_positive_rate = (group_results['pfasgroups_detections'] / max(group_results['molecules_tested'], 1)) * 100
+            pfas_false_positive_rate = (group_results['HalogenGroups_detections'] / max(group_results['molecules_tested'], 1)) * 100
             atlas_false_positive_rate = (group_results['atlas_detections'] / max(group_results['molecules_tested'], 1)) * 100
             
             print(f"   ✅ Generated {group_results['molecules_tested']} non-fluorinated molecules")
-            print(f"   ⚠️  PFASGroups false positives (target group {group_id}): {group_results['pfasgroups_detections']}/{group_results['molecules_tested']} ({pfas_false_positive_rate:.1f}%)")
+            print(f"   ⚠️  HalogenGroups false positives (target group {group_id}): {group_results['HalogenGroups_detections']}/{group_results['molecules_tested']} ({pfas_false_positive_rate:.1f}%)")
             print(f"   ⚠️  Atlas false positives (any PFAS class): {group_results['atlas_detections']}/{group_results['molecules_tested']} ({atlas_false_positive_rate:.1f}%)")
             
             all_results.append(group_results)
@@ -1145,7 +1145,7 @@ class EnhancedPFASBenchmark:
         
         # Summary statistics
         total_molecules = sum(r['molecules_tested'] for r in all_results)
-        total_pfas_false_positives = sum(r['pfasgroups_detections'] for r in all_results)
+        total_pfas_false_positives = sum(r['HalogenGroups_detections'] for r in all_results)
         total_atlas_false_positives = sum(r['atlas_detections'] for r in all_results)
         
         overall_pfas_fpr = (total_pfas_false_positives / max(total_molecules, 1)) * 100
@@ -1154,7 +1154,7 @@ class EnhancedPFASBenchmark:
         print(f"\n💾 Non-Fluorinated Benchmark Complete!")
         print(f"📊 Total molecules tested: {total_molecules}")
         print(f"🎯 Expected result: 0% detection of target functional groups (these are NOT PFAS molecules)")
-        print(f"📈 PFASGroups false positive rate (target groups): {overall_pfas_fpr:.1f}% ({total_pfas_false_positives}/{total_molecules})")
+        print(f"📈 HalogenGroups false positive rate (target groups): {overall_pfas_fpr:.1f}% ({total_pfas_false_positives}/{total_molecules})")
         print(f"📈 PFAS-Atlas false positive rate (any PFAS): {overall_atlas_fpr:.1f}% ({total_atlas_false_positives}/{total_molecules})")
         print(f"💾 Results saved: {output_file}")
         
@@ -1188,61 +1188,61 @@ class EnhancedPFASBenchmark:
             'highly_branched_carboxylic_acid': {
                 'smiles': 'C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=O)O',
                 'description': 'Highly branched perfluorocarboxylic acid',
-                'expected_pfasgroups': [33],  # carboxylic acid
+                'expected_HalogenGroups': [33],  # carboxylic acid
                 'complexity': 'very_high'
             },
             'branched_sulfonic_acid': {
                 'smiles': 'C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)S(=O)(=O)O',
                 'description': 'Branched perfluorosulfonic acid',
-                'expected_pfasgroups': [36],  # sulfonic acid
+                'expected_HalogenGroups': [36],  # sulfonic acid
                 'complexity': 'high'
             },
             'branched_ether_chain': {
                 'smiles': 'C(C(F)(F)C(F)(F)F)(C(F)(F)F)OC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)F',
                 'description': 'Branched perfluoroether',
-                'expected_pfasgroups': [31],  # ether
+                'expected_HalogenGroups': [31],  # ether
                 'complexity': 'high'
             },
             'multi_functional_branched': {
                 'smiles': 'C(C(F)(F)C(=O)O)(C(F)(F)C(F)(F)F)OC(F)(F)C(F)(F)S(=O)(=O)O',
                 'description': 'Multi-functional branched PFAS (carboxylic acid + ether + sulfonic acid)',
-                'expected_pfasgroups': [31, 33, 36],  # ether, carboxylic acid, sulfonic acid
+                'expected_HalogenGroups': [31, 33, 36],  # ether, carboxylic acid, sulfonic acid
                 'complexity': 'very_high'
             },
             'cyclic_branched': {
                 'smiles': 'C1(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)C(C(F)(F)F)C(C(=O)O)C1(F)F',
                 'description': 'Cyclic branched perfluorocarboxylic acid',
-                'expected_pfasgroups': [49, 50, 54, 55],  # perfluoroalkyl, polyfluoroalkyl, Perfluoro cyclic, Polyfluoro cyclic
+                'expected_HalogenGroups': [49, 50, 54, 55],  # perfluoroalkyl, polyfluoroalkyl, Perfluoro cyclic, Polyfluoro cyclic
                 'complexity': 'high'
             },
             'aromatic_branched': {
                 'smiles': 'c1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(F)c(C(F)(F)C(=O)O)c(F)c1F',
                 'description': 'Aromatic branched PFAS with carboxylic acid',
-                'expected_pfasgroups': [22, 33, 49, 50, 53, 56, 57],  # carboxylic acid, side-chain aromatics, aromatic groups, alkyl groups
+                'expected_HalogenGroups': [22, 33, 49, 50, 53, 56, 57],  # carboxylic acid, side-chain aromatics, aromatic groups, alkyl groups
                 'complexity': 'very_high'
             }
         }
         
         all_results = []
         total_tests = 0
-        successful_detections = {'pfasgroups': 0, 'atlas': 0}
+        successful_detections = {'HalogenGroups': 0, 'atlas': 0}
         
         for test_name, mol_info in test_molecules.items():
             print(f"\n🔬 Testing {test_name}: {mol_info['description']}")
             print(f"   SMILES: {mol_info['smiles']}")
             print(f"   Complexity: {mol_info['complexity']}")
-            print(f"   Expected PFASGroups: {mol_info['expected_pfasgroups']}")
+            print(f"   Expected HalogenGroups: {mol_info['expected_HalogenGroups']}")
             
             test_results = {
                 'test_name': test_name,
                 'description': mol_info['description'],
                 'smiles': mol_info['smiles'],
                 'complexity': mol_info['complexity'],
-                'expected_pfasgroups': mol_info['expected_pfasgroups'],
+                'expected_HalogenGroups': mol_info['expected_HalogenGroups'],
                 'molecules_tested': 0,
-                'pfasgroups_detections': 0,
+                'HalogenGroups_detections': 0,
                 'atlas_detections': 0,
-                'pfasgroups_correct_detections': 0,
+                'HalogenGroups_correct_detections': 0,
                 'molecules': []
             }
             
@@ -1264,19 +1264,19 @@ class EnhancedPFASBenchmark:
                     test_results['molecules_tested'] += 1
                     total_tests += 1
                     
-                    # Test with PFASGroups - accuracy test
-                    pfas_result = self.test_with_pfasgroups(mol_info['smiles'], include_PFAS_definitions=True)
-                    pfasgroups_detected = pfas_result['success']
+                    # Test with HalogenGroups - accuracy test
+                    pfas_result = self.test_with_HalogenGroups(mol_info['smiles'], include_PFAS_definitions=True)
+                    HalogenGroups_detected = pfas_result['success']
                     detected_groups = pfas_result['detected_groups']
                     
-                    if pfasgroups_detected:
-                        test_results['pfasgroups_detections'] += 1
-                        successful_detections['pfasgroups'] += 1
+                    if HalogenGroups_detected:
+                        test_results['HalogenGroups_detections'] += 1
+                        successful_detections['HalogenGroups'] += 1
                         
                         # Check if expected groups were detected
-                        expected_groups_detected = all(group in detected_groups for group in mol_info['expected_pfasgroups'])
+                        expected_groups_detected = all(group in detected_groups for group in mol_info['expected_HalogenGroups'])
                         if expected_groups_detected:
-                            test_results['pfasgroups_correct_detections'] += 1
+                            test_results['HalogenGroups_correct_detections'] += 1
                     
                     # Test with PFAS-Atlas
                     atlas_result = self.test_with_atlas(mol_info['smiles'])
@@ -1293,14 +1293,14 @@ class EnhancedPFASBenchmark:
                         'num_atoms': num_atoms,
                         'num_heavy_atoms': num_heavy_atoms,
                         'num_fluorines': num_fluorines,
-                        'pfasgroups_detected': pfasgroups_detected,
-                        'pfasgroups_groups': detected_groups,
-                        'pfasgroups_expected_groups': mol_info['expected_pfasgroups'],
-                        'pfasgroups_correct': all(group in detected_groups for group in mol_info['expected_pfasgroups']) if pfasgroups_detected else False,
+                        'HalogenGroups_detected': HalogenGroups_detected,
+                        'HalogenGroups_groups': detected_groups,
+                        'HalogenGroups_expected_groups': mol_info['expected_HalogenGroups'],
+                        'HalogenGroups_correct': all(group in detected_groups for group in mol_info['expected_HalogenGroups']) if HalogenGroups_detected else False,
                         'atlas_detected': atlas_detected,
                         'atlas_first_class': atlas_result['first_class'],
                         'atlas_second_class': atlas_result['second_class'],
-                        'pfasgroups_execution_time': pfas_result['execution_time'],
+                        'HalogenGroups_execution_time': pfas_result['execution_time'],
                         'atlas_execution_time': atlas_result['execution_time']
                     }
                     
@@ -1311,13 +1311,13 @@ class EnhancedPFASBenchmark:
                     continue
             
             # Calculate success rates for this test
-            pfasgroups_detection_rate = (test_results['pfasgroups_detections'] / max(test_results['molecules_tested'], 1)) * 100
-            pfasgroups_accuracy_rate = (test_results['pfasgroups_correct_detections'] / max(test_results['molecules_tested'], 1)) * 100
+            HalogenGroups_detection_rate = (test_results['HalogenGroups_detections'] / max(test_results['molecules_tested'], 1)) * 100
+            HalogenGroups_accuracy_rate = (test_results['HalogenGroups_correct_detections'] / max(test_results['molecules_tested'], 1)) * 100
             atlas_detection_rate = (test_results['atlas_detections'] / max(test_results['molecules_tested'], 1)) * 100
             
             print(f"   ✅ Tested {test_results['molecules_tested']} iterations")
-            print(f"   📊 PFASGroups detection: {test_results['pfasgroups_detections']}/{test_results['molecules_tested']} ({pfasgroups_detection_rate:.1f}%)")
-            print(f"   🎯 PFASGroups correct groups: {test_results['pfasgroups_correct_detections']}/{test_results['molecules_tested']} ({pfasgroups_accuracy_rate:.1f}%)")
+            print(f"   📊 HalogenGroups detection: {test_results['HalogenGroups_detections']}/{test_results['molecules_tested']} ({HalogenGroups_detection_rate:.1f}%)")
+            print(f"   🎯 HalogenGroups correct groups: {test_results['HalogenGroups_correct_detections']}/{test_results['molecules_tested']} ({HalogenGroups_accuracy_rate:.1f}%)")
             print(f"   📊 Atlas detection: {test_results['atlas_detections']}/{test_results['molecules_tested']} ({atlas_detection_rate:.1f}%)")
             
             all_results.append(test_results)
@@ -1330,19 +1330,19 @@ class EnhancedPFASBenchmark:
             json.dump(all_results, f, indent=2, default=str)
         
         # Summary statistics
-        overall_pfasgroups_rate = (successful_detections['pfasgroups'] / max(total_tests, 1)) * 100
+        overall_HalogenGroups_rate = (successful_detections['HalogenGroups'] / max(total_tests, 1)) * 100
         overall_atlas_rate = (successful_detections['atlas'] / max(total_tests, 1)) * 100
         
         print(f"\n💾 Complex Branched Benchmark Complete!")
         print(f"📊 Total tests: {total_tests} ({len(test_molecules)} molecule types × {molecules_per_test} iterations)")
         print(f"🎯 Expected result: High detection rates for complex PFAS structures")
-        print(f"📈 PFASGroups overall detection rate: {overall_pfasgroups_rate:.1f}% ({successful_detections['pfasgroups']}/{total_tests})")
+        print(f"📈 HalogenGroups overall detection rate: {overall_HalogenGroups_rate:.1f}% ({successful_detections['HalogenGroups']}/{total_tests})")
         print(f"📈 PFAS-Atlas overall detection rate: {overall_atlas_rate:.1f}% ({successful_detections['atlas']}/{total_tests})")
         print(f"💾 Results saved: {output_file}")
         
-        if overall_pfasgroups_rate >= 90 and overall_atlas_rate >= 90:
+        if overall_HalogenGroups_rate >= 90 and overall_atlas_rate >= 90:
             print(f"🎉 EXCELLENT: Both systems show excellent detection of complex PFAS structures!")
-        elif overall_pfasgroups_rate >= 75 and overall_atlas_rate >= 75:
+        elif overall_HalogenGroups_rate >= 75 and overall_atlas_rate >= 75:
             print(f"✅ GOOD: Both systems show good detection rates for complex structures")
         else:
             print(f"⚠️  CONCERNING: Lower than expected detection rates for complex PFAS structures")
@@ -1372,7 +1372,7 @@ class EnhancedPFASBenchmark:
         all_results = []
         
         # Process OECD molecules
-        print(f"🧪 Testing {len(oecd_data)} OECD molecules with PFASGroups (groups 1-28)")
+        print(f"🧪 Testing {len(oecd_data)} OECD molecules with HalogenGroups (groups 1-28)")
         
         for idx, row in oecd_data.iterrows():
             smiles = row['SMILES']
@@ -1382,8 +1382,8 @@ class EnhancedPFASBenchmark:
             if pd.isna(smiles) or smiles.strip() == '':
                 continue
                 
-            # Test with PFASGroups - accuracy test
-            pfas_result = self.test_with_pfasgroups(smiles, include_PFAS_definitions=True)
+            # Test with HalogenGroups - accuracy test
+            pfas_result = self.test_with_HalogenGroups(smiles, include_PFAS_definitions=True)
             
             # Test with PFAS-Atlas
             atlas_result = self.test_with_atlas(smiles)
@@ -1398,7 +1398,7 @@ class EnhancedPFASBenchmark:
             
             result = {
                 'molecule_data': molecule_data,
-                'pfasgroups_result': pfas_result,
+                'HalogenGroups_result': pfas_result,
                 'atlas_result': atlas_result
             }
             

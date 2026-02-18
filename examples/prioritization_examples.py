@@ -6,7 +6,7 @@ This script demonstrates how to use the prioritise_molecules function
 to rank PFAS compounds based on different criteria.
 """
 
-from PFASgroups import prioritise_molecules, get_priority_statistics
+from HalogenGroups import prioritise_molecules, get_priority_statistics
 import numpy as np
 
 
@@ -225,7 +225,7 @@ def main():
     """Run all examples."""
     print("\n" + "=" * 80)
     print("PFAS MOLECULE PRIORITIZATION EXAMPLES")
-    print("PFASgroups v2.2.4")
+    print("HalogenGroups v2.2.4")
     print("=" * 80)
     
     example_reference_based()

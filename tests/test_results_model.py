@@ -2,7 +2,7 @@
 
 import json
 
-from PFASgroups.results_model import ResultsModel
+from HalogenGroups.results_model import ResultsModel
 
 
 def test_results_model_helpers():
@@ -15,7 +15,7 @@ def test_results_model_helpers():
                     "id": 1,
                     "group_name": "Test Group",
                     "match_count": 1,
-                    "type": "PFASgroup",
+                    "type": "HalogenGroup",
                     "components": [
                         {"component": [1, 2, 3], "SMARTS": "Perfluoroalkyl"},
                         {"component": [3, 4], "SMARTS": "Perfluoroalkyl"},

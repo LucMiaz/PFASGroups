@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Test if PFASgroups detects the new molecules correctly"""
+"""Test if HalogenGroups detects the new molecules correctly"""
 
 import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from rdkit import Chem
-from PFASgroups.parser import parse_mol
+from HalogenGroups.parser import parse_mol
 
 # New test molecules with direct attachment
 test_molecules = {
@@ -15,7 +15,7 @@ test_molecules = {
     106: 'S(=O)(CCC(=O)NC(C)(C)CS(=O)(=O)O)C(F)(F)C(F)(F)C(F)(F)F',
 }
 
-print("🧪 TESTING PFASGROUPS DETECTION WITH NEW MOLECULES\n")
+print("🧪 TESTING HalogenGroupS DETECTION WITH NEW MOLECULES\n")
 print("=" * 80)
 
 for group_id, smiles in test_molecules.items():
@@ -28,18 +28,18 @@ for group_id, smiles in test_molecules.items():
         print("   ❌ Invalid SMILES")
         continue
     
-    # Test with PFASgroups
+    # Test with HalogenGroups
     result = parse_mol(mol, include_PFAS_definitions=True)
     
     if isinstance(result, dict) and 'matches' in result:
-        detected_groups = [m['id'] for m in result['matches'] if m.get('type') == 'PFASgroup']
+        detected_groups = [m['id'] for m in result['matches'] if m.get('type') == 'HalogenGroup']
         print(f"   Detected groups: {detected_groups}")
         
         if group_id in detected_groups:
             print(f"   ✅ Group {group_id} WAS DETECTED!")
             # Find the match details
             for match in result['matches']:
-                if match.get('type') == 'PFASgroup' and match['id'] == group_id:
+                if match.get('type') == 'HalogenGroup' and match['id'] == group_id:
                     print(f"      Match count: {match.get('match_count', 1)}")
         else:
             print(f"   ❌ Group {group_id} was NOT detected")

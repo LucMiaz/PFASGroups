@@ -13,7 +13,7 @@ c.execute('''
         p.execution_time as pfas_time,
         a.execution_time as atlas_time
     FROM molecules m
-    JOIN pfasgroups_results p ON m.id = p.molecule_id
+    JOIN HalogenGroups_results p ON m.id = p.molecule_id
     JOIN atlas_results a ON m.id = a.molecule_id
     WHERE m.dataset_type = 'timing'
       AND p.execution_time IS NOT NULL 
@@ -36,7 +36,7 @@ atlas_times = np.array([r[3] * 1000 for r in rows])
 
 print(f"Timing dataset: {len(rows)} molecules")
 print(f"Atom count range: {atom_counts.min()}-{atom_counts.max()}")
-print(f"PFASgroups time range: {pfas_times.min():.1f}-{pfas_times.max():.1f} ms")
+print(f"HalogenGroups time range: {pfas_times.min():.1f}-{pfas_times.max():.1f} ms")
 print(f"Atlas time range: {atlas_times.min():.1f}-{atlas_times.max():.1f} ms")
 
 # Define models
@@ -52,9 +52,9 @@ def linear_model(x, a, b):
     """time = a * x + b"""
     return a * x + b
 
-# Fit models for PFASgroups
+# Fit models for HalogenGroups
 print("\n" + "="*60)
-print("PFASGROUPS SCALING ANALYSIS")
+print("HalogenGroupS SCALING ANALYSIS")
 print("="*60)
 
 try:
@@ -146,6 +146,6 @@ for low, high in bins:
     mask = (atom_counts >= low) & (atom_counts < high)
     if np.sum(mask) > 0:
         print(f"\n{low}-{high} atoms ({np.sum(mask)} molecules):")
-        print(f"  PFASgroups: {pfas_times[mask].mean():.1f} ± {pfas_times[mask].std():.1f} ms")
+        print(f"  HalogenGroups: {pfas_times[mask].mean():.1f} ± {pfas_times[mask].std():.1f} ms")
         print(f"  Atlas:      {atlas_times[mask].mean():.1f} ± {atlas_times[mask].std():.1f} ms")
         print(f"  Ratio:      {pfas_times[mask].mean() / atlas_times[mask].mean():.2f}×")

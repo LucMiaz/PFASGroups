@@ -75,7 +75,7 @@ Create binary fingerprints for machine learning:
 
 .. code-block:: python
 
-   from PFASgroups import generate_fingerprint
+   from HalogenGroups.fingerprints import generate_fingerprint
    import numpy as np
    
    smiles_list = [
@@ -84,18 +84,22 @@ Create binary fingerprints for machine learning:
        "C(C(F)(F)C(F)(F)C(F)(F)F)O"  # FTOH
    ]
    
-   # Generate binary fingerprints
+   # Default: F only, per-saturation → 116 groups
    fps, group_info = generate_fingerprint(smiles_list)
+   print(f"Fingerprint shape: {fps.shape}")   # (3, 116)
    
-   print(f"Fingerprint shape: {fps.shape}")
-   print(f"Number of groups: {len(group_info)}")
+   # Stacked multi-halogen: F + Cl → 232 columns, names suffixed [F] / [Cl]
+   fps_fcl, info = generate_fingerprint(smiles_list, halogens=['F', 'Cl'])
+   print(f"Stacked shape: {fps_fcl.shape}")    # (3, 232)
+   print(info['group_names'][:3])              # ['... [F]', '... [F]', ...]
+   
+   # Polyfluorinated components only
+   fps_poly, _ = generate_fingerprint(smiles_list, halogens='F', saturation='poly')
    
    # Use in ML model
    from sklearn.ensemble import RandomForestClassifier
-   
-   X = fps  # Features
-   y = [1, 1, 0]  # Labels (1=PFAS, 0=not PFAS)
-   
+   X = fps   # shape (3, 116)
+   y = [1, 1, 0]
    model = RandomForestClassifier()
    model.fit(X, y)
 
@@ -105,15 +109,35 @@ Create binary fingerprints for machine learning:
 
    # Dictionary format (sparse)
    fps_dict, _ = generate_fingerprint(smiles_list, representation='dict')
-   print(fps_dict[0])  # {group_id: 1, ...}
+   print(fps_dict[0])  # {'Perfluoroalkyl carboxylic acids': 1, ...}
    
    # Count-based (instead of binary)
    fps_count, _ = generate_fingerprint(smiles_list, count_mode='count')
-   print(fps_count[0])  # [0, 1, 0, 0, ...]  (counts, not binary)
    
    # Max chain length
-   fps_chain, _ = generate_fingerprint(smiles_list, count_mode='max_chain')
-   print(fps_chain[0])  # [0, 5, 0, 0, ...]  (max chain length per group)
+   fps_chain, _ = generate_fingerprint(smiles_list, count_mode='max_component')
+
+**Using ResultsModel.to_fingerprint():**
+
+.. code-block:: python
+
+   from HalogenGroups import parse_smiles
+   
+   results = parse_smiles(smiles_list)
+   
+   # Default fingerprint (F, per, all 116 groups)
+   fp = results.to_fingerprint()
+   
+   # Stacked F + Cl → shape (n, 232)
+   fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'])
+   
+   # OECD groups only, polyfluorinated
+   fp_oecd = results.to_fingerprint(
+       group_selection='oecd', halogens='F', saturation='poly')
+   
+   print(repr(fp))
+   # ResultsFingerprint(n_molecules=3, n_groups=116,
+   #   group_selection='all', halogens='F', saturation='per', count_mode='binary')
 
 Visualization
 -------------
@@ -317,6 +341,65 @@ Robust error handling:
                
        except Exception as e:
            print(f"✗ Error processing {smiles}: {e}")
+
+Filtering Components by Halogen, Form, and Saturation
+------------------------------------------------------
+
+You can filter component matches by specific halogens, chemical forms, or saturation levels:
+
+.. code-block:: python
+
+   from PFASgroups import parse_smiles
+   
+   smiles_list = [
+       "C(C(F)(F)F)F",  # Simple fluorinated
+       "FC(F)(F)C(F)(F)C(=O)O",  # Perfluorinated carboxylic acid
+       "C(C(Cl)(Cl)Cl)Cl"  # Chlorinated
+   ]
+   
+   # Filter only fluorine components
+   results_f = parse_smiles(smiles_list, halogens='F')
+   
+   # Filter perfluorinated alkyl compounds
+   results_pfa = parse_smiles(
+       smiles_list,
+       halogens='F',
+       saturation='per',
+       form='alkyl'
+   )
+   
+   # Filter polyfluorinated cyclic compounds
+   results_polyf_cyclic = parse_smiles(
+       smiles_list,
+       halogens='F',
+       saturation='poly',
+       form='cyclic'
+   )
+   
+   # Filter multiple halogens (F and Cl)
+   results_multi = parse_smiles(smiles_list, halogens=['F', 'Cl'])
+
+**Valid filter options:**
+
+- **halogens**: ``'F'``, ``'Cl'``, ``'Br'``, ``'I'``, or list like ``['F', 'Cl']`` (``None`` for all)
+- **saturation**: ``'per'`` or ``'poly'`` (or list like ``['per', 'poly']`` for both, ``None`` for all)
+- **form**: ``'alkyl'`` or ``'cyclic'`` (or list like ``['alkyl', 'cyclic']`` for both, ``None`` for all)
+
+Command-line equivalents:
+
+.. code-block:: bash
+
+   # Filter for fluorine components only
+   halogengroups parse --halogens F "C(C(F)(F)F)F"
+   
+   # Filter for perfluorinated alkyl
+   halogengroups parse --halogens F --saturation per --form alkyl "FC(F)(F)C(F)(F)C(=O)O"
+   
+   # Filter for multiple halogens
+   halogengroups parse --halogens F Cl "C(C(F)(F)F)Cl"
+   
+   # Filter for cyclic forms only
+   halogengroups parse --form cyclic "your_smiles_here"
 
 Next Steps
 ----------

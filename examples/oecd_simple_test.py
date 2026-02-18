@@ -23,8 +23,8 @@ for smi in smiles_list:
 print(f"Valid SMILES: {len(valid_smiles)}")
 
 # Parse
-print("Parsing with PFASgroups...")
-from PFASgroups import parse_smiles
+print("Parsing with HalogenGroups...")
+from HalogenGroups import parse_smiles
 results = parse_smiles(valid_smiles[:100])  # Start with just 100
 print(f"Parsed {len(results)} molecules")
 

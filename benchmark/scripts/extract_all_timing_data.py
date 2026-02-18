@@ -22,7 +22,7 @@ print(f"Loading latest timing analysis: {html_file}")
 with open(html_file, 'r', encoding='utf-8') as f:
     content = f.read()
 
-# Find the x and y arrays for PFASGroups (first occurrence)
+# Find the x and y arrays for HalogenGroups (first occurrence)
 # The x array is the atom counts
 x_match = re.search(r'"x":\[([0-9,]+)\]', content)
 if x_match:

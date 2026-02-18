@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generate HTML timing report for PFAS benchmark results
-Analyzes execution times for PFASgroups and PFAS-Atlas across datasets
+Analyzes execution times for HalogenGroups and PFAS-Atlas across datasets
 """
 
 import json
@@ -33,10 +33,10 @@ def generate_html_report(output_file='reports/benchmark_timing_report.html'):
             m.dataset_type,
             m.num_atoms,
             m.smiles,
-            p.execution_time as pfasgroups_time,
+            p.execution_time as HalogenGroups_time,
             a.execution_time as atlas_time
         FROM molecules m
-        LEFT JOIN pfasgroups_results p ON m.id = p.molecule_id
+        LEFT JOIN HalogenGroups_results p ON m.id = p.molecule_id
         LEFT JOIN atlas_results a ON m.id = a.molecule_id
         WHERE p.execution_time IS NOT NULL OR a.execution_time IS NOT NULL
     """)
@@ -51,17 +51,17 @@ def generate_html_report(output_file='reports/benchmark_timing_report.html'):
     print(f"✓ Found {len(rows)} molecules with timing data")
     
     # Organize data
-    data_by_dataset = defaultdict(lambda: {'pfasgroups': [], 'atlas': [], 'atoms': []})
-    all_pfasgroups = []
+    data_by_dataset = defaultdict(lambda: {'HalogenGroups': [], 'atlas': [], 'atoms': []})
+    all_HalogenGroups = []
     all_atlas = []
-    data_by_atoms = defaultdict(lambda: {'pfasgroups': [], 'atlas': []})
+    data_by_atoms = defaultdict(lambda: {'HalogenGroups': [], 'atlas': []})
     
     for dataset, num_atoms, smiles, pfas_time, atlas_time in rows:
         if pfas_time is not None:
-            data_by_dataset[dataset]['pfasgroups'].append(pfas_time)
-            all_pfasgroups.append(pfas_time)
+            data_by_dataset[dataset]['HalogenGroups'].append(pfas_time)
+            all_HalogenGroups.append(pfas_time)
             if num_atoms:
-                data_by_atoms[num_atoms]['pfasgroups'].append(pfas_time)
+                data_by_atoms[num_atoms]['HalogenGroups'].append(pfas_time)
         
         if atlas_time is not None:
             data_by_dataset[dataset]['atlas'].append(atlas_time)
@@ -73,7 +73,7 @@ def generate_html_report(output_file='reports/benchmark_timing_report.html'):
             data_by_dataset[dataset]['atoms'].append(num_atoms)
     
     # Generate HTML report
-    html = generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_atoms, len(rows))
+    html = generate_html_content(data_by_dataset, all_HalogenGroups, all_atlas, data_by_atoms, len(rows))
     
     output_path = Path(__file__).parent / output_file
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -82,7 +82,7 @@ def generate_html_report(output_file='reports/benchmark_timing_report.html'):
     print(f"✅ Report generated: {output_path}")
     return True
 
-def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_atoms, total_molecules):
+def generate_html_content(data_by_dataset, all_HalogenGroups, all_atlas, data_by_atoms, total_molecules):
     """Generate HTML content with embedded charts"""
     
     # Calculate statistics
@@ -98,21 +98,21 @@ def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_at
             'count': len(times)
         }
     
-    overall_pfasgroups = calc_stats(all_pfasgroups)
+    overall_HalogenGroups = calc_stats(all_HalogenGroups)
     overall_atlas = calc_stats(all_atlas)
     
     # Build dataset statistics table
     dataset_rows = []
     for dataset in sorted(data_by_dataset.keys()):
         d = data_by_dataset[dataset]
-        pfas_stats = calc_stats(d['pfasgroups'])
+        pfas_stats = calc_stats(d['HalogenGroups'])
         atlas_stats = calc_stats(d['atlas'])
         
         dataset_rows.append({
             'name': dataset,
             'pfas_stats': pfas_stats,
             'atlas_stats': atlas_stats,
-            'count': len(d['pfasgroups']) or len(d['atlas'])
+            'count': len(d['HalogenGroups']) or len(d['atlas'])
         })
     
     # Build atom count statistics
@@ -127,7 +127,7 @@ def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_at
         
         for atoms, times_dict in data_by_atoms.items():
             if bin_start < atoms <= bin_end:
-                pfas_times.extend(times_dict['pfasgroups'])
+                pfas_times.extend(times_dict['HalogenGroups'])
                 atlas_times.extend(times_dict['atlas'])
         
         if pfas_times or atlas_times:
@@ -307,7 +307,7 @@ def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_at
     <div class="container">
         <div class="header">
             <h1>⚡ PFAS Benchmark Timing Report</h1>
-            <p>Performance Analysis: PFASgroups vs PFAS-Atlas</p>
+            <p>Performance Analysis: HalogenGroups vs PFAS-Atlas</p>
             <p style="margin-top: 10px; font-size: 0.95rem;">Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
         </div>
         
@@ -317,17 +317,17 @@ def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_at
                 <h2>📊 Overall Performance</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3>PFASgroups Mean Time</h3>
-                        <div class="value">{overall_pfasgroups['mean']*1000:.2f}<span class="unit">ms</span></div>
-                        <div class="detail">Median: {overall_pfasgroups['median']*1000:.2f}ms</div>
-                        <div class="detail">σ: {overall_pfasgroups['stdev']*1000:.2f}ms</div>
+                        <h3>HalogenGroups Mean Time</h3>
+                        <div class="value">{overall_HalogenGroups['mean']*1000:.2f}<span class="unit">ms</span></div>
+                        <div class="detail">Median: {overall_HalogenGroups['median']*1000:.2f}ms</div>
+                        <div class="detail">σ: {overall_HalogenGroups['stdev']*1000:.2f}ms</div>
                     </div>
                     
                     <div class="stat-card">
-                        <h3>PFASgroups Range</h3>
-                        <div class="value">{overall_pfasgroups['min']*1000:.2f}<span class="unit">ms</span></div>
-                        <div class="detail">Max: {overall_pfasgroups['max']*1000:.2f}ms</div>
-                        <div class="detail">Molecules: {overall_pfasgroups['count']:,}</div>
+                        <h3>HalogenGroups Range</h3>
+                        <div class="value">{overall_HalogenGroups['min']*1000:.2f}<span class="unit">ms</span></div>
+                        <div class="detail">Max: {overall_HalogenGroups['max']*1000:.2f}ms</div>
+                        <div class="detail">Molecules: {overall_HalogenGroups['count']:,}</div>
                     </div>
                     
                     {f'''<div class="stat-card atlas">
@@ -339,8 +339,8 @@ def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_at
                     
                     <div class="stat-card atlas">
                         <h3>Speedup Factor</h3>
-                        <div class="value {'speedup' if overall_atlas['mean'] > overall_pfasgroups['mean'] else 'slower'}">{overall_atlas['mean']/overall_pfasgroups['mean']:.2f}<span class="unit">x</span></div>
-                        <div class="detail">{'PFASgroups is faster' if overall_atlas['mean'] > overall_pfasgroups['mean'] else 'PFAS-Atlas is faster'}</div>
+                        <div class="value {'speedup' if overall_atlas['mean'] > overall_HalogenGroups['mean'] else 'slower'}">{overall_atlas['mean']/overall_HalogenGroups['mean']:.2f}<span class="unit">x</span></div>
+                        <div class="detail">{'HalogenGroups is faster' if overall_atlas['mean'] > overall_HalogenGroups['mean'] else 'PFAS-Atlas is faster'}</div>
                         <div class="detail">Molecules: {overall_atlas['count']:,}</div>
                     </div>''' if overall_atlas else ''}
                 </div>
@@ -354,8 +354,8 @@ def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_at
                         <tr>
                             <th>Dataset</th>
                             <th>Count</th>
-                            <th>PFASgroups Mean</th>
-                            <th>PFASgroups Median</th>
+                            <th>HalogenGroups Mean</th>
+                            <th>HalogenGroups Median</th>
                             <th>Atlas Mean</th>
                             <th>Speedup</th>
                         </tr>
@@ -377,8 +377,8 @@ def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_at
                     <thead>
                         <tr>
                             <th>Atom Count Range</th>
-                            <th>PFASgroups Mean</th>
-                            <th>PFASgroups Median</th>
+                            <th>HalogenGroups Mean</th>
+                            <th>HalogenGroups Median</th>
                             <th>Atlas Mean</th>
                             <th>Speedup</th>
                         </tr>
@@ -404,7 +404,7 @@ def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_at
         
         <div class="footer">
             <p>PFAS Benchmark Timing Report • Total Molecules: {total_molecules:,}</p>
-            <p>Generated by PFASgroups Benchmark Suite</p>
+            <p>Generated by HalogenGroups Benchmark Suite</p>
         </div>
     </div>
     
@@ -416,7 +416,7 @@ def generate_html_content(data_by_dataset, all_pfasgroups, all_atlas, data_by_at
         {generate_atom_chart_js(atom_stats)}
         
         // Distribution chart
-        {generate_distribution_chart_js(all_pfasgroups, all_atlas)}
+        {generate_distribution_chart_js(all_HalogenGroups, all_atlas)}
     </script>
 </body>
 </html>"""
@@ -488,7 +488,7 @@ def generate_dataset_chart_js(dataset_rows):
         var datasetTrace1 = {{
             x: {json.dumps(datasets)},
             y: {json.dumps(pfas_means)},
-            name: 'PFASgroups',
+            name: 'HalogenGroups',
             type: 'bar',
             marker: {{ color: '#667eea' }}
         }};
@@ -522,7 +522,7 @@ def generate_atom_chart_js(atom_stats):
         var atomTrace1 = {{
             x: {json.dumps(ranges)},
             y: {json.dumps(pfas_means)},
-            name: 'PFASgroups',
+            name: 'HalogenGroups',
             type: 'scatter',
             mode: 'lines+markers',
             line: {{ color: '#667eea', width: 3 }},
@@ -549,12 +549,12 @@ def generate_atom_chart_js(atom_stats):
         Plotly.newPlot('atomChart', [atomTrace1, atomTrace2], atomLayout);
     """
 
-def generate_distribution_chart_js(pfasgroups_times, atlas_times):
+def generate_distribution_chart_js(HalogenGroups_times, atlas_times):
     """Generate Plotly.js code for distribution histogram"""
     return f"""
         var distTrace1 = {{
-            x: {json.dumps([t*1000 for t in pfasgroups_times])},
-            name: 'PFASgroups',
+            x: {json.dumps([t*1000 for t in HalogenGroups_times])},
+            name: 'HalogenGroups',
             type: 'histogram',
             opacity: 0.7,
             marker: {{ color: '#667eea' }},

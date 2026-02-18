@@ -55,7 +55,7 @@ def load_latest_profile_file(profile):
 
 def fit_profile(profile, timing_data):
     x_data = np.array([d["num_atoms"] for d in timing_data])
-    y_data = np.array([d["pfasgroups_time_avg"] for d in timing_data])
+    y_data = np.array([d["HalogenGroups_time_avg"] for d in timing_data])
 
     if len(x_data) < 2:
         raise ValueError(f"Not enough data points for profile {profile}")
@@ -124,7 +124,7 @@ def plot_comparison(results):
         ax.plot(x_fit, y_fit, color=color, linewidth=2)
 
     ax.set_xlabel("Number of atoms")
-    ax.set_ylabel("PFASGroups time (ms)")
+    ax.set_ylabel("HalogenGroups time (ms)")
     ax.set_title("Timing comparison with exponential fits")
     ax.grid(True, alpha=0.3)
     ax.legend(fontsize=10)

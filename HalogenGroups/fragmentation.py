@@ -1,5 +1,5 @@
 """
-Fragmentation utilities for PFASgroups.
+Fragmentation utilities for HalogenGroups.
 
 This module provides functions for fragmenting molecules based on bond dissociation energies.
 """

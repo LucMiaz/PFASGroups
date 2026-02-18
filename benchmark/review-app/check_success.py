@@ -6,7 +6,7 @@ cursor = conn.cursor()
 # Check success values
 cursor.execute('''
     SELECT p.id, p.success, m.smiles
-    FROM pfasgroups_results p
+    FROM HalogenGroups_results p
     JOIN molecules m ON p.molecule_id = m.id
     WHERE m.dataset_type='highly_branched'
     LIMIT 10
@@ -22,7 +22,7 @@ cursor.execute('''
         COUNT(*) as total,
         SUM(CASE WHEN p.success = 1 THEN 1 ELSE 0 END) as successful,
         SUM(CASE WHEN p.success = 0 THEN 1 ELSE 0 END) as failed
-    FROM pfasgroups_results p
+    FROM HalogenGroups_results p
     JOIN molecules m ON p.molecule_id = m.id
     WHERE m.dataset_type='highly_branched'
 ''')

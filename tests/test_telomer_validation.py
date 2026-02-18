@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from rdkit import Chem
 
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 
 def test_telomer_validation_sdf():

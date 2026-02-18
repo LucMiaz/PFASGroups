@@ -56,7 +56,7 @@ def quadratic_model(x, a, b, c):
 
 # Fit models
 print("\n" + "="*70)
-print("TIMING DATASET SCALING ANALYSIS (PFASgroups)")
+print("TIMING DATASET SCALING ANALYSIS (HalogenGroups)")
 print("="*70)
 
 models = []

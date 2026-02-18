@@ -1,7 +1,7 @@
 """Test component fraction calculations based on carbon atoms."""
 
 from rdkit import Chem
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 
 def test_component_fractions():
     """Test that component_fraction uses carbon atoms and total_components_fraction is valid."""

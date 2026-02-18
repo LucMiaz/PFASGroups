@@ -5,7 +5,7 @@ class PFASDefinition:
     """Model class representing a PFAS definition based on structural criteria.
     
     A PFAS definition identifies molecules using SMARTS patterns and/or fluorine ratio thresholds.
-    Unlike PFASGroup which focuses on specific functional groups, PFASDefinition provides
+    Unlike HalogenGroup which focuses on specific functional groups, PFASDefinition provides
     broader chemical definitions (e.g., "contains at least one perfluoroalkyl moiety").
     
     Attributes

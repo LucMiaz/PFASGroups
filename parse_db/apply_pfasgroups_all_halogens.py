@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Apply PFASGroups parsing to all halogenated compounds in the clinventory database.
+"""Apply HalogenGroups parsing to all halogenated compounds in the clinventory database.
 
-This script processes compounds containing F, Cl, Br, or I using PFASGroups,
+This script processes compounds containing F, Cl, Br, or I using HalogenGroups,
 optionally substituting other halogens with F to leverage the existing PFAS
 classification infrastructure.
 
 The script queries the clinventory database for compounds with halogen elements
-and processes them using PFASGroups parse_mol function.
+and processes them using HalogenGroups parse_mol function.
 """
 
 import argparse
@@ -32,14 +32,14 @@ class DBConfig:
     port: int
 
 
-def _default_pfasgroups_path() -> Path:
-    # Script is in PFASGroups root, so use current directory
+def _default_HalogenGroups_path() -> Path:
+    # Script is in HalogenGroups root, so use current directory
     return Path(__file__).resolve().parent
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Apply PFASGroups parsing to all halogenated compounds in clinventory database"
+        description="Apply HalogenGroups parsing to all halogenated compounds in clinventory database"
     )
     parser.add_argument("--db-name", default=os.environ.get("DATABASE_NAME", "clinventory"))
     parser.add_argument("--db-user", default=os.environ.get("DATABASE_USER", "django"))
@@ -48,10 +48,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--db-port", type=int, default=int(os.environ.get("DATABASE_PORT", "5432")))
 
     parser.add_argument(
-        "--pfasgroups-path",
+        "--HalogenGroups-path",
         type=Path,
-        default=_default_pfasgroups_path(),
-        help="Path to local PFASGroups repository (default: current directory)",
+        default=_default_HalogenGroups_path(),
+        help="Path to local HalogenGroups repository (default: current directory)",
     )
     
     parser.add_argument(
@@ -86,7 +86,7 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument(
         "--run-id",
-        default=f"pfasgroups_halogens_{dt.datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}",
+        default=f"HalogenGroups_halogens_{dt.datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}",
         help="Identifier for this run",
     )
 
@@ -120,13 +120,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--save-to-db",
         action="store_true",
-        help="Save results to database table pfasgroups_results",
+        help="Save results to database table HalogenGroups_results",
     )
     
     parser.add_argument(
         "--results-table",
-        default="pfasgroups_results",
-        help="Database table name for storing results (default: pfasgroups_results)",
+        default="HalogenGroups_results",
+        help="Database table name for storing results (default: HalogenGroups_results)",
     )
     
     parser.add_argument("--batch-size", type=int, default=100, help="Processing batch size")
@@ -144,30 +144,30 @@ def build_db_config(args: argparse.Namespace) -> DBConfig:
     )
 
 
-def import_pfasgroups(pfasgroups_path: Path):
-    """Import PFASGroups and suppress RDKit warnings."""
-    if not pfasgroups_path.exists():
-        raise FileNotFoundError(f"PFASGroups path does not exist: {pfasgroups_path}")
+def import_HalogenGroups(HalogenGroups_path: Path):
+    """Import HalogenGroups and suppress RDKit warnings."""
+    if not HalogenGroups_path.exists():
+        raise FileNotFoundError(f"HalogenGroups path does not exist: {HalogenGroups_path}")
 
-    sys.path.insert(0, str(pfasgroups_path))
+    sys.path.insert(0, str(HalogenGroups_path))
 
     # Import and suppress RDKit warnings
     from rdkit import RDLogger
     RDLogger.DisableLog('rdApp.*')
     
-    from PFASgroups import parse_mol, get_PFASGroups  # type: ignore
-    from PFASgroups.results_model import ResultsModel  # type: ignore
+    from HalogenGroups import parse_mol, get_HalogenGroups  # type: ignore
+    from HalogenGroups.results_model import ResultsModel  # type: ignore
 
-    return parse_mol, get_PFASGroups, ResultsModel
+    return parse_mol, get_HalogenGroups, ResultsModel
 
 
 def initialize_database_tables(conn, pfas_groups_list):
-    """Initialize the three required tables: pfasgroups, pfasgroups_in_molecules, components_in_molecules."""
+    """Initialize the three required tables: HalogenGroups, HalogenGroups_in_molecules, components_in_molecules."""
     
     with conn.cursor() as cur:
-        # Table 1: pfasgroups - PFAS group definitions
+        # Table 1: HalogenGroups - PFAS group definitions
         cur.execute("""
-        CREATE TABLE IF NOT EXISTS pfasgroups (
+        CREATE TABLE IF NOT EXISTS HalogenGroups (
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             alias TEXT,
@@ -179,9 +179,9 @@ def initialize_database_tables(conn, pfas_groups_list):
         );
         """)
         
-        # Table 2: pfasgroups_in_molecules - PFAS group matches in molecules
+        # Table 2: HalogenGroups_in_molecules - PFAS group matches in molecules
         cur.execute("""
-        CREATE TABLE IF NOT EXISTS pfasgroups_in_molecules (
+        CREATE TABLE IF NOT EXISTS HalogenGroups_in_molecules (
             id SERIAL PRIMARY KEY,
             smiles TEXT NOT NULL,
             molecule_id INTEGER,
@@ -191,12 +191,12 @@ def initialize_database_tables(conn, pfas_groups_list):
             created_at TIMESTAMP DEFAULT NOW()
         );
         
-        CREATE INDEX IF NOT EXISTS idx_pfasgroups_in_molecules_smiles 
-            ON pfasgroups_in_molecules(smiles);
-        CREATE INDEX IF NOT EXISTS idx_pfasgroups_in_molecules_molecule_id 
-            ON pfasgroups_in_molecules(molecule_id);
-        CREATE INDEX IF NOT EXISTS idx_pfasgroups_in_molecules_group_id 
-            ON pfasgroups_in_molecules(group_id);
+        CREATE INDEX IF NOT EXISTS idx_HalogenGroups_in_molecules_smiles 
+            ON HalogenGroups_in_molecules(smiles);
+        CREATE INDEX IF NOT EXISTS idx_HalogenGroups_in_molecules_molecule_id 
+            ON HalogenGroups_in_molecules(molecule_id);
+        CREATE INDEX IF NOT EXISTS idx_HalogenGroups_in_molecules_group_id 
+            ON HalogenGroups_in_molecules(group_id);
         """)
         
         # Table 3: components_in_molecules - Component details
@@ -222,17 +222,17 @@ def initialize_database_tables(conn, pfas_groups_list):
     
     conn.commit()
     
-    # Populate pfasgroups table with group definitions
+    # Populate HalogenGroups table with group definitions
     with conn.cursor() as cur:
         # Check if table is empty
-        cur.execute("SELECT COUNT(*) FROM pfasgroups")
+        cur.execute("SELECT COUNT(*) FROM HalogenGroups")
         count = cur.fetchone()[0]
         
         if count == 0:
-            print(f"Populating pfasgroups table with {len(pfas_groups_list)} group definitions...")
+            print(f"Populating HalogenGroups table with {len(pfas_groups_list)} group definitions...")
             for group in pfas_groups_list:
                 cur.execute("""
-                INSERT INTO pfasgroups (id, name, alias, category, pathway_type, smarts_primary, smarts_secondary)
+                INSERT INTO HalogenGroups (id, name, alias, category, pathway_type, smarts_primary, smarts_secondary)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (id) DO NOTHING
                 """, (
@@ -245,9 +245,9 @@ def initialize_database_tables(conn, pfas_groups_list):
                     str(getattr(group, 'smarts2', None)) if hasattr(group, 'smarts2') else None,
                 ))
             conn.commit()
-            print(f"Populated pfasgroups table with {len(pfas_groups_list)} groups")
+            print(f"Populated HalogenGroups table with {len(pfas_groups_list)} groups")
         else:
-            print(f"pfasgroups table already contains {count} groups")
+            print(f"HalogenGroups table already contains {count} groups")
 
 
 def add_molecule_id_to_results(results_model, compound_id_map):
@@ -371,7 +371,7 @@ def save_batch_to_database(molecule_results, compound_id_map, engine):
         # Process each match
         for match in mol_result.get('matches', []):
             # Only process PFAS groups, not definitions
-            if match.get('type') != 'PFASgroup':
+            if match.get('type') != 'HalogenGroup':
                 continue
             
             group_id = match.get('id')
@@ -410,7 +410,7 @@ def save_batch_to_database(molecule_results, compound_id_map, engine):
     if groups_data:
         df_groups = pd.DataFrame(groups_data)
         df_groups.to_sql(
-            'pfasgroups_in_molecules',
+            'HalogenGroups_in_molecules',
             engine,
             if_exists='append',
             index=False,
@@ -441,7 +441,7 @@ def parse_one_compound(
     parse_mol_func,
     substitute: bool,
 ) -> Dict:
-    """Parse a single compound with PFASGroups."""
+    """Parse a single compound with HalogenGroups."""
     from rdkit import Chem
     
     t0 = time.perf_counter()
@@ -458,7 +458,7 @@ def parse_one_compound(
         if mol is None:
             raise ValueError(f"Invalid SMILES: {target_smiles}")
         
-        # Use PFASGroups parse_mol
+        # Use HalogenGroups parse_mol
         # Returns a MoleculeResult object (dict-like) with 'matches' list
         parsed_result = parse_mol_func(
             mol,
@@ -501,8 +501,8 @@ def main() -> int:
         print(f"Processing compounds with halogens: {', '.join(halogens)}")
     print(f"Database: {db_config.dbname} (table: {args.table_name})")
     
-    # Import PFASGroups
-    parse_mol_func, get_pfas_groups, ResultsModel = import_pfasgroups(args.pfasgroups_path)
+    # Import HalogenGroups
+    parse_mol_func, get_pfas_groups, ResultsModel = import_HalogenGroups(args.HalogenGroups_path)
     
     # Load PFAS groups for reference
     pfas_groups = get_pfas_groups()
@@ -519,7 +519,7 @@ def main() -> int:
     ) as conn:
         # Initialize database tables if saving to database
         if args.save_to_db:
-            print("Initializing database tables (pfasgroups, pfasgroups_in_molecules, components_in_molecules)...")
+            print("Initializing database tables (HalogenGroups, HalogenGroups_in_molecules, components_in_molecules)...")
             initialize_database_tables(conn, pfas_groups)
             print("Database tables ready")
         # Fetch compounds

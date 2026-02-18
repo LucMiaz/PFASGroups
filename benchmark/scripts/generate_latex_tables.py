@@ -130,10 +130,10 @@ if definitions_data:
 latex_content = []
 
 # Document header
-latex_content.append(r"""%% LaTeX tables and text for PFASgroups article
+latex_content.append(r"""%% LaTeX tables and text for HalogenGroups article
 %% Generated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + r"""
 %% 
-%% Include in your article with: \input{pfasgroups_results.tex}
+%% Include in your article with: \input{HalogenGroups_results.tex}
 %%
 
 """)
@@ -145,7 +145,7 @@ print("\n2. Generating dataset overview table...")
 
 latex_content.append(r"""\section*{Benchmark Dataset Overview}
 
-Table~\ref{tab:datasets} provides an overview of the benchmark datasets used to validate PFASgroups detection accuracy and performance.
+Table~\ref{tab:datasets} provides an overview of the benchmark datasets used to validate HalogenGroups detection accuracy and performance.
 
 \begin{table}[htbp]
 \centering
@@ -222,15 +222,15 @@ Table~\ref{tab:definitions_accuracy} shows the classification performance of fiv
 
 """)
 
-# Calculate PFASgroups TP/TN/FP/FN from OECD and non-fluorinated data
-print("\n2c. Generating PFASgroups classification accuracy...")
+# Calculate HalogenGroups TP/TN/FP/FN from OECD and non-fluorinated data
+print("\n2c. Generating HalogenGroups classification accuracy...")
 
 # Calculate from OECD (should all be PFAS - true positives)
-pg_tp = sum(1 for r in oecd_data if r.get('pfasgroups_result', {}).get('is_pfas', False))
+pg_tp = sum(1 for r in oecd_data if r.get('HalogenGroups_result', {}).get('is_pfas', False))
 pg_fn = len(oecd_data) - pg_tp
 
 # Calculate from non-fluorinated (should all be non-PFAS - true negatives)
-pg_tn = sum(1 for r in non_fluor_data if not r.get('pfasgroups_result', {}).get('is_pfas', True))
+pg_tn = sum(1 for r in non_fluor_data if not r.get('HalogenGroups_result', {}).get('is_pfas', True))
 pg_fp = len(non_fluor_data) - pg_tn
 
 pg_total = pg_tp + pg_tn + pg_fp + pg_fn
@@ -240,21 +240,21 @@ pg_recall = pg_tp / (pg_tp + pg_fn) * 100 if (pg_tp + pg_fn) > 0 else 0
 pg_specificity = pg_tn / (pg_tn + pg_fp) * 100 if (pg_tn + pg_fp) > 0 else 0
 pg_f1 = 2 * (pg_precision * pg_recall) / (pg_precision + pg_recall) if (pg_precision + pg_recall) > 0 else 0
 
-latex_content.append(r"""\subsection*{PFASgroups Classification Performance}
+latex_content.append(r"""\subsection*{HalogenGroups Classification Performance}
 
-Table~\ref{tab:pfasgroups_accuracy} shows the classification performance of PFASgroups on known PFAS (OECD database) and non-fluorinated compounds.
+Table~\ref{tab:HalogenGroups_accuracy} shows the classification performance of HalogenGroups on known PFAS (OECD database) and non-fluorinated compounds.
 
 \begin{table}[htbp]
 \centering
-\caption{PFASgroups classification accuracy metrics.}
-\label{tab:pfasgroups_accuracy}
+\caption{HalogenGroups classification accuracy metrics.}
+\label{tab:HalogenGroups_accuracy}
 \begin{tabular}{lrrrrrrr}
 \toprule
 \textbf{Method} & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} \\
 \midrule
 """)
 
-latex_content.append(f"PFASgroups & {pg_tp} & {pg_tn} & {pg_fp} & {pg_fn} & {pg_accuracy:.1f}\\% & {pg_precision:.1f}\\% & {pg_recall:.1f}\\% \\\\\n")
+latex_content.append(f"HalogenGroups & {pg_tp} & {pg_tn} & {pg_fp} & {pg_fn} & {pg_accuracy:.1f}\\% & {pg_precision:.1f}\\% & {pg_recall:.1f}\\% \\\\\n")
 
 latex_content.append(r"""\bottomrule
 \end{tabular}
@@ -290,7 +290,7 @@ oecd_by_group = defaultdict(lambda: {'total': 0, 'detected': 0, 'atlas_agree': 0
 
 for record in oecd_data:
     mol_data = record.get('molecule_data', {})
-    pg_result = record.get('pfasgroups_result', {})
+    pg_result = record.get('HalogenGroups_result', {})
     atlas_result = record.get('atlas_result', {})
     
     oecd_class = mol_data.get('oecd_first_class', 'Unknown')
@@ -325,7 +325,7 @@ for i, (group_name, stats) in enumerate(sorted_groups, 1):
 
 # Overall statistics
 total_oecd = len(oecd_data)
-total_detected = sum(1 for r in oecd_data if r.get('pfasgroups_result', {}).get('groups_detected'))
+total_detected = sum(1 for r in oecd_data if r.get('HalogenGroups_result', {}).get('groups_detected'))
 overall_accuracy = (total_detected / total_oecd * 100) if total_oecd > 0 else 0
 
 latex_content.append(r"""\midrule
@@ -346,11 +346,11 @@ latex_content.append(r"""\section*{Timing Performance Analysis}
 
 \subsection*{Overall Execution Time Statistics}
 
-Table~\ref{tab:timing_overall} presents timing statistics for PFASgroups and PFAS-Atlas across all test molecules.
+Table~\ref{tab:timing_overall} presents timing statistics for HalogenGroups and PFAS-Atlas across all test molecules.
 
 \begin{table}[htbp]
 \centering
-\caption{Execution time statistics (milliseconds) for PFASgroups and PFAS-Atlas.}
+\caption{Execution time statistics (milliseconds) for HalogenGroups and PFAS-Atlas.}
 \label{tab:timing_overall}
 \begin{tabular}{lrrrrrr}
 \toprule
@@ -359,20 +359,20 @@ Table~\ref{tab:timing_overall} presents timing statistics for PFASgroups and PFA
 """)
 
 # Calculate timing statistics
-pg_times = [r['pfasgroups_time_avg'] * 1000 for r in timing_data]  # Convert to ms
+pg_times = [r['HalogenGroups_time_avg'] * 1000 for r in timing_data]  # Convert to ms
 atlas_times = [r['atlas_time_avg'] * 1000 for r in timing_data if 'atlas_time_avg' in r]
 
 pg_stats = calculate_statistics(pg_times)
 atlas_stats = calculate_statistics(atlas_times) if atlas_times else {}
 
-latex_content.append(f"PFASgroups & {pg_stats['n']:,} & {format_number(pg_stats['mean'])} & {format_number(pg_stats['median'])} & {format_number(pg_stats['std'])} & {format_number(pg_stats['min'])} & {format_number(pg_stats['max'])} \\\\\n")
+latex_content.append(f"HalogenGroups & {pg_stats['n']:,} & {format_number(pg_stats['mean'])} & {format_number(pg_stats['median'])} & {format_number(pg_stats['std'])} & {format_number(pg_stats['min'])} & {format_number(pg_stats['max'])} \\\\\n")
 
 if atlas_stats:
     latex_content.append(f"PFAS-Atlas & {atlas_stats['n']:,} & {format_number(atlas_stats['mean'])} & {format_number(atlas_stats['median'])} & {format_number(atlas_stats['std'])} & {format_number(atlas_stats['min'])} & {format_number(atlas_stats['max'])} \\\\\n")
     
     speedup = atlas_stats['mean'] / pg_stats['mean'] if pg_stats['mean'] > 0 else 0
     latex_content.append(r"""\midrule
-\multicolumn{7}{l}{\textit{Speedup factor (Atlas/PFASgroups): """ + f"{speedup:.2f}" + r"""$\times$}} \\
+\multicolumn{7}{l}{\textit{Speedup factor (Atlas/HalogenGroups): """ + f"{speedup:.2f}" + r"""$\times$}} \\
 """)
 
 latex_content.append(r"""\bottomrule
@@ -405,7 +405,7 @@ for min_size, max_size in size_ranges:
     if not range_data:
         continue
     
-    pg_range_times = [r['pfasgroups_time_avg'] * 1000 for r in range_data]
+    pg_range_times = [r['HalogenGroups_time_avg'] * 1000 for r in range_data]
     atlas_range_times = [r['atlas_time_avg'] * 1000 for r in range_data if 'atlas_time_avg' in r]
     
     pg_range_stats = calculate_statistics(pg_range_times)
@@ -441,7 +441,7 @@ where $t$ is execution time (seconds), $n$ is number of atoms, and parameters we
 
 # Fit exponential model
 timing_atoms = [r['num_atoms'] for r in timing_data]
-timing_pg = [r['pfasgroups_time_avg'] for r in timing_data]
+timing_pg = [r['HalogenGroups_time_avg'] for r in timing_data]
 
 # Log-linear regression
 log_timing = [math.log(max(t, 1e-10)) for t in timing_pg]
@@ -516,13 +516,13 @@ categories = {
 category_stats = {}
 for cat_name, group_ids in categories.items():
     cat_records = [r for r in enhanced_data 
-                   if r.get('pfasgroups_result', {}).get('detected_groups') 
-                   and any(g in group_ids for g in r['pfasgroups_result']['detected_groups'])]
+                   if r.get('HalogenGroups_result', {}).get('detected_groups') 
+                   and any(g in group_ids for g in r['HalogenGroups_result']['detected_groups'])]
     
     if cat_records:
         detected = len(cat_records)
-        times = [r.get('pfasgroups_result', {}).get('execution_time', 0) * 1000 
-                for r in cat_records if r.get('pfasgroups_result', {}).get('execution_time')]
+        times = [r.get('HalogenGroups_result', {}).get('execution_time', 0) * 1000 
+                for r in cat_records if r.get('HalogenGroups_result', {}).get('execution_time')]
         mean_time = sum(times) / len(times) if times else 0
         
         # False positive rate (if applicable)
@@ -552,23 +552,23 @@ print("\n6. Generating PFAS-Atlas comparison...")
 
 latex_content.append(r"""\section*{Comparison with PFAS-Atlas}
 
-Table~\ref{tab:atlas_comparison} provides a detailed comparison of PFASgroups and PFAS-Atlas performance.
+Table~\ref{tab:atlas_comparison} provides a detailed comparison of HalogenGroups and PFAS-Atlas performance.
 
 \begin{table}[htbp]
 \centering
-\caption{Performance comparison between PFASgroups and PFAS-Atlas.}
+\caption{Performance comparison between HalogenGroups and PFAS-Atlas.}
 \label{tab:atlas_comparison}
 \begin{tabular}{lrrrr}
 \toprule
-\textbf{Metric} & \textbf{PFASgroups} & \textbf{PFAS-Atlas} & \textbf{Agreement (\%)} & \textbf{Advantage} \\
+\textbf{Metric} & \textbf{HalogenGroups} & \textbf{PFAS-Atlas} & \textbf{Agreement (\%)} & \textbf{Advantage} \\
 \midrule
 """)
 
 # Calculate comparison metrics
-pg_detected = sum(1 for r in oecd_data if r.get('pfasgroups_result', {}).get('is_pfas', False))
+pg_detected = sum(1 for r in oecd_data if r.get('HalogenGroups_result', {}).get('is_pfas', False))
 atlas_detected = sum(1 for r in oecd_data if r.get('atlas_result', {}).get('is_pfas', False))
 agreement = sum(1 for r in oecd_data 
-                if r.get('pfasgroups_result', {}).get('is_pfas') == r.get('atlas_result', {}).get('is_pfas'))
+                if r.get('HalogenGroups_result', {}).get('is_pfas') == r.get('atlas_result', {}).get('is_pfas'))
 
 agreement_pct = (agreement / len(oecd_data) * 100) if oecd_data else 0
 
@@ -577,13 +577,13 @@ latex_content.append(f"PFAS Detection Rate & {pg_detected/len(oecd_data)*100:.1f
 # Timing comparison
 if pg_stats and atlas_stats:
     speedup = atlas_stats['mean'] / pg_stats['mean']
-    advantage = 'PFASgroups' if speedup > 1 else 'PFAS-Atlas'
+    advantage = 'HalogenGroups' if speedup > 1 else 'PFAS-Atlas'
     latex_content.append(f"Mean Exec. Time (ms) & {format_number(pg_stats['mean'])} & {format_number(atlas_stats['mean'])} & -- & {advantage} \\\\\n")
     latex_content.append(f"Speedup Factor & -- & -- & -- & {abs(speedup):.2f}$\\times$ \\\\\n")
 
 # Group specificity
-pg_groups = sum(1 for r in oecd_data if r.get('pfasgroups_result', {}).get('groups_detected'))
-latex_content.append(f"Detailed Groups & {pg_groups} & -- & -- & PFASgroups \\\\\n")
+pg_groups = sum(1 for r in oecd_data if r.get('HalogenGroups_result', {}).get('groups_detected'))
+latex_content.append(f"Detailed Groups & {pg_groups} & -- & -- & HalogenGroups \\\\\n")
 
 latex_content.append(r"""\bottomrule
 \end{tabular}
@@ -614,8 +614,8 @@ latex_content.append(r"""\section*{Figures}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.9\textwidth]{imgs/pfasgroups_vs_atlas.pdf}
-\caption{Performance comparison between PFASgroups and PFAS-Atlas showing execution time distribution (left) and detection agreement (right).}
+\includegraphics[width=0.9\textwidth]{imgs/HalogenGroups_vs_atlas.pdf}
+\caption{Performance comparison between HalogenGroups and PFAS-Atlas showing execution time distribution (left) and detection agreement (right).}
 \label{fig:atlas_comparison}
 \end{figure}
 
@@ -628,28 +628,28 @@ print("\n8. Generating statistical summary text...")
 
 latex_content.append(r"""\section*{Statistical Summary}
 
-The benchmark results demonstrate that PFASgroups achieves high accuracy in PFAS detection across diverse molecular structures. Key findings include:
+The benchmark results demonstrate that HalogenGroups achieves high accuracy in PFAS detection across diverse molecular structures. Key findings include:
 
 \begin{itemize}
 \item \textbf{Detection Accuracy:} Overall accuracy of """ + f"{overall_accuracy:.1f}" + r"""\% on the OECD reference database (""" + f"{len(oecd_data):,}" + r""" compounds), with individual group accuracies ranging from """ + f"{min(accuracy for _, stats in sorted_groups for accuracy in [stats['detected']/stats['total']*100] if stats['total'] > 0):.1f}" + r"""\% to """ + f"{max(accuracy for _, stats in sorted_groups for accuracy in [stats['detected']/stats['total']*100] if stats['total'] > 0):.1f}" + r"""\%.
 
-\item \textbf{Classification Performance:} PFASgroups achieves """ + f"{pg_accuracy:.1f}" + r"""\% overall classification accuracy with """ + f"{pg_precision:.1f}" + r"""\% precision, """ + f"{pg_recall:.1f}" + r"""\% recall (sensitivity), """ + f"{pg_specificity:.1f}" + r"""\% specificity, and F1-score of """ + f"{pg_f1:.1f}" + r"""\% across """ + f"{pg_total:,}" + r""" test cases (""" + f"{pg_tp}" + r""" TP, """ + f"{pg_tn}" + r""" TN, """ + f"{pg_fp}" + r""" FP, """ + f"{pg_fn}" + r""" FN).""" + (r"""
+\item \textbf{Classification Performance:} HalogenGroups achieves """ + f"{pg_accuracy:.1f}" + r"""\% overall classification accuracy with """ + f"{pg_precision:.1f}" + r"""\% precision, """ + f"{pg_recall:.1f}" + r"""\% recall (sensitivity), """ + f"{pg_specificity:.1f}" + r"""\% specificity, and F1-score of """ + f"{pg_f1:.1f}" + r"""\% across """ + f"{pg_total:,}" + r""" test cases (""" + f"{pg_tp}" + r""" TP, """ + f"{pg_tn}" + r""" TN, """ + f"{pg_fp}" + r""" FP, """ + f"{pg_fn}" + r""" FN).""" + (r"""
 
 \item \textbf{PFAS Definitions Benchmark:} Comparison of five PFAS definition systems shows accuracy ranging from """ + f"{min(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}" + r"""\% to """ + f"{max(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}" + r"""\% across OECD, EU, OPPT, UK, and PFASTRUCTv5 definitions.""" if definitions_data else "") + r"""
 
 \item \textbf{Performance Scaling:} Execution time follows an exponential model ($R^2 = """ + f"{r_squared:.4f}" + r"""$) with mean processing time of """ + f"{pg_stats['mean']:.2f}" + r""" ms per molecule and median of """ + f"{pg_stats['median']:.2f}" + r""" ms.
 
-\item \textbf{Comparative Performance:} """ + (f"PFASgroups demonstrates {speedup:.2f}$\\times$ speedup compared to PFAS-Atlas" if speedup > 1 else f"Performance comparable to PFAS-Atlas (ratio: {speedup:.2f}$\\times$)") + r""" while providing detailed functional group identification.
+\item \textbf{Comparative Performance:} """ + (f"HalogenGroups demonstrates {speedup:.2f}$\\times$ speedup compared to PFAS-Atlas" if speedup > 1 else f"Performance comparable to PFAS-Atlas (ratio: {speedup:.2f}$\\times$)") + r""" while providing detailed functional group identification.
 
 \item \textbf{Robustness:} Successfully handles complex branched structures (""" + f"{len(complex_data):,}" + r""" molecules tested) and correctly excludes non-fluorinated compounds (""" + f"{len(non_fluor_data):,}" + r""" negative controls).
 \end{itemize}
 
-These results validate PFASgroups as a reliable and efficient tool for automated PFAS detection and classification in large chemical databases.
+These results validate HalogenGroups as a reliable and efficient tool for automated PFAS detection and classification in large chemical databases.
 
 """)
 
 # Save to file
-output_file = 'reports/pfasgroups_latex_results.tex'
+output_file = 'reports/HalogenGroups_latex_results.tex'
 os.makedirs('reports', exist_ok=True)
 
 with open(output_file, 'w') as f:
@@ -661,13 +661,13 @@ print(f"   Total figures: 3")
 print(f"   Total sections: 7")
 
 # Also generate a separate file with just the main results for quick inclusion
-summary_file = 'reports/pfasgroups_latex_summary.tex'
+summary_file = 'reports/HalogenGroups_latex_summary.tex'
 summary_content = [
-    r"""%% PFASgroups Performance Summary for Abstract/Introduction
+    r"""%% HalogenGroups Performance Summary for Abstract/Introduction
 %% Generated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + r"""
 
-The PFASgroups algorithm was validated on """ + f"{len(oecd_data):,}" + r""" reference compounds from the OECD database, achieving """ + f"{overall_accuracy:.1f}" + r"""\% accuracy in PFAS detection and classification with """ + f"{pg_precision:.1f}" + r"""\% precision and """ + f"{pg_recall:.1f}" + r"""\% recall. """ + (f"Benchmarking of five PFAS definition systems (OECD, EU, OPPT, UK, PFASTRUCTv5) showed accuracy ranging from {min(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}\\% to {max(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}\\%. " if definitions_data else "") + r"""Performance analysis on """ + f"{len(timing_data):,}" + r""" molecules of varying complexity showed execution times ranging from """ + f"{pg_stats['min']:.2f}" + r""" to """ + f"{pg_stats['max']:.2f}" + r""" ms (mean: """ + f"{pg_stats['mean']:.2f}" + r""" ms, median: """ + f"{pg_stats['median']:.2f}" + r""" ms). The algorithm successfully identified all 55 functional groups in """ + f"{len(enhanced_data):,}" + r""" systematically generated test molecules and demonstrated robust handling of complex branched structures. """,
-    (f"Compared to PFAS-Atlas, PFASgroups showed {speedup:.2f}$\\times$ speedup" if speedup > 1 else f"performance comparable to PFAS-Atlas") + r""" while providing detailed functional group identification and chain length quantification.
+The HalogenGroups algorithm was validated on """ + f"{len(oecd_data):,}" + r""" reference compounds from the OECD database, achieving """ + f"{overall_accuracy:.1f}" + r"""\% accuracy in PFAS detection and classification with """ + f"{pg_precision:.1f}" + r"""\% precision and """ + f"{pg_recall:.1f}" + r"""\% recall. """ + (f"Benchmarking of five PFAS definition systems (OECD, EU, OPPT, UK, PFASTRUCTv5) showed accuracy ranging from {min(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}\\% to {max(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}\\%. " if definitions_data else "") + r"""Performance analysis on """ + f"{len(timing_data):,}" + r""" molecules of varying complexity showed execution times ranging from """ + f"{pg_stats['min']:.2f}" + r""" to """ + f"{pg_stats['max']:.2f}" + r""" ms (mean: """ + f"{pg_stats['mean']:.2f}" + r""" ms, median: """ + f"{pg_stats['median']:.2f}" + r""" ms). The algorithm successfully identified all 55 functional groups in """ + f"{len(enhanced_data):,}" + r""" systematically generated test molecules and demonstrated robust handling of complex branched structures. """,
+    (f"Compared to PFAS-Atlas, HalogenGroups showed {speedup:.2f}$\\times$ speedup" if speedup > 1 else f"performance comparable to PFAS-Atlas") + r""" while providing detailed functional group identification and chain length quantification.
 
 """
 ]

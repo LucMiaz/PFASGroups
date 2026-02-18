@@ -1,6 +1,62 @@
 Changelog
 =========
 
+Version 3.1.0 (February 2026)
+------------------------------
+
+**Released:** February 18, 2026
+
+**New Features:**
+
+- **Multi-halogen fingerprinting**: ``generate_fingerprint`` and ``ResultsModel.to_fingerprint()``
+  now accept a ``halogens`` parameter (``'F'``, ``'Cl'``, ``'Br'``, ``'I'``, or a list thereof).
+
+  - Single halogen (default ``'F'``): standard 116-column binary/count vector.
+  - Multiple halogens (e.g. ``['F', 'Cl']``): vectors are **stacked** horizontally,
+    yielding a fingerprint of length 116 × n_halogens. Group names are automatically
+    suffixed with ``[F]``, ``[Cl]``, etc.
+
+- **Saturation filter**: a ``saturation`` parameter (``'per'`` | ``'poly'`` | ``None``,
+  default ``'per'``) controls which component SMARTS are used for groups that have
+  halogenated-chain components (OECD groups 1–28). Groups without a component SMARTS
+  (generic/telomer groups) are unaffected by this filter.
+
+- **Corrected group-selection indexing**: group selections (``'oecd'``, ``'generic'``,
+  ``'telomers'``, ``'generic+telomers'``) now resolve using canonical **group IDs**
+  rather than raw list positions, making them robust to future changes in the data file.
+
+- **``ResultsFingerprint`` metadata**: the class now stores and displays ``halogens``
+  and ``saturation`` in ``__repr__`` and ``summary()``.
+
+**API Changes:**
+
+.. code-block:: python
+
+   # Default: F only, perfluorinated, all 116 groups → shape (n_mols, 116)
+   fp = results.to_fingerprint()
+
+   # Fluorine + chlorine stacked → shape (n_mols, 232)
+   fp = results.to_fingerprint(halogens=['F', 'Cl'])
+
+   # Polyfluorinated components only
+   fp = results.to_fingerprint(halogens='F', saturation='poly')
+
+   # No saturation filter (all component SMARTS)
+   fp = results.to_fingerprint(halogens='F', saturation=None)
+
+   # generate_fingerprint directly, same new params
+   from HalogenGroups.fingerprints import generate_fingerprint
+   vectors, info = generate_fingerprint(smiles_list, halogens=['F', 'Cl'], saturation='per')
+   # info['halogens'] == ['F', 'Cl']
+   # info['saturation'] == 'per'
+
+**Background — group count (116 vs 117):**
+
+The data file contains 117 group entries, but group ID 116 (*Telomers*) has
+``compute=False`` — it is an *aggregate* group matched by regex against other group
+names rather than parsed directly. The ``@load_HalogenGroups`` decorator excludes it,
+so every fingerprint always has **116** computable columns.
+
 Version 2.2.4 (February 2026)
 ------------------------------
 

@@ -2,19 +2,19 @@
 import json
 from pathlib import Path
 
-from PFASgroups.PFASGroupModel import PFASGroup
+from HalogenGroups import HalogenGroup
 
 
 def test_smarts_atom_count_precompute():
-    data_dir = Path(__file__).parent.parent / 'PFASgroups' / 'data'
-    groups_file = data_dir / 'PFAS_groups_smarts.json'
+    data_dir = Path(__file__).parent.parent / 'HalogenGroups' / 'data'
+    groups_file = data_dir / 'Halogen_groups_smarts.json'
     with open(groups_file, 'r') as f:
         groups_data = json.load(f)
 
-    assert groups_data, "No PFAS groups loaded"
+    assert groups_data, "No halogen groups loaded"
 
     for group_data in groups_data[:10]:
-        group = PFASGroup(**group_data)
+        group = HalogenGroup(**group_data)
         if not group.smarts:
             continue
         assert len(group.smarts) == len(group.smarts_count)

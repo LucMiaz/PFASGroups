@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 from rdkit import Chem
 import os
 
-# Import PFASgroups
-from PFASgroups import parse_smiles
+# Import HalogenGroups
+from HalogenGroups import parse_smiles
 
 # Load OECD dataset
 print("Loading OECD PFAS dataset...")
@@ -29,8 +29,8 @@ for smi in smiles_list:
         pass
 print(f"Valid SMILES: {len(valid_smiles)}")
 
-# Parse with PFASgroups
-print("Parsing with PFASgroups...")
+# Parse with HalogenGroups
+print("Parsing with HalogenGroups...")
 results = parse_smiles(valid_smiles)
 print(f"Parsed {len(results)} molecules")
 
@@ -80,7 +80,7 @@ print("✓ Results saved to oecd_results.db")
 print("✓ Fingerprints saved to oecd_fingerprints.db")
 
 # Load back
-from PFASgroups.results_model import ResultsModel, ResultsFingerprint
+from HalogenGroups.results_model import ResultsModel, ResultsFingerprint
 loaded_results = ResultsModel.from_sql(filename='oecd_results.db')
 loaded_fp = ResultsFingerprint.from_sql(filename='oecd_fingerprints.db')
 print(f"✓ Loaded {len(loaded_results)} results and {loaded_fp.fingerprint_matrix.shape[0]} fingerprints")

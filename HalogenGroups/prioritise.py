@@ -6,7 +6,7 @@ This module provides functions to prioritize PFAS molecules based on:
 1. Distributional similarity to a reference list (using fingerprint KL divergence)
 2. Fluorinated component characteristics (total fluorine content and component size distribution)
 
-Author: PFASgroups
+Author: HalogenGroups
 Version: 2.2.4
 """
 
@@ -97,7 +97,7 @@ def prioritise_molecules(
     Examples
     --------
     # Priority by similarity to reference list
-    >>> from PFASgroups import prioritise_molecules
+    >>> from HalogenGroups import prioritise_molecules
     >>> inventory = ["FC(F)(F)C(F)(F)C(=O)O", "FC(F)(F)C(F)(F)C(F)(F)C(=O)O"]
     >>> reference = ["FC(F)(F)C(F)(F)C(=O)O"]  # Known priority compounds
     >>> results, scores = prioritise_molecules(inventory, reference=reference)
@@ -319,7 +319,7 @@ def _prioritise_by_components(
         all_component_sizes = []
         
         for match in mol_result['matches']:
-            if match.get('type') == 'PFASgroup' and 'components_sizes' in match:
+            if match.get('type') == 'HalogenGroup' and 'components_sizes' in match:
                 component_sizes = match['components_sizes']
                 if isinstance(component_sizes, list) and len(component_sizes) > 0:
                     all_component_sizes.extend(component_sizes)
@@ -397,7 +397,7 @@ def get_priority_statistics(
     group_counts = {}
     for i in range(n):
         for match in results[i]['matches']:
-            if match.get('type') == 'PFASgroup':
+            if match.get('type') == 'HalogenGroup':
                 group_name = match.get('group_name', 'Unknown')
                 group_counts[group_name] = group_counts.get(group_name, 0) + 1
     

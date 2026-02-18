@@ -1,15 +1,15 @@
-from .parser import add_componentSmarts, load_PFASGroups, load_PFASDefinitions
-from .core import PFAS_GROUPS_FILE,PFAS_DEFINITIONS_FILE
+from .parser import add_componentSmarts, load_HalogenGroups, load_PFASDefinitions
+from .core import HALOGEN_GROUPS_FILE,PFAS_DEFINITIONS_FILE
 import json
 @add_componentSmarts()
 def get_componentSmartss(**kwargs):
     return kwargs.get('componentSmartss')
 
-@load_PFASGroups()
-def get_PFASGroups(**kwargs):
+@load_HalogenGroups()
+def get_HalogenGroups(**kwargs):
     if kwargs.get('json_format',False):
         return kwargs.get('pfas_groups',[]).extend(kwargs.get('agg_pfas_groups',[]))
-    with open(PFAS_GROUPS_FILE, 'r') as f:
+    with open(HALOGEN_GROUPS_FILE, 'r') as f:
         data = json.load(f)
     return data
 

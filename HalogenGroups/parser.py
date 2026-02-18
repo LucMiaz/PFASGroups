@@ -1,7 +1,7 @@
 """
-PFASgroups core functions.
+HalogenGroups core functions.
 
-This module provides functions for parsing and plotting PFAS groups.
+This module provides functions for parsing and plotting halogen groups.
 """
 
 import numpy as np
@@ -9,24 +9,24 @@ from typing import Optional
 
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
-from .PFASGroupModel import PFASGroup
+from .HalogenGroupModel import HalogenGroup
 from .PFASDefinitionModel import PFASDefinition
 from .ComponentsSolverModel import ComponentsSolver
-from .core import fragment_until_valence_is_correct, n_from_formula, add_componentSmarts, PFAS_DEFINITIONS_FILE, PFAS_GROUPS_FILE, rdkit_disable_log
+from .core import fragment_until_valence_is_correct, n_from_formula, add_componentSmarts, PFAS_DEFINITIONS_FILE, HALOGEN_GROUPS_FILE, rdkit_disable_log
 import json
 
 
 
-# --- Load PFAS groups from PFAS_groups_smarts.json ---
-def load_PFASGroups():
+# --- Load halogen groups from PFAS_groups_smarts.json ---
+def load_HalogenGroups():
     """
-    Adds default PFASGroups to function
+    Adds default HalogenGroups to function
     """
-    with open(PFAS_GROUPS_FILE,'r') as f:
+    with open(HALOGEN_GROUPS_FILE,'r') as f:
         _pfg = json.load(f)
-    pfg = [PFASGroup(**x) for x in _pfg if x.get('compute',True)]
-    agg_pfg = [PFASGroup(**x) for x in _pfg if not x.get('compute',True)]
-    # list of PFASgroup names
+    pfg = [HalogenGroup(**x) for x in _pfg if x.get('compute',True)]
+    agg_pfg = [HalogenGroup(**x) for x in _pfg if not x.get('compute',True)]
+    # list of HalogenGroup names
     pfg_names =  {pf.name:pf.id for pf in pfg}
     # list groups aggregated by groups with compute=FALSE
     agg_pfg = {ppf:list(map(pfg_names.get,list(filter(ppf.re_search.search,pfg_names.keys())))) for ppf in agg_pfg}
@@ -103,12 +103,12 @@ def parse_definitions_in_mol(mol, **kwargs):
     return definition_matches
 
 
-# --- Main PFAS group parsing functions ---
+# --- Main halogen group parsing functions ---
 @add_componentSmarts()
-@load_PFASGroups()
+@load_HalogenGroups()
 @load_componentsSolver()
 def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = None, **kwargs):
-    """Iterates over PFAS groups and finds the ones that match the molecule.
+    """Iterates over halogen groups and finds the ones that match the molecule.
     
     Parameters
     ----------
@@ -122,8 +122,8 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
     Returns
     -------
     list of tuples
-        List of (PFASGroup, match_count, component_sizes, matched_components) tuples where:
-        - PFASGroup: The matched PFAS group object
+        List of (HalogenGroup, match_count, component_sizes, matched_components) tuples where:
+        - HalogenGroup: The matched halogen group object
         - match_count: Number of times this group pattern was matched (int)
         - component_sizes: List of carbon component sizes found (list of int)
         - matched_components: Detailed information about matched components (list of dicts)
@@ -138,11 +138,11 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
     
     Notes
     -----
-    For PFASgroups 
+    For HalogenGroups 
     1. with componentSmarts = 'cyclic', search for connected component matching first smarts
     2. with multiple smarts patterns or counts > 1: Find components containing all required SMARTS matches with minimum counts
     3. with single smarts pattern: Search for connected components of fluorinated atoms (for each pathType) where smarts match is in the component
-    4. with smarts defined and formula constraints: search for substructure matches of smarts, and for given componentSmarts for the PFASgroup, search for connected components of fluorinated atoms where smarts match is in the component
+    4. with smarts defined and formula constraints: search for substructure matches of smarts, and for given componentSmarts for the HalogenGroup, search for connected components of fluorinated atoms where smarts match is in the component
 
     """
     mol = Chem.AddHs(mol)
@@ -157,7 +157,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
         frags = [mol]
         formulas = [n_from_formula(formula)]# formula as a dictionary
     agg_pfas_groups = kwargs.get('agg_pfas_groups',{})
-    # PFAS groups
+    # halogen groups
     group_matches = []
     # map of group_id -> list of matches for quick lookup
     group_id_to_matches = {}
@@ -172,7 +172,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                 group_matches.extend(match)
                 group_id_to_matches.setdefault(pf.id, []).extend(match)
     
-    # Process aggregate PFAS groups efficiently
+    # Process aggregate halogen groups efficiently
     if agg_pfas_groups:
         
         # For each aggregate group, collect and deduplicate components
@@ -197,8 +197,13 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                     smarts_type = comp.get('SMARTS')
                     
                     # Filter by componentSmarts if aggregate has one (not None)
-                    if agg_group.componentSmarts is not None and smarts_type != agg_group.componentSmarts:
-                        continue
+                    if agg_group.componentSmarts is not None:
+                        allowed = agg_group.componentSmarts
+                        if isinstance(allowed, (list, tuple, set)):
+                            if smarts_type not in allowed:
+                                continue
+                        elif smarts_type != allowed:
+                            continue
                     
                     # Deduplicate by (atoms, SMARTS_type) key
                     key = (atoms_key, smarts_type)
@@ -217,9 +222,10 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
 
 @rdkit_disable_log(level='warning')
 def parse_smiles(smiles, bycomponent=False, output_format='list', 
-                  limit_effective_graph_resistance=None, compute_component_metrics=True, **kwargs):
+                  limit_effective_graph_resistance=None, compute_component_metrics=True,
+                  halogens=None, form=None, saturation=None, **kwargs):
     """
-    Parse SMILES string(s) and return PFAS group information.
+    Parse SMILES string(s) and return halogen group information.
     
     Parameters:
     -----------
@@ -241,6 +247,12 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
         Whether to compute graph metrics (diameter, radius, etc.) for components.
         - True: Compute all metrics (default)
         - False: Only compute component size, skip all other metrics
+    halogens : str or list of str, optional
+        Filter components by halogen element (e.g., 'F', ['F', 'Cl'], or None for all)
+    form : str or list of str, optional
+        Filter components by form type (e.g., 'alkyl', ['alkyl', 'cyclic'], or None for all)
+    saturation : str or list of str, optional
+        Filter components by saturation (e.g., 'per', 'poly', or None for all)
     **kwargs : dict
         Additional parameters (pfas_groups, componentSmartss, etc.)
     
@@ -256,6 +268,9 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     # Parse all molecules
     kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
     kwargs['compute_component_metrics'] = compute_component_metrics
+    kwargs['halogens'] = halogens
+    kwargs['form'] = form
+    kwargs['saturation'] = saturation
     return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, **kwargs)
 
 from .results_model import ResultsModel
@@ -276,9 +291,9 @@ def parse_from_database(
     write_results: bool = True,
     **kwargs
 ):
-    """Parse PFAS groups from molecules stored in a database.
+    """Parse halogen groups from molecules stored in a database.
     
-    This function reads molecules from a database table, parses them for PFAS groups,
+    This function reads molecules from a database table, parses them for halogen groups,
     and optionally writes the results back to the database.
     
     Parameters
@@ -306,7 +321,7 @@ def parse_from_database(
     components_table : str, default 'components'
         Table name for detailed component data.
     groups_table : str, default 'pfas_groups_in_compound'
-        Table name for PFAS group matches.
+        Table name for halogen group matches.
     write_results : bool, default True
         Whether to write results back to database.
     **kwargs : dict
@@ -437,24 +452,24 @@ def parse_from_database(
     return results
 
 
-def setup_pfas_groups_database(
+def setup_halogen_groups_database(
     conn,
-    groups_info_table: str = 'pfas_groups_info',
-    smarts_table: str = 'pfas_smarts',
+    groups_info_table: str = 'halogen_groups_info',
+    smarts_table: str = 'halogen_smarts',
     if_exists: str = 'replace'
 ):
-    """Set up PFAS groups metadata tables in a database.
+    """Set up halogen groups metadata tables in a database.
     
-    This function creates tables to store PFAS group definitions and SMARTS patterns,
+    This function creates tables to store halogen group definitions and SMARTS patterns,
     similar to the load_pfas_groups function in zeropmdb.
     
     Parameters
     ----------
     conn : str or sqlalchemy.engine.Engine
         Database connection.
-    groups_info_table : str, default 'pfas_groups_info'
-        Table name for PFAS group metadata.
-    smarts_table : str, default 'pfas_smarts'
+    groups_info_table : str, default 'halogen_groups_info'
+        Table name for halogen group metadata.
+    smarts_table : str, default 'halogen_smarts'
         Table name for SMARTS patterns used in groups.
     if_exists : str, default 'replace'
         How to behave if tables exist: 'fail', 'replace', or 'append'.
@@ -467,17 +482,17 @@ def setup_pfas_groups_database(
     Examples
     --------
     >>> # Set up in PostgreSQL
-    >>> setup_pfas_groups_database(
-    ...     conn='postgresql://user:pass@localhost/pfas_db',
-    ...     groups_info_table='pfas_groups',
-    ...     smarts_table='pfas_smarts_patterns'
+    >>> setup_halogen_groups_database(
+    ...     conn='postgresql://user:pass@localhost/halogen_db',
+    ...     groups_info_table='halogen_groups',
+    ...     smarts_table='halogen_smarts_patterns'
     ... )
     >>> 
     >>> # Set up in SQLite
     >>> from sqlalchemy import create_engine
-    >>> engine = create_engine('sqlite:///pfas_database.db')
-    >>> stats = setup_pfas_groups_database(engine)
-    >>> print(f"Loaded {stats['total_groups']} PFAS groups")
+    >>> engine = create_engine('sqlite:///halogen_database.db')
+    >>> stats = setup_halogen_groups_database(engine)
+    >>> print(f"Loaded {stats['total_groups']} halogen groups")
     """
     try:
         import pandas as pd
@@ -491,13 +506,13 @@ def setup_pfas_groups_database(
     else:
         engine = conn
     
-    # Load PFAS groups from the module
-    from .PFASGroupModel import PFASGroup
+    # Load halogen groups from the module
+    from .HalogenGroupModel import HalogenGroup
     import json
     
     # Load groups from JSON file
-    from .core import PFAS_GROUPS_FILE
-    with open(PFAS_GROUPS_FILE, 'r') as f:
+    from .core import HALOGEN_GROUPS_FILE_GROUPS_FILE
+    with open(HALOGEN_GROUPS_FILE, 'r') as f:
         groups_data = json.load(f)
     
     # Prepare groups info data
@@ -529,7 +544,7 @@ def setup_pfas_groups_database(
     ])
     
     # Write to database
-    print(f"Writing {len(df_groups)} PFAS groups to table '{groups_info_table}'...")
+    print(f"Writing {len(df_groups)} halogen groups to table '{groups_info_table}'...")
     df_groups.to_sql(groups_info_table, engine, if_exists=if_exists, index=False)
     
     print(f"Writing {len(df_smarts)} SMARTS patterns to table '{smarts_table}'...")
@@ -542,7 +557,7 @@ def setup_pfas_groups_database(
         'total_smarts': len(df_smarts),
     }
     
-    print(f"✅ Successfully set up PFAS groups database")
+    print(f"✅ Successfully set up halogen groups database")
     print(f"   - {stats['total_groups']} total groups ({stats['compute_groups']} compute, {stats['aggregate_groups']} aggregate)")
     print(f"   - {stats['total_smarts']} unique SMARTS patterns")
     
@@ -559,9 +574,10 @@ def parse_mol(mol, **kwargs):
     return parse_mols([mol], **kwargs)[0]
 
 def parse_mols(mols, output_format='list', include_PFAS_definitions=True, 
-               limit_effective_graph_resistance=None, compute_component_metrics=True, **kwargs):
+               limit_effective_graph_resistance=None, compute_component_metrics=True,
+               halogens=None, form=None, saturation=None, **kwargs):
     """
-    Parse RDKit molecule(s) and return PFAS group information.
+    Parse RDKit molecule(s) and return halogen group information.
     
     Parameters:
     -----------
@@ -583,8 +599,14 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         Whether to compute graph metrics (diameter, radius, etc.) for components.
         - True: Compute all metrics (default)
         - False: Only compute component size, skip all other metrics
+    halogens : str or list of str, optional
+        Filter components by halogen element (e.g., 'F', ['F', 'Cl'], or None for all)
+    form : str or list of str, optional
+        Filter components by form type (e.g., 'alkyl', ['alkyl', 'cyclic'], or None for all)
+    saturation : str or list of str, optional
+        Filter components by saturation (e.g., 'per', 'poly', or None for all)
     **kwargs : dict
-        Additional parameters (pfas_groups, componentSmartss, etc.)
+        Additional parameters (halogen_groups, componentSmartss, etc.)
     
     Returns:
     --------
@@ -599,9 +621,12 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         mol_with_h = Chem.AddHs(mol)
         formula = CalcMolFormula(mol)
         bycomponent = kwargs.pop('bycomponent', False)
-        # Pass through component metric options
+        # Pass through component metric options and filters
         kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
         kwargs['compute_component_metrics'] = compute_component_metrics
+        kwargs['halogens'] = halogens
+        kwargs['form'] = form
+        kwargs['saturation'] = saturation
         matches, mol_with_h = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
         inchikey = Chem.MolToInchiKey(mol)
         inchi = Chem.MolToInchi(mol)
@@ -719,8 +744,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 'components_sizes': components_sizes,
                 'num_components': len(matched_components),
                 'components': matched_components,
-                'components_types': [x for x in set([c['SMARTS'] for c in matched_components])],
-                'type':'PFASgroup',
+                'components_types': list(set(str(c['SMARTS']) if isinstance(c['SMARTS'], list) else c['SMARTS'] for c in matched_components)),
+                'type':'HalogenGroup',
                 **summary_metrics
             })
         
@@ -748,7 +773,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         rows = []
         for entry in results_list:
             for match in entry['matches']:
-                if match['type'] == 'PFASgroup':
+                if match['type'] == 'HalogenGroup':
                     rows.append({
                         'smiles': smi,
                         'match_id': match['match_id'],
@@ -851,8 +876,39 @@ def compile_componentSmartss(paths_dict):
     """
     compiled = {}
     for name, patterns in paths_dict.items():
-        if isinstance(patterns, dict) and 'component' in patterns and 'end' in patterns:
-            compiled[name] = compile_componentSmarts(patterns['component'], patterns['end'])
+        if isinstance(patterns, dict):
+            if 'smarts' in patterns:
+                smarts_val = patterns['smarts']
+                if isinstance(smarts_val, str):
+                    smarts_val = Chem.MolFromSmarts(smarts_val)
+                    if smarts_val is None:
+                        raise ValueError(f"Invalid SMARTS for path '{name}'")
+                    smarts_val.UpdatePropertyCache()
+                    Chem.GetSymmSSSR(smarts_val)
+                    smarts_val.GetRingInfo().NumRings()
+                compiled[name] = {
+                    **patterns,
+                    'smarts': smarts_val,
+                    'component': smarts_val
+                }
+            elif 'component' in patterns and 'end' in patterns:
+                compiled[name] = compile_componentSmarts(patterns['component'], patterns['end'])
+            elif 'component' in patterns:
+                smarts_val = patterns['component']
+                if isinstance(smarts_val, str):
+                    smarts_val = Chem.MolFromSmarts(smarts_val)
+                    if smarts_val is None:
+                        raise ValueError(f"Invalid SMARTS for path '{name}'")
+                    smarts_val.UpdatePropertyCache()
+                    Chem.GetSymmSSSR(smarts_val)
+                    smarts_val.GetRingInfo().NumRings()
+                compiled[name] = {
+                    **patterns,
+                    'smarts': smarts_val,
+                    'component': smarts_val
+                }
+            else:
+                raise ValueError(f"Path '{name}' must define 'smarts' or 'component' (and optionally 'end')")
         else:
-            raise ValueError(f"Path '{name}' must have 'component' and 'end' keys")
+            raise ValueError(f"Path '{name}' must be a dict")
     return compiled

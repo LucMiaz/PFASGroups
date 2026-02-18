@@ -1,1 +1,1 @@
-"""Test suite for PFASGroups package."""
+"""Test suite for HalogenGroups package."""

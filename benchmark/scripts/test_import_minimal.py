@@ -6,5 +6,5 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 print("About to import...")
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 print("Import OK!")
