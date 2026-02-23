@@ -4252,7 +4252,6 @@
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
-            "[#6R$([#6R](F)[F,#6R$([#6](F)F)])]": 1
         },
         "test": {
             "category": "generic",
@@ -4316,9 +4315,7 @@
         "componentSaturation": "poly",
         "linker_smarts": null,
         "constraints": {},
-        "smarts": {
-            "[#6R$([#6R]([#9,#17,#35,#53])[F,#6R$([#6]([#9,#17,#35,#53])F)])]": 1
-        },
+        "smarts": {},
         "test": {
             "category": "generic",
             "F": {
@@ -4376,11 +4373,10 @@
         "id": 58,
         "name": "Perfluoroaryl compounds",
         "alias": "Perfluoroaryl compounds",
-        "componentSmarts": "cyclic",
+        "componentSmarts": "aryl",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
-            "[#6aR$([#6aR][F,#6aR$([#6aR]F)])]": 1
         },
         "test": {
             "category": "generic",
@@ -4439,11 +4435,10 @@
         "id": 59,
         "name": "Polyfluoroaryl compounds",
         "alias": "Polyfluoroaryl compounds",
-        "componentSmarts": "cyclic",
+        "componentSmarts": "aryl",
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
-            "[#6aR$([#6aR][F,#6aR$([#6aR][#9])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]F)]": 1
         },
         "test": {
             "category": "generic",

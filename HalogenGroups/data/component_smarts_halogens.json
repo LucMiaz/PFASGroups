@@ -21,6 +21,16 @@
                 "name": "Polyfluorocyclic",
                 "component": "[#6R$([#6R]([#9,#17,#35,#53])[F,#6R$([#6]([#9,#17,#35,#53])F)])]"
             }
+        },
+        "aryl": {
+            "per": {
+                "name": "Perfluoroaryl",
+                "component": "[#6aR$([#6aR][F,#6aR$([#6aR]F)])]"
+            },
+            "poly": {
+                "name": "Polyfluoroaryl",
+                "component": "[#6aR$([#6aR][F,#6aR$([#6aR][#9])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]F)]"
+            }
         }
     },
     "Cl": {
@@ -44,6 +54,16 @@
             "poly": {
                 "name": "Polychlorocyclic",
                 "component": "[#6R$([#6R]([#9,#17,#35,#53])[Cl,#6R$([#6]([#9,#17,#35,#53])Cl)])]"
+            }
+        },
+        "aryl": {
+            "per": {
+                "name": "Perchloroaryl",
+                "component": "[#6aR$([#6aR][Cl,#6aR$([#6aR]Cl)])]"
+            },
+            "poly": {
+                "name": "Polychloroaryl",
+                "component": "[#6aR$([#6aR][Cl,#6aR$([#6aR][#17])]),#6aR$([#6aR]([#17,#35,#53])[#6aR]Cl)]"
             }
         }
     },
@@ -69,6 +89,16 @@
                 "name": "Polybromocyclic",
                 "component": "[#6R$([#6R]([#9,#17,#35,#53])[Br,#6R$([#6]([#9,#17,#35,#53])Br)])]"
             }
+        },
+        "aryl": {
+            "per": {
+                "name": "Perbromoaryl",
+                "component": "[#6aR$([#6aR][Br,#6aR$([#6aR]Br)])]"
+            },
+            "poly": {
+                "name": "Polybromoaryl",
+                "component": "[#6aR$([#6aR][Br,#6aR$([#6aR][#35])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]Br)]"
+            }
         }
     },
     "I": {
@@ -92,6 +122,16 @@
             "poly": {
                 "name": "Polyiodocyclic",
                 "component": "[#6R$([#6R]([#9,#17,#35,#53])[I,#6R$([#6]([#9,#17,#35,#53])I)])]"
+            }
+        },
+        "aryl": {
+            "per": {
+                "name": "Periodoaryl",
+                "component": "[#6aR$([#6aR][I,#6aR$([#6aR]I)])]"
+            },
+            "poly": {
+                "name": "Polyiodoaryl",
+                "component": "[#6aR$([#6aR][I,#6aR$([#6aR][#53])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]I)]"
             }
         }
     }
