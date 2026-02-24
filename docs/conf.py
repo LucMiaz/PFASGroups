@@ -10,8 +10,8 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'HalogenGroups'
 copyright = '2026, Luc T. Miaz'
 author = 'Luc T. Miaz'
-release = '3.1.0'
-version = '3.1.0'
+release = '3.1.1'
+version = '3.1.1'
 
 # -- General configuration ---------------------------------------------------
 extensions = [
