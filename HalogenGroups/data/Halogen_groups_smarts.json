@@ -181,7 +181,7 @@
         "name": "Perfluoroalkyl dicarboxylic acids",
         "alias": "PFdiCAs",
         "componentSmarts": "Perfluoroalkyl",
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -632,7 +632,7 @@
         "name": "Perfluoroalkyl disulfonic acids",
         "alias": "PFdiSAs",
         "componentSmarts": "Perfluoroalkyl",
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "eq": {
@@ -1273,7 +1273,7 @@
         "alias": "Telomer alcohols",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "eq": {
                 "O": 1
@@ -1507,7 +1507,7 @@
         "name": "Perfluoroalkene",
         "alias": "Perfluoroalkene",
         "componentSmarts": null,
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "linker_smarts": null,
         "constraints": {
             "only": [
@@ -1581,7 +1581,7 @@
         "name": "Hydrofluoroolefins",
         "alias": "HFOs",
         "componentSmarts": "Polyfluoroalkyl",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "linker_smarts": "[CH2]",
         "constraints": {
             "gte": {
@@ -2115,7 +2115,7 @@
         "name": "Perfluoroalkane sulfonyl fluorides",
         "alias": "PASFs",
         "componentSmarts": "Perfluoroalkyl",
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "rel": {
@@ -2356,7 +2356,7 @@
         "alias": "alcohol",
         "id": 29,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -2570,7 +2570,7 @@
         "alias": "ether",
         "id": 32,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -2642,7 +2642,7 @@
         "alias": "ester",
         "id": 33,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -2714,7 +2714,7 @@
         "alias": "carboxylic acid",
         "id": 34,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -2786,7 +2786,7 @@
         "alias": "amide",
         "id": 35,
         "componentSmarts": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -2859,7 +2859,7 @@
         "alias": "acyl halide",
         "id": 36,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -2923,7 +2923,7 @@
         "alias": "sulfonic acid",
         "id": 37,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3004,7 +3004,7 @@
         "alias": "sulfenic acid",
         "id": 38,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3077,7 +3077,7 @@
         "alias": "sulfinic acid",
         "id": 39,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3150,7 +3150,7 @@
         "alias": "sulfuric acid",
         "id": 40,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3227,7 +3227,7 @@
         "alias": "phosphonic acid",
         "id": 41,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3296,7 +3296,7 @@
         "alias": "phosphinic acid",
         "id": 42,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3365,7 +3365,7 @@
         "alias": "fluoride",
         "id": 117,
         "componentSmarts": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3422,7 +3422,7 @@
         "alias": "chloride",
         "id": 43,
         "componentSmarts": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3479,7 +3479,7 @@
         "alias": "bromide",
         "id": 44,
         "componentSmarts": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3536,7 +3536,7 @@
         "alias": "iodide",
         "id": 45,
         "componentSmarts": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3592,7 +3592,7 @@
         "name": "sulfonamide",
         "alias": "sulfonamide",
         "id": 46,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "componentSmarts": null,
         "constraints": {
@@ -3667,7 +3667,7 @@
         "alias": "heterocyclic azole",
         "id": 47,
         "componentSmarts": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3736,7 +3736,7 @@
         "alias": "heterocyclic azine",
         "id": 48,
         "componentSmarts": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -3805,7 +3805,7 @@
         "alias": "benzodioxole",
         "id": 49,
         "componentSmarts": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
             "gte": {
@@ -4057,7 +4057,7 @@
         "alias": "alkene",
         "id": 53,
         "componentSmarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -4121,7 +4121,7 @@
         "alias": "alkyne",
         "id": 54,
         "componentSmarts": null,
-        "max_dist_from_CF": 1,
+        "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {},
         "smarts": {
@@ -4636,7 +4636,7 @@
         "alias": "Silane",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "Si": 1,
@@ -4705,7 +4705,7 @@
         "alias": "Trichlorosilane",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "Si": 1,
@@ -4770,7 +4770,7 @@
         "alias": "Acrylate",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "O": 2
@@ -4838,7 +4838,7 @@
         "alias": "Methacrylate",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "O": 2
@@ -4906,7 +4906,7 @@
         "alias": "Betaine",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "N": 1,
@@ -4967,7 +4967,7 @@
         "alias": "Thiocyanic acid",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "N": 1,
@@ -5032,7 +5032,7 @@
         "alias": "Thia keto propanoic acid",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "O": 5,
@@ -5105,7 +5105,7 @@
         "alias": "Glucuronate",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "O": 7
@@ -5177,7 +5177,7 @@
         "alias": "Glycine",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "N": 1,
@@ -5238,7 +5238,7 @@
         "alias": "Sulfonamidoethanol",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "N": 1,
@@ -5308,7 +5308,7 @@
         "alias": "Sulfonyl propanoic acid",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "O": 4,
@@ -5373,7 +5373,7 @@
         "alias": "Sulfinyl amido sulfonic acid",
         "componentSmarts": null,
         "linker_smarts": null,
-        "max_dist_from_CF": 0,
+        "max_dist_from_comp": 0,
         "constraints": {
             "gte": {
                 "O": 5,
@@ -5440,7 +5440,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "Si": 1,
@@ -5498,7 +5498,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 6,
+        "max_dist_from_comp": 6,
         "constraints": {
             "gte": {
                 "Si": 1,
@@ -5556,7 +5556,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "I": 1
@@ -5645,7 +5645,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 1
@@ -5734,7 +5734,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 2
@@ -5823,7 +5823,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,O$(O([CH2])[CH2])]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 1
@@ -5916,7 +5916,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "S": 1,
@@ -6006,7 +6006,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 4
@@ -6095,7 +6095,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 4
@@ -6184,7 +6184,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 4
@@ -6273,7 +6273,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 2
@@ -6362,7 +6362,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 2,
@@ -6436,7 +6436,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 1
@@ -6525,7 +6525,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "S": 1
@@ -6614,7 +6614,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "S": 1,
@@ -6705,7 +6705,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "Si": 1,
@@ -6763,7 +6763,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "N": 1,
@@ -6853,7 +6853,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 2
@@ -6926,7 +6926,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "N": 1,
@@ -6992,7 +6992,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {},
         "smarts": {
             "[C$([CH1$(C(=C)C),CH2]=[CH1])]": 1
@@ -7072,7 +7072,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "N": 1
@@ -7161,7 +7161,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "S": 1,
@@ -7251,7 +7251,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "S": 1,
@@ -7341,7 +7341,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "S": 1,
@@ -7431,7 +7431,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {},
         "smarts": {
             "[C$(C[CH2][CH3,CH2!$(C([CH2])[CH2])])]": 1
@@ -7492,7 +7492,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 7
@@ -7573,7 +7573,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 4,
@@ -7663,7 +7663,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 2
@@ -7748,7 +7748,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 2
@@ -7837,7 +7837,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CH1X4$(C(F))]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "N": 1,
@@ -7927,7 +7927,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "N": 1,
@@ -8018,7 +8018,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,OH0X2]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 3
@@ -8108,7 +8108,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 4,
@@ -8198,7 +8198,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 5,
@@ -8289,7 +8289,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 1,
@@ -8371,7 +8371,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 2,
@@ -8461,7 +8461,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 4,
@@ -8551,7 +8551,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 4,
@@ -8641,7 +8641,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "O": 2,
@@ -8731,7 +8731,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "N": 2
@@ -8820,7 +8820,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {},
         "smarts": {
             "[C$([CH2,CH1$(C=C)](~[CH2])[sI,F,Cl,Br])]": 1
@@ -8904,7 +8904,7 @@
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
-        "max_dist_from_CF": 16,
+        "max_dist_from_comp": 16,
         "constraints": {
             "gte": {
                 "I": 1

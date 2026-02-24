@@ -4,7 +4,7 @@ Fluorotelomer alcohols have the structure: CF3(CF2)n-(CH2)m-OH
 where the CH2 chain connects the perfluorinated part to the alcohol group.
 
 Group 15 has linker_smarts set to "[#6H2X4]" (only CH2 groups allowed as linkers)
-and max_dist_from_CF=12 to allow for various chain lengths.
+and max_dist_from_comp=12 to allow for various chain lengths.
 """
 
 import pytest

@@ -10,19 +10,19 @@ test_cases = {
         'smarts': '[C$(C(=O)SC(=O)C([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]',
         'generated_smiles': 'O=C(O)C(O)C(=O)SC(=O)C(F)(C(F)(F)F)C(F)(F)F',
         'constraints': {'gte': {'O': 5, 'S': 1}},
-        'max_dist_from_CF': 0
+        'max_dist_from_comp': 0
     },
     104: {
         'smarts': '[CH2$(CS(=O)(=O)[CH2][CH2]C(=O)[OH1,Oh1,O-])]',
         'generated_smiles': 'O=C(O)CCS(=O)(=O)CC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F',
         'constraints': {'gte': {'O': 4, 'S': 1}},
-        'max_dist_from_CF': 0
+        'max_dist_from_comp': 0
     },
     106: {
         'smarts': '[CH2$(CS(=O)[CH2][CH2]C(=O)[NH][CH2]([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]',
         'generated_smiles': 'CC(C)(CNC(=O)CCS(=O)CC(F)(F)C(F)(F)C(F)(F)F)CS(=O)(=O)O',
         'constraints': {'gte': {'O': 5, 'S': 2, 'N': 1}},
-        'max_dist_from_CF': 0
+        'max_dist_from_comp': 0
     }
 }
 
@@ -34,7 +34,7 @@ for group_id, test_data in test_cases.items():
     print(f"   SMARTS: {test_data['smarts']}")
     print(f"   Test molecule: {test_data['generated_smiles']}")
     print(f"   Constraints: {test_data['constraints']}")
-    print(f"   max_dist_from_CF: {test_data['max_dist_from_CF']}")
+    print(f"   max_dist_from_comp: {test_data['max_dist_from_comp']}")
     
     mol = Chem.MolFromSmiles(test_data['generated_smiles'])
     if mol is None:

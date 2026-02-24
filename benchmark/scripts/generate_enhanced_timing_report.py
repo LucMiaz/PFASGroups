@@ -97,7 +97,7 @@ def generate_html_report(output_file='reports/enhanced_timing_report.html'):
                     # Check if any detected group has linker validation
                     for grp in groups_data:
                         if isinstance(grp, dict):
-                            if grp.get('max_dist_from_CF2', 0) > 0:
+                            if grp.get('max_dist_from_comp2', 0) > 0:
                                 chain_type = 'fluorotelomer'
                                 break
             except:

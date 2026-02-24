@@ -23,7 +23,7 @@ for group_id, group_info in test_groups.items():
     print(f"   Functional group SMILES: {group_info['smiles']}")
     
     # Simulate molecule generation by attaching to perfluoro chain
-    # For max_dist_from_CF:0, the functional group attaches directly to a CF carbon
+    # For max_dist_from_comp:0, the functional group attaches directly to a CF carbon
     
     # Create a simple perfluorinated molecule with the functional group attached
     # Mode 'attach' means the functional group is attached to the end of the perfluoro chain
@@ -62,5 +62,5 @@ for group_id, group_info in test_groups.items():
 print("\n" + "=" * 80)
 print("💡 ANALYSIS:\n")
 print("The new patterns attach functional groups directly to perfluoro carbons.")
-print("For groups with max_dist_from_CF: 0, this should satisfy the constraint.")
+print("For groups with max_dist_from_comp: 0, this should satisfy the constraint.")
 print("\nNext step: Re-run benchmarks to validate these fixes.")

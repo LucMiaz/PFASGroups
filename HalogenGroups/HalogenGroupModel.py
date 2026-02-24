@@ -26,13 +26,13 @@ class HalogenGroup():
     componentForm: str or None
     componentHalogens: list, str or None
     componentSaturation: str or None (-> both)
-    max_dist_from_CF : int
+    max_dist_from_comp : int
         Maximum graph distance (number of bonds) from fluorinated component to functional group.
         When > 0, extends component search radius to find nearby functional groups.
     linker_smarts : Chem.Mol or None
         Compiled SMARTS pattern for validating linker atoms between fluorinated component
         and functional group. When None (default), no restriction is applied to linker atoms.
-        Only used when max_dist_from_CF > 0.
+        Only used when max_dist_from_comp > 0.
     constraints : dict
         Molecular formula constraints with keys:
         - 'only': Elements that must be present exclusively (e.g., ['C', 'F', 'O'])
@@ -50,7 +50,7 @@ class HalogenGroup():
     ...     smarts={"C(=O)O":1},  # Carboxylic acid group
     ...     componentSmarts="Perfluoroalkyl",
     ...     constraints={"only": ["C", "F", "O", "H"]},
-    ...     max_dist_from_CF=0,
+    ...     max_dist_from_comp=0,
     ...     linker_smarts=None
     ... )
 
@@ -58,7 +58,7 @@ class HalogenGroup():
     -----
     - SMARTS patterns are compiled on initialization for efficient matching
     - Constraints are validated when checking if a molecule belongs to this group
-    - max_dist_from_CF allows finding functional groups connected via non-fluorinated linkers
+    - max_dist_from_comp allows finding functional groups connected via non-fluorinated linkers
     - linker_smarts restricts which atoms can be in the path between component and functional group
     """
     @add_componentSmarts()
@@ -78,7 +78,7 @@ class HalogenGroup():
         self.componentHalogens = kwargs.get('componentHalogens', None)
         self.componentForm = kwargs.get("componentForm", None)
         self.set_component_smarts(kwargs.get('componentSmartss', {}))
-        self.max_dist_from_CF = kwargs.get('max_dist_from_CF', 0)
+        self.max_dist_from_comp = kwargs.get('max_dist_from_comp', 0)
         # Compile linker_smarts pattern if provided
         linker_smarts_str = kwargs.get('linker_smarts', None)
         self.linker_smarts = None
@@ -482,9 +482,9 @@ class HalogenGroup():
 
         Notes
         -----
-        - Matches are determined based on componentSmarts and max_dist_from_CF attributes.
+        - Matches are determined based on componentSmarts and max_dist_from_comp attributes.
         - If componentSmarts is None, all components are considered.
-        - max_dist_from_CF allows extending the search radius for functional groups.
+        - max_dist_from_comp allows extending the search radius for functional groups.
         """
         if not self.find_matched_atoms(mol):
             return 0, [], 0, []
@@ -510,20 +510,20 @@ class HalogenGroup():
         # Preload components (optional, not strictly required for filtering)
         components = []
         for comp_type in componentSmartss:
-            comps = component_solver.get(comp_type, max_dist=self.max_dist_from_CF, default=[])
+            comps = component_solver.get(comp_type, max_dist=self.max_dist_from_comp, default=[])
             if not comps and comp_type != "Polyfluoroalkyl":
-                comps = component_solver.get("Polyfluoroalkyl", max_dist=self.max_dist_from_CF, default=[])
+                comps = component_solver.get("Polyfluoroalkyl", max_dist=self.max_dist_from_comp, default=[])
             components.extend(comps)
 
         # Filter components connected to the smarts and get augmented versions
         augmented_matched_components = []
         for _componentSmarts in componentSmartss:
-            extended_components = component_solver.get(_componentSmarts, self.max_dist_from_CF, [])
+            extended_components = component_solver.get(_componentSmarts, self.max_dist_from_comp, [])
             for i, comp in enumerate(extended_components):
                 # Check if this component is connected to SMARTS matches
                 if self.component_satisfies_all_smarts(comp):
                     augmented = component_solver.get_augmented_component(
-                        _componentSmarts, self.max_dist_from_CF, i, self.subset, self.linker_smarts
+                        _componentSmarts, self.max_dist_from_comp, i, self.subset, self.linker_smarts
                     )
                     # Accept augmented component if valid (linker validation already done in get_augmented_component)
                     if augmented is not None and len(augmented) > 0:
@@ -587,9 +587,9 @@ class HalogenGroup():
                     component_types = [self.componentSmarts]
                 path_components = []
                 for comp_type in component_types:
-                    comps = component_solver.get(comp_type, max_dist=self.max_dist_from_CF, default=[])
+                    comps = component_solver.get(comp_type, max_dist=self.max_dist_from_comp, default=[])
                     if not comps and comp_type != "Polyfluoroalkyl":
-                        comps = component_solver.get("Polyfluoroalkyl", max_dist=self.max_dist_from_CF, default=[])
+                        comps = component_solver.get("Polyfluoroalkyl", max_dist=self.max_dist_from_comp, default=[])
                     path_components.extend(comps)
                 match_count = len(path_components)
                 component_sizes = [len(x) for x in path_components]
