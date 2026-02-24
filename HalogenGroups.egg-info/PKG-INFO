@@ -32,6 +32,8 @@ Requires-Dist: pandas
 Requires-Dist: networkx
 Requires-Dist: tqdm
 Requires-Dist: svgutils
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: pytest-cov; extra == "dev"

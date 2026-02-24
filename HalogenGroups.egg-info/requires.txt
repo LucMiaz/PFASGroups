@@ -4,6 +4,8 @@ pandas
 networkx
 tqdm
 svgutils
+scikit-learn
+matplotlib
 
 [database]
 sqlalchemy>=1.4.0
