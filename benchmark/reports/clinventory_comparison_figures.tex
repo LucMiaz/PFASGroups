@@ -1,11 +1,10 @@
-
 % ---------- Figure snippets (paste into your article) ----------
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.7\textwidth]{imgs/clinventory_timing_box.pdf}
 \caption{Box plots of per-molecule classification time (ms) for HalogenGroups
-  and PFAS-Atlas on the C\&L inventory.  Outliers are omitted.}
+  and PFAS-Atlas on the C\&L inventory. Outliers omitted.}
 \label{fig:clinventory_timing_box}
 \end{figure}
 
@@ -25,24 +24,8 @@
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{imgs/clinventory_timing_by_halogen.pdf}
-\caption{Median classification time by halogen-composition class.}
-\label{fig:clinventory_timing_halogen}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.9\textwidth]{imgs/clinventory_timing_ratio_by_bracket.pdf}
-\caption{Ratio of HalogenGroups to PFAS-Atlas median timing per bracket.
-  Values above 1 indicate HalogenGroups is slower; below 1 it is faster.}
-\label{fig:clinventory_timing_ratio}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
 \includegraphics[width=0.9\textwidth]{imgs/clinventory_classification_agreement.pdf}
-\caption{Classification agreement between HalogenGroups (F-group detection)
-  and PFAS-Atlas (PFAS classification) across the common molecule set.}
+\caption{Classification agreement between HalogenGroups and PFAS-Atlas.}
 \label{fig:clinventory_agreement}
 \end{figure}
 
@@ -58,4 +41,38 @@
 \includegraphics[width=0.75\textwidth]{imgs/clinventory_hg_top_groups.pdf}
 \caption{Top-20 most frequently detected HalogenGroups functional groups.}
 \label{fig:clinventory_hg_groups}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{imgs/clinventory_timing_box_three.pdf}
+\caption{Box plots of per-molecule timing for HalogenGroups, PFASGroups
+  (F-only, \texttt{halogens=`F'}), and PFAS-Atlas. Outliers omitted.}
+\label{fig:clinventory_timing_box_three}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{imgs/clinventory_timing_by_bracket_three.pdf}
+\caption{Median classification time by heavy-atom-count bracket for
+  all three classifiers.}
+\label{fig:clinventory_timing_bracket_three}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{imgs/clinventory_f_only_speedup.pdf}
+\caption{Speed-up factor from restricting HalogenGroups to F-only SMARTS
+  patterns (\texttt{halogens=`F'}, PFASGroups mode) vs.\ full HalogenGroups,
+  by heavy-atom-count bracket. Values above~1 indicate PFASGroups is faster.}
+\label{fig:clinventory_f_only_speedup}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{imgs/clinventory_three_way_agreement.pdf}
+\caption{PFAS-detection agreement with PFAS-Atlas for HalogenGroups (left)
+  and PFASGroups F-only mode (right), showing Cohen's $\kappa$ and agreement
+  percentage.}
+\label{fig:clinventory_three_way_agreement}
 \end{figure}

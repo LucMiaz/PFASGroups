@@ -1,4 +1,4 @@
-% Clinventory comparison tables — generated 2026-02-25T08:30:44.952800
+% Clinventory comparison tables — generated 2026-02-25T11:00:53.277464
 
 % Requires: booktabs, siunitx
 
@@ -12,8 +12,8 @@
 \toprule
 \textbf{Method} & \textbf{$n$} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{P95} & \textbf{Total (s)} \\
 \midrule
-  HalogenGroups & 71,908 & 8.124 & 10.201 & 6.997 & 23.758 & 747.2 \\
-  PFAS-Atlas & 28,328 & 0.925 & 5.020 & 11.248 & 34.436 & 148.2 \\
+  HalogenGroups & 71,908 & 10.030 & 12.833 & 9.586 & 29.614 & 941.2 \\
+  PFAS-Atlas & 28,328 & 1.034 & 5.374 & 11.962 & 36.763 & 159.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -29,11 +29,11 @@
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
 \textbf{Bracket} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{Median} & \\
 \midrule
-  tiny (<10) & 9,409 & 4.682 & 2,838 & 1.086 & 4.31 \\
-  small (10-19) & 48,414 & 7.774 & 20,640 & 0.887 & 8.77 \\
-  medium (20-34) & 12,126 & 17.678 & 4,125 & 1.037 & 17.05 \\
-  large (35-59) & 1,804 & 29.833 & 676 & 1.220 & 24.46 \\
-  very large (>=60) & 155 & 61.236 & 49 & 1.807 & 33.89 \\
+  tiny (<10) & 9,409 & 5.739 & 2,838 & 1.206 & 4.76 \\
+  small (10-19) & 48,414 & 9.497 & 20,640 & 0.994 & 9.56 \\
+  medium (20-34) & 12,126 & 20.757 & 4,125 & 1.159 & 17.91 \\
+  large (35-59) & 1,804 & 35.050 & 676 & 1.369 & 25.60 \\
+  very large (>=60) & 155 & 77.549 & 49 & 2.029 & 38.21 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -48,10 +48,10 @@
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
 \textbf{Halogen class} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{Median} & \\
 \midrule
-  F only & 19,666 & 8.612 & 19,666 & 0.947 & 9.09 \\
-  Mixed (F + other) & 8,637 & 7.265 & 8,637 & 0.881 & 8.25 \\
-  Other halogen (no F) & 43,570 & 8.090 & 3 & 0.986 & 8.20 \\
-  No halogen & 35 & 1.271 & 22 & 0.954 & 1.33 \\
+  F only & 19,666 & 10.683 & 19,666 & 1.059 & 10.09 \\
+  Mixed (F + other) & 8,637 & 8.985 & 8,637 & 0.987 & 9.10 \\
+  Other halogen (no F) & 43,570 & 9.968 & 3 & 1.080 & 9.23 \\
+  No halogen & 35 & 1.706 & 22 & 1.069 & 1.59 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -133,6 +133,50 @@
   Telomer methyl & 696 & 0.4\% \\
   alcohol & 579 & 0.4\% \\
   carboxylic acid & 543 & 0.3\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Speed gain from restricting HalogenGroups to fluorine-only
+  patterns (\texttt{halogens=`F'}, PFASGroups mode) vs.\ full
+  HalogenGroups on the F-containing molecules of the C\&L inventory.
+  Speed-up factor $=$ HalogenGroups median / PFASGroups median;
+  values $>1$ indicate PFASGroups is faster.}
+\label{tab:clinventory_pfasgroups_speedup}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Bracket} & \textbf{$n$} & \textbf{HG median (ms)} & \textbf{PFASGroups median (ms)} & \textbf{Speed-up} \\
+\midrule
+  tiny (<10) & 2,838 & 6.125 & 6.169 & 0.99 \\
+  small (10-19) & 20,640 & 9.558 & 9.548 & 1.00 \\
+  medium (20-34) & 4,125 & 20.714 & 20.832 & 0.99 \\
+  large (35-59) & 676 & 35.411 & 36.039 & 0.98 \\
+  very large (>=60) & 49 & 64.608 & 62.313 & 1.04 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Classification agreement between PFASGroups
+  (\texttt{halogens=`F'}, F-group detection) and PFAS-Atlas
+  (any PFAS classification) on fluorine-containing molecules.}
+\label{tab:clinventory_pfasgroups_agreement}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Category} & \textbf{Molecules} & \textbf{\%} \\
+\midrule
+  Both classify as F/PFAS & 12,001 & 42.4\% \\
+  PFASGroups only (F detected) & 3,075 & 10.9\% \\
+  PFAS-Atlas only & 8,847 & 31.2\% \\
+  Neither classifies & 4,405 & 15.5\% \\
+\midrule
+  \textbf{Total} & \textbf{28,328} & 100.0\% \\
+\midrule
+  Overall agreement & \multicolumn{2}{r}{57.9\%} \\
+  Cohen's $\kappa$ & \multicolumn{2}{r}{0.132} \\
 \bottomrule
 \end{tabular}
 \end{table}
