@@ -1,0 +1,138 @@
+% Clinventory comparison tables — generated 2026-02-25T08:30:44.952800
+
+% Requires: booktabs, siunitx
+
+
+\begin{table}[htbp]
+\centering
+\caption{Overall per-molecule classification timing (ms) for
+  HalogenGroups and PFAS-Atlas on the C\&L inventory.}
+\label{tab:clinventory_timing_overall}
+\begin{tabular}{lrrrrrr}
+\toprule
+\textbf{Method} & \textbf{$n$} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{P95} & \textbf{Total (s)} \\
+\midrule
+  HalogenGroups & 71,908 & 8.124 & 10.201 & 6.997 & 23.758 & 747.2 \\
+  PFAS-Atlas & 28,328 & 0.925 & 5.020 & 11.248 & 34.436 & 148.2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Median per-molecule timing (ms) by molecular size (heavy-atom count)
+  for both classifiers.}
+\label{tab:clinventory_timing_bracket}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{\textbf{HalogenGroups}} & \multicolumn{2}{c}{\textbf{PFAS-Atlas}} & \multicolumn{2}{c}{\textbf{Ratio (HG/Atlas)}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+\textbf{Bracket} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{Median} & \\
+\midrule
+  tiny (<10) & 9,409 & 4.682 & 2,838 & 1.086 & 4.31 \\
+  small (10-19) & 48,414 & 7.774 & 20,640 & 0.887 & 8.77 \\
+  medium (20-34) & 12,126 & 17.678 & 4,125 & 1.037 & 17.05 \\
+  large (35-59) & 1,804 & 29.833 & 676 & 1.220 & 24.46 \\
+  very large (>=60) & 155 & 61.236 & 49 & 1.807 & 33.89 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Median per-molecule timing (ms) by halogen composition for both classifiers.}
+\label{tab:clinventory_timing_halogen}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{\textbf{HalogenGroups}} & \multicolumn{2}{c}{\textbf{PFAS-Atlas}} & \multicolumn{2}{c}{\textbf{Ratio (HG/Atlas)}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+\textbf{Halogen class} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{Median} & \\
+\midrule
+  F only & 19,666 & 8.612 & 19,666 & 0.947 & 9.09 \\
+  Mixed (F + other) & 8,637 & 7.265 & 8,637 & 0.881 & 8.25 \\
+  Other halogen (no F) & 43,570 & 8.090 & 3 & 0.986 & 8.20 \\
+  No halogen & 35 & 1.271 & 22 & 0.954 & 1.33 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Classification agreement between HalogenGroups (presence of
+  F-containing group) and PFAS-Atlas (any PFAS classification) across
+  the common set of molecules.  Cohen's $\kappa$ measures agreement
+  beyond chance.}
+\label{tab:clinventory_agreement}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Category} & \textbf{Molecules} & \textbf{\%} \\
+\midrule
+  Both classify as F/PFAS & 12,001 & 42.4\% \\
+  HalogenGroups only (F detected) & 3,075 & 10.9\% \\
+  PFAS-Atlas only & 8,847 & 31.2\% \\
+  Neither classifies & 4,405 & 15.5\% \\
+\midrule
+  \textbf{Total} & \textbf{28,328} & 100.0\% \\
+\midrule
+  Overall agreement & \multicolumn{2}{r}{57.9\%} \\
+  Cohen's $\kappa$ & \multicolumn{2}{r}{0.132} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution of PFAS-Atlas primary classifications on  the fluorine-containing molecules of the C\&L inventory.}
+\label{tab:clinventory_atlas_classes}
+\begin{tabular}{lrr}
+\toprule
+\textbf{PFAS-Atlas class} & \textbf{Molecules} & \textbf{\%} \\
+\midrule
+  Other PFASs & 18,054 & 63.7\% \\
+  Not PFAS & 7,475 & 26.4\% \\
+  Other PFASs, cyclic & 1,001 & 3.5\% \\
+  PFAA precursors & 492 & 1.7\% \\
+  Polyfluoroalkyl acids & 480 & 1.7\% \\
+  Polyfluoroalkyl acids, cyclic & 442 & 1.6\% \\
+  PFAA precursors, cyclic & 270 & 1.0\% \\
+  PFAAs & 101 & 0.4\% \\
+  PFAAs, cyclic & 8 & 0.0\% \\
+  error & 5 & 0.0\% \\
+\midrule
+  \textbf{Total} & \textbf{28,328} & 100.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Top 20 most frequently matched HalogenGroups functional groups
+  in the C\&L inventory (by number of molecules matched).}
+\label{tab:clinventory_hg_top_groups}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Group name} & \textbf{Molecules} & \textbf{\%\ of matches} \\
+\midrule
+  polyhalogenated alkyl & 23,043 & 14.0\% \\
+  Polyhalogenated aryl compounds & 23,043 & 14.0\% \\
+  Polyhalogenated cyclic compounds & 17,066 & 10.4\% \\
+  Perhalogenated cyclic compounds & 16,414 & 10.0\% \\
+  perhalogenated alkyl & 15,828 & 9.6\% \\
+  Perhalogenated aryl compounds & 15,828 & 9.6\% \\
+  fluoride & 12,729 & 7.7\% \\
+  Side-chain aromatics & 9,733 & 5.9\% \\
+  Side-chain fluorinated aromatics & 5,399 & 3.3\% \\
+  chloride & 5,045 & 3.1\% \\
+  bromide & 3,873 & 2.4\% \\
+  Heterocyclic azine & 2,772 & 1.7\% \\
+  Heterocyclic azole & 2,711 & 1.6\% \\
+  ether & 2,044 & 1.2\% \\
+  amide & 1,992 & 1.2\% \\
+  ketone & 1,218 & 0.7\% \\
+  amine & 940 & 0.6\% \\
+  Telomer methyl & 696 & 0.4\% \\
+  alcohol & 579 & 0.4\% \\
+  carboxylic acid & 543 & 0.3\% \\
+\bottomrule
+\end{tabular}
+\end{table}
