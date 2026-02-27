@@ -10,6 +10,16 @@ class ComponentsSolver:
         self.mol = mol
         self.mol_size = mol.GetNumAtoms()  # Total atoms in molecule for fraction calculation
         self.total_carbons = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')  # Total carbon atoms
+        self.total_fluorines = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'F')  # Total fluorine atoms
+        # Global perfluorination density: F atoms / heavy atoms (strongest linear predictor of ecotoxicity)
+        self.perfluorination_density = self.total_fluorines / self.mol_size if self.mol_size > 0 else 0.0
+        # CF2 count: carbons bearing ≥2 fluorines (correlates r=-0.53 with HC50EC50eq)
+        self.cf2_count = sum(
+            1 for atom in mol.GetAtoms()
+            if atom.GetSymbol() == 'C' and
+            sum(1 for nb in atom.GetNeighbors() if nb.GetSymbol() == 'F') >= 2
+        )
+        self.cf2_density = self.cf2_count / self.total_carbons if self.total_carbons > 0 else 0.0
         self.G = mol_to_nx(mol)
         self.limit_effective_graph_resistance = kwargs.get('limit_effective_graph_resistance',None)
         self.skip_component_metrics = not kwargs.get('compute_component_metrics', True)
@@ -593,6 +603,23 @@ class ComponentsSolver:
         # Count carbon atoms in component
         component_carbons = sum(1 for atom_idx in component if self.mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C')
 
+        # Component-level perfluorination density
+        component_carbons_indices = [idx for idx in component
+                                     if self.mol.GetAtomWithIdx(idx).GetSymbol() == 'C']
+        component_f_count = sum(
+            1 for atom_idx in component_carbons_indices
+            for nb in self.mol.GetAtomWithIdx(atom_idx).GetNeighbors()
+            if nb.GetSymbol() == 'F'
+        )
+        component_cf2_count = sum(
+            1 for atom_idx in component_carbons_indices
+            if sum(1 for nb in self.mol.GetAtomWithIdx(atom_idx).GetNeighbors()
+                   if nb.GetSymbol() == 'F') >= 2
+        )
+        _n_comp_c = len(component_carbons_indices)
+        component_perfluorination_density = component_f_count / _n_comp_c if _n_comp_c > 0 else 0.0
+        component_cf2_density = component_cf2_count / _n_comp_c if _n_comp_c > 0 else 0.0
+
         # Count carbon atoms in SMARTS matches that are NOT already in the component
         smarts_carbons_not_in_component = 0
         if smarts_matches is not None:
@@ -637,7 +664,15 @@ class ComponentsSolver:
             'min_dist_to_center': 0,
             'min_resistance_dist_to_center': 0.0,
             'max_dist_to_periphery': 0,
-            'max_resistance_dist_to_periphery': 0.0
+            'max_resistance_dist_to_periphery': 0.0,
+            # Perfluorination density (component-level)
+            'component_f_count': component_f_count,
+            'component_perfluorination_density': component_perfluorination_density,
+            'component_cf2_count': component_cf2_count,
+            'component_cf2_density': component_cf2_density,
+            # Global molecule-level perfluorination density (for context)
+            'molecule_perfluorination_density': self.perfluorination_density,
+            'molecule_cf2_density': self.cf2_density,
         }
 
         # Override distance metrics with SMARTS-specific values if available
