@@ -10,16 +10,30 @@ class ComponentsSolver:
         self.mol = mol
         self.mol_size = mol.GetNumAtoms()  # Total atoms in molecule for fraction calculation
         self.total_carbons = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')  # Total carbon atoms
-        self.total_fluorines = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'F')  # Total fluorine atoms
-        # Global perfluorination density: F atoms / heavy atoms (strongest linear predictor of ecotoxicity)
-        self.perfluorination_density = self.total_fluorines / self.mol_size if self.mol_size > 0 else 0.0
-        # CF2 count: carbons bearing ≥2 fluorines (correlates r=-0.53 with HC50EC50eq)
-        self.cf2_count = sum(
-            1 for atom in mol.GetAtoms()
-            if atom.GetSymbol() == 'C' and
-            sum(1 for nb in atom.GetNeighbors() if nb.GetSymbol() == 'F') >= 2
-        )
-        self.cf2_density = self.cf2_count / self.total_carbons if self.total_carbons > 0 else 0.0
+
+        # Per-halogen density metrics (F, Cl, Br, I)
+        # Naming convention:
+        #   total_{sym}s        : total count of that halogen (total_fluorines, total_chlorines, …)
+        #   per{X}ination_density: halogen count / heavy-atom count (perfluorination_density, …)
+        #   c{sym}2_count       : carbons bearing ≥2 of that halogen (cf2_count, ccl2_count, …)
+        #   c{sym}2_density     : c{sym}2_count / total_carbons
+        _HALOGEN_META = [
+            ('F',  'fluorines',  'perfluorination_density',   'cf2_count',  'cf2_density'),
+            ('Cl', 'chlorines',  'perchlorination_density',  'ccl2_count', 'ccl2_density'),
+            ('Br', 'bromines',   'perbromination_density',   'cbr2_count', 'cbr2_density'),
+            ('I',  'iodines',    'periodination_density',    'ci2_count',  'ci2_density'),
+        ]
+        for halogen_sym, total_attr, per_attr, cx2_count_attr, cx2_density_attr in _HALOGEN_META:
+            total_hal = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == halogen_sym)
+            setattr(self, 'total_' + total_attr, total_hal)
+            setattr(self, per_attr, total_hal / self.mol_size if self.mol_size > 0 else 0.0)
+            cx2 = sum(
+                1 for atom in mol.GetAtoms()
+                if atom.GetSymbol() == 'C' and
+                sum(1 for nb in atom.GetNeighbors() if nb.GetSymbol() == halogen_sym) >= 2
+            )
+            setattr(self, cx2_count_attr, cx2)
+            setattr(self, cx2_density_attr, cx2 / self.total_carbons if self.total_carbons > 0 else 0.0)
         self.G = mol_to_nx(mol)
         self.limit_effective_graph_resistance = kwargs.get('limit_effective_graph_resistance',None)
         self.skip_component_metrics = not kwargs.get('compute_component_metrics', True)
@@ -603,22 +617,35 @@ class ComponentsSolver:
         # Count carbon atoms in component
         component_carbons = sum(1 for atom_idx in component if self.mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C')
 
-        # Component-level perfluorination density
+        # Component-level halogen density metrics (F, Cl, Br, I)
         component_carbons_indices = [idx for idx in component
                                      if self.mol.GetAtomWithIdx(idx).GetSymbol() == 'C']
-        component_f_count = sum(
-            1 for atom_idx in component_carbons_indices
-            for nb in self.mol.GetAtomWithIdx(atom_idx).GetNeighbors()
-            if nb.GetSymbol() == 'F'
-        )
-        component_cf2_count = sum(
-            1 for atom_idx in component_carbons_indices
-            if sum(1 for nb in self.mol.GetAtomWithIdx(atom_idx).GetNeighbors()
-                   if nb.GetSymbol() == 'F') >= 2
-        )
         _n_comp_c = len(component_carbons_indices)
-        component_perfluorination_density = component_f_count / _n_comp_c if _n_comp_c > 0 else 0.0
-        component_cf2_density = component_cf2_count / _n_comp_c if _n_comp_c > 0 else 0.0
+        _COMP_HALOGEN_META = [
+            ('F',  'component_f_count',  'component_perfluorination_density',  'component_cf2_count',  'component_cf2_density'),
+            ('Cl', 'component_cl_count', 'component_perchlorination_density', 'component_ccl2_count', 'component_ccl2_density'),
+            ('Br', 'component_br_count', 'component_perbromination_density',  'component_cbr2_count', 'component_cbr2_density'),
+            ('I',  'component_i_count',  'component_periodination_density',   'component_ci2_count',  'component_ci2_density'),
+        ]
+        _comp_hal_vals = {}
+        for halogen_sym, cnt_key, per_key, cx2_cnt_key, cx2_den_key in _COMP_HALOGEN_META:
+            hal_count = sum(
+                1 for atom_idx in component_carbons_indices
+                for nb in self.mol.GetAtomWithIdx(atom_idx).GetNeighbors()
+                if nb.GetSymbol() == halogen_sym
+            )
+            cx2_count = sum(
+                1 for atom_idx in component_carbons_indices
+                if sum(1 for nb in self.mol.GetAtomWithIdx(atom_idx).GetNeighbors()
+                       if nb.GetSymbol() == halogen_sym) >= 2
+            )
+            _comp_hal_vals[cnt_key]    = hal_count
+            _comp_hal_vals[per_key]    = hal_count / _n_comp_c if _n_comp_c > 0 else 0.0
+            _comp_hal_vals[cx2_cnt_key] = cx2_count
+            _comp_hal_vals[cx2_den_key] = cx2_count / _n_comp_c if _n_comp_c > 0 else 0.0
+        # Convenience aliases for backward compatibility
+        component_f_count = _comp_hal_vals['component_f_count']
+        component_cf2_count = _comp_hal_vals['component_cf2_count']
 
         # Count carbon atoms in SMARTS matches that are NOT already in the component
         smarts_carbons_not_in_component = 0
@@ -665,14 +692,17 @@ class ComponentsSolver:
             'min_resistance_dist_to_center': 0.0,
             'max_dist_to_periphery': 0,
             'max_resistance_dist_to_periphery': 0.0,
-            # Perfluorination density (component-level)
-            'component_f_count': component_f_count,
-            'component_perfluorination_density': component_perfluorination_density,
-            'component_cf2_count': component_cf2_count,
-            'component_cf2_density': component_cf2_density,
-            # Global molecule-level perfluorination density (for context)
-            'molecule_perfluorination_density': self.perfluorination_density,
-            'molecule_cf2_density': self.cf2_density,
+            # Halogen density metrics — component-level (F, Cl, Br, I)
+            **_comp_hal_vals,
+            # Global molecule-level halogen density (for context)
+            'molecule_perfluorination_density':   self.perfluorination_density,
+            'molecule_cf2_density':               self.cf2_density,
+            'molecule_perchlorination_density':   self.perchlorination_density,
+            'molecule_ccl2_density':              self.ccl2_density,
+            'molecule_perbromination_density':    self.perbromination_density,
+            'molecule_cbr2_density':              self.cbr2_density,
+            'molecule_periodination_density':     self.periodination_density,
+            'molecule_ci2_density':               self.ci2_density,
         }
 
         # Override distance metrics with SMARTS-specific values if available
