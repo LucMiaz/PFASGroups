@@ -1,6 +1,6 @@
-"""Tests for the PFASgroups legacy compatibility wrapper.
+"""Tests for the PFASGroups legacy compatibility wrapper.
 
-This module verifies that `import PFASgroups` (and `import PFASGroups`) provide
+This module verifies that `import PFASGroups` (and `import PFASGroups`) provide
 the expected legacy API:
   - Functions default to halogens='F' (fluorine-only)
   - parse_mol / parse_mols / parse_smiles return list-of-tuples:
@@ -13,8 +13,8 @@ the expected legacy API:
 import pytest
 from rdkit import Chem
 
-import PFASgroups
-from PFASgroups import (
+import PFASGroups
+from PFASGroups import (
     parse_smiles,
     parse_mol,
     parse_mols,
@@ -54,7 +54,7 @@ def chlorinated_mol():
 
 
 class TestModuleImport:
-    """Verify that the PFASgroups namespace exposes the expected symbols."""
+    """Verify that the PFASGroups namespace exposes the expected symbols."""
 
     def test_parse_smiles_callable(self):
         assert callable(parse_smiles)
@@ -75,7 +75,7 @@ class TestModuleImport:
         """PFASGroups (capital G) module should expose the same parse_smiles."""
         import PFASGroups  # top-level alias module
         assert callable(PFASGroups.parse_smiles)
-        assert PFASGroups.parse_smiles is PFASgroups.parse_smiles
+        assert PFASGroups.parse_smiles is PFASGroups.parse_smiles
 
 
 # ---------------------------------------------------------------------------
@@ -297,7 +297,7 @@ class TestReturnedGroupAttributes:
 
 
 # ---------------------------------------------------------------------------
-# Consistency between PFASgroups and HalogenGroups with halogens='F'
+# Consistency between PFASGroups and HalogenGroups with halogens='F'
 # ---------------------------------------------------------------------------
 
 

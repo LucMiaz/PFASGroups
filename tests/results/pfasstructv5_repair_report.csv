@@ -1,0 +1,9 @@
+DTXSID,CASRN,preferred_name,formula,strategy,recovered_smiles,fixed,F_ratio_with_H,F_ratio_without_H,matched_by_pfasgroups
+DTXSID80820420,61146-71-2,Pentachloropentafluorobutane,N/A,pubchem_cas,C(C(C(Cl)(Cl)Cl)(Cl)Cl)(C(F)(F)F)(F)F,True,0.357143,0.357143,True
+DTXSID40880545,64202-77-3,"Perfluorooctanesulfonic acid, monoamide with N,N'-bis(2-aminoethyl)-1,2-ethanediamine",N/A,no_structure_in_sdf,,False,,,
+DTXSID50931113,141529-32-0,Pentafluorobutane,N/A,no_structure_in_sdf,,False,,,
+DTXSID501032770,314057-01-7,"6:2 Fluorotelomer sulfonic acid, mixt. with 6:2 Fluorotelomer sulfonate ammonium salt",N/A,no_structure_in_sdf,,False,,,
+DTXSID50243945,99106-55-5,"2-Propenoic acid, 2-fluoro-, tetrafluoropropyl ester, homopolymer",N/A,pubchem_cas,CC(C(OC(=O)C(=C)F)(F)F)(F)F,True,0.277778,0.384615,True
+DTXSID50796805,61253-02-9,Dodecafluoroheptyl methacrylate,C11H5FO2,pubchem_cas,CC(=C)C(=O)OC(C(C(C(C(CC(F)(F)F)F)(F)F)(F)F)(F)F)(F)F,True,0.363636,0.48,True
+DTXSID90149518,111173-25-2,Perfluoro(2-sulfoethyl vinyl ether) tetrafluoroethylene copolymer,N/A,pubchem_cas,C(=C(F)F)(OC(C(F)(F)S(=O)(=O)O)(F)F)F.C(=C(F)F)(F)F,True,0.478261,0.5,True
+DTXSID40474327,123333-88-0,Copper(II) trifluoroacetate hydrate,N/A,pubchem_cas,C(=O)(C(F)(F)F)O.C(=O)(C(F)(F)F)O.O.[Cu],True,0.3,0.375,True

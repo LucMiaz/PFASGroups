@@ -1,2 +1,0 @@
-[console_scripts]
-pfasgroups = PFASgroups.cli:main

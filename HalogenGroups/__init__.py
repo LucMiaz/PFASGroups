@@ -1,22 +1,22 @@
 """HalogenGroups - Multi-halogen analysis package.
 
-This package extends PFASgroups to support all halogens (F, Cl, Br, I) by
+This package extends PFASGroups to support all halogens (F, Cl, Br, I) by
 default. When imported as ``HalogenGroups``, all public functions default to
-``halogens=['F', 'Cl', 'Br', 'I']``, whereas ``PFASgroups`` defaults to
+``halogens=['F', 'Cl', 'Br', 'I']``, whereas ``PFASGroups`` defaults to
 ``halogens='F'`` (fluorine only).
 
 Examples
 --------
 >>> from HalogenGroups import parse_smiles          # defaults to all halogens
->>> from PFASgroups import parse_smiles             # defaults to F only
+>>> from PFASGroups import parse_smiles             # defaults to F only
 """
 import functools
 from typing import Union, List, Optional, Any, Iterable
 
 # ---------------------------------------------------------------------------
-# Re-export everything from PFASgroups that does not need default overriding.
+# Re-export everything from PFASGroups that does not need default overriding.
 # ---------------------------------------------------------------------------
-from PFASgroups import (
+from PFASGroups import (
     HalogenGroup,
     PFASDefinition,
     ComponentsSolver,
@@ -45,7 +45,7 @@ from PFASgroups import (
     prioritize_molecules,
     get_priority_statistics,
 )
-from PFASgroups import (
+from PFASGroups import (
     parse_smiles as _parse_smiles_base,
     parse_mols as _parse_mols_base,
     generate_fingerprint as _generate_fingerprint_base,
@@ -64,7 +64,7 @@ _ALL_HALOGENS = ['F', 'Cl', 'Br', 'I']
 class ResultsModel(_ResultsModel):
     """ResultsModel with all-halogens default for fingerprint generation.
 
-    Identical to ``PFASgroups.ResultsModel`` except that
+    Identical to ``PFASGroups.ResultsModel`` except that
     :meth:`to_fingerprint` defaults to ``halogens=['F', 'Cl', 'Br', 'I']``
     instead of ``halogens='F'``.
     """
@@ -126,7 +126,7 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
                  halogens=None, form=None, saturation=None, **kwargs):
     """Parse SMILES string(s), defaulting to all halogens.
 
-    Identical to ``PFASgroups.parse_smiles`` except the default for
+    Identical to ``PFASGroups.parse_smiles`` except the default for
     ``halogens`` is ``None`` (no filter = all halogens: F, Cl, Br, I)
     instead of ``'F'``.
 
@@ -139,7 +139,7 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
 
     See Also
     --------
-    PFASgroups.parse_smiles : fluorine-only default version.
+    PFASGroups.parse_smiles : fluorine-only default version.
     """
     result = _parse_smiles_base(
         smiles,
@@ -165,7 +165,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                halogens=None, form=None, saturation=None, **kwargs):
     """Parse RDKit molecule(s), defaulting to all halogens.
 
-    Identical to ``PFASgroups.parse_mols`` except the default for
+    Identical to ``PFASGroups.parse_mols`` except the default for
     ``halogens`` is ``None`` (no filter = all halogens: F, Cl, Br, I)
     instead of ``'F'``.
 
@@ -177,7 +177,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
 
     See Also
     --------
-    PFASgroups.parse_mols : fluorine-only default version.
+    PFASGroups.parse_mols : fluorine-only default version.
     """
     result = _parse_mols_base(
         mols,
@@ -202,7 +202,7 @@ def generate_fingerprint(smiles, selected_groups=None, representation='vector',
                          **kwargs):
     """Generate halogen-group fingerprints, defaulting to all halogens.
 
-    Identical to ``PFASgroups.generate_fingerprint`` except the default for
+    Identical to ``PFASGroups.generate_fingerprint`` except the default for
     ``halogens`` is ``['F', 'Cl', 'Br', 'I']`` (stacked vector) instead of
     ``'F'``.
 
@@ -215,7 +215,7 @@ def generate_fingerprint(smiles, selected_groups=None, representation='vector',
 
     See Also
     --------
-    PFASgroups.generate_fingerprint : fluorine-only default version.
+    PFASGroups.generate_fingerprint : fluorine-only default version.
     """
     return _generate_fingerprint_base(
         smiles,

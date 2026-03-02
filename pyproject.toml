@@ -73,14 +73,14 @@ Documentation = "https://pfasgroups.readthedocs.io"
 "Bug Tracker" = "https://github.com/lucmiaz/PFASGroups/issues"
 
 [project.scripts]
-pfasgroups = "PFASgroups.cli:main"
+pfasgroups = "PFASGroups.cli:main"
 
 [tool.setuptools]
-packages = ["HalogenGroups", "PFASgroups"]
+packages = ["HalogenGroups", "PFASGroups"]
 
 [tool.setuptools.package-data]
 HalogenGroups = ["data/*.json", "data/*.txt"]
-PFASgroups = ["data/*.json", "data/*.txt"]
+PFASGroups = ["data/*.json", "data/*.txt"]
 
 # Pytest configuration
 [tool.pytest.ini_options]

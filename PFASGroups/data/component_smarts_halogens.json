@@ -1,0 +1,138 @@
+{
+    "F": {
+        "alkyl": {
+            "per": {
+                "name": "Perfluoroalkyl",
+                "component": "[C$([#6H0X4]([F,$([CX4H0]F),$([CX4H0][CX4H0]F),$([#8][CX4H0]F)])([!#17,!#35,!#54])([!#17,!#35,!#54])[CX4H0,F])!R,C$([#6H0X4]([#6H0X4])([#6H0X4])[#6H0X4])!R,O$([#8]([CX4H0](F)F)[CX4H0](F)F)]",
+                "end": "[C$([CX4H0]([F,CX4$([CX4H0](F)F)])([F,CX4$([CX4H0](F)F)])([$(*[#1,#17,#35,#53]),!$(*[#9])!#9])),C$([CX4H0](F)(F)F)]"
+            },
+            "poly": {
+                "name": "Polyfluoroalkyl",
+                "component": "[C$([CX4]([#9,$([#6X4][#9]),$([#8]CF)])[C,F,#1,#17,#35,#53])!R,C$([#6X4]([#6X4])([#6X4])[#6X4])!R,C$([#6X4]([#6X4])[#6X4]F)!R,O$([#8](CF)[C$(C[F,C$(CC(F))])])]",
+                "end": "[C$([#6X4]([!$([#6][#9]),#1,F,#17,#35,#53])([!$([#6][#9]),F,#1,#17,#35,#53])F)]"
+            }
+        },
+        "cyclic": {
+            "per": {
+                "name": "Perfluorocyclic",
+                "component": "[#6R$([#6R](F)[F,#6R$([#6](F)F)])]"
+            },
+            "poly": {
+                "name": "Polyfluorocyclic",
+                "component": "[#6R$([#6R]([#1,#9,#17,#35,#53])[F,#6R$([#6]([#1,#9,#17,#35,#53])F)])]"
+            }
+        },
+        "aryl": {
+            "per": {
+                "name": "Perfluoroaryl",
+                "component": "[#6aR$([#6aR][F,#6aR$([#6aR]F)])]"
+            },
+            "poly": {
+                "name": "Polyfluoroaryl",
+                "component": "[#6aR$([#6aR][F,#6aR$([#6aR][#9])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]F)]"
+            }
+        }
+    },
+    "Cl": {
+        "alkyl": {
+            "per": {
+                "name": "Perchloroalkyl",
+                "component": "[C$([#6H0X4]([Cl,$([CX4H0]Cl),$([CX4H0][CX4H0]Cl),$([#8][CX4H0]Cl)])([!#17,!#35,!#54])([!#17,!#35,!#54])[CX4H0,Cl])!R,C$([#6H0X4]([#6H0X4])([#6H0X4])[#6H0X4])!R,O$([#8]([CX4H0](Cl)Cl)[CX4H0](Cl)Cl)]",
+                "end": "[C$([CX4H0]([Cl,CX4$([CX4H0](Cl)Cl)])([Cl,CX4$([CX4H0](Cl)Cl)])([$(*[#1,#9,#35,#53]),!$(*[#17])!#17])),C$([CX4H0](Cl)(Cl)Cl)]"
+            },
+            "poly": {
+                "name": "Polychloroalkyl",
+                "component": "[C$([CX4]([#17,$([#6X4][#17]),$([#8]CCl)])[C,F,#1,#17,#35,#53])!R,C$([#6X4]([#6X4])([#6X4])[#6X4])!R,C$([#6X4]([#6X4])[#6X4]Cl)!R,O$([#8](CCl)[C$(C[Cl,C$(CC(Cl))])])]",
+                "end": "[C$([#6X4]([!$([#6][#17]),#1,#17,#9,#35,#53])([!$([#6][#17]),F,#1,#17,#35,#53])Cl)]"
+            }
+        },
+        "cyclic": {
+            "per": {
+                "name": "Perchlorocyclic",
+                "component": "[#6R$([#6R](Cl)[Cl,#6R$([#6](Cl)Cl)])]"
+            },
+            "poly": {
+                "name": "Polychlorocyclic",
+                "component": "[#6R$([#6R]([#1,#9,#17,#35,#53])[Cl,#6R$([#6]([#1,#9,#17,#35,#53])Cl)])]"
+            }
+        },
+        "aryl": {
+            "per": {
+                "name": "Perchloroaryl",
+                "component": "[#6aR$([#6aR][Cl,#6aR$([#6aR]Cl)])]"
+            },
+            "poly": {
+                "name": "Polychloroaryl",
+                "component": "[#6aR$([#6aR][Cl,#6aR$([#6aR][#17])]),#6aR$([#6aR]([#17,#35,#53])[#6aR]Cl)]"
+            }
+        }
+    },
+    "Br": {
+        "alkyl": {
+            "per": {
+                "name": "Perbromoalkyl",
+                "component": "[C$([#6H0X4]([Br,$([CX4H0]Br),$([CX4H0][CX4H0]Br),$([#8][CX4H0]Br)])([!#17,!#35,!#54])([!#17,!#35,!#54])[CX4H0,Br])!R,C$([#6H0X4]([#6H0X4])([#6H0X4])[#6H0X4])!R,O$([#8]([CX4H0](Br)Br)[CX4H0](Br)Br)]",
+                "end": "[C$([CX4H0]([Br,CX4$([CX4H0](Br)Br)])([Br,CX4$([CX4H0](Br)Br)])([$(*[#1,#17,#9,#53]),!$(*[#35])!#35])),C$([CX4H0](Br)(Br)Br)]"
+            },
+            "poly": {
+                "name": "Polybromoalkyl",
+                "component": "[C$([CX4]([#35,$([#6X4][#35]),$([#8]CBr)])[C,F,#1,#17,#35,#53])!R,C$([#6X4]([#6X4])([#6X4])[#6X4])!R,C$([#6X4]([#6X4])[#6X4]Br)!R,O$([#8](CBr)[C$(C[Br,C$(CC(Br))])])]",
+                "end": "[C$([#6X4]([!$([#6][#35]),#1,Br,#17,#35,#53])([!$([#6][#35]),F,#1,#9,#17,#35,#53])Br)]"
+            }
+        },
+        "cyclic": {
+            "per": {
+                "name": "Perbromocyclic",
+                "component": "[#6R$([#6R](Br)[Br,#6R$([#6](Br)Br)])]"
+            },
+            "poly": {
+                "name": "Polybromocyclic",
+                "component": "[#6R$([#6R]([#1,#9,#17,#35,#53])[Br,#6R$([#6]([#1,#9,#17,#35,#53])Br)])]"
+            }
+        },
+        "aryl": {
+            "per": {
+                "name": "Perbromoaryl",
+                "component": "[#6aR$([#6aR][Br,#6aR$([#6aR]Br)])]"
+            },
+            "poly": {
+                "name": "Polybromoaryl",
+                "component": "[#6aR$([#6aR][Br,#6aR$([#6aR][#35])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]Br)]"
+            }
+        }
+    },
+    "I": {
+        "alkyl": {
+            "per": {
+                "name": "Periodoalkyl",
+                "component": "[C$([#6H0X4]([I,$([CX4H0]I),$([CX4H0][CX4H0]I),$([#8][CX4H0]I)])([!#17,!#35,!#54])([!#17,!#35,!#54])[CX4H0,I])!R,C$([#6H0X4]([#6H0X4])([#6H0X4])[#6H0X4])!R,O$([#8]([CX4H0](I)I)[CX4H0](I)I)]",
+                "end": "[C$([CX4H0]([I,CX4$([CX4H0](I)I)])([I,CX4$([CX4H0](I)I)])([$(*[#1,#17,#35,#9]),!$(*[#53])!#53])),C$([CX4H0](I)(I)I)]"
+            },
+            "poly": {
+                "name": "Polyiodoalkyl",
+                "component": "[C$([CX4]([#53,$([#6X4][#53]),$([#8]CI)])[C,#9,#1,#17,#35,#53])!R,C$([#6X4]([#6X4])([#6X4])[#6X4])!R,C$([#6X4]([#6X4])[#6X4]I)!R,O$([#8](CI)[C$(C[I,C$(CC(I))])])]",
+                "end": "[C$([#6X4]([!$([#6][#53]),#1,#9,#17,#35,#53])([!$([#6][#53]),F,#1,#17,#35,#53])I)]"
+            }
+        },
+        "cyclic": {
+            "per": {
+                "name": "Periodocyclic",
+                "component": "[#6R$([#6R](I)[I,#6R$([#6](I)I)])]"
+            },
+            "poly": {
+                "name": "Polyiodocyclic",
+                "component": "[#6R$([#6R]([#1,#9,#17,#35,#53])[I,#6R$([#6]([#1,#9,#17,#35,#53])I)])]"
+            }
+        },
+        "aryl": {
+            "per": {
+                "name": "Periodoaryl",
+                "component": "[#6aR$([#6aR][I,#6aR$([#6aR]I)])]"
+            },
+            "poly": {
+                "name": "Polyiodoaryl",
+                "component": "[#6aR$([#6aR][I,#6aR$([#6aR][#53])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]I)]"
+            }
+        }
+    }
+}
