@@ -4,7 +4,7 @@ import sys
 from rdkit import Chem
 
 print("Loading dataset...")
-df = pd.read_csv('tests/OECDPFAS_list_22012019.csv', encoding='latin-1')
+df = pd.read_csv('tests/test_data/OECDPFAS_list_22012019.csv', encoding='latin-1')
 smiles_list = df[df['SMILES'].notna() & (df['SMILES'] != '-')]['SMILES'].tolist()[:500]
 
 print(f"Loaded {len(smiles_list)} SMILES")

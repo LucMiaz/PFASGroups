@@ -13,7 +13,7 @@ from HalogenGroups import parse_smiles
 
 # Load OECD dataset
 print("Loading OECD PFAS dataset...")
-df = pd.read_csv('tests/OECDPFAS_list_22012019.csv', encoding='latin-1')
+df = pd.read_csv('tests/test_data/OECDPFAS_list_22012019.csv', encoding='latin-1')
 smiles_list = df[df['SMILES'].notna() & (df['SMILES'] != '-')]['SMILES'].tolist()[:200]
 print(f"Loaded {len(smiles_list)} SMILES")
 

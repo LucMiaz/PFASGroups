@@ -387,6 +387,74 @@ See `COMPREHENSIVE_METRICS_SUMMARY.md` for complete documentation.
 
 - Find SMARTS match connected to either a second SMARTS or a default path-related SMARTS using networkx shortest_path.
 
+## Tests and benchmarks
+
+### Automated pytest suite
+
+The module ships a comprehensive pytest suite in `tests/`. Run it from the repository root:
+
+```bash
+pytest tests/            # run all tests
+pytest tests/ -v         # verbose output
+pytest tests/ -k smarts  # run only SMARTS-related tests
+```
+
+Key test files:
+
+| File | What it tests |
+|------|---------------|
+| `tests/test_halogen_groups_smarts.py` | Per-group positive and negative examples embedded in the JSON configuration |
+| `tests/test_pfasstructv5_against_richard2023.py` | PFASSTRUCTv5 definition against the Richard 2023 PFASSTRUCTV5 inventory (see below) |
+| `tests/test_results_fingerprint.py` | Fingerprint generation, group selection, and dimensionality-reduction methods |
+| `tests/test_definition_comparison.py` | Consistency of the five PFAS regulatory definitions |
+| `tests/test_linker_smarts.py` | CH₂ linker validation for fluorotelomer groups |
+| `tests/test_metrics.py` | Graph-theoretical component metric values |
+
+### Benchmarking against PFAS-Atlas
+
+Performance and coverage were benchmarked against [PFAS-Atlas](https://github.com/su-group/PFAS-atlas?tab=readme-ov-file) (Su *et al.* 2024, [DOI: 10.1016/j.scitotenv.2024.171229](https://www.sciencedirect.com/science/article/pii/S0048969724013688)).
+
+See the table in the [Benchmark Summary](#benchmark-summary-feb-2026-using-v-223-only-on-f-groups) section above for timing numbers. Full per-dataset comparison and Sankey diagrams are in `benchmark/reports/`.
+
+### PFASSTRUCTv5 validation against Richard *et al.* 2023
+
+The PFASSTRUCTv5 PFAS definition (definition ID 5, `'PFASTRUCTv5'`, fluorineRatio ≥ 0.3) was validated against the PFASSTRUCTV5 inventory distributed as supplementary data by:
+
+> Richard, A. M. *et al.* (2023). *A New CSRML Structure-Based Fingerprint Method for Profiling and Categorizing Per- and Polyfluoroalkyl Substances (PFAS).* Chemical Research in Toxicology, 36(3), 318–338. [DOI: 10.1021/acs.chemrestox.2c00403](https://doi.org/10.1021/acs.chemrestox.2c00403)
+
+The inventory (`tests/test_data/PFASSTRUCTV5_20221101.sdf`, 14,735 structures) was used as a positive test set: every molecule is expected to satisfy the PFASSTRUCTv5 definition. The automated test `tests/test_pfasstructv5_against_richard2023.py` checks this:
+
+```bash
+# Pytest mode — a deterministic sample of 10 molecules (fast, suitable for CI):
+pytest tests/test_pfasstructv5_against_richard2023.py -v
+
+# Direct mode — validates all 14,735 molecules and reports any failures:
+python tests/test_pfasstructv5_against_richard2023.py
+```
+
+### HalogenGroups fingerprint comparison against CSRML (Richard *et al.* 2023)
+
+HalogenGroups binary fingerprints were compared against the 125-bit CSRML fingerprint system introduced by Richard *et al.* 2023 (same reference as above), which was developed specifically for profiling and categorising PFAS. The comparison script `benchmark/scripts/compare_pfasgroups_vs_txppfas.py` generates:
+
+- Group coverage statistics and information-content distribution per group
+- Lorenz curves for class-richness concentration
+- PCA scatter plots comparing chemical-space coverage of both fingerprint systems
+- Pairwise Jaccard similarity distributions within each system
+- Cross-fingerprint similarity scatter (HalogenGroups vs. CSRML Jaccard)
+
+```bash
+cd benchmark/scripts
+
+# HalogenGroups fingerprint analysis only (no CSRML CSV needed):
+python compare_pfasgroups_vs_txppfas.py --smiles ../data/test_set_for_PFASSTRUCTv5.tsv
+
+# Full comparison (requires Richard 2023 SI Table S2 exported as CSV):
+python compare_pfasgroups_vs_txppfas.py \
+  --smiles ../data/test_set_for_PFASSTRUCTv5.tsv \
+  --txppfas_csv ../data/richard2023_SI_table_S2.csv
+```
+
+
 ## Licence
 <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.
 

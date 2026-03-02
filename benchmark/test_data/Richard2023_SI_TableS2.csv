@@ -1,0 +1,48 @@
+﻿Table S1.,PFASSTRUCTV5-ToxPrint FP
+,ToxPrint fingerprint matrix exported from the Chemotyper for PFASSTRUCTV5 containing 14735 rows indexed by DTXSID substance identifier and 729 columns indexed by ToxPrint names (alphabetized).,
+
+Table S2.,PFASSTRUCTV5-TxP_PFAS FP,
+,TxP_PFAS_v1.0.4 fingerprint matrix exported from the Chemotyper for PFASSTRUCTV5 containing 14735 rows indexed by DTXSID substance identifier and 129 columns indexed by TxP_PFAS_v1.0.4 chemotype names (alphabetized).,
+
+Table S3.,TxP_PFAS-counts,
+,"Table contains chemotype count totals generated from Table S2 for TxP_PFAS_v1.0.4 mapped to PFASSTRUCTV5 compared to counts for PFASSTRUCTV4 (fingerprint file not provided), as well as the corresponding ToxPrint names where a close correspondence exists; counts were used to generate Figure 4.",
+
+A,TxP_PFAS_v1.0.4,List of TxP_PFAS_v1.0.4 chemotype names
+B,PFASSTRUCTV4,"Total counts of TxP_PFAS chemotypes in PFASSTRUCTV4 (10,776 structures)"
+C,PFASSTRUCTV5,"Total counts of TxP_PFAS chemotypes in PFASSTRUCTV5 (14,735 structures)"
+D,corresponding ToxPrints,ToxPrint name is listed for TxP_PFAS chemotypes having a closely corresponding ToxPrint
+
+Table S4.,ToxPrint.vs.TxP_PFAS-counts,
+,"Table contains chemotype count totals from Table S1 for ToxPrints mapped to PFASSTRUCTV5 compared to counts for PFASSTRUCTV4 (fingerprint file not provided), as well as indications of which ToxPrints have a closely corresponding TxP_PFAS chemotype (highlighted light blue), and counts of excluded subsets indicated in Figure 2.  Also listed for the latter overlapping subset are the corresponding chemotype count totals for TxP_PFAS along with the difference and % difference in counts from the original ToxPrint totals for PFASSTRUCTV5; counts and %diff were used to generate Figure 5. ",
+A,ToxPrints (those with corresponding TxP_PFAS_v1.0.4 chemotype highlighted blue),"List of ToxPrint chemotype names, with the subset of 51 closely corresponding to a TxP_PFAS chemotype highlighted in blue."
+B,PFASSTRUCTV4,"Total counts of ToxPrint chemotypes in PFASSTRUCTv4 (10,776 structures)"
+C,Fig2-1a. Remove 463 <30,Indicator list of 463 ToxPrints excluded in Fig2-1a. for having fewer than 30 total counts in PFASSTRUCTV4
+D,"Fig2-1b. Remove 77 ”X”, “halo” “halide”, “chain:alkane”, or ”chain:alkene”","Indicator list of 77 ToxPrints excluded in Fig2-1b. with names that contain ”X”, “halo” “halide”, “chain:alkane”, or ”chain:alkene”"
+E,Fig2-1c. Remove 96 distant or redundant,"Indicator list of 96 ToxPrints excluded in Fig2-1c. that were confirmed to be usually distant from the fluorinated portion of the molecule, or were redundant with another ToxPrint"
+F,PFASSTRUCTV5,"Total counts of ToxPrint chemotypes in PFASSTRUCTV5 (14,735 structures)"
+H,TxP_PFAS_v1.0.4 vs V5,"Total counts of TxP_PFAS chemotypes in PFASSTRUCTV5 (10,776 structures) for those having a closely corresponding ToxPrint chemotype"
+I,diff,Col F minus Col H
+J,%diff,diff/Col F
+
+
+Table S5.,PFASSTRUCTV5xOECDCat,
+,"Table contains DSSTox chemical identifiers (DTXSID, name, CASRN, formula) for the full PFASSTRUCTV5 list (14735), and indicator column for overlapping content in PFASSTRUCTV4 (10586) and PFASOECD (3662) lists.  Table also lists indicator columns for the 7 TxP_PFAS chemotypes used in the OECD Category analysis of Section 5, along with indicator columns for chemicals containing one or more of the 20 TxP_PFAS fluorotelomer (FT) chemotypes or designated as an OECD FT.  The last column of the table lists the assigned OECD Structure-Category Name for the 3662 overlapping OECD vs PFASSTRUCTV5 chemicals, with the last separated column listing the 106 unique OECD Structure Categories. ",
+A,DTXSID,DSSTox unique substance ID
+B,SMILES,SMILES text representation of structure
+C,PREFERRED_NAME,DSSTox unique substance name selected by DSSTox curators
+D,CASRN,DSSTox unique substcnce CASRN
+F,MOLECULAR FORMULA,molecular formula of associated structure to DTXSID
+G,PFASSTRUCTV4,indicator [1] of chemicals in list contained in PFASSTRUCTV4 list from within PFASSTRUCTV5 list
+H,PFASOECD,
+I,pfas_bond:aromatic_FCc1c,indicator [1] of chemicals containing TxP_PFAS chemotype used in example in Section 5
+J,pfas_bond:CN_amine_aliphatic_generic_CF,indicator [1] of chemicals containing TxP_PFAS chemotype used in example in Section 5
+K,pfas_bond:S(=O)X_sulfonylhalide_CF,indicator [1] of chemicals containing TxP_PFAS chemotype used in example in Section 5
+L,pfas_bond:S=O_sulfonyl_generic_CF,indicator [1] of chemicals containing TxP_PFAS chemotype used in example in Section 5
+M,pfas_bond:S(=O)O_sulfonicEster_acyclic_S-C_(chain)_SCF,indicator [1] of chemicals containing TxP_PFAS chemotype used in example in Section 5
+N,pfas_bond:S(=O)O_sulfonicAcid_acyclic_(chain)_SCF,indicator [1] of chemicals containing TxP_PFAS chemotype used in example in Section 5
+O,pfas_bond:X[notF]_CFX_I,indicator [1] of chemicals containing TxP_PFAS chemotype used in example in Section 5
+P,All 20 TxP_PFAS FT chemotypes x OECD,indicator [1] of chemicals containing any 1 of the 20 TxP_PFAS fluorotelomer (FT) chemotypes overlapping with the OECD list
+Q,All OECD FT's,indicator [1] of OECD list chemical assigned to a fluorotelomer category by OECD
+R,OECD Structure Category Name,Structure category name assigned to 3662 OECD overlapping chemicals
+S,,
+T,OECD Structure Category Name - 106 unique,List of 1006 unique structure category names assigned to 3662 OECD overlapping chemicals

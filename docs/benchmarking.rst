@@ -198,6 +198,98 @@ Validate fluorotelomer detection:
    
    print(f"FTOH Detection Rate: {correct/total:.1%}")
 
+Validation Against Richard et al. 2023 (PFASSTRUCTV5 & CSRML)
+--------------------------------------------------------------
+
+PFASSTRUCTv5 Inventory Validation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The PFASSTRUCTv5 PFAS definition (definition ID 5, ``'PFASTRUCTv5'``,
+fluorine-ratio threshold ≥ 0.3) was validated against the PFASSTRUCTV5 inventory
+of 14,735 PFAS structures published as supplementary material by:
+
+   Richard, A. M. *et al.* (2023). *A New CSRML Structure-Based Fingerprint
+   Method for Profiling and Categorizing Per- and Polyfluoroalkyl Substances
+   (PFAS).* Chemical Research in Toxicology, 36(3), 318–338.
+   https://doi.org/10.1021/acs.chemrestox.2c00403
+
+The SDF file (``tests/test_data/PFASSTRUCTV5_20221101.sdf``) serves as a positive
+test set: every molecule in the inventory is expected to satisfy definition 5.
+
+An automated test file ``tests/test_pfasstructv5_against_richard2023.py``
+verifies this. Under pytest, ten evenly-spaced molecules are sampled to keep CI
+fast; running the script directly tests all 14,735 structures:
+
+.. code-block:: bash
+
+   # Fast CI check — 10-molecule evenly-spaced sample:
+   pytest tests/test_pfasstructv5_against_richard2023.py -v
+
+   # Full validation of all 14,735 PFASSTRUCTV5 molecules:
+   python tests/test_pfasstructv5_against_richard2023.py
+
+The script reports exact identifiers (DTXCID/DTXSID) for any molecule that fails
+the definition, enabling targeted investigation of edge cases.
+
+The definition uses **either** SMARTS matching (CF₃–CF₂ adjacency, CF₂–heteroatom–CF₂
+bridges) **or** a fluorine-ratio criterion (F/all-atoms ≥ 0.3), whichever is satisfied.
+This means that highly fluorinated compounds with non-standard architectures are
+included even without a CF₂–CF₂ chain pattern.
+
+Programmatic use:
+
+.. code-block:: python
+
+   import json
+   from HalogenGroups import PFASDefinition
+   from HalogenGroups.core import PFAS_DEFINITIONS_FILE
+
+   with open(PFAS_DEFINITIONS_FILE) as fh:
+       defs = json.load(fh)
+   pfasstruct = PFASDefinition(**next(d for d in defs if d["id"] == 5))
+
+   from rdkit import Chem
+   mol = Chem.MolFromSmiles("FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O")
+   print(pfasstruct.applies_to_molecule(mol))  # True
+
+
+Fingerprint Comparison Against CSRML
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+HalogenGroups binary group fingerprints were compared against the **125-bit CSRML**
+fingerprint system introduced by Richard *et al.* 2023 (same reference as above).
+CSRML fingerprints are a SMARTS-based binary encoding designed specifically for
+PFAS profiling, derived from the TxP_PFAS taxonomy used in the CompTox Chemicals
+Dashboard.
+
+The comparison script ``benchmark/scripts/compare_pfasgroups_vs_txppfas.py``
+computes and visualises:
+
+- **Coverage** — fraction of the test set for which each group fires at least once
+- **Information content** per group (Shannon entropy-based)
+- **Lorenz curve** of class-richness concentration
+- **PCA scatter** of the two fingerprint systems on a shared compound set
+- **Pairwise Jaccard** similarity distributions within each system
+- **Cross-fingerprint** similarity scatter (HalogenGroups vs. CSRML Jaccard)
+
+.. code-block:: bash
+
+   cd benchmark/scripts
+
+   # HalogenGroups fingerprint analysis only (no CSRML data required):
+   python compare_pfasgroups_vs_txppfas.py \
+       --smiles ../data/test_set_for_PFASSTRUCTv5.tsv
+
+   # Full comparison (Richard 2023 SI Table S2 exported as CSV):
+   python compare_pfasgroups_vs_txppfas.py \
+       --smiles ../data/test_set_for_PFASSTRUCTv5.tsv \
+       --txppfas_csv ../data/richard2023_SI_table_S2.csv
+
+   # Limit to 100 molecules for a quick sanity check:
+   python compare_pfasgroups_vs_txppfas.py --max_mols 100
+
+Result figures are written to ``benchmark/reports/``.
+
 Custom Validation
 -----------------
 

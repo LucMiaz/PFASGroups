@@ -18,7 +18,7 @@ from pathlib import Path
 # Import HalogenGroups
 from HalogenGroups import parse_smiles
 
-def load_oecd_dataset(filepath='tests/OECDPFAS_list_22012019.csv', limit=None):
+def load_oecd_dataset(filepath='tests/test_data/OECDPFAS_list_22012019.csv', limit=None):
     """Load OECD PFAS dataset and extract valid SMILES."""
     print(f"\n{'='*80}")
     print("LOADING OECD PFAS DATASET")

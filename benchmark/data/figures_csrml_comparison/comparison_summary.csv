@@ -1,0 +1,9 @@
+metric,PFASGroups,TxP_PFAS
+n_molecules,22,
+total_features,116,
+active_features_(hit_ge1_mol),23,
+pct_mols_with_ge1_feature,100.0,
+mean_prevalence_pct,35.77,
+median_prevalence_pct,9.09,
+mean_bits_per_mol,8.23,
+mean_IC_bits,0.358,
