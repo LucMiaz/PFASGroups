@@ -222,7 +222,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
 @rdkit_disable_log(level='warning')
 def parse_smiles(smiles, bycomponent=False, output_format='list',
                   limit_effective_graph_resistance=None, compute_component_metrics=True,
-                  halogens=None, form=None, saturation=None, **kwargs):
+                  halogens='F', form=None, saturation=None, **kwargs):
     """
     Parse SMILES string(s) and return halogen group information.
 
@@ -246,8 +246,12 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
         Whether to compute graph metrics (diameter, radius, etc.) for components.
         - True: Compute all metrics (default)
         - False: Only compute component size, skip all other metrics
-    halogens : str or list of str, optional
-        Filter components by halogen element (e.g., 'F', ['F', 'Cl'], or None for all)
+    halogens : str or list of str or None, default 'F'
+        Filter components by halogen element.
+        - 'F' (default): fluorine only
+        - str (e.g. 'Cl'): restrict to that single halogen
+        - list (e.g. ['F', 'Cl']): restrict to those halogens
+        - None: no filter (include all halogens)
     form : str or list of str, optional
         Filter components by form type (e.g., 'alkyl', ['alkyl', 'cyclic'], or None for all)
     saturation : str or list of str, optional
@@ -572,7 +576,7 @@ def parse_mol(mol, **kwargs):
 
 def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                limit_effective_graph_resistance=None, compute_component_metrics=True,
-               halogens=None, form=None, saturation=None, **kwargs):
+               halogens='F', form=None, saturation=None, **kwargs):
     """
     Parse RDKit molecule(s) and return halogen group information.
 
@@ -596,8 +600,12 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         Whether to compute graph metrics (diameter, radius, etc.) for components.
         - True: Compute all metrics (default)
         - False: Only compute component size, skip all other metrics
-    halogens : str or list of str, optional
-        Filter components by halogen element (e.g., 'F', ['F', 'Cl'], or None for all)
+    halogens : str or list of str or None, default 'F'
+        Filter components by halogen element.
+        - 'F' (default): fluorine only
+        - str (e.g. 'Cl'): restrict to that single halogen
+        - list (e.g. ['F', 'Cl']): restrict to those halogens
+        - None: no filter (include all halogens)
     form : str or list of str, optional
         Filter components by form type (e.g., 'alkyl', ['alkyl', 'cyclic'], or None for all)
     saturation : str or list of str, optional

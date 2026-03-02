@@ -38,7 +38,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
     halogens : str or list of str, default 'F'
         Which halogen(s) to use for component SMARTS matching.
         - Single halogen (e.g. 'F'): standard fingerprint of length n_groups
-        - List of halogens (e.g. ['F', 'Cl']): fingerprints are generated per
+        - List of halogens (e.g. ['F', 'Cl', 'Br', 'I']): fingerprints are generated per
           halogen and stacked, yielding length n_groups * n_halogens.
           Group names are suffixed with '[F]', '[Cl]', etc.
         Available: 'F', 'Cl', 'Br', 'I'

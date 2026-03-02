@@ -22,8 +22,11 @@ smiles_list = [
 
 results = parse_smiles(smiles_list)
 
-# Default fingerprint: F only, per-saturation, 116 groups → shape (2, 116)
+# Default fingerprint: all halogens, per-saturation, 116 groups × 4 → shape (2, 464)
 fp = results.to_fingerprint()
+
+# Fluorine only → shape (2, 116)
+fp_f = results.to_fingerprint(halogens='F')
 
 # Stacked F + Cl fingerprint → shape (2, 232)
 fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'])
@@ -51,7 +54,7 @@ Convert a `ResultsModel` to a `ResultsFingerprint` for analysis.
 | `group_selection` | `str` | `'all'` | Which groups to include (see table below) |
 | `count_mode` | `str` | `'binary'` | Encoding method (`'binary'`, `'count'`, `'max_component'`) |
 | `selected_group_ids` | `list` | `None` | Explicit group IDs — overrides `group_selection` |
-| `halogens` | `str` or `list` | `'F'` | Halogen(s) for component SMARTS matching (see below) |
+| `halogens` | `str` or `list` | `['F','Cl','Br','I']` | Halogen(s) for component SMARTS matching (see below) |
 | `saturation` | `str` or `None` | `'per'` | Saturation filter: `'per'`, `'poly'`, or `None` |
 
 **Group selection options:**
@@ -85,8 +88,11 @@ Groups without a component SMARTS (generic, telomer groups) are unaffected by th
 **Examples:**
 
 ```python
-# Default: fluorine only, perfluorinated, all 116 groups → shape (n, 116)
+# Default: all halogens, per-saturation, 116 groups × 4 → shape (n, 464)
 fp = results.to_fingerprint()
+
+# Fluorine only → shape (n, 116)
+fp = results.to_fingerprint(halogens='F')
 
 # Stacked F + Cl fingerprint → shape (n, 232), names suffixed [F] / [Cl]
 fp = results.to_fingerprint(halogens=['F', 'Cl'])
@@ -193,7 +199,7 @@ Perform t-Distributed Stochastic Neighbor Embedding (t-SNE).
   - Lower values focus on local structure
   - Higher values preserve global structure
 - `learning_rate` (float): Learning rate (default: 200.0)
-- `n_iter` (int): Number of iterations (default: 1000)
+- `max_iter` (int): Maximum number of iterations (default: 1000)
 - `plot` (bool): Whether to create visualization (default: True)
 - `output_file` (str): Path to save plot
 
@@ -202,14 +208,14 @@ Perform t-Distributed Stochastic Neighbor Embedding (t-SNE).
 **Example:**
 ```python
 # Basic t-SNE
-tsne = fp.perform_tsne(perplexity=30, n_iter=1000)
+tsne = fp.perform_tsne(perplexity=30, max_iter=1000)
 
 # Try different perplexities
 for perp in [5, 15, 30, 50]:
     tsne = fp.perform_tsne(perplexity=perp, output_file=f'tsne_perp{perp}.png')
 
 # Higher iterations for convergence
-tsne = fp.perform_tsne(n_iter=2000, learning_rate=300)
+tsne = fp.perform_tsne(max_iter=2000, learning_rate=300)
 ```
 
 **Scientific Background:**
@@ -342,7 +348,7 @@ fp.to_sql(filename='pfas_fingerprints.db', if_exists='replace')
 fp.to_sql(conn='postgresql://user:pass@localhost/dbname')
 
 # Load from database
-from PFASgroups.results_model import ResultsFingerprint
+from HalogenGroups import ResultsFingerprint
 fp_loaded = ResultsFingerprint.from_sql(filename='pfas_fingerprints.db')
 
 # Load subset
@@ -362,7 +368,7 @@ Load results from SQL database.
 
 **Example:**
 ```python
-from PFASgroups.results_model import ResultsModel
+from HalogenGroups import ResultsModel
 
 # Save results
 results.to_sql(filename='results.db', if_exists='replace')
@@ -377,7 +383,7 @@ results_subset = ResultsModel.from_sql(filename='results.db', limit=50)
 ## Complete Workflow Example
 
 ```python
-from PFASgroups import parse_smiles
+from HalogenGroups import parse_smiles
 import numpy as np
 import matplotlib.pyplot as plt
 
