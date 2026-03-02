@@ -80,7 +80,7 @@ print("✓ Results saved to oecd_results.db")
 print("✓ Fingerprints saved to oecd_fingerprints.db")
 
 # Load back
-from HalogenGroups.results_model import ResultsModel, ResultsFingerprint
+from PFASGroups.results_model import ResultsModel, ResultsFingerprint
 loaded_results = ResultsModel.from_sql(filename='oecd_results.db')
 loaded_fp = ResultsFingerprint.from_sql(filename='oecd_fingerprints.db')
 print(f"✓ Loaded {len(loaded_results)} results and {loaded_fp.fingerprint_matrix.shape[0]} fingerprints")

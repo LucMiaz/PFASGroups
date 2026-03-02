@@ -1,4 +1,4 @@
-"""HomologueSeries – result container for :func:`~HalogenGroups.generate_homologues`.
+"""HomologueSeries – result container for :func:`~PFASGroups.generate_homologues`.
 
 Backward-compatible with the raw ``{InChIKey: {formula: mol}}`` dict that
 ``generate_homologues`` previously returned.  All existing code that iterates
@@ -87,12 +87,12 @@ class HomologueEntry:
 # ---------------------------------------------------------------------------
 
 class HomologueSeries(dict):
-    """Result container for :func:`~HalogenGroups.generate_homologues`.
+    """Result container for :func:`~PFASGroups.generate_homologues`.
 
     Inherits from :class:`dict` so that ``series[inchikey][formula]`` access
     and ``for inchikey, inner in series.items()`` still work exactly as before.
 
-    Additional attributes set by :func:`~HalogenGroups.generate_homologues`:
+    Additional attributes set by :func:`~PFASGroups.generate_homologues`:
 
     Attributes
     ----------

@@ -2,7 +2,7 @@
 
 import json
 
-from HalogenGroups.results_model import ResultsModel
+from PFASGroups.results_model import ResultsModel
 
 
 def test_results_model_helpers():

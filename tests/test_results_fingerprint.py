@@ -15,7 +15,7 @@ import tempfile
 import os
 from pathlib import Path
 from HalogenGroups import parse_smiles
-from HalogenGroups.results_model import ResultsFingerprint, ResultsModel
+from PFASGroups.results_model import ResultsFingerprint, ResultsModel
 
 
 # Test SMILES - diverse set of PFAS compounds

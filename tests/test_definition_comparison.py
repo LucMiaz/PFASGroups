@@ -12,7 +12,7 @@ import csv
 from pathlib import Path
 from typing import Dict, List
 
-from HalogenGroups.PFASDefinitionModel import PFASDefinition
+from PFASGroups.PFASDefinitionModel import PFASDefinition
 
 
 @pytest.fixture(scope='session')

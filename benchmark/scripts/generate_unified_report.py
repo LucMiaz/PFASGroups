@@ -403,7 +403,7 @@ def analyze_oecd_robustness(oecd_molecules):
             
             # Run HalogenGroups analysis
             try:
-                from HalogenGroups.parser import parse_groups_in_mol
+                from PFASGroups.parser import parse_groups_in_mol
                 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
                 from rdkit import Chem
                 

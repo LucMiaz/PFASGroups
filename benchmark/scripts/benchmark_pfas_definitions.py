@@ -474,7 +474,7 @@ class PFASDefinitionBenchmark:
         Returns:
             Dictionary with test results
         """
-        from HalogenGroups.parser import parse_mol
+        from PFASGroups.parser import parse_mol
 
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:

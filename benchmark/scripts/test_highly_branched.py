@@ -16,7 +16,7 @@ from datetime import datetime
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 try:
-    from HalogenGroups.parser import parse_smiles
+    from PFASGroups.parser import parse_smiles
     HalogenGroupS_AVAILABLE = True
 except ImportError:
     print("❌ Error: Could not import HalogenGroups module")

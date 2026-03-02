@@ -54,14 +54,12 @@ pip install -e ".[database]"
 > conda install -c conda-forge rdkit
 > ```
 
-After installation, both `HalogenGroups` (all halogens by default) and `PFASgroups`
-(fluorine only by default) are importable, and the `pfasgroups` CLI command is
-available in your terminal.
+After installation, both `HalogenGroups` (all halogens by default) and `PFASgroups` (fluorine only by default) are importable, and the `pfasgroups` CLI command is available in your terminal.
 
 ### Verify installation
 
 ```python
-from HalogenGroups import parse_smiles
+from PFASGroups import parse_smiles
 results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O")
 print(results[0].matched_groups)
 ```

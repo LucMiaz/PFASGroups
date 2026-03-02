@@ -1,5 +1,5 @@
 from rdkit import Chem
-from HalogenGroups.parser import parse_groups_in_mol
+from PFASGroups.parser import parse_groups_in_mol
 
 
 def _first_component(mol):

@@ -36,7 +36,7 @@ except ImportError:
         from .generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
     except ImportError:
         try:
-            from HalogenGroups.parser import parse_groups_in_mol
+            from PFASGroups.parser import parse_groups_in_mol
             from HalogenGroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_group,get_attachment
         except ImportError as e:
             print(f"Error importing HalogenGroups modules: {e}")

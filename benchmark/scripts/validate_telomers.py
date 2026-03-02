@@ -8,7 +8,7 @@ from pathlib import Path
 import json
 from datetime import datetime
 
-from HalogenGroups.parser import parse_mol
+from PFASGroups.parser import parse_mol
 from HalogenGroups.core import rdkit_disable_log
 # Import Chem after HalogenGroups to avoid conflicts
 from rdkit import Chem

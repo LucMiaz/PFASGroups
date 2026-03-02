@@ -1,6 +1,6 @@
 """Compare component fractions with and without SMARTS precomputation."""
 from rdkit import Chem
-from HalogenGroups.parser import parse_smiles
+from PFASGroups.parser import parse_smiles
 
 
 def test_fraction_analysis_pfoa():

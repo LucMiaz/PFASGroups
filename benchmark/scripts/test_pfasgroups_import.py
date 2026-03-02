@@ -4,7 +4,7 @@ sys.path.append('c:/Users/luc/git/HalogenGroups')
 
 try:
     print("1. Importing parse_mol...")
-    from HalogenGroups.parser import parse_mol
+    from PFASGroups.parser import parse_mol
     print("   Success!")
     
     print("2. Importing PFASDefinition...")

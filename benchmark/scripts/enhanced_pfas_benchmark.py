@@ -26,7 +26,7 @@ if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
 try:
-    from HalogenGroups.parser import parse_mol
+    from PFASGroups.parser import parse_mol
     from HalogenGroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_groups
     from HalogenGroups.core import mol_to_nx, rdkit_disable_log
     HalogenGroupS_AVAILABLE = True

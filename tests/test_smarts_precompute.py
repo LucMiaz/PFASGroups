@@ -1,5 +1,5 @@
 """Test SMARTS precomputation in HalogenGroup."""
-from HalogenGroups.parser import parse_smiles
+from PFASGroups.parser import parse_smiles
 
 
 def test_smarts_precompute_pfoa():

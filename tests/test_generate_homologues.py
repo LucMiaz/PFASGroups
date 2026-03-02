@@ -15,9 +15,9 @@ import pytest
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 
-from HalogenGroups.generate_homologues import generate_homologues, find_halogenated_components
-from HalogenGroups.homologue_series import HomologueSeries, HomologueEntry
-from HalogenGroups.generate_mol import generate_random_mol
+from PFASGroups.generate_homologues import generate_homologues, find_halogenated_components
+from PFASGroups.homologue_series import HomologueSeries, HomologueEntry
+from PFASGroups.generate_mol import generate_random_mol
 
 
 # ---------------------------------------------------------------------------
