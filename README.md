@@ -1,10 +1,10 @@
-# HalogenGroups
+# PFASGroups
 
 A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, in particular per- and polyfluoroalkyl substances (PFAS) in chemical databases.
 
 ## Overview
 
-HalogenGroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
+PFASGroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
 
 ## Key Features
 
@@ -14,7 +14,7 @@ HalogenGroups combines SMARTS pattern matching, molecular formula constraints, a
   - 45 non-telomer groups
   - 40 fluorotelomer groups with linker validation (Groups 69-112)
   - 1 aggregate pattern-matching group (Group 113: Telomers)
-- **Atom Reference Requirement**: For non-telomer groups, SMARTS patterns must match atoms that are part of or directly connected to the fluorinated component (per/polyfluorinated carbons), respecting the `max_dist_from_CF` constraint
+- **Atom Reference Requirement**: For non-telomer groups, SMARTS patterns must match atoms that are part of or directly connected to the fluorinated component (per/polyfluorinated carbons), respecting the `max_dist_from_comp` constraint
 - **Linker Validation**: CH₂-specific validation for 40 fluorotelomer groups to distinguish from direct-attachment analogues. Telomer groups use `linker_smarts` to allow functional groups separated from perfluoro chains by non-fluorinated linkers
 - **Aggregate Groups**: Pattern-matching groups that collect related PFAS groups via regex (e.g., Group 113 matches all "telomer" groups)
 - **Component Length Analysis**: Quantification of per- and polyfluorinated alkyl components with CF₂ unit counting
@@ -30,13 +30,97 @@ HalogenGroups combines SMARTS pattern matching, molecular formula constraints, a
 
 ## Installation
 
-Clone the repository and install dependencies:
+### From source (recommended for development)
+
+**Prerequisites**: Python ≥ 3.7, RDKit (install via conda or pip before the steps below).
 
 ```sh
+# Clone the repository
+git clone https://github.com/lucmiaz/PFASGroups.git
+cd PFASGroups
+
+# Install in editable mode (development install)
 pip install -e .
+
+# Optional: install development dependencies (pytest, coverage)
+pip install -e ".[dev]"
+
+# Optional: install database support (SQLAlchemy)
+pip install -e ".[database]"
 ```
 
-After installation, the `halogengroups` command will be available in your terminal.
+> **Note for conda users**: install RDKit via conda before running pip:
+> ```sh
+> conda install -c conda-forge rdkit
+> ```
+
+After installation, both `HalogenGroups` (all halogens by default) and `PFASgroups`
+(fluorine only by default) are importable, and the `pfasgroups` CLI command is
+available in your terminal.
+
+### Verify installation
+
+```python
+from HalogenGroups import parse_smiles
+results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O")
+print(results[0].matched_groups)
+```
+
+## Repository Structure
+
+```
+PFASGroups/
+├── HalogenGroups/                   # Multi-halogen wrapper package
+│   └── __init__.py                  #   Wraps PFASgroups; defaults halogens=['F','Cl','Br','I']
+├── PFASGroups/                      # Core implementation package (also importable as PFASgroups)
+│   ├── __init__.py                  #   Public API
+│   ├── core.py                      #   SMARTS matching engine, component detection, decorators
+│   ├── parser.py                    #   parse_smiles / parse_mols entry points
+│   ├── fingerprints.py              #   generate_fingerprint
+│   ├── results_model.py             #   ResultsModel, ResultsFingerprint, MoleculeResult
+│   ├── HalogenGroupModel.py         #   HalogenGroup data model
+│   ├── PFASDefinitionModel.py       #   PFASDefinition model
+│   ├── ComponentsSolverModel.py     #   Graph-based path-finding solver
+│   ├── getter.py                    #   get_HalogenGroups, get_componentSmartss, …
+│   ├── cli.py                       #   Command-line interface (halogengroups / pfasgroups)
+│   ├── prioritise.py                #   prioritise_molecules
+│   ├── generate_homologues.py       #   Homologue series generation
+│   ├── fragmentation.py             #   Fragment utilities
+│   ├── draw_mols.py                 #   Molecule and group visualisation helpers
+│   └── data/                        #   JSON configuration files (bundled with the package)
+│       ├── Halogen_groups_smarts.json      # 113 halogen group definitions
+│       ├── component_smarts.json           # Fluorinated component SMARTS patterns
+│       ├── component_smarts_halogens.json  # Multi-halogen component SMARTS patterns
+│       └── PFAS_definitions_smarts.json    # PFAS regulatory definitions
+├── tests/                           # Pytest test suite (25+ test modules)
+│   ├── test_halogen_groups_smarts.py
+│   ├── test_results_fingerprint.py
+│   ├── test_results_model.py
+│   ├── test_prioritise.py
+│   └── …
+├── examples/                        # Standalone usage example scripts
+│   ├── results_fingerprint_analysis.py
+│   ├── prioritization_examples.py
+│   └── …
+├── docs/                            # Sphinx documentation source
+│   ├── quickstart.rst
+│   ├── algorithm.rst
+│   ├── customization.rst
+│   ├── ResultsFingerprint_Guide.md
+│   └── …
+├── benchmark/                       # Benchmarking scripts and timing reports
+│   ├── data/
+│   ├── reports/
+│   └── …
+└── pyproject.toml                   # Package metadata and build configuration
+```
+
+**Two importable packages, one codebase:**
+
+| Package | Default `halogens` | Typical use |
+|---|---|---|
+| `HalogenGroups` | `['F', 'Cl', 'Br', 'I']` (all) | Multi-halogen analysis |
+| `PFASgroups` | `'F'` (fluorine only) | PFAS / fluorine-focused analysis |
 
 ## Benchmark Summary (Feb 2026, using v. 2.2.3 only on F groups)
 
@@ -118,14 +202,13 @@ fp.to_sql(filename='fingerprints.db')
 results.to_sql(filename='results.db')
 
 # New in v2.2.4: Prioritization tool for screening and ranking
-from PFASgroups import prioritise_molecules
+from HalogenGroups import prioritise_molecules
 
 # Prioritize by similarity to reference list (e.g., known persistent PFAS)
 reference = ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"]
 prioritized = prioritise_molecules(
     molecules=smiles_list,
     reference=reference,
-    method='minmax',
     return_scores=True
 )
 
@@ -197,6 +280,72 @@ halogengroups parse --form cyclic "your_smiles_here"
 halogengroups parse --halogens F --saturation poly "FC(F)(F)C(C(F)(F)F)C(F)(F)F"
 ```
 
+## Multi-Halogen Analysis
+
+PFASGroups supports fluorine, chlorine, bromine, and iodine. There are two ways
+to analyse all halogens at once:
+
+### Option A – import `HalogenGroups` (all halogens by default)
+
+```python
+from HalogenGroups import parse_smiles, generate_fingerprint
+
+smiles_list = [
+    "C(C(F)(F)F)F",          # fluorinated
+    "ClC(Cl)(Cl)C(Cl)(Cl)Cl", # chlorinated
+    "BrC(Br)(Br)CBr",         # brominated
+]
+
+# halogens defaults to ['F','Cl','Br','I'] — no extra argument needed
+results = parse_smiles(smiles_list)
+
+# to_fingerprint() also defaults to all halogens
+fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
+
+# generate_fingerprint() works the same way
+fingerprints, group_info = generate_fingerprint(smiles_list)
+```
+
+### Option B – import `PFASgroups` and specify `halogens` explicitly
+
+```python
+from PFASgroups import parse_smiles, generate_fingerprint
+
+smiles_list = [
+    "C(C(F)(F)F)F",
+    "ClC(Cl)(Cl)C(Cl)(Cl)Cl",
+    "BrC(Br)(Br)CBr",
+]
+
+# Explicitly pass all halogens
+results = parse_smiles(smiles_list, halogens=['F', 'Cl', 'Br', 'I'])
+
+fp = results.to_fingerprint(
+    group_selection='oecd',
+    count_mode='binary',
+    halogens=['F', 'Cl', 'Br', 'I'],
+)
+
+fingerprints, group_info = generate_fingerprint(
+    smiles_list,
+    halogens=['F', 'Cl', 'Br', 'I'],
+)
+```
+
+Both approaches produce identical results. Use `HalogenGroups` when your workflow
+is always multi-halogen; use `PFASgroups` with an explicit `halogens` argument when
+you want to mix fluorine-only and multi-halogen calls in the same script.
+
+CLI equivalents (the CLI always requires an explicit `--halogens` flag):
+
+```bash
+# All four halogens
+halogengroups parse --halogens F Cl Br I "C(C(F)(F)F)F" "ClC(Cl)(Cl)C(Cl)(Cl)Cl"
+
+# Fingerprint with all halogens
+halogengroups fingerprint --halogens F Cl Br I "C(C(F)(F)F)F"
+```
+
 ## Custom Configuration
 
 Use custom pathtype definitions and PFAS groups:
@@ -224,28 +373,27 @@ groups = get_HalogenGroups()  # Get defaults
 groups.append(HalogenGroup(
     id=999,
     name="My Custom Group",
-    smarts={"[C](F)(F)F":1}
-    componentSmarts="None,
+    smarts={"[C](F)(F)F": 1},
+    componentSmarts=None,
     componentSaturation="per",
-    componentHalogen="F",
+    componentHalogens="F",
     componentForm="alkyl",
-    constraints={"gte":{"F":1}}
+    constraints={"gte": {"F": 1}}
 ))
 
 results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
 
-# Custom max_dist_from_CF parameter
-# For functional groups without formula constraints, when bycomponent=True,
-# the max_dist_from_CF parameter limits the maximum bond distance between
+# Custom max_dist_from_comp parameter
+# For functional groups without formula constraints,
+# max_dist_from_comp limits the maximum bond distance between
 # a functional group match and a fluorinated carbon terminal atom (default: 0)
-groups.append(PFASGroup(
+groups.append(HalogenGroup(
     id=998,
     name="Extended Distance Group",
-    smarts1="[#6$([#6][OH1])]",
-    smarts2=None,
+    smarts={"[#6$([#6][OH1])]": 1},
     componentSmarts=None,
     constraints={},
-    max_dist_from_CF=3  # Allow up to 3 bonds from fluorinated carbon
+    max_dist_from_comp=3  # Allow up to 3 bonds from fluorinated carbon
 ))
 
 # Add custom path types (e.g., chlorinated analogs)
@@ -260,11 +408,11 @@ results = parse_smiles(["ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"], componentSmartss=paths)
 
 ```bash
 # Via command line
-pfasgroups parse --groups-file my_custom_groups.json "C(C(F)(F)F)F"
+halogengroups parse --groups-file my_custom_groups.json "C(C(F)(F)F)F"
 
 # List available groups and paths
-pfasgroups list-groups
-pfasgroups list-paths
+halogengroups list-groups
+halogengroups list-paths
 ```
 
 ## Documentation

@@ -18,7 +18,7 @@ Quick Start
 
 .. code-block:: python
 
-   from PFASgroups import prioritise_molecules, get_priority_statistics
+   from HalogenGroups import prioritise_molecules, get_priority_statistics
    
    # Prioritize by similarity to known compounds
    reference = ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"]  # PFOA
