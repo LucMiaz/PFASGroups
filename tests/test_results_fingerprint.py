@@ -61,15 +61,15 @@ class TestResultsModelToFingerprint:
     def test_group_selections(self, results):
         """Test different group selections."""
         # All groups
-        fp_all = results.to_fingerprint(group_selection='all')
+        fp_all = results.to_fingerprint(group_selection='all', halogens='F')
         assert len(fp_all.group_names) == 116  # 117 total, but 1 is aggregate-only (compute=False)
         
         # OECD groups
-        fp_oecd = results.to_fingerprint(group_selection='oecd')
+        fp_oecd = results.to_fingerprint(group_selection='oecd', halogens='F')
         assert len(fp_oecd.group_names) == 28
         
         # Generic groups
-        fp_generic = results.to_fingerprint(group_selection='generic')
+        fp_generic = results.to_fingerprint(group_selection='generic', halogens='F')
         assert len(fp_generic.group_names) == 27
     
     def test_count_modes(self, results):
@@ -89,7 +89,7 @@ class TestResultsModelToFingerprint:
     def test_custom_group_ids(self, results):
         """Test custom group ID selection."""
         custom_ids = [1, 2, 5, 10]
-        fp = results.to_fingerprint(selected_group_ids=custom_ids,count_mode='binary')
+        fp = results.to_fingerprint(selected_group_ids=custom_ids, count_mode='binary', halogens='F')
         assert len(fp.group_names) == len(custom_ids)
 
     def test_halogen_default(self, results):
@@ -127,7 +127,7 @@ class TestResultsModelToFingerprint:
 
     def test_halogen_telomers_selection(self, results):
         """Telomers selection uses correct ID range."""
-        fp = results.to_fingerprint(group_selection='telomers',count_mode='binary')
+        fp = results.to_fingerprint(group_selection='telomers', count_mode='binary', halogens='F')
         assert len(fp.group_names) == 42
 
 

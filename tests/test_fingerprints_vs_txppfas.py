@@ -96,6 +96,8 @@ except ImportError:
 
 def jaccard_similarity(a: np.ndarray, b: np.ndarray) -> float:
     """Binary Tanimoto / Jaccard similarity between two 1-D binary arrays."""
+    a = np.asarray(a, dtype=np.uint8)
+    b = np.asarray(b, dtype=np.uint8)
     and_ = int(np.dot(a, b))
     or_  = int(np.sum(a | b))
     return and_ / or_ if or_ > 0 else 0.0
