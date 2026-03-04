@@ -230,9 +230,9 @@ class TestMultiComponent:
 class TestFindHalogenatedComponents:
 
     def _get_component_smarts(self, name='Perfluoroalkyl'):
-        from HalogenGroups.core import preprocess_componentsSmarts
+        from PFASGroups.core import preprocess_componentsSmarts
         import json, os
-        data_dir = os.path.join(os.path.dirname(__file__), '..', 'HalogenGroups', 'data')
+        data_dir = os.path.join(os.path.dirname(__file__), '..', 'PFASGroups', 'data')
         with open(os.path.join(data_dir, 'component_smarts_halogens.json')) as f:
             components = json.load(f)
         processed = preprocess_componentsSmarts(components)

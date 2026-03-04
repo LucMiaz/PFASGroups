@@ -89,12 +89,12 @@ class TestResultsModelToFingerprint:
     def test_custom_group_ids(self, results):
         """Test custom group ID selection."""
         custom_ids = [1, 2, 5, 10]
-        fp = results.to_fingerprint(selected_group_ids=custom_ids)
+        fp = results.to_fingerprint(selected_group_ids=custom_ids,count_mode='binary')
         assert len(fp.group_names) == len(custom_ids)
 
     def test_halogen_default(self, results):
         """Default halogen='F' gives 117 group names, no suffix."""
-        fp = results.to_fingerprint(halogens='F')
+        fp = results.to_fingerprint(halogens='F',count_mode='binary')
         assert fp.halogens == ['F']
         assert fp.saturation == 'per'
         assert len(fp.group_names) == 116
@@ -102,8 +102,8 @@ class TestResultsModelToFingerprint:
 
     def test_halogen_stacking(self, results):
         """Multiple halogens double (or triple) fingerprint width."""
-        fp_f = results.to_fingerprint(halogens='F')
-        fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'])
+        fp_f = results.to_fingerprint(halogens='F',count_mode='binary')
+        fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'],count_mode='binary')
         n_groups = len(fp_f.group_names)
         assert len(fp_fcl.group_names) == n_groups * 2
         assert fp_fcl.fingerprints.shape == (len(results), n_groups * 2)
@@ -116,18 +116,18 @@ class TestResultsModelToFingerprint:
 
     def test_saturation_poly(self, results):
         """Saturation='poly' is accepted and stored."""
-        fp = results.to_fingerprint(halogens='F', saturation='poly')
+        fp = results.to_fingerprint(halogens='F', saturation='poly',count_mode='binary')
         assert fp.saturation == 'poly'
         assert fp.fingerprints.shape[0] == len(results)
 
     def test_saturation_none(self, results):
         """Saturation=None disables the saturation filter."""
-        fp = results.to_fingerprint(halogens='F', saturation=None)
+        fp = results.to_fingerprint(halogens='F', saturation=None,count_mode='binary')
         assert fp.saturation is None
 
     def test_halogen_telomers_selection(self, results):
         """Telomers selection uses correct ID range."""
-        fp = results.to_fingerprint(group_selection='telomers')
+        fp = results.to_fingerprint(group_selection='telomers',count_mode='binary')
         assert len(fp.group_names) == 42
 
 
@@ -272,8 +272,8 @@ class TestKLDivergence:
     
     def test_group_mismatch(self, results):
         """Test that different groups raises error."""
-        fp1 = results.to_fingerprint(group_selection='all')
-        fp2 = results.to_fingerprint(group_selection='oecd')
+        fp1 = results.to_fingerprint(group_selection='all',count_mode='binary')
+        fp2 = results.to_fingerprint(group_selection='oecd',count_mode='binary')
         
         with pytest.raises(ValueError, match="same number of groups"):
             fp1.compare_kld(fp2)
@@ -331,7 +331,7 @@ class TestEdgeCases:
         # Empty results should raise an error or return empty fingerprint
         # Depending on implementation, adjust this test
         try:
-            fp = empty_results.to_fingerprint()
+            fp = empty_results.to_fingerprint(count_mode='binary')
             assert len(fp) == 0 or fp.fingerprints.size == 0
         except (ValueError, IndexError, Exception) as e:
             # Expected behavior for empty input
@@ -340,7 +340,7 @@ class TestEdgeCases:
     def test_single_molecule(self):
         """Test with single molecule."""
         single_results = parse_smiles([TEST_SMILES[0]])
-        fp = single_results.to_fingerprint()
+        fp = single_results.to_fingerprint(count_mode='binary')
         
         assert len(fp) == 1
         assert fp.fingerprints.shape[0] == 1
@@ -348,7 +348,7 @@ class TestEdgeCases:
     def test_invalid_group_selection(self, results):
         """Test invalid group selection."""
         with pytest.raises(ValueError, match="Unknown group_selection"):
-            results.to_fingerprint(group_selection='invalid')
+            results.to_fingerprint(group_selection='invalid',count_mode='binary')
     
     def test_invalid_kl_method(self, fingerprint):
         """Test invalid KL method."""
@@ -396,8 +396,8 @@ class TestIntegration:
         results2 = parse_smiles(COMPARISON_SMILES)
         
         # Convert to fingerprints
-        fp1 = results1.to_fingerprint(group_selection='all')
-        fp2 = results2.to_fingerprint(group_selection='all')
+        fp1 = results1.to_fingerprint(group_selection='all',count_mode='binary')
+        fp2 = results2.to_fingerprint(group_selection='all',count_mode='binary')
         
         # Compare using different methods
         methods = ['minmax', 'forward', 'reverse', 'symmetric']
@@ -602,7 +602,7 @@ class TestNumericalStability:
         """Test with identical SMILES."""
         identical_smiles = [TEST_SMILES[0]] * 3
         results = parse_smiles(identical_smiles)
-        fp = results.to_fingerprint()
+        fp = results.to_fingerprint(count_mode='binary')
         
         # Should not crash - note: identical SMILES may be deduplicated
         assert len(fp) >= 1  # At least one result

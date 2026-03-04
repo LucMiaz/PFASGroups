@@ -585,21 +585,24 @@ class HalogenGroup():
                     component_types = list(self.componentSmarts)
                 else:
                     component_types = [self.componentSmarts]
-                path_components = []
+                # Collect unique components across all types; deduplicate by atom-set so
+                # the same carbon substructure is only reported once even when multiple
+                # per-halogen SMARTS types are listed (e.g. perhalogenated alkyl groups).
+                seen_atom_sets = set()
+                matched_components = []
                 for comp_type in component_types:
                     comps = component_solver.get(comp_type, max_dist=self.max_dist_from_comp, default=[])
-                    if not comps and comp_type != "Polyfluoroalkyl":
-                        comps = component_solver.get("Polyfluoroalkyl", max_dist=self.max_dist_from_comp, default=[])
-                    path_components.extend(comps)
-                match_count = len(path_components)
-                component_sizes = [len(x) for x in path_components]
-                matched1_len = len(path_components)  # Set matched1_len to enable group matching
-                matched_components = []
-                for comp in path_components:
-                    # Use get_matched_component_dict with no SMARTS matches
-                    matched_components.append(
-                        component_solver.get_matched_component_dict(comp, None, self.componentSmarts, self)
-                    )
+                    for comp in comps:
+                        key = frozenset(comp)
+                        if key in seen_atom_sets:
+                            continue
+                        seen_atom_sets.add(key)
+                        matched_components.append(
+                            component_solver.get_matched_component_dict(comp, None, comp_type, self)
+                        )
+                match_count = len(matched_components)
+                component_sizes = [comp.get('size', 0) for comp in matched_components]
+                matched1_len = match_count  # Set matched1_len to enable group matching
             else:
                 # treat cases with no SMARTS patterns, just formula constraints
                 match_count = 1

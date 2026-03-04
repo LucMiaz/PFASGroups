@@ -115,13 +115,10 @@ Step 3: SMARTS Pattern Matching
 
 **Purpose**: Identify functional group candidates in the molecule
 
-SMARTS (SMiles ARbitrary Target Specification) patterns define substructure queries:
-
-**Primary Pattern (smarts1)**:
-Identifies the main functional group (e.g., carboxylic acid ``[#6$([#6][#6](=O)([OH1,O-]))]``)
-
-**Secondary Pattern (smarts2)** (optional):
-Provides additional specificity (e.g., specific bond types, aromatic systems)
+SMARS (SMiles ARbitrary Target Specification) patterns define substructure queries.
+Each :class:`HalogenGroup` accepts a ``smarts`` dictionary mapping SMARTS strings
+to minimum occurrence counts, e.g. ``{"[C$(C(=O)O)]": 1}``.
+Multiple patterns can be required simultaneously.
 
 **Example:**
 
@@ -145,13 +142,13 @@ Provides additional specificity (e.g., specific bond types, aromatic systems)
    fluorinated component or can be validated by the component criteria. This means:
    
    - The matched atom should be a carbon that is per- or polyfluorinated, OR
-   - The matched atom must satisfy the ``max_dist_from_CF`` constraint (distance from 
-     the nearest C-F carbon)
+   - The matched atom must satisfy the ``max_dist_from_comp`` constraint (distance from 
+     the nearest halogenated component)
    
    For example:
    
    - ✅ **Valid**: ``[C$(C(=O)O)]`` where the matched ``C`` is directly bonded to ``CF2`` groups
-   - ✅ **Valid**: ``[CH2$(COC(=O))]`` where the ``CH2`` is within ``max_dist_from_CF`` of fluorinated carbons
+   - ✅ **Valid**: ``[CH2$(COC(=O))]`` where the ``CH2`` is within ``max_dist_from_comp`` of halogenated carbons
    - ❌ **Invalid**: Functional group atoms isolated from the fluorinated chain
    
    **Telomer groups** are exceptions: they use ``componentSmarts`` with ``linker_smarts`` to 
@@ -251,14 +248,15 @@ Step 5: Result Aggregation
 
 3. **Compile chain lengths**: List of all valid chain lengths found
 
-4. **Return structured data**:
+4. **Return structured data** accessible via :class:`~PFASGroups.results_model.MoleculeResult`:
 
 .. code-block:: python
 
-   [
-       (PFASGroup, match_count, [chain_lengths], [matched_chains]),
-       ...
-   ]
+   # results[i].matches returns a list of MatchView objects
+   for match in results[0].matches:
+       if match.is_group:
+           print(match.group_name, match.group_id)
+           sizes = [len(c.atoms) for c in match.components]
 
 Pathway SMARTS Patterns
 ------------------------

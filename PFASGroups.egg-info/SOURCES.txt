@@ -42,7 +42,7 @@ tests/test_linker_smarts.py
 tests/test_metrics.py
 tests/test_metrics_detailed.py
 tests/test_pfasgroups_legacy.py
-tests/test_pfasstructv5_against_richard2023.py
+tests/test_pfasstructv5.py
 tests/test_prioritise.py
 tests/test_results_fingerprint.py
 tests/test_results_model.py

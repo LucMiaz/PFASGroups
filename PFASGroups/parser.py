@@ -636,13 +636,15 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         inchikey = Chem.MolToInchiKey(mol)
         inchi = Chem.MolToInchi(mol)
         smi = Chem.MolToSmiles(mol)
-        # Store SMILES with explicit H for efficient atom index mapping during visualization
-        smiles_with_h = Chem.MolToSmiles(mol_with_h)
+        # Store molblock with explicit H to preserve atom ordering for visualization
+        # (MolToSmiles canonicalises atom order, breaking component atom indices)
+        molblock_with_h = Chem.MolToMolBlock(mol_with_h)
         results.setdefault(inchikey,{}).update({"smiles": smi,
                         "inchikey": inchikey,
                         "inchi": inchi,
                         "formula": formula,
-                        "smiles_with_h": smiles_with_h})
+                        "smiles_with_h": Chem.MolToSmiles(mol_with_h),  # kept for backward compat
+                        "molblock_with_h": molblock_with_h})
 
         # Build match results with comprehensive summary metrics
         match_results = []

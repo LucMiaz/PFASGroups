@@ -31,13 +31,13 @@ from HalogenGroups import HalogenGroup, PFASDefinition
 @pytest.fixture(scope="module")
 def groups_file():
     """Path to Halogen groups JSON file."""
-    return Path(__file__).parent.parent / 'HalogenGroups' / 'data' / 'Halogen_groups_smarts.json'
+    return Path(__file__).parent.parent / 'PFASGroups' / 'data' / 'Halogen_groups_smarts.json'
 
 
 @pytest.fixture(scope="module")
 def definitions_file():
     """Path to PFAS definitions JSON file."""
-    return Path(__file__).parent.parent / 'HalogenGroups' / 'data' / 'PFAS_definitions_smarts.json'
+    return Path(__file__).parent.parent / 'PFASGroups' / 'data' / 'PFAS_definitions_smarts.json'
 
 
 @pytest.fixture(scope="module")

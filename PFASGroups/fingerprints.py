@@ -267,8 +267,10 @@ def generate_fingerprint(smiles: Union[str, List[str]],
         except Exception as e:
             raise ValueError(f"Error processing SMILES '{smiles_str}': {str(e)}")
 
-    # Return single fingerprint for single input, list for multiple inputs
+    # Return single fingerprint for single input, stacked matrix for multiple
     if single_input:
         return fingerprints[0], group_info
     else:
+        if representation == 'vector':
+            return np.vstack(fingerprints), group_info
         return fingerprints, group_info

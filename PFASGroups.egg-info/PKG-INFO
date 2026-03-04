@@ -96,14 +96,12 @@ pip install -e ".[database]"
 > conda install -c conda-forge rdkit
 > ```
 
-After installation, both `HalogenGroups` (all halogens by default) and `PFASgroups`
-(fluorine only by default) are importable, and the `pfasgroups` CLI command is
-available in your terminal.
+After installation, both `HalogenGroups` (all halogens by default) and `PFASgroups` (fluorine only by default) are importable, and the `pfasgroups` CLI command is available in your terminal.
 
 ### Verify installation
 
 ```python
-from HalogenGroups import parse_smiles
+from PFASGroups import parse_smiles
 results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O")
 print(results[0].matched_groups)
 ```
@@ -594,7 +592,7 @@ Key test files:
 | File | What it tests |
 |------|---------------|
 | `tests/test_halogen_groups_smarts.py` | Per-group positive and negative examples embedded in the JSON configuration |
-| `tests/test_pfasstructv5_against_richard2023.py` | PFASSTRUCTv5 definition against the Richard 2023 PFASSTRUCTV5 inventory (see below) |
+| `tests/test_pfasstructv5.py` | PFASSTRUCTv5 definition against the PFASSTRUCTV5 from DSSTox (see below) |
 | `tests/test_results_fingerprint.py` | Fingerprint generation, group selection, and dimensionality-reduction methods |
 | `tests/test_definition_comparison.py` | Consistency of the five PFAS regulatory definitions |
 | `tests/test_linker_smarts.py` | CH₂ linker validation for fluorotelomer groups |
@@ -608,29 +606,29 @@ See the table in the [Benchmark Summary](#benchmark-summary-feb-2026-using-v-223
 
 ### PFASSTRUCTv5 validation against Richard *et al.* 2023
 
-The PFASSTRUCTv5 PFAS definition (definition ID 5, `'PFASTRUCTv5'`, fluorineRatio ≥ 0.3) was validated against the PFASSTRUCTV5 inventory distributed as supplementary data by:
+The PFASSTRUCTv5 definition (definition ID 5, `'PFASTRUCTv5'`, fluorineRatio ≥ 0.3) was validated against the PFASSTRUCTV5 list (update August 2022) in [DSSTox database](https://comptox.epa.gov/dashboard/chemical-lists/PFASSTRUCTV5), downloaded on 2 March 2026 as SDF v3000.
 
-> Richard, A. M. *et al.* (2023). *A New CSRML Structure-Based Fingerprint Method for Profiling and Categorizing Per- and Polyfluoroalkyl Substances (PFAS).* Chemical Research in Toxicology, 36(3), 318–338. [DOI: 10.1021/acs.chemrestox.2c00403](https://doi.org/10.1021/acs.chemrestox.2c00403)
-
-The inventory (`tests/test_data/PFASSTRUCTV5_20221101.sdf`, 14,735 structures) was used as a positive test set: every molecule is expected to satisfy the PFASSTRUCTv5 definition. The automated test `tests/test_pfasstructv5_against_richard2023.py` checks this:
+The inventory (`tests/test_data/PFASSTRUCTV5_20221101.sdf`, 14,735 structures) was used as a positive test set: every molecule is expected to satisfy the PFASSTRUCTv5 definition. The automated test `tests/test_pfasstructv5.py` checks this:
 
 ```bash
 # Pytest mode — a deterministic sample of 10 molecules (fast, suitable for CI):
-pytest tests/test_pfasstructv5_against_richard2023.py -v
+pytest tests/test_pfasstructv5.py -v
 
 # Direct mode — validates all 14,735 molecules and reports any failures:
-python tests/test_pfasstructv5_against_richard2023.py
+python tests/test_pfasstructv5.py
 ```
 
 ### HalogenGroups fingerprint comparison against CSRML (Richard *et al.* 2023)
 
-HalogenGroups binary fingerprints were compared against the 125-bit CSRML fingerprint system introduced by Richard *et al.* 2023 (same reference as above), which was developed specifically for profiling and categorising PFAS. The comparison script `benchmark/scripts/compare_pfasgroups_vs_txppfas.py` generates:
+HalogenGroups binary fingerprints were compared against the 125-bit CSRML fingerprint system introduced by Richard *et al.* 2023, which was developed specifically for profiling and categorising PFAS. The comparison script `benchmark/scripts/compare_pfasgroups_vs_txppfas.py` generates:
 
 - Group coverage statistics and information-content distribution per group
 - Lorenz curves for class-richness concentration
 - PCA scatter plots comparing chemical-space coverage of both fingerprint systems
 - Pairwise Jaccard similarity distributions within each system
 - Cross-fingerprint similarity scatter (HalogenGroups vs. CSRML Jaccard)
+
+> Richard, A. M. *et al.* (2023). *A New CSRML Structure-Based Fingerprint Method for Profiling and Categorizing Per- and Polyfluoroalkyl Substances (PFAS).* Chemical Research in Toxicology, 36(3), 318–338. [DOI: 10.1021/acs.chemrestox.2c00403](https://doi.org/10.1021/acs.chemrestox.2c00403)
 
 ```bash
 cd benchmark/scripts

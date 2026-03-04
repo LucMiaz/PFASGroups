@@ -78,7 +78,7 @@ Create binary fingerprints for machine learning:
 
 .. code-block:: python
 
-   from HalogenGroups.fingerprints import generate_fingerprint
+   from HalogenGroups import generate_fingerprint
    import numpy as np
    
    smiles_list = [
@@ -416,6 +416,88 @@ Command-line equivalents:
    
    # Filter for cyclic forms only
    halogengroups parse --form cyclic "your_smiles_here"
+
+Article Examples
+----------------
+
+The following examples correspond to the code listings in the PFASGroups article.
+
+**Example 1 – Custom PFAS group at runtime:**
+
+.. code-block:: python
+
+   from PFASgroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
+
+   groups = get_compiled_HalogenGroups()  # compiled HalogenGroup instances
+   groups.append(HalogenGroup(
+       id=200,
+       name="Perfluoroalkyl nitrates",
+       smarts={"[C$(C[ON+](=O)[O-])]": 1},
+       componentSaturation="per",
+       componentHalogens="F",
+       componentForm="alkyl",
+       constraints={"eq": {"N": 1}, "gte": {"F": 1}},
+   ))
+   results = parse_smiles(["FC(F)(F)C(F)(F)ON(=O)=O"], pfas_groups=groups)
+
+**Example 2 – Generating and analysing PFAS fingerprints:**
+
+.. code-block:: python
+
+   from PFASgroups import parse_smiles, generate_fingerprint
+
+   smiles = [
+       "FC(F)(F)C(F)(F)C(F)(F)C(=O)O",        # PFBA
+       "FC(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",    # PFBS
+       "C(CF)(CF)C(F)(F)C(F)(F)OCC(F)(F)F",   # FTOH-like
+   ]
+
+   # Direct fingerprint generation (116-column binary, F only)
+   fp_matrix, info = generate_fingerprint(smiles, halogens='F', saturation='per')
+   print(fp_matrix.shape)       # (3, 116)
+   print(info['group_names'][:3])
+
+   # Via ResultsModel for post-hoc fingerprinting and dimensionality reduction
+   results = parse_smiles(smiles)
+   fp = results.to_fingerprint(group_selection='all', halogens='F', count_mode='binary')
+
+   pca  = fp.perform_pca(n_components=2, plot=True)
+   tsne = fp.perform_tsne(perplexity=10, max_iter=1000, plot=True)
+   umap = fp.perform_umap(n_neighbors=5, plot=True)
+
+   # KL-divergence comparison between two fingerprint datasets
+   other_fp = parse_smiles(["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"]).to_fingerprint()
+   kld = fp.compare_kld(other_fp, method='minmax')
+
+**Example 3 – Multi-halogen analysis:**
+
+.. code-block:: python
+
+   from HalogenGroups import parse_smiles as hal_parse   # all halogens by default
+   from PFASgroups import parse_smiles as pfas_parse     # F only by default
+
+   multi = hal_parse(["ClC(Cl)(Cl)CCl", "BrC(Br)(Br)CBr"])
+   pfas  = pfas_parse(["FC(F)(F)C(F)(F)C(=O)O"])
+
+**Example 4 – Molecule prioritization:**
+
+.. code-block:: python
+
+   from PFASgroups import parse_smiles, prioritise_molecules
+
+   known_persistent = [
+       "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O",  # PFOA
+       "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",                    # PFOS
+   ]
+   candidates = [
+       "FC(F)(F)C(F)(F)C(=O)O",       # PFBA
+       "FC(F)(F)C(F)(F)C(F)(F)C(=O)O",  # PFPA
+       "CCO",                            # ethanol
+   ]
+
+   known_results = parse_smiles(known_persistent)
+   candidate_results = parse_smiles(candidates)
+   ranked = prioritise_molecules(candidate_results, known_results)
 
 Next Steps
 ----------

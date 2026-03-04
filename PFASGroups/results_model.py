@@ -171,6 +171,112 @@ def _grid_images(imgs: Sequence[Image.Image], buffer: int = 4, ncols: int = 3) -
     return canvas, max_width, total_height
 
 
+def _mol_image_with_table(
+    mol_img: Image.Image,
+    entries: List[Tuple[str, str, str, str, str]],
+    mol_label: str = "",
+    font_size: int = 9,
+) -> Image.Image:
+    """Composite a molecule image (PIL) with a formatted matplotlib table.
+
+    Parameters
+    ----------
+    mol_img : PIL Image
+        The molecule drawing produced by RDKit (no legend text).
+    entries : list of tuples
+        Each tuple: (group_name, smarts_label, halogen, form, saturation)
+    mol_label : str
+        Optional header shown above the table (e.g. "mol#1").
+    font_size : int
+        Font size for table body text.
+
+    Returns
+    -------
+    PIL Image
+        Combined molecule + table image.
+    """
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    import io as _io
+
+    dpi = 96
+    mol_w, mol_h = mol_img.size
+    fig_w_in = mol_w / dpi
+
+    # Row height in inches
+    row_h_in = (font_size + 5) / 72.0
+    header_h_in = row_h_in * 1.4
+    n_rows = max(1, len(entries))
+    label_h_in = (font_size + 4) / 72.0 * 1.3 if mol_label else 0.0
+    table_h_in = header_h_in + n_rows * row_h_in + label_h_in + 0.12
+    mol_h_in = mol_h / dpi
+    fig_h_in = mol_h_in + table_h_in
+
+    fig = plt.figure(figsize=(fig_w_in, fig_h_in), dpi=dpi)
+
+    mol_ratio = mol_h_in / fig_h_in
+    ax_mol = fig.add_axes([0, 1 - mol_ratio, 1, mol_ratio])
+    ax_mol.imshow(mol_img)
+    ax_mol.axis('off')
+
+    tbl_ratio = 1.0 - mol_ratio
+    ax_tbl = fig.add_axes([0.01, 0, 0.98, tbl_ratio])
+    ax_tbl.axis('off')
+
+    if mol_label:
+        ax_tbl.text(
+            0.5, 1.0, mol_label,
+            ha='center', va='top',
+            fontsize=font_size + 1, fontweight='bold',
+            transform=ax_tbl.transAxes,
+        )
+
+    col_labels = ["Group", "SMARTS", "Hal.", "Form", "Sat."]
+    col_widths = [0.40, 0.26, 0.10, 0.12, 0.12]
+
+    cell_text = [
+        [grp, sls or "\u2014", hal, frm, sat]
+        for grp, sls, hal, frm, sat in entries
+    ] or [["\u2014", "\u2014", "\u2014", "\u2014", "\u2014"]]
+
+    # y-position inside ax_tbl: leave room for label
+    tbl_y = 1.0 - (label_h_in / (tbl_ratio * fig_h_in / dpi * 72) * 0.01) if mol_label else 1.0
+
+    tbl = ax_tbl.table(
+        cellText=cell_text,
+        colLabels=col_labels,
+        colWidths=col_widths,
+        loc='upper center',
+        cellLoc='left',
+        bbox=[0, 0, 1, tbl_y],
+    )
+    tbl.auto_set_font_size(False)
+    tbl.set_fontsize(font_size)
+
+    # Style header
+    for j in range(len(col_labels)):
+        cell = tbl[0, j]
+        cell.set_facecolor('#3B5BA5')
+        cell.set_text_props(color='white', fontweight='bold')
+        cell.set_edgecolor('#3B5BA5')
+
+    # Alternate row shading
+    for i in range(len(cell_text)):
+        for j in range(len(col_labels)):
+            cell = tbl[i + 1, j]
+            cell.set_facecolor('#EEF2FF' if i % 2 == 0 else 'white')
+            cell.set_edgecolor('#C0C8E8')
+
+    fig.patch.set_facecolor('white')
+    buf = _io.BytesIO()
+    fig.savefig(buf, format='png', dpi=dpi, bbox_inches='tight', pad_inches=0.04,
+                facecolor='white')
+    plt.close(fig)
+    buf.seek(0)
+    return Image.open(buf).copy()
+
+
 @dataclass
 class ComponentView:
     """Lightweight wrapper around a matched component dict.
@@ -232,13 +338,17 @@ class MoleculeResult(dict):
     def mol_with_h(self):
         """Get the molecule with explicit hydrogens used for component detection.
 
-        This reconstructs the molecule from the stored SMILES with explicit hydrogens,
-        ensuring atom indices match those used during component detection.
+        Atom indices in the molblock are guaranteed to match those stored in
+        matched component dicts.  The older SMILES path is kept only for
+        backward compatibility with cached results (MolToSmiles reorders atoms).
         """
+        molblock = self.get("molblock_with_h")
+        if molblock:
+            return Chem.MolFromMolBlock(molblock, removeHs=False)
+        # Backward compatibility: SMILES path (atom ordering may differ)
         smiles_h = self.get("smiles_with_h")
         if smiles_h:
             return Chem.MolFromSmiles(smiles_h)
-        # Fallback for backwards compatibility
         return self.get("mol_with_h")
 
     @property
@@ -424,19 +534,19 @@ class MoleculeResult(dict):
     def show(
         self,
         display: bool = True,
-        subwidth: int = 300,
-        subheight: int = 300,
+        subwidth: int = 350,
+        subheight: int = 350,
         ncols: int = 4,
     ) -> Image.Image:
         """Show all component combinations for this molecule in a grid plot.
 
-        Each panel corresponds to one combination of:
-        - matched PFAS group
-        - SMARTS/component type
-        - individual component instance
+        Components that share the same highlighted atoms are merged into a
+        single panel.  The legend lists every PFAS group (and its
+        halogen / form / saturation metadata) that maps to those atoms as a
+        bullet-point list, avoiding repeated panels for the same molecular
+        fragment.
 
-        Atoms are highlighted with a colour encoding three dimensions
-        simultaneously:
+        Atoms are highlighted with the colour of the first matching entry:
         - **Halogen**: cyan (F), green (Cl), amber (Br), violet (I)
         - **Form**: alkyl (full base colour) vs cyclic (warm-shifted tint)
         - **Saturation**: per- (full brightness) vs poly- (dimmed)
@@ -445,10 +555,11 @@ class MoleculeResult(dict):
         ----------
         display : bool, default True
             Whether to display the image immediately.
-        subwidth : int, default 300
+        subwidth : int, default 350
             Width of each sub-image in pixels.
-        subheight : int, default 300
-            Height of each sub-image in pixels.
+        subheight : int, default 350
+            Minimum height of each sub-image in pixels.  Panels with many
+            matching groups are automatically made taller.
         ncols : int, default 4
             Number of columns in the grid.
 
@@ -468,16 +579,19 @@ class MoleculeResult(dict):
                 raise ValueError(f"Cannot parse SMILES: {self.smiles}")
             mol = Chem.AddHs(mol)
 
-        imgs: List[Image.Image] = []
+        # Collect all (atoms_key -> entries) grouping
+        from collections import OrderedDict
+        comp_groups: Dict = OrderedDict()
 
         for match in self.matches:
             if not match.is_group:
                 continue
             base_label = match.group_name or match.get("match_id", "")
-            for comp_idx, comp in enumerate(match.components, start=1):
+            for comp in match.components:
                 atoms = comp.atoms
                 if not atoms:
                     continue
+                key = frozenset(atoms)
                 sl = comp.smarts_label
                 sl_str = str(sl) if isinstance(sl, list) else (sl or "")
                 info = meta.get(sl_str, {})
@@ -485,34 +599,40 @@ class MoleculeResult(dict):
                 form       = info.get("form")
                 saturation = info.get("saturation")
                 colour = _component_color(halogen, form, saturation)
+                if key not in comp_groups:
+                    comp_groups[key] = {
+                        'atoms': sorted(atoms),
+                        'colour': colour,
+                        'entries': [],
+                    }
+                entry = (base_label, sl_str, halogen or "?", form or "?", saturation or "?")
+                if entry not in comp_groups[key]['entries']:
+                    comp_groups[key]['entries'].append(entry)
 
-                # Build legend with metadata badges
-                hal_tag = halogen or "?"
-                frm_tag = form or "?"
-                sat_tag = saturation or "?"
-                legend = (
-                    f"{base_label} | {sl_str} | comp#{comp_idx}\n"
-                    f"[{hal_tag}] [{frm_tag}] [{sat_tag}]"
-                )
+        imgs: List[Image.Image] = []
 
-                atom_colours: Dict[int, Color] = {a: colour for a in atoms}
-                d2d = Draw.MolDraw2DCairo(subwidth, subheight)
-                dopts = d2d.drawOptions()
-                dopts.useBWAtomPalette()
-                dopts.fixedBondLength = 20
-                dopts.addAtomIndices = True
-                dopts.addBondIndices = False
-                dopts.maxFontSize = 16
-                dopts.minFontSize = 13
-                d2d.DrawMolecule(
-                    mol,
-                    legend=legend,
-                    highlightAtoms=atoms,
-                    highlightAtomColors=atom_colours,
-                )
-                d2d.FinishDrawing()
-                png = d2d.GetDrawingText()
-                imgs.append(Image.open(BytesIO(png)))
+        for data in comp_groups.values():
+            atoms = data['atoms']
+            colour = data['colour']
+            entries = data['entries']
+
+            atom_colours: Dict[int, Color] = {a: colour for a in atoms}
+            d2d = Draw.MolDraw2DCairo(subwidth, subheight)
+            dopts = d2d.drawOptions()
+            dopts.useBWAtomPalette()
+            dopts.fixedBondLength = 20
+            dopts.addAtomIndices = True
+            dopts.addBondIndices = False
+            dopts.maxFontSize = 14
+            dopts.minFontSize = 12
+            d2d.DrawMolecule(
+                mol,
+                highlightAtoms=atoms,
+                highlightAtomColors=atom_colours,
+            )
+            d2d.FinishDrawing()
+            mol_img = Image.open(BytesIO(d2d.GetDrawingText()))
+            imgs.append(_mol_image_with_table(mol_img, entries))
 
         if not imgs:
             raise ValueError("No PFAS group components found to display.")
@@ -528,20 +648,23 @@ class MoleculeResult(dict):
     def svg(
         self,
         filename: str,
-        subwidth: int = 300,
-        subheight: int = 300,
+        subwidth: int = 350,
+        subheight: int = 350,
         ncols: int = 4,
     ) -> str:
         """Export all component combinations to an SVG file (vector graphics).
+
+        Components that share the same highlighted atoms are merged into a
+        single panel with a bullet-point legend listing all matching groups.
 
         Parameters
         ----------
         filename : str
             Path to the output SVG file.
-        subwidth : int, default 300
+        subwidth : int, default 350
             Width of each sub-image in pixels.
-        subheight : int, default 300
-            Height of each sub-image in pixels.
+        subheight : int, default 350
+            Minimum height of each sub-image in pixels.
         ncols : int, default 4
             Number of columns in the grid.
 
@@ -552,6 +675,8 @@ class MoleculeResult(dict):
         """
         import svgutils.transform as sg
 
+        meta = _get_component_meta()
+
         # Use the molecule with hydrogens that was used during component detection
         mol = self.mol_with_h
         if mol is None:
@@ -561,30 +686,60 @@ class MoleculeResult(dict):
                 raise ValueError(f"Cannot parse SMILES: {self.smiles}")
             mol = Chem.AddHs(mol)
 
-        imgs: List[str] = []
+        # Group by unique atom set
+        from collections import OrderedDict
+        comp_groups: Dict = OrderedDict()
 
         for match in self.matches:
             if not match.is_group:
                 continue
             base_label = match.group_name or match.get("match_id", "")
-            for comp_idx, comp in enumerate(match.components, start=1):
+            for comp in match.components:
                 atoms = comp.atoms
                 if not atoms:
                     continue
-                smarts_label = comp.smarts_label or ""
-                legend = f"{base_label} | {smarts_label} | comp#{comp_idx}"
+                key = frozenset(atoms)
+                sl = comp.smarts_label
+                sl_str = str(sl) if isinstance(sl, list) else (sl or "")
+                info = meta.get(sl_str, {})
+                halogen    = info.get("halogen")
+                form       = info.get("form")
+                saturation = info.get("saturation")
+                if key not in comp_groups:
+                    comp_groups[key] = {'atoms': sorted(atoms), 'entries': []}
+                entry = (base_label, sl_str, halogen or "?", form or "?", saturation or "?")
+                if entry not in comp_groups[key]['entries']:
+                    comp_groups[key]['entries'].append(entry)
 
-                d2d = Draw.MolDraw2DSVG(subwidth, subheight)
-                dopts = d2d.drawOptions()
-                dopts.useBWAtomPalette()
-                dopts.fixedBondLength = 20
-                dopts.addAtomIndices = True
-                dopts.addBondIndices = False
-                dopts.maxFontSize = 16
-                dopts.minFontSize = 13
-                d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
-                d2d.FinishDrawing()
-                imgs.append(d2d.GetDrawingText())
+        imgs: List[str] = []
+
+        for data in comp_groups.values():
+            atoms = data['atoms']
+            entries = data['entries']
+            n = len(entries)
+
+            lines: List[str] = []
+            for grp, sls, hal, frm, sat in entries:
+                line = f"\u2022 {grp}"
+                if sls:
+                    line += f" | {sls}"
+                lines.append(line)
+                lines.append(f"  [{hal}] [{frm}] [{sat}]")
+            legend = "\n".join(lines)
+
+            effective_height = max(subheight, 220 + n * 38)
+
+            d2d = Draw.MolDraw2DSVG(subwidth, effective_height)
+            dopts = d2d.drawOptions()
+            dopts.useBWAtomPalette()
+            dopts.fixedBondLength = 20
+            dopts.addAtomIndices = True
+            dopts.addBondIndices = False
+            dopts.maxFontSize = 14
+            dopts.minFontSize = 12
+            d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
+            d2d.FinishDrawing()
+            imgs.append(d2d.GetDrawingText())
 
         if not imgs:
             raise ValueError("No PFAS group components found to display.")
@@ -746,6 +901,8 @@ class ResultsModel(list):
         subwidth: int = 300,
         subheight: int = 300,
         atom_colours: Optional[Dict[int, Color]] = None,
+        maxFontSize: int = 14,
+        minFontSize: int = 11,
     ) -> Image.Image:
         """Draw a single molecule with highlighted atoms as a PIL image.
 
@@ -755,6 +912,10 @@ class ResultsModel(list):
             Mapping of atom index → (R, G, B) float colour. When provided,
             individual atoms are highlighted with their assigned colour.
             When ``None`` the default highlight colour is used for all atoms.
+        maxFontSize : int, default 14
+            Maximum font size for legend text.
+        minFontSize : int, default 11
+            Minimum font size for legend text.
         """
 
         d2d = Draw.MolDraw2DCairo(subwidth, subheight)
@@ -763,8 +924,8 @@ class ResultsModel(list):
         dopts.fixedBondLength = 20
         dopts.addAtomIndices = True
         dopts.addBondIndices = False
-        dopts.maxFontSize = 16
-        dopts.minFontSize = 13
+        dopts.maxFontSize = maxFontSize
+        dopts.minFontSize = minFontSize
         if atom_colours:
             d2d.DrawMolecule(
                 mol,
@@ -805,12 +966,14 @@ class ResultsModel(list):
             if not atoms:
                 continue
 
-            smiles = mol_res.smiles
-            mol = Chem.MolFromSmiles(smiles)
+            # Use mol_with_h to preserve atom ordering from parse_groups_in_mol
+            mol = mol_res.mol_with_h
             if mol is None:
-                continue
-            # IMPORTANT: Add hydrogens to match atom numbering used in parse_groups_in_mol
-            mol = Chem.AddHs(mol)
+                smiles = mol_res.smiles
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    continue
+                mol = Chem.AddHs(mol)
 
             # Try to infer a label from the first matching group
             label = ""
@@ -831,20 +994,18 @@ class ResultsModel(list):
     def show(
         self,
         display: bool = True,
-        subwidth: int = 300,
-        subheight: int = 300,
+        subwidth: int = 350,
+        subheight: int = 350,
         ncols: int = 4,
     ) -> Image.Image:
         """Show all component combinations in a grid plot.
 
-        Each panel corresponds to one combination of:
-        - molecule
-        - matched PFAS group
-        - SMARTS/component type
-        - individual component instance
+        Components that share the same highlighted atoms within a molecule are
+        merged into a single panel.  The legend lists every PFAS group (and its
+        halogen / form / saturation metadata) that maps to those atoms as a
+        bullet-point list under a ``mol#N`` header.
 
-        Atoms are highlighted with a colour encoding three dimensions
-        simultaneously:
+        Atoms are highlighted with the colour of the first matching entry:
         - **Halogen**: cyan (F), green (Cl), amber (Br), violet (I)
         - **Form**: alkyl (full base colour) vs cyclic (warm-shifted tint)
         - **Saturation**: per- (full brightness) vs poly- (dimmed)
@@ -860,21 +1021,25 @@ class ResultsModel(list):
             # Use the molecule with hydrogens from parsing
             mol = mol_res.mol_with_h
             if mol is None:
-                # Fallback to SMILES
                 smiles = mol_res.smiles
                 mol = Chem.MolFromSmiles(smiles)
                 if mol is None:
                     continue
                 mol = Chem.AddHs(mol)
 
+            # Group by unique atom set within this molecule
+            from collections import OrderedDict
+            comp_groups: Dict = OrderedDict()
+
             for match in mol_res.matches:
                 if not match.is_group:
                     continue
                 base_label = match.group_name or match.get("match_id", "")
-                for comp_idx, comp in enumerate(match.components, start=1):
+                for comp in match.components:
                     atoms = comp.atoms
                     if not atoms:
                         continue
+                    key = frozenset(atoms)
                     sl = comp.smarts_label
                     sl_str = str(sl) if isinstance(sl, list) else (sl or "")
                     info = meta.get(sl_str, {})
@@ -882,24 +1047,40 @@ class ResultsModel(list):
                     form       = info.get("form")
                     saturation = info.get("saturation")
                     colour = _component_color(halogen, form, saturation)
+                    if key not in comp_groups:
+                        comp_groups[key] = {
+                            'atoms': sorted(atoms),
+                            'colour': colour,
+                            'entries': [],
+                        }
+                    entry = (base_label, sl_str, halogen or "?", form or "?", saturation or "?")
+                    if entry not in comp_groups[key]['entries']:
+                        comp_groups[key]['entries'].append(entry)
 
-                    hal_tag = halogen or "?"
-                    frm_tag = form or "?"
-                    sat_tag = saturation or "?"
-                    legend = (
-                        f"{base_label} | {sl_str} | mol#{mol_index+1} comp#{comp_idx}\n"
-                        f"[{hal_tag}] [{frm_tag}] [{sat_tag}]"
-                    )
-                    atom_colours: Dict[int, Color] = {a: colour for a in atoms}
-                    img = self._draw_single_molecule(
-                        mol,
-                        atoms,
-                        legend=legend,
-                        subwidth=subwidth,
-                        subheight=subheight,
-                        atom_colours=atom_colours,
-                    )
-                    imgs.append(img)
+            for data in comp_groups.values():
+                atoms = data['atoms']
+                colour = data['colour']
+                entries = data['entries']
+
+                atom_colours: Dict[int, Color] = {a: colour for a in atoms}
+                d2d = Draw.MolDraw2DCairo(subwidth, subheight)
+                dopts = d2d.drawOptions()
+                dopts.useBWAtomPalette()
+                dopts.fixedBondLength = 20
+                dopts.addAtomIndices = True
+                dopts.addBondIndices = False
+                dopts.maxFontSize = 14
+                dopts.minFontSize = 12
+                d2d.DrawMolecule(
+                    mol,
+                    highlightAtoms=atoms,
+                    highlightAtomColors=atom_colours,
+                )
+                d2d.FinishDrawing()
+                mol_img = Image.open(BytesIO(d2d.GetDrawingText()))
+                imgs.append(_mol_image_with_table(
+                    mol_img, entries, mol_label=f"mol#{mol_index + 1}"
+                ))
 
         if not imgs:
             raise ValueError("No PFAS group components found to display.")
@@ -1021,20 +1202,23 @@ class ResultsModel(list):
     def svg(
         self,
         filename: str,
-        subwidth: int = 300,
-        subheight: int = 300,
+        subwidth: int = 350,
+        subheight: int = 350,
         ncols: int = 4,
     ) -> str:
         """Export all component combinations to an SVG file (vector graphics).
+
+        Components that share the same highlighted atoms within a molecule are
+        merged into a single panel with a bullet-point legend.
 
         Parameters
         ----------
         filename : str
             Path to the output SVG file.
-        subwidth : int, default 300
+        subwidth : int, default 350
             Width of each sub-image in pixels.
-        subheight : int, default 300
-            Height of each sub-image in pixels.
+        subheight : int, default 350
+            Minimum height of each sub-image in pixels.
         ncols : int, default 4
             Number of columns in the grid.
 
@@ -1045,41 +1229,71 @@ class ResultsModel(list):
         """
         import svgutils.transform as sg
 
+        meta = _get_component_meta()
         imgs: List[str] = []
 
         for mol_index, mol_res in enumerate(self):  # type: ignore[assignment]
             # Use the molecule with hydrogens from parsing
             mol = mol_res.mol_with_h
             if mol is None:
-                # Fallback to SMILES
                 smiles = mol_res.smiles
                 mol = Chem.MolFromSmiles(smiles)
                 if mol is None:
                     continue
                 mol = Chem.AddHs(mol)
 
+            # Group by unique atom set within this molecule
+            from collections import OrderedDict
+            comp_groups: Dict = OrderedDict()
+
             for match in mol_res.matches:
                 if not match.is_group:
                     continue
                 base_label = match.group_name or match.get("match_id", "")
-                for comp_idx, comp in enumerate(match.components, start=1):
+                for comp in match.components:
                     atoms = comp.atoms
                     if not atoms:
                         continue
-                    smarts_label = comp.smarts_label or ""
-                    legend = f"{base_label} | {smarts_label} | mol#{mol_index+1} comp#{comp_idx}"
+                    key = frozenset(atoms)
+                    sl = comp.smarts_label
+                    sl_str = str(sl) if isinstance(sl, list) else (sl or "")
+                    info = meta.get(sl_str, {})
+                    halogen    = info.get("halogen")
+                    form       = info.get("form")
+                    saturation = info.get("saturation")
+                    if key not in comp_groups:
+                        comp_groups[key] = {'atoms': sorted(atoms), 'entries': []}
+                    entry = (base_label, sl_str, halogen or "?", form or "?", saturation or "?")
+                    if entry not in comp_groups[key]['entries']:
+                        comp_groups[key]['entries'].append(entry)
 
-                    d2d = Draw.MolDraw2DSVG(subwidth, subheight)
-                    dopts = d2d.drawOptions()
-                    dopts.useBWAtomPalette()
-                    dopts.fixedBondLength = 20
-                    dopts.addAtomIndices = True
-                    dopts.addBondIndices = False
-                    dopts.maxFontSize = 16
-                    dopts.minFontSize = 13
-                    d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
-                    d2d.FinishDrawing()
-                    imgs.append(d2d.GetDrawingText())
+            for data in comp_groups.values():
+                atoms = data['atoms']
+                entries = data['entries']
+                n = len(entries)
+
+                lines: List[str] = [f"mol#{mol_index + 1}"]
+                for grp, sls, hal, frm, sat in entries:
+                    line = f"\u2022 {grp}"
+                    if sls:
+                        line += f" | {sls}"
+                    lines.append(line)
+                    lines.append(f"  [{hal}] [{frm}] [{sat}]")
+                legend = "\n".join(lines)
+
+                effective_height = max(subheight, 220 + (n + 1) * 38)
+
+                d2d = Draw.MolDraw2DSVG(subwidth, effective_height)
+                dopts = d2d.drawOptions()
+                dopts.useBWAtomPalette()
+                dopts.fixedBondLength = 20
+                dopts.addAtomIndices = True
+                dopts.addBondIndices = False
+                dopts.maxFontSize = 14
+                dopts.minFontSize = 11
+                d2d.DrawMolecule(mol, legend=legend, highlightAtoms=atoms)
+                d2d.FinishDrawing()
+                imgs.append(d2d.GetDrawingText())
 
         if not imgs:
             raise ValueError("No PFAS group components found to display.")
@@ -2006,19 +2220,35 @@ class ResultsFingerprint:
                 "umap-learn and matplotlib required. Install with: "
                 "pip install umap-learn matplotlib"
             ) from exc
+        # Silence the dual-OpenMP conflict warning (Intel libiomp + LLVM libomp)
+        # and the UMAP n_jobs/random_state cosmetic warning.
+        import os as _os
+        _os.environ.setdefault('KMP_DUPLICATE_LIB_OK', 'TRUE')
+
         # Standardize features
         scaler = StandardScaler()
         X_scaled = scaler.fit_transform(self.fingerprints)
 
-        # Perform UMAP
-        reducer = umap.UMAP(
-            n_components=n_components,
-            n_neighbors=n_neighbors,
-            min_dist=min_dist,
-            metric=metric,
-            random_state=42,
-        )
-        X_umap = reducer.fit_transform(X_scaled)
+        # Perform UMAP (random_state kept for reproducibility; n_jobs=1 side-effect is expected)
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                'ignore',
+                message=r'.*n_jobs value.*overridden.*random_state.*',
+                category=UserWarning,
+            )
+            warnings.filterwarnings(
+                'ignore',
+                message=r'.*Intel OpenMP.*LLVM OpenMP.*',
+                category=RuntimeWarning,
+            )
+            reducer = umap.UMAP(
+                n_components=n_components,
+                n_neighbors=n_neighbors,
+                min_dist=min_dist,
+                metric=metric,
+                random_state=42,
+            )
+            X_umap = reducer.fit_transform(X_scaled)
 
         # Create plot if requested
         if plot and n_components >= 2:

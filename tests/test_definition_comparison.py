@@ -20,7 +20,7 @@ def data_dir():
     """Get path to data directory."""
     script_dir = Path(__file__).parent
     root_dir = script_dir.parent
-    return root_dir / 'HalogenGroups' / 'data'
+    return root_dir / 'PFASGroups' / 'data'
 
 
 @pytest.fixture(scope='session')
@@ -54,7 +54,7 @@ def definitions(data_dir):
 @pytest.fixture(scope='session')
 def comparison_data():
     """Load comparison data from CSV file."""
-    csv_file = Path(__file__).parent / 'pfas_definition_comparison.csv'
+    csv_file = Path(__file__).parent / 'test_data' / 'pfas_definition_comparison.csv'
     
     test_cases = []
     with open(csv_file, 'r') as f:

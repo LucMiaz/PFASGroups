@@ -114,7 +114,7 @@ def data_dir():
     """Get path to data directory."""
     script_dir = Path(__file__).parent
     root_dir = script_dir.parent
-    return root_dir / 'HalogenGroups' / 'data'
+    return root_dir / 'PFASGroups' / 'data'
 
 
 @pytest.fixture(scope='session')
@@ -450,7 +450,7 @@ def main():
     # Determine paths
     script_dir = Path(__file__).parent
     root_dir = script_dir.parent
-    data_dir = root_dir / 'HalogenGroups' / 'data'
+    data_dir = root_dir / 'PFASGroups' / 'data'
     
     groups_file = data_dir / 'Halogen_groups_smarts.json'
     definitions_file = data_dir / 'PFAS_definitions_smarts.json'

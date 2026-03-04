@@ -13,10 +13,10 @@ PFAS groups represent functional groups attached to fluorinated chains. PFASgrou
 
 .. code-block:: python
 
-   from PFASgroups import parse_smiles, get_PFASGroups
+   from PFASgroups import parse_smiles, get_compiled_HalogenGroups
    
    # List all available groups
-   groups = get_PFASGroups()
+   groups = get_compiled_HalogenGroups()
    
    # OECD groups (1-28)
    oecd_groups = groups[:28]
@@ -48,14 +48,15 @@ Let's analyze several well-known PFAS compounds:
    for name, smiles in pfas_compounds.items():
        print(f"\n{name}:")
        results = parse_smiles(smiles)
-       
-       if results[0]:
-           for group, count, lengths, _ in results[0]:
-               print(f"  ✓ {group.name}")
-               print(f"    Chain length: {lengths}")
-               print(f"    OECD Group: {group.id}")
+       group_matches = [m for m in results[0].matches if m.is_group]
+       if group_matches:
+           for match in group_matches:
+               sizes = [len(c.atoms) for c in match.components]
+               print(f"  \u2713 {match.group_name}")
+               print(f"    Component sizes: {sizes}")
+               print(f"    OECD Group: {match.group_id}")
        else:
-           print("  ✗ No PFAS groups detected")
+           print("  \u2717 No PFAS groups detected")
 
 **Expected Output:**
 
@@ -329,21 +330,23 @@ Define custom groups:
 
 .. code-block:: python
 
-   from PFASgroups import PFASGroup, parse_smiles, get_PFASGroups
-   from rdkit import Chem
+   from PFASgroups import HalogenGroup, parse_smiles, get_compiled_HalogenGroups
    
-   # Get default groups
-   groups = get_PFASGroups()
+   # Get default compiled groups
+   groups = get_compiled_HalogenGroups()
    
    # Add custom group
-   custom_group = PFASGroup(
+   custom_group = HalogenGroup(
        id=100,
        name="Perfluoroalkyl nitrates",
        alias="PFANs",
-       smarts1=Chem.MolFromSmarts("[C]-[O]-[N+](=O)[O-]"),
+       smarts={"[C$(C[ON+](=O)[O-])]": 1},
        componentSmarts="Perfluoroalkyl",
+       componentSaturation="per",
+       componentHalogens="F",
+       componentForm="alkyl",
        constraints={
-           "eq": {"N": 1, "O": 3},
+           "eq": {"N": 1},
            "gte": {"F": 1}
        }
    )
@@ -354,9 +357,9 @@ Define custom groups:
    smiles = "FC(F)(F)C(F)(F)C(F)(F)ON(=O)=O"
    results = parse_smiles(smiles, pfas_groups=groups)
    
-   if results[0]:
-       for group, count, lengths, _ in results[0]:
-           print(f"Detected: {group.name}")
+   for match in results[0].matches:
+       if match.is_group:
+           print(f"Detected: {match.group_name}")
 
 Part 6: Real-World Applications
 --------------------------------

@@ -22,8 +22,8 @@ def prioritise_molecules(
     molecules: Union[List[str], List[Chem.Mol], ResultsModel],
     reference: Optional[Union[List[str], List[Chem.Mol], ResultsModel]] = None,
     group_selection: str = 'all',
-    count_mode: str = 'binary',
-    a: float = 1.0,
+    count_mode: str = 'max_component',    halogens: Union[str, List[str]] = 'F',
+    saturation: Optional[str] = None,    a: float = 1.0,
     b: float = 1.0,
     percentile: float = 90.0,
     return_scores: bool = True,
@@ -58,6 +58,17 @@ def prioritise_molecules(
         - 'binary': 1 if present, 0 if absent
         - 'count': Number of matches
         - 'max_component': Maximum component size
+
+    halogens : str or list of str, default 'F'
+        Which halogen(s) to include when generating fingerprints for reference
+        comparison.  Passed directly to ``ResultsModel.to_fingerprint``.
+
+    saturation : str or None, default None
+        Saturation filter applied to component SMARTS when generating
+        fingerprints.  ``None`` (default) includes both per- and
+        polyfluorinated / polyhalogenated components, which gives the broadest
+        coverage and avoids zero scores for candidates that only contain
+        polyfluorinated chains.  Pass ``'per'`` or ``'poly'`` to restrict.
 
     a : float, default 1.0
         Weight for total fluorinated component size (sum of all component sizes).
@@ -97,7 +108,7 @@ def prioritise_molecules(
     Examples
     --------
     # Priority by similarity to reference list
-    >>> from HalogenGroups import prioritise_molecules
+    >>> from PFASGroups import prioritise_molecules
     >>> inventory = ["FC(F)(F)C(F)(F)C(=O)O", "FC(F)(F)C(F)(F)C(F)(F)C(=O)O"]
     >>> reference = ["FC(F)(F)C(F)(F)C(=O)O"]  # Known priority compounds
     >>> results, scores = prioritise_molecules(inventory, reference=reference)
@@ -122,10 +133,14 @@ def prioritise_molecules(
     -----
     **Reference-based prioritization:**
 
-    Uses distributional similarity (KL divergence) between fingerprints:
-    - Lower KL divergence = more similar to reference = higher priority
-    - Useful for prioritizing molecules similar to known compounds of concern
-    - Accounts for overall composition of PFAS groups
+    Uses cosine similarity between each candidate's fingerprint vector and the
+    mean fingerprint of the reference set:
+
+    score_i = (fp_i · mean_ref) / (||fp_i|| × ||mean_ref||)
+
+    - Higher cosine similarity = more similar group profile to reference = higher priority
+    - Molecules that activate the same PFAS groups as the reference rank highest
+    - Molecules with no group matches receive score 0
 
     **Intrinsic prioritization (no reference):**
 
@@ -180,9 +195,9 @@ def prioritise_molecules(
 
     # Step 2: Compute priority scores
     if reference is not None:
-        # Reference-based: distributional similarity using KL divergence
+        # Reference-based: cosine similarity of fingerprint vectors
         scores = _prioritise_by_reference(
-            results, reference, group_selection, count_mode
+            results, reference, group_selection, count_mode, halogens, saturation
         )
     else:
         # Intrinsic: fluorinated component characteristics
@@ -206,12 +221,22 @@ def _prioritise_by_reference(
     results: ResultsModel,
     reference: Union[List[str], List[Chem.Mol], ResultsModel],
     group_selection: str,
-    count_mode: str
+    count_mode: str,
+    halogens: Union[str, List[str]] = 'F',
+    saturation: Optional[str] = None,
 ) -> np.ndarray:
     """
-    Prioritize by distributional similarity to reference using KL divergence.
+    Prioritize by similarity to a reference set of molecules.
 
-    Lower KL divergence = higher similarity = higher priority score (inverted).
+    Each candidate is scored by the cosine similarity between its fingerprint
+    vector and the mean fingerprint of the reference set.  This produces
+    genuinely different scores for molecules with different group profiles, even
+    when individual molecules only activate a small number of groups.
+
+    (KL divergence between a full reference distribution and each *individual*
+    molecule is unsuitable here: any molecule with zero group matches produces
+    an all-epsilon vector that normalises to the same uniform distribution,
+    collapsing all such candidates to an identical score.)
 
     Parameters
     ----------
@@ -227,7 +252,7 @@ def _prioritise_by_reference(
     Returns
     -------
     np.ndarray
-        Priority scores (higher = higher priority)
+        Priority scores in [0, 1] (higher = more similar to reference)
     """
     # Convert reference to ResultsModel if needed
     if isinstance(reference, ResultsModel):
@@ -235,7 +260,6 @@ def _prioritise_by_reference(
     elif isinstance(reference, list):
         if len(reference) == 0:
             raise ValueError("reference list is empty")
-
         if isinstance(reference[0], str):
             ref_results = parse_smiles(reference)
         elif isinstance(reference[0], Chem.Mol):
@@ -251,38 +275,47 @@ def _prioritise_by_reference(
             f"got {type(reference)}"
         )
 
-    # Convert to fingerprints
+    # Build the reference mean-frequency vector (one entry per group)
     ref_fp = ref_results.to_fingerprint(
         group_selection=group_selection,
-        count_mode=count_mode
+        count_mode=count_mode,
+        halogens=halogens,
+        saturation=saturation,
     )
+    # Mean across molecules → shape (n_groups,)
+    ref_vec = np.mean(ref_fp.fingerprints, axis=0).astype(float)
+    ref_norm = float(np.linalg.norm(ref_vec))
 
-    # Compute KL divergence for each molecule
-    kl_divergences = []
-
-    for i in range(len(results)):
-        # Create single-molecule fingerprint
-        single_result = ResultsModel([results[i]])
-        single_fp = single_result.to_fingerprint(
-            group_selection=group_selection,
-            count_mode=count_mode
+    if ref_norm == 0.0:
+        raise ValueError(
+            "Reference fingerprint is all-zero: no molecules in the reference "
+            "matched any group for the given group_selection / saturation / halogens "
+            "settings. Try saturation=None to include both per- and polyfluorinated "
+            "components, or broaden group_selection."
         )
 
-        # Compute KL divergence (minmax method)
-        try:
-            kl_div = ref_fp.compare_kld(single_fp, method='minmax')
-            kl_divergences.append(kl_div)
-        except Exception as e:
-            # If comparison fails, assign worst score
-            kl_divergences.append(1.0)
+    # Build the candidate fingerprint matrix in a single batch call
+    cand_fp = results.to_fingerprint(
+        group_selection=group_selection,
+        count_mode=count_mode,
+        halogens=halogens,
+        saturation=saturation,
+    )
+    # Each row is one candidate → shape (n_candidates, n_groups)
+    cand_mat = cand_fp.fingerprints.astype(float)
 
-    kl_divergences = np.array(kl_divergences)
+    # Cosine similarity: score_i = (cand_i · ref_vec) / (||cand_i|| × ||ref_vec||)
+    # Candidates with no group matches get score 0.
+    dot_products = cand_mat @ ref_vec                        # (n_candidates,)
+    cand_norms   = np.linalg.norm(cand_mat, axis=1)         # (n_candidates,)
 
-    # Convert to priority scores: lower KL = higher priority
-    # Invert so that higher score = higher priority
-    priority_scores = 1.0 - kl_divergences
+    # Avoid 0/0 by pre-masking: only divide where the candidate norm is positive.
+    scores = np.zeros(len(dot_products), dtype=float)
+    nonzero = cand_norms > 0
+    scores[nonzero] = dot_products[nonzero] / (cand_norms[nonzero] * ref_norm)
 
-    return priority_scores
+    # Clip to [0, 1] (fingerprints are non-negative, so cosine similarity ≥ 0)
+    return np.clip(scores, 0.0, 1.0)
 
 
 def _prioritise_by_components(

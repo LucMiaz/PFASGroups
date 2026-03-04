@@ -1,6 +1,39 @@
 Changelog
 =========
 
+Version 3.2.0 (February 2026)
+------------------------------
+
+**Released:** February 2026
+
+**New Features:**
+
+- **``get_compiled_HalogenGroups()``**: New function returning compiled
+  :class:`HalogenGroup` instances (``compute=True`` groups only), suitable for
+  extending with custom groups and passing directly to :func:`parse_smiles` or
+  :func:`generate_fingerprint`. The older :func:`get_HalogenGroups` continues to
+  return raw JSON dicts and is used internally by :class:`ResultsModel`.
+
+  .. code-block:: python
+
+     from PFASgroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
+
+     groups = get_compiled_HalogenGroups()
+     groups.append(HalogenGroup(
+         id=200, name="Perfluoroalkyl nitrates",
+         smarts={"[C$(C[ON+](=O)[O-])]": 1},
+         componentSaturation="per", componentHalogens="F", componentForm="alkyl",
+         constraints={"eq": {"N": 1}, "gte": {"F": 1}},
+     ))
+     results = parse_smiles(["FC(F)(F)C(F)(F)ON(=O)=O"], pfas_groups=groups)
+
+**API Changes:**
+
+- **``generate_fingerprint`` return type**: When the input is a list of SMILES and
+  ``representation='vector'`` (default), the return value is now a 2D
+  ``numpy.ndarray`` of shape ``(n_molecules, n_groups)`` instead of a Python list.
+  This matches expected ML-ready usage (``fp_matrix.shape`` now works directly).
+
 Version 3.1.0 (February 2026)
 ------------------------------
 
@@ -45,7 +78,7 @@ Version 3.1.0 (February 2026)
    fp = results.to_fingerprint(halogens='F', saturation=None)
 
    # generate_fingerprint directly, same new params
-   from HalogenGroups.fingerprints import generate_fingerprint
+   from HalogenGroups import generate_fingerprint
    vectors, info = generate_fingerprint(smiles_list, halogens=['F', 'Cl'], saturation='per')
    # info['halogens'] == ['F', 'Cl']
    # info['saturation'] == 'per'
