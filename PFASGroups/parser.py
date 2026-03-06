@@ -65,6 +65,12 @@ def load_componentsSolver(**kwargs):
             args = list(args)  # Convert to mutable list
             args[0] = mol
             args = tuple(args)  # Convert back to tuple
+            halogens = kwargs.get('halogens', ['F','Cl','Br','I'])
+            _smarts = '[{}]'.format(','.join(halogens)) if isinstance(halogens, list) else f'[{halogens}]'
+            # check organic halogen:
+            if not mol.GetSubstructMatch(Chem.MolFromSmarts(_smarts)):
+                #logger.debug("No organic halogens found, skipping componentsSolver")
+                return [], mol
             # Pass through component metric options
             solver_kwargs = {}
             if 'limit_effective_graph_resistance' in kwargs:
