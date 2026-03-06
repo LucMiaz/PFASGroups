@@ -1,7 +1,7 @@
 ﻿Prioritization
 ==============
 
-:func:`~HalogenGroups.prioritise_molecules` ranks a set of molecules by
+:func:`~PFASGroups.prioritise_molecules` ranks a set of molecules by
 their structural novelty.  It is useful for selecting a structurally diverse
 subset from a large chemical library, or for identifying which molecules in a
 test set are most different from a reference set.
@@ -15,7 +15,7 @@ Basic usage
 
 .. code-block:: python
 
-   from HalogenGroups import prioritise_molecules
+   from PFASGroups import prioritise_molecules
 
    molecules = [
        "CCCC(F)(F)F",
@@ -123,7 +123,7 @@ Parameters
    * - ``halogens``
      - Halogen(s) used to build fingerprints for distance computation
    * - ``saturation``
-     - Saturation filter passed to :func:`~HalogenGroups.generate_fingerprint`
+     - Saturation filter passed to :func:`~PFASGroups.generate_fingerprint`
    * - ``count_mode``
      - Count mode for fingerprints: ``'max_component'``, ``'all'``, or
        ``'binary'``
@@ -139,7 +139,7 @@ Example: selecting a diverse subset
 .. code-block:: python
 
    import pandas as pd
-   from HalogenGroups import prioritise_molecules
+   from PFASGroups import prioritise_molecules
 
    df = pd.read_csv("pfas_candidates.csv")
    smiles = df["SMILES"].tolist()

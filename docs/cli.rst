@@ -11,6 +11,19 @@ Installation makes the command available in your shell after:
    pip install PFASGroups
    # or: pip install -e .
 
+Quick example:
+
+.. code-block:: bash
+
+   # Parse a SMILES and list detected groups
+   pfasgroups parse "CCCC(F)(F)F"
+
+   # Generate a 116-column fingerprint (F only) and print as CSV
+   pfasgroups fingerprint --format csv "CCCC(F)(F)F" "FC(F)(F)C(=O)O"
+
+   # List all 116 built-in groups
+   pfasgroups list-groups
+
 
 Synopsis
 --------

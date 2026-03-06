@@ -1,13 +1,13 @@
 ﻿PFAS Definitions
 ================
 
-HalogenGroups can classify molecules against five regulatory and scientific
+PFASGroups can classify molecules against five regulatory and scientific
 PFAS definitions.  Pass ``include_PFAS_definitions=True`` to
-:func:`~HalogenGroups.parse_smiles` to enable classification:
+:func:`~PFASGroups.parse_smiles` to enable classification:
 
 .. code-block:: python
 
-   from HalogenGroups import parse_smiles
+   from PFASGroups import parse_smiles
 
    smiles = ["CCCC(F)(F)F", "FC(F)(F)C(=O)O", "OCCOCCO"]
 
@@ -74,7 +74,7 @@ PFASTRUCTv5
 **Reference**: `Schymanski et al., PFASSTRUCTV5 annotated structure database
 <https://zenodo.org/record/7370805>`_
 
-PFASTRUCTv5 is a curated database of PFAS structures.  HalogenGroups ships
+PFASTRUCTv5 is a curated database of PFAS structures.  PFASGroups ships
 an integrated classifier that reproduces the binary PFAS/non-PFAS label from
 this database for molecules whose structural motifs overlap with the
 library groups.
@@ -84,7 +84,7 @@ Retrieving definition objects
 
 .. code-block:: python
 
-   from HalogenGroups import get_PFASDefinitions
+   from PFASGroups import get_PFASDefinitions
 
    definitions = get_PFASDefinitions()
    for d in definitions:
@@ -95,7 +95,7 @@ Checking a single molecule
 
 .. code-block:: python
 
-   from HalogenGroups import parse_smiles
+   from PFASGroups import parse_smiles
 
    result = parse_smiles(["CCCC(F)(F)F"], include_PFAS_definitions=True)[0]
    for match in result.pfas_definition_matches:

@@ -1,10 +1,23 @@
 ﻿Data Models
 ===========
 
-.. currentmodule:: HalogenGroups
+.. currentmodule:: PFASGroups
 
-This page documents the data model classes returned by
-:func:`~HalogenGroups.parse_smiles` and related functions.
+.. code-block:: python
+
+   from PFASGroups import parse_smiles
+
+   results = parse_smiles(["CCCC(F)(F)F", "OCCOCCO"])
+   mol = results[0]                      # MoleculeResult
+
+   print(mol.smiles, mol.is_PFAS)
+   for match in mol.matches:             # GroupMatch objects
+       print(match.group_name, match.group_id)
+       for comp in match.components:     # MatchComponent objects
+           print("  atoms:", comp.atoms)
+
+   fp = results.to_fingerprint()         # ResultsFingerprint
+   print(fp.fingerprints.shape)          # (2, 116)
 
 .. contents:: Contents
    :local:
@@ -25,7 +38,7 @@ Its length equals the number of input SMILES.
 
 .. list-table::
    :header-rows: 1
-   :widths: 35 65
+   :widths: 40 60
 
    * - Method
      - Description
@@ -33,12 +46,29 @@ Its length equals the number of input SMILES.
      - Access the i-th :class:`MoleculeResult`
    * - ``results.to_dataframe()``
      - Flatten all matches to a ``pandas.DataFrame``
-   * - ``results.to_fingerprint(...)``
+   * - ``results.to_fingerprint(group_selection='all', count_mode='binary', halogens='F', saturation='per')``
      - Convert to a :class:`ResultsFingerprint`
    * - ``results.to_sql(filename)``
      - Persist to a SQLite or PostgreSQL database
    * - ``ResultsModel.from_sql(filename)``
      - Load from a previously saved database
+
+to_fingerprint options:
+
+.. code-block:: python
+
+   # Default: all 116 groups, F only, binary
+   fp = results.to_fingerprint()                                   # (n, 116)
+
+   # OECD groups only
+   fp = results.to_fingerprint(group_selection='oecd')            # (n, 28)
+
+   # Count or max-component encoding
+   fp = results.to_fingerprint(count_mode='count')
+   fp = results.to_fingerprint(count_mode='max_component')
+
+   # Multi-halogen (advanced) — see halogengroups page
+   fp = results.to_fingerprint(halogens=['F', 'Cl', 'Br', 'I'])  # (n, 464)
 
 MoleculeResult
 --------------
@@ -67,22 +97,12 @@ Represents parsing results for a single molecule.
    * - ``matches``
      - List of :class:`GroupMatch` objects
    * - ``pfas_definition_matches``
-     - List of :class:`PFASDefinitionMatch` objects (populated when
+     - List of definition matches (populated when
        ``include_PFAS_definitions=True``)
    * - ``n_matches``
      - Number of group matches
    * - ``is_PFAS``
      - ``True`` if any match has ``is_PFAS=True``
-
-**Example:**
-
-.. code-block:: python
-
-   mol = results[0]
-   print(mol.smiles)
-   print(mol.is_PFAS)
-   for match in mol.matches:
-       print(match.group_name)
 
 GroupMatch
 ----------
@@ -115,8 +135,7 @@ Represents a single group detected in a molecule.
 MatchComponent
 --------------
 
-A single structural component of a group match (multiple matches of the same
-group in one molecule appear as separate components).
+A single structural component of a group match.
 
 **Attributes:**
 
@@ -137,6 +156,19 @@ group in one molecule appear as separate components).
    * - ``effective_graph_resistance``
      - Kirchhoff index of the component graph (``None`` if not computed)
 
+ResultsFingerprint
+------------------
+
+See :doc:`fingerprint_analysis` for full documentation.
+
+The fingerprint matrix is stored as ``fp.fingerprints`` (``numpy.ndarray``):
+
+.. code-block:: python
+
+   fp = results.to_fingerprint()
+   print(fp.fingerprints.shape)   # (n_mols, n_groups)
+   print(fp.group_names)          # list of group-name strings
+
 HalogenGroup
 ------------
 
@@ -146,30 +178,7 @@ HalogenGroup
    :show-inheritance:
 
 Defines a single halogen structural group (SMARTS pattern + metadata).
-Used to build custom group libraries.
-
-**Constructor parameters:**
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Parameter
-     - Description
-   * - ``group_id``
-     - Unique integer ID
-   * - ``name``
-     - Group name
-   * - ``category``
-     - ``'OECD'``, ``'Generic'``, ``'Fluorotelomer'``, or custom string
-   * - ``smarts``
-     - SMARTS string or list of SMARTS strings
-   * - ``is_PFAS``
-     - Boolean
-   * - ``compute``
-     - If ``False``, the group is listed in fingerprint headers but not matched
-   * - ``description``
-     - Optional free-text description
+Used to build custom group libraries.  See :doc:`../customization`.
 
 PFASDefinition
 --------------
@@ -180,6 +189,4 @@ PFASDefinition
    :show-inheritance:
 
 Encapsulates a regulatory PFAS definition and its matching logic.
-
-See :doc:`../pfas_definitions` for descriptions of the five built-in
-definitions.
+See :doc:`../pfas_definitions` for descriptions of the five built-in definitions.

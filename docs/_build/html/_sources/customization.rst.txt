@@ -1,7 +1,15 @@
 ﻿Customization
 =============
 
-The library is built on a composable set of :class:`~HalogenGroups.HalogenGroup`
+.. code-block:: python
+
+   from PFASGroups import parse_smiles, get_compiled_HalogenGroups, HalogenGroup
+
+   # Filter to OECD groups only
+   oecd_groups = [g for g in get_compiled_HalogenGroups() if g.category == 'OECD']
+   results = parse_smiles(["CCCC(F)(F)F"], halogen_groups=oecd_groups)
+
+The library is built on a composable set of :class:`~PFASGroups.HalogenGroup`
 objects.  You can extend, filter, or replace the default group library without
 modifying the source code.
 
@@ -14,7 +22,7 @@ Inspecting the built-in groups
 
 .. code-block:: python
 
-   from HalogenGroups import get_compiled_HalogenGroups
+   from PFASGroups import get_compiled_HalogenGroups
 
    groups = get_compiled_HalogenGroups()
    print(len(groups))           # 116
@@ -29,7 +37,7 @@ Pass a custom subset to ``parse_smiles`` via its ``halogen_groups`` parameter:
 
 .. code-block:: python
 
-   from HalogenGroups import parse_smiles, get_compiled_HalogenGroups
+   from PFASGroups import parse_smiles, get_compiled_HalogenGroups
 
    all_groups = get_compiled_HalogenGroups()
 
@@ -41,12 +49,12 @@ Pass a custom subset to ``parse_smiles`` via its ``halogen_groups`` parameter:
 Defining a custom group
 ------------------------
 
-A :class:`~HalogenGroups.HalogenGroup` object requires at minimum a name,
+A :class:`~PFASGroups.HalogenGroup` object requires at minimum a name,
 category, SMARTS pattern, and group ID:
 
 .. code-block:: python
 
-   from HalogenGroups import HalogenGroup, parse_smiles
+   from PFASGroups import HalogenGroup, parse_smiles
 
    my_group = HalogenGroup(
        group_id=200,
@@ -65,7 +73,7 @@ Combining built-in and custom groups
 
 .. code-block:: python
 
-   from HalogenGroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
+   from PFASGroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
 
    base_groups = get_compiled_HalogenGroups()
    my_group = HalogenGroup(
@@ -106,24 +114,24 @@ HalogenGroup attributes
 Using raw (uncompiled) groups
 -------------------------------
 
-:func:`~HalogenGroups.get_HalogenGroups` returns the raw (uncompiled)
+:func:`~PFASGroups.get_HalogenGroups` returns the raw (uncompiled)
 group definitions as plain data objects:
 
 .. code-block:: python
 
-   from HalogenGroups import get_HalogenGroups
+   from PFASGroups import get_HalogenGroups
    raw = get_HalogenGroups()
 
    for g in raw:
        print(g["name"], g["smarts"])
 
-To compile them into :class:`~HalogenGroups.HalogenGroup` instances call
-:func:`~HalogenGroups.get_compiled_HalogenGroups` (which internally calls
-:func:`~HalogenGroups.load_HalogenGroups`):
+To compile them into :class:`~PFASGroups.HalogenGroup` instances call
+:func:`~PFASGroups.get_compiled_HalogenGroups` (which internally calls
+:func:`~PFASGroups.load_HalogenGroups`):
 
 .. code-block:: python
 
-   from HalogenGroups import load_HalogenGroups, get_HalogenGroups
+   from PFASGroups import load_HalogenGroups, get_HalogenGroups
    raw = get_HalogenGroups()
    compiled = load_HalogenGroups(raw)
 

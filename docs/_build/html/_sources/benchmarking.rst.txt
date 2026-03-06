@@ -1,8 +1,17 @@
 ﻿Benchmarking
 ============
 
+.. code-block:: python
+
+   from PFASGroups import parse_smiles, generate_fingerprint
+
+   # Parse 10 k molecules
+   smiles = [...]   # your list
+   results = parse_smiles(smiles)
+   fps, info = generate_fingerprint(smiles)   # shape (n, 116)
+
 This page describes the validation studies performed to assess the accuracy
-and completeness of the HalogenGroups library.
+and completeness of the PFASGroups library.
 
 .. contents:: Contents
    :local:
@@ -52,9 +61,9 @@ toolbox was used as an external reference.
 
 **Key findings**:
 
-* HalogenGroups matches or exceeds CSRML accuracy on structures with at least
+* PFASGroups matches or exceeds CSRML accuracy on structures with at least
   one perfluoroalkyl chain.
-* HalogenGroups additionally detects fluorotelomer groups not covered by the
+* PFASGroups additionally detects fluorotelomer groups not covered by the
   CSRML rule set.
 * For borderline polyfluoroalkyl structures sensitivity is comparable (both
   ~0.85).

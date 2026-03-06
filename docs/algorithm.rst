@@ -1,7 +1,16 @@
 ﻿Algorithm
 =========
 
-This page describes how HalogenGroups detects and classifies halogenated
+.. code-block:: python
+
+   from PFASGroups import parse_smiles
+
+   results = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
+   # results[0].matches contains the detected halogen groups
+   for mol in results:
+       print(mol.smiles, [m.group_name for m in mol.matches])
+
+This page describes how PFASGroups detects and classifies halogenated
 structural groups in a molecule.
 
 .. contents:: Contents
@@ -113,15 +122,17 @@ To limit computation time on very large components you can pass:
 Fingerprint generation
 -----------------------
 
-:func:`~HalogenGroups.generate_fingerprint` converts a list of SMILES to a
-2-D numpy array.  The column layout is:
+:func:`~PFASGroups.generate_fingerprint` converts a list of SMILES to a
+2-D numpy array.  The default mode is fluorine-only (``halogens='F'``),
+producing **116 columns** — one per group.  The column layout for multi-halogen
+mode is:
 
 ``[group_0_F, group_0_Cl, group_0_Br, group_0_I,``
 ``  group_1_F, …,``
 ``  group_115_F, group_115_Cl, group_115_Br, group_115_I]``
 
-Total columns = 116 × 4 = **464** (for the default all-halogen mode).
-For fluorine-only mode the column count is 116 × 1 = **116**.
+Default F-only column count: 116 × 1 = **116**.
+All-halogen column count: 116 × 4 = **464** (see :ref:`multi_halogen_fingerprint`).
 
 Three ``count_mode`` options are available:
 
@@ -130,12 +141,12 @@ Three ``count_mode`` options are available:
 
    * - count_mode
      - Cell value
-   * - ``'max_component'`` (default)
-     - Size of the largest matching component (atom count)
-   * - ``'all'``
-     - Total atom count across all components
-   * - ``'binary'``
+   * - ``'binary'`` (default)
      - 1 if any match exists, 0 otherwise
+   * - ``'count'``
+     - Number of matching components
+   * - ``'max_component'``
+     - Size of the largest matching component (atom count)
 
 PFAS definition classification
 --------------------------------

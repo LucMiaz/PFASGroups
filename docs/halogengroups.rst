@@ -1,11 +1,27 @@
-HalogenGroups — Multi-Halogen Analysis
-=======================================
+Multi-Halogen Analysis (Advanced)
+==================================
 
-**HalogenGroups** is a thin wrapper around **PFASGroups** that sets all-halogens
-(``['F', 'Cl', 'Br', 'I']``) as the default for every function that accepts a
-``halogens`` parameter. Both packages live in the same repository and share the
-same codebase; choosing one over the other is purely a matter of import
-convenience.
+.. note::
+
+   This is an **advanced topic**.  For standard PFAS / fluorine-only work,
+   use :doc:`quickstart` which focuses on the ``PFASGroups`` import.
+   This page describes how to extend detection to **Cl, Br and I** groups.
+
+**PFASGroups** focuses on fluorinated substances (``halogens='F'`` by default).
+The same codebase can also detect chlorinated, brominated and iodinated
+structural groups when you pass ``halogens`` explicitly, or by importing from
+``HalogenGroups`` which sets all four halogens as the default.
+
+.. code-block:: python
+
+   # Option A — explicit halogens argument with PFASGroups (recommended)
+   from PFASGroups import parse_smiles
+   results = parse_smiles(["ClC(Cl)(Cl)Cl", "BrCCBr"], halogens=['F','Cl','Br','I'])
+
+   # Option B — import HalogenGroups, all-halogens is the default
+   from HalogenGroups import parse_smiles
+   results = parse_smiles(["ClC(Cl)(Cl)Cl", "BrCCBr"])
+
 
 .. list-table::
    :header-rows: 1
@@ -101,6 +117,8 @@ To restrict to a subset of halogens with ``HalogenGroups``:
    # Override the default to fluorine + chlorine only
    results = parse_smiles(smiles, halogens=['F', 'Cl'])
 
+
+.. _multi_halogen_fingerprint:
 
 Multi-Halogen Fingerprints
 ---------------------------

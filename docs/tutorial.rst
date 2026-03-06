@@ -1,9 +1,13 @@
 ﻿Tutorial
 ========
 
-This tutorial walks through typical research workflows: parsing a chemical
-database, generating and comparing fingerprints, applying PFAS definitions,
-and exporting data.
+.. code-block:: python
+
+   from PFASGroups import parse_smiles, generate_fingerprint, prioritise_molecules
+
+   results  = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
+   fps, _   = generate_fingerprint(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
+   ranking  = prioritise_molecules(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
 
 .. contents:: Table of contents
    :local:
@@ -14,10 +18,11 @@ Setting up
 
 .. code-block:: python
 
-   from HalogenGroups import (
+   from PFASGroups import (
        parse_smiles,
        generate_fingerprint,
        get_compiled_HalogenGroups,
+       prioritise_molecules,
    )
    import pandas as pd
 
@@ -29,14 +34,11 @@ Parsing a list of molecules
    smiles_list = [
        "CCCC(F)(F)F",
        "FC(F)(F)C(=O)O",
-       "ClC(Cl)Cl",
-       "BrCCBr",
-       "IC(I)(I)I",
-       "OCCOCCO",      # no halogen
+       "OCCOCCO",      # no fluorine
    ]
 
    results = parse_smiles(smiles_list)
-   print(len(results))          # 6 — one per input SMILES
+   print(len(results))          # 3 — one per input SMILES
 
 Iterating over results
 ----------------------
@@ -64,7 +66,7 @@ Drill into a specific match
    # atom indices of each matched component
    for i, comp in enumerate(match.components):
        print(f"  Component {i}: atoms {comp.atoms}")
-       print(f"  Effective graph resistance: {comp.effective_graph_resistance}")
+       print(f"  EGR: {comp.effective_graph_resistance}")
 
 Exporting to DataFrame
 -----------------------
@@ -84,91 +86,111 @@ Filtering by group category
    pfas_df = df[df["is_PFAS"] == True]
    oecd_df  = df[df["group_category"] == "OECD"]
 
-Working with multiple halogens
--------------------------------
-
-.. code-block:: python
-
-   # All halogens (HalogenGroups default)
-   results_all = parse_smiles(smiles_list, halogens=['F', 'Cl', 'Br', 'I'])
-
-   # Just chlorine
-   results_cl = parse_smiles(smiles_list, halogens='Cl')
-
-   # Fluorine + chlorine
-   results_fcl = parse_smiles(smiles_list, halogens=['F', 'Cl'])
-
 Saturation filter
-~~~~~~~~~~~~~~~~~
+-----------------
 
 .. code-block:: python
 
-   # Only detect fully saturated halogenated groups
-   results_sat = parse_smiles(smiles_list, saturation='saturated')
+   # Perfluorinated components only (uses 'per' SMARTS)
+   results_per  = parse_smiles(smiles_list, saturation='per')
 
-   # Only unsaturated (e.g. fluorotelomer olefins)
-   results_unsat = parse_smiles(smiles_list, saturation='unsaturated')
+   # Polyfluorinated components only
+   results_poly = parse_smiles(smiles_list, saturation='poly')
+
+   # No saturation filter (use all components)
+   results_all  = parse_smiles(smiles_list, saturation=None)
 
 Fingerprinting for machine learning
 -------------------------------------
 
-.. code-block:: python
-
-   fps, group_names = generate_fingerprint(smiles_list)
-   print(fps.shape)    # (6, 464)  — 116 groups × 4 halogens
-
-   # fluorine-only fingerprint (116 columns)
-   fps_f, _ = generate_fingerprint(smiles_list, halogens='F')
-   print(fps_f.shape)  # (6, 116)
-
-count_mode controls how overlapping matches within a molecule are counted:
+:func:`~PFASGroups.generate_fingerprint` converts a list of SMILES to a
+2-D numpy array.  By default the output has **116 columns** (one per group,
+fluorine only, binary encoding):
 
 .. code-block:: python
 
-   # default: max component count per group
+   fps, info = generate_fingerprint(smiles_list)
+   print(fps.shape)                  # (3, 116)
+   print(info['group_names'][:3])    # e.g. ['perfluoromethyl', ...]
+
+**Selecting groups** — pass a list or range of 0-based indices:
+
+.. code-block:: python
+
+   # OECD groups only (indices 0–27 map to IDs 1–28)
+   fps_oecd, _ = generate_fingerprint(smiles_list, selected_groups=range(0, 28))
+
+**Count modes:**
+
+.. code-block:: python
+
+   fps_bin, _ = generate_fingerprint(smiles_list, count_mode='binary')       # default
+   fps_cnt, _ = generate_fingerprint(smiles_list, count_mode='count')
    fps_max, _ = generate_fingerprint(smiles_list, count_mode='max_component')
-
-   # total occurrences
-   fps_all, _ = generate_fingerprint(smiles_list, count_mode='all')
-
-   # binary (0/1 presence)
-   fps_bin, _ = generate_fingerprint(smiles_list, count_mode='binary')
 
 Using ResultsModel.to_fingerprint
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+:meth:`~PFASGroups.ResultsModel.to_fingerprint` produces a
+:class:`~PFASGroups.ResultsFingerprint` with the same matrix plus metadata:
+
 .. code-block:: python
 
    results = parse_smiles(smiles_list)
-   fp_obj = results.to_fingerprint()
+   fp = results.to_fingerprint()
 
-   # fp_obj is a ResultsFingerprint
-   print(fp_obj.matrix.shape)   # (6, 464)
-   print(fp_obj.group_names)    # dict: col_index -> (group_name, halogen)
+   print(fp.fingerprints.shape)     # (3, 116)
+   print(fp.group_names[:3])        # list of group-name strings
+   print(fp.halogens)               # ['F']
+   print(fp.count_mode)             # 'binary'
+
+Group selection with to_fingerprint:
+
+.. code-block:: python
+
+   fp_oecd = results.to_fingerprint(group_selection='oecd')       # 28 cols
+   fp_gen  = results.to_fingerprint(group_selection='generic')    # 45 cols
+   fp_all  = results.to_fingerprint(group_selection='all')        # 116 cols
 
 Dimensionality reduction
 --------------------------
 
 .. code-block:: python
 
-   fp_obj = results.to_fingerprint()
+   fp = results.to_fingerprint()
 
-   coords_pca   = fp_obj.perform_pca(n_components=2)
-   coords_tsne  = fp_obj.perform_tsne(n_components=2, perplexity=5)
-   coords_umap  = fp_obj.perform_umap(n_components=2)
+   coords_pca  = fp.perform_pca(n_components=2)
+   coords_tsne = fp.perform_tsne(n_components=2, perplexity=5)
+   coords_umap = fp.perform_umap(n_components=2)
 
-   # each returns a numpy array of shape (n_mols, n_components)
+   # each returns a dict with key 'transformed' (numpy array, shape n_mols × n_components)
 
 Comparing distributions
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-   # KL divergence between two fingerprint sets
-   fp_a = parse_smiles(smiles_list[:3]).to_fingerprint()
-   fp_b = parse_smiles(smiles_list[3:]).to_fingerprint()
+   fp_a = parse_smiles(smiles_list[:2]).to_fingerprint()
+   fp_b = parse_smiles(smiles_list[2:]).to_fingerprint()
 
-   kld = fp_a.compare_kld(fp_b)   # returns dict of per-group KL divergences
+   kld = fp_a.compare_kld(fp_b)   # dict of per-group KL divergences
+
+Multi-halogen parsing (advanced)
+----------------------------------
+
+By default ``PFASGroups`` detects fluorine only.  To detect other halogens
+pass ``halogens`` explicitly:
+
+.. code-block:: python
+
+   results = parse_smiles(["ClCCCl", "BrCCBr"], halogens=['F', 'Cl', 'Br', 'I'])
+
+   # Multi-halogen fingerprint: 116 * 4 = 464 columns
+   fps, info = generate_fingerprint(
+       ["ClCCCl", "BrCCBr"], halogens=['F', 'Cl', 'Br', 'I'])
+   print(fps.shape)     # (2, 464)
+
+See :doc:`halogengroups` for full documentation of multi-halogen mode.
 
 PFAS definition screening
 --------------------------
@@ -182,27 +204,19 @@ PFAS definition screening
            names = [d.definition_name for d in mol.pfas_definition_matches]
            print(mol.smiles, "->", names)
 
-Available definitions:
-
-- ``OECD 2021`` — Organisation for Economic Co-operation and Development
-- ``EU REACH`` — European Union REACH regulation
-- ``OPPT 2023`` — US EPA Office of Pollution Prevention and Toxics
-- ``UK Environment Agency`` — UK Fluorinated Polymer definition
-- ``PFASTRUCTv5`` — Annotated PFAS chemical structure database
+Available definitions: OECD 2021, EU REACH, OPPT 2023, UK Environment Agency,
+PFASTRUCTv5.  See :doc:`pfas_definitions` for details.
 
 Molecule prioritization
 -------------------------
 
-Rank a set of molecules by their structural novelty relative to each other
-or relative to a reference set:
-
 .. code-block:: python
 
-   from HalogenGroups import prioritise_molecules
+   from PFASGroups import prioritise_molecules
 
    molecules = ["CCCC(F)(F)F", "FC(F)(F)C(=O)O", "FCCC(F)(F)F", "ClCCCl"]
-
    ranking = prioritise_molecules(molecules)
+
    for smiles, score in ranking:
        print(smiles, score)
 
@@ -213,7 +227,7 @@ Loading and inspecting groups
 
 .. code-block:: python
 
-   from HalogenGroups import get_compiled_HalogenGroups
+   from PFASGroups import get_compiled_HalogenGroups
 
    groups = get_compiled_HalogenGroups()
    print(len(groups))       # 116

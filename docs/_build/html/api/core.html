@@ -9,6 +9,7 @@
   <title>Core API &mdash; HalogenGroups / PFASGroups 3.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -16,6 +17,8 @@
       <script src="../_static/documentation_options.js?v=eaea8fc6"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=d30a5ebd"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -58,31 +61,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#parsing-smiles">Parsing SMILES</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#accessing-matches">Accessing matches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#converting-to-a-dataframe">Converting to a DataFrame</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#fluorine-only-pfasgroups-mode">Fluorine-only (PFASGroups mode)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#generating-fingerprints">Generating fingerprints</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#pfas-definition-screening">PFAS definition screening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#saturated-vs-unsaturated-groups">Saturated vs unsaturated groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#saturation-filter">Saturation filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#multi-halogen-parsing-advanced">Multi-halogen parsing (advanced)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#command-line-usage">Command-line usage</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Core Concepts</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../halogengroups.html">HalogenGroups — Multi-Halogen Analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#quick-comparison">Quick Comparison</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#functions-with-altered-defaults">Functions with Altered Defaults</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#parsing-multi-halogen-molecules">Parsing Multi-Halogen Molecules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#multi-halogen-fingerprints">Multi-Halogen Fingerprints</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../halogengroups.html#via-resultsmodel">Via ResultsModel</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#combining-with-saturation-filters">Combining with Saturation Filters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#cli-with-multiple-halogens">CLI with Multiple Halogens</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#implementation-details">Implementation Details</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#when-to-use-which-import">When to Use Which Import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#see-also">See Also</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../pfas_definitions.html">PFAS Definitions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#oecd-2021">OECD 2021</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pfas_definitions.html#eu-reach">EU REACH</a></li>
@@ -121,10 +109,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../tutorial.html#filtering-by-group-category">Filtering by group category</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#working-with-multiple-halogens">Working with multiple halogens</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../tutorial.html#saturation-filter">Saturation filter</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#saturation-filter">Saturation filter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial.html#fingerprinting-for-machine-learning">Fingerprinting for machine learning</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial.html#using-resultsmodel-to-fingerprint">Using ResultsModel.to_fingerprint</a></li>
 </ul>
@@ -133,6 +118,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../tutorial.html#comparing-distributions">Comparing distributions</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#multi-halogen-parsing-advanced">Multi-halogen parsing (advanced)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial.html#pfas-definition-screening">PFAS definition screening</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial.html#molecule-prioritization">Molecule prioritization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial.html#loading-and-inspecting-groups">Loading and inspecting groups</a></li>
@@ -164,6 +150,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#performance">Performance</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../halogengroups.html">Multi-Halogen Analysis (Advanced)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#quick-comparison">Quick Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#functions-with-altered-defaults">Functions with Altered Defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#parsing-multi-halogen-molecules">Parsing Multi-Halogen Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#multi-halogen-fingerprints">Multi-Halogen Fingerprints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../halogengroups.html#via-resultsmodel">Via ResultsModel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#combining-with-saturation-filters">Combining with Saturation Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#cli-with-multiple-halogens">CLI with Multiple Halogens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#implementation-details">Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#when-to-use-which-import">When to Use Which Import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../halogengroups.html#see-also">See Also</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-Line Interface</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../cli.html#synopsis">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cli.html#parse">parse</a></li>
@@ -182,52 +183,52 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Core API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#parsing">Parsing</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#parse-smiles">parse_smiles</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#parse-mols">parse_mols</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.parse_mols"><code class="docutils literal notranslate"><span class="pre">parse_mols()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.parse_mols"><code class="docutils literal notranslate"><span class="pre">parse_mols()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#parse-mol">parse_mol</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.parse_mol"><code class="docutils literal notranslate"><span class="pre">parse_mol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.parse_mol"><code class="docutils literal notranslate"><span class="pre">parse_mol()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#fingerprinting">Fingerprinting</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#generate-fingerprint">generate_fingerprint</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#group-library">Group library</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#get-compiled-halogengroups">get_compiled_HalogenGroups</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.get_compiled_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_compiled_HalogenGroups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.get_compiled_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_compiled_HalogenGroups()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#get-halogengroups">get_HalogenGroups</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.get_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_HalogenGroups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.get_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_HalogenGroups()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#load-halogengroups">load_HalogenGroups</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.load_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">load_HalogenGroups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.load_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">load_HalogenGroups()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#get-pfasdefinitions">get_PFASDefinitions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.get_PFASDefinitions"><code class="docutils literal notranslate"><span class="pre">get_PFASDefinitions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.get_PFASDefinitions"><code class="docutils literal notranslate"><span class="pre">get_PFASDefinitions()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#get-componentsmartss">get_componentSmartss</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#molecule-prioritization">Molecule prioritization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#prioritise-molecules">prioritise_molecules</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#HalogenGroups.prioritise_molecules"><code class="docutils literal notranslate"><span class="pre">prioritise_molecules()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.prioritise_molecules"><code class="docutils literal notranslate"><span class="pre">prioritise_molecules()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -236,76 +237,90 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Data Models</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="models.html#resultsmodel">ResultsModel</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="models.html#HalogenGroups.ResultsModel"><code class="docutils literal notranslate"><span class="pre">ResultsModel</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.ResultsModel.to_fingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_fingerprint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#PFASGroups.ResultsModel"><code class="docutils literal notranslate"><span class="pre">ResultsModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsModel.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.from_raw"><code class="docutils literal notranslate"><span class="pre">ResultsModel.from_raw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.iter_group_matches"><code class="docutils literal notranslate"><span class="pre">ResultsModel.iter_group_matches()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.plot_components_for_group"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot_components_for_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.show"><code class="docutils literal notranslate"><span class="pre">ResultsModel.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.plot"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.svg"><code class="docutils literal notranslate"><span class="pre">ResultsModel.svg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.summarise"><code class="docutils literal notranslate"><span class="pre">ResultsModel.summarise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.table"><code class="docutils literal notranslate"><span class="pre">ResultsModel.table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.summary"><code class="docutils literal notranslate"><span class="pre">ResultsModel.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.plot_all_components_with_group_colours"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot_all_components_with_group_colours()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_sql()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.to_fingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_fingerprint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsModel.from_sql()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="models.html#moleculeresult">MoleculeResult</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult"><code class="docutils literal notranslate"><span class="pre">MoleculeResult</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.smiles"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.smiles</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.mol_with_h"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.mol_with_h</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.matches</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.iter_group_matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.iter_group_matches()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.collect_component_atoms"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.collect_component_atoms()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.summarise"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summarise()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.summary"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summary()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.table"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.show"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.show()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.plot"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.plot()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.svg"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.svg()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.MoleculeResult.to_sql"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.to_sql()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult"><code class="docutils literal notranslate"><span class="pre">MoleculeResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.smiles"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.smiles</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.mol_with_h"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.mol_with_h</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.matches</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.iter_group_matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.iter_group_matches()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.collect_component_atoms"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.collect_component_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.summarise"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summarise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.summary"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.table"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.show"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.plot"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.svg"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.svg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.to_sql"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.to_sql()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="models.html#groupmatch">GroupMatch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html#matchcomponent">MatchComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#resultsfingerprint">ResultsFingerprint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html#halogengroup">HalogenGroup</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup"><code class="docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.id"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.id</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.name"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSmarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.componentForm"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentForm</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.componentHalogens"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentHalogens</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.componentSaturation"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSaturation</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.max_dist_from_comp"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.max_dist_from_comp</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.linker_smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraints</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.__init__"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.set_component_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_component_smarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.set_componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_componentSmarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_gte()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_lte()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_eq()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_only()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_rel()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.formula_dict_satisfies_constraints()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_matched_atoms()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.component_satisfies_all_smarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_alkyl_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_aryl_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.find_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.HalogenGroup.test"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup"><code class="docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.id"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.name"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSmarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.componentForm"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.componentHalogens"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentHalogens</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.componentSaturation"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSaturation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.max_dist_from_comp"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.max_dist_from_comp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.linker_smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.__init__"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.set_component_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_component_smarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.set_componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_componentSmarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_gte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_lte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_only()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_rel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.formula_dict_satisfies_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_matched_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.component_satisfies_all_smarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_alkyl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_aryl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.find_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.HalogenGroup.test"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.test()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="models.html#pfasdefinition">PFASDefinition</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="models.html#HalogenGroups.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -314,16 +329,16 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="fingerprint_analysis.html">Fingerprint Analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="fingerprint_analysis.html#resultsfingerprint">ResultsFingerprint</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.summary"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.summary()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_pca()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_kernel_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_kernel_pca()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_tsne"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_tsne()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_umap"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_umap()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.compare_kld"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.to_sql()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.from_sql()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.summary"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_pca()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_kernel_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_kernel_pca()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_tsne"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_tsne()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_umap"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_umap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.compare_kld"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.to_sql()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.from_sql()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#creating-a-resultsfingerprint">Creating a ResultsFingerprint</a></li>
@@ -331,37 +346,18 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="fingerprint_analysis.html#dimensionality-reduction">Dimensionality reduction</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#perform-pca">perform_pca</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#id0"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_pca()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#perform-tsne">perform_tsne</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#id1"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_tsne()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#perform-umap">perform_umap</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#id2"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_umap()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#perform-pca">perform_pca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#perform-tsne">perform_tsne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#perform-umap">perform_umap</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="fingerprint_analysis.html#statistical-comparison">Statistical comparison</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#compare-kld">compare_kld</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#id3"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#compare-kld">compare_kld</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="fingerprint_analysis.html#database-i-o">Database I/O</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#to-sql-from-sql">to_sql / from_sql</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#id4"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.to_sql()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#id5"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.from_sql()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#summary">Summary</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#id6"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.summary()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#to-sql-from-sql">to_sql / from_sql</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#summary">Summary</a></li>
 </ul>
 </li>
 </ul>
@@ -422,74 +418,106 @@
              
   <section id="core-api">
 <h1>Core API<a class="headerlink" href="#core-api" title="Link to this heading"></a></h1>
-<p>This page covers the top-level functions exported by both the
-<code class="docutils literal notranslate"><span class="pre">HalogenGroups</span></code> and <code class="docutils literal notranslate"><span class="pre">PFASGroups</span></code> namespaces.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span><span class="p">,</span> <span class="n">generate_fingerprint</span>
+
+<span class="c1"># Parse — returns ResultsModel</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;CCCC(F)(F)F&quot;</span><span class="p">,</span> <span class="s2">&quot;ClCCCl&quot;</span><span class="p">])</span>
+
+<span class="c1"># Fingerprint — returns (numpy.ndarray, dict)</span>
+<span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">([</span><span class="s2">&quot;CCCC(F)(F)F&quot;</span><span class="p">,</span> <span class="s2">&quot;ClCCCl&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fps</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>             <span class="c1"># (2, 116)   — 116 groups, F only, binary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;group_names&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
 <nav class="contents local" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#parsing" id="id1">Parsing</a></p>
+<li><p><a class="reference internal" href="#parsing" id="id7">Parsing</a></p>
 <ul>
-<li><p><a class="reference internal" href="#parse-smiles" id="id2">parse_smiles</a></p></li>
-<li><p><a class="reference internal" href="#parse-mols" id="id3">parse_mols</a></p></li>
-<li><p><a class="reference internal" href="#parse-mol" id="id4">parse_mol</a></p></li>
+<li><p><a class="reference internal" href="#parse-smiles" id="id8">parse_smiles</a></p></li>
+<li><p><a class="reference internal" href="#parse-mols" id="id9">parse_mols</a></p></li>
+<li><p><a class="reference internal" href="#parse-mol" id="id10">parse_mol</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#fingerprinting" id="id5">Fingerprinting</a></p>
+<li><p><a class="reference internal" href="#fingerprinting" id="id11">Fingerprinting</a></p>
 <ul>
-<li><p><a class="reference internal" href="#generate-fingerprint" id="id6">generate_fingerprint</a></p></li>
+<li><p><a class="reference internal" href="#generate-fingerprint" id="id12">generate_fingerprint</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#group-library" id="id7">Group library</a></p>
+<li><p><a class="reference internal" href="#group-library" id="id13">Group library</a></p>
 <ul>
-<li><p><a class="reference internal" href="#get-compiled-halogengroups" id="id8">get_compiled_HalogenGroups</a></p></li>
-<li><p><a class="reference internal" href="#get-halogengroups" id="id9">get_HalogenGroups</a></p></li>
-<li><p><a class="reference internal" href="#load-halogengroups" id="id10">load_HalogenGroups</a></p></li>
-<li><p><a class="reference internal" href="#get-pfasdefinitions" id="id11">get_PFASDefinitions</a></p></li>
-<li><p><a class="reference internal" href="#get-componentsmartss" id="id12">get_componentSmartss</a></p></li>
+<li><p><a class="reference internal" href="#get-compiled-halogengroups" id="id14">get_compiled_HalogenGroups</a></p></li>
+<li><p><a class="reference internal" href="#get-halogengroups" id="id15">get_HalogenGroups</a></p></li>
+<li><p><a class="reference internal" href="#load-halogengroups" id="id16">load_HalogenGroups</a></p></li>
+<li><p><a class="reference internal" href="#get-pfasdefinitions" id="id17">get_PFASDefinitions</a></p></li>
+<li><p><a class="reference internal" href="#get-componentsmartss" id="id18">get_componentSmartss</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#molecule-prioritization" id="id13">Molecule prioritization</a></p>
+<li><p><a class="reference internal" href="#molecule-prioritization" id="id19">Molecule prioritization</a></p>
 <ul>
-<li><p><a class="reference internal" href="#prioritise-molecules" id="id14">prioritise_molecules</a></p></li>
+<li><p><a class="reference internal" href="#prioritise-molecules" id="id20">prioritise_molecules</a></p></li>
 </ul>
 </li>
 </ul>
 </nav>
 <section id="parsing">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Parsing</a><a class="headerlink" href="#parsing" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Parsing</a><a class="headerlink" href="#parsing" title="Link to this heading"></a></h2>
 <section id="parse-smiles">
-<h3><a class="toc-backref" href="#id2" role="doc-backlink">parse_smiles</a><a class="headerlink" href="#parse-smiles" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">parse_smiles</a><a class="headerlink" href="#parse-smiles" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.parse_smiles">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">parse_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bycomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_effective_graph_resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_component_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/HalogenGroups.html#parse_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#HalogenGroups.parse_smiles" title="Link to this definition"></a></dt>
-<dd><p>Parse SMILES string(s), defaulting to all halogens.</p>
-<p>Identical to <code class="docutils literal notranslate"><span class="pre">PFASGroups.parse_smiles</span></code> except the default for
-<code class="docutils literal notranslate"><span class="pre">halogens</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> (no filter = all halogens: F, Cl, Br, I)
-instead of <code class="docutils literal notranslate"><span class="pre">'F'</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>smiles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
-<li><p><strong>halogens</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>default None</em>) – <code class="docutils literal notranslate"><span class="pre">None</span></code> → all halogens (F, Cl, Br, I).
-Pass <code class="docutils literal notranslate"><span class="pre">'F'</span></code> to restrict to fluorine only.</p></li>
-</ul>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
+<dt class="sig sig-object py" id="PFASGroups.parse_smiles">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">parse_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bycomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_effective_graph_resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_component_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.parse_smiles" title="Link to this definition"></a></dt>
+<dd><p>Parse SMILES string(s) and return halogen group information.</p>
+<section id="parameters">
+<h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
 <dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">PFASGroups.parse_smiles</span></code></dt><dd><p>fluorine-only default version.</p>
+<dt>smiles<span class="classifier">str or list of str</span></dt><dd><p>Single SMILES string or list of SMILES strings</p>
+</dd>
+<dt>bycomponent<span class="classifier">bool</span></dt><dd><p>Whether to use component-based analysis</p>
+</dd>
+<dt>output_format<span class="classifier">str, default ‘list’</span></dt><dd><p>Output format: ‘list’ (default), ‘dataframe’, or ‘csv’
+- ‘list’: Returns nested lists of tuples (default behavior)
+- ‘dataframe’: Returns pandas DataFrame with one row per match
+- ‘csv’: Returns CSV string</p>
+</dd>
+<dt>limit_effective_graph_resistance<span class="classifier">int or None, default None</span></dt><dd><p>Maximum component size for computing effective graph resistance.
+- None: Compute for all components (default, may be slow for large molecules)
+- int &gt; 0: Only compute for components with fewer atoms than this limit
+- 0: Skip computation for all components (set to NaN)</p>
+</dd>
+<dt>compute_component_metrics<span class="classifier">bool, default True</span></dt><dd><p>Whether to compute graph metrics (diameter, radius, etc.) for components.
+- True: Compute all metrics (default)
+- False: Only compute component size, skip all other metrics</p>
+</dd>
+<dt>halogens<span class="classifier">str or list of str or None, default ‘F’</span></dt><dd><p>Filter components by halogen element.
+- ‘F’ (default): fluorine only
+- str (e.g. ‘Cl’): restrict to that single halogen
+- list (e.g. [‘F’, ‘Cl’]): restrict to those halogens
+- None: no filter (include all halogens)</p>
+</dd>
+<dt>form<span class="classifier">str or list of str, optional</span></dt><dd><p>Filter components by form type (e.g., ‘alkyl’, [‘alkyl’, ‘cyclic’], or None for all)</p>
+</dd>
+<dt>saturation<span class="classifier">str or list of str, optional</span></dt><dd><p>Filter components by saturation (e.g., ‘per’, ‘poly’, or None for all)</p>
+</dd>
+<dt><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs<span class="classifier">dict</span></dt><dd><p>Additional parameters (pfas_groups, componentSmartss, etc.)</p>
 </dd>
 </dl>
-</div>
+</section>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>list, pandas.DataFrame, or str</dt><dd><p>Depends on output_format parameter</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <p><strong>Parameters:</strong></p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 25.0%" />
+<col style="width: 35.0%" />
 <col style="width: 15.0%" />
-<col style="width: 60.0%" />
+<col style="width: 50.0%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -503,12 +531,12 @@ Pass <code class="docutils literal notranslate"><span class="pre">'F'</span></co
 <td><p>Single SMILES string or list of SMILES strings</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">halogens</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'F'</span></code> (PFASGroups) / <code class="docutils literal notranslate"><span class="pre">['F','Cl','Br','I']</span></code> (HalogenGroups)</p></td>
-<td><p>Halogen(s) to include; string or list of strings</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'F'</span></code></p></td>
+<td><p>Halogen(s) to detect; string or list of strings</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">saturation</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'saturated'</span></code>, <code class="docutils literal notranslate"><span class="pre">'unsaturated'</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> (all)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'per'</span></code>, <code class="docutils literal notranslate"><span class="pre">'poly'</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> (all)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">form</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
@@ -520,27 +548,20 @@ Pass <code class="docutils literal notranslate"><span class="pre">'F'</span></co
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">limit_effective_graph_resistance</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
-<td><p>Maximum number of atoms for which effective graph resistance is
-computed; <code class="docutils literal notranslate"><span class="pre">None</span></code> = unlimited</p></td>
+<td><p>Max atoms for which EGR is computed; <code class="docutils literal notranslate"><span class="pre">None</span></code> = unlimited</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">include_PFAS_definitions</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
-<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, classify each molecule against the five PFAS definitions</p></td>
+<td><p>Classify each molecule against the five PFAS definitions</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">halogen_groups</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
-<td><p>Custom list of <a class="reference internal" href="models.html#HalogenGroups.HalogenGroup" title="HalogenGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances; <code class="docutils literal notranslate"><span class="pre">None</span></code> = use the
-built-in 116-group library</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
-<td><p>Number of parallel workers (requires <code class="docutils literal notranslate"><span class="pre">joblib</span></code>)</p></td>
+<td><p>Custom list of <a class="reference internal" href="models.html#PFASGroups.HalogenGroup" title="PFASGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances</p></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Returns:</strong> <a class="reference internal" href="models.html#HalogenGroups.ResultsModel" title="HalogenGroups.ResultsModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResultsModel</span></code></a></p>
-<p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
+<p><strong>Returns:</strong> <a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.ResultsModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ResultsModel</span></code></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
 
 <span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;CCCC(F)(F)F&quot;</span><span class="p">,</span> <span class="s2">&quot;ClCCCl&quot;</span><span class="p">])</span>
 <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
@@ -549,34 +570,58 @@ built-in 116-group library</p></td>
 </div>
 </section>
 <section id="parse-mols">
-<h3><a class="toc-backref" href="#id3" role="doc-backlink">parse_mols</a><a class="headerlink" href="#parse-mols" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">parse_mols</a><a class="headerlink" href="#parse-mols" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.parse_mols">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">parse_mols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_PFAS_definitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_effective_graph_resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_component_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/HalogenGroups.html#parse_mols"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#HalogenGroups.parse_mols" title="Link to this definition"></a></dt>
-<dd><p>Parse RDKit molecule(s), defaulting to all halogens.</p>
-<p>Identical to <code class="docutils literal notranslate"><span class="pre">PFASGroups.parse_mols</span></code> except the default for
-<code class="docutils literal notranslate"><span class="pre">halogens</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> (no filter = all halogens: F, Cl, Br, I)
-instead of <code class="docutils literal notranslate"><span class="pre">'F'</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><em>rdkit.Chem.Mol</em>)</p></li>
-<li><p><strong>halogens</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em><em>, </em><em>default None</em>) – <code class="docutils literal notranslate"><span class="pre">None</span></code> → all halogens (F, Cl, Br, I).</p></li>
-</ul>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
+<dt class="sig sig-object py" id="PFASGroups.parse_mols">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">parse_mols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_PFAS_definitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_effective_graph_resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_component_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_mols"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.parse_mols" title="Link to this definition"></a></dt>
+<dd><p>Parse RDKit molecule(s) and return halogen group information.</p>
+<section id="id3">
+<h4>Parameters:<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
 <dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">PFASGroups.parse_mols</span></code></dt><dd><p>fluorine-only default version.</p>
+<dt>mols<span class="classifier">list of rdkit.Chem.Mol</span></dt><dd><p>Single RDKit molecule or list of molecules</p>
+</dd>
+<dt>bycomponent<span class="classifier">bool</span></dt><dd><p>Whether to use component-based analysis</p>
+</dd>
+<dt>output_format<span class="classifier">str, default ‘list’</span></dt><dd><p>Output format: ‘list’ (default), ‘dataframe’, or ‘csv’
+- ‘list’: Returns nested lists of tuples (default behavior)
+- ‘dataframe’: Returns pandas DataFrame with one row per match
+- ‘csv’: Returns CSV string</p>
+</dd>
+<dt>limit_effective_graph_resistance<span class="classifier">int or None, default None</span></dt><dd><p>Maximum component size for computing effective graph resistance.
+- None: Compute for all components (default, may be slow for large molecules)
+- int &gt; 0: Only compute for components with fewer atoms than this limit
+- 0: Skip computation for all components (set to NaN)</p>
+</dd>
+<dt>compute_component_metrics<span class="classifier">bool, default True</span></dt><dd><p>Whether to compute graph metrics (diameter, radius, etc.) for components.
+- True: Compute all metrics (default)
+- False: Only compute component size, skip all other metrics</p>
+</dd>
+<dt>halogens<span class="classifier">str or list of str or None, default ‘F’</span></dt><dd><p>Filter components by halogen element.
+- ‘F’ (default): fluorine only
+- str (e.g. ‘Cl’): restrict to that single halogen
+- list (e.g. [‘F’, ‘Cl’]): restrict to those halogens
+- None: no filter (include all halogens)</p>
+</dd>
+<dt>form<span class="classifier">str or list of str, optional</span></dt><dd><p>Filter components by form type (e.g., ‘alkyl’, [‘alkyl’, ‘cyclic’], or None for all)</p>
+</dd>
+<dt>saturation<span class="classifier">str or list of str, optional</span></dt><dd><p>Filter components by saturation (e.g., ‘per’, ‘poly’, or None for all)</p>
+</dd>
+<dt><a href="#id4"><span class="problematic" id="id5">**</span></a>kwargs<span class="classifier">dict</span></dt><dd><p>Additional parameters (halogen_groups, componentSmartss, etc.)</p>
 </dd>
 </dl>
-</div>
+</section>
+<section id="id6">
+<h4>Returns:<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>list, pandas.DataFrame, or str</dt><dd><p>Depends on output_format parameter</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
-<p>Like <a class="reference internal" href="#HalogenGroups.parse_smiles" title="HalogenGroups.parse_smiles"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a> but accepts RDKit <code class="docutils literal notranslate"><span class="pre">Mol</span></code> objects directly:</p>
+<p>Like <a class="reference internal" href="#PFASGroups.parse_smiles" title="PFASGroups.parse_smiles"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a> but accepts RDKit <code class="docutils literal notranslate"><span class="pre">Mol</span></code> objects directly:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_mols</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PFASGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_mols</span>
 
 <span class="n">mols</span> <span class="o">=</span> <span class="p">[</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;CCCC(F)(F)F&quot;</span><span class="p">,</span> <span class="s2">&quot;ClCCCl&quot;</span><span class="p">]]</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">parse_mols</span><span class="p">(</span><span class="n">mols</span><span class="p">)</span>
@@ -584,54 +629,34 @@ instead of <code class="docutils literal notranslate"><span class="pre">'F'</spa
 </div>
 </section>
 <section id="parse-mol">
-<h3><a class="toc-backref" href="#id4" role="doc-backlink">parse_mol</a><a class="headerlink" href="#parse-mol" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">parse_mol</a><a class="headerlink" href="#parse-mol" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.parse_mol">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">parse_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#HalogenGroups.parse_mol" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASGroups.parse_mol">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">parse_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.parse_mol" title="Link to this definition"></a></dt>
 <dd><p>Wrapper for parse_mols to handle single molecule input.</p>
 <p>Returns a single <code class="docutils literal notranslate"><span class="pre">MoleculeResult</span></code> when <code class="docutils literal notranslate"><span class="pre">output_format='list'</span></code>
 (default), preserving backwards-compatible dict behaviour while
 enabling richer navigation helpers.</p>
 </dd></dl>
 
-<p>Parse a single RDKit molecule.  Returns a <a class="reference internal" href="models.html#HalogenGroups.MoleculeResult" title="HalogenGroups.MoleculeResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MoleculeResult</span></code></a>.</p>
+<p>Parse a single RDKit molecule.  Returns a <a class="reference internal" href="models.html#PFASGroups.MoleculeResult" title="PFASGroups.MoleculeResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MoleculeResult</span></code></a>.</p>
 </section>
 </section>
 <section id="fingerprinting">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Fingerprinting</a><a class="headerlink" href="#fingerprinting" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Fingerprinting</a><a class="headerlink" href="#fingerprinting" title="Link to this heading"></a></h2>
 <section id="generate-fingerprint">
-<h3><a class="toc-backref" href="#id6" role="doc-backlink">generate_fingerprint</a><a class="headerlink" href="#generate-fingerprint" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">generate_fingerprint</a><a class="headerlink" href="#generate-fingerprint" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.generate_fingerprint">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">generate_fingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">representation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vector'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binary'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['F',</span> <span class="pre">'Cl',</span> <span class="pre">'Br',</span> <span class="pre">'I']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'per'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/HalogenGroups.html#generate_fingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#HalogenGroups.generate_fingerprint" title="Link to this definition"></a></dt>
-<dd><p>Generate halogen-group fingerprints, defaulting to all halogens.</p>
-<p>Identical to <code class="docutils literal notranslate"><span class="pre">PFASGroups.generate_fingerprint</span></code> except the default for
-<code class="docutils literal notranslate"><span class="pre">halogens</span></code> is <code class="docutils literal notranslate"><span class="pre">['F',</span> <span class="pre">'Cl',</span> <span class="pre">'Br',</span> <span class="pre">'I']</span></code> (stacked vector) instead of
-<code class="docutils literal notranslate"><span class="pre">'F'</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>smiles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
-<li><p><strong>halogens</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>default</em><em> [</em><em>'F'</em><em>, </em><em>'Cl'</em><em>, </em><em>'Br'</em><em>, </em><em>'I'</em><em>]</em>) – Halogens to include. Multiple values produce a stacked fingerprint
-of length n_groups × n_halogens.</p></li>
-</ul>
-</dd>
-</dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">PFASGroups.generate_fingerprint</span></code></dt><dd><p>fluorine-only default version.</p>
-</dd>
-</dl>
-</div>
-</dd></dl>
+<dt class="sig sig-object py" id="PFASGroups.generate_fingerprint">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">generate_fingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.generate_fingerprint" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <p><strong>Parameters:</strong></p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25.0%" />
-<col style="width: 15.0%" />
-<col style="width: 60.0%" />
+<col style="width: 20.0%" />
+<col style="width: 55.0%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -642,48 +667,66 @@ of length n_groups × n_halogens.</p></li>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">smiles</span></code></p></td>
 <td><p><em>required</em></p></td>
-<td><p>List of SMILES strings</p></td>
+<td><p>Single SMILES string or list of SMILES strings</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">halogens</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'F'</span></code> / <code class="docutils literal notranslate"><span class="pre">['F','Cl','Br','I']</span></code></p></td>
-<td><p>Halogen(s) for fingerprint columns</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">saturation</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">selected_groups</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
-<td><p>Saturation filter</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">count_mode</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'max_component'</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'max_component'</span></code>, <code class="docutils literal notranslate"><span class="pre">'all'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'binary'</span></code></p></td>
+<td><p>0-based indices of groups to include (list, range, or <code class="docutils literal notranslate"><span class="pre">None</span></code> = all)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">representation</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'vector'</span></code></p></td>
-<td><p>Only <code class="docutils literal notranslate"><span class="pre">'vector'</span></code> is currently supported (returns numpy array)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'vector'</span></code>, <code class="docutils literal notranslate"><span class="pre">'dict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sparse'</span></code>, <code class="docutils literal notranslate"><span class="pre">'detailed'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'int'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">count_mode</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'binary'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'binary'</span></code>, <code class="docutils literal notranslate"><span class="pre">'count'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'max_component'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">halogens</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'F'</span></code></p></td>
+<td><p>Halogen(s) to include; string or list of strings</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">saturation</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'per'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'per'</span></code>, <code class="docutils literal notranslate"><span class="pre">'poly'</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Returns:</strong> <code class="docutils literal notranslate"><span class="pre">(numpy.ndarray</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_mols,</span> <span class="pre">n_groups</span> <span class="pre">×</span> <span class="pre">n_halogens),</span> <span class="pre">dict)</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_fingerprint</span>
+<p><strong>Returns:</strong> <code class="docutils literal notranslate"><span class="pre">(numpy.ndarray</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_mols,</span> <span class="pre">n_cols),</span> <span class="pre">dict)</span></code></p>
+<p>The second return value is a dict with keys:
+<code class="docutils literal notranslate"><span class="pre">group_names</span></code> (list), <code class="docutils literal notranslate"><span class="pre">group_ids</span></code> (list), <code class="docutils literal notranslate"><span class="pre">selected_indices</span></code> (list),
+<code class="docutils literal notranslate"><span class="pre">halogens</span></code> (list), <code class="docutils literal notranslate"><span class="pre">saturation</span></code> (str or None).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_fingerprint</span>
 
+<span class="c1"># Default: 116-col binary, F only</span>
 <span class="n">fps</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">([</span><span class="s2">&quot;CCCC(F)(F)F&quot;</span><span class="p">,</span> <span class="s2">&quot;ClCCCl&quot;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">fps</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>        <span class="c1"># (2, 464)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>          <span class="c1"># (&#39;perfluoroalkyl&#39;, &#39;F&#39;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fps</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>                   <span class="c1"># (2, 116)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;group_names&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">])</span>     <span class="c1"># list of group name strings</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;halogens&#39;</span><span class="p">])</span>            <span class="c1"># [&#39;F&#39;]</span>
+
+<span class="c1"># OECD groups only (indices 0–27)</span>
+<span class="n">fps_oecd</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">([</span><span class="s2">&quot;CCCC(F)(F)F&quot;</span><span class="p">],</span> <span class="n">selected_groups</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">28</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fps_oecd</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>              <span class="c1"># (1, 28)</span>
+
+<span class="c1"># Multi-halogen: 4 × 116 = 464 columns</span>
+<span class="n">fps_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">generate_fingerprint</span><span class="p">([</span><span class="s2">&quot;CCCC(F)(F)F&quot;</span><span class="p">],</span>
+                                   <span class="n">halogens</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;Cl&#39;</span><span class="p">,</span> <span class="s1">&#39;Br&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fps_all</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>               <span class="c1"># (1, 464)</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="group-library">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Group library</a><a class="headerlink" href="#group-library" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Group library</a><a class="headerlink" href="#group-library" title="Link to this heading"></a></h2>
 <section id="get-compiled-halogengroups">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">get_compiled_HalogenGroups</a><a class="headerlink" href="#get-compiled-halogengroups" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">get_compiled_HalogenGroups</a><a class="headerlink" href="#get-compiled-halogengroups" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.get_compiled_HalogenGroups">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">get_compiled_HalogenGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HalogenGroups.get_compiled_HalogenGroups" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASGroups.get_compiled_HalogenGroups">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_compiled_HalogenGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.get_compiled_HalogenGroups" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
-<p>Returns a list of compiled <a class="reference internal" href="models.html#HalogenGroups.HalogenGroup" title="HalogenGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances (only groups with
-<code class="docutils literal notranslate"><span class="pre">compute=True</span></code>; 116 groups total).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_compiled_HalogenGroups</span>
+<p>Returns a list of compiled <a class="reference internal" href="models.html#PFASGroups.HalogenGroup" title="PFASGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances
+(116 groups with <code class="docutils literal notranslate"><span class="pre">compute=True</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_compiled_HalogenGroups</span>
 
 <span class="n">groups</span> <span class="o">=</span> <span class="n">get_compiled_HalogenGroups</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">groups</span><span class="p">))</span>      <span class="c1"># 116</span>
@@ -692,61 +735,60 @@ of length n_groups × n_halogens.</p></li>
 </div>
 </section>
 <section id="get-halogengroups">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">get_HalogenGroups</a><a class="headerlink" href="#get-halogengroups" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">get_HalogenGroups</a><a class="headerlink" href="#get-halogengroups" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.get_HalogenGroups">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">get_HalogenGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HalogenGroups.get_HalogenGroups" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASGroups.get_HalogenGroups">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_HalogenGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.get_HalogenGroups" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
-<p>Returns raw JSON-like dicts (internal format).  Prefer
-<a class="reference internal" href="#HalogenGroups.get_compiled_HalogenGroups" title="HalogenGroups.get_compiled_HalogenGroups"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_compiled_HalogenGroups()</span></code></a> for most uses.</p>
+<p>Returns raw JSON-like dicts (internal format). Prefer
+<a class="reference internal" href="#PFASGroups.get_compiled_HalogenGroups" title="PFASGroups.get_compiled_HalogenGroups"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_compiled_HalogenGroups()</span></code></a> for most uses.</p>
 </section>
 <section id="load-halogengroups">
-<h3><a class="toc-backref" href="#id10" role="doc-backlink">load_HalogenGroups</a><a class="headerlink" href="#load-halogengroups" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id16" role="doc-backlink">load_HalogenGroups</a><a class="headerlink" href="#load-halogengroups" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.load_HalogenGroups">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">load_HalogenGroups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#load_HalogenGroups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#HalogenGroups.load_HalogenGroups" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASGroups.load_HalogenGroups">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">load_HalogenGroups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#load_HalogenGroups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.load_HalogenGroups" title="Link to this definition"></a></dt>
 <dd><p>Adds default HalogenGroups to function</p>
 </dd></dl>
 
-<p>Compile a list of raw group dicts into <a class="reference internal" href="models.html#HalogenGroups.HalogenGroup" title="HalogenGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances.</p>
+<p>Compile a list of raw group dicts into <a class="reference internal" href="models.html#PFASGroups.HalogenGroup" title="PFASGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances.</p>
 </section>
 <section id="get-pfasdefinitions">
-<h3><a class="toc-backref" href="#id11" role="doc-backlink">get_PFASDefinitions</a><a class="headerlink" href="#get-pfasdefinitions" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">get_PFASDefinitions</a><a class="headerlink" href="#get-pfasdefinitions" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.get_PFASDefinitions">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">get_PFASDefinitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HalogenGroups.get_PFASDefinitions" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASGroups.get_PFASDefinitions">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_PFASDefinitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.get_PFASDefinitions" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
-<p>Returns the list of <a class="reference internal" href="models.html#HalogenGroups.PFASDefinition" title="HalogenGroups.PFASDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a> objects used by
-<code class="docutils literal notranslate"><span class="pre">include_PFAS_definitions=True</span></code>.</p>
+<p>Returns the list of <a class="reference internal" href="models.html#PFASGroups.PFASDefinition" title="PFASGroups.PFASDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a> objects.</p>
 </section>
 <section id="get-componentsmartss">
-<h3><a class="toc-backref" href="#id12" role="doc-backlink">get_componentSmartss</a><a class="headerlink" href="#get-componentsmartss" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">get_componentSmartss</a><a class="headerlink" href="#get-componentsmartss" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.get_componentSmartss">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">get_componentSmartss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#HalogenGroups.get_componentSmartss" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASGroups.get_componentSmartss">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_componentSmartss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.get_componentSmartss" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
-<p>Returns the component-level SMARTS patterns used for saturation filtering.</p>
+<p>Returns component-level SMARTS patterns used for saturation filtering.</p>
 </section>
 </section>
 <section id="molecule-prioritization">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink">Molecule prioritization</a><a class="headerlink" href="#molecule-prioritization" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id19" role="doc-backlink">Molecule prioritization</a><a class="headerlink" href="#molecule-prioritization" title="Link to this heading"></a></h2>
 <section id="prioritise-molecules">
-<h3><a class="toc-backref" href="#id14" role="doc-backlink">prioritise_molecules</a><a class="headerlink" href="#prioritise-molecules" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id20" role="doc-backlink">prioritise_molecules</a><a class="headerlink" href="#prioritise-molecules" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="HalogenGroups.prioritise_molecules">
-<span class="sig-prename descclassname"><span class="pre">HalogenGroups.</span></span><span class="sig-name descname"><span class="pre">prioritise_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://www.rdkit.org/docs/source/rdkit.Chem.rdchem.html#rdkit.Chem.rdchem.Mol" title="(in The RDKit v2025.09)"><span class="pre">Mol</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ResultsModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://www.rdkit.org/docs/source/rdkit.Chem.rdchem.html#rdkit.Chem.rdchem.Mol" title="(in The RDKit v2025.09)"><span class="pre">Mol</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ResultsModel</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'max_component'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ResultsModel</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ResultsModel</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/PFASGroups/prioritise.html#prioritise_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#HalogenGroups.prioritise_molecules" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASGroups.prioritise_molecules">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">prioritise_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://www.rdkit.org/docs/source/rdkit.Chem.rdchem.html#rdkit.Chem.rdchem.Mol" title="(in The RDKit v2025.09)"><span class="pre">Mol</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://www.rdkit.org/docs/source/rdkit.Chem.rdchem.html#rdkit.Chem.rdchem.Mol" title="(in The RDKit v2025.09)"><span class="pre">Mol</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'max_component'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/PFASGroups/prioritise.html#prioritise_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.prioritise_molecules" title="Link to this definition"></a></dt>
 <dd><p>Prioritize PFAS molecules based on similarity to a reference or intrinsic properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>molecules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><em>rdkit.Chem.Mol</em><em>, or </em><a class="reference internal" href="models.html#HalogenGroups.ResultsModel" title="HalogenGroups.ResultsModel"><em>ResultsModel</em></a>) – Molecules to prioritize. Can be:
+<li><p><strong>molecules</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><em>rdkit.Chem.Mol</em><em>, or </em><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.ResultsModel"><em>ResultsModel</em></a>) – Molecules to prioritize. Can be:
 - List of SMILES strings
 - List of RDKit molecule objects
 - ResultsModel object (pre-computed results)</p></li>
-<li><p><strong>reference</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><em>rdkit.Chem.Mol</em><em>, </em><a class="reference internal" href="models.html#HalogenGroups.ResultsModel" title="HalogenGroups.ResultsModel"><em>ResultsModel</em></a><em>, or </em><em>None</em>) – Reference molecules for similarity comparison. If provided, molecules are
+<li><p><strong>reference</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><em>rdkit.Chem.Mol</em><em>, </em><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.ResultsModel"><em>ResultsModel</em></a><em>, or </em><em>None</em>) – Reference molecules for similarity comparison. If provided, molecules are
 prioritized by distributional similarity (lower KL divergence = higher priority).
 If None, prioritization is based on intrinsic fluorinated component properties.</p></li>
 <li><p><strong>group_selection</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>default 'all'</em>) – PFAS group selection for fingerprint generation when using reference:
@@ -794,7 +836,7 @@ If return_scores=False: prioritized_results only</p>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="models.html#HalogenGroups.ResultsModel" title="HalogenGroups.ResultsModel">ResultsModel</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.ResultsModel">ResultsModel</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -844,9 +886,9 @@ mean fingerprint of the reference set:</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="models.html#HalogenGroups.ResultsModel.to_fingerprint" title="HalogenGroups.ResultsModel.to_fingerprint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResultsModel.to_fingerprint</span></code></a></dt><dd><p>Convert results to fingerprints</p>
+<dt><a class="reference internal" href="models.html#PFASGroups.ResultsModel.to_fingerprint" title="PFASGroups.ResultsModel.to_fingerprint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResultsModel.to_fingerprint</span></code></a></dt><dd><p>Convert results to fingerprints</p>
 </dd>
-<dt><a class="reference internal" href="fingerprint_analysis.html#id3" title="HalogenGroups.ResultsFingerprint.compare_kld"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld</span></code></a></dt><dd><p>Compare fingerprint distributions</p>
+<dt><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.compare_kld" title="PFASGroups.ResultsFingerprint.compare_kld"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld</span></code></a></dt><dd><p>Compare fingerprint distributions</p>
 </dd>
 </dl>
 </div>

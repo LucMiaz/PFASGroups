@@ -1,5 +1,5 @@
-﻿HalogenGroups / PFASGroups
-==========================
+﻿PFASGroups Documentation
+=========================
 
 .. image:: https://badge.fury.io/py/PFASgroups.svg
    :target: https://badge.fury.io/py/PFASgroups
@@ -17,51 +17,33 @@
    :target: https://www.rdkit.org/
    :alt: Powered by RDKit
 
-A comprehensive Python cheminformatics package for automated detection,
-classification, and analysis of halogenated substances — with a focus on
-Per- and Polyfluoroalkyl Substances (PFAS).
-
-The package can be imported as **HalogenGroups** (all halogens: F, Cl, Br, I)
-or as **PFASGroups** (fluorine-only, for backward compatibility):
-
-.. list-table::
-   :header-rows: 1
-   :widths: 30 70
-
-   * - Import
-     - Default behavior
-   * - ``from HalogenGroups import parse_smiles``
-     - Searches for all halogens (F, Cl, Br, I) across 116 groups
-   * - ``from PFASGroups import parse_smiles``
-     - Searches for fluorine only (backward-compatible with v1/v2)
-
-Quick example
--------------
+**PFASGroups** is a Python cheminformatics package for automated detection,
+classification, and analysis of Per- and Polyfluoroalkyl Substances (PFAS)
+using SMARTS-based structural group matching.
 
 .. code-block:: python
 
-   from HalogenGroups import parse_smiles, generate_fingerprint
-   import numpy as np
+   from PFASGroups import parse_smiles
 
-   smiles = ["CCCC(F)(F)F", "ClCCCl", "FC(F)(F)C(=O)O"]
-   results = parse_smiles(smiles)
+   results = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O", "OCCOCCO"])
 
-   for mol_result in results:
-       print(mol_result.smiles, "->", len(mol_result.matches), "group matches")
-
-   fps, group_names = generate_fingerprint(smiles)
-   print(fps.shape)   # (3, 464)
+   for mol in results:
+       print(mol.smiles, "—", len(mol.matches), "group match(es)")
+   # CCCC(F)(F)F — 1 group match(es)
+   # FC(F)(F)C(=O)O — 1 group match(es)
+   # OCCOCCO — 0 group match(es)
 
 Key capabilities
 ----------------
 
 - **116 halogen groups**: 28 OECD, 45 generic, 43 fluorotelomer groups
-- **Dual-halogen API**: parse for any combination of F, Cl, Br, I in one call
 - **PFAS definition screening**: classify molecules against 5 regulatory frameworks
-- **Fingerprinting**: generate 464-column multi-halogen fingerprints for ML
+- **Fingerprinting**: generate 116-column fingerprints (binary, count  or max-component) for ML
+- **Group selection**: use all groups, OECD only, generic, telomers, or a custom subset
 - **Dimensionality reduction**: PCA, t-SNE, UMAP on fingerprint matrices
 - **Molecule prioritization**: rank molecules by structural novelty
-- **Command-line interface**: ``halogengroups parse``, ``fingerprint``, ``list-groups``
+- **Command-line interface**: ``pfasgroups parse``, ``fingerprint``, ``list-groups``
+- **Multi-halogen support**: extend detection to Cl, Br, I via :doc:`halogengroups`
 
 .. toctree::
    :maxdepth: 2
@@ -74,7 +56,6 @@ Key capabilities
    :maxdepth: 2
    :caption: Core Concepts
 
-   halogengroups
    pfas_definitions
    algorithm
 
@@ -86,6 +67,7 @@ Key capabilities
    customization
    prioritization
    benchmarking
+   halogengroups
    cli
 
 .. toctree::

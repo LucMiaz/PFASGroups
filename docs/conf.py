@@ -22,7 +22,12 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
     'myst_parser',
+    'sphinx_copybutton',
 ]
+
+# Copy button: strip prompt characters from copy
+copybutton_prompt_text = r'>>> |\.\.\. |\$ |\# |In \[\d+\]: | {2,5}\.\.\.: | {5,8}: '  # noqa: E501
+copybutton_prompt_is_regexp = True
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md', 'ResultsFingerprint_Guide.md']

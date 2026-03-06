@@ -8,6 +8,7 @@
   <title>Index &mdash; HalogenGroups / PFASGroups 3.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -15,6 +16,8 @@
       <script src="_static/documentation_options.js?v=eaea8fc6"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=d30a5ebd"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -55,31 +58,16 @@
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#parsing-smiles">Parsing SMILES</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#accessing-matches">Accessing matches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#converting-to-a-dataframe">Converting to a DataFrame</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#fluorine-only-pfasgroups-mode">Fluorine-only (PFASGroups mode)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#generating-fingerprints">Generating fingerprints</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#pfas-definition-screening">PFAS definition screening</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#saturated-vs-unsaturated-groups">Saturated vs unsaturated groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#saturation-filter">Saturation filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#multi-halogen-parsing-advanced">Multi-halogen parsing (advanced)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#command-line-usage">Command-line usage</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Core Concepts</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="halogengroups.html">HalogenGroups — Multi-Halogen Analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#quick-comparison">Quick Comparison</a></li>
-<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#functions-with-altered-defaults">Functions with Altered Defaults</a></li>
-<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#parsing-multi-halogen-molecules">Parsing Multi-Halogen Molecules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#multi-halogen-fingerprints">Multi-Halogen Fingerprints</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="halogengroups.html#via-resultsmodel">Via ResultsModel</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#combining-with-saturation-filters">Combining with Saturation Filters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#cli-with-multiple-halogens">CLI with Multiple Halogens</a></li>
-<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#implementation-details">Implementation Details</a></li>
-<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#when-to-use-which-import">When to Use Which Import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#see-also">See Also</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="pfas_definitions.html">PFAS Definitions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#oecd-2021">OECD 2021</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#eu-reach">EU REACH</a></li>
@@ -118,10 +106,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tutorial.html#filtering-by-group-category">Filtering by group category</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#working-with-multiple-halogens">Working with multiple halogens</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#saturation-filter">Saturation filter</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#saturation-filter">Saturation filter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#fingerprinting-for-machine-learning">Fingerprinting for machine learning</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tutorial.html#using-resultsmodel-to-fingerprint">Using ResultsModel.to_fingerprint</a></li>
 </ul>
@@ -130,6 +115,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tutorial.html#comparing-distributions">Comparing distributions</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#multi-halogen-parsing-advanced">Multi-halogen parsing (advanced)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#pfas-definition-screening">PFAS definition screening</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#molecule-prioritization">Molecule prioritization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#loading-and-inspecting-groups">Loading and inspecting groups</a></li>
@@ -161,6 +147,21 @@
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#performance">Performance</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="halogengroups.html">Multi-Halogen Analysis (Advanced)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#quick-comparison">Quick Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#functions-with-altered-defaults">Functions with Altered Defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#parsing-multi-halogen-molecules">Parsing Multi-Halogen Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#multi-halogen-fingerprints">Multi-Halogen Fingerprints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="halogengroups.html#via-resultsmodel">Via ResultsModel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#combining-with-saturation-filters">Combining with Saturation Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#cli-with-multiple-halogens">CLI with Multiple Halogens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#implementation-details">Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#when-to-use-which-import">When to Use Which Import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#see-also">See Also</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#synopsis">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#parse">parse</a></li>
@@ -179,52 +180,52 @@
 <li class="toctree-l1"><a class="reference internal" href="api/core.html">Core API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/core.html#parsing">Parsing</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-smiles">parse_smiles</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-mols">parse_mols</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.parse_mols"><code class="docutils literal notranslate"><span class="pre">parse_mols()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.parse_mols"><code class="docutils literal notranslate"><span class="pre">parse_mols()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-mol">parse_mol</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.parse_mol"><code class="docutils literal notranslate"><span class="pre">parse_mol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.parse_mol"><code class="docutils literal notranslate"><span class="pre">parse_mol()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/core.html#fingerprinting">Fingerprinting</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#generate-fingerprint">generate_fingerprint</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/core.html#group-library">Group library</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#get-compiled-halogengroups">get_compiled_HalogenGroups</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.get_compiled_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_compiled_HalogenGroups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.get_compiled_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_compiled_HalogenGroups()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#get-halogengroups">get_HalogenGroups</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.get_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_HalogenGroups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.get_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_HalogenGroups()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#load-halogengroups">load_HalogenGroups</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.load_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">load_HalogenGroups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.load_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">load_HalogenGroups()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#get-pfasdefinitions">get_PFASDefinitions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.get_PFASDefinitions"><code class="docutils literal notranslate"><span class="pre">get_PFASDefinitions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.get_PFASDefinitions"><code class="docutils literal notranslate"><span class="pre">get_PFASDefinitions()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#get-componentsmartss">get_componentSmartss</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/core.html#molecule-prioritization">Molecule prioritization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/core.html#prioritise-molecules">prioritise_molecules</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.prioritise_molecules"><code class="docutils literal notranslate"><span class="pre">prioritise_molecules()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASGroups.prioritise_molecules"><code class="docutils literal notranslate"><span class="pre">prioritise_molecules()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -233,76 +234,90 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/models.html">Data Models</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#resultsmodel">ResultsModel</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/models.html#HalogenGroups.ResultsModel"><code class="docutils literal notranslate"><span class="pre">ResultsModel</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.ResultsModel.to_fingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_fingerprint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel"><code class="docutils literal notranslate"><span class="pre">ResultsModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsModel.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.from_raw"><code class="docutils literal notranslate"><span class="pre">ResultsModel.from_raw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.iter_group_matches"><code class="docutils literal notranslate"><span class="pre">ResultsModel.iter_group_matches()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.plot_components_for_group"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot_components_for_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.show"><code class="docutils literal notranslate"><span class="pre">ResultsModel.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.plot"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.svg"><code class="docutils literal notranslate"><span class="pre">ResultsModel.svg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.summarise"><code class="docutils literal notranslate"><span class="pre">ResultsModel.summarise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.table"><code class="docutils literal notranslate"><span class="pre">ResultsModel.table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.summary"><code class="docutils literal notranslate"><span class="pre">ResultsModel.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.plot_all_components_with_group_colours"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot_all_components_with_group_colours()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_sql()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.to_fingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_fingerprint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.ResultsModel.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsModel.from_sql()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#moleculeresult">MoleculeResult</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult"><code class="docutils literal notranslate"><span class="pre">MoleculeResult</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.smiles"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.smiles</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.mol_with_h"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.mol_with_h</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.matches</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.iter_group_matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.iter_group_matches()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.collect_component_atoms"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.collect_component_atoms()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.summarise"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summarise()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.summary"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summary()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.table"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.show"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.show()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.plot"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.plot()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.svg"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.svg()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.to_sql"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.to_sql()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult"><code class="docutils literal notranslate"><span class="pre">MoleculeResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.smiles"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.smiles</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.mol_with_h"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.mol_with_h</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.matches</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.iter_group_matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.iter_group_matches()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.collect_component_atoms"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.collect_component_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.summarise"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summarise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.summary"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.table"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.show"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.plot"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.svg"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.svg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.MoleculeResult.to_sql"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.to_sql()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#groupmatch">GroupMatch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#matchcomponent">MatchComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#resultsfingerprint">ResultsFingerprint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#halogengroup">HalogenGroup</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup"><code class="docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.id"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.id</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.name"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSmarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.componentForm"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentForm</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.componentHalogens"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentHalogens</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.componentSaturation"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSaturation</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.max_dist_from_comp"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.max_dist_from_comp</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.linker_smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraints</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.__init__"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.set_component_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_component_smarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.set_componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_componentSmarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_gte()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_lte()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_eq()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_only()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_rel()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.formula_dict_satisfies_constraints()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_matched_atoms()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.component_satisfies_all_smarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_alkyl_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_aryl_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.find_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.test"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup"><code class="docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.id"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.name"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSmarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.componentForm"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.componentHalogens"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentHalogens</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.componentSaturation"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSaturation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.max_dist_from_comp"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.max_dist_from_comp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.linker_smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.__init__"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.set_component_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_component_smarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.set_componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_componentSmarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_gte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_lte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_only()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_rel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.formula_dict_satisfies_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_matched_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.component_satisfies_all_smarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_alkyl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_aryl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.find_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.HalogenGroup.test"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.test()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/models.html#pfasdefinition">PFASDefinition</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASGroups.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -311,16 +326,16 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/fingerprint_analysis.html">Fingerprint Analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/fingerprint_analysis.html#resultsfingerprint">ResultsFingerprint</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.summary"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.summary()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_pca()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_kernel_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_kernel_pca()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_tsne"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_tsne()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_umap"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_umap()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.compare_kld"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.to_sql()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.from_sql()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.summary"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_pca()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_kernel_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_kernel_pca()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_tsne"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_tsne()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_umap"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_umap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.compare_kld"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.to_sql()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.from_sql()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#creating-a-resultsfingerprint">Creating a ResultsFingerprint</a></li>
@@ -421,12 +436,14 @@
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.__init__">__init__() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.__init__">__init__() (PFASGroups.HalogenGroup method)</a>
 
       <ul>
-        <li><a href="api/models.html#HalogenGroups.PFASDefinition.__init__">(HalogenGroups.PFASDefinition method)</a>
+        <li><a href="api/models.html#PFASGroups.PFASDefinition.__init__">(PFASGroups.PFASDefinition method)</a>
 </li>
-        <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.__init__">(HalogenGroups.ResultsFingerprint method)</a>
+        <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.__init__">(PFASGroups.ResultsFingerprint method)</a>
+</li>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.__init__">(PFASGroups.ResultsModel method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -435,7 +452,7 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.PFASDefinition.applies_to_molecule">applies_to_molecule() (HalogenGroups.PFASDefinition method)</a>
+      <li><a href="api/models.html#PFASGroups.PFASDefinition.applies_to_molecule">applies_to_molecule() (PFASGroups.PFASDefinition method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -443,33 +460,33 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.collect_component_atoms">collect_component_atoms() (HalogenGroups.MoleculeResult method)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.collect_component_atoms">collect_component_atoms() (PFASGroups.MoleculeResult method)</a>
 </li>
-      <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.compare_kld">compare_kld() (HalogenGroups.ResultsFingerprint method)</a>
+      <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.compare_kld">compare_kld() (PFASGroups.ResultsFingerprint method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.component_satisfies_all_smarts">component_satisfies_all_smarts() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.component_satisfies_all_smarts">component_satisfies_all_smarts() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.componentForm">componentForm (HalogenGroups.HalogenGroup attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.componentForm">componentForm (PFASGroups.HalogenGroup attribute)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.componentHalogens">componentHalogens (HalogenGroups.HalogenGroup attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.componentHalogens">componentHalogens (PFASGroups.HalogenGroup attribute)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.componentSaturation">componentSaturation (HalogenGroups.HalogenGroup attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.componentSaturation">componentSaturation (PFASGroups.HalogenGroup attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.componentSmarts">componentSmarts (HalogenGroups.HalogenGroup attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.componentSmarts">componentSmarts (PFASGroups.HalogenGroup attribute)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.constraint_eq">constraint_eq() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.constraint_eq">constraint_eq() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.constraint_gte">constraint_gte() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.constraint_gte">constraint_gte() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.constraint_lte">constraint_lte() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.constraint_lte">constraint_lte() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.constraint_only">constraint_only() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.constraint_only">constraint_only() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.constraint_rel">constraint_rel() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.constraint_rel">constraint_rel() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.constraints">constraints (HalogenGroups.HalogenGroup attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.constraints">constraints (PFASGroups.HalogenGroup attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -477,7 +494,7 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.PFASDefinition.description">description (HalogenGroups.PFASDefinition attribute)</a>
+      <li><a href="api/models.html#PFASGroups.PFASDefinition.description">description (PFASGroups.PFASDefinition attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -485,39 +502,45 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.find_alkyl_components">find_alkyl_components() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.find_alkyl_components">find_alkyl_components() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.find_aryl_components">find_aryl_components() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.find_aryl_components">find_aryl_components() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.find_components">find_components() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.find_components">find_components() (PFASGroups.HalogenGroup method)</a>
+</li>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.find_matched_atoms">find_matched_atoms() (PFASGroups.HalogenGroup method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.find_matched_atoms">find_matched_atoms() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.PFASDefinition.fluorineRatio">fluorineRatio (PFASGroups.PFASDefinition attribute)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.PFASDefinition.fluorineRatio">fluorineRatio (HalogenGroups.PFASDefinition attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.formula_dict_satisfies_constraints">formula_dict_satisfies_constraints() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.formula_dict_satisfies_constraints">formula_dict_satisfies_constraints() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.ResultsModel.from_raw">from_raw() (PFASGroups.ResultsModel class method)</a>
 </li>
-      <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.from_sql">from_sql() (HalogenGroups.ResultsFingerprint class method)</a>
+      <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.from_sql">from_sql() (PFASGroups.ResultsFingerprint class method)</a>
+
+      <ul>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.from_sql">(PFASGroups.ResultsModel class method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#HalogenGroups.generate_fingerprint">generate_fingerprint() (in module HalogenGroups)</a>
+      <li><a href="api/core.html#PFASGroups.generate_fingerprint">generate_fingerprint() (in module PFASGroups)</a>
 </li>
-      <li><a href="api/core.html#HalogenGroups.get_compiled_HalogenGroups">get_compiled_HalogenGroups() (in module HalogenGroups)</a>
+      <li><a href="api/core.html#PFASGroups.get_compiled_HalogenGroups">get_compiled_HalogenGroups() (in module PFASGroups)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#HalogenGroups.get_componentSmartss">get_componentSmartss() (in module HalogenGroups)</a>
+      <li><a href="api/core.html#PFASGroups.get_componentSmartss">get_componentSmartss() (in module PFASGroups)</a>
 </li>
-      <li><a href="api/core.html#HalogenGroups.get_HalogenGroups">get_HalogenGroups() (in module HalogenGroups)</a>
+      <li><a href="api/core.html#PFASGroups.get_HalogenGroups">get_HalogenGroups() (in module PFASGroups)</a>
 </li>
-      <li><a href="api/core.html#HalogenGroups.get_PFASDefinitions">get_PFASDefinitions() (in module HalogenGroups)</a>
+      <li><a href="api/core.html#PFASGroups.get_PFASDefinitions">get_PFASDefinitions() (in module PFASGroups)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -525,7 +548,7 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup">HalogenGroup (class in HalogenGroups)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup">HalogenGroup (class in PFASGroups)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -533,29 +556,33 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.id">id (HalogenGroups.HalogenGroup attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.id">id (PFASGroups.HalogenGroup attribute)</a>
 
       <ul>
-        <li><a href="api/models.html#HalogenGroups.PFASDefinition.id">(HalogenGroups.PFASDefinition attribute)</a>
+        <li><a href="api/models.html#PFASGroups.PFASDefinition.id">(PFASGroups.PFASDefinition attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.PFASDefinition.includeHydrogen">includeHydrogen (HalogenGroups.PFASDefinition attribute)</a>
+      <li><a href="api/models.html#PFASGroups.PFASDefinition.includeHydrogen">includeHydrogen (PFASGroups.PFASDefinition attribute)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.iter_group_matches">iter_group_matches() (HalogenGroups.MoleculeResult method)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.iter_group_matches">iter_group_matches() (PFASGroups.MoleculeResult method)</a>
+
+      <ul>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.iter_group_matches">(PFASGroups.ResultsModel method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.linker_smarts">linker_smarts (HalogenGroups.HalogenGroup attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.linker_smarts">linker_smarts (PFASGroups.HalogenGroup attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#HalogenGroups.load_HalogenGroups">load_HalogenGroups() (in module HalogenGroups)</a>
+      <li><a href="api/core.html#PFASGroups.load_HalogenGroups">load_HalogenGroups() (in module PFASGroups)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -563,15 +590,15 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.matches">matches (HalogenGroups.MoleculeResult property)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.matches">matches (PFASGroups.MoleculeResult property)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.max_dist_from_comp">max_dist_from_comp (HalogenGroups.HalogenGroup attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.max_dist_from_comp">max_dist_from_comp (PFASGroups.HalogenGroup attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.mol_with_h">mol_with_h (HalogenGroups.MoleculeResult property)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.mol_with_h">mol_with_h (PFASGroups.MoleculeResult property)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult">MoleculeResult (class in HalogenGroups)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult">MoleculeResult (class in PFASGroups)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -579,10 +606,10 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.name">name (HalogenGroups.HalogenGroup attribute)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.name">name (PFASGroups.HalogenGroup attribute)</a>
 
       <ul>
-        <li><a href="api/models.html#HalogenGroups.PFASDefinition.name">(HalogenGroups.PFASDefinition attribute)</a>
+        <li><a href="api/models.html#PFASGroups.PFASDefinition.name">(PFASGroups.PFASDefinition attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -591,27 +618,35 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/core.html#HalogenGroups.parse_mol">parse_mol() (in module HalogenGroups)</a>
+      <li><a href="api/core.html#PFASGroups.parse_mol">parse_mol() (in module PFASGroups)</a>
 </li>
-      <li><a href="api/core.html#HalogenGroups.parse_mols">parse_mols() (in module HalogenGroups)</a>
+      <li><a href="api/core.html#PFASGroups.parse_mols">parse_mols() (in module PFASGroups)</a>
 </li>
-      <li><a href="api/core.html#HalogenGroups.parse_smiles">parse_smiles() (in module HalogenGroups)</a>
+      <li><a href="api/core.html#PFASGroups.parse_smiles">parse_smiles() (in module PFASGroups)</a>
 </li>
-      <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_kernel_pca">perform_kernel_pca() (HalogenGroups.ResultsFingerprint method)</a>
+      <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_kernel_pca">perform_kernel_pca() (PFASGroups.ResultsFingerprint method)</a>
 </li>
-      <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_pca">perform_pca() (HalogenGroups.ResultsFingerprint method)</a>
+      <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_pca">perform_pca() (PFASGroups.ResultsFingerprint method)</a>
+</li>
+      <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_tsne">perform_tsne() (PFASGroups.ResultsFingerprint method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_tsne">perform_tsne() (HalogenGroups.ResultsFingerprint method)</a>
+      <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_umap">perform_umap() (PFASGroups.ResultsFingerprint method)</a>
 </li>
-      <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_umap">perform_umap() (HalogenGroups.ResultsFingerprint method)</a>
+      <li><a href="api/models.html#PFASGroups.PFASDefinition">PFASDefinition (class in PFASGroups)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.PFASDefinition">PFASDefinition (class in HalogenGroups)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.plot">plot() (PFASGroups.MoleculeResult method)</a>
+
+      <ul>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.plot">(PFASGroups.ResultsModel method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.plot">plot() (HalogenGroups.MoleculeResult method)</a>
+      </ul></li>
+      <li><a href="api/models.html#PFASGroups.ResultsModel.plot_all_components_with_group_colours">plot_all_components_with_group_colours() (PFASGroups.ResultsModel method)</a>
 </li>
-      <li><a href="api/core.html#HalogenGroups.prioritise_molecules">prioritise_molecules() (in module HalogenGroups)</a>
+      <li><a href="api/models.html#PFASGroups.ResultsModel.plot_components_for_group">plot_components_for_group() (PFASGroups.ResultsModel method)</a>
+</li>
+      <li><a href="api/core.html#PFASGroups.prioritise_molecules">prioritise_molecules() (in module PFASGroups)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -619,13 +654,13 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.PFASDefinition.requireBoth">requireBoth (HalogenGroups.PFASDefinition attribute)</a>
+      <li><a href="api/models.html#PFASGroups.PFASDefinition.requireBoth">requireBoth (PFASGroups.PFASDefinition attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint">ResultsFingerprint (class in HalogenGroups)</a>
+      <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint">ResultsFingerprint (class in PFASGroups)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.ResultsModel">ResultsModel (class in HalogenGroups)</a>
+      <li><a href="api/models.html#PFASGroups.ResultsModel">ResultsModel (class in PFASGroups)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -633,54 +668,74 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.set_component_smarts">set_component_smarts() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.set_component_smarts">set_component_smarts() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.set_componentSmarts">set_componentSmarts() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.set_componentSmarts">set_componentSmarts() (PFASGroups.HalogenGroup method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.show">show() (HalogenGroups.MoleculeResult method)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.show">show() (PFASGroups.MoleculeResult method)</a>
+
+      <ul>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.show">(PFASGroups.ResultsModel method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.smarts">smarts (HalogenGroups.HalogenGroup attribute)</a>
+      </ul></li>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.smarts">smarts (PFASGroups.HalogenGroup attribute)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.PFASDefinition.smarts_patterns">smarts_patterns (HalogenGroups.PFASDefinition attribute)</a>
+      <li><a href="api/models.html#PFASGroups.PFASDefinition.smarts_patterns">smarts_patterns (PFASGroups.PFASDefinition attribute)</a>
+</li>
+      <li><a href="api/models.html#PFASGroups.PFASDefinition.smarts_strings">smarts_strings (PFASGroups.PFASDefinition attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.PFASDefinition.smarts_strings">smarts_strings (HalogenGroups.PFASDefinition attribute)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.smiles">smiles (PFASGroups.MoleculeResult property)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.smiles">smiles (HalogenGroups.MoleculeResult property)</a>
-</li>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.summarise">summarise() (HalogenGroups.MoleculeResult method)</a>
-</li>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.summary">summary() (HalogenGroups.MoleculeResult method)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.summarise">summarise() (PFASGroups.MoleculeResult method)</a>
 
       <ul>
-        <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.summary">(HalogenGroups.ResultsFingerprint method)</a>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.summarise">(PFASGroups.ResultsModel method)</a>
 </li>
       </ul></li>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.svg">svg() (HalogenGroups.MoleculeResult method)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.summary">summary() (PFASGroups.MoleculeResult method)</a>
+
+      <ul>
+        <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.summary">(PFASGroups.ResultsFingerprint method)</a>
 </li>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.summary">(PFASGroups.ResultsModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.svg">svg() (PFASGroups.MoleculeResult method)</a>
+
+      <ul>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.svg">(PFASGroups.ResultsModel method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.table">table() (HalogenGroups.MoleculeResult method)</a>
-</li>
-      <li><a href="api/models.html#HalogenGroups.HalogenGroup.test">test() (HalogenGroups.HalogenGroup method)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.table">table() (PFASGroups.MoleculeResult method)</a>
 
       <ul>
-        <li><a href="api/models.html#HalogenGroups.PFASDefinition.test">(HalogenGroups.PFASDefinition method)</a>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.table">(PFASGroups.ResultsModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/models.html#PFASGroups.HalogenGroup.test">test() (PFASGroups.HalogenGroup method)</a>
+
+      <ul>
+        <li><a href="api/models.html#PFASGroups.PFASDefinition.test">(PFASGroups.PFASDefinition method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/models.html#HalogenGroups.ResultsModel.to_fingerprint">to_fingerprint() (HalogenGroups.ResultsModel method)</a>
+      <li><a href="api/models.html#PFASGroups.ResultsModel.to_fingerprint">to_fingerprint() (PFASGroups.ResultsModel method)</a>
 </li>
-      <li><a href="api/models.html#HalogenGroups.MoleculeResult.to_sql">to_sql() (HalogenGroups.MoleculeResult method)</a>
+      <li><a href="api/models.html#PFASGroups.MoleculeResult.to_sql">to_sql() (PFASGroups.MoleculeResult method)</a>
 
       <ul>
-        <li><a href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.to_sql">(HalogenGroups.ResultsFingerprint method)</a>
+        <li><a href="api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.to_sql">(PFASGroups.ResultsFingerprint method)</a>
+</li>
+        <li><a href="api/models.html#PFASGroups.ResultsModel.to_sql">(PFASGroups.ResultsModel method)</a>
 </li>
       </ul></li>
   </ul></td>
