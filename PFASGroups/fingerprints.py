@@ -9,7 +9,7 @@ import numpy as np
 def generate_fingerprint(smiles: Union[str, List[str]],
                              selected_groups: Union[List[int], range, None] = None,
                              representation: str = 'vector',
-                             count_mode: str = 'binary',
+                             count_mode: str = 'max_component',
                              halogens: Union[str, List[str]] = 'F',
                              saturation: Optional[str] = 'per',
                              **kwargs):
