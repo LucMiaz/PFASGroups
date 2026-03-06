@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customization &mdash; PFASgroups 2.2.2 documentation</title>
+  <title>Customization &mdash; HalogenGroups / PFASGroups 3.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=219dea72"></script>
+      <script src="_static/documentation_options.js?v=eaea8fc6"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Benchmarking and Validation" href="benchmarking.html" />
-    <link rel="prev" title="Data Models API Reference" href="api/models.html" /> 
+    <link rel="next" title="Prioritization" href="prioritization.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,7 +32,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            PFASgroups
+            HalogenGroups / PFASGroups
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -42,400 +42,356 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#from-pypi-recommended">From PyPI (Recommended)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#from-conda-forge">From Conda-Forge</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#from-source">From Source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="installation.html#core-dependencies">Core Dependencies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="installation.html#optional-dependencies">Optional Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-with-pip">Install with pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-with-conda">Install with conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#optional-dependencies">Optional dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verify-installation">Verify installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#verifying-installation">Verifying Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#testing-the-installation">Testing the Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="installation.html#rdkit-installation-issues">RDKit Installation Issues</a></li>
-<li class="toctree-l3"><a class="reference internal" href="installation.html#import-errors">Import Errors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="installation.html#performance-issues">Performance Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#parsing-smiles">Parsing SMILES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#accessing-matches">Accessing matches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#converting-to-a-dataframe">Converting to a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#fluorine-only-pfasgroups-mode">Fluorine-only (PFASGroups mode)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#generating-fingerprints">Generating fingerprints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#pfas-definition-screening">PFAS definition screening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#saturated-vs-unsaturated-groups">Saturated vs unsaturated groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#command-line-usage">Command-line usage</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#upgrading">Upgrading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#development-installation">Development Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Core Concepts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="halogengroups.html">HalogenGroups — Multi-Halogen Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#quick-comparison">Quick Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#functions-with-altered-defaults">Functions with Altered Defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#parsing-multi-halogen-molecules">Parsing Multi-Halogen Molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#multi-halogen-fingerprints">Multi-Halogen Fingerprints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="halogengroups.html#via-resultsmodel">Via ResultsModel</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-pfas-detection">Basic PFAS Detection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#multiple-molecules">Multiple Molecules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#generating-fingerprints">Generating Fingerprints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#visualization">Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#component-based-analysis">Component-Based Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#command-line-interface">Command Line Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#working-with-dataframes">Working with DataFrames</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#reading-from-files">Reading from Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#error-handling">Error Handling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-1-basic-pfas-detection">Part 1: Basic PFAS Detection</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#understanding-pfas-groups">Understanding PFAS Groups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#analyzing-common-pfas">Analyzing Common PFAS</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-2-working-with-data">Part 2: Working with Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#batch-processing">Batch Processing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#dataframe-output">DataFrame Output</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-3-fingerprints-for-ml">Part 3: Fingerprints for ML</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#binary-fingerprints">Binary Fingerprints</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#count-based-fingerprints">Count-Based Fingerprints</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-4-visualization">Part 4: Visualization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#basic-visualization">Basic Visualization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#grid-layouts">Grid Layouts</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#svg-for-publications">SVG for Publications</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-5-advanced-features">Part 5: Advanced Features</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#component-based-analysis">Component-Based Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#homologue-generation">Homologue Generation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#custom-pfas-groups">Custom PFAS Groups</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#part-6-real-world-applications">Part 6: Real-World Applications</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#database-screening">Database Screening</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#regulatory-compliance">Regulatory Compliance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial.html#error-handling">Error Handling</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#combining-with-saturation-filters">Combining with Saturation Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#cli-with-multiple-halogens">CLI with Multiple Halogens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#implementation-details">Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#when-to-use-which-import">When to Use Which Import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halogengroups.html#see-also">See Also</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pfas_definitions.html">PFAS Definitions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#supported-definitions">Supported Definitions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#oecd-definition-2021">1. OECD Definition (2021)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#eu-pfas-restriction-reach">2. EU PFAS Restriction (REACH)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#oppt-2023-us-epa">3. OPPT 2023 (US EPA)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#uk-pfas-definition">4. UK PFAS Definition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#pfastructv5">5. PFASTRUCTv5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#oecd-2021">OECD 2021</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#eu-reach">EU REACH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#oppt-2023">OPPT 2023</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#uk-environment-agency">UK Environment Agency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#pfastructv5">PFASTRUCTv5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#retrieving-definition-objects">Retrieving definition objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#checking-a-single-molecule">Checking a single molecule</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#using-pfas-definitions-in-code">Using PFAS Definitions in Code</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#checking-pfas-classification">Checking PFAS Classification</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pfas_definitions.html#filtering-by-definition">Filtering by Definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#group-library">Group library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#smarts-based-matching">SMARTS-based matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#halogen-filtering">Halogen filtering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithm.html#saturation-filtering">Saturation filtering</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#regulatory-implications">Regulatory Implications</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#see-also">See Also</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#references">References</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html#core-concepts">Core Concepts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html#algorithm-workflow">Algorithm Workflow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-1-molecule-preprocessing">Step 1: Molecule Preprocessing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-2-formula-constraint-validation">Step 2: Formula Constraint Validation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-3-smarts-pattern-matching">Step 3: SMARTS Pattern Matching</a></li>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-4a-fluorinated-path-finding-non-cyclic">Step 4a: Fluorinated Path Finding (Non-Cyclic)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-4b-fluorinated-connected-components-cyclic">Step 4b: Fluorinated Connected Components (Cyclic)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#step-5-result-aggregation">Step 5: Result Aggregation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html#pathway-smarts-patterns">Pathway SMARTS Patterns</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#perfluoroalkyl-chain">Perfluoroalkyl Chain</a></li>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#polyfluoroalkyl-chain">Polyfluoroalkyl Chain</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html#optimization-strategies">Optimization Strategies</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#early-termination">Early Termination</a></li>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#caching">Caching</a></li>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#graph-algorithms">Graph Algorithms</a></li>
-<li class="toctree-l3"><a class="reference internal" href="algorithm.html#parallel-processing">Parallel Processing</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html#time-complexity">Time Complexity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html#accuracy-and-validation">Accuracy and Validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html#limitations">Limitations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html#future-development">Future Development</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html#references">References</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api/core.html">Core API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/core.html#main-functions">Main Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-smiles">parse_smiles</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-groups-in-mol">parse_groups_in_mol</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.parse_groups_in_mol"><code class="docutils literal notranslate"><span class="pre">parse_groups_in_mol()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#generate-fingerprint">generate_fingerprint</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.fingerprints.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#plot-pfasgroups">plot_pfasgroups</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.draw_mols.plot_pfasgroups"><code class="docutils literal notranslate"><span class="pre">plot_pfasgroups()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/core.html#helper-functions">Helper Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-pfasgroups">get_PFASGroups</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_PFASGroups"><code class="docutils literal notranslate"><span class="pre">get_PFASGroups()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-componentSmartss">get_componentSmartss</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.getter.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-componentSmarts">compile_componentSmarts</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_componentSmarts"><code class="docutils literal notranslate"><span class="pre">compile_componentSmarts()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/core.html#compile-componentSmartss">compile_componentSmartss</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/core.html#PFASgroups.parser.compile_componentSmartss"><code class="docutils literal notranslate"><span class="pre">compile_componentSmartss()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/core.html#internal-functions">Internal Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/core.html#see-also">See Also</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api/models.html">Data Models API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/models.html#pfasgroup-class">PFASGroup Class</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup"><code class="docutils literal notranslate"><span class="pre">PFASGroup</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.id"><code class="docutils literal notranslate"><span class="pre">PFASGroup.id</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.name"><code class="docutils literal notranslate"><span class="pre">PFASGroup.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.componentSmarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.max_dist_from_CF"><code class="docutils literal notranslate"><span class="pre">PFASGroup.max_dist_from_CF</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.linker_smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraints</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.__init__"><code class="docutils literal notranslate"><span class="pre">PFASGroup.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_gte()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_lte()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_eq()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_only()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">PFASGroup.constraint_rel()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">PFASGroup.formula_dict_satisfies_constraints()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_matched_atoms()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">PFASGroup.component_satisfies_all_smarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_alkyl_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_aryl_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.find_components"><code class="docutils literal notranslate"><span class="pre">PFASGroup.find_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASGroupModel.PFASGroup.test"><code class="docutils literal notranslate"><span class="pre">PFASGroup.test()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/models.html#formula-dict-satisfies-constraints">formula_dict_satisfies_constraints</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/models.html#pfasdefinition-class">PFASDefinition Class</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/models.html#PFASgroups.PFASDefinitionModel.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/models.html#applies-to-molecule">applies_to_molecule</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/models.html#data-model-integration">Data Model Integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/models.html#json-configuration">JSON Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/models.html#see-also">See Also</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#overlap-deduplication">Overlap deduplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#component-graph-metrics">Component graph metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#fingerprint-generation">Fingerprint generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html#pfas-definition-classification">PFAS definition classification</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Topics</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#setting-up">Setting up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#parsing-a-list-of-molecules">Parsing a list of molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#iterating-over-results">Iterating over results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#drill-into-a-specific-match">Drill into a specific match</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#exporting-to-dataframe">Exporting to DataFrame</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#filtering-by-group-category">Filtering by group category</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#working-with-multiple-halogens">Working with multiple halogens</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#saturation-filter">Saturation filter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#fingerprinting-for-machine-learning">Fingerprinting for machine learning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#using-resultsmodel-to-fingerprint">Using ResultsModel.to_fingerprint</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#dimensionality-reduction">Dimensionality reduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#comparing-distributions">Comparing distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#pfas-definition-screening">PFAS definition screening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#molecule-prioritization">Molecule prioritization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#loading-and-inspecting-groups">Loading and inspecting groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#custom-group-collections">Custom group collections</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Customization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#custom-pfas-groups">Custom PFAS Groups</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#creating-groups-from-scratch">Creating Groups from Scratch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modifying-existing-groups">Modifying Existing Groups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#understanding-atom-reference-requirements">Understanding Atom Reference Requirements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#loading-groups-from-json">Loading Groups from JSON</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#constraint-examples">Constraint Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inspecting-the-built-in-groups">Inspecting the built-in groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#filtering-groups">Filtering groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-a-custom-group">Defining a custom group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#combining-built-in-and-custom-groups">Combining built-in and custom groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#halogengroup-attributes">HalogenGroup attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-raw-uncompiled-groups">Using raw (uncompiled) groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-smarts-tips">Custom SMARTS tips</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-pathways">Custom Pathways</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#defining-pathway-types">Defining Pathway Types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#loading-pathways-from-json">Loading Pathways from JSON</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#smarts-pattern-guide">SMARTS Pattern Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prioritization.html">Prioritization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="prioritization.html#basic-usage">Basic usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prioritization.html#novelty-against-a-reference-set">Novelty against a reference set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prioritization.html#scoring-formula">Scoring formula</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prioritization.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prioritization.html#example-selecting-a-diverse-subset">Example: selecting a diverse subset</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-pfas-definitions">Custom PFAS Definitions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#creating-definitions">Creating Definitions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#fluorine-ratio-calculation">Fluorine Ratio Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#validation-against-pfastructv5">Validation against PFASTRUCTv5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#comparison-with-csrml-classifier">Comparison with CSRML classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#running-the-benchmark-scripts">Running the benchmark scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#performance">Performance</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#advanced-customization">Advanced Customization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#combining-custom-components">Combining Custom Components</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration-management">Configuration Management</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#testing-custom-groups">Testing Custom Groups</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#smarts-pattern-design">SMARTS Pattern Design</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#constraint-design">Constraint Design</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking and Validation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#running-benchmarks">Running Benchmarks</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#quick-start">Quick Start</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#individual-benchmarks">Individual Benchmarks</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#benchmark-results">Benchmark Results</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#performance-metrics">Performance Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#viewing-results">Viewing Results</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#validation-against-reference-data">Validation Against Reference Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#oecd-database">OECD Database</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#pubchem-validation">PubChem Validation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#custom-validation">Custom Validation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#creating-test-sets">Creating Test Sets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#running-custom-tests">Running Custom Tests</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#test-molecule-generation">Test Molecule Generation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#json-driven-generation">JSON-Driven Generation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#customizing-test-generation">Customizing Test Generation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#performance-testing">Performance Testing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#timing-analysis">Timing Analysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#scaling-analysis">Scaling Analysis</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#accuracy-metrics">Accuracy Metrics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#confusion-matrix">Confusion Matrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#precision-and-recall">Precision and Recall</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#comparative-analysis">Comparative Analysis</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#compare-with-pfas-atlas">Compare with PFAS-Atlas</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#continuous-integration">Continuous Integration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#automated-testing">Automated Testing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="benchmarking.html#regression-testing">Regression Testing</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#see-also">See Also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#parse">parse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#fingerprint">fingerprint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#list-groups">list-groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#list-paths">list-paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#global-options">Global Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#environment">Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#performance-tips">Performance Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#see-also">See Also</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#getting-started">Getting Started</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#setting-up-development-environment">Setting Up Development Environment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#development-workflow">Development Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core.html">Core API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#parsing">Parsing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-smiles">parse_smiles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.parse_smiles"><code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#types-of-contributions">Types of Contributions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#bug-reports">Bug Reports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#feature-requests">Feature Requests</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-mols">parse_mols</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.parse_mols"><code class="docutils literal notranslate"><span class="pre">parse_mols()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#code-contributions">Code Contributions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#coding-standards">Coding Standards</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#adding-new-pfas-groups">Adding New PFAS Groups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#performance-optimization">Performance Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#parse-mol">parse_mol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.parse_mol"><code class="docutils literal notranslate"><span class="pre">parse_mol()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-request-process">Pull Request Process</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#pr-checklist">PR Checklist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#pr-template">PR Template</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#review-process">Review Process</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#communication">Communication</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#channels">Channels</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#communication-guidelines">Communication Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#fingerprinting">Fingerprinting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#generate-fingerprint">generate_fingerprint</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.generate_fingerprint"><code class="docutils literal notranslate"><span class="pre">generate_fingerprint()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#license">License</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#code-of-conduct">Code of Conduct</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#pledge">Pledge</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#standards">Standards</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#enforcement">Enforcement</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#recognition">Recognition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#questions">Questions?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#group-library">Group library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-compiled-halogengroups">get_compiled_HalogenGroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.get_compiled_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_compiled_HalogenGroups()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-halogengroups">get_HalogenGroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.get_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">get_HalogenGroups()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#load-halogengroups">load_HalogenGroups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.load_HalogenGroups"><code class="docutils literal notranslate"><span class="pre">load_HalogenGroups()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-pfasdefinitions">get_PFASDefinitions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.get_PFASDefinitions"><code class="docutils literal notranslate"><span class="pre">get_PFASDefinitions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#get-componentsmartss">get_componentSmartss</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/core.html#molecule-prioritization">Molecule prioritization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/core.html#prioritise-molecules">prioritise_molecules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/core.html#HalogenGroups.prioritise_molecules"><code class="docutils literal notranslate"><span class="pre">prioritise_molecules()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/models.html">Data Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#resultsmodel">ResultsModel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#HalogenGroups.ResultsModel"><code class="docutils literal notranslate"><span class="pre">ResultsModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.ResultsModel.to_fingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_fingerprint()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#moleculeresult">MoleculeResult</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult"><code class="docutils literal notranslate"><span class="pre">MoleculeResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.smiles"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.smiles</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.mol_with_h"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.mol_with_h</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.matches</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.iter_group_matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.iter_group_matches()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.collect_component_atoms"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.collect_component_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.summarise"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summarise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.summary"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.table"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.show"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.plot"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.svg"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.svg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.MoleculeResult.to_sql"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.to_sql()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#groupmatch">GroupMatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#matchcomponent">MatchComponent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#halogengroup">HalogenGroup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup"><code class="docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.id"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.name"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSmarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.componentForm"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.componentHalogens"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentHalogens</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.componentSaturation"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSaturation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.max_dist_from_comp"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.max_dist_from_comp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.linker_smarts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.__init__"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.set_component_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_component_smarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.set_componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_componentSmarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_gte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_lte()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_only()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_rel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.formula_dict_satisfies_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_matched_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.component_satisfies_all_smarts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_alkyl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_aryl_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.find_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_components()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup.test"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html#pfasdefinition">PFASDefinition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/models.html#HalogenGroups.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/fingerprint_analysis.html">Fingerprint Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/fingerprint_analysis.html#resultsfingerprint">ResultsFingerprint</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.summary"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_pca()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_kernel_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_kernel_pca()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_tsne"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_tsne()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.perform_umap"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_umap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.compare_kld"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.to_sql()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#HalogenGroups.ResultsFingerprint.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.from_sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#creating-a-resultsfingerprint">Creating a ResultsFingerprint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#attributes">Attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/fingerprint_analysis.html#dimensionality-reduction">Dimensionality reduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#perform-pca">perform_pca</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#id0"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_pca()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#perform-tsne">perform_tsne</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#id1"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_tsne()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#perform-umap">perform_umap</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#id2"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_umap()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/fingerprint_analysis.html#statistical-comparison">Statistical comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#compare-kld">compare_kld</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#id3"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/fingerprint_analysis.html#database-i-o">Database I/O</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#to-sql-from-sql">to_sql / from_sql</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#id4"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.to_sql()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#id5"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.from_sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/fingerprint_analysis.html#summary">Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/fingerprint_analysis.html#id6"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.summary()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Info</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-2-current">Version 2.2.2 (Current)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-0">Version 2.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-1-0">Version 2.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-0">Version 2.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#migration-guides">Migration Guides</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="changelog.html#migrating-from-1-1-x-to-1-2-x">Migrating from 1.1.x to 1.2.x</a></li>
-<li class="toctree-l3"><a class="reference internal" href="changelog.html#migrating-from-1-0-x-to-1-1-x">Migrating from 1.0.x to 1.1.x</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-3-1-3">Version 3.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-3-2-0">Version 3.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-3-1-0">Version 3.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-4">Version 2.2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-3">Version 2.2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0">Version 2.0</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#roadmap">Roadmap</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="changelog.html#version-1-3-0-planned-q2-2026">Version 1.3.0 (Planned - Q2 2026)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="changelog.html#version-2-0-0-planned-q4-2026">Version 2.0.0 (Planned - Q4 2026)</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#contributing">Contributing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#license">License</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#support">Support</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#citation">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#setting-up-a-development-environment">Setting up a development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#running-tests">Running tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#code-style">Code style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#adding-new-halogen-groups">Adding new halogen groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#reporting-issues">Reporting issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#contact">Contact</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="license.html#pfasgroups-license">PFASgroups License</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="license.html#you-are-free-to">You are free to:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="license.html#under-the-following-terms">Under the following terms:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="license.html#notices">Notices:</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="license.html#commercial-use">Commercial Use</a></li>
-<li class="toctree-l2"><a class="reference internal" href="license.html#attribution-requirements">Attribution Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="license.html#acknowledgments">Acknowledgments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="license.html#third-party-licenses">Third-Party Licenses</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="license.html#rdkit">RDKit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="license.html#numpy">NumPy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="license.html#networkx">NetworkX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="license.html#pandas">Pandas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="license.html#matplotlib">Matplotlib</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="license.html#full-license-text">Full License Text</a></li>
-<li class="toctree-l2"><a class="reference internal" href="license.html#disclaimer">Disclaimer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="license.html#privacy">Privacy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="license.html#questions">Questions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#full-license-text">Full license text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#citation">Citation</a></li>
 </ul>
 </li>
 </ul>
@@ -446,7 +402,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">PFASgroups</a>
+          <a href="index.html">HalogenGroups / PFASGroups</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -466,635 +422,151 @@
              
   <section id="customization">
 <h1>Customization<a class="headerlink" href="#customization" title="Link to this heading"></a></h1>
-<p>PFASgroups provides extensive customization options for defining custom PFAS groups, pathways, and definitions.</p>
-<section id="custom-pfas-groups">
-<h2>Custom PFAS Groups<a class="headerlink" href="#custom-pfas-groups" title="Link to this heading"></a></h2>
-<section id="creating-groups-from-scratch">
-<h3>Creating Groups from Scratch<a class="headerlink" href="#creating-groups-from-scratch" title="Link to this heading"></a></h3>
-<p>Define a completely new PFAS group:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASGroup</span><span class="p">,</span> <span class="n">parse_smiles</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-
-<span class="c1"># Define a custom group for perfluoroalkyl nitrates</span>
-<span class="n">pfan_group</span> <span class="o">=</span> <span class="n">PFASGroup</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl nitrates&quot;</span><span class="p">,</span>
-    <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;PFANs&quot;</span><span class="p">,</span>
-    <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[C]-[O]-[N+](=O)[O-]&quot;</span><span class="p">),</span>
-    <span class="n">smarts2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Optional secondary pattern</span>
-    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>  <span class="c1"># Require perfluorinated chain</span>
-    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>  <span class="c1"># Exactly 1 N and 3 O</span>
-        <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>  <span class="c1"># At least 1 fluorine</span>
-        <span class="s2">&quot;only&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">]</span>  <span class="c1"># Only these elements</span>
-    <span class="p">},</span>
-    <span class="n">max_dist_from_CF</span><span class="o">=</span><span class="mi">2</span>  <span class="c1"># Max distance from fluorinated carbon</span>
-<span class="p">)</span>
-
-<span class="c1"># Test the custom group</span>
-<span class="n">test_smiles</span> <span class="o">=</span> <span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)ON(=O)=O&quot;</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">test_smiles</span><span class="p">,</span> <span class="n">pfas_groups</span><span class="o">=</span><span class="p">[</span><span class="n">pfan_group</span><span class="p">])</span>
-
-<span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-    <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">lengths</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✓ Detected: </span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Chain length: </span><span class="si">{</span><span class="n">lengths</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="modifying-existing-groups">
-<h3>Modifying Existing Groups<a class="headerlink" href="#modifying-existing-groups" title="Link to this heading"></a></h3>
-<p>Customize existing PFAS groups:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_PFASGroups</span><span class="p">,</span> <span class="n">parse_smiles</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-
-<span class="c1"># Get default groups</span>
-<span class="n">groups</span> <span class="o">=</span> <span class="n">get_PFASGroups</span><span class="p">()</span>
-
-<span class="c1"># Find and modify PFCA group (ID 1)</span>
-<span class="n">pfca</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># Make it less restrictive (allow more elements)</span>
-<span class="n">pfca</span><span class="o">.</span><span class="n">constraints</span><span class="p">[</span><span class="s2">&quot;only&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">]</span>
-
-<span class="c1"># Or change max distance</span>
-<span class="n">pfca</span><span class="o">.</span><span class="n">max_dist_from_CF</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Allow groups farther from chain</span>
-
-<span class="c1"># Use modified groups</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span> <span class="n">pfas_groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="understanding-atom-reference-requirements">
-<h3>Understanding Atom Reference Requirements<a class="headerlink" href="#understanding-atom-reference-requirements" title="Link to this heading"></a></h3>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>When defining custom PFAS groups, the SMARTS pattern must match an atom that satisfies
-the component criteria. This is crucial for non-telomer groups:</p>
-<p><strong>Non-Telomer Groups</strong> (<code class="docutils literal notranslate"><span class="pre">componentSmarts</span></code> without <code class="docutils literal notranslate"><span class="pre">linker_smarts</span></code>):</p>
+<p>The library is built on a composable set of <a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup" title="HalogenGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a>
+objects.  You can extend, filter, or replace the default group library without
+modifying the source code.</p>
+<nav class="contents local" id="contents">
+<p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p>The matched atom must be part of or directly connected to the fluorinated component</p></li>
-<li><p>The matched atom should be a carbon that is per- or polyfluorinated, OR</p></li>
-<li><p>The matched atom must be within <code class="docutils literal notranslate"><span class="pre">max_dist_from_CF</span></code> distance from a C-F carbon</p></li>
-<li><p>Example: <code class="docutils literal notranslate"><span class="pre">[C$(C(=O)O)]</span></code> where <code class="docutils literal notranslate"><span class="pre">C</span></code> is bonded to <code class="docutils literal notranslate"><span class="pre">CF2</span></code> groups</p></li>
+<li><p><a class="reference internal" href="#inspecting-the-built-in-groups" id="id1">Inspecting the built-in groups</a></p></li>
+<li><p><a class="reference internal" href="#filtering-groups" id="id2">Filtering groups</a></p></li>
+<li><p><a class="reference internal" href="#defining-a-custom-group" id="id3">Defining a custom group</a></p></li>
+<li><p><a class="reference internal" href="#combining-built-in-and-custom-groups" id="id4">Combining built-in and custom groups</a></p></li>
+<li><p><a class="reference internal" href="#halogengroup-attributes" id="id5">HalogenGroup attributes</a></p></li>
+<li><p><a class="reference internal" href="#using-raw-uncompiled-groups" id="id6">Using raw (uncompiled) groups</a></p></li>
+<li><p><a class="reference internal" href="#custom-smarts-tips" id="id7">Custom SMARTS tips</a></p></li>
 </ul>
-<p><strong>Telomer Groups</strong> (<code class="docutils literal notranslate"><span class="pre">componentSmarts</span></code> with <code class="docutils literal notranslate"><span class="pre">linker_smarts</span></code>):</p>
+</nav>
+<section id="inspecting-the-built-in-groups">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Inspecting the built-in groups</a><a class="headerlink" href="#inspecting-the-built-in-groups" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_compiled_HalogenGroups</span>
+
+<span class="n">groups</span> <span class="o">=</span> <span class="n">get_compiled_HalogenGroups</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">groups</span><span class="p">))</span>           <span class="c1"># 116</span>
+
+<span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">group_id</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="filtering-groups">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Filtering groups</a><a class="headerlink" href="#filtering-groups" title="Link to this heading"></a></h2>
+<p>Pass a custom subset to <code class="docutils literal notranslate"><span class="pre">parse_smiles</span></code> via its <code class="docutils literal notranslate"><span class="pre">halogen_groups</span></code> parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span><span class="p">,</span> <span class="n">get_compiled_HalogenGroups</span>
+
+<span class="n">all_groups</span> <span class="o">=</span> <span class="n">get_compiled_HalogenGroups</span><span class="p">()</span>
+
+<span class="c1"># Keep only OECD groups</span>
+<span class="n">oecd_only</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">all_groups</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="s1">&#39;OECD&#39;</span><span class="p">]</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;CCCC(F)(F)F&quot;</span><span class="p">],</span> <span class="n">halogen_groups</span><span class="o">=</span><span class="n">oecd_only</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="defining-a-custom-group">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Defining a custom group</a><a class="headerlink" href="#defining-a-custom-group" title="Link to this heading"></a></h2>
+<p>A <a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup" title="HalogenGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> object requires at minimum a name,
+category, SMARTS pattern, and group ID:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">HalogenGroup</span><span class="p">,</span> <span class="n">parse_smiles</span>
+
+<span class="n">my_group</span> <span class="o">=</span> <span class="n">HalogenGroup</span><span class="p">(</span>
+    <span class="n">group_id</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;my_custom_group&quot;</span><span class="p">,</span>
+    <span class="n">category</span><span class="o">=</span><span class="s2">&quot;Custom&quot;</span><span class="p">,</span>
+    <span class="n">smarts</span><span class="o">=</span><span class="s2">&quot;[CX4](F)(F)(F)[CX4](F)(F)&quot;</span><span class="p">,</span>   <span class="c1"># two adjacent CF3/CF2 units</span>
+    <span class="n">is_PFAS</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;CCCC(F)(F)F&quot;</span><span class="p">],</span> <span class="n">halogen_groups</span><span class="o">=</span><span class="p">[</span><span class="n">my_group</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matches</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="combining-built-in-and-custom-groups">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Combining built-in and custom groups</a><a class="headerlink" href="#combining-built-in-and-custom-groups" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_compiled_HalogenGroups</span><span class="p">,</span> <span class="n">HalogenGroup</span><span class="p">,</span> <span class="n">parse_smiles</span>
+
+<span class="n">base_groups</span> <span class="o">=</span> <span class="n">get_compiled_HalogenGroups</span><span class="p">()</span>
+<span class="n">my_group</span> <span class="o">=</span> <span class="n">HalogenGroup</span><span class="p">(</span>
+    <span class="n">group_id</span><span class="o">=</span><span class="mi">201</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;chlorinated_alkyl&quot;</span><span class="p">,</span>
+    <span class="n">category</span><span class="o">=</span><span class="s2">&quot;Custom&quot;</span><span class="p">,</span>
+    <span class="n">smarts</span><span class="o">=</span><span class="s2">&quot;[CX4]([Cl])[CX4][Cl]&quot;</span><span class="p">,</span>
+    <span class="n">is_PFAS</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">compute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">extended</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">base_groups</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">my_group</span><span class="p">]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;ClCCCl&quot;</span><span class="p">],</span> <span class="n">halogen_groups</span><span class="o">=</span><span class="n">extended</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="halogengroup-attributes">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">HalogenGroup attributes</a><a class="headerlink" href="#halogengroup-attributes" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">group_id</span></code></p></td>
+<td><p>Integer identifier (must be unique in the collection you pass)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>Human-readable group name</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">category</span></code></p></td>
+<td><p>Category label, e.g. <code class="docutils literal notranslate"><span class="pre">'OECD'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Generic'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Fluorotelomer'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">smarts</span></code></p></td>
+<td><p>SMARTS pattern string (or list of SMARTS strings)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_PFAS</span></code></p></td>
+<td><p>Whether the group contributes to a PFAS classification</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">compute</span></code></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">False</span></code> the group appears in fingerprint headers but is not matched</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">description</span></code></p></td>
+<td><p>Optional free-text description</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="using-raw-uncompiled-groups">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Using raw (uncompiled) groups</a><a class="headerlink" href="#using-raw-uncompiled-groups" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="api/core.html#HalogenGroups.get_HalogenGroups" title="HalogenGroups.get_HalogenGroups"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_HalogenGroups()</span></code></a> returns the raw (uncompiled)
+group definitions as plain data objects:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_HalogenGroups</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">get_HalogenGroups</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">raw</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">g</span><span class="p">[</span><span class="s2">&quot;smarts&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To compile them into <a class="reference internal" href="api/models.html#HalogenGroups.HalogenGroup" title="HalogenGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances call
+<a class="reference internal" href="api/core.html#HalogenGroups.get_compiled_HalogenGroups" title="HalogenGroups.get_compiled_HalogenGroups"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_compiled_HalogenGroups()</span></code></a> (which internally calls
+<a class="reference internal" href="api/core.html#HalogenGroups.load_HalogenGroups" title="HalogenGroups.load_HalogenGroups"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_HalogenGroups()</span></code></a>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">HalogenGroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_HalogenGroups</span><span class="p">,</span> <span class="n">get_HalogenGroups</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">get_HalogenGroups</span><span class="p">()</span>
+<span class="n">compiled</span> <span class="o">=</span> <span class="n">load_HalogenGroups</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-smarts-tips">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Custom SMARTS tips</a><a class="headerlink" href="#custom-smarts-tips" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>These groups explicitly allow non-fluorinated linkers (e.g., <code class="docutils literal notranslate"><span class="pre">[CH2X4]</span></code>)</p></li>
-<li><p>The functional group can be separated from the perfluorinated chain</p></li>
-<li><p>Example: 6:2 FTOH has <code class="docutils literal notranslate"><span class="pre">-(CH2)2-</span></code> linker between perfluoro chain and <code class="docutils literal notranslate"><span class="pre">-OH</span></code></p></li>
-</ul>
-<p>If your SMARTS pattern matches an atom that is not part of the fluorinated component
-and is beyond <code class="docutils literal notranslate"><span class="pre">max_dist_from_CF</span></code>, the group will not be detected even though the
-pattern matches. This is by design to ensure functional groups are actually connected
-to fluorinated chains.</p>
-</div>
-<p><strong>Example - Correct atom reference:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ✓ Good: Matches carbon directly attached to perfluoro chain</span>
-<span class="n">good_group</span> <span class="o">=</span> <span class="n">PFASGroup</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My carboxylic acid&quot;</span><span class="p">,</span>
-    <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[C$(C(=O)[OH1,O-])]&quot;</span><span class="p">),</span>  <span class="c1"># Matches the C=O carbon</span>
-    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
-    <span class="n">max_dist_from_CF</span><span class="o">=</span><span class="mi">0</span>  <span class="c1"># Must be directly on fluorinated carbon</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Example - Incorrect atom reference:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ✗ Bad: Matches oxygen which is too far from chain</span>
-<span class="n">bad_group</span> <span class="o">=</span> <span class="n">PFASGroup</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My carboxylic acid&quot;</span><span class="p">,</span>
-    <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[OH1]&quot;</span><span class="p">),</span>  <span class="c1"># Matches the O-H oxygen</span>
-    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
-    <span class="n">max_dist_from_CF</span><span class="o">=</span><span class="mi">0</span>  <span class="c1"># The oxygen is 2 bonds away from the CF carbon!</span>
-<span class="p">)</span>
-<span class="c1"># This won&#39;t detect most carboxylic acids because the matched atom (O)</span>
-<span class="c1"># is not within max_dist_from_CF of the fluorinated chain</span>
-</pre></div>
-</div>
-</section>
-<section id="loading-groups-from-json">
-<h3>Loading Groups from JSON<a class="headerlink" href="#loading-groups-from-json" title="Link to this heading"></a></h3>
-<p>Store custom groups in a JSON file:</p>
-<p><strong>my_groups.json:</strong></p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-<span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perfluoroalkyl nitrates&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;alias&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PFANs&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;smarts1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[C]-[O]-[N+](=O)[O-]&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;smarts2&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;componentSmarts&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;constraints&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;eq&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;O&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;gte&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;F&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;only&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;O&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;N&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;H&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;max_dist_from_CF&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perfluoroalkyl thiols&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;alias&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PFATs&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;smarts1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[C]-[SH1]&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;componentSmarts&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;constraints&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;eq&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;gte&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;F&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<p><strong>Load and use:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_PFASGroups</span><span class="p">,</span> <span class="n">parse_smiles</span>
-
-<span class="c1"># Load custom groups</span>
-<span class="n">custom_groups</span> <span class="o">=</span> <span class="n">get_PFASGroups</span><span class="p">(</span><span class="n">custom_groups_file</span><span class="o">=</span><span class="s1">&#39;my_groups.json&#39;</span><span class="p">)</span>
-
-<span class="c1"># Use in parsing</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span>
-    <span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)ON(=O)=O&quot;</span><span class="p">,</span>
-    <span class="n">pfas_groups</span><span class="o">=</span><span class="n">custom_groups</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="constraint-examples">
-<h3>Constraint Examples<a class="headerlink" href="#constraint-examples" title="Link to this heading"></a></h3>
-<p>Different types of molecular constraints:</p>
-<p><strong>Exact count (eq):</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>  <span class="c1"># Exactly 2 oxygens (e.g., carboxylic acid)</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Minimum count (gte):</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>  <span class="c1"># At least 3 fluorines</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Maximum count (lte):</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;lte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>  <span class="c1"># At most 1 nitrogen</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Element restrictions (only):</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;only&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">]</span>  <span class="c1"># No other elements allowed</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Relative ratios (rel):</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perfluorinated: C = (F + H) / 2 - 1</span>
-<span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;rel&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">],</span>  <span class="c1"># Sum F + H</span>
-            <span class="s2">&quot;add&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Subtract 1</span>
-            <span class="s2">&quot;div&quot;</span><span class="p">:</span> <span class="mi">2</span>  <span class="c1"># Divide by 2</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="custom-pathways">
-<h2>Custom Pathways<a class="headerlink" href="#custom-pathways" title="Link to this heading"></a></h2>
-<section id="defining-pathway-types">
-<h3>Defining Pathway Types<a class="headerlink" href="#defining-pathway-types" title="Link to this heading"></a></h3>
-<p>Create custom fluorinated pathways:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_componentSmarts</span><span class="p">,</span> <span class="n">get_componentSmartss</span><span class="p">,</span> <span class="n">parse_smiles</span>
-
-<span class="c1"># Get default pathways</span>
-<span class="n">paths</span> <span class="o">=</span> <span class="n">get_componentSmartss</span><span class="p">()</span>
-
-<span class="c1"># Add perchlorinated pathway (Cl instead of F)</span>
-<span class="n">paths</span><span class="p">[</span><span class="s1">&#39;Perchlorinated&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compile_componentSmarts</span><span class="p">(</span>
-    <span class="s2">&quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;</span><span class="p">,</span>  <span class="c1"># Chain segment</span>
-    <span class="s2">&quot;[C;X4](Cl)(Cl)Cl&quot;</span>  <span class="c1"># Terminal CCl3</span>
-<span class="p">)</span>
-
-<span class="c1"># Add perbrominated pathway</span>
-<span class="n">paths</span><span class="p">[</span><span class="s1">&#39;Perbrominated&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compile_componentSmarts</span><span class="p">(</span>
-    <span class="s2">&quot;[C;X4](Br)(Br)!@!=!#[C;X4](Br)(Br)&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;[C;X4](Br)(Br)Br&quot;</span>
-<span class="p">)</span>
-
-<span class="c1"># Use with custom groups</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASGroup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-
-<span class="n">chlorinated_acid</span> <span class="o">=</span> <span class="n">PFASGroup</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Perchlorinated carboxylic acids&quot;</span><span class="p">,</span>
-    <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[#6$([#6][#6](=O)([OH1,O-]))]&quot;</span><span class="p">),</span>
-    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perchlorinated&quot;</span><span class="p">,</span>
-    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Cl&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
-<span class="p">)</span>
-
-<span class="c1"># Test on chlorinated compound</span>
-<span class="n">smiles</span> <span class="o">=</span> <span class="s2">&quot;ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O&quot;</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span>
-    <span class="n">smiles</span><span class="p">,</span>
-    <span class="n">pfas_groups</span><span class="o">=</span><span class="p">[</span><span class="n">chlorinated_acid</span><span class="p">],</span>
-    <span class="n">componentSmartss</span><span class="o">=</span><span class="n">paths</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="loading-pathways-from-json">
-<h3>Loading Pathways from JSON<a class="headerlink" href="#loading-pathways-from-json" title="Link to this heading"></a></h3>
-<p><strong>component_smarts.json:</strong></p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Perfluoroalkyl&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;chain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[C;X4;H0](F)(F)!@!=!#[C;X4;H0](F)(F)&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;end&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[C;X4;H0](F)(F)F&quot;</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;Perchlorinated&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;chain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;end&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[C;X4](Cl)(Cl)Cl&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Load and use:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_componentSmartss</span><span class="p">,</span> <span class="n">parse_smiles</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-
-<span class="c1"># Load custom pathways</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;component_smarts.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">paths_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-<span class="n">paths</span> <span class="o">=</span> <span class="n">compile_componentSmartss</span><span class="p">(</span><span class="n">paths_dict</span><span class="p">)</span>
-
-<span class="c1"># Use in parsing</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">componentSmartss</span><span class="o">=</span><span class="n">paths</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="smarts-pattern-guide">
-<h3>SMARTS Pattern Guide<a class="headerlink" href="#smarts-pattern-guide" title="Link to this heading"></a></h3>
-<p>Key SMARTS syntax for pathway definitions:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[C;X4;H0]   - Carbon with 4 connections, no hydrogens
-(F)(F)      - Two fluorine substituents
-!@          - Non-ring bond
-!=          - Not double bond
-!#          - Not triple bond
-</pre></div>
-</div>
-<p><strong>Examples:</strong></p>
-<ul class="simple">
-<li><p>Perfluoroalkyl chain: <code class="docutils literal notranslate"><span class="pre">[C;X4;H0](F)(F)</span></code></p></li>
-<li><p>Polyfluoroalkyl chain: <code class="docutils literal notranslate"><span class="pre">[C;X4;H1](F)</span></code> (allows one H)</p></li>
-<li><p>Terminal CF₃: <code class="docutils literal notranslate"><span class="pre">[C;X4;H0](F)(F)F</span></code></p></li>
-<li><p>Terminal CHF₂: <code class="docutils literal notranslate"><span class="pre">[C;X4;H1](F)F</span></code></p></li>
-</ul>
-</section>
-</section>
-<section id="custom-pfas-definitions">
-<h2>Custom PFAS Definitions<a class="headerlink" href="#custom-pfas-definitions" title="Link to this heading"></a></h2>
-<section id="creating-definitions">
-<h3>Creating Definitions<a class="headerlink" href="#creating-definitions" title="Link to this heading"></a></h3>
-<p>Define broad PFAS classifications:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASDefinition</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-
-<span class="c1"># OECD-style definition</span>
-<span class="n">oecd_pfas</span> <span class="o">=</span> <span class="n">PFASDefinition</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;OECD PFAS&quot;</span><span class="p">,</span>
-    <span class="n">smarts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;[C](F)(F)F&quot;</span><span class="p">,</span> <span class="s2">&quot;[C](F)(F)[C](F)(F)&quot;</span><span class="p">],</span>
-    <span class="n">fluorineRatio</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># No minimum ratio</span>
-    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Contains perfluoroalkyl moiety&quot;</span><span class="p">,</span>
-    <span class="n">includeHydrogen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">requireBoth</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># SMARTS OR ratio</span>
-<span class="p">)</span>
-
-<span class="c1"># High fluorination definition</span>
-<span class="n">high_f</span> <span class="o">=</span> <span class="n">PFASDefinition</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;High Fluorination&quot;</span><span class="p">,</span>
-    <span class="n">smarts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;[F]&quot;</span><span class="p">],</span>  <span class="c1"># Must have F</span>
-    <span class="n">fluorineRatio</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># 50% F content</span>
-    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Highly fluorinated compounds&quot;</span><span class="p">,</span>
-    <span class="n">includeHydrogen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">requireBoth</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># SMARTS AND ratio</span>
-<span class="p">)</span>
-
-<span class="c1"># Test molecules</span>
-<span class="n">test_compounds</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span>  <span class="c1"># PFBA</span>
-    <span class="s2">&quot;FC(F)(F)C(=O)O&quot;</span><span class="p">,</span>  <span class="c1"># TFA</span>
-    <span class="s2">&quot;CCO&quot;</span>  <span class="c1"># Ethanol</span>
-<span class="p">]</span>
-
-<span class="k">for</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="n">test_compounds</span><span class="p">:</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">smiles</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  OECD: </span><span class="si">{</span><span class="n">oecd_pfas</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  High-F: </span><span class="si">{</span><span class="n">high_f</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="fluorine-ratio-calculation">
-<h3>Fluorine Ratio Calculation<a class="headerlink" href="#fluorine-ratio-calculation" title="Link to this heading"></a></h3>
-<p>Understanding fluorine ratio thresholds:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">calculate_f_ratio</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">include_h</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate fluorine ratio for a molecule.&quot;&quot;&quot;</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="c1"># Count atoms</span>
-    <span class="n">n_c</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()</span> <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
-    <span class="n">n_f</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()</span> <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
-    <span class="n">n_h</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetTotalNumHs</span><span class="p">()</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">())</span>
-
-    <span class="c1"># Calculate ratio</span>
-    <span class="k">if</span> <span class="n">include_h</span><span class="p">:</span>
-        <span class="n">denominator</span> <span class="o">=</span> <span class="n">n_c</span> <span class="o">+</span> <span class="n">n_f</span> <span class="o">+</span> <span class="n">n_h</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">denominator</span> <span class="o">=</span> <span class="n">n_c</span> <span class="o">+</span> <span class="n">n_f</span>
-
-    <span class="k">return</span> <span class="n">n_f</span> <span class="o">/</span> <span class="n">denominator</span> <span class="k">if</span> <span class="n">denominator</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
-
-<span class="c1"># Test on various compounds</span>
-<span class="n">compounds</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;PFOA&quot;</span><span class="p">,</span> <span class="s2">&quot;FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;TFA&quot;</span><span class="p">,</span> <span class="s2">&quot;FC(F)(F)C(=O)O&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Benzene&quot;</span><span class="p">,</span> <span class="s2">&quot;c1ccccc1&quot;</span><span class="p">)</span>
-<span class="p">]</span>
-
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="n">compounds</span><span class="p">:</span>
-    <span class="n">ratio</span> <span class="o">=</span> <span class="n">calculate_f_ratio</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">ratio</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="advanced-customization">
-<h2>Advanced Customization<a class="headerlink" href="#advanced-customization" title="Link to this heading"></a></h2>
-<section id="combining-custom-components">
-<h3>Combining Custom Components<a class="headerlink" href="#combining-custom-components" title="Link to this heading"></a></h3>
-<p>Use custom groups, pathways, and definitions together:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">PFASGroup</span><span class="p">,</span> <span class="n">PFASDefinition</span><span class="p">,</span>
-    <span class="n">compile_componentSmarts</span><span class="p">,</span> <span class="n">get_PFASGroups</span><span class="p">,</span>
-    <span class="n">parse_smiles</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-
-<span class="c1"># 1. Custom pathway</span>
-<span class="n">paths</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;PartiallyFluorinated&#39;</span><span class="p">:</span> <span class="n">compile_componentSmarts</span><span class="p">(</span>
-        <span class="s2">&quot;[C;X4](F)!@!=!#[C;X4]&quot;</span><span class="p">,</span>  <span class="c1"># One F per carbon</span>
-        <span class="s2">&quot;[C;X4](F)F&quot;</span>  <span class="c1"># Terminal</span>
-    <span class="p">)</span>
-<span class="p">}</span>
-
-<span class="c1"># 2. Custom group using custom pathway</span>
-<span class="n">partial_f_acid</span> <span class="o">=</span> <span class="n">PFASGroup</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Partially fluorinated carboxylic acids&quot;</span><span class="p">,</span>
-    <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[C]-[C](=O)O&quot;</span><span class="p">),</span>
-    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;PartiallyFluorinated&quot;</span><span class="p">,</span>
-    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
-<span class="p">)</span>
-
-<span class="c1"># 3. Custom definition</span>
-<span class="n">partial_f_def</span> <span class="o">=</span> <span class="n">PFASDefinition</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Partial Fluorination&quot;</span><span class="p">,</span>
-    <span class="n">smarts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;[C][F]&quot;</span><span class="p">],</span>
-    <span class="n">fluorineRatio</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># 20% minimum</span>
-    <span class="n">requireBoth</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-
-<span class="c1"># Use all together</span>
-<span class="n">smiles</span> <span class="o">=</span> <span class="s2">&quot;FC(C(F)C(F)C(=O)O)&quot;</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span>
-    <span class="n">smiles</span><span class="p">,</span>
-    <span class="n">pfas_groups</span><span class="o">=</span><span class="p">[</span><span class="n">partial_f_acid</span><span class="p">],</span>
-    <span class="n">componentSmartss</span><span class="o">=</span><span class="n">paths</span>
-<span class="p">)</span>
-
-<span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
-<span class="n">matches_def</span> <span class="o">=</span> <span class="n">partial_f_def</span><span class="o">.</span><span class="n">applies_to_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Groups detected: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matches definition: </span><span class="si">{</span><span class="n">matches_def</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="configuration-management">
-<h3>Configuration Management<a class="headerlink" href="#configuration-management" title="Link to this heading"></a></h3>
-<p>Manage multiple configuration sets:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">compile_componentSmartss</span><span class="p">,</span> <span class="n">get_PFASGroups</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">PFASConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Manage PFAS analysis configuration.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">definitions</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">load_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load groups from JSON file.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">get_PFASGroups</span><span class="p">(</span><span class="n">custom_groups_file</span><span class="o">=</span><span class="n">json_file</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">load_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load pathways from JSON file.&quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">paths_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">paths</span> <span class="o">=</span> <span class="n">compile_componentSmartss</span><span class="p">(</span><span class="n">paths_dict</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">save_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save configuration to JSON.&quot;&quot;&quot;</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s1">&#39;groups_count&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">),</span>
-            <span class="s1">&#39;paths&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="p">}</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">smiles</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse SMILES with this configuration.&quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_smiles</span>
-        <span class="k">return</span> <span class="n">parse_smiles</span><span class="p">(</span>
-            <span class="n">smiles</span><span class="p">,</span>
-            <span class="n">pfas_groups</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">,</span>
-            <span class="n">componentSmartss</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">paths</span>
-        <span class="p">)</span>
-
-<span class="c1"># Use it</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">PFASConfig</span><span class="p">(</span><span class="s1">&#39;regulatory&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">load_groups</span><span class="p">(</span><span class="s1">&#39;regulatory_groups.json&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">load_paths</span><span class="p">(</span><span class="s1">&#39;regulatory_paths.json&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">(</span><span class="s1">&#39;regulatory_config.json&#39;</span><span class="p">)</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="testing-custom-groups">
-<h3>Testing Custom Groups<a class="headerlink" href="#testing-custom-groups" title="Link to this heading"></a></h3>
-<p>Validate custom PFAS groups:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">PFASGroup</span><span class="p">,</span> <span class="n">parse_smiles</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">test_pfas_group</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">test_cases</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test a PFAS group on multiple test cases.&quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Testing: </span><span class="si">{</span><span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
-
-    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">smiles</span><span class="p">,</span> <span class="n">expected</span> <span class="ow">in</span> <span class="n">test_cases</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">pfas_groups</span><span class="o">=</span><span class="p">[</span><span class="n">group</span><span class="p">])</span>
-        <span class="n">detected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span>
-
-        <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;✓&quot;</span> <span class="k">if</span> <span class="n">detected</span> <span class="o">==</span> <span class="n">expected</span> <span class="k">else</span> <span class="s2">&quot;✗&quot;</span>
-        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">smiles</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">detected</span><span class="p">,</span> <span class="n">status</span><span class="p">))</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">smiles</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   Expected: </span><span class="si">{</span><span class="n">expected</span><span class="si">}</span><span class="s2">, Got: </span><span class="si">{</span><span class="n">detected</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Summary</span>
-    <span class="n">passed</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">det</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">results</span> <span class="k">if</span> <span class="n">exp</span> <span class="o">==</span> <span class="n">det</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Passed: </span><span class="si">{</span><span class="n">passed</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">results</span>
-
-<span class="c1"># Example usage</span>
-<span class="n">my_group</span> <span class="o">=</span> <span class="n">PFASGroup</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Test Group&quot;</span><span class="p">,</span>
-    <span class="n">smarts1</span><span class="o">=</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[C](F)(F)F&quot;</span><span class="p">),</span>
-    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
-    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}}</span>
-<span class="p">)</span>
-
-<span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;FC(F)(F)C(F)(F)C(=O)O&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>  <span class="c1"># Should match</span>
-    <span class="p">(</span><span class="s2">&quot;CCO&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>  <span class="c1"># Should not match</span>
-    <span class="p">(</span><span class="s2">&quot;FC(F)(F)CF&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># Should match</span>
-<span class="p">]</span>
-
-<span class="n">test_pfas_group</span><span class="p">(</span><span class="n">my_group</span><span class="p">,</span> <span class="n">test_cases</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="best-practices">
-<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
-<section id="smarts-pattern-design">
-<h3>SMARTS Pattern Design<a class="headerlink" href="#smarts-pattern-design" title="Link to this heading"></a></h3>
-<p>Tips for effective SMARTS patterns:</p>
-<ol class="arabic">
-<li><p><strong>Be specific but not too restrictive:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Too general</span>
-<span class="n">smarts</span> <span class="o">=</span> <span class="s2">&quot;[C][F]&quot;</span>  <span class="c1"># Matches any C-F bond</span>
-
-<span class="c1"># Too specific</span>
-<span class="n">smarts</span> <span class="o">=</span> <span class="s2">&quot;[CH2][CF2][CF3]&quot;</span>  <span class="c1"># Only exact pattern</span>
-
-<span class="c1"># Good balance</span>
-<span class="n">smarts</span> <span class="o">=</span> <span class="s2">&quot;[C;X4](F)(F)F&quot;</span>  <span class="c1"># CF3 with flexibility</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>Use atom environment specifications:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;[C;X4]&quot;</span>  <span class="c1"># Carbon with 4 connections</span>
-<span class="s2">&quot;[C;H0]&quot;</span>  <span class="c1"># Carbon with no hydrogens</span>
-<span class="s2">&quot;[C;!R]&quot;</span>  <span class="c1"># Non-ring carbon</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>Test thoroughly:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
-
-<span class="n">pattern</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s2">&quot;[your_pattern]&quot;</span><span class="p">)</span>
-<span class="n">test_mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;test_smiles&quot;</span><span class="p">)</span>
-<span class="n">matches</span> <span class="o">=</span> <span class="n">test_mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matches: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-<section id="constraint-design">
-<h3>Constraint Design<a class="headerlink" href="#constraint-design" title="Link to this heading"></a></h3>
-<p>Guidelines for molecular constraints:</p>
-<ol class="arabic">
-<li><p><strong>Start with essential constraints:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Minimum viable constraints</span>
-<span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-     <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>  <span class="c1"># Must have fluorine</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>Add specificity gradually:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># More specific</span>
-<span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-     <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
-     <span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>  <span class="c1"># Carboxylic acid</span>
-     <span class="s2">&quot;only&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>Use relative constraints for chain validation:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perfluorinated validation</span>
-<span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
-     <span class="s2">&quot;rel&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">],</span> <span class="s2">&quot;add&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;div&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
-     <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-<section id="documentation">
-<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h3>
-<p>Document your custom groups:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_group</span> <span class="o">=</span> <span class="n">PFASGroup</span><span class="p">(</span>
-    <span class="nb">id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Custom Group&quot;</span><span class="p">,</span>
-    <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;MCG&quot;</span><span class="p">,</span>
-    <span class="n">smarts1</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span>
-    <span class="n">componentSmarts</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl&quot;</span><span class="p">,</span>
-    <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">,</span>
-    <span class="c1"># Add description in comments</span>
-    <span class="c1"># Purpose: Detect specific fluorinated compounds</span>
-    <span class="c1"># Created: 2026-02-01</span>
-    <span class="c1"># Author: Your Name</span>
-    <span class="c1"># Test cases: See tests/test_custom.py</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="see-also">
-<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="api/core.html"><span class="doc">Core API Reference</span></a>: Core API reference</p></li>
-<li><p><a class="reference internal" href="api/models.html"><span class="doc">Data Models API Reference</span></a>: Data model details</p></li>
-<li><p><a class="reference internal" href="tutorial.html"><span class="doc">Tutorial</span></a>: Practical examples</p></li>
-<li><p><a class="reference internal" href="algorithm.html"><span class="doc">Algorithm Overview</span></a>: Algorithm explanation</p></li>
+<li><p>SMARTS must be valid RDKit SMARTS (validated by <code class="docutils literal notranslate"><span class="pre">Chem.MolFromSmarts</span></code>).</p></li>
+<li><p>Multiple SMARTS for one group can be supplied as a list:
+<code class="docutils literal notranslate"><span class="pre">smarts=[&quot;[CX4](F)(F)F&quot;,</span> <span class="pre">&quot;[CX4](F)(F)&quot;]</span></code></p></li>
+<li><p>Recursive SMARTS are supported.</p></li>
+<li><p>Test your SMARTS with <code class="docutils literal notranslate"><span class="pre">rdkit.Chem.rdchem.Mol.GetSubstructMatches</span></code> before
+adding them to the library.</p></li>
 </ul>
 </section>
 </section>
@@ -1103,8 +575,8 @@ to fluorinated chains.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="api/models.html" class="btn btn-neutral float-left" title="Data Models API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="benchmarking.html" class="btn btn-neutral float-right" title="Benchmarking and Validation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="prioritization.html" class="btn btn-neutral float-right" title="Prioritization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

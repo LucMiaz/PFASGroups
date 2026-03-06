@@ -99,9 +99,9 @@ class ResultsModel(_ResultsModel):
             Explicit list of group IDs to include (overrides group_selection)
         halogens : str or list of str, default ['F', 'Cl', 'Br', 'I']
             Which halogen(s) to match component SMARTS against.
-            - Multiple values → one fingerprint per halogen, concatenated into
-              a vector of length n_groups × n_halogens. Group names are
-              suffixed with ``[F]``, ``[Cl]``, etc.
+            Multiple values produce one fingerprint per halogen,
+            concatenated into a vector of length n_groups × n_halogens.
+            Group names are suffixed with ``[F]``, ``[Cl]``, etc.
             Available: ``'F'``, ``'Cl'``, ``'Br'``, ``'I'``
         saturation : str or None, default 'per'
             Saturation filter applied to component SMARTS groups:

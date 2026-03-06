@@ -1,5 +1,5 @@
-PFASgroups Documentation
-========================
+﻿HalogenGroups / PFASGroups
+==========================
 
 .. image:: https://badge.fury.io/py/PFASgroups.svg
    :target: https://badge.fury.io/py/PFASgroups
@@ -9,72 +9,84 @@ PFASgroups Documentation
    :target: https://www.python.org/downloads/
    :alt: Python 3.7+
 
-.. image:: https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg
-   :target: https://creativecommons.org/licenses/by-nc/4.0/
-   :alt: License: CC BY-NC 4.0
+.. image:: https://img.shields.io/badge/License-CC%20BY--ND%204.0-lightgrey.svg
+   :target: https://creativecommons.org/licenses/by-nd/4.0/
+   :alt: License: CC BY-ND 4.0
 
 .. image:: https://img.shields.io/badge/Powered%20by-RDKit-3838ff.svg
    :target: https://www.rdkit.org/
    :alt: Powered by RDKit
 
-A comprehensive Python cheminformatics package for automated detection, classification, and analysis of Per- and Polyfluoroalkyl Substances (PFAS) in chemical databases.
+A comprehensive Python cheminformatics package for automated detection,
+classification, and analysis of halogenated substances — with a focus on
+Per- and Polyfluoroalkyl Substances (PFAS).
 
-Overview
---------
+The package can be imported as **HalogenGroups** (all halogens: F, Cl, Br, I)
+or as **PFASGroups** (fluorine-only, for backward compatibility):
 
-**PFASgroups** provides three main capabilities:
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
 
-1. **PFAS Group Identification and Chain Analysis**: Automated detection of 116 functional groups connected to halogenated chains, based on OECD terminology (28 OECD groups, 27 generic groups, 42 telomer groups)
-2. **Halogenated Chain Length Quantification**: Determination of per- or poly-halogenated alkyl chain lengths connected to functional groups, supporting F, Cl, Br and I
-3. **Customization**: Both functional groups and pathway patterns can be customized via JSON configuration files
+   * - Import
+     - Default behavior
+   * - ``from HalogenGroups import parse_smiles``
+     - Searches for all halogens (F, Cl, Br, I) across 116 groups
+   * - ``from PFASGroups import parse_smiles``
+     - Searches for fluorine only (backward-compatible with v1/v2)
 
-The algorithm combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding using RDKit and NetworkX.
-
-Quick Start
------------
-
-Installation
-~~~~~~~~~~~~
-
-.. code-block:: bash
-
-   pip install PFASgroups
-
-Basic Usage
-~~~~~~~~~~~
+Quick example
+-------------
 
 .. code-block:: python
 
-   from PFASgroups import parse_smiles, generate_fingerprint
+   from HalogenGroups import parse_smiles, generate_fingerprint
+   import numpy as np
 
-   # Parse PFAS structures
-   smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
-   results = parse_smiles(smiles_list)
+   smiles = ["CCCC(F)(F)F", "ClCCCl", "FC(F)(F)C(=O)O"]
+   results = parse_smiles(smiles)
 
-   # Each result contains: (PFASGroup, match_count, chain_lengths, matched_chains)
-   for i, smiles_str in enumerate(smiles_list):
-       print(f"\nAnalyzing: {smiles_str}")
-       for group, n_matches, chain_lengths, chains in results[i]:
-           print(f"  {group.name}: {n_matches} matches, chains: {chain_lengths}")
+   for mol_result in results:
+       print(mol_result.smiles, "->", len(mol_result.matches), "group matches")
 
-   # Generate fingerprints for machine learning (F only, per-saturation, 116 groups)
-   fingerprints, group_info = generate_fingerprint(smiles_list)
+   fps, group_names = generate_fingerprint(smiles)
+   print(fps.shape)   # (3, 464)
 
-   # Multi-halogen stacked fingerprint (F + Cl → 232 columns)
-   fingerprints, group_info = generate_fingerprint(smiles_list, halogens=['F', 'Cl'])
+Key capabilities
+----------------
 
-Table of Contents
------------------
+- **116 halogen groups**: 28 OECD, 45 generic, 43 fluorotelomer groups
+- **Dual-halogen API**: parse for any combination of F, Cl, Br, I in one call
+- **PFAS definition screening**: classify molecules against 5 regulatory frameworks
+- **Fingerprinting**: generate 464-column multi-halogen fingerprints for ML
+- **Dimensionality reduction**: PCA, t-SNE, UMAP on fingerprint matrices
+- **Molecule prioritization**: rank molecules by structural novelty
+- **Command-line interface**: ``halogengroups parse``, ``fingerprint``, ``list-groups``
 
 .. toctree::
    :maxdepth: 2
-   :caption: User Guide
+   :caption: Getting Started
 
    installation
    quickstart
-   tutorial
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Core Concepts
+
+   halogengroups
    pfas_definitions
    algorithm
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Advanced Topics
+
+   tutorial
+   customization
+   prioritization
+   benchmarking
+   cli
 
 .. toctree::
    :maxdepth: 2
@@ -85,23 +97,15 @@ Table of Contents
    api/fingerprint_analysis
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Advanced Topics
-
-   customization
-   benchmarking
-   prioritization
-
-.. toctree::
    :maxdepth: 1
-   :caption: Additional Information
+   :caption: Project Info
 
-   contributing
    changelog
+   contributing
    license
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

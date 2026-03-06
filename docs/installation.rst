@@ -1,181 +1,109 @@
-Installation
+﻿Installation
 ============
-
-PFASgroups can be installed in multiple ways depending on your needs and preferences.
-
-From PyPI (Recommended)
------------------------
-
-The simplest way to install PFASgroups is via pip:
-
-.. code-block:: bash
-
-   pip install PFASgroups
-
-This will install PFASgroups and all required dependencies.
-
-From Conda-Forge
-----------------
-
-If you prefer conda package management:
-
-.. code-block:: bash
-
-   conda install -c conda-forge pfasgroups
-
-From Source
------------
-
-For development or to get the latest features:
-
-.. code-block:: bash
-
-   git clone https://github.com/yourusername/PFASGroups.git
-   cd PFASGroups
-   pip install -e .
-
-The ``-e`` flag installs in editable mode, allowing you to modify the source code.
 
 Requirements
 ------------
 
-PFASgroups requires Python 3.7 or later and the following packages:
+- Python 3.7 or newer
+- `RDKit <https://www.rdkit.org/>`_ 2020.09 or newer
+- `NetworkX <https://networkx.org/>`_ 2.5 or newer
 
-Core Dependencies
-~~~~~~~~~~~~~~~~~
+Install with pip
+----------------
 
-- **RDKit** (>=2020.03): Chemistry toolkit for molecular operations
-- **NumPy** (>=1.19.0): Numerical computing
-- **Pandas** (>=1.1.0): Data manipulation and analysis
-- **NetworkX** (>=2.5): Graph algorithms for pathfinding
-- **tqdm**: Progress bars
+The recommended installation method is via pip.  RDKit must already be
+available in the target environment (it is not listed as a pip dependency
+because it is best installed via conda or a pre-built wheel).
 
-Optional Dependencies
-~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: bash
 
-For visualization:
+   pip install PFASgroups
 
-- **matplotlib** (>=3.3.0): Static plotting
-- **svgutils**: SVG manipulation
+Install with conda
+------------------
 
-For benchmarking:
+If you manage environments with conda you can install both RDKit and the
+package in one step:
 
-- **seaborn**: Statistical visualization
-- **plotly**: Interactive plots
-- **scipy**: Statistical analysis
+.. code-block:: bash
 
-Verifying Installation
-----------------------
+   conda install -c conda-forge rdkit
+   pip install PFASgroups
 
-To verify that PFASgroups is installed correctly:
+Or create a fresh environment:
+
+.. code-block:: bash
+
+   conda create -n halogengroups -c conda-forge python=3.10 rdkit networkx
+   conda activate halogengroups
+   pip install PFASgroups
+
+Install from source
+-------------------
+
+.. code-block:: bash
+
+   git clone https://github.com/lucdecrem/PFASGroups.git
+   cd PFASGroups
+   pip install -e .
+
+Optional dependencies
+---------------------
+
+Some features require additional packages that are not installed by default:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 30 40
+
+   * - Feature
+     - Package
+     - Install
+   * - PCA / t-SNE
+     - scikit-learn
+     - ``pip install scikit-learn``
+   * - UMAP
+     - umap-learn
+     - ``pip install umap-learn``
+   * - Database export
+     - SQLAlchemy
+     - ``pip install sqlalchemy``
+   * - PostgreSQL export
+     - psycopg2
+     - ``pip install psycopg2-binary``
+
+Verify installation
+-------------------
 
 .. code-block:: python
 
-   import PFASgroups
-   print(PFASgroups.__version__)
+   from HalogenGroups import parse_smiles, get_compiled_HalogenGroups
 
-You should see the version number printed without errors.
+   groups = get_compiled_HalogenGroups()
+   print(f"Loaded {len(groups)} halogen groups")
+   # Loaded 116 halogen groups
 
-Testing the Installation
-------------------------
-
-Run a quick test:
-
-.. code-block:: python
-
-   from PFASgroups import parse_smiles
-   
-   # Test with PFOA (Perfluorooctanoic acid)
-   result = parse_smiles("FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O")
-   
-   if result:
-       print("✓ Installation successful!")
-       print(f"Detected groups: {[g.name for g, _, _, _ in result[0]]}")
-   else:
-       print("✗ Installation issue detected")
-
-Expected output should show detection of "Perfluoroalkyl carboxylic acids" (PFCAs).
+   results = parse_smiles(["CCCC(F)(F)F"])
+   print(results[0].matches[0].group_name)
+   # perfluoroalkyl
 
 Troubleshooting
 ---------------
 
-RDKit Installation Issues
-~~~~~~~~~~~~~~~~~~~~~~~~~
+**ImportError: No module named rdkit**
 
-RDKit can sometimes be challenging to install. If you encounter issues:
+Install RDKit via conda-forge (recommended) or use a wheel from
+`https://www.lfd.uci.edu/~gohlke/pythonlibs/ <https://www.lfd.uci.edu/~gohlke/pythonlibs/>`_.
 
-**Using conda (recommended for RDKit):**
+**ModuleNotFoundError: No module named 'HalogenGroups'**
 
-.. code-block:: bash
+Make sure you installed the package as ``PFASgroups`` (on PyPI the distribution
+is called *PFASgroups*; both ``import HalogenGroups`` and ``import PFASGroups``
+work after installation).
 
-   conda create -n pfas python=3.9
-   conda activate pfas
-   conda install -c conda-forge rdkit
-   pip install PFASgroups
+**scikit-learn / umap-learn not found**
 
-**On Windows:**
-
-RDKit wheels are available for recent Python versions. If pip installation fails, use conda.
-
-**On Linux:**
-
-Most distributions have RDKit packages:
-
-.. code-block:: bash
-
-   # Ubuntu/Debian
-   sudo apt-get install python3-rdkit
-   
-   # Fedora
-   sudo dnf install python3-rdkit
-
-Import Errors
-~~~~~~~~~~~~~
-
-If you get import errors:
-
-1. Ensure you're in the correct Python environment
-2. Check that all dependencies are installed: ``pip list | grep -i rdkit``
-3. Try importing RDKit directly: ``python -c "import rdkit; print(rdkit.__version__)"``
-
-Performance Issues
-~~~~~~~~~~~~~~~~~~
-
-For better performance on large datasets:
-
-- Ensure NumPy is linked to an optimized BLAS library (Intel MKL or OpenBLAS)
-- Consider using PyPy for pure-Python operations (note: RDKit may not be available)
-- Use parallel processing when analyzing multiple molecules
-
-Upgrading
----------
-
-To upgrade to the latest version:
-
-.. code-block:: bash
-
-   pip install --upgrade PFASgroups
-
-To upgrade from conda:
-
-.. code-block:: bash
-
-   conda update -c conda-forge pfasgroups
-
-Development Installation
-------------------------
-
-For contributors:
-
-.. code-block:: bash
-
-   git clone https://github.com/yourusername/PFASGroups.git
-   cd PFASGroups
-   pip install -e ".[dev]"
-
-This installs additional development dependencies including:
-
-- pytest: Testing framework
-- black: Code formatter
-- flake8: Linter
-- sphinx: Documentation generator
+These are optional.  They are only needed when calling
+:meth:`~HalogenGroups.ResultsFingerprint.perform_pca`,
+:meth:`~HalogenGroups.ResultsFingerprint.perform_tsne`, or
+:meth:`~HalogenGroups.ResultsFingerprint.perform_umap`.

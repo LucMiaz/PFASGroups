@@ -1,509 +1,145 @@
-Quick Start Guide
-=================
+﻿Quickstart
+==========
 
-This guide will get you up and running with PFASgroups in minutes.
+This page shows the most common use cases in under five minutes.
 
-Basic PFAS Detection
----------------------
-
-Detecting PFAS groups in molecules:
+Parsing SMILES
+--------------
 
 .. code-block:: python
 
    from HalogenGroups import parse_smiles
-   
-   # Single SMILES string
-   smiles = "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"
-   results = parse_smiles(smiles)
-   
-   # results is a ResultsModel (list of MoleculeResult)
-   for match in results[0].matches:
-       print(f"{match.group_name}: {len(match.components)} component(s)")
-       sizes = [len(c.atoms) for c in match.components]
-       print(f"  Component sizes: {sizes}")
-       print(f"  OECD Group ID: {match.group_id}")
 
-**Output:**
-
-.. code-block:: text
-
-   Perfluoroalkyl carboxylic acids: 1 matches
-     Chain lengths: [5]
-     OECD Group ID: 1
-
-Multiple Molecules
-------------------
-
-Process a list of SMILES:
-
-.. code-block:: python
-
-   from HalogenGroups import parse_smiles
-   
-   smiles_list = [
-       "FC(F)(F)C(F)(F)C(=O)O",  # PFBA
-       "FC(F)(F)C(F)(F)S(=O)(=O)O",  # PFBS
-       "C(C(F)(F)F)F"  # Not a typical PFAS functional group
+   smiles = [
+       "CCCC(F)(F)F",               # perfluoroalkyl chain
+       "ClCCCl",                     # organochlorine
+       "FC(F)(F)C(=O)O",            # trifluoroacetic acid (TFA)
+       "OCCOCCO",                    # no halogen — returns no matches
    ]
-   
-   results = parse_smiles(smiles_list)
-   
-   for mol_result in results:
-       print(f"\n{mol_result.smiles}:")
-       group_matches = [m for m in mol_result.matches if m.is_group]
-       if group_matches:
-           for match in group_matches:
-               sizes = [len(c.atoms) for c in match.components]
-               print(f"  ✓ {match.group_name} (component sizes: {sizes})")
-       else:
-           print("  ✗ No PFAS groups detected")
 
-**Output:**
+   results = parse_smiles(smiles)
 
-.. code-block:: text
+``results`` is a :class:`~HalogenGroups.ResultsModel` (a list-like container
+of :class:`~HalogenGroups.MoleculeResult` objects, one per input SMILES).
 
-   FC(F)(F)C(F)(F)C(=O)O:
-     ✓ Perfluoroalkyl carboxylic acids (chains: [3])
-   
-   FC(F)(F)C(F)(F)S(=O)(=O)O:
-     ✓ Perfluoroalkyl sulfonic acids (chains: [3])
-   
-   C(C(F)(F)F)F:
-     ✗ No PFAS groups detected
+Accessing matches
+-----------------
 
-Generating Fingerprints
-------------------------
+.. code-block:: python
 
-Create binary fingerprints for machine learning:
+   mol = results[0]                         # first molecule
+   print(mol.smiles)                        # canonical SMILES
+   print(mol.inchi)
+
+   for match in mol.matches:
+       print(match.group_name)              # e.g. "perfluoroalkyl"
+       print(match.group_id)               # integer group ID
+       print(match.is_PFAS)
+       for comp in match.components:
+           print(comp.atoms)               # list of atom indices
+
+Skipping molecules with no match:
+
+.. code-block:: python
+
+   for mol in results:
+       if mol.matches:
+           print(mol.smiles, "—", len(mol.matches), "match(es)")
+
+Converting to a DataFrame
+-------------------------
+
+.. code-block:: python
+
+   df = results.to_dataframe()
+   print(df.columns.tolist())
+   # ['smiles', 'inchi', 'group_name', 'group_id', 'is_PFAS', 'n_components', ...]
+
+Fluorine-only (PFASGroups mode)
+--------------------------------
+
+Use the ``PFASGroups`` import instead of ``HalogenGroups`` to restrict
+detection to fluorine only (this is the default for backward compatibility):
+
+.. code-block:: python
+
+   from PFASGroups import parse_smiles
+
+   results = parse_smiles(["ClCCCl", "CCCC(F)(F)F"])
+   # ClCCCl has no fluorine → no matches
+   # CCCC(F)(F)F → perfluoroalkyl match
+
+Or pass ``halogens`` explicitly with either import:
+
+.. code-block:: python
+
+   from HalogenGroups import parse_smiles
+
+   # fluorine only
+   results_f = parse_smiles(smiles, halogens='F')
+
+   # chlorine and bromine only
+   results_clbr = parse_smiles(smiles, halogens=['Cl', 'Br'])
+
+Generating fingerprints
+-----------------------
+
+Fingerprints encode group counts as a fixed-length vector suitable for
+machine learning:
 
 .. code-block:: python
 
    from HalogenGroups import generate_fingerprint
-   import numpy as np
-   
-   smiles_list = [
-       "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O",  # PFBA
-       "FC(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",  # PFBS
-       "C(C(F)(F)C(F)(F)C(F)(F)F)O"  # FTOH
-   ]
-   
-   # Default: all halogens, per-saturation → 116 groups × 4 = 464 columns
-   fps, group_info = generate_fingerprint(smiles_list)
-   print(f"Fingerprint shape: {fps.shape}")   # (3, 464)
-   
-   # Fluorine only → 116 columns
-   fps_f, info = generate_fingerprint(smiles_list, halogens='F')
-   print(f"Fluorine-only shape: {fps_f.shape}")  # (3, 116)
-   print(info['group_names'][:3])              # ['... [F]', '... [F]', ...]
-   
-   # Polyfluorinated components only
-   fps_poly, _ = generate_fingerprint(smiles_list, halogens='F', saturation='poly')
-   
-   # Use in ML model
-   from sklearn.ensemble import RandomForestClassifier
-   X = fps_f   # shape (3, 116)
-   y = [1, 1, 0]
-   model = RandomForestClassifier()
-   model.fit(X, y)
 
-**Different fingerprint representations:**
+   smiles = ["CCCC(F)(F)F", "ClCCCl", "FC(F)(F)C(=O)O"]
+   fps, group_names = generate_fingerprint(smiles)
 
-.. code-block:: python
+   print(fps.shape)            # (3, 464) — 116 groups × 4 halogens
+   print(type(fps))            # numpy.ndarray
 
-   # Dictionary format (sparse)
-   fps_dict, _ = generate_fingerprint(smiles_list, representation='dict')
-   print(fps_dict[0])  # {'Perfluoroalkyl carboxylic acids': 1, ...}
-   
-   # Count-based (instead of binary)
-   fps_count, _ = generate_fingerprint(smiles_list, count_mode='count')
-   
-   # Max chain length
-   fps_chain, _ = generate_fingerprint(smiles_list, count_mode='max_component')
+Each column corresponds to (group, halogen) pair.  ``group_names`` is a
+dict mapping column index to ``(group_name, halogen)`` tuples.
 
-**Using ResultsModel.to_fingerprint():**
+PFAS definition screening
+--------------------------
+
+Classify molecules against regulatory PFAS definitions:
 
 .. code-block:: python
 
    from HalogenGroups import parse_smiles
-   
-   results = parse_smiles(smiles_list)
-   
-   # Default fingerprint (all halogens, per-saturation, 116 groups × 4 = 464 columns)
-   fp = results.to_fingerprint()
-   
-   # Fluorine only → shape (n, 116)
-   fp_f = results.to_fingerprint(halogens='F')
-   
-   # OECD groups only, polyfluorinated
-   fp_oecd = results.to_fingerprint(
-       group_selection='oecd', halogens='F', saturation='poly')
-   
-   print(repr(fp))
-   # ResultsFingerprint(n_molecules=3, n_groups=464,
-   #   group_selection='all', halogens=['F', 'Cl', 'Br', 'I'], saturation='per', count_mode='binary')
 
-Visualization
--------------
+   results = parse_smiles(
+       ["CCCC(F)(F)F", "OCCOCCO"],
+       include_PFAS_definitions=True,
+   )
 
-Visualize PFAS group assignments:
+   for mol in results:
+       for defn in mol.pfas_definition_matches:
+           print(mol.smiles, "matches", defn.definition_name)
+
+Saturated vs unsaturated groups
+---------------------------------
+
+Filter for fully saturated groups only:
 
 .. code-block:: python
 
-   from HalogenGroups import parse_smiles
-   
-   smiles = "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"
-   results = parse_smiles(smiles)
-   
-   # Display in Jupyter notebook
-   results[0].show(display=True)
-   
-   # Save to file
-   img = results[0].show(display=False)
-   img.save("pfba_annotated.png")
-   
-   # Export to SVG
-   results[0].svg("pfba_annotated.svg")
-   
-   # Multiple molecules in grid
-   smiles_list = [
-       "FC(F)(F)C(F)(F)C(=O)O",
-       "FC(F)(F)C(F)(F)S(=O)(=O)O",
-       "C(C(F)(F)C(F)(F)F)O"
-   ]
-   results = parse_smiles(smiles_list)
-   grid_img = results.show(display=False, ncols=3)
-   grid_img.save("pfas_comparison.png")
+   results = parse_smiles(smiles, saturation='saturated')
+   # or 'unsaturated' / None (default — all)
 
-Component-Based Analysis
-------------------------
-
-For molecules with disconnected or cyclic components:
-
-.. code-block:: python
-
-   from HalogenGroups import parse_smiles
-   
-   # Complex molecule with cycles
-   smiles = "C1(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)(F)"
-   
-   # Analysis - all components are detected automatically
-   results = parse_smiles(smiles)
-   
-   print("Matched groups:", len(results[0].matches))
-   print("Total components:", sum(len(m.components) for m in results[0].matches))
-
-Command Line Interface
-----------------------
-
-PFASgroups provides a CLI for quick analyses:
-
-**Parse SMILES:**
-
-.. code-block:: bash
-
-   halogengroups parse "FC(F)(F)C(F)(F)C(=O)O"
-   
-   # Multiple SMILES
-   halogengroups parse "FC(F)(F)C(F)(F)C(=O)O" "FC(F)(F)C(F)(F)S(=O)(=O)O"
-   
-   # From file
-   halogengroups parse --file molecules.smi
-
-**Generate fingerprints:**
-
-.. code-block:: bash
-
-   halogengroups fingerprint "FC(F)(F)C(F)(F)C(=O)O" --format dict
-   
-   # Save to file
-   halogengroups fingerprint --file molecules.smi --output fingerprints.json
-
-**List available groups:**
-
-.. code-block:: bash
-
-   halogengroups list-groups
-   
-   # Filter by main group
-   halogengroups list-groups --main "Perfluoroalkyl acids"
-
-**List pathway types:**
-
-.. code-block:: bash
-
-   halogengroups list-paths
-
-Working with DataFrames
-------------------------
-
-Output results as pandas DataFrame:
-
-.. code-block:: python
-
-   from HalogenGroups import parse_smiles
-   import pandas as pd
-   
-   smiles_list = [
-       "FC(F)(F)C(F)(F)C(=O)O",
-       "FC(F)(F)C(F)(F)S(=O)(=O)O",
-       "C(C(F)(F)C(F)(F)F)O"
-   ]
-   
-   results = parse_smiles(smiles_list)
-   
-   # Build a DataFrame from results
-   rows = []
-   for mol_result in results:
-       for match in mol_result.matches:
-           if match.is_group:
-               rows.append({
-                   'smiles': mol_result.smiles,
-                   'group_name': match.group_name,
-                   'group_id': match.group_id,
-                   'n_components': len(match.components),
-               })
-   df = pd.DataFrame(rows)
-   print(df.head())
-   
-   # Export to CSV
-   df.to_csv('pfas_analysis.csv', index=False)
-
-Reading from Files
+Command-line usage
 ------------------
 
-Process SMILES from various file formats:
-
-**From SMILES file (.smi):**
-
-.. code-block:: python
-
-   from HalogenGroups import parse_smiles
-   import pandas as pd
-   
-   # Read SMILES file
-   with open('molecules.smi', 'r') as f:
-       smiles_list = [line.strip() for line in f if line.strip()]
-   
-   results = parse_smiles(smiles_list)
-
-**From CSV:**
-
-.. code-block:: python
-
-   import pandas as pd
-   from HalogenGroups import parse_smiles
-   
-   # Read CSV with SMILES column
-   df = pd.read_csv('compounds.csv')
-   smiles_list = df['SMILES'].tolist()
-   
-   results = parse_smiles(smiles_list)
-   
-   # Add results to DataFrame
-   df['pfas_groups'] = [
-       [m.group_name for m in mol_result.matches if m.is_group]
-       for mol_result in results
-   ]
-
-**From SDF:**
-
-.. code-block:: python
-
-   from rdkit import Chem
-   from HalogenGroups import parse_groups_in_mol
-   
-   # Read SDF file
-   suppl = Chem.SDMolSupplier('compounds.sdf')
-   
-   results = []
-   for mol in suppl:
-       if mol is not None:
-           result = parse_groups_in_mol(mol)
-           results.append(result)
-
-Error Handling
---------------
-
-Robust error handling:
-
-.. code-block:: python
-
-   from HalogenGroups import parse_smiles
-   from rdkit import Chem
-   
-   smiles_list = [
-       "FC(F)(F)C(F)(F)C(=O)O",  # Valid
-       "INVALID_SMILES",  # Invalid
-       "CCO",  # Valid but not PFAS
-   ]
-   
-   for smiles in smiles_list:
-       try:
-           # Check if valid SMILES first
-           mol = Chem.MolFromSmiles(smiles)
-           if mol is None:
-               print(f"✗ Invalid SMILES: {smiles}")
-               continue
-           
-           # Parse PFAS groups
-           results = parse_smiles(smiles)
-           mol_result = results[0]
-           group_matches = [m for m in mol_result.matches if m.is_group]
-           
-           if group_matches:
-               print(f"✓ {smiles}: {len(group_matches)} groups")
-           else:
-               print(f"○ {smiles}: No PFAS groups")
-               
-       except Exception as e:
-           print(f"✗ Error processing {smiles}: {e}")
-
-Filtering Components by Halogen, Form, and Saturation
-------------------------------------------------------
-
-You can filter component matches by specific halogens, chemical forms, or saturation levels:
-
-.. code-block:: python
-
-   from HalogenGroups import parse_smiles
-   
-   smiles_list = [
-       "C(C(F)(F)F)F",  # Simple fluorinated
-       "FC(F)(F)C(F)(F)C(=O)O",  # Perfluorinated carboxylic acid
-       "C(C(Cl)(Cl)Cl)Cl"  # Chlorinated
-   ]
-   
-   # Filter only fluorine components
-   results_f = parse_smiles(smiles_list, halogens='F')
-   
-   # Filter perfluorinated alkyl compounds
-   results_pfa = parse_smiles(
-       smiles_list,
-       halogens='F',
-       saturation='per',
-       form='alkyl'
-   )
-   
-   # Filter polyfluorinated cyclic compounds
-   results_polyf_cyclic = parse_smiles(
-       smiles_list,
-       halogens='F',
-       saturation='poly',
-       form='cyclic'
-   )
-   
-   # Filter multiple halogens (F and Cl)
-   results_multi = parse_smiles(smiles_list, halogens=['F', 'Cl'])
-
-**Valid filter options:**
-
-- **halogens**: ``'F'``, ``'Cl'``, ``'Br'``, ``'I'``, or list like ``['F', 'Cl']`` (``None`` for all)
-- **saturation**: ``'per'`` or ``'poly'`` (or list like ``['per', 'poly']`` for both, ``None`` for all)
-- **form**: ``'alkyl'`` or ``'cyclic'`` (or list like ``['alkyl', 'cyclic']`` for both, ``None`` for all)
-
-Command-line equivalents:
-
 .. code-block:: bash
 
-   # Filter for fluorine components only
-   halogengroups parse --halogens F "C(C(F)(F)F)F"
-   
-   # Filter for perfluorinated alkyl
-   halogengroups parse --halogens F --saturation per --form alkyl "FC(F)(F)C(F)(F)C(=O)O"
-   
-   # Filter for multiple halogens
-   halogengroups parse --halogens F Cl "C(C(F)(F)F)Cl"
-   
-   # Filter for cyclic forms only
-   halogengroups parse --form cyclic "your_smiles_here"
+   # Parse a CSV of SMILES and save results to JSON
+   halogengroups parse input.csv --output results.json
 
-Article Examples
-----------------
+   # Generate fingerprints
+   halogengroups fingerprint input.csv --output fps.csv
 
-The following examples correspond to the code listings in the PFASGroups article.
+   # List all 116 group names
+   halogengroups list-groups
 
-**Example 1 – Custom PFAS group at runtime:**
-
-.. code-block:: python
-
-   from PFASgroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
-
-   groups = get_compiled_HalogenGroups()  # compiled HalogenGroup instances
-   groups.append(HalogenGroup(
-       id=200,
-       name="Perfluoroalkyl nitrates",
-       smarts={"[C$(C[ON+](=O)[O-])]": 1},
-       componentSaturation="per",
-       componentHalogens="F",
-       componentForm="alkyl",
-       constraints={"eq": {"N": 1}, "gte": {"F": 1}},
-   ))
-   results = parse_smiles(["FC(F)(F)C(F)(F)ON(=O)=O"], pfas_groups=groups)
-
-**Example 2 – Generating and analysing PFAS fingerprints:**
-
-.. code-block:: python
-
-   from PFASgroups import parse_smiles, generate_fingerprint
-
-   smiles = [
-       "FC(F)(F)C(F)(F)C(F)(F)C(=O)O",        # PFBA
-       "FC(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",    # PFBS
-       "C(CF)(CF)C(F)(F)C(F)(F)OCC(F)(F)F",   # FTOH-like
-   ]
-
-   # Direct fingerprint generation (116-column binary, F only)
-   fp_matrix, info = generate_fingerprint(smiles, halogens='F', saturation='per')
-   print(fp_matrix.shape)       # (3, 116)
-   print(info['group_names'][:3])
-
-   # Via ResultsModel for post-hoc fingerprinting and dimensionality reduction
-   results = parse_smiles(smiles)
-   fp = results.to_fingerprint(group_selection='all', halogens='F', count_mode='binary')
-
-   pca  = fp.perform_pca(n_components=2, plot=True)
-   tsne = fp.perform_tsne(perplexity=10, max_iter=1000, plot=True)
-   umap = fp.perform_umap(n_neighbors=5, plot=True)
-
-   # KL-divergence comparison between two fingerprint datasets
-   other_fp = parse_smiles(["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"]).to_fingerprint()
-   kld = fp.compare_kld(other_fp, method='minmax')
-
-**Example 3 – Multi-halogen analysis:**
-
-.. code-block:: python
-
-   from HalogenGroups import parse_smiles as hal_parse   # all halogens by default
-   from PFASgroups import parse_smiles as pfas_parse     # F only by default
-
-   multi = hal_parse(["ClC(Cl)(Cl)CCl", "BrC(Br)(Br)CBr"])
-   pfas  = pfas_parse(["FC(F)(F)C(F)(F)C(=O)O"])
-
-**Example 4 – Molecule prioritization:**
-
-.. code-block:: python
-
-   from PFASgroups import parse_smiles, prioritise_molecules
-
-   known_persistent = [
-       "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O",  # PFOA
-       "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",                    # PFOS
-   ]
-   candidates = [
-       "FC(F)(F)C(F)(F)C(=O)O",       # PFBA
-       "FC(F)(F)C(F)(F)C(F)(F)C(=O)O",  # PFPA
-       "CCO",                            # ethanol
-   ]
-
-   known_results = parse_smiles(known_persistent)
-   candidate_results = parse_smiles(candidates)
-   ranked = prioritise_molecules(candidate_results, known_results)
-
-Next Steps
-----------
-
-- Read the :doc:`tutorial` for in-depth examples
-- Learn about the :doc:`algorithm` behind the detection
-- Explore :doc:`customization` for advanced use cases
-- Check the :doc:`api/core` for complete API reference
-- See :doc:`benchmarking` for validation and performance analysis
+See :doc:`cli` for the full CLI reference.

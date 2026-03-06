@@ -1,233 +1,87 @@
-Changelog
+﻿Changelog
 =========
 
-Version 3.2.0 (February 2026)
-------------------------------
+Version 3.1.3
+--------------
 
-**Released:** February 2026
+**Released:** 2026
 
-**New Features:**
+- Documentation rewrite for ReadTheDocs publication
+- Both ``HalogenGroups`` and ``PFASGroups`` entry points documented
+- All code examples updated to current API (``ResultsModel`` pattern)
+- CLI reference page added
+- API reference pages updated with autodoc
 
-- **``get_compiled_HalogenGroups()``**: New function returning compiled
-  :class:`HalogenGroup` instances (``compute=True`` groups only), suitable for
-  extending with custom groups and passing directly to :func:`parse_smiles` or
-  :func:`generate_fingerprint`. The older :func:`get_HalogenGroups` continues to
-  return raw JSON dicts and is used internally by :class:`ResultsModel`.
+Version 3.2.0
+--------------
+
+**New features:**
+
+- **``get_compiled_HalogenGroups()``**: Returns compiled :class:`HalogenGroup`
+  instances (``compute=True`` groups only), suitable for extending with custom
+  groups and passing directly to :func:`parse_smiles` or
+  :func:`generate_fingerprint`.  The older :func:`get_HalogenGroups` continues
+  to return raw JSON dicts.
 
   .. code-block:: python
 
-     from PFASgroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
+     from HalogenGroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
 
      groups = get_compiled_HalogenGroups()
      groups.append(HalogenGroup(
-         id=200, name="Perfluoroalkyl nitrates",
-         smarts={"[C$(C[ON+](=O)[O-])]": 1},
-         componentSaturation="per", componentHalogens="F", componentForm="alkyl",
-         constraints={"eq": {"N": 1}, "gte": {"F": 1}},
+         group_id=200, name="my_custom_group",
+         smarts="[CX4](F)(F)(F)",
+         category="Custom",
+         is_PFAS=True,
      ))
-     results = parse_smiles(["FC(F)(F)C(F)(F)ON(=O)=O"], pfas_groups=groups)
+     results = parse_smiles(["FC(F)(F)C(F)(F)F"], halogen_groups=groups)
 
-**API Changes:**
+**API changes:**
 
-- **``generate_fingerprint`` return type**: When the input is a list of SMILES and
-  ``representation='vector'`` (default), the return value is now a 2D
-  ``numpy.ndarray`` of shape ``(n_molecules, n_groups)`` instead of a Python list.
-  This matches expected ML-ready usage (``fp_matrix.shape`` now works directly).
+- ``generate_fingerprint`` return value is now a 2-D ``numpy.ndarray`` of
+  shape ``(n_molecules, n_groups)`` instead of a Python list.
 
-Version 3.1.0 (February 2026)
-------------------------------
+Version 3.1.0
+--------------
 
-**Released:** February 18, 2026
+**New features:**
 
-**New Features:**
+- **Multi-halogen fingerprinting**: :func:`~HalogenGroups.generate_fingerprint`
+  and :meth:`~HalogenGroups.ResultsModel.to_fingerprint` now accept a
+  ``halogens`` parameter.  Multiple halogens produce horizontally-stacked
+  vectors (116 × n_halogens columns).
+- **Saturation filter**: ``saturation`` parameter (``'saturated'`` | ``'unsaturated'``
+  | ``None``) for both parsing and fingerprinting.
+- **Corrected group-selection indexing**: selections resolve by canonical group
+  IDs rather than list positions.
+- **``ResultsFingerprint`` metadata**: ``halogens`` and ``saturation``
+  stored in the object and shown in ``__repr__`` / ``summary()``.
 
-- **Multi-halogen fingerprinting**: ``generate_fingerprint`` and ``ResultsModel.to_fingerprint()``
-  now accept a ``halogens`` parameter (``'F'``, ``'Cl'``, ``'Br'``, ``'I'``, or a list thereof).
+Version 2.2.4
+--------------
 
-  - Single halogen (default ``'F'``): standard 116-column binary/count vector.
-  - Multiple halogens (e.g. ``['F', 'Cl']``): vectors are **stacked** horizontally,
-    yielding a fingerprint of length 116 × n_halogens. Group names are automatically
-    suffixed with ``[F]``, ``[Cl]``, etc.
+**New features:**
 
-- **Saturation filter**: a ``saturation`` parameter (``'per'`` | ``'poly'`` | ``None``,
-  default ``'per'``) controls which component SMARTS are used for groups that have
-  halogenated-chain components (OECD groups 1–28). Groups without a component SMARTS
-  (generic/telomer groups) are unaffected by this filter.
+- **ResultsFingerprint class** with group selection, multiple encoding modes
+  (binary / count / max_component), PCA, t-SNE, UMAP, and KL divergence.
+- **Database persistence**: ``to_sql()`` / ``from_sql()`` for ResultsFingerprint
+  and ResultsModel (SQLite and PostgreSQL via SQLAlchemy).
+- 100+ new unit tests.
 
-- **Corrected group-selection indexing**: group selections (``'oecd'``, ``'generic'``,
-  ``'telomers'``, ``'generic+telomers'``) now resolve using canonical **group IDs**
-  rather than raw list positions, making them robust to future changes in the data file.
+Version 2.2.3
+--------------
 
-- **``ResultsFingerprint`` metadata**: the class now stores and displays ``halogens``
-  and ``saturation`` in ``__repr__`` and ``summary()``.
+**New features:**
 
-**API Changes:**
+- **ResultsModel container**: wraps ``parse_smiles`` / ``parse_mols`` output
+  with helpers ``show()``, ``summarise()``, ``table()``, and ``to_dataframe()``.
+- Extended visualisation utilities (``plot_pfasgroups``).
+- Updated PFAS group definitions to 116 groups.
 
-.. code-block:: python
+Version 2.0
+-----------
 
-   # Default: F only, perfluorinated, all 116 groups → shape (n_mols, 116)
-   fp = results.to_fingerprint()
-
-   # Fluorine + chlorine stacked → shape (n_mols, 232)
-   fp = results.to_fingerprint(halogens=['F', 'Cl'])
-
-   # Polyfluorinated components only
-   fp = results.to_fingerprint(halogens='F', saturation='poly')
-
-   # No saturation filter (all component SMARTS)
-   fp = results.to_fingerprint(halogens='F', saturation=None)
-
-   # generate_fingerprint directly, same new params
-   from HalogenGroups import generate_fingerprint
-   vectors, info = generate_fingerprint(smiles_list, halogens=['F', 'Cl'], saturation='per')
-   # info['halogens'] == ['F', 'Cl']
-   # info['saturation'] == 'per'
-
-**Background — group count (116 vs 117):**
-
-The data file contains 117 group entries, but group ID 116 (*Telomers*) has
-``compute=False`` — it is an *aggregate* group matched by regex against other group
-names rather than parsed directly. The ``@load_HalogenGroups`` decorator excludes it,
-so every fingerprint always has **116** computable columns.
-
-Version 2.2.4 (February 2026)
-------------------------------
-
-**Released:** February 13, 2026
-
-**New Features:**
-
-- **ResultsFingerprint Class**: New comprehensive fingerprint analysis class with:
-  
-  - Flexible group selection: 'all', 'oecd', 'generic', 'telomers', or custom groups
-  - Multiple encoding modes: 'binary', 'count', 'max_component'
-  - Conversion method: ``ResultsModel.to_fingerprint()``
-
-- **Dimensionality Reduction Methods**:
-  
-  - **PCA** (``perform_pca()``): Linear dimensionality reduction with explained variance analysis and scree plots
-  - **Kernel PCA** (``perform_kernel_pca()``): Non-linear dimensionality reduction with multiple kernel options (RBF, polynomial, sigmoid, cosine)
-  - **t-SNE** (``perform_tsne()``): Excellent for visualization and cluster identification with configurable perplexity
-  - **UMAP** (``perform_umap()``): Fast, scalable non-linear reduction that preserves global structure (requires umap-learn)
-  - All methods include automatic plot generation with customizable output
-
-- **Statistical Comparison**:
-  
-  - **KL Divergence** (``compare_kld()``): Compare fingerprint distributions between datasets
-  - Multiple comparison modes: 'minmax' (normalized 0-1), 'forward', 'reverse', 'symmetric'
-  - Quantitative assessment of compositional similarity between chemical inventories
-
-- **Database Persistence**:
-  
-  - ``ResultsFingerprint.to_sql()`` / ``from_sql()``: Efficient save/load with sparse storage
-  - ``ResultsModel.from_sql()``: Load previously saved parsing results
-  - Support for SQLite and PostgreSQL databases
-  - Metadata preservation across save/load cycles
-
-- **Comprehensive Documentation**:
-  
-  - Complete API reference in ``docs/ResultsFingerprint_Guide.md``
-  - Scientific background for each dimensionality reduction method
-  - Parameter tuning guidelines and best practices
-  - Working examples in ``examples/results_fingerprint_analysis.py``
-  - Quick reference guide in ``RESULTS_FINGERPRINT_QUICKREF.md``
-
-**New API Methods:**
-
-.. code-block:: python
-
-   # Convert results to fingerprints
-   fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
-   
-   # Dimensionality reduction
-   pca_results = fp.perform_pca(n_components=5, plot=True)
-   kpca_results = fp.perform_kernel_pca(kernel='rbf', plot=True)
-   tsne_results = fp.perform_tsne(perplexity=30, plot=True)
-   umap_results = fp.perform_umap(n_neighbors=15, plot=True)
-   
-   # Compare datasets
-   kl_divergence = fp1.compare_kld(fp2, method='minmax')
-   
-   # Save/load
-   fp.to_sql(filename='fingerprints.db')
-   results.to_sql(filename='results.db')
-   fp_loaded = ResultsFingerprint.from_sql(filename='fingerprints.db')
-   results_loaded = ResultsModel.from_sql(filename='results.db')
-
-**Use Cases:**
-
-- Exploratory data analysis of large PFAS inventories
-- Database comparison and compositional analysis  
-- Cluster identification and structural pattern recognition
-- Machine learning feature extraction and preprocessing
-- Visualization of chemical space
-- Quantitative similarity assessment between datasets
-
-**Testing:**
-
-- 100+ comprehensive unit tests covering all new functionality
-- Integration tests for complete workflows
-- Performance tests for dimensionality reduction methods
-- SQL roundtrip tests for data integrity
-- Edge case handling and numerical stability tests
-
-**Dependencies:**
-
-- Required: numpy, pandas, scipy, scikit-learn, matplotlib, sqlalchemy
-- Optional: umap-learn (for UMAP analysis)
-
-**Documentation Files:**
-
-- ``docs/ResultsFingerprint_Guide.md`` - Complete API documentation
-- ``examples/results_fingerprint_analysis.py`` - Working examples
-- ``tests/test_results_fingerprint.py`` - Test suite
-- ``RESULTS_FINGERPRINT_QUICKREF.md`` - Quick reference
-
-Version 2.2.3 (February 2026)
-------------------------------
-
-**Released:** February 2026
-
-**New Features:**
-
-- Added a ``ResultsModel`` container around the default ``parse_mols`` / ``parse_smiles``
-   output, providing convenient helpers for navigating PFAS group matches and
-   components (e.g. ``show()``, ``summarise()``, ``table()``, and plotting
-   functions) while remaining fully compatible with existing list-of-dicts
-   consumers and JSON export.
-- Extended visualisation utilities for PFAS components:
-   - ``plot_pfasgroups`` now supports filtering by component path type
-      (e.g. perfluoroalkyl vs polyfluoroalkyl), optional SMARTS filtering,
-      panel labels, and more robust handling of invalid SMILES.
-   - New figure-generation helpers in the codebase reproduce the main-text and
-      supplementary figures used in the PFASgroups manuscript (overview example
-      and component/path-type illustrations).
-- Improved documentation and manuscript alignment:
-   - Updated the main article and Additional File~1 descriptions of PFASgroups
-      to match the current implementation (114 PFAS groups, component-based
-      graph metrics, universal component merging, fluorotelomer linker
-      validation, and regulatory definition support).
-   - Clarified JSON-based configuration of PFAS groups and regulatory
-      definitions and how component SMARTSs control perfluoroalkyl and
-      polyfluoroalkyl detection.
-
-
-
-License
--------
-
-PFASgroups is licensed under CC BY-NC 4.0. See :doc:`license` for details.
-
-Support
--------
-
-- **Issues:** https://github.com/yourusername/PFASGroups/issues
-- **Discussions:** https://github.com/yourusername/PFASGroups/discussions
-- **Email:** luc.miaz@aces.su.se
-
-Citation
---------
-
-If you use PFASgroups in your research, please cite:
-
-   Miaz, L.T., Cousins, I.T. (2026). Automatic Determination and Classification of Per- and Polyfluoroalkyl Substances. *Journal of Cheminformatics* (in preparation).
+- Complete rewrite of the SMARTS-based matcher.
+- New JSON-based group definition format.
+- Regulatory PFAS definition support (OECD, REACH, OPPT, UK EA, PFASTRUCTv5).
+- CLI entry points ``halogengroups`` / ``pfasgroups`` added.

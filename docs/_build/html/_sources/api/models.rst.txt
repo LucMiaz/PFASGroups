@@ -1,310 +1,185 @@
-Data Models API Reference
-=========================
+﻿Data Models
+===========
 
-This module defines the data structures used to represent PFAS groups and definitions.
+.. currentmodule:: HalogenGroups
 
-PFASGroup Class
----------------
+This page documents the data model classes returned by
+:func:`~HalogenGroups.parse_smiles` and related functions.
 
-.. autoclass:: PFASgroups.PFASGroupModel.PFASGroup
+.. contents:: Contents
+   :local:
+   :depth: 2
+
+ResultsModel
+------------
+
+.. autoclass:: ResultsModel
    :members:
-   :special-members: __init__
+   :undoc-members:
+   :show-inheritance:
 
-**Class Description:**
+``ResultsModel`` is a list-like container of :class:`MoleculeResult` objects.
+Its length equals the number of input SMILES.
 
-Represents a PFAS functional group definition with SMARTS patterns, pathway requirements, and molecular formula constraints.
+**Key methods:**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Method
+     - Description
+   * - ``results[i]``
+     - Access the i-th :class:`MoleculeResult`
+   * - ``results.to_dataframe()``
+     - Flatten all matches to a ``pandas.DataFrame``
+   * - ``results.to_fingerprint(...)``
+     - Convert to a :class:`ResultsFingerprint`
+   * - ``results.to_sql(filename)``
+     - Persist to a SQLite or PostgreSQL database
+   * - ``ResultsModel.from_sql(filename)``
+     - Load from a previously saved database
+
+MoleculeResult
+--------------
+
+.. autoclass:: MoleculeResult
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Represents parsing results for a single molecule.
 
 **Attributes:**
 
-- **id** (*int*): Unique identifier for the group (1-55+ for OECD groups, higher for custom)
-- **name** (*str*): Descriptive name (e.g., "Perfluoroalkyl carboxylic acids")
-- **alias** (*str*, optional): Short name or abbreviation (e.g., "PFCAs")
-- **smarts1** (*rdkit.Chem.Mol*): Primary SMARTS pattern (compiled RDKit Mol object)
-- **smarts2** (*rdkit.Chem.Mol*, optional): Secondary SMARTS pattern for additional specificity
-- **componentSmarts** (*str*): Pathway type - 'Perfluoroalkyl', 'Polyfluoroalkyl', 'cyclic', or None
-- **constraints** (*dict*): Molecular formula constraints
-- **max_dist_from_CF** (*int*): Maximum bond distance from fluorinated carbon terminal (default: 2)
-- **base_functional_groups** (*list*, optional): Base functional group categories
-- **main_group** (*str*, optional): Main classification category
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
 
-**Constraint Dictionary Structure:**
+   * - Attribute
+     - Description
+   * - ``smiles``
+     - Canonical SMILES string
+   * - ``inchi``
+     - InChI string
+   * - ``inchikey``
+     - InChIKey
+   * - ``matches``
+     - List of :class:`GroupMatch` objects
+   * - ``pfas_definition_matches``
+     - List of :class:`PFASDefinitionMatch` objects (populated when
+       ``include_PFAS_definitions=True``)
+   * - ``n_matches``
+     - Number of group matches
+   * - ``is_PFAS``
+     - ``True`` if any match has ``is_PFAS=True``
 
-.. code-block:: python
-
-   constraints = {
-       "eq": {"O": 2},  # Exactly 2 oxygen atoms
-       "gte": {"F": 1},  # At least 1 fluorine atom
-       "lte": {"N": 1},  # At most 1 nitrogen atom
-       "only": ["C", "F", "O", "H"],  # Only these elements allowed
-       "rel": {  # Relative element ratios
-           "C": {
-               "atoms": ["F", "H"],  # Reference atoms
-               "add": 0.5,  # Addition term
-               "div": 2  # Division factor
-           }
-       }
-   }
-
-**Relative Constraint Formula:**
-
-.. math::
-
-   n_{target} = \frac{\sum_{i} n_{atoms_i} + add}{div}
-
-For example, perfluorinated compounds: C = (F + H) / 2 - 1
-
-**Methods:**
-
-formula_dict_satisfies_constraints
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Example:**
 
 .. code-block:: python
 
-   def formula_dict_satisfies_constraints(self, formula_dict: dict) -> bool:
-       """
-       Check if a molecular formula satisfies all constraints.
-       
-       Args:
-           formula_dict: Dictionary mapping element symbols to counts
-                        e.g., {'C': 8, 'F': 15, 'O': 2, 'H': 1}
-       
-       Returns:
-           True if all constraints satisfied, False otherwise
-       """
+   mol = results[0]
+   print(mol.smiles)
+   print(mol.is_PFAS)
+   for match in mol.matches:
+       print(match.group_name)
 
-**Examples:**
+GroupMatch
+----------
 
-Creating a custom PFAS group:
-
-.. code-block:: python
-
-   from PFASgroups import PFASGroup
-   from rdkit import Chem
-   
-   # Define a custom PFAS group
-   my_group = PFASGroup(
-       id=999,
-       name="Perfluoroalkyl nitrates",
-       alias="PFANs",
-       smarts1=Chem.MolFromSmarts("[C]-[O]-[N+](=O)[O-]"),
-       smarts2=None,
-       componentSmarts="Perfluoroalkyl",
-       constraints={
-           "eq": {"N": 1, "O": 3},  # One N and three O (nitrate)
-           "gte": {"F": 1},  # At least one F
-           "only": ["C", "F", "O", "N", "H"]
-       },
-       max_dist_from_CF=2
-   )
-   
-   # Check if a formula satisfies constraints
-   formula = {'C': 4, 'F': 7, 'O': 3, 'N': 1, 'H': 0}
-   satisfies = my_group.formula_dict_satisfies_constraints(formula)
-   print(f"Formula satisfies: {satisfies}")
-
-Using in custom analysis:
-
-.. code-block:: python
-
-   from PFASgroups import get_PFASGroups, parse_smiles
-   
-   # Get default groups
-   groups = get_PFASGroups()
-   
-   # Add custom group
-   groups.append(my_group)
-   
-   # Use in parsing
-   results = parse_smiles(
-       "FC(F)(F)C(F)(F)C(F)(F)ON(=O)=O",
-       pfas_groups=groups
-   )
-
-PFASDefinition Class
---------------------
-
-.. autoclass:: PFASgroups.PFASDefinitionModel.PFASDefinition
-   :members:
-   :special-members: __init__
-
-**Class Description:**
-
-Represents broader PFAS definitions (e.g., OECD, EPA, EU) based on SMARTS patterns and fluorine ratios.
+Represents a single group detected in a molecule.
 
 **Attributes:**
 
-- **id** (*int*): Unique identifier
-- **name** (*str*): Definition name (e.g., "OECD PFAS Definition")
-- **smarts** (*list*): List of SMARTS pattern strings
-- **fluorineRatio** (*float*): Minimum F/(C+F+H) ratio threshold (0.0-1.0)
-- **description** (*str*): Human-readable description
-- **includeHydrogen** (*bool*): Include H in ratio calculation
-- **requireBoth** (*bool*): Require both SMARTS match AND fluorine ratio
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
 
-**Methods:**
+   * - Attribute
+     - Description
+   * - ``group_name``
+     - Human-readable group name
+   * - ``group_id``
+     - Integer group ID
+   * - ``group_category``
+     - ``'OECD'``, ``'Generic'``, or ``'Fluorotelomer'``
+   * - ``is_PFAS``
+     - Whether this group qualifies as PFAS
+   * - ``halogen``
+     - Halogen symbol matched (``'F'``, ``'Cl'``, etc.)
+   * - ``components``
+     - List of :class:`MatchComponent` objects
+   * - ``n_components``
+     - Number of components
 
-applies_to_molecule
-~~~~~~~~~~~~~~~~~~~
+MatchComponent
+--------------
 
-.. code-block:: python
+A single structural component of a group match (multiple matches of the same
+group in one molecule appear as separate components).
 
-   def applies_to_molecule(self, mol_or_smiles, formula=None, **kwargs) -> bool:
-       """
-       Check if this definition applies to a molecule.
-       
-       Args:
-           mol_or_smiles: RDKit Mol object or SMILES string
-           formula: Pre-computed molecular formula (optional)
-           **kwargs: Additional parameters
-       
-       Returns:
-           True if definition applies, False otherwise
-       """
+**Attributes:**
 
-**Examples:**
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
 
-Creating a custom PFAS definition:
+   * - Attribute
+     - Description
+   * - ``atoms``
+     - List of atom indices (0-based) in the RDKit molecule
+   * - ``n_atoms``
+     - Number of atoms in the component
+   * - ``n_halogens``
+     - Number of halogen atoms
+   * - ``halogen_fraction``
+     - Ratio of halogen atoms to total heavy atoms
+   * - ``effective_graph_resistance``
+     - Kirchhoff index of the component graph (``None`` if not computed)
 
-.. code-block:: python
+HalogenGroup
+------------
 
-   from PFASgroups import PFASDefinition
-   
-   # OECD definition example
-   oecd_def = PFASDefinition(
-       id=1,
-       name="OECD PFAS Definition",
-       smarts=[
-           "[C](F)(F)F",  # CF3 group
-           "[C](F)(F)[C](F)(F)"  # CF2-CF2 segment
-       ],
-       fluorineRatio=0.0,  # No minimum ratio (SMARTS match sufficient)
-       description="OECD: Contains at least one perfluoroalkyl moiety",
-       includeHydrogen=True,
-       requireBoth=False  # SMARTS match OR ratio
-   )
-   
-   # Check if molecule matches definition
-   from rdkit import Chem
-   mol = Chem.MolFromSmiles("FC(F)(F)C(F)(F)C(=O)O")
-   matches = oecd_def.applies_to_molecule(mol)
-   print(f"Matches OECD definition: {matches}")
+.. autoclass:: HalogenGroup
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-Using multiple definitions:
+Defines a single halogen structural group (SMARTS pattern + metadata).
+Used to build custom group libraries.
 
-.. code-block:: python
+**Constructor parameters:**
 
-   # Define multiple PFAS definitions
-   definitions = [
-       PFASDefinition(
-           id=1, name="OECD",
-           smarts=["[C](F)(F)F"],
-           fluorineRatio=0.0,
-           requireBoth=False
-       ),
-       PFASDefinition(
-           id=2, name="High Fluorination",
-           smarts=["[F]"],
-           fluorineRatio=0.5,  # 50% F content
-           includeHydrogen=True,
-           requireBoth=True  # Must have F AND meet ratio
-       )
-   ]
-   
-   # Test molecule against all definitions
-   smiles = "FC(F)(F)C(F)(F)C(F)(F)C(=O)O"
-   mol = Chem.MolFromSmiles(smiles)
-   
-   for definition in definitions:
-       matches = definition.applies_to_molecule(mol)
-       print(f"{definition.name}: {matches}")
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
 
-Data Model Integration
-----------------------
+   * - Parameter
+     - Description
+   * - ``group_id``
+     - Unique integer ID
+   * - ``name``
+     - Group name
+   * - ``category``
+     - ``'OECD'``, ``'Generic'``, ``'Fluorotelomer'``, or custom string
+   * - ``smarts``
+     - SMARTS string or list of SMARTS strings
+   * - ``is_PFAS``
+     - Boolean
+   * - ``compute``
+     - If ``False``, the group is listed in fingerprint headers but not matched
+   * - ``description``
+     - Optional free-text description
 
-Both PFASGroup and PFASDefinition integrate with the core parsing functions:
+PFASDefinition
+--------------
 
-.. code-block:: python
+.. autoclass:: PFASDefinition
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-   from PFASgroups import (
-       parse_smiles, 
-       get_PFASGroups,
-       PFASGroup,
-       PFASDefinition
-   )
-   from rdkit import Chem
-   
-   # Custom groups
-   custom_groups = get_PFASGroups()
-   custom_groups.append(PFASGroup(
-       id=100,
-       name="My Custom Group",
-       smarts1=Chem.MolFromSmarts("[custom_pattern]"),
-       componentSmarts="Perfluoroalkyl",
-       constraints={"gte": {"F": 1}}
-   ))
-   
-   # Use in parsing
-   results = parse_smiles(
-       "FC(F)(F)C(F)(F)C(=O)O",
-       pfas_groups=custom_groups
-   )
-   
-   # Custom definitions for broad classification
-   oecd_def = PFASDefinition(
-       id=1, name="OECD",
-       smarts=["[C](F)(F)F"],
-       fluorineRatio=0.0
-   )
-   
-   # Check definition
-   mol = Chem.MolFromSmiles("FC(F)(F)C(F)(F)C(=O)O")
-   is_pfas = oecd_def.applies_to_molecule(mol)
+Encapsulates a regulatory PFAS definition and its matching logic.
 
-JSON Configuration
-------------------
-
-Both models support JSON serialization for configuration files:
-
-**PFAS Groups JSON (PFAS_groups_smarts.json):**
-
-.. code-block:: json
-
-   [
-     {
-       "id": 1,
-       "name": "Perfluoroalkyl carboxylic acids",
-       "alias": "PFCAs",
-       "smarts1": "[#6$([#6][#6](=O)([OH1,O-]))]",
-       "smarts2": null,
-       "componentSmarts": "Perfluoroalkyl",
-       "constraints": {
-         "eq": {"O": 2},
-         "gte": {"F": 1},
-         "only": ["C", "F", "O", "H"]
-       },
-       "max_dist_from_CF": 2
-     }
-   ]
-
-**PFAS Definitions JSON:**
-
-.. code-block:: json
-
-   [
-     {
-       "id": 1,
-       "name": "OECD PFAS Definition",
-       "smarts": ["[C](F)(F)F", "[C](F)(F)[C](F)(F)"],
-       "fluorineRatio": 0.0,
-       "description": "OECD definition",
-       "includeHydrogen": true,
-       "requireBoth": false
-     }
-   ]
-
-See Also
---------
-
-- :doc:`core`: Core parsing functions
-- :doc:`../customization`: Creating custom groups and definitions
-- :doc:`../algorithm`: How these models are used in detection
+See :doc:`../pfas_definitions` for descriptions of the five built-in
+definitions.

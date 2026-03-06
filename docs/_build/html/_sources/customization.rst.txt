@@ -1,681 +1,138 @@
-Customization
+﻿Customization
 =============
 
-PFASgroups provides extensive customization options for defining custom PFAS groups, pathways, and definitions.
+The library is built on a composable set of :class:`~HalogenGroups.HalogenGroup`
+objects.  You can extend, filter, or replace the default group library without
+modifying the source code.
 
-Custom PFAS Groups
-------------------
+.. contents:: Contents
+   :local:
+   :depth: 2
 
-Creating Groups from Scratch
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Define a completely new PFAS group:
-
-.. code-block:: python
-
-   from PFASgroups import PFASGroup, parse_smiles
-   from rdkit import Chem
-   
-   # Define a custom group for perfluoroalkyl nitrates
-   pfan_group = PFASGroup(
-       id=100,
-       name="Perfluoroalkyl nitrates",
-       alias="PFANs",
-       smarts1=Chem.MolFromSmarts("[C]-[O]-[N+](=O)[O-]"),
-       smarts2=None,  # Optional secondary pattern
-       componentSmarts="Perfluoroalkyl",  # Require perfluorinated chain
-       constraints={
-           "eq": {"N": 1, "O": 3},  # Exactly 1 N and 3 O
-           "gte": {"F": 1},  # At least 1 fluorine
-           "only": ["C", "F", "O", "N", "H"]  # Only these elements
-       },
-       max_dist_from_CF=2  # Max distance from fluorinated carbon
-   )
-   
-   # Test the custom group
-   test_smiles = "FC(F)(F)C(F)(F)C(F)(F)ON(=O)=O"
-   results = parse_smiles(test_smiles, pfas_groups=[pfan_group])
-   
-   if results[0]:
-       for group, count, lengths, _ in results[0]:
-           print(f"✓ Detected: {group.name}")
-           print(f"  Chain length: {lengths}")
-
-Modifying Existing Groups
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Customize existing PFAS groups:
+Inspecting the built-in groups
+--------------------------------
 
 .. code-block:: python
 
-   from PFASgroups import get_PFASGroups, parse_smiles
-   from rdkit import Chem
-   
-   # Get default groups
-   groups = get_PFASGroups()
-   
-   # Find and modify PFCA group (ID 1)
-   pfca = next(g for g in groups if g.id == 1)
-   
-   # Make it less restrictive (allow more elements)
-   pfca.constraints["only"] = ["C", "F", "O", "H", "N", "S"]
-   
-   # Or change max distance
-   pfca.max_dist_from_CF = 3  # Allow groups farther from chain
-   
-   # Use modified groups
-   results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O", pfas_groups=groups)
+   from HalogenGroups import get_compiled_HalogenGroups
 
-Understanding Atom Reference Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   groups = get_compiled_HalogenGroups()
+   print(len(groups))           # 116
 
-.. important::
-   When defining custom PFAS groups, the SMARTS pattern must match an atom that satisfies 
-   the component criteria. This is crucial for non-telomer groups:
+   for g in groups:
+       print(g.group_id, g.name, g.category)
 
-   **Non-Telomer Groups** (``componentSmarts`` without ``linker_smarts``):
-   
-   - The matched atom must be part of or directly connected to the fluorinated component
-   - The matched atom should be a carbon that is per- or polyfluorinated, OR
-   - The matched atom must be within ``max_dist_from_CF`` distance from a C-F carbon
-   - Example: ``[C$(C(=O)O)]`` where ``C`` is bonded to ``CF2`` groups
-   
-   **Telomer Groups** (``componentSmarts`` with ``linker_smarts``):
-   
-   - These groups explicitly allow non-fluorinated linkers (e.g., ``[CH2X4]``)
-   - The functional group can be separated from the perfluorinated chain
-   - Example: 6:2 FTOH has ``-(CH2)2-`` linker between perfluoro chain and ``-OH``
-   
-   If your SMARTS pattern matches an atom that is not part of the fluorinated component 
-   and is beyond ``max_dist_from_CF``, the group will not be detected even though the 
-   pattern matches. This is by design to ensure functional groups are actually connected 
-   to fluorinated chains.
+Filtering groups
+-----------------
 
-**Example - Correct atom reference:**
+Pass a custom subset to ``parse_smiles`` via its ``halogen_groups`` parameter:
 
 .. code-block:: python
 
-   # ✓ Good: Matches carbon directly attached to perfluoro chain
-   good_group = PFASGroup(
-       id=100,
-       name="My carboxylic acid",
-       smarts1=Chem.MolFromSmarts("[C$(C(=O)[OH1,O-])]"),  # Matches the C=O carbon
-       componentSmarts="Perfluoroalkyl",
-       max_dist_from_CF=0  # Must be directly on fluorinated carbon
-   )
+   from HalogenGroups import parse_smiles, get_compiled_HalogenGroups
 
-**Example - Incorrect atom reference:**
+   all_groups = get_compiled_HalogenGroups()
 
-.. code-block:: python
+   # Keep only OECD groups
+   oecd_only = [g for g in all_groups if g.category == 'OECD']
 
-   # ✗ Bad: Matches oxygen which is too far from chain
-   bad_group = PFASGroup(
-       id=101,
-       name="My carboxylic acid",
-       smarts1=Chem.MolFromSmarts("[OH1]"),  # Matches the O-H oxygen
-       componentSmarts="Perfluoroalkyl",
-       max_dist_from_CF=0  # The oxygen is 2 bonds away from the CF carbon!
-   )
-   # This won't detect most carboxylic acids because the matched atom (O)
-   # is not within max_dist_from_CF of the fluorinated chain
+   results = parse_smiles(["CCCC(F)(F)F"], halogen_groups=oecd_only)
 
-Loading Groups from JSON
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Store custom groups in a JSON file:
-
-**my_groups.json:**
-
-.. code-block:: json
-
-   [
-     {
-       "id": 100,
-       "name": "Perfluoroalkyl nitrates",
-       "alias": "PFANs",
-       "smarts1": "[C]-[O]-[N+](=O)[O-]",
-       "smarts2": null,
-       "componentSmarts": "Perfluoroalkyl",
-       "constraints": {
-         "eq": {"N": 1, "O": 3},
-         "gte": {"F": 1},
-         "only": ["C", "F", "O", "N", "H"]
-       },
-       "max_dist_from_CF": 2
-     },
-     {
-       "id": 101,
-       "name": "Perfluoroalkyl thiols",
-       "alias": "PFATs",
-       "smarts1": "[C]-[SH1]",
-       "componentSmarts": "Perfluoroalkyl",
-       "constraints": {
-         "eq": {"S": 1},
-         "gte": {"F": 1}
-       }
-     }
-   ]
-
-**Load and use:**
-
-.. code-block:: python
-
-   from PFASgroups import get_PFASGroups, parse_smiles
-   
-   # Load custom groups
-   custom_groups = get_PFASGroups(custom_groups_file='my_groups.json')
-   
-   # Use in parsing
-   results = parse_smiles(
-       "FC(F)(F)C(F)(F)C(F)(F)ON(=O)=O",
-       pfas_groups=custom_groups
-   )
-
-Constraint Examples
-~~~~~~~~~~~~~~~~~~~
-
-Different types of molecular constraints:
-
-**Exact count (eq):**
-
-.. code-block:: python
-
-   constraints = {
-       "eq": {"O": 2}  # Exactly 2 oxygens (e.g., carboxylic acid)
-   }
-
-**Minimum count (gte):**
-
-.. code-block:: python
-
-   constraints = {
-       "gte": {"F": 3}  # At least 3 fluorines
-   }
-
-**Maximum count (lte):**
-
-.. code-block:: python
-
-   constraints = {
-       "lte": {"N": 1}  # At most 1 nitrogen
-   }
-
-**Element restrictions (only):**
-
-.. code-block:: python
-
-   constraints = {
-       "only": ["C", "F", "O", "H"]  # No other elements allowed
-   }
-
-**Relative ratios (rel):**
-
-.. code-block:: python
-
-   # Perfluorinated: C = (F + H) / 2 - 1
-   constraints = {
-       "rel": {
-           "C": {
-               "atoms": ["F", "H"],  # Sum F + H
-               "add": -1,  # Subtract 1
-               "div": 2  # Divide by 2
-           }
-       }
-   }
-
-Custom Pathways
----------------
-
-Defining Pathway Types
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Create custom fluorinated pathways:
-
-.. code-block:: python
-
-   from PFASgroups import compile_componentSmarts, get_componentSmartss, parse_smiles
-   
-   # Get default pathways
-   paths = get_componentSmartss()
-   
-   # Add perchlorinated pathway (Cl instead of F)
-   paths['Perchlorinated'] = compile_componentSmarts(
-       "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # Chain segment
-       "[C;X4](Cl)(Cl)Cl"  # Terminal CCl3
-   )
-   
-   # Add perbrominated pathway
-   paths['Perbrominated'] = compile_componentSmarts(
-       "[C;X4](Br)(Br)!@!=!#[C;X4](Br)(Br)",
-       "[C;X4](Br)(Br)Br"
-   )
-   
-   # Use with custom groups
-   from PFASgroups import PFASGroup
-   from rdkit import Chem
-   
-   chlorinated_acid = PFASGroup(
-       id=200,
-       name="Perchlorinated carboxylic acids",
-       smarts1=Chem.MolFromSmarts("[#6$([#6][#6](=O)([OH1,O-]))]"),
-       componentSmarts="Perchlorinated",
-       constraints={"eq": {"O": 2}, "gte": {"Cl": 1}}
-   )
-   
-   # Test on chlorinated compound
-   smiles = "ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"
-   results = parse_smiles(
-       smiles,
-       pfas_groups=[chlorinated_acid],
-       componentSmartss=paths
-   )
-
-Loading Pathways from JSON
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-**component_smarts.json:**
-
-.. code-block:: json
-
-   {
-     "Perfluoroalkyl": {
-       "component": "[C;X4;H0](F)(F)!@!=!#[C;X4;H0](F)(F)",
-       "end": "[C;X4;H0](F)(F)F"
-     },
-     "Perchlorinated": {
-       "component": "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
-       "end": "[C;X4](Cl)(Cl)Cl"
-     }
-   }
-
-**Load and use:**
-
-.. code-block:: python
-
-   from PFASgroups import compile_componentSmartss, parse_smiles
-   import json
-   
-   # Load custom pathways
-   with open('component_smarts.json', 'r') as f:
-       paths_dict = json.load(f)
-   
-   paths = compile_componentSmartss(paths_dict)
-   
-   # Use in parsing
-   results = parse_smiles(smiles, componentSmartss=paths)
-
-SMARTS Pattern Guide
-~~~~~~~~~~~~~~~~~~~~
-
-Key SMARTS syntax for pathway definitions:
-
-.. code-block:: text
-
-   [C;X4;H0]   - Carbon with 4 connections, no hydrogens
-   (F)(F)      - Two fluorine substituents
-   !@          - Non-ring bond
-   !=          - Not double bond
-   !#          - Not triple bond
-
-**Examples:**
-
-- Perfluoroalkyl chain: ``[C;X4;H0](F)(F)``
-- Polyfluoroalkyl chain: ``[C;X4;H1](F)`` (allows one H)
-- Terminal CF₃: ``[C;X4;H0](F)(F)F``
-- Terminal CHF₂: ``[C;X4;H1](F)F``
-
-Custom PFAS Definitions
+Defining a custom group
 ------------------------
 
-Creating Definitions
-~~~~~~~~~~~~~~~~~~~~
-
-Define broad PFAS classifications:
+A :class:`~HalogenGroups.HalogenGroup` object requires at minimum a name,
+category, SMARTS pattern, and group ID:
 
 .. code-block:: python
 
-   from PFASgroups import PFASDefinition
-   from rdkit import Chem
-   
-   # OECD-style definition
-   oecd_pfas = PFASDefinition(
-       id=1,
-       name="OECD PFAS",
-       smarts=["[C](F)(F)F", "[C](F)(F)[C](F)(F)"],
-       fluorineRatio=0.0,  # No minimum ratio
-       description="Contains perfluoroalkyl moiety",
-       includeHydrogen=True,
-       requireBoth=False  # SMARTS OR ratio
-   )
-   
-   # High fluorination definition
-   high_f = PFASDefinition(
-       id=2,
-       name="High Fluorination",
-       smarts=["[F]"],  # Must have F
-       fluorineRatio=0.5,  # 50% F content
-       description="Highly fluorinated compounds",
-       includeHydrogen=True,
-       requireBoth=True  # SMARTS AND ratio
-   )
-   
-   # Test molecules
-   test_compounds = [
-       "FC(F)(F)C(F)(F)C(=O)O",  # PFBA
-       "FC(F)(F)C(=O)O",  # TFA
-       "CCO"  # Ethanol
-   ]
-   
-   for smiles in test_compounds:
-       mol = Chem.MolFromSmiles(smiles)
-       print(f"\n{smiles}:")
-       print(f"  OECD: {oecd_pfas.applies_to_molecule(mol)}")
-       print(f"  High-F: {high_f.applies_to_molecule(mol)}")
+   from HalogenGroups import HalogenGroup, parse_smiles
 
-Fluorine Ratio Calculation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   my_group = HalogenGroup(
+       group_id=200,
+       name="my_custom_group",
+       category="Custom",
+       smarts="[CX4](F)(F)(F)[CX4](F)(F)",   # two adjacent CF3/CF2 units
+       is_PFAS=True,
+       compute=True,
+   )
 
-Understanding fluorine ratio thresholds:
+   results = parse_smiles(["CCCC(F)(F)F"], halogen_groups=[my_group])
+   print(results[0].matches)
+
+Combining built-in and custom groups
+--------------------------------------
 
 .. code-block:: python
 
-   from rdkit import Chem
-   
-   def calculate_f_ratio(smiles, include_h=True):
-       """Calculate fluorine ratio for a molecule."""
-       mol = Chem.MolFromSmiles(smiles)
-       if mol is None:
-           return None
-       
-       # Count atoms
-       n_c = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'C')
-       n_f = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == 'F')
-       n_h = sum(atom.GetTotalNumHs() for atom in mol.GetAtoms())
-       
-       # Calculate ratio
-       if include_h:
-           denominator = n_c + n_f + n_h
-       else:
-           denominator = n_c + n_f
-       
-       return n_f / denominator if denominator > 0 else 0
-   
-   # Test on various compounds
-   compounds = [
-       ("PFOA", "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"),
-       ("TFA", "FC(F)(F)C(=O)O"),
-       ("Benzene", "c1ccccc1")
-   ]
-   
-   for name, smiles in compounds:
-       ratio = calculate_f_ratio(smiles)
-       print(f"{name}: {ratio:.2%}")
+   from HalogenGroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
 
-Advanced Customization
------------------------
+   base_groups = get_compiled_HalogenGroups()
+   my_group = HalogenGroup(
+       group_id=201,
+       name="chlorinated_alkyl",
+       category="Custom",
+       smarts="[CX4]([Cl])[CX4][Cl]",
+       is_PFAS=False,
+       compute=True,
+   )
+   extended = list(base_groups) + [my_group]
+   results = parse_smiles(["ClCCCl"], halogen_groups=extended)
 
-Combining Custom Components
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+HalogenGroup attributes
+------------------------
 
-Use custom groups, pathways, and definitions together:
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Attribute
+     - Description
+   * - ``group_id``
+     - Integer identifier (must be unique in the collection you pass)
+   * - ``name``
+     - Human-readable group name
+   * - ``category``
+     - Category label, e.g. ``'OECD'``, ``'Generic'``, ``'Fluorotelomer'``
+   * - ``smarts``
+     - SMARTS pattern string (or list of SMARTS strings)
+   * - ``is_PFAS``
+     - Whether the group contributes to a PFAS classification
+   * - ``compute``
+     - If ``False`` the group appears in fingerprint headers but is not matched
+   * - ``description``
+     - Optional free-text description
+
+Using raw (uncompiled) groups
+-------------------------------
+
+:func:`~HalogenGroups.get_HalogenGroups` returns the raw (uncompiled)
+group definitions as plain data objects:
 
 .. code-block:: python
 
-   from PFASgroups import (
-       PFASGroup, PFASDefinition,
-       compile_componentSmarts, get_PFASGroups,
-       parse_smiles
-   )
-   from rdkit import Chem
-   
-   # 1. Custom pathway
-   paths = {
-       'PartiallyFluorinated': compile_componentSmarts(
-           "[C;X4](F)!@!=!#[C;X4]",  # One F per carbon
-           "[C;X4](F)F"  # Terminal
-       )
-   }
-   
-   # 2. Custom group using custom pathway
-   partial_f_acid = PFASGroup(
-       id=300,
-       name="Partially fluorinated carboxylic acids",
-       smarts1=Chem.MolFromSmarts("[C]-[C](=O)O"),
-       componentSmarts="PartiallyFluorinated",
-       constraints={"eq": {"O": 2}, "gte": {"F": 1}}
-   )
-   
-   # 3. Custom definition
-   partial_f_def = PFASDefinition(
-       id=10,
-       name="Partial Fluorination",
-       smarts=["[C][F]"],
-       fluorineRatio=0.2,  # 20% minimum
-       requireBoth=True
-   )
-   
-   # Use all together
-   smiles = "FC(C(F)C(F)C(=O)O)"
-   
-   results = parse_smiles(
-       smiles,
-       pfas_groups=[partial_f_acid],
-       componentSmartss=paths
-   )
-   
-   mol = Chem.MolFromSmiles(smiles)
-   matches_def = partial_f_def.applies_to_molecule(mol)
-   
-   print(f"Groups detected: {len(results[0]) if results[0] else 0}")
-   print(f"Matches definition: {matches_def}")
+   from HalogenGroups import get_HalogenGroups
+   raw = get_HalogenGroups()
 
-Configuration Management
-~~~~~~~~~~~~~~~~~~~~~~~~
+   for g in raw:
+       print(g["name"], g["smarts"])
 
-Manage multiple configuration sets:
+To compile them into :class:`~HalogenGroups.HalogenGroup` instances call
+:func:`~HalogenGroups.get_compiled_HalogenGroups` (which internally calls
+:func:`~HalogenGroups.load_HalogenGroups`):
 
 .. code-block:: python
 
-   import json
-   from PFASgroups import compile_componentSmartss, get_PFASGroups
-   
-   class PFASConfig:
-       """Manage PFAS analysis configuration."""
-       
-       def __init__(self, name):
-           self.name = name
-           self.groups = []
-           self.paths = {}
-           self.definitions = []
-       
-       def load_groups(self, json_file):
-           """Load groups from JSON file."""
-           self.groups = get_PFASGroups(custom_groups_file=json_file)
-           return self
-       
-       def load_paths(self, json_file):
-           """Load pathways from JSON file."""
-           with open(json_file, 'r') as f:
-               paths_dict = json.load(f)
-           self.paths = compile_componentSmartss(paths_dict)
-           return self
-       
-       def save_config(self, output_file):
-           """Save configuration to JSON."""
-           config = {
-               'name': self.name,
-               'groups_count': len(self.groups),
-               'paths': list(self.paths.keys())
-           }
-           with open(output_file, 'w') as f:
-               json.dump(config, f, indent=2)
-       
-       def parse(self, smiles):
-           """Parse SMILES with this configuration."""
-           from PFASgroups import parse_smiles
-           return parse_smiles(
-               smiles,
-               pfas_groups=self.groups,
-               componentSmartss=self.paths
-           )
-   
-   # Use it
-   config = PFASConfig('regulatory')
-   config.load_groups('regulatory_groups.json')
-   config.load_paths('regulatory_paths.json')
-   config.save_config('regulatory_config.json')
-   
-   results = config.parse("FC(F)(F)C(F)(F)C(=O)O")
+   from HalogenGroups import load_HalogenGroups, get_HalogenGroups
+   raw = get_HalogenGroups()
+   compiled = load_HalogenGroups(raw)
 
-Testing Custom Groups
-~~~~~~~~~~~~~~~~~~~~~~
+Custom SMARTS tips
+-------------------
 
-Validate custom PFAS groups:
-
-.. code-block:: python
-
-   from PFASgroups import PFASGroup, parse_smiles
-   from rdkit import Chem
-   
-   def test_pfas_group(group, test_cases):
-       """Test a PFAS group on multiple test cases."""
-       print(f"\nTesting: {group.name}")
-       print("=" * 60)
-       
-       results = []
-       for smiles, expected in test_cases:
-           result = parse_smiles(smiles, pfas_groups=[group])
-           detected = len(result[0]) > 0 if result[0] else False
-           
-           status = "✓" if detected == expected else "✗"
-           results.append((smiles, expected, detected, status))
-           
-           print(f"{status} {smiles}")
-           print(f"   Expected: {expected}, Got: {detected}")
-       
-       # Summary
-       passed = sum(1 for _, exp, det, _ in results if exp == det)
-       print(f"\nPassed: {passed}/{len(results)}")
-       return results
-   
-   # Example usage
-   my_group = PFASGroup(
-       id=100,
-       name="Test Group",
-       smarts1=Chem.MolFromSmarts("[C](F)(F)F"),
-       componentSmarts="Perfluoroalkyl",
-       constraints={"gte": {"F": 3}}
-   )
-   
-   test_cases = [
-       ("FC(F)(F)C(F)(F)C(=O)O", True),  # Should match
-       ("CCO", False),  # Should not match
-       ("FC(F)(F)CF", True)  # Should match
-   ]
-   
-   test_pfas_group(my_group, test_cases)
-
-Best Practices
---------------
-
-SMARTS Pattern Design
-~~~~~~~~~~~~~~~~~~~~~
-
-Tips for effective SMARTS patterns:
-
-1. **Be specific but not too restrictive:**
-
-   .. code-block:: python
-   
-      # Too general
-      smarts = "[C][F]"  # Matches any C-F bond
-      
-      # Too specific
-      smarts = "[CH2][CF2][CF3]"  # Only exact pattern
-      
-      # Good balance
-      smarts = "[C;X4](F)(F)F"  # CF3 with flexibility
-
-2. **Use atom environment specifications:**
-
-   .. code-block:: python
-   
-      "[C;X4]"  # Carbon with 4 connections
-      "[C;H0]"  # Carbon with no hydrogens
-      "[C;!R]"  # Non-ring carbon
-
-3. **Test thoroughly:**
-
-   .. code-block:: python
-   
-      from rdkit import Chem
-      
-      pattern = Chem.MolFromSmarts("[your_pattern]")
-      test_mol = Chem.MolFromSmiles("test_smiles")
-      matches = test_mol.GetSubstructMatches(pattern)
-      print(f"Matches: {len(matches)}")
-
-Constraint Design
-~~~~~~~~~~~~~~~~~
-
-Guidelines for molecular constraints:
-
-1. **Start with essential constraints:**
-
-   .. code-block:: python
-   
-      # Minimum viable constraints
-      constraints = {
-           "gte": {"F": 1}  # Must have fluorine
-      }
-
-2. **Add specificity gradually:**
-
-   .. code-block:: python
-   
-      # More specific
-      constraints = {
-           "gte": {"F": 1},
-           "eq": {"O": 2},  # Carboxylic acid
-           "only": ["C", "F", "O", "H"]
-      }
-
-3. **Use relative constraints for chain validation:**
-
-   .. code-block:: python
-   
-      # Perfluorinated validation
-      constraints = {
-           "rel": {
-               "C": {"atoms": ["F"], "add": 0.5, "div": 2}
-           }
-      }
-
-Documentation
-~~~~~~~~~~~~~
-
-Document your custom groups:
-
-.. code-block:: python
-
-   my_group = PFASGroup(
-       id=100,
-       name="My Custom Group",
-       alias="MCG",
-       smarts1=pattern,
-       componentSmarts="Perfluoroalkyl",
-       constraints=constraints,
-       # Add description in comments
-       # Purpose: Detect specific fluorinated compounds
-       # Created: 2026-02-01
-       # Author: Your Name
-       # Test cases: See tests/test_custom.py
-   )
-
-See Also
---------
-
-- :doc:`api/core`: Core API reference
-- :doc:`api/models`: Data model details
-- :doc:`tutorial`: Practical examples
-- :doc:`algorithm`: Algorithm explanation
+* SMARTS must be valid RDKit SMARTS (validated by ``Chem.MolFromSmarts``).
+* Multiple SMARTS for one group can be supplied as a list:
+  ``smarts=["[CX4](F)(F)F", "[CX4](F)(F)"]``
+* Recursive SMARTS are supported.
+* Test your SMARTS with ``rdkit.Chem.rdchem.Mol.GetSubstructMatches`` before
+  adding them to the library.

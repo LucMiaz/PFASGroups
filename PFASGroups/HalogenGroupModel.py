@@ -626,23 +626,14 @@ class HalogenGroup():
         ----------
         test_data : dict, optional
             Test metadata dictionary. If None, will be loaded from the group's
-            entry in PFAS_groups_smarts.json. Expected structure:
-            {
-                'category': 'OECD'|'generic'|'telomer',
-                'examples': [smiles_string, ...],
-                'generate': {'smiles_pattern': str, 'mode': str}  # for telomers/generic
-            }
+            entry in PFAS_groups_smarts.json. Expected keys: ``category``,
+            ``examples``, ``generate``.
 
         Returns
         -------
         dict
-            Test results with structure:
-            {
-                'passed': bool,
-                'total_tests': int,
-                'failures': [{'smiles': str, 'expected': bool, 'got': bool, 'error': str}, ...],
-                'category': str
-            }
+            Test results with keys: ``passed`` (bool), ``total_tests`` (int),
+            ``failures`` (list of dicts), ``category`` (str).
 
         Notes
         -----

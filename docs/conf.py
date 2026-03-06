@@ -7,7 +7,7 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
-project = 'HalogenGroups'
+project = 'HalogenGroups / PFASGroups'
 copyright = '2026, Luc T. Miaz'
 author = 'Luc T. Miaz'
 release = '3.1.3'
@@ -25,7 +25,7 @@ extensions = [
 ]
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md', 'ResultsFingerprint_Guide.md']
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_rtd_theme'

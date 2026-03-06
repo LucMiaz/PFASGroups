@@ -220,33 +220,16 @@ class PFASDefinition:
         ----------
         test_data : dict, optional
             Test metadata dictionary. If None, will be loaded from the definition's
-            entry in PFAS_definitions_smarts.json. Expected structure:
-            {
-                'category': 'definition',
-                'examples': {
-                    'true_positives': [{'smiles': str, 'category': str}, ...],
-                    'true_negatives': [{'smiles': str, 'category': str}, ...],
-                    'false_positives': [{'smiles': str, 'category': str}, ...],
-                    'false_negatives': [{'smiles': str, 'category': str}, ...]
-                }
-            }
+            entry in PFAS_definitions_smarts.json. Expected keys: ``category``,
+            ``examples`` (dict with keys ``true_positives``, ``true_negatives``,
+            ``false_positives``, ``false_negatives`` each a list of dicts).
         
         Returns
         -------
         dict
-            Test results with structure:
-            {
-                'passed': bool,
-                'total_tests': int,
-                'failures': [{'smiles': str, 'expected': bool, 'got': bool, 'type': str, 'error': str}, ...],
-                'category': str,
-                'stats': {
-                    'true_positives': int,
-                    'true_negatives': int,
-                    'false_positives': int,
-                    'false_negatives': int
-                }
-            }
+            Test results with keys: ``passed`` (bool), ``total_tests`` (int),
+            ``failures`` (list), ``category`` (str), ``stats`` (dict with
+            counts for true/false positives/negatives).
         
         Notes
         -----
