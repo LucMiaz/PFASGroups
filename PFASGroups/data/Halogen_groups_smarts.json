@@ -293,7 +293,8 @@
             }
         },
         "smarts": {
-            "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]": 1
+            "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]": 1,
+            "[#6$([#6]([#8X2H0][#6!$(C=O)]))!$([#6](=O))]": 1
         },
         "test": {
             "category": "OECD",
@@ -307,7 +308,8 @@
                 "counter-examples": [
                     "O=C(OC)C(F)(F)C(F)(F)F",
                     "OC(F)(F)C(F)(F)C(F)(F)F",
-                    "O=C(O)CCCC"
+                    "O=C(O)CCCC",
+                    "CCC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(=O)O)C(O)(C(F)(F)F)C(F)(F)F"
                 ]
             },
             "Cl": {
@@ -385,7 +387,8 @@
             }
         },
         "smarts": {
-            "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]": 1
+            "[#6$([#6][#6](=O)([OH1,Oh1,O-]))]": 1,
+            "[#6$([#6]([#8X2H0][#6!$(C=O)]))!$([#6](=O))]": 1
         },
         "test": {
             "category": "OECD",
@@ -399,7 +402,8 @@
                 "counter-examples": [
                     "O=C(OC)C(F)(F)C(F)(F)F",
                     "OC(F)(F)C(F)(F)C(F)(F)F",
-                    "O=C(O)CCCC"
+                    "O=C(O)CCCC",
+                    "CCC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(=O)O)C(O)(C(F)(F)F)C(F)(F)F"
                 ]
             },
             "Cl": {
@@ -750,7 +754,7 @@
         },
         "smarts": {
             "[#6$([#6][#16](=O)(=O)([OH]))]": 1,
-            "[#8$([#8](C)C)]": 1
+            "[#6$([#6]([#8X2H0][#6!$(C=O)]))!$([#6](=O))]": 1
         },
         "test": {
             "category": "OECD",
@@ -768,7 +772,8 @@
                     "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
                     "[O-]S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
                     "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                    "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+                    "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                    "CCC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)S(=O)(=O)O)C(O)(C(F)(F)F)C(F)(F)F"
                 ]
             },
             "Cl": {
@@ -862,7 +867,8 @@
             }
         },
         "smarts": {
-            "[#6$([#6][#16](=O)(=O)([OH]))]": 1
+            "[#6$([#6][#16](=O)(=O)([OH]))]": 1,
+            "[#6$([#6]([#8X2H0][#6!$(C=O)]))!$([#6](=O))]": 1
         },
         "test": {
             "category": "OECD",
@@ -880,7 +886,8 @@
                     "OS(=O)(=O)C(F)(F)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
                     "[O-]S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)C(F)(F)C(F)(F)F",
                     "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
-                    "OS(=O)(=O)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+                    "OS(=O)(=O)C(F)(F)C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+                    "CCC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)S(=O)(=O)O)C(O)(C(F)(F)F)C(F)(F)F"
                 ]
             },
             "Cl": {
