@@ -3364,6 +3364,7 @@
         "name": "fluoride",
         "alias": "fluoride",
         "id": 117,
+        "componentHalogen": ["Cl", "Br", "I"],
         "componentSmarts": null,
         "max_dist_from_comp": 1,
         "linker_smarts": null,
