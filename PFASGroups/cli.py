@@ -10,7 +10,8 @@ import sys
 import json
 
 
-from .parser import parse_smiles, generate_fingerprint, get_componentSmartss, get_PFASGroups
+from .parser import parse_smiles, get_componentSmartss, get_PFASGroups
+from .fingerprints import PFASFingerprint
 from rdkit import Chem
 
 
@@ -345,14 +346,20 @@ def cmd_fingerprint(args):
     if args.groups:
         selected_groups = parse_group_selection(args.groups)
 
-    # Generate fingerprints
-    fps, group_info = generate_fingerprint(
+    # Normalise representation arg: PFASFingerprint is now a numpy array subclass;
+    # the array itself is the fingerprint matrix.
+    import numpy as np
+    rfp = PFASFingerprint(
         smiles_list,
-        selected_groups=selected_groups,
-        representation=args.format,
         count_mode=args.count_mode,
-        **kwargs
+        halogens=kwargs.pop('halogens', 'F'),
     )
+    fps = rfp
+    group_info = {
+        'group_names': rfp.group_names,
+        'halogens': rfp.halogens,
+        'saturation': rfp.saturation,
+    }
 
     # Prepare output
     output_data = {
@@ -362,16 +369,9 @@ def cmd_fingerprint(args):
 
     # Handle different representations
     if args.format == 'vector':
-        # Convert numpy arrays to lists
-        import numpy as np
-        if isinstance(fps, list):
-            output_data['fingerprints'] = [fp.tolist() if isinstance(fp, np.ndarray) else fp for fp in fps]
-        else:
-            output_data['fingerprints'] = fps.tolist() if isinstance(fps, np.ndarray) else fps
-    elif args.format in ['int']:
-        output_data['fingerprints'] = fps if isinstance(fps, list) else [fps]
-    else:  # dict, sparse, detailed
-        output_data['fingerprints'] = fps if isinstance(fps, list) else [fps]
+        output_data['fingerprints'] = fps.tolist() if isinstance(fps, np.ndarray) else fps
+    else:
+        output_data['fingerprints'] = fps.tolist() if isinstance(fps, np.ndarray) else fps
 
     # Add SMILES to output for reference
     output_data['smiles'] = smiles_list

@@ -26,7 +26,7 @@ def get_compiled_HalogenGroups(**kwargs):
     -------
     list of HalogenGroup
         All compiled groups, suitable for passing as *pfas_groups* to
-        :func:`parse_smiles` or :func:`generate_fingerprint`.
+        :func:`parse_smiles` or :class:`~PFASGroups.fingerprints.PFASFingerprint`.
 
     Examples
     --------
@@ -50,14 +50,14 @@ def get_compiled_PFASGroups() -> list:
     ``componentHalogens`` forced to ``'F'``, so the compiled component-SMARTS
     patterns are built for fluorine only.  Suitable for extending with custom
     PFAS-specific groups and passing directly to :func:`parse_smiles` or
-    :func:`generate_fingerprint` when analysing PFAS/fluorinated compounds.
+    :class:`~PFASGroups.fingerprints.PFASFingerprint` when analysing PFAS/fluorinated compounds.
 
     Returns
     -------
     list of HalogenGroup
         All compute=True groups compiled with ``componentHalogens='F'``,
         suitable for passing as *pfas_groups* to :func:`parse_smiles` or
-        :func:`generate_fingerprint`.
+        :class:`~PFASGroups.fingerprints.PFASFingerprint`.
 
     Examples
     --------
