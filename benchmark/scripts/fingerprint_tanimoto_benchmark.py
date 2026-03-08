@@ -314,49 +314,39 @@ P1_SERIES  = [c[2] for c in P1_COMPOUNDS]
 # Richard2023_SI_TableS2.csv (verified by _check_overlap.py)
 # ══════════════════════════════════════════════════════════════════════════════
 P2_COMPOUNDS = [
-    ("DTXSID1073159",  "1,3-DiCl-tetrafluoropropan-2-one",    "C(=O)(C(F)(F)Cl)C(F)(F)Cl"),
-    ("DTXSID40748237", "1,1,1,3,3-PF-propenone (ether)",      "COC(C(OC(C(=O)C(F)(F)F)(F)F)F)(F)F"),
-    ("DTXSID60435490", "DecaF-2,5,8-nonanetrione",            "C(C(=O)CC(C(=O)C(F)(F)F)(F)F)C(C(=O)C(F)(F)F)(F)F"),
-    ("DTXSID20776331", "DecaF-heptane (branched)",            "C(C(CC(F)(F)F)(F)F)C(CC(F)(F)F)(F)F"),
-    ("DTXSID00896607", "Bis-(CF-vinyl-oxy)methane",           "C(=C(F)F)(OC(OC(=C(F)F)F)(F)F)F"),
-    ("DTXSID30529779", "OctaF-penta-1,4-diene",              "C(=C(F)F)(C(C(=C(F)F)F)(F)F)F"),
-    ("DTXSID20525346", "DodecaF-biphenyl",                   "C1(=C(C(=C(C(=C1F)F)F)F)F)C2=C(C(C(=C(C2(F)F)F)F)(F)F)F"),
-    ("DTXSID70381191", "2,2-DiFluoroacetyl fluoride",        "C(C(=O)F)(F)F"),
-    ("DTXSID601020902","(2E)-1,4-DiCl-hexaF-2-butene",       "C(=C(C(F)(F)Cl)F)(C(F)(F)Cl)F"),
-    ("DTXSID50931113", "PentaF-butane",                      "C(C(C(C(F)F)F)F)F"),
-    ("DTXSID20809173", "DiFluoro-methoxy-TFM-butenyl sulfide","COC(CC(=C(F)F)C(F)(F)F)SC1=CC=CC=C1"),
-    ("DTXSID201023166","HexaF-butan-2-one (ClAnilino-oxy)",  "C1=CC(=CC(=C1)Cl)NOC(C(C(=O)C(F)(F)F)F)(F)F"),
-    ("DTXSID00892528", "4:2 FT thioether amido sulfonic acid","CC(C)(CS(=O)(=O)O)NC(=O)CCSCCC(C(C(C(F)(F)F)(F)F)(F)F)(F)F"),
-    ("DTXSID20882022", "N-(PFBuSO2)-N-DMAminoPropyl-APAA",  "CN(C)CCCN(CCC(=O)O)S(=O)(=O)C(C(C(C(F)(F)F)(F)F)(F)F)(F)F"),
-    ("DTXSID10576660", "3-Cl-4-(TFM-oxy-TFE-oxy)aniline",   "C1=CC(=C(C=C1N)Cl)OC(C(OC(F)(F)F)F)(F)F"),
-    ("DTXSID80661330", "TriF-TFM-benzodioxine",              "C1=CC=C2C(=C1)C(OC(O2)(C(F)(F)F)F)(F)F"),
-    ("DTXSID80804225", "Propyl 3,3-diF-2-(TFM)prop-2-enoate","CCCOC(=O)C(=C(F)F)C(F)(F)F"),
-    ("DTXSID4041284",  "6:2 FT sulfonamide betaine",         "C[N+](C)(CCCNS(=O)(=O)CCC(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)CC(=O)[O-]"),
+    ("DTXSID6062599",   "PFPeA (C5 PFCA)",    "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID3031862",   "PFHxA (C6 PFCA)",    "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID8031865",   "PFOA  (C8 PFCA)",    "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID8031863",   "PFNA  (C9 PFCA)",    "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID3031860",   "PFDA  (C10 PFCA)",   "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID5030030",   "PFBS  (C4 PFSA)",    "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID7040150",   "PFHxS (C6 PFSA)",    "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID3031864",   "PFOS  (C8 PFSA)",    "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID30880251",  "PFBS-amide (C4 SA)", "NS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID3038939",   "PFOSA (C8 SA)",       "NS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
+    ("DTXSID90896595",  "iso-PFOA (C8 br)",    "OC(=O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
 ]
 
 P2_DTXSIDS = [c[0] for c in P2_COMPOUNDS]
 P2_LABELS  = [c[1] for c in P2_COMPOUNDS]
 P2_SMILES  = [c[2] for c in P2_COMPOUNDS]
 # Chemical-family groupings for Phase-2 MDS hull visualisation
+# Series 1 (PFCA): PFPeA, PFHxA, PFOA, PFNA, PFDA  → chain-length axis
+# Series 2 (PFSA): PFBS, PFHxS, PFOS                → same chain_size axis but SO3H
+# Series 3 (PFSA-amide): PFBS-amide, PFOSA          → SO2NH2 head group
+# Series 4 (Branched): iso-PFOA                     → branching axis
 P2_SERIES = [
-    "Halogenated",       # 1,3-DiCl-tetrafluoropropan-2-one
-    "Fluoroketone/ester",# 1,1,1,3,3-PF-propenone (ether)
-    "Fluoroketone/ester",# DecaF-2,5,8-nonanetrione
-    "Simple PFC",        # DecaF-heptane (branched)
-    "Vinyl ether",       # Bis-(CF-vinyl-oxy)methane
-    "Simple PFC",        # OctaF-penta-1,4-diene
-    "Aromatic",          # DodecaF-biphenyl
-    "Fluoroketone/ester",# 2,2-DiFluoroacetyl fluoride
-    "Halogenated",       # (2E)-1,4-DiCl-hexaF-2-butene
-    "Simple PFC",        # PentaF-butane
-    "Aromatic",          # DiFluoro-methoxy-TFM-butenyl sulfide
-    "Halogenated",       # HexaF-butan-2-one (ClAnilino-oxy)
-    "FT surfactant",     # 4:2 FT thioether amido sulfonic acid
-    "FT surfactant",     # N-(PFBuSO2)-N-DMAminoPropyl-APAA
-    "Aromatic",          # 3-Cl-4-(TFM-oxy-TFE-oxy)aniline
-    "Aromatic",          # TriF-TFM-benzodioxine
-    "Fluoroketone/ester",# Propyl 3,3-diF-2-(TFM)prop-2-enoate
-    "FT surfactant",     # 6:2 FT sulfonamide betaine
+    "PFCA",             # PFPeA  (C5)
+    "PFCA",             # PFHxA  (C6)
+    "PFCA",             # PFOA   (C8)
+    "PFCA",             # PFNA   (C9)
+    "PFCA",             # PFDA   (C10)
+    "PFSA",             # PFBS   (C4)
+    "PFSA",             # PFHxS  (C6)
+    "PFSA",             # PFOS   (C8)
+    "PFSA-amide",       # PFBS-amide (C4)
+    "PFSA-amide",       # PFOSA  (C8)
+    "Branched",         # iso-PFOA (C8 branched)
 ]
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -377,12 +367,10 @@ _SERIES_COLOURS = {
     "FG-eccentric":"#e41a1c",
 }
 _P2_SERIES_COLOURS = {
-    "Halogenated":       "#d73027",
-    "Fluoroketone/ester":"#4393c3",
-    "Simple PFC":        "#1a9850",
-    "Vinyl ether":       "#762a83",
-    "Aromatic":          "#e08214",
-    "FT surfactant":     "#999999",
+    "PFCA":       "#2166ac",   # blue  — perfluorocarboxylic acids
+    "PFSA":       "#d73027",   # red   — perfluorosulfonic acids
+    "PFSA-amide": "#984ea3",   # purple — perfluorosulfonamides
+    "Branched":   "#4dac26",   # green — branched PFCA
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1074,6 +1062,25 @@ def plot_p2_gsi_breakdown(p2_results: list[dict], txp_sim: np.ndarray,
         fontsize=9)
     ax.legend(fontsize=7, ncol=2, loc='upper right', framealpha=0.85)
     ax.grid(axis='y', alpha=0.3)
+
+    # Clip y-axis so outlier groups don't squash the rest; annotate clipped bars
+    all_scores = df['score'].values
+    sorted_scores = np.sort(all_scores)
+    clip_top = sorted_scores[int(len(sorted_scores) * 0.85)] * 1.35
+    clip_top = max(clip_top, 0.1)
+    ax.set_ylim(0, clip_top)
+    # Annotate bars whose actual value exceeds the clip
+    for bar_patch in ax.patches:
+        actual = bar_patch.get_height()
+        if actual > clip_top:
+            ax.text(bar_patch.get_x() + bar_patch.get_width() / 2, clip_top * 0.97,
+                    f'{actual:.2f}', ha='center', va='top', fontsize=6,
+                    color='black', rotation=90,
+                    bbox=dict(boxstyle='round,pad=0.2', fc='lightyellow', ec='grey', alpha=0.85))
+            bar_patch.set_height(clip_top)
+            bar_patch.set_edgecolor('red')
+            bar_patch.set_linewidth(1.2)
+
     fig.tight_layout()
     return fig
 
