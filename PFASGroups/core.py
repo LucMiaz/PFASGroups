@@ -270,10 +270,15 @@ def add_componentSmarts(filename = COMPONENTS_FILE):
     paths = preprocess_componentsSmarts(Hcomponents)
     def inner(func):
         def wrapper(*args,**kwargs):
-            # Extract filter parameters
+            # Extract filter parameters. Pop halogens so it doesn't conflict with
+            # inner function signatures, but restore it so load_componentsSolver
+            # can still read it after add_componentSmarts runs.
             halogens = kwargs.pop('halogens', None)
             form = kwargs.pop('form', None)
             saturation = kwargs.pop('saturation', None)
+            # Restore halogens for downstream decorators (e.g. load_componentsSolver)
+            if halogens is not None:
+                kwargs['halogens'] = halogens
 
             # Normalize filters to lists
             if halogens is not None:

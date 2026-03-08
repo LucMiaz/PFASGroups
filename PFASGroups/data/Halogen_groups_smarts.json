@@ -3371,7 +3371,7 @@
         "name": "fluoride",
         "alias": "fluoride",
         "id": 117,
-        "componentHalogen": ["Cl", "Br", "I"],
+        "excludeHalogens": ["F"],
         "componentSmarts": null,
         "max_dist_from_comp": 1,
         "linker_smarts": null,
@@ -3429,6 +3429,7 @@
         "name": "chloride",
         "alias": "chloride",
         "id": 43,
+        "excludeHalogens": ["Cl"],
         "componentSmarts": null,
         "max_dist_from_comp": 1,
         "linker_smarts": null,
@@ -3487,6 +3488,7 @@
         "alias": "bromide",
         "id": 44,
         "componentSmarts": null,
+        "excludeHalogens": ["Br"],
         "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {
@@ -3544,6 +3546,7 @@
         "alias": "iodide",
         "id": 45,
         "componentSmarts": null,
+        "excludeHalogens": ["I"],
         "max_dist_from_comp": 1,
         "linker_smarts": null,
         "constraints": {

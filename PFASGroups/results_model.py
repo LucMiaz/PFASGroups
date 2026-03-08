@@ -18,7 +18,7 @@ from io import BytesIO
 import numpy as np
 import pandas as pd
 from scipy.stats import entropy
-
+from .parser import load_HalogenGroups
 
 Color = Tuple[float, float, float]
 
@@ -174,17 +174,22 @@ def _grid_images(imgs: Sequence[Image.Image], buffer: int = 4, ncols: int = 3) -
 def _mol_image_with_table(
     mol_img: Image.Image,
     entries: List[Tuple[str, str, str, str, str]],
+    comp_metrics: Optional[Tuple[str, str, str, str]] = None,
     mol_label: str = "",
     font_size: int = 9,
 ) -> Image.Image:
-    """Composite a molecule image (PIL) with a formatted matplotlib table.
+    """Composite a molecule image (PIL) with two formatted matplotlib tables.
 
     Parameters
     ----------
     mol_img : PIL Image
         The molecule drawing produced by RDKit (no legend text).
     entries : list of tuples
-        Each tuple: (group_name, smarts_label, halogen, form, saturation)
+        Each tuple: (group_name, smarts_label, dist_center, dist_periphery, chain_pct)
+        FG-specific metrics per matched component row.
+    comp_metrics : tuple of str or None
+        Component-wide row: (size, branching, eccentricity, diameter).
+        When provided, rendered in a separate second table below the FG table.
     mol_label : str
         Optional header shown above the table (e.g. "mol#1").
     font_size : int
@@ -193,7 +198,7 @@ def _mol_image_with_table(
     Returns
     -------
     PIL Image
-        Combined molecule + table image.
+        Combined molecule + tables image.
     """
     import matplotlib
     matplotlib.use('Agg')
@@ -209,7 +214,9 @@ def _mol_image_with_table(
     header_h_in = row_h_in * 1.4
     n_rows = max(1, len(entries))
     label_h_in = (font_size + 4) / 72.0 * 1.3 if mol_label else 0.0
-    table_h_in = header_h_in + n_rows * row_h_in + label_h_in + 0.12
+    # Second table height: header + 1 data row (if comp_metrics provided)
+    metrics_tbl_h_in = (header_h_in + row_h_in + 0.04) if comp_metrics else 0.0
+    table_h_in = label_h_in + header_h_in + n_rows * row_h_in + 0.06 + metrics_tbl_h_in + 0.06
     mol_h_in = mol_h / dpi
     fig_h_in = mol_h_in + table_h_in
 
@@ -221,52 +228,95 @@ def _mol_image_with_table(
     ax_mol.axis('off')
 
     tbl_ratio = 1.0 - mol_ratio
+
+    # --- Layout: split tbl_ratio into label, table1, gap, table2 (bottom-up) ---
+    bottom_pad = 0.03 / tbl_ratio  # small padding at very bottom (in axes coords)
+    metrics_frac = (metrics_tbl_h_in / table_h_in) if comp_metrics else 0.0
+    gap_frac = (0.06 / table_h_in) if comp_metrics else 0.0
+    fg_tbl_frac = (header_h_in + n_rows * row_h_in + 0.06) / table_h_in
+    label_frac = label_h_in / table_h_in
+
     ax_tbl = fig.add_axes([0.01, 0, 0.98, tbl_ratio])
     ax_tbl.axis('off')
+    ax_tbl.set_xlim(0, 1)
+    ax_tbl.set_ylim(0, 1)
+
+    # y positions (axes coords, from bottom=0 to top=1)
+    metrics_bottom = bottom_pad
+    metrics_top = metrics_bottom + metrics_frac
+    gap_top = metrics_top + gap_frac
+    fg_tbl_bottom = gap_top
+    fg_tbl_top = fg_tbl_bottom + fg_tbl_frac
+    label_bottom = fg_tbl_top
 
     if mol_label:
+        label_center_y = label_bottom + label_frac / 2.0
         ax_tbl.text(
-            0.5, 1.0, mol_label,
-            ha='center', va='top',
+            0.5, label_center_y, mol_label,
+            ha='center', va='center',
             fontsize=font_size + 1, fontweight='bold',
             transform=ax_tbl.transAxes,
         )
 
-    col_labels = ["Group", "SMARTS", "Hal.", "Form", "Sat."]
-    col_widths = [0.40, 0.26, 0.10, 0.12, 0.12]
+    # --- FG-specific table (table 1) ---
+    col_labels_fg = ["Group", "SMARTS", "Dist.Ctr", "Dist.Per", "% chain"]
+    col_widths_fg = [0.35, 0.30, 0.11, 0.11, 0.13]
 
-    cell_text = [
-        [grp, sls or "\u2014", hal, frm, sat]
-        for grp, sls, hal, frm, sat in entries
+    cell_text_fg = [
+        [grp, sls or "\u2014", dct, dpr, frc]
+        for grp, sls, dct, dpr, frc in entries
     ] or [["\u2014", "\u2014", "\u2014", "\u2014", "\u2014"]]
 
-    # y-position inside ax_tbl: leave room for label
-    tbl_y = 1.0 - (label_h_in / (tbl_ratio * fig_h_in / dpi * 72) * 0.01) if mol_label else 1.0
-
     tbl = ax_tbl.table(
-        cellText=cell_text,
-        colLabels=col_labels,
-        colWidths=col_widths,
+        cellText=cell_text_fg,
+        colLabels=col_labels_fg,
+        colWidths=col_widths_fg,
         loc='upper center',
         cellLoc='left',
-        bbox=[0, 0, 1, tbl_y],
+        bbox=[0, fg_tbl_bottom, 1, fg_tbl_frac],
     )
     tbl.auto_set_font_size(False)
     tbl.set_fontsize(font_size)
 
-    # Style header
-    for j in range(len(col_labels)):
+    for j in range(len(col_labels_fg)):
         cell = tbl[0, j]
         cell.set_facecolor('#3B5BA5')
         cell.set_text_props(color='white', fontweight='bold')
         cell.set_edgecolor('#3B5BA5')
 
-    # Alternate row shading
-    for i in range(len(cell_text)):
-        for j in range(len(col_labels)):
+    for i in range(len(cell_text_fg)):
+        for j in range(len(col_labels_fg)):
             cell = tbl[i + 1, j]
             cell.set_facecolor('#EEF2FF' if i % 2 == 0 else 'white')
             cell.set_edgecolor('#C0C8E8')
+
+    # --- Component-wide metrics table (table 2) ---
+    if comp_metrics:
+        col_labels_m = ["Size", "Branch.", "Ecc.", "Diam."]
+        col_widths_m = [0.22, 0.26, 0.26, 0.26]
+        cell_text_m = [list(comp_metrics)]
+
+        tbl2 = ax_tbl.table(
+            cellText=cell_text_m,
+            colLabels=col_labels_m,
+            colWidths=col_widths_m,
+            loc='upper center',
+            cellLoc='center',
+            bbox=[0, metrics_bottom, 1, metrics_frac],
+        )
+        tbl2.auto_set_font_size(False)
+        tbl2.set_fontsize(font_size)
+
+        for j in range(len(col_labels_m)):
+            cell = tbl2[0, j]
+            cell.set_facecolor('#2E7D32')
+            cell.set_text_props(color='white', fontweight='bold')
+            cell.set_edgecolor('#2E7D32')
+
+        for j in range(len(col_labels_m)):
+            cell = tbl2[1, j]
+            cell.set_facecolor('#E8F5E9')
+            cell.set_edgecolor('#A5D6A7')
 
     fig.patch.set_facecolor('white')
     buf = _io.BytesIO()
@@ -294,6 +344,46 @@ class ComponentView:
     @property
     def smarts_label(self) -> Optional[str]:
         return self.data.get("SMARTS")
+
+    @property
+    def size(self) -> int:
+        """Number of carbon atoms in the component (falls back to atom-index count)."""
+        return self.data.get("size", len(self.atoms))
+
+    @property
+    def branching(self) -> Optional[float]:
+        """Branching metric: 1.0 = linear, 0.0 = fully branched."""
+        return self.data.get("branching")
+
+    @property
+    def mean_eccentricity(self) -> Optional[float]:
+        """Mean graph eccentricity across nodes in the component."""
+        return self.data.get("mean_eccentricity")
+
+    @property
+    def min_dist_to_center(self) -> Optional[int]:
+        """Minimum graph distance from any SMARTS match atom to the component center."""
+        return self.data.get("min_dist_to_center")
+
+    @property
+    def max_dist_to_periphery(self) -> Optional[int]:
+        """Maximum graph distance from any SMARTS match atom to the component periphery."""
+        return self.data.get("max_dist_to_periphery")
+
+    @property
+    def component_fraction(self) -> Optional[float]:
+        """Fraction of total molecular carbon atoms that belong to this component.
+
+        Computed as (# C atoms in the augmented component) / (total # C atoms in molecule).
+        Oxygen, fluorine, and other heteroatoms in the augmented component are excluded
+        from both numerator and denominator, so the value is always in [0, 1].
+        """
+        return self.data.get("component_fraction")
+
+    @property
+    def diameter(self) -> Optional[float]:
+        """Graph diameter of the component (longest shortest path)."""
+        return self.data.get("diameter")
 
 
 class MatchView(dict):
@@ -437,13 +527,9 @@ class MoleculeResult(dict):
     def summary(self) -> None:
         """Print a detailed coloured summary of matched groups and components.
 
-        Colour coding:
-        - Group name: **bold**
-        - Halogen label: cyan (F), green (Cl), yellow (Br), magenta (I)
-        - Form label: blue (alkyl), magenta (cyclic)
-        - Saturation label: red (per), yellow (poly)
+        Each component is shown with graph metrics: size (carbon count),
+        branching (1.0 = linear, 0.0 = highly branched) and mean eccentricity.
         """
-        meta = _get_component_meta()
 
         print("=" * 80)
         print(f"{_ANSI_BOLD}MOLECULE:{_ANSI_RESET} {self.smiles}")
@@ -485,23 +571,12 @@ class MoleculeResult(dict):
 
             # Display components by SMARTS type
             for smarts_label, comps in sorted(by_smarts.items(), key=lambda x: x[0] or ""):
-                info = meta.get(smarts_label or "", {})
-                halogen    = info.get("halogen")
-                form       = info.get("form")
-                saturation = info.get("saturation")
-
-                hal_str = _ansi(halogen or "?",    _ANSI_HALOGEN.get(halogen or "", ""))
-                frm_str = _ansi(form or "?",       _ANSI_FORM.get(form or "", ""))
-                sat_str = _ansi(saturation or "?", _ANSI_SAT.get(saturation or "", ""))
-
                 label = smarts_label or "(no label)"
-                print(f"  SMARTS: {label}  [{hal_str} | {frm_str} | {sat_str}]")
-                print(f"    Components: {len(comps)}")
-
-                sizes = [len(comp.atoms) for comp in comps]
-                if sizes:
-                    sizes_str = ", ".join(map(str, sorted(sizes, reverse=True)))
-                    print(f"    Sizes (atoms): {sizes_str}")
+                print(f"  SMARTS: {label}  ({len(comps)} component(s))")
+                for comp in sorted(comps, key=lambda c: c.size, reverse=True):
+                    br_str  = f"{comp.branching:.2f}"       if comp.branching        is not None else "\u2014"
+                    ecc_str = f"{comp.mean_eccentricity:.2f}" if comp.mean_eccentricity is not None else "\u2014"
+                    print(f"    size={_ANSI_BOLD}{comp.size}{_ANSI_RESET}  branching={br_str}  eccentricity={ecc_str}")
 
             print()
 
@@ -600,12 +675,29 @@ class MoleculeResult(dict):
                 saturation = info.get("saturation")
                 colour = _component_color(halogen, form, saturation)
                 if key not in comp_groups:
+                    # Build component-wide metrics once per unique atom set
+                    import math as _math
+                    size_str = str(comp.size)
+                    br_v  = comp.branching
+                    ecc_v = comp.mean_eccentricity
+                    diam_v = comp.diameter
+                    br_str   = f"{br_v:.2f}"   if br_v   is not None else "\u2014"
+                    ecc_str  = f"{ecc_v:.2f}"  if ecc_v  is not None else "\u2014"
+                    diam_str = (f"{float(diam_v):.0f}" if diam_v is not None and not _math.isnan(float(diam_v)) else "\u2014")
                     comp_groups[key] = {
                         'atoms': sorted(atoms),
                         'colour': colour,
                         'entries': [],
+                        'comp_metrics': (size_str, br_str, ecc_str, diam_str),
                     }
-                entry = (base_label, sl_str, halogen or "?", form or "?", saturation or "?")
+                # FG-specific entry: group name, SMARTS type, dist-to-center, dist-to-periphery, % chain
+                dct_v = comp.min_dist_to_center
+                dpr_v = comp.max_dist_to_periphery
+                frc_v = comp.component_fraction
+                dct_str = str(dct_v) if dct_v is not None else "\u2014"
+                dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
+                frc_str = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
+                entry = (base_label, sl_str, dct_str, dpr_str, frc_str)
                 if entry not in comp_groups[key]['entries']:
                     comp_groups[key]['entries'].append(entry)
 
@@ -615,6 +707,7 @@ class MoleculeResult(dict):
             atoms = data['atoms']
             colour = data['colour']
             entries = data['entries']
+            comp_metrics = data.get('comp_metrics')
 
             atom_colours: Dict[int, Color] = {a: colour for a in atoms}
             d2d = Draw.MolDraw2DCairo(subwidth, subheight)
@@ -632,7 +725,7 @@ class MoleculeResult(dict):
             )
             d2d.FinishDrawing()
             mol_img = Image.open(BytesIO(d2d.GetDrawingText()))
-            imgs.append(_mol_image_with_table(mol_img, entries))
+            imgs.append(_mol_image_with_table(mol_img, entries, comp_metrics=comp_metrics))
 
         if not imgs:
             raise ValueError("No PFAS group components found to display.")
@@ -675,8 +768,6 @@ class MoleculeResult(dict):
         """
         import svgutils.transform as sg
 
-        meta = _get_component_meta()
-
         # Use the molecule with hydrogens that was used during component detection
         mol = self.mol_with_h
         if mol is None:
@@ -701,13 +792,27 @@ class MoleculeResult(dict):
                 key = frozenset(atoms)
                 sl = comp.smarts_label
                 sl_str = str(sl) if isinstance(sl, list) else (sl or "")
-                info = meta.get(sl_str, {})
-                halogen    = info.get("halogen")
-                form       = info.get("form")
-                saturation = info.get("saturation")
                 if key not in comp_groups:
-                    comp_groups[key] = {'atoms': sorted(atoms), 'entries': []}
-                entry = (base_label, sl_str, halogen or "?", form or "?", saturation or "?")
+                    import math as _math
+                    br_v   = comp.branching
+                    ecc_v  = comp.mean_eccentricity
+                    diam_v = comp.diameter
+                    br_str   = f"{br_v:.2f}"  if br_v  is not None else "\u2014"
+                    ecc_str  = f"{ecc_v:.2f}" if ecc_v is not None else "\u2014"
+                    diam_str = (f"{float(diam_v):.0f}" if diam_v is not None and not _math.isnan(float(diam_v)) else "\u2014")
+                    comp_groups[key] = {
+                        'atoms': sorted(atoms),
+                        'entries': [],
+                        'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str),
+                    }
+                # FG-specific entry
+                dct_v = comp.min_dist_to_center
+                dpr_v = comp.max_dist_to_periphery
+                frc_v = comp.component_fraction
+                dct_str = str(dct_v) if dct_v is not None else "\u2014"
+                dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
+                frc_str = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
+                entry = (base_label, sl_str, dct_str, dpr_str, frc_str)
                 if entry not in comp_groups[key]['entries']:
                     comp_groups[key]['entries'].append(entry)
 
@@ -716,15 +821,19 @@ class MoleculeResult(dict):
         for data in comp_groups.values():
             atoms = data['atoms']
             entries = data['entries']
+            comp_metrics = data.get('comp_metrics')
             n = len(entries)
 
             lines: List[str] = []
-            for grp, sls, hal, frm, sat in entries:
+            for grp, sls, dct, dpr, frc in entries:
                 line = f"\u2022 {grp}"
                 if sls:
                     line += f" | {sls}"
+                line += f"  dct={dct}  dpr={dpr}  chain={frc}"
                 lines.append(line)
-                lines.append(f"  [{hal}] [{frm}] [{sat}]")
+            if comp_metrics:
+                sz, br, ecc, diam = comp_metrics
+                lines.append(f"  size={sz}  br={br}  ecc={ecc}  diam={diam}")
             legend = "\n".join(lines)
 
             effective_height = max(subheight, 220 + n * 38)
@@ -753,6 +862,149 @@ class MoleculeResult(dict):
 
         grid.save(filename)
         return filename
+
+    @load_HalogenGroups()
+    def to_fingerprint(
+        self,
+        group_selection: str = 'all',
+        count_mode: str = 'binary',
+        selected_group_ids: Optional[List[int]] = None,
+        halogens: Union[str, List[str]] = 'F',
+        saturation: Optional[str] = 'per',
+        graph_metrics: Optional[List[str]] = None,
+        molecule_metrics: Optional[List[str]] = None,
+        pfas_groups: Optional[List[Dict]] = None,
+        preset: Optional[str] = None,
+        **kwargs,
+    ) -> 'ResultsFingerprint':
+        """Convert this molecule result to a ResultsFingerprint.
+
+        Parameters
+        ----------
+        group_selection : str, default 'all'
+            Which groups to include in fingerprint:
+            - 'all': All available groups
+            - 'oecd': OECD groups (IDs 1–28)
+            - 'generic': Generic functional-group groups (IDs 29–55)
+            - 'telomers': Telomer-related groups (IDs 74–116)
+            - 'generic+telomers': Combination of generic and telomer groups
+        count_mode : str, default 'binary'
+            How to encode group matches:
+            - 'binary': 1 if present, 0 if absent
+            - 'count': Number of matched components
+            - 'max_component': Maximum component size (C-atom count)
+            - 'total_component': Sum of all component sizes
+        selected_group_ids : list of int, optional
+            Explicit list of group IDs to include (overrides group_selection)
+        halogens : str or list of str, default 'F'
+            Which halogen(s) to match component SMARTS against.
+        saturation : str or None, default 'per'
+            Saturation filter applied to component SMARTS groups.
+        graph_metrics : list of str, optional
+            Per-group component graph metrics to append as extra columns
+            (one block of n_groups columns per metric, mean-aggregated over
+            matched components).  E.g. ``['branching', 'mean_eccentricity']``
+            yields a vector of length 3 × n_groups.
+        molecule_metrics : list of str, optional
+            Molecule-wide scalar metrics appended after all group columns.
+            E.g. ``['n_components', 'mean_branching', 'max_diameter']``.
+        pfas_groups : list, optional
+            Custom list of PFAS group objects or dicts (injected by decorator).
+        preset : str, optional
+            Named benchmark-validated configuration.  When given, overrides
+            ``count_mode``, ``graph_metrics``, and ``molecule_metrics``.
+            See ``FINGERPRINT_PRESETS`` for available names.
+
+        Returns
+        -------
+        ResultsFingerprint
+            Fingerprint representation of this single molecule.
+        """
+        from .fingerprints import generate_fingerprint, FINGERPRINT_PRESETS
+        from .getter import get_HalogenGroups
+
+        # Apply preset if requested
+        if preset is not None:
+            if preset not in FINGERPRINT_PRESETS:
+                raise ValueError(
+                    f"Unknown preset: {preset!r}. "
+                    f"Available: {sorted(FINGERPRINT_PRESETS)}"
+                )
+            _p = FINGERPRINT_PRESETS[preset]
+            count_mode = _p.get('count_mode', count_mode)
+            if _p.get('graph_metrics') is not None:
+                graph_metrics = _p['graph_metrics']
+            if _p.get('molecule_metrics') is not None:
+                molecule_metrics = _p['molecule_metrics']
+
+        smiles_list = [self.smiles]
+
+        all_groups_raw = get_HalogenGroups()
+        halogens_list = (
+            [halogens] if isinstance(halogens, str)
+            else list(halogens) if halogens is not None
+            else ['F', 'Cl', 'Br', 'I']
+        )
+        compute_groups = [
+            g for g in all_groups_raw
+            if g.get('compute', True)
+            and (not g.get('excludeHalogens')
+                 or set(g.get('excludeHalogens', [])).isdisjoint(halogens_list))
+        ]
+        id_to_index = {g['id']: i for i, g in enumerate(compute_groups)}
+        permitted_group_selection = set()
+        if pfas_groups is not None:
+            for p in pfas_groups:
+                if isinstance(p, dict):
+                    cat = p.get('test', {}).get('category', 'other')
+                else:
+                    test = getattr(p, 'test_dict', None) or {}
+                    cat = test.get('category', 'other')
+                permitted_group_selection.add(cat)
+        if selected_group_ids is not None:
+            selected_indices = [id_to_index[gid] for gid in selected_group_ids if gid in id_to_index]
+        elif group_selection is None or group_selection == 'all':
+            selected_indices = None
+        elif group_selection == 'oecd':
+            selected_indices = [id_to_index[gid] for gid in range(1, 29) if gid in id_to_index]
+        elif group_selection == 'generic':
+            selected_indices = [id_to_index[gid] for gid in range(29, 56) if gid in id_to_index]
+        elif group_selection == 'telomers':
+            selected_indices = [id_to_index[gid] for gid in range(74, 117) if gid in id_to_index]
+        elif group_selection == 'generic+telomers':
+            ids = list(range(29, 56)) + list(range(74, 117))
+            selected_indices = [id_to_index[gid] for gid in ids if gid in id_to_index]
+        elif group_selection in permitted_group_selection:
+            selected_indices = [i for i, g in enumerate(compute_groups)
+                                if g.get('test', {}).get('category', 'other') == group_selection]
+        else:
+            raise ValueError(
+                f"Unknown group_selection: {group_selection}. "
+                f"Choose from: 'all', 'generic', 'oecd', 'telomers', 'generic+telomers'"
+            )
+
+        fps, info = generate_fingerprint(
+            smiles_list,
+            selected_groups=selected_indices,
+            representation='vector',
+            count_mode=count_mode,
+            halogens=halogens,
+            saturation=saturation,
+            graph_metrics=graph_metrics,
+            molecule_metrics=molecule_metrics,
+        )
+
+        return ResultsFingerprint(
+            fingerprints=fps,
+            smiles=smiles_list,
+            group_names=info['group_names'],
+            group_selection=group_selection,
+            count_mode=count_mode,
+            halogens=info['halogens'],
+            saturation=saturation,
+            graph_metrics=info.get('graph_metrics', []),
+            molecule_metrics=info.get('molecule_metrics', []),
+        )
 
     def to_sql(
         self,
@@ -1001,17 +1253,12 @@ class ResultsModel(list):
         """Show all component combinations in a grid plot.
 
         Components that share the same highlighted atoms within a molecule are
-        merged into a single panel.  The legend lists every PFAS group (and its
-        halogen / form / saturation metadata) that maps to those atoms as a
-        bullet-point list under a ``mol#N`` header.
+        merged into a single panel.  The table below each structure lists the
+        matched PFAS group, the component SMARTS type, and three graph metrics:
+        size (C-atom count), branching (1.0 = linear) and mean eccentricity.
 
-        Atoms are highlighted with the colour of the first matching entry:
-        - **Halogen**: cyan (F), green (Cl), amber (Br), violet (I)
-        - **Form**: alkyl (full base colour) vs cyclic (warm-shifted tint)
-        - **Saturation**: per- (full brightness) vs poly- (dimmed)
-
-        This is intended for detailed inspection of how HalogenGroups and
-        component SMARTSs decompose the molecules.
+        Atoms are highlighted with the colour derived from the component SMARTS
+        metadata (halogen / form / saturation) of the first entry in each panel.
         """
         meta = _get_component_meta()
 
@@ -1048,12 +1295,26 @@ class ResultsModel(list):
                     saturation = info.get("saturation")
                     colour = _component_color(halogen, form, saturation)
                     if key not in comp_groups:
+                        import math as _math
+                        br_v   = comp.branching
+                        ecc_v  = comp.mean_eccentricity
+                        diam_v = comp.diameter
+                        br_str   = f"{br_v:.2f}"  if br_v  is not None else "\u2014"
+                        ecc_str  = f"{ecc_v:.2f}" if ecc_v is not None else "\u2014"
+                        diam_str = (f"{float(diam_v):.0f}" if diam_v is not None and not _math.isnan(float(diam_v)) else "\u2014")
                         comp_groups[key] = {
                             'atoms': sorted(atoms),
                             'colour': colour,
                             'entries': [],
+                            'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str),
                         }
-                    entry = (base_label, sl_str, halogen or "?", form or "?", saturation or "?")
+                    dct_v = comp.min_dist_to_center
+                    dpr_v = comp.max_dist_to_periphery
+                    frc_v = comp.component_fraction
+                    dct_str = str(dct_v) if dct_v is not None else "\u2014"
+                    dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
+                    frc_str = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
+                    entry = (base_label, sl_str, dct_str, dpr_str, frc_str)
                     if entry not in comp_groups[key]['entries']:
                         comp_groups[key]['entries'].append(entry)
 
@@ -1061,6 +1322,7 @@ class ResultsModel(list):
                 atoms = data['atoms']
                 colour = data['colour']
                 entries = data['entries']
+                comp_metrics = data.get('comp_metrics')
 
                 atom_colours: Dict[int, Color] = {a: colour for a in atoms}
                 d2d = Draw.MolDraw2DCairo(subwidth, subheight)
@@ -1079,7 +1341,7 @@ class ResultsModel(list):
                 d2d.FinishDrawing()
                 mol_img = Image.open(BytesIO(d2d.GetDrawingText()))
                 imgs.append(_mol_image_with_table(
-                    mol_img, entries, mol_label=f"mol#{mol_index + 1}"
+                    mol_img, entries, comp_metrics=comp_metrics, mol_label=f"mol#{mol_index + 1}"
                 ))
 
         if not imgs:
@@ -1229,7 +1491,6 @@ class ResultsModel(list):
         """
         import svgutils.transform as sg
 
-        meta = _get_component_meta()
         imgs: List[str] = []
 
         for mol_index, mol_res in enumerate(self):  # type: ignore[assignment]
@@ -1257,28 +1518,45 @@ class ResultsModel(list):
                     key = frozenset(atoms)
                     sl = comp.smarts_label
                     sl_str = str(sl) if isinstance(sl, list) else (sl or "")
-                    info = meta.get(sl_str, {})
-                    halogen    = info.get("halogen")
-                    form       = info.get("form")
-                    saturation = info.get("saturation")
                     if key not in comp_groups:
-                        comp_groups[key] = {'atoms': sorted(atoms), 'entries': []}
-                    entry = (base_label, sl_str, halogen or "?", form or "?", saturation or "?")
+                        import math as _math
+                        br_v   = comp.branching
+                        ecc_v  = comp.mean_eccentricity
+                        diam_v = comp.diameter
+                        br_str   = f"{br_v:.2f}"  if br_v  is not None else "\u2014"
+                        ecc_str  = f"{ecc_v:.2f}" if ecc_v is not None else "\u2014"
+                        diam_str = (f"{float(diam_v):.0f}" if diam_v is not None and not _math.isnan(float(diam_v)) else "\u2014")
+                        comp_groups[key] = {
+                            'atoms': sorted(atoms),
+                            'entries': [],
+                            'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str),
+                        }
+                    dct_v = comp.min_dist_to_center
+                    dpr_v = comp.max_dist_to_periphery
+                    frc_v = comp.component_fraction
+                    dct_str = str(dct_v) if dct_v is not None else "\u2014"
+                    dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
+                    frc_str = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
+                    entry = (base_label, sl_str, dct_str, dpr_str, frc_str)
                     if entry not in comp_groups[key]['entries']:
                         comp_groups[key]['entries'].append(entry)
 
             for data in comp_groups.values():
                 atoms = data['atoms']
                 entries = data['entries']
+                comp_metrics = data.get('comp_metrics')
                 n = len(entries)
 
                 lines: List[str] = [f"mol#{mol_index + 1}"]
-                for grp, sls, hal, frm, sat in entries:
+                for grp, sls, dct, dpr, frc in entries:
                     line = f"\u2022 {grp}"
                     if sls:
                         line += f" | {sls}"
+                    line += f"  dct={dct}  dpr={dpr}  chain={frc}"
                     lines.append(line)
-                    lines.append(f"  [{hal}] [{frm}] [{sat}]")
+                if comp_metrics:
+                    sz, br, ecc, diam = comp_metrics
+                    lines.append(f"  size={sz}  br={br}  ecc={ecc}  diam={diam}")
                 legend = "\n".join(lines)
 
                 effective_height = max(subheight, 220 + (n + 1) * 38)
@@ -1414,19 +1692,10 @@ class ResultsModel(list):
     def summary(self) -> None:
         """Print a detailed coloured summary of matched groups across all molecules.
 
-        Colour coding:
-        - Group name: **bold**
-        - Halogen label: cyan (F), green (Cl), yellow (Br), magenta (I)
-        - Form label: blue (alkyl), magenta (cyclic)
-        - Saturation label: red (per), yellow (poly)
-
-        The summary includes:
-        - Total number of molecules
-        - List of all matched group IDs and names
-        - For each group: number of components by SMARTS type + metadata badge
-        - Component size statistics (min, max, mean)
+        For each group, shows the component SMARTS type and, per component,
+        the graph metrics: size (C-atom count), branching and mean eccentricity.
+        Component size statistics (min, max, mean) are also shown.
         """
-        meta = _get_component_meta()
 
         print("=" * 80)
         print(f"{_ANSI_BOLD}RESULTS SUMMARY:{_ANSI_RESET} {len(self)} molecule(s)")
@@ -1469,25 +1738,17 @@ class ResultsModel(list):
 
             # Display components by SMARTS type
             for smarts_label, comps in sorted(by_smarts.items(), key=lambda x: x[0] or ""):
-                info = meta.get(smarts_label or "", {})
-                halogen    = info.get("halogen")
-                form       = info.get("form")
-                saturation = info.get("saturation")
-
-                hal_str = _ansi(halogen or "?",    _ANSI_HALOGEN.get(halogen or "", ""))
-                frm_str = _ansi(form or "?",       _ANSI_FORM.get(form or "", ""))
-                sat_str = _ansi(saturation or "?", _ANSI_SAT.get(saturation or "", ""))
-
                 label = smarts_label or "(no label)"
-                print(f"  SMARTS: {label}  [{hal_str} | {frm_str} | {sat_str}]")
-                print(f"    Total components: {len(comps)}")
-
-                sizes = [len(comp.atoms) for comp in comps]
-                if sizes:
-                    min_size = min(sizes)
-                    max_size = max(sizes)
-                    mean_size = sum(sizes) / len(sizes)
-                    print(f"    Size range (atoms): {min_size} - {max_size} (mean: {mean_size:.1f})")
+                sizes = [comp.size for comp in comps]
+                min_sz = min(sizes) if sizes else 0
+                max_sz = max(sizes) if sizes else 0
+                mean_sz = sum(sizes) / len(sizes) if sizes else 0.0
+                print(f"  SMARTS: {label}  ({len(comps)} component(s))  "
+                      f"size {min_sz}\u2013{max_sz} (mean {mean_sz:.1f})")
+                for comp in sorted(comps, key=lambda c: c.size, reverse=True):
+                    br_str  = f"{comp.branching:.2f}"       if comp.branching        is not None else "\u2014"
+                    ecc_str = f"{comp.mean_eccentricity:.2f}" if comp.mean_eccentricity is not None else "\u2014"
+                    print(f"    size={_ANSI_BOLD}{comp.size}{_ANSI_RESET}  branching={br_str}  eccentricity={ecc_str}")
 
             print()
 
@@ -1676,7 +1937,7 @@ class ResultsModel(list):
         if groups_data:
             df_groups = pd.DataFrame(groups_data)
             df_groups.to_sql(groups_table, engine, if_exists=if_exists, index=False)
-
+    @load_HalogenGroups()
     def to_fingerprint(
         self,
         group_selection: str = 'all',
@@ -1684,6 +1945,11 @@ class ResultsModel(list):
         selected_group_ids: Optional[List[int]] = None,
         halogens: Union[str, List[str]] = 'F',
         saturation: Optional[str] = 'per',
+        graph_metrics: Optional[List[str]] = None,
+        molecule_metrics: Optional[List[str]] = None,
+        pfas_groups: Optional[List[Dict]] = None,
+        preset: Optional[str] = None,
+        **kwargs,
     ) -> 'ResultsFingerprint':
         """Convert ResultsModel to ResultsFingerprint for dimensionality reduction.
 
@@ -1699,8 +1965,9 @@ class ResultsModel(list):
         count_mode : str, default 'binary'
             How to encode group matches:
             - 'binary': 1 if present, 0 if absent
-            - 'count': Number of matches
-            - 'max_component': Maximum component size
+            - 'count': Number of matched components
+            - 'max_component': Maximum component size (C-atom count)
+            - 'total_component': Sum of all component sizes
         selected_group_ids : list of int, optional
             Explicit list of group IDs to include (overrides group_selection)
         halogens : str or list of str, default 'F'
@@ -1715,27 +1982,82 @@ class ResultsModel(list):
             - ``'per'``: perfluorinated / perhalogenated only
             - ``'poly'``: polyfluorinated / polyhalogenated only
             - ``None``: no filter
+        graph_metrics : list of str, optional
+            Per-group component graph metrics appended as extra column blocks
+            (n_groups columns per metric, mean-aggregated over matched
+            components).  E.g. ``['branching', 'mean_eccentricity']`` gives
+            a vector of length 3 × n_groups.  Group names are suffixed with
+            the metric in square brackets, e.g. ``"Perfluoroalkyl [branching]"``.
+            Supported: 'branching', 'mean_eccentricity', 'diameter', 'radius',
+            'component_fraction', 'min_dist_to_center', 'max_dist_to_periphery', …
+        molecule_metrics : list of str, optional
+            Molecule-wide scalar metrics appended as extra columns *after* all
+            per-group columns.  These aggregate over ALL matched components
+            in the molecule (across all groups).
+            Supported: 'n_components', 'total_size', 'mean_size', 'max_size',
+            'mean_branching', 'max_branching', 'mean_eccentricity',
+            'max_diameter', 'mean_component_fraction', 'max_component_fraction'.
+        preset : str, optional
+            Named benchmark-validated configuration.  When given, overrides
+            ``count_mode``, ``graph_metrics``, and ``molecule_metrics``.
+            Available: ``'best'``, ``'best_2'``, …, ``'binary'``, ``'count'``,
+            ``'max_component'``.  See ``FINGERPRINT_PRESETS`` for full list.
 
         Returns
         -------
         ResultsFingerprint
             Fingerprint representation of the results
         """
-        from .fingerprints import generate_fingerprint
+        from .fingerprints import generate_fingerprint, FINGERPRINT_PRESETS
+
+        # Apply preset if requested (overrides count_mode / graph_metrics / molecule_metrics)
+        if preset is not None:
+            if preset not in FINGERPRINT_PRESETS:
+                raise ValueError(
+                    f"Unknown preset: {preset!r}. "
+                    f"Available: {sorted(FINGERPRINT_PRESETS)}"
+                )
+            _p = FINGERPRINT_PRESETS[preset]
+            count_mode = _p.get('count_mode', count_mode)
+            if _p.get('graph_metrics') is not None:
+                graph_metrics = _p['graph_metrics']
+            if _p.get('molecule_metrics') is not None:
+                molecule_metrics = _p['molecule_metrics']
         from .getter import get_HalogenGroups
 
         # Extract SMILES from results
         smiles_list = [mol_res.smiles for mol_res in self]  # type: ignore[assignment]
 
         # Resolve selected_groups as 0-based indices from group IDs.
-        # Only computable groups (compute=True, or missing) are in pfas_groups.
+        # Only computable groups (compute=True) that are not excluded for the requested
+        # halogens are included.  This matches the filtering that load_HalogenGroups
+        # applies inside generate_fingerprint, so the resulting indices are valid.
         all_groups_raw = get_HalogenGroups()  # list of raw dicts
-        compute_groups = [g for g in all_groups_raw if g.get('compute', True)]
+        halogens_list = (
+            [halogens] if isinstance(halogens, str)
+            else list(halogens) if halogens is not None
+            else ['F', 'Cl', 'Br', 'I']
+        )
+        compute_groups = [
+            g for g in all_groups_raw
+            if g.get('compute', True)
+            and (not g.get('excludeHalogens')
+                 or set(g.get('excludeHalogens', [])).isdisjoint(halogens_list))
+        ]
         id_to_index = {g['id']: i for i, g in enumerate(compute_groups)}
-
+        permitted_group_selection = set()
+        if pfas_groups is not None:
+            for p in pfas_groups:
+                if isinstance(p, dict):
+                    cat = p.get('test', {}).get('category', 'other')
+                else:
+                    # HalogenGroup object — uses test_dict attribute
+                    test = getattr(p, 'test_dict', None) or {}
+                    cat = test.get('category', 'other')
+                permitted_group_selection.add(cat)
         if selected_group_ids is not None:
             selected_indices = [id_to_index[gid] for gid in selected_group_ids if gid in id_to_index]
-        elif group_selection == 'all':
+        elif group_selection is None or group_selection == 'all':
             selected_indices = None  # Use all groups
         elif group_selection == 'oecd':
             selected_indices = [id_to_index[gid] for gid in range(1, 29) if gid in id_to_index]
@@ -1746,6 +2068,10 @@ class ResultsModel(list):
         elif group_selection == 'generic+telomers':
             ids = list(range(29, 56)) + list(range(74, 117))
             selected_indices = [id_to_index[gid] for gid in ids if gid in id_to_index]
+        elif group_selection in permitted_group_selection:
+            # Dynamic selection by test.category value from JSON
+            selected_indices = [i for i, g in enumerate(compute_groups)
+                                if g.get('test', {}).get('category', 'other') == group_selection]
         else:
             raise ValueError(
                 f"Unknown group_selection: {group_selection}. "
@@ -1760,6 +2086,8 @@ class ResultsModel(list):
             count_mode=count_mode,
             halogens=halogens,
             saturation=saturation,
+            graph_metrics=graph_metrics,
+            molecule_metrics=molecule_metrics,
         )
 
         return ResultsFingerprint(
@@ -1770,6 +2098,8 @@ class ResultsModel(list):
             count_mode=count_mode,
             halogens=info['halogens'],
             saturation=saturation,
+            graph_metrics=info.get('graph_metrics', []),
+            molecule_metrics=info.get('molecule_metrics', []),
         )
 
     @classmethod
@@ -1857,20 +2187,26 @@ class ResultsFingerprint:
     Parameters
     ----------
     fingerprints : np.ndarray
-        Fingerprint matrix (n_molecules, n_groups)
+        Fingerprint matrix (n_molecules, n_columns).  The number of columns is
+        n_groups × (1 + len(graph_metrics)) + len(molecule_metrics).
     smiles : list of str
         SMILES strings for each molecule
     group_names : list of str
-        Names of the PFAS groups in fingerprint
+        Names of all columns in fingerprint order (includes metric suffixes and
+        ``mol:`` prefixed molecule-metric names).
     group_selection : str
         Type of group selection used
     count_mode : str
-        Encoding mode used (binary, count, max_component)
+        Encoding mode: 'binary', 'count', 'max_component', or 'total_component'
     halogens : list of str, optional
         Halogen(s) used for component SMARTS matching. When multiple halogens
         are given the fingerprint vectors are stacked.
     saturation : str or None, optional
         Saturation filter applied to component SMARTS groups.
+    graph_metrics : list of str, optional
+        Per-group graph metrics that were appended as extra column blocks.
+    molecule_metrics : list of str, optional
+        Molecule-wide scalar metrics appended at the end of each vector.
     """
 
     def __init__(
@@ -1882,6 +2218,8 @@ class ResultsFingerprint:
         count_mode: str = 'binary',
         halogens: Optional[Union[str, List[str]]] = None,
         saturation: Optional[str] = None,
+        graph_metrics: Optional[List[str]] = None,
+        molecule_metrics: Optional[List[str]] = None,
     ):
         self.fingerprints = np.array(fingerprints)
         self.smiles = smiles
@@ -1896,6 +2234,8 @@ class ResultsFingerprint:
         else:
             self.halogens = list(halogens)
         self.saturation = saturation
+        self.graph_metrics: List[str] = list(graph_metrics) if graph_metrics else []
+        self.molecule_metrics: List[str] = list(molecule_metrics) if molecule_metrics else []
 
         if len(self.fingerprints) != len(self.smiles):
             raise ValueError(
@@ -1908,14 +2248,19 @@ class ResultsFingerprint:
 
     def __repr__(self) -> str:
         hal_str = "+".join(self.halogens) if self.halogens else "all"
-        return (
-            f"ResultsFingerprint(n_molecules={len(self)}, "
-            f"n_groups={len(self.group_names)}, "
-            f"group_selection='{self.group_selection}', "
-            f"halogens={hal_str!r}, "
-            f"saturation={self.saturation!r}, "
-            f"count_mode='{self.count_mode}')"
-        )
+        parts = [
+            f"n_molecules={len(self)}",
+            f"n_cols={len(self.group_names)}",
+            f"group_selection='{self.group_selection}'",
+            f"halogens={hal_str!r}",
+            f"saturation={self.saturation!r}",
+            f"count_mode='{self.count_mode}'",
+        ]
+        if self.graph_metrics:
+            parts.append(f"graph_metrics={self.graph_metrics!r}")
+        if self.molecule_metrics:
+            parts.append(f"molecule_metrics={self.molecule_metrics!r}")
+        return f"ResultsFingerprint({', '.join(parts)})"
 
     def summary(self) -> str:
         """Return text summary of fingerprint statistics."""
@@ -1924,23 +2269,33 @@ class ResultsFingerprint:
         lines.append("ResultsFingerprint Summary")
         lines.append("=" * 50)
         lines.append(f"Molecules: {len(self)}")
-        lines.append(f"Groups: {len(self.group_names)}")
+        lines.append(f"Columns: {len(self.group_names)}")
         lines.append(f"Group selection: {self.group_selection}")
         lines.append(f"Halogens: {hal_str}")
         lines.append(f"Saturation: {self.saturation}")
         lines.append(f"Count mode: {self.count_mode}")
+        if self.graph_metrics:
+            lines.append(f"Per-group graph metrics: {', '.join(self.graph_metrics)}")
+        if self.molecule_metrics:
+            lines.append(f"Molecule-wide metrics: {', '.join(self.molecule_metrics)}")
         lines.append(f"Fingerprint shape: {self.fingerprints.shape}")
         lines.append(f"Non-zero entries: {np.count_nonzero(self.fingerprints)}")
         lines.append(f"Sparsity: {1 - np.count_nonzero(self.fingerprints) / self.fingerprints.size:.2%}")
 
-        # Group frequency statistics
-        group_frequencies = np.sum(self.fingerprints > 0, axis=0)
+        # Show most-active group columns only (skip metric extension columns)
+        mol_metric_prefix = "mol:"
+        base_idx = [i for i, n in enumerate(self.group_names)
+                    if '[' not in n and not n.startswith(mol_metric_prefix)]
+        if not base_idx:
+            base_idx = list(range(len(self.group_names)))
+        group_frequencies = np.sum(self.fingerprints[:, base_idx] > 0, axis=0)
         lines.append("\nMost common groups:")
         top_indices = np.argsort(group_frequencies)[::-1][:10]
-        for idx in top_indices:
-            if group_frequencies[idx] > 0:
-                lines.append(f"  {self.group_names[idx]}: {group_frequencies[idx]} molecules "
-                           f"({100 * group_frequencies[idx] / len(self):.1f}%)")
+        for rel_idx in top_indices:
+            if group_frequencies[rel_idx] > 0:
+                abs_idx = base_idx[rel_idx]
+                lines.append(f"  {self.group_names[abs_idx]}: {group_frequencies[rel_idx]} molecules "
+                           f"({100 * group_frequencies[rel_idx] / len(self):.1f}%)")
 
         return "\n".join(lines)
 

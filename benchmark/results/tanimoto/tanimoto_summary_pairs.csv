@@ -1,0 +1,137 @@
+fingerprint,mol_A,mol_B,tanimoto
+binary+effective_graph_resistance,TFA (C2),PFPrA (C3),0.5
+binary+effective_graph_resistance,TFA (C2),PFBA (C4),0.2
+binary+effective_graph_resistance,TFA (C2),PFPeA (C5),0.09091
+binary+effective_graph_resistance,TFA (C2),PFHxA (C6),0.04762
+binary+effective_graph_resistance,TFA (C2),PFHpA (C7),0.02778
+binary+effective_graph_resistance,TFA (C2),PFOA (C8),0.01754
+binary+effective_graph_resistance,TFA (C2),PFNA (C9),0.01176
+binary+effective_graph_resistance,TFA (C2),PFDA (C10),0.00826
+binary+effective_graph_resistance,TFA (C2),PFBS (C4),0.03448
+binary+effective_graph_resistance,TFA (C2),PFHxS (C6),0.01093
+binary+effective_graph_resistance,TFA (C2),PFOS (C8),0.00467
+binary+effective_graph_resistance,TFA (C2),iso-PFBA,0.2
+binary+effective_graph_resistance,TFA (C2),iso-PFHpA,0.02778
+binary+effective_graph_resistance,TFA (C2),6:2 FTOH,0.00889
+binary+effective_graph_resistance,TFA (C2),8:2 FTOH,0.004
+binary+effective_graph_resistance,TFA (C2),6:2 FTS,0.00849
+binary+effective_graph_resistance,PFPrA (C3),PFBA (C4),0.4
+binary+effective_graph_resistance,PFPrA (C3),PFPeA (C5),0.18182
+binary+effective_graph_resistance,PFPrA (C3),PFHxA (C6),0.09524
+binary+effective_graph_resistance,PFPrA (C3),PFHpA (C7),0.05556
+binary+effective_graph_resistance,PFPrA (C3),PFOA (C8),0.03509
+binary+effective_graph_resistance,PFPrA (C3),PFNA (C9),0.02353
+binary+effective_graph_resistance,PFPrA (C3),PFDA (C10),0.01653
+binary+effective_graph_resistance,PFPrA (C3),PFBS (C4),0.06557
+binary+effective_graph_resistance,PFPrA (C3),PFHxS (C6),0.02151
+binary+effective_graph_resistance,PFPrA (C3),PFOS (C8),0.00928
+binary+effective_graph_resistance,PFPrA (C3),iso-PFBA,0.4
+binary+effective_graph_resistance,PFPrA (C3),iso-PFHpA,0.05556
+binary+effective_graph_resistance,PFPrA (C3),6:2 FTOH,0.01754
+binary+effective_graph_resistance,PFPrA (C3),8:2 FTOH,0.00795
+binary+effective_graph_resistance,PFPrA (C3),6:2 FTS,0.01677
+binary+effective_graph_resistance,PFBA (C4),PFPeA (C5),0.45455
+binary+effective_graph_resistance,PFBA (C4),PFHxA (C6),0.2381
+binary+effective_graph_resistance,PFBA (C4),PFHpA (C7),0.13889
+binary+effective_graph_resistance,PFBA (C4),PFOA (C8),0.08772
+binary+effective_graph_resistance,PFBA (C4),PFNA (C9),0.05882
+binary+effective_graph_resistance,PFBA (C4),PFDA (C10),0.04132
+binary+effective_graph_resistance,PFBA (C4),PFBS (C4),0.14286
+binary+effective_graph_resistance,PFBA (C4),PFHxS (C6),0.05128
+binary+effective_graph_resistance,PFBA (C4),PFOS (C8),0.02273
+binary+effective_graph_resistance,PFBA (C4),iso-PFBA,1.0
+binary+effective_graph_resistance,PFBA (C4),iso-PFHpA,0.13889
+binary+effective_graph_resistance,PFBA (C4),6:2 FTOH,0.04219
+binary+effective_graph_resistance,PFBA (C4),8:2 FTOH,0.01953
+binary+effective_graph_resistance,PFBA (C4),6:2 FTS,0.0404
+binary+effective_graph_resistance,PFPeA (C5),PFHxA (C6),0.52381
+binary+effective_graph_resistance,PFPeA (C5),PFHpA (C7),0.30556
+binary+effective_graph_resistance,PFPeA (C5),PFOA (C8),0.19298
+binary+effective_graph_resistance,PFPeA (C5),PFNA (C9),0.12941
+binary+effective_graph_resistance,PFPeA (C5),PFDA (C10),0.09091
+binary+effective_graph_resistance,PFPeA (C5),PFBS (C4),0.25
+binary+effective_graph_resistance,PFPeA (C5),PFHxS (C6),0.10329
+binary+effective_graph_resistance,PFPeA (C5),PFOS (C8),0.04803
+binary+effective_graph_resistance,PFPeA (C5),iso-PFBA,0.45455
+binary+effective_graph_resistance,PFPeA (C5),iso-PFHpA,0.30556
+binary+effective_graph_resistance,PFPeA (C5),6:2 FTOH,0.08627
+binary+effective_graph_resistance,PFPeA (C5),8:2 FTOH,0.04151
+binary+effective_graph_resistance,PFPeA (C5),6:2 FTS,0.08286
+binary+effective_graph_resistance,PFHxA (C6),PFHpA (C7),0.58333
+binary+effective_graph_resistance,PFHxA (C6),PFOA (C8),0.36842
+binary+effective_graph_resistance,PFHxA (C6),PFNA (C9),0.24706
+binary+effective_graph_resistance,PFHxA (C6),PFDA (C10),0.17355
+binary+effective_graph_resistance,PFHxA (C6),PFBS (C4),0.15942
+binary+effective_graph_resistance,PFHxA (C6),PFHxS (C6),0.17284
+binary+effective_graph_resistance,PFHxA (C6),PFOS (C8),0.08607
+binary+effective_graph_resistance,PFHxA (C6),iso-PFBA,0.2381
+binary+effective_graph_resistance,PFHxA (C6),iso-PFHpA,0.58333
+binary+effective_graph_resistance,PFHxA (C6),6:2 FTOH,0.14737
+binary+effective_graph_resistance,PFHxA (C6),8:2 FTOH,0.075
+binary+effective_graph_resistance,PFHxA (C6),6:2 FTS,0.14213
+binary+effective_graph_resistance,PFHpA (C7),PFOA (C8),0.63158
+binary+effective_graph_resistance,PFHpA (C7),PFNA (C9),0.42353
+binary+effective_graph_resistance,PFHpA (C7),PFDA (C10),0.29752
+binary+effective_graph_resistance,PFHpA (C7),PFBS (C4),0.10329
+binary+effective_graph_resistance,PFHpA (C7),PFHxS (C6),0.25
+binary+effective_graph_resistance,PFHpA (C7),PFOS (C8),0.13508
+binary+effective_graph_resistance,PFHpA (C7),iso-PFBA,0.13889
+binary+effective_graph_resistance,PFHpA (C7),iso-PFHpA,1.0
+binary+effective_graph_resistance,PFHpA (C7),6:2 FTOH,0.21818
+binary+effective_graph_resistance,PFHpA (C7),8:2 FTOH,0.11901
+binary+effective_graph_resistance,PFHpA (C7),6:2 FTS,0.21145
+binary+effective_graph_resistance,PFOA (C8),PFNA (C9),0.67059
+binary+effective_graph_resistance,PFOA (C8),PFDA (C10),0.47107
+binary+effective_graph_resistance,PFOA (C8),PFBS (C4),0.06918
+binary+effective_graph_resistance,PFOA (C8),PFHxS (C6),0.18321
+binary+effective_graph_resistance,PFOA (C8),PFOS (C8),0.19128
+binary+effective_graph_resistance,PFOA (C8),iso-PFBA,0.08772
+binary+effective_graph_resistance,PFOA (C8),iso-PFHpA,0.63158
+binary+effective_graph_resistance,PFOA (C8),6:2 FTOH,0.22464
+binary+effective_graph_resistance,PFOA (C8),8:2 FTOH,0.17066
+binary+effective_graph_resistance,PFOA (C8),6:2 FTS,0.21908
+binary+effective_graph_resistance,PFNA (C9),PFDA (C10),0.70248
+binary+effective_graph_resistance,PFNA (C9),PFBS (C4),0.04803
+binary+effective_graph_resistance,PFNA (C9),PFHxS (C6),0.13508
+binary+effective_graph_resistance,PFNA (C9),PFOS (C8),0.25
+binary+effective_graph_resistance,PFNA (C9),iso-PFBA,0.05882
+binary+effective_graph_resistance,PFNA (C9),iso-PFHpA,0.42353
+binary+effective_graph_resistance,PFNA (C9),6:2 FTOH,0.16787
+binary+effective_graph_resistance,PFNA (C9),8:2 FTOH,0.22606
+binary+effective_graph_resistance,PFNA (C9),6:2 FTS,0.16475
+binary+effective_graph_resistance,PFDA (C10),PFBS (C4),0.03448
+binary+effective_graph_resistance,PFDA (C10),PFHxS (C6),0.10098
+binary+effective_graph_resistance,PFDA (C10),PFOS (C8),0.19767
+binary+effective_graph_resistance,PFDA (C10),iso-PFBA,0.04132
+binary+effective_graph_resistance,PFDA (C10),iso-PFHpA,0.29752
+binary+effective_graph_resistance,PFDA (C10),6:2 FTOH,0.1267
+binary+effective_graph_resistance,PFDA (C10),8:2 FTOH,0.22991
+binary+effective_graph_resistance,PFDA (C10),6:2 FTS,0.12492
+binary+effective_graph_resistance,PFBS (C4),PFHxS (C6),0.30556
+binary+effective_graph_resistance,PFBS (C4),PFOS (C8),0.12941
+binary+effective_graph_resistance,PFBS (C4),iso-PFBA,0.14286
+binary+effective_graph_resistance,PFBS (C4),iso-PFHpA,0.10329
+binary+effective_graph_resistance,PFBS (C4),6:2 FTOH,0.08627
+binary+effective_graph_resistance,PFBS (C4),8:2 FTOH,0.04151
+binary+effective_graph_resistance,PFBS (C4),6:2 FTS,0.12967
+binary+effective_graph_resistance,PFHxS (C6),PFOS (C8),0.42353
+binary+effective_graph_resistance,PFHxS (C6),iso-PFBA,0.05128
+binary+effective_graph_resistance,PFHxS (C6),iso-PFHpA,0.25
+binary+effective_graph_resistance,PFHxS (C6),6:2 FTOH,0.21818
+binary+effective_graph_resistance,PFHxS (C6),8:2 FTOH,0.11901
+binary+effective_graph_resistance,PFHxS (C6),6:2 FTS,0.35468
+binary+effective_graph_resistance,PFOS (C8),iso-PFBA,0.02273
+binary+effective_graph_resistance,PFOS (C8),iso-PFHpA,0.13508
+binary+effective_graph_resistance,PFOS (C8),6:2 FTOH,0.16787
+binary+effective_graph_resistance,PFOS (C8),8:2 FTOH,0.22606
+binary+effective_graph_resistance,PFOS (C8),6:2 FTS,0.26931
+binary+effective_graph_resistance,iso-PFBA,iso-PFHpA,0.13889
+binary+effective_graph_resistance,iso-PFBA,6:2 FTOH,0.04219
+binary+effective_graph_resistance,iso-PFBA,8:2 FTOH,0.01953
+binary+effective_graph_resistance,iso-PFBA,6:2 FTS,0.0404
+binary+effective_graph_resistance,iso-PFHpA,6:2 FTOH,0.21818
+binary+effective_graph_resistance,iso-PFHpA,8:2 FTOH,0.11901
+binary+effective_graph_resistance,iso-PFHpA,6:2 FTS,0.21145
+binary+effective_graph_resistance,6:2 FTOH,8:2 FTOH,0.44668
+binary+effective_graph_resistance,6:2 FTOH,6:2 FTS,0.39631
+binary+effective_graph_resistance,8:2 FTOH,6:2 FTS,0.21482
