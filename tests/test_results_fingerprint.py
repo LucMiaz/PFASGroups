@@ -62,7 +62,7 @@ class TestResultsModelToFingerprint:
         """Test different group selections."""
         # All groups
         fp_all = results.to_fingerprint(group_selection='all', halogens='F')
-        assert len(fp_all.group_names) == 116  # 117 total, but 1 is aggregate-only (compute=False)
+        assert len(fp_all.group_names) == 115  # 117 total, but 1 is aggregate-only (compute=False)
         
         # OECD groups
         fp_oecd = results.to_fingerprint(group_selection='oecd', halogens='F')
@@ -85,7 +85,61 @@ class TestResultsModelToFingerprint:
         # Max component
         fp_max = results.to_fingerprint(count_mode='max_component')
         assert np.all(fp_max.fingerprints >= 0)
-    
+
+        # Total component (new)
+        fp_total = results.to_fingerprint(count_mode='total_component')
+        assert np.all(fp_total.fingerprints >= 0)
+        # total_component >= max_component entry-wise
+        assert np.all(fp_total.fingerprints >= fp_max.fingerprints)
+
+    def test_graph_metrics(self, results):
+        """Test per-group graph metrics extension."""
+        fp_base = results.to_fingerprint(count_mode='binary')
+        n_base = len(fp_base.group_names)
+
+        fp_gm = results.to_fingerprint(count_mode='binary',
+                                        graph_metrics=['branching'])
+        # One extra block of n_base columns
+        assert len(fp_gm.group_names) == 2 * n_base
+        assert fp_gm.fingerprints.shape[1] == 2 * n_base
+        # Metric columns are named with bracket suffix
+        assert any('[branching]' in n for n in fp_gm.group_names)
+        assert fp_gm.graph_metrics == ['branching']
+
+        # Two metrics → 3× base width
+        fp_gm2 = results.to_fingerprint(count_mode='binary',
+                                          graph_metrics=['branching', 'mean_eccentricity'])
+        assert len(fp_gm2.group_names) == 3 * n_base
+        assert fp_gm2.fingerprints.shape[1] == 3 * n_base
+
+    def test_molecule_metrics(self, results):
+        """Test molecule-wide scalar metrics appended to the fingerprint."""
+        fp_base = results.to_fingerprint(count_mode='binary')
+        n_base = len(fp_base.group_names)
+
+        fp_mm = results.to_fingerprint(count_mode='binary',
+                                        molecule_metrics=['n_components', 'mean_branching'])
+        assert len(fp_mm.group_names) == n_base + 2
+        assert fp_mm.fingerprints.shape[1] == n_base + 2
+        # Column names include mol: prefix
+        assert 'mol:n_components' in fp_mm.group_names
+        assert 'mol:mean_branching' in fp_mm.group_names
+        assert fp_mm.molecule_metrics == ['n_components', 'mean_branching']
+        # n_components must be non-negative
+        mol_col = fp_mm.group_names.index('mol:n_components')
+        assert np.all(fp_mm.fingerprints[:, mol_col] >= 0)
+
+    def test_graph_and_molecule_metrics_combined(self, results):
+        """Test combining graph_metrics and molecule_metrics."""
+        fp_base = results.to_fingerprint(count_mode='binary')
+        n_base = len(fp_base.group_names)
+        fp = results.to_fingerprint(count_mode='binary',
+                                     graph_metrics=['branching'],
+                                     molecule_metrics=['n_components'])
+        expected_cols = n_base * 2 + 1
+        assert len(fp.group_names) == expected_cols
+        assert fp.fingerprints.shape[1] == expected_cols
+
     def test_custom_group_ids(self, results):
         """Test custom group ID selection."""
         custom_ids = [1, 2, 5, 10]
@@ -97,14 +151,14 @@ class TestResultsModelToFingerprint:
         fp = results.to_fingerprint(halogens='F',count_mode='binary')
         assert fp.halogens == ['F']
         assert fp.saturation == 'per'
-        assert len(fp.group_names) == 116
+        assert len(fp.group_names) == 115
         assert not any('[' in name for name in fp.group_names)
 
     def test_halogen_stacking(self, results):
         """Multiple halogens double (or triple) fingerprint width."""
         fp_f = results.to_fingerprint(halogens='F',count_mode='binary')
         fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'],count_mode='binary')
-        n_groups = len(fp_f.group_names)
+        n_groups = len(fp_f.group_names)-1 # Exclude 'Chloride group
         assert len(fp_fcl.group_names) == n_groups * 2
         assert fp_fcl.fingerprints.shape == (len(results), n_groups * 2)
         # Names should be suffixed
@@ -161,7 +215,7 @@ class TestResultsFingerprint:
         repr_str = repr(fingerprint)
         assert 'ResultsFingerprint' in repr_str
         assert 'n_molecules' in repr_str
-        assert 'n_groups' in repr_str
+        assert 'n_cols' in repr_str
         assert 'halogens' in repr_str
         assert 'saturation' in repr_str
     
@@ -169,7 +223,7 @@ class TestResultsFingerprint:
         """Test summary method."""
         summary = fingerprint.summary()
         assert 'Molecules:' in summary
-        assert 'Groups:' in summary
+        assert 'Columns:' in summary
         assert 'Sparsity:' in summary
         assert 'Halogens:' in summary
         assert 'Saturation:' in summary
@@ -512,7 +566,7 @@ class TestDataValidation:
         
         # Check for key information
         assert 'Molecules:' in summary
-        assert 'Groups:' in summary
+        assert 'Columns:' in summary
         assert 'Sparsity:' in summary
         assert 'Most common groups:' in summary
         
@@ -560,7 +614,7 @@ class TestDocumentation:
         
         assert 'ResultsFingerprint' in repr_str
         assert 'n_molecules=' in repr_str
-        assert 'n_groups=' in repr_str
+        assert 'n_cols=' in repr_str
         assert 'group_selection=' in repr_str
         assert 'count_mode=' in repr_str
     

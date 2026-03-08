@@ -75,9 +75,10 @@ class HalogenGroup():
         self.smarts = [] if self.smarts_str else None
         self.componentSmarts = kwargs.get('componentSmarts',None)
         self.componentSaturation = kwargs.get('componentSaturation',None)
-        self.componentHalogens = kwargs.get('componentHalogens', None)
+        self.componentHalogens = kwargs.get('componentHalogens', kwargs.get('componentHalogen', None))
         self.componentForm = kwargs.get("componentForm", None)
         self.set_component_smarts(kwargs.get('componentSmartss', {}))
+        self.excludeHalogens = kwargs.get('excludeHalogens', None)
         self.max_dist_from_comp = kwargs.get('max_dist_from_comp', 0)
         # Compile linker_smarts pattern if provided
         linker_smarts_str = kwargs.get('linker_smarts', None)
@@ -503,7 +504,9 @@ class HalogenGroup():
                     continue
                 componentSmartss.append(path_type)
         elif isinstance(self.componentSmarts, (list, tuple, set)):
-            componentSmartss = list(self.componentSmarts)
+            # Only keep paths the solver knows about (respects halogen filtering)
+            available = set(component_solver.componentSmartss.keys())
+            componentSmartss = [cs for cs in self.componentSmarts if cs in available]
         else:
             componentSmartss = [self.componentSmarts]
 
@@ -511,8 +514,6 @@ class HalogenGroup():
         components = []
         for comp_type in componentSmartss:
             comps = component_solver.get(comp_type, max_dist=self.max_dist_from_comp, default=[])
-            if not comps and comp_type != "Polyfluoroalkyl":
-                comps = component_solver.get("Polyfluoroalkyl", max_dist=self.max_dist_from_comp, default=[])
             components.extend(comps)
 
         # Filter components connected to the smarts and get augmented versions
@@ -581,10 +582,14 @@ class HalogenGroup():
                 match_count, component_sizes, matched1_len, matched_components = self.find_alkyl_components(mol, component_solver, **kwargs)
             elif self.componentSmarts is not None:
                 # treat cases with only componentSmarts defined (no SMARTS patterns), find all components of that path type
+                available = set(component_solver.componentSmartss.keys())
                 if isinstance(self.componentSmarts, (list, tuple, set)):
-                    component_types = list(self.componentSmarts)
-                else:
+                    # Only keep paths available in the solver (respects halogen filter)
+                    component_types = [cs for cs in self.componentSmarts if cs in available]
+                elif self.componentSmarts in available:
                     component_types = [self.componentSmarts]
+                else:
+                    component_types = []
                 # Collect unique components across all types; deduplicate by atom-set so
                 # the same carbon substructure is only reported once even when multiple
                 # per-halogen SMARTS types are listed (e.g. perhalogenated alkyl groups).

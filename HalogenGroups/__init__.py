@@ -78,6 +78,9 @@ class ResultsModel(_ResultsModel):
         selected_group_ids: Optional[List[int]] = None,
         halogens: Union[str, List[str]] = _ALL_HALOGENS,
         saturation: Optional[str] = 'per',
+        graph_metrics: Optional[List[str]] = None,
+        molecule_metrics: Optional[List[str]] = None,
+        **kwargs,
     ) -> 'ResultsFingerprint':
         """Convert ResultsModel to ResultsFingerprint for dimensionality reduction.
 
@@ -93,8 +96,9 @@ class ResultsModel(_ResultsModel):
         count_mode : str, default 'binary'
             How to encode group matches:
             - 'binary': 1 if present, 0 if absent
-            - 'count': Number of matches
-            - 'max_component': Maximum component size
+            - 'count': Number of matched components
+            - 'max_component': Maximum component size (C-atom count)
+            - 'total_component': Sum of all component sizes
         selected_group_ids : list of int, optional
             Explicit list of group IDs to include (overrides group_selection)
         halogens : str or list of str, default ['F', 'Cl', 'Br', 'I']
@@ -108,6 +112,13 @@ class ResultsModel(_ResultsModel):
             - ``'per'``: perhalogenated only
             - ``'poly'``: polyhalogenated only
             - ``None``: no filter
+        graph_metrics : list of str, optional
+            Per-group component graph metrics appended as extra column blocks
+            (n_groups columns per metric, mean-aggregated).
+            E.g. ``['branching', 'mean_eccentricity']`` yields 3 × n_groups cols.
+        molecule_metrics : list of str, optional
+            Molecule-wide scalar metrics appended after all group columns.
+            E.g. ``['n_components', 'mean_branching']``.
         """
         return super().to_fingerprint(
             group_selection=group_selection,
@@ -115,6 +126,9 @@ class ResultsModel(_ResultsModel):
             selected_group_ids=selected_group_ids,
             halogens=halogens,
             saturation=saturation,
+            graph_metrics=graph_metrics,
+            molecule_metrics=molecule_metrics,
+            **kwargs,
         )
 
 

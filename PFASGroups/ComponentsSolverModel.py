@@ -171,7 +171,8 @@ class ComponentsSolver:
         if len(matched_components_list) == 0 or self.total_carbons == 0:
             return 0.0
 
-        # Union all carbon atoms from components and SMARTS matches
+        # Union all carbon atoms from components (augmented components already include
+        # SMARTS-match and linker atoms, so just iterate over 'component' atom sets).
         union_carbon_atoms = set()
         for comp_dict in matched_components_list:
             component = set(comp_dict.get('component', []))
@@ -182,26 +183,15 @@ class ComponentsSolver:
                 if self.mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
                     union_carbon_atoms.add(atom_idx)
 
-            # Add carbon atoms from SMARTS matches
-            if smarts_matches is not None:
-                for atom_idx in smarts_matches:
-                    if self.mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C':
-                        union_carbon_atoms.add(atom_idx)
+            # smarts_matches are intentionally excluded: the augmented component already
+            # contains those atoms via get_augmented_component. Adding them separately
+            # would double-count for OECD groups and overcount for telomers.
 
-        # Add extra carbons from functional groups
-        # This accounts for carbons in functional groups that are not matched by SMARTS
-        # For example, in -COOH, if SMARTS matches the adjacent carbon, we need to add
-        # the carbonyl carbon from smarts_extra_atoms
-        extra_carbons_count = 0
-        for comp_dict in matched_components_list:
-            # Get smarts_extra_atoms from pfas_group if available
-            if 'smarts_extra_atoms' in comp_dict:
-                extra_carbons_count += comp_dict['smarts_extra_atoms']
-
-        # Total = union of matched carbons + extra functional group carbons
-        # Cap at total_carbons to avoid exceeding 1.0
-        total_carbon_count = min(len(union_carbon_atoms) + extra_carbons_count, self.total_carbons)
-        total_fraction = total_carbon_count / self.total_carbons
+        # Total coverage = union of C atoms from all augmented components.
+        # smarts_extra_atoms is intentionally not added here: the augmented components
+        # already incorporate SMARTS-match and linker atoms, so no additive correction
+        # is needed and it would push telomers above 1.0.
+        total_fraction = len(union_carbon_atoms) / self.total_carbons
         return total_fraction
 
     def _precompute_component_metrics(self):
@@ -647,26 +637,17 @@ class ComponentsSolver:
         component_f_count = _comp_hal_vals['component_f_count']
         component_cf2_count = _comp_hal_vals['component_cf2_count']
 
-        # Count carbon atoms in SMARTS matches that are NOT already in the component
-        smarts_carbons_not_in_component = 0
-        if smarts_matches is not None:
-            for atom_idx in smarts_matches:
-                if self.mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C' and atom_idx not in component:
-                    smarts_carbons_not_in_component += 1
-
-        # smarts_extra_atoms represents additional carbons in the functional group beyond the matched carbon
-        # For each SMARTS pattern, extra_atoms indicates carbons beyond the primary matched atom
-        # These are summed across all SMARTS matches to get the total extra carbons
-        # So we always add smarts_extra_atoms regardless of whether matched carbon is in component
-
-        total_carbons_in_component = component_carbons + smarts_carbons_not_in_component + smarts_extra_atoms
-
-        component_fraction = total_carbons_in_component / self.total_carbons if self.total_carbons > 0 else 0.0
+        # component_fraction: ratio of carbon atoms in this component to all carbon atoms in the
+        # molecule, counting only C atoms actually present in the (augmented) component atom set.
+        # The augmented component already includes linker atoms and SMARTS-match atoms added by
+        # get_augmented_component, so no further additive correction is needed.
+        # Excluded: O, F, and other heteroatoms that may appear in telomer linker paths.
+        component_fraction = component_carbons / self.total_carbons if self.total_carbons > 0 else 0.0
 
         result = {
             'component': sorted(list(component)),
             'size': len(component),
-            'component_fraction': component_fraction,  # Fraction of molecule covered by component
+            'component_fraction': component_fraction,  # C atoms in augmented component / total C atoms in molecule (always ≤ 1.0)
             'smarts_matches': sorted(list(smarts_matches)) if smarts_matches is not None else None,  # Store for union calculation
             'smarts_extra_atoms': smarts_extra_atoms,  # Extra carbons from functional group
             'SMARTS': smarts_type,

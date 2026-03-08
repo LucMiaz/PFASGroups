@@ -1,17 +1,119 @@
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from .parser import load_HalogenGroups, parse_groups_in_mol
-from typing import Union, List, Optional
+from typing import Union, List, Optional, Dict, Any
 import numpy as np
+
+
+# ---------------------------------------------------------------------------
+# Supported per-group graph-metric keys (present in matched_components dicts)
+# ---------------------------------------------------------------------------
+_COMPONENT_GRAPH_METRICS = {
+    'branching', 'mean_eccentricity', 'median_eccentricity', 'diameter',
+    'radius', 'effective_graph_resistance', 'component_fraction',
+    'min_dist_to_center', 'max_dist_to_periphery',
+    'min_dist_to_barycenter', 'min_resistance_dist_to_barycenter',
+    'min_resistance_dist_to_center', 'max_resistance_dist_to_periphery',
+    'size',
+}
+
+# Aggregation function used to collapse multiple components → one scalar per group
+_GRAPH_METRIC_AGG: Dict[str, str] = {}   # empty = default 'mean' for all
+
+# Supported molecule-wide metric names and how they are computed
+# (from the pool of *all* matched_components across all groups for a molecule)
+_MOL_METRIC_KEYS = {
+    'n_components', 'total_size', 'mean_size', 'max_size',
+    'mean_branching', 'max_branching',
+    'mean_eccentricity', 'max_diameter',
+    'mean_component_fraction', 'max_component_fraction',
+}
+
+# ---------------------------------------------------------------------------
+# Benchmark-validated fingerprint presets (PFASGroups Tanimoto benchmark 2026)
+# Sorted by mean inter-group Tanimoto (lower = more discriminating).
+# ---------------------------------------------------------------------------
+FINGERPRINT_PRESETS: Dict[str, Any] = {
+    # ── Top-5 PFASGroups configs from Phase 1 (all-group pairwise benchmark) ─
+    'best': {
+        'count_mode': 'binary',
+        'graph_metrics': ['effective_graph_resistance'],
+        'molecule_metrics': None,
+        'description': (
+            'Rank 1 — binary + effective_graph_resistance.\n'
+            'Mean inter-group Tanimoto = 0.184 (best discrimination, '
+            'outperforms TxP-PFAS 129-bit fingerprint).'
+        ),
+    },
+    'best_2': {
+        'count_mode': 'binary',
+        'graph_metrics': ['branching', 'effective_graph_resistance'],
+        'molecule_metrics': None,
+        'description': (
+            'Rank 2 — binary + branching + effective_graph_resistance.\n'
+            'Mean inter-group Tanimoto = 0.189.'
+        ),
+    },
+    'best_3': {
+        'count_mode': 'binary',
+        'graph_metrics': ['branching', 'mean_eccentricity', 'effective_graph_resistance'],
+        'molecule_metrics': None,
+        'description': (
+            'Rank 3 — binary + branching + mean_eccentricity + effective_graph_resistance.\n'
+            'Mean inter-group Tanimoto = 0.196.'
+        ),
+    },
+    'best_4': {
+        'count_mode': 'total_component',
+        'graph_metrics': ['branching', 'mean_eccentricity', 'effective_graph_resistance'],
+        'molecule_metrics': None,
+        'description': (
+            'Rank 4 — total_component + branching + mean_eccentricity + effective_graph_resistance.\n'
+            'Mean inter-group Tanimoto = 0.206.'
+        ),
+    },
+    'best_5': {
+        'count_mode': 'binary',
+        'graph_metrics': ['branching', 'mean_eccentricity', 'diameter', 'radius',
+                          'effective_graph_resistance'],
+        'molecule_metrics': None,
+        'description': (
+            'Rank 5 — binary + 5 graph metrics.\n'
+            'Mean inter-group Tanimoto = 0.207.'
+        ),
+    },
+    # ── Convenience presets ────────────────────────────────────────────────
+    'binary': {
+        'count_mode': 'binary',
+        'graph_metrics': [],
+        'molecule_metrics': None,
+        'description': 'Plain binary fingerprint — 1 if group present, 0 absent. No graph metrics.',
+    },
+    'count': {
+        'count_mode': 'count',
+        'graph_metrics': [],
+        'molecule_metrics': None,
+        'description': 'Count fingerprint — number of matched components per group.',
+    },
+    'max_component': {
+        'count_mode': 'max_component',
+        'graph_metrics': [],
+        'molecule_metrics': None,
+        'description': 'Max-component fingerprint — maximum component size (C-atom count) per group.',
+    },
+}
 
 
 @load_HalogenGroups()
 def generate_fingerprint(smiles: Union[str, List[str]],
                              selected_groups: Union[List[int], range, None] = None,
                              representation: str = 'vector',
-                             count_mode: str = 'max_component',
+                             count_mode: str = 'binary',
                              halogens: Union[str, List[str]] = 'F',
                              saturation: Optional[str] = 'per',
+                             graph_metrics: Optional[List[str]] = None,
+                             molecule_metrics: Optional[List[str]] = None,
+                             preset: Optional[str] = None,
                              **kwargs):
     """
     Generate PFAS group fingerprints from SMILES strings.
@@ -33,8 +135,11 @@ def generate_fingerprint(smiles: Union[str, List[str]],
     count_mode : str, default 'binary'
         How to count matches:
         - 'binary': 1 if group present, 0 if absent
-        - 'count': Number of matches found
-        - 'max_component': Maximum component size for groups with components
+        - 'count': Number of matched components found
+        - 'max_component': Maximum component size (C-atom count) among all
+          components matching the group
+        - 'total_component': Sum of all component sizes matching the group
+        Ignored when ``preset`` is given.
     halogens : str or list of str, default 'F'
         Which halogen(s) to use for component SMARTS matching.
         - Single halogen (e.g. 'F'): standard fingerprint of length n_groups
@@ -49,6 +154,34 @@ def generate_fingerprint(smiles: Union[str, List[str]],
         - None: no saturation filter (use all)
         Only applies to groups that use component SMARTS (e.g. OECD groups).
         Groups without component SMARTS (generic/telomer) are unaffected.
+    graph_metrics : list of str, optional
+        Per-group component-level graph metrics to append as additional columns.
+        For each metric, *n_groups* extra columns are added (mean aggregated over
+        all matched components for that group), yielding a vector of length
+        n_groups * (1 + len(graph_metrics)).  Column names are suffixed with
+        the metric name, e.g. ``"Perfluoroalkyl [branching]"``.
+        Supported: 'branching', 'mean_eccentricity', 'diameter', 'radius',
+        'component_fraction', 'min_dist_to_center', 'max_dist_to_periphery',
+        'min_dist_to_barycenter', 'effective_graph_resistance', etc.
+    molecule_metrics : list of str, optional
+        Molecule-wide scalar metrics appended as extra columns *after* the
+        per-group columns.  These are computed from the pool of ALL matched
+        components across all PFAS groups in the molecule.
+        Supported values: 'n_components', 'total_size', 'mean_size',
+        'max_size', 'mean_branching', 'max_branching', 'mean_eccentricity',
+        'max_diameter', 'mean_component_fraction', 'max_component_fraction'.
+    preset : str, optional
+        Named benchmark-validated configuration.  When given, overrides
+        ``count_mode``, ``graph_metrics``, and ``molecule_metrics`` with the
+        preset values.  Available presets (see ``FINGERPRINT_PRESETS``):
+        - ``'best'``: binary + effective_graph_resistance (rank 1, mean T=0.184)
+        - ``'best_2'``: binary + branching + EGR (rank 2, mean T=0.189)
+        - ``'best_3'``: binary + branching + mean_eccentricity + EGR (rank 3)
+        - ``'best_4'``: total_component + branching + mean_eccentricity + EGR (rank 4)
+        - ``'best_5'``: binary + 5 graph metrics (rank 5)
+        - ``'binary'``: plain binary, no graph metrics
+        - ``'count'``: component count per group
+        - ``'max_component'``: max component size per group
     pfas_groups : list, optional
         Custom list of PFAS groups. If None, uses default groups.
 
@@ -60,13 +193,17 @@ def generate_fingerprint(smiles: Union[str, List[str]],
         For list input, returns list of fingerprints.
         When multiple halogens are given and representation='vector', the
         vectors are stacked horizontally (shape: n_molecules x (n_groups*n_hal)).
+        When graph_metrics are requested the vector is extended to
+        n_groups * (1 + len(graph_metrics)) [+ len(molecule_metrics)].
     group_info : dict
-        Information about the groups used in fingerprinting:
-        - 'group_names': List of group names in fingerprint order
-        - 'group_ids': List of group IDs in fingerprint order
+        Information aboutthe groups used in fingerprinting:
+        - 'group_names': List of column names in fingerprint order
+        - 'group_ids': List of group IDs (None for extra metric columns)
         - 'selected_indices': Indices of selected groups
         - 'halogens': Halogen(s) used
         - 'saturation': Saturation filter used
+        - 'graph_metrics': Per-group metric names (may be empty list)
+        - 'molecule_metrics': Molecule-level metric names (may be empty list)
 
     Examples:
     ---------
@@ -76,12 +213,54 @@ def generate_fingerprint(smiles: Union[str, List[str]],
     >>> # Stacked fingerprint for F and Cl
     >>> fp, info = generate_fingerprint('CC(F)(F)C(=O)O', halogens=['F', 'Cl'])
 
+    >>> # With per-group branching appended (vector length = 2 * n_groups)
+    >>> fp, info = generate_fingerprint('CC(F)(F)C(=O)O',
+    ...                                  graph_metrics=['branching'])
+
+    >>> # With molecule-wide metrics appended
+    >>> fp, info = generate_fingerprint(['CCF', 'CCFF'],
+    ...                                  molecule_metrics=['n_components', 'mean_branching'])
+
+    >>> # Best benchmark-validated fingerprint (binary + effective_graph_resistance)
+    >>> fp, info = generate_fingerprint('CC(F)(F)C(=O)O', preset='best')
+
     >>> # Count-based dictionary representation
     >>> fp, info = generate_fingerprint(['CCF', 'CCFF'],
     ...                                  representation='dict',
     ...                                  count_mode='count')
     """
+    # Apply preset if requested (overrides count_mode / graph_metrics / molecule_metrics)
+    if preset is not None:
+        if preset not in FINGERPRINT_PRESETS:
+            raise ValueError(
+                f"Unknown preset: {preset!r}. "
+                f"Available: {sorted(FINGERPRINT_PRESETS)}"
+            )
+        _p = FINGERPRINT_PRESETS[preset]
+        count_mode = _p.get('count_mode', count_mode)
+        if _p.get('graph_metrics') is not None:
+            graph_metrics = _p['graph_metrics']
+        if _p.get('molecule_metrics') is not None:
+            molecule_metrics = _p['molecule_metrics']
+
     pfas_groups = kwargs.get('pfas_groups')
+    graph_metrics = list(graph_metrics) if graph_metrics else []
+    molecule_metrics = list(molecule_metrics) if molecule_metrics else []
+
+    # Validate graph_metrics
+    unsupported_gm = [m for m in graph_metrics if m not in _COMPONENT_GRAPH_METRICS]
+    if unsupported_gm:
+        raise ValueError(
+            f"Unsupported graph_metrics: {unsupported_gm}. "
+            f"Supported: {sorted(_COMPONENT_GRAPH_METRICS)}"
+        )
+    unsupported_mm = [m for m in molecule_metrics if m not in _MOL_METRIC_KEYS]
+    if unsupported_mm:
+        raise ValueError(
+            f"Unsupported molecule_metrics: {unsupported_mm}. "
+            f"Supported: {sorted(_MOL_METRIC_KEYS)}"
+        )
+
     # Normalise halogens to a list
     if isinstance(halogens, str):
         halogens_list = [halogens]
@@ -98,17 +277,14 @@ def generate_fingerprint(smiles: Union[str, List[str]],
 
     # Determine which groups to use
     if selected_groups is None:
-        # Use all groups
         selected_indices = list(range(len(pfas_groups)))
         selected_pfas_groups = pfas_groups
     else:
-        # Convert range to list if needed
         if isinstance(selected_groups, range):
             selected_indices = list(selected_groups)
         else:
             selected_indices = selected_groups
 
-        # Validate indices
         max_index = len(pfas_groups) - 1
         invalid_indices = [i for i in selected_indices if i < 0 or i > max_index]
         if invalid_indices:
@@ -117,23 +293,37 @@ def generate_fingerprint(smiles: Union[str, List[str]],
 
         selected_pfas_groups = [pfas_groups[i] for i in selected_indices]
 
-    # Build group names/ids, suffixed with halogen tag when multiple halogens
+    # Build base group names/ids (with halogen suffix when multi-halogen)
     multi_halogen = len(halogens_list) > 1
     if multi_halogen:
-        group_names = [f"{g.name} [{h}]" for h in halogens_list for g in selected_pfas_groups]
-        group_ids = [g.id for h in halogens_list for g in selected_pfas_groups]
+        base_group_names = [f"{g.name} [{h}]" for h in halogens_list for g in selected_pfas_groups]
+        base_group_ids: List[Optional[int]] = [g.id for h in halogens_list for g in selected_pfas_groups]
     else:
-        group_names = [g.name for g in selected_pfas_groups]
-        group_ids = [g.id for g in selected_pfas_groups]
+        base_group_names = [g.name for g in selected_pfas_groups]
+        base_group_ids = [g.id for g in selected_pfas_groups]
 
-    # Create group info
-    group_info = {
-        'group_names': group_names,
-        'group_ids': group_ids,
+    # Extend names/ids with per-group graph metric columns
+    extended_group_names = list(base_group_names)
+    extended_group_ids: List[Optional[int]] = list(base_group_ids)
+    for gm in graph_metrics:
+        for name, gid in zip(base_group_names, base_group_ids):
+            extended_group_names.append(f"{name} [{gm}]")
+            extended_group_ids.append(gid)
+
+    # Append molecule-metric column names (one scalar each)
+    mol_metric_names = [f"mol:{m}" for m in molecule_metrics]
+    all_column_names = extended_group_names + mol_metric_names
+    all_column_ids = extended_group_ids + [None] * len(molecule_metrics)
+
+    group_info: Dict[str, Any] = {
+        'group_names': all_column_names,
+        'group_ids': all_column_ids,
         'selected_indices': selected_indices,
         'total_groups': len(pfas_groups),
         'halogens': halogens_list,
         'saturation': saturation,
+        'graph_metrics': graph_metrics,
+        'molecule_metrics': molecule_metrics,
     }
 
     # Base kwargs without injected keys
@@ -159,6 +349,59 @@ def generate_fingerprint(smiles: Union[str, List[str]],
             }
         return match_dict
 
+    def _agg_comp_metric(comps, metric):
+        """Return mean of *metric* over a list of component dicts (0.0 if empty)."""
+        values = [comp.get(metric) for comp in comps if comp.get(metric) is not None]
+        return float(np.mean(values)) if values else 0.0
+
+    def _build_graph_metric_vec(md, groups, metric):
+        """Per-group mean of *metric* across matched components (float vector)."""
+        vec = np.zeros(len(groups), dtype=float)
+        for i, group in enumerate(groups):
+            if group.id in md:
+                comps = md[group.id].get('matched_components', [])
+                vec[i] = _agg_comp_metric(comps, metric)
+        return vec
+
+    def _build_mol_metrics(all_match_dicts):
+        """Compute molecule-wide scalar metrics from the union of all match dicts."""
+        # Gather ALL matched_components across all halogens and all groups
+        all_comps = []
+        for md in all_match_dicts.values():
+            for mi in md.values():
+                all_comps.extend(mi.get('matched_components', []))
+        result = []
+        for m in molecule_metrics:
+            if m == 'n_components':
+                result.append(float(len(all_comps)))
+            elif m == 'total_size':
+                result.append(float(sum(c.get('size', 0) or 0 for c in all_comps)))
+            elif m == 'mean_size':
+                sizes = [c.get('size', 0) or 0 for c in all_comps]
+                result.append(float(np.mean(sizes)) if sizes else 0.0)
+            elif m == 'max_size':
+                sizes = [c.get('size', 0) or 0 for c in all_comps]
+                result.append(float(max(sizes)) if sizes else 0.0)
+            elif m == 'mean_branching':
+                result.append(_agg_comp_metric(all_comps, 'branching'))
+            elif m == 'max_branching':
+                vals = [c.get('branching') for c in all_comps if c.get('branching') is not None]
+                result.append(float(max(vals)) if vals else 0.0)
+            elif m == 'mean_eccentricity':
+                result.append(_agg_comp_metric(all_comps, 'mean_eccentricity'))
+            elif m == 'max_diameter':
+                vals = [c.get('diameter') for c in all_comps if c.get('diameter') is not None]
+                result.append(float(max(vals)) if vals else 0.0)
+            elif m == 'mean_component_fraction':
+                result.append(_agg_comp_metric(all_comps, 'component_fraction'))
+            elif m == 'max_component_fraction':
+                vals = [c.get('component_fraction') for c in all_comps
+                        if c.get('component_fraction') is not None]
+                result.append(float(max(vals)) if vals else 0.0)
+            else:
+                result.append(0.0)
+        return np.array(result, dtype=float)
+
     fingerprints = []
 
     for smiles_str in smiles_list:
@@ -176,7 +419,7 @@ def generate_fingerprint(smiles: Union[str, List[str]],
 
             def _build_vector(md, groups):
                 """Build a count/binary vector for one match_dict + group list."""
-                vec = np.zeros(len(groups), dtype=int)
+                vec = np.zeros(len(groups), dtype=float if graph_metrics else int)
                 for i, group in enumerate(groups):
                     if group.id in md:
                         match_info = md[group.id]
@@ -186,7 +429,14 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                             vec[i] = match_info['match_count']
                         elif count_mode == 'max_component':
                             if match_info['matched_components']:
-                                vec[i] = max([comp['size'] for comp in match_info['matched_components']])
+                                vec[i] = max(comp.get('size', 0) or 0
+                                             for comp in match_info['matched_components'])
+                            else:
+                                vec[i] = match_info['match_count'] if match_info['match_count'] > 0 else 0
+                        elif count_mode == 'total_component':
+                            if match_info['matched_components']:
+                                vec[i] = sum(comp.get('size', 0) or 0
+                                             for comp in match_info['matched_components'])
                             else:
                                 vec[i] = match_info['match_count'] if match_info['match_count'] > 0 else 0
                         else:
@@ -195,20 +445,39 @@ def generate_fingerprint(smiles: Union[str, List[str]],
 
             if representation == 'vector' or representation == 'int':
                 if multi_halogen:
-                    # Stack one vector per halogen
                     parts = [_build_vector(match_dicts[h], selected_pfas_groups)
                              for h in halogens_list]
-                    fingerprint = np.concatenate(parts)
+                    base_vec = np.concatenate(parts)
                 else:
-                    fingerprint = _build_vector(match_dict, selected_pfas_groups)
+                    base_vec = _build_vector(match_dict, selected_pfas_groups)
+
+                # Append per-group graph metric columns
+                extra_parts = []
+                for gm in graph_metrics:
+                    if multi_halogen:
+                        gm_parts = [_build_graph_metric_vec(match_dicts[h], selected_pfas_groups, gm)
+                                    for h in halogens_list]
+                        extra_parts.append(np.concatenate(gm_parts))
+                    else:
+                        extra_parts.append(_build_graph_metric_vec(match_dict, selected_pfas_groups, gm))
+
+                # Append molecule-wide metric scalars
+                mol_vec = _build_mol_metrics(match_dicts) if molecule_metrics else np.zeros(0)
+
+                if extra_parts or len(mol_vec):
+                    fingerprint = np.concatenate(
+                        [base_vec.astype(float)] + [p.astype(float) for p in extra_parts]
+                        + ([mol_vec] if len(mol_vec) else [])
+                    )
+                else:
+                    fingerprint = base_vec
 
                 if representation == 'int':
-                    fingerprints.append(int(''.join([str(x) for x in fingerprint]), 2))
+                    fingerprints.append(int(''.join([str(x) for x in fingerprint.astype(int)]), 2))
                 else:
                     fingerprints.append(fingerprint)
 
             elif representation == 'dict':
-                # Create dictionary with all groups (including zeros)
                 fingerprint = {}
                 for group in selected_pfas_groups:
                     if group.id in match_dict:
@@ -219,36 +488,75 @@ def generate_fingerprint(smiles: Union[str, List[str]],
                             fingerprint[group.name] = match_info['match_count']
                         elif count_mode == 'max_component':
                             if match_info['matched_components']:
-                                fingerprint[group.name] = max([comp['size'] for comp in match_info['matched_components']])
+                                fingerprint[group.name] = max(
+                                    comp.get('size', 0) or 0
+                                    for comp in match_info['matched_components'])
+                            else:
+                                fingerprint[group.name] = match_info['match_count'] if match_info['match_count'] > 0 else 0
+                        elif count_mode == 'total_component':
+                            if match_info['matched_components']:
+                                fingerprint[group.name] = sum(
+                                    comp.get('size', 0) or 0
+                                    for comp in match_info['matched_components'])
                             else:
                                 fingerprint[group.name] = match_info['match_count'] if match_info['match_count'] > 0 else 0
                     else:
                         fingerprint[group.name] = 0
+                # Append per-group graph metrics to dict
+                for gm in graph_metrics:
+                    for group in selected_pfas_groups:
+                        col = f"{group.name} [{gm}]"
+                        if group.id in match_dict:
+                            r = _agg_comp_metric(match_dict[group.id].get('matched_components', []), gm)
+                        else:
+                            r = 0.0
+                        fingerprint[col] = r
+                # Append molecule metrics to dict
+                if molecule_metrics:
+                    mv = _build_mol_metrics(match_dicts)
+                    for name, val in zip(mol_metric_names, mv):
+                        fingerprint[name] = val
                 fingerprints.append(fingerprint)
 
             elif representation == 'sparse':
-                # Create dictionary with only non-zero entries
                 fingerprint = {}
                 for group in selected_pfas_groups:
                     if group.id in match_dict:
                         match_info = match_dict[group.id]
-                        value = 0
+                        value: float = 0.0
                         if count_mode == 'binary':
-                            value = 1
+                            value = 1.0
                         elif count_mode == 'count':
-                            value = match_info['match_count']
+                            value = float(match_info['match_count'])
                         elif count_mode == 'max_component':
                             if match_info['matched_components']:
-                                value = max([comp['size'] for comp in match_info['matched_components']])
+                                value = float(max(comp.get('size', 0) or 0
+                                                  for comp in match_info['matched_components']))
                             else:
-                                value = match_info['match_count'] if match_info['match_count'] > 0 else 0
-
+                                value = float(match_info['match_count']) if match_info['match_count'] > 0 else 0.0
+                        elif count_mode == 'total_component':
+                            if match_info['matched_components']:
+                                value = float(sum(comp.get('size', 0) or 0
+                                                  for comp in match_info['matched_components']))
+                            else:
+                                value = float(match_info['match_count']) if match_info['match_count'] > 0 else 0.0
                         if value > 0:
                             fingerprint[group.name] = value
+                # Sparse: only non-zero graph metric entries
+                for gm in graph_metrics:
+                    for group in selected_pfas_groups:
+                        if group.id in match_dict:
+                            r = _agg_comp_metric(match_dict[group.id].get('matched_components', []), gm)
+                            if r != 0.0:
+                                fingerprint[f"{group.name} [{gm}]"] = r
+                if molecule_metrics:
+                    mv = _build_mol_metrics(match_dicts)
+                    for name, val in zip(mol_metric_names, mv):
+                        if val != 0.0:
+                            fingerprint[name] = val
                 fingerprints.append(fingerprint)
 
             elif representation == 'detailed':
-                # Return full match information for selected groups
                 fingerprint = {}
                 for group in selected_pfas_groups:
                     if group.id in match_dict:

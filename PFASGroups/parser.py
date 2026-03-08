@@ -13,6 +13,7 @@ from .PFASDefinitionModel import PFASDefinition
 from .ComponentsSolverModel import ComponentsSolver
 from .core import fragment_until_valence_is_correct, n_from_formula, add_componentSmarts, PFAS_DEFINITIONS_FILE, HALOGEN_GROUPS_FILE, rdkit_disable_log
 import json
+import functools
 
 
 
@@ -30,8 +31,9 @@ def load_HalogenGroups():
     # list groups aggregated by groups with compute=FALSE
     agg_pfg = {ppf:list(map(pfg_names.get,list(filter(ppf.re_search.search,pfg_names.keys())))) for ppf in agg_pfg}
     def inner(func):
+        @functools.wraps(func)
         def wrapper(*args,**kwargs):
-            kwargs['pfas_groups'] = kwargs.get('pfas_groups',pfg)
+            kwargs['pfas_groups'] = kwargs.get('pfas_groups',[p for p in pfg if p.excludeHalogens is None or set(p.excludeHalogens).isdisjoint(kwargs.get('halogens', ['F','Cl','Br','I']))])
             kwargs['agg_pfas_groups'] = kwargs.get('agg_pfas_groups',agg_pfg)
             return func(*args, **kwargs)
         return wrapper
@@ -45,6 +47,7 @@ def load_PFASDefinitions():
         pfg = json.load(f)
     pfg = [PFASDefinition(**x) for x in pfg]
     def inner(func):
+        @functools.wraps(func)
         def wrapper(*args,**kwargs):
             kwargs['pfas_definitions'] = kwargs.get('pfas_definitions',pfg)
             return func(*args, **kwargs)
@@ -57,6 +60,7 @@ def load_componentsSolver(**kwargs):
     Adds componentsSolver to function (creates it per call with the molecule)
     """
     def inner(func):
+        @functools.wraps(func)
         def wrapper(*args,**kwargs):
             mol = args[0]
             # Add hydrogens to molecule before creating ComponentsSolver
@@ -77,7 +81,7 @@ def load_componentsSolver(**kwargs):
                 solver_kwargs['limit_effective_graph_resistance'] = kwargs['limit_effective_graph_resistance']
             if 'compute_component_metrics' in kwargs:
                 solver_kwargs['compute_component_metrics'] = kwargs['compute_component_metrics']
-            with ComponentsSolver(mol, **solver_kwargs) as fluorinated_components_dict:
+            with ComponentsSolver(mol, halogens=kwargs.get('halogens'), **solver_kwargs) as fluorinated_components_dict:
                 kwargs['fluorinated_components_dict'] = kwargs.get('fluorinated_components_dict',fluorinated_components_dict)
                 return func(*args, **kwargs)
         return wrapper
