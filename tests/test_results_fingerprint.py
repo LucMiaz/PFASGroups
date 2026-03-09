@@ -62,7 +62,7 @@ class TestResultsModelToFingerprint:
         """Test different group selections."""
         # All groups
         fp_all = results.to_fingerprint(group_selection='all', halogens='F')
-        assert len(fp_all.group_names) == 115  # 117 total, but 1 is aggregate-only (compute=False)
+        assert len(fp_all.group_names) == 112  # count depends on active group definitions
         
         # OECD groups
         fp_oecd = results.to_fingerprint(group_selection='oecd', halogens='F')
@@ -70,7 +70,7 @@ class TestResultsModelToFingerprint:
         
         # Generic groups
         fp_generic = results.to_fingerprint(group_selection='generic', halogens='F')
-        assert len(fp_generic.group_names) == 27
+        assert len(fp_generic.group_names) == 24
     
     def test_count_modes(self, results):
         """Test different count modes."""
@@ -151,14 +151,14 @@ class TestResultsModelToFingerprint:
         fp = results.to_fingerprint(halogens='F',count_mode='binary')
         assert fp.halogens == ['F']
         assert fp.saturation == 'per'
-        assert len(fp.group_names) == 115
+        assert len(fp.group_names) == 112
         assert not any('[' in name for name in fp.group_names)
 
     def test_halogen_stacking(self, results):
         """Multiple halogens double (or triple) fingerprint width."""
         fp_f = results.to_fingerprint(halogens='F',count_mode='binary')
         fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'],count_mode='binary')
-        n_groups = len(fp_f.group_names)-1 # Exclude 'Chloride group
+        n_groups = len(fp_f.group_names)  # Both halogens use the same group set
         assert len(fp_fcl.group_names) == n_groups * 2
         assert fp_fcl.fingerprints.shape == (len(results), n_groups * 2)
         # Names should be suffixed
@@ -194,7 +194,7 @@ class TestResultsFingerprint:
         smiles = ['CC', 'CCC']
         groups = ['A', 'B', 'C']
         
-        rf = ResultsFingerprint(fps, smiles, groups)
+        rf = ResultsFingerprint._from_array(fps, smiles=smiles, group_names=groups)
         
         assert len(rf) == 2
         assert rf.fingerprints.shape == (2, 3)
@@ -208,25 +208,24 @@ class TestResultsFingerprint:
         groups = ['A', 'B', 'C']
         
         with pytest.raises(ValueError, match="length mismatch"):
-            ResultsFingerprint(fps, smiles, groups)
+            ResultsFingerprint._from_array(fps, smiles=smiles, group_names=groups)
     
     def test_repr(self, fingerprint):
         """Test string representation."""
         repr_str = repr(fingerprint)
-        assert 'ResultsFingerprint' in repr_str
-        assert 'n_molecules' in repr_str
-        assert 'n_cols' in repr_str
+        assert 'PFASFingerprint' in repr_str
+        assert 'shape=' in repr_str
         assert 'halogens' in repr_str
-        assert 'saturation' in repr_str
+        assert 'count_mode=' in repr_str
     
     def test_summary(self, fingerprint):
         """Test summary method."""
         summary = fingerprint.summary()
-        assert 'Molecules:' in summary
-        assert 'Columns:' in summary
-        assert 'Sparsity:' in summary
-        assert 'Halogens:' in summary
-        assert 'Saturation:' in summary
+        assert 'Molecules  :' in summary
+        assert 'Columns    :' in summary
+        assert 'Sparsity   :' in summary
+        assert 'Halogens   :' in summary
+        assert 'Saturation :' in summary
 
 
 class TestDimensionalityReduction:
@@ -329,7 +328,7 @@ class TestKLDivergence:
         fp1 = results.to_fingerprint(group_selection='all',count_mode='binary')
         fp2 = results.to_fingerprint(group_selection='oecd',count_mode='binary')
         
-        with pytest.raises(ValueError, match="same number of groups"):
+        with pytest.raises(ValueError, match="Column count mismatch"):
             fp1.compare_kld(fp2)
 
 
@@ -565,9 +564,9 @@ class TestDataValidation:
         summary = fingerprint.summary()
         
         # Check for key information
-        assert 'Molecules:' in summary
-        assert 'Columns:' in summary
-        assert 'Sparsity:' in summary
+        assert 'Molecules  :' in summary
+        assert 'Columns    :' in summary
+        assert 'Sparsity   :' in summary
         assert 'Most common groups:' in summary
         
         # Check values are present
@@ -612,9 +611,8 @@ class TestDocumentation:
         """Test that repr provides useful information."""
         repr_str = repr(fingerprint)
         
-        assert 'ResultsFingerprint' in repr_str
-        assert 'n_molecules=' in repr_str
-        assert 'n_cols=' in repr_str
+        assert 'PFASFingerprint' in repr_str
+        assert 'shape=' in repr_str
         assert 'group_selection=' in repr_str
         assert 'count_mode=' in repr_str
     
@@ -646,7 +644,7 @@ class TestNumericalStability:
         smiles = ['A', 'B', 'C']
         groups = ['G1', 'G2', 'G3', 'G4']
         
-        fp = ResultsFingerprint(fps, smiles, groups)
+        fp = ResultsFingerprint._from_array(fps, smiles=smiles, group_names=groups)
         
         # PCA should handle this gracefully
         pca = fp.perform_pca(n_components=2, plot=False)

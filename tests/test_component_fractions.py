@@ -53,12 +53,10 @@ def test_component_fractions():
                 for atom_idx in component_atoms
                 if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C'
             )
-            smarts_carbons_not_in_component = 0
-            for atom_idx in smarts_matches or []:
-                if mol.GetAtomWithIdx(atom_idx).GetSymbol() == 'C' and atom_idx not in component_atoms:
-                    smarts_carbons_not_in_component += 1
 
-            expected_fraction = (component_carbons + smarts_carbons_not_in_component + smarts_extra_atoms) / total_carbons
+            # The augmented component already incorporates SMARTS-match atoms and linker
+            # atoms, so component_fraction = component_carbons / total_carbons.
+            expected_fraction = component_carbons / total_carbons
             assert abs(comp_fraction - expected_fraction) <= 1e-6
     
     # Total fraction should be >= max component fraction

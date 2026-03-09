@@ -385,7 +385,13 @@ class PFASFingerprint(np.ndarray):
         Used by :meth:`from_sql` and other deserialisation paths where the
         fingerprint data already exists as a NumPy array.
         """
-        obj = np.asarray(array, dtype=float).view(cls)
+        _arr = np.asarray(array, dtype=float)
+        if _arr.ndim == 2 and _arr.shape[0] != len(smiles):
+            raise ValueError(
+                f"length mismatch: array has {_arr.shape[0]} rows but "
+                f"{len(smiles)} SMILES provided"
+            )
+        obj = _arr.view(cls)
         obj.smiles = list(smiles)
         obj.group_names = list(group_names)
         obj.group_selection = group_selection
@@ -650,6 +656,16 @@ class PFASFingerprint(np.ndarray):
         """Number of fingerprint columns."""
         return self.shape[-1]
 
+    @property
+    def fingerprints(self) -> np.ndarray:
+        """Backward-compatible 2-D view of the underlying NumPy data.
+
+        Always has shape ``(n_molecules, n_columns)`` regardless of whether
+        this instance is 1-D or 2-D, so that code written against the old
+        ``ResultsFingerprint.fingerprints`` attribute continues to work.
+        """
+        return np.atleast_2d(np.asarray(self))
+
     # ------------------------------------------------------------------
     # Display
     # ------------------------------------------------------------------
@@ -670,6 +686,16 @@ class PFASFingerprint(np.ndarray):
         if self.molecule_metrics:
             parts.append(f"molecule_metrics={self.molecule_metrics!r}")
         return f"PFASFingerprint({', '.join(parts)})"
+
+    def _compute_group_distribution(self) -> np.ndarray:
+        """Return per-group presence count (number of molecules that have each group > 0).
+
+        Returns
+        -------
+        np.ndarray of shape (n_columns,)
+        """
+        mat = np.atleast_2d(np.asarray(self))
+        return np.sum(mat > 0, axis=0).astype(float)
 
     def summary(self) -> str:
         """Return a human-readable text summary of fingerprint statistics."""
@@ -1152,3 +1178,73 @@ class PFASFingerprint(np.ndarray):
             group_selection=group_selection,
             count_mode=count_mode,
         )
+
+
+# ---------------------------------------------------------------------------
+# Backward-compatible generate_fingerprint() function
+# ---------------------------------------------------------------------------
+
+def generate_fingerprint(
+    smiles: Union[str, List[str]],
+    selected_groups: Union[List[int], range, None] = None,
+    representation: str = 'vector',
+    count_mode: str = 'binary',
+    halogens: Union[str, List[str]] = 'F',
+    saturation: Optional[str] = 'per',
+    graph_metrics: Optional[List[str]] = None,
+    molecule_metrics: Optional[List[str]] = None,
+    preset: Optional[str] = None,
+    **kwargs,
+) -> Tuple[np.ndarray, Dict[str, Any]]:
+    """Generate PFAS group fingerprints from SMILES strings.
+
+    Backward-compatible wrapper around :class:`PFASFingerprint`.
+    Returns ``(fp_array, group_info)`` where ``group_info`` is a dict
+    containing ``group_names``, ``count_mode``, ``halogens``, and
+    ``saturation``.
+
+    Parameters
+    ----------
+    smiles : str or list of str
+    selected_groups : list of int or None
+        Group IDs to include (``None`` = all groups).
+    representation : str, default ``'vector'``
+        Only ``'vector'`` is supported; other values are accepted but
+        ignored (the result is always a NumPy array).
+    count_mode : str, default ``'binary'``
+    halogens : str or list of str, default ``'F'``
+    saturation : str or None, default ``'per'``
+    graph_metrics : list of str or None
+    molecule_metrics : list of str or None
+    preset : str or None
+    **kwargs
+        Forwarded to :class:`PFASFingerprint`.
+
+    Returns
+    -------
+    fp_array : numpy.ndarray
+        Shape ``(n_columns,)`` for a single SMILES or
+        ``(n_molecules, n_columns)`` for a list.
+    group_info : dict
+        ``{'group_names': [...], 'count_mode': ..., 'halogens': [...],
+        'saturation': ..., 'selected_group_ids': [...] | None}``
+    """
+    fp = PFASFingerprint(
+        smiles,
+        preset=preset,
+        count_mode=count_mode,
+        selected_group_ids=list(selected_groups) if selected_groups is not None else None,
+        halogens=halogens,
+        saturation=saturation,
+        graph_metrics=graph_metrics,
+        molecule_metrics=molecule_metrics,
+        **kwargs,
+    )
+    group_info: Dict[str, Any] = {
+        'group_names': fp.group_names,
+        'count_mode': fp.count_mode,
+        'halogens': fp.halogens,
+        'saturation': fp.saturation,
+        'selected_group_ids': list(selected_groups) if selected_groups is not None else None,
+    }
+    return np.asarray(fp), group_info
