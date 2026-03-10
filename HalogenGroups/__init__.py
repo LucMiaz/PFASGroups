@@ -11,7 +11,7 @@ Examples
 >>> from PFASGroups import parse_smiles             # defaults to F only
 """
 import functools
-from typing import Union, List, Optional, Any, Iterable
+from typing import Union, List, Optional, Any, Iterable, Dict
 
 # ---------------------------------------------------------------------------
 # Re-export everything from PFASGroups that does not need default overriding.
@@ -73,13 +73,16 @@ class ResultsModel(_ResultsModel):
 
     def to_fingerprint(
         self,
+        *,
         group_selection: str = 'all',
         count_mode: str = 'binary',
         selected_group_ids: Optional[List[int]] = None,
-        halogens: Union[str, List[str]] = _ALL_HALOGENS,
+        halogens: Optional[Union[str, List[str]]] = None,
         saturation: Optional[str] = 'per',
         graph_metrics: Optional[List[str]] = None,
         molecule_metrics: Optional[List[str]] = None,
+        pfas_groups: Optional[List[Dict]] = None,
+        preset: Optional[str] = None,
         **kwargs,
     ) -> 'ResultsFingerprint':
         """Convert ResultsModel to ResultsFingerprint for dimensionality reduction.
@@ -120,6 +123,8 @@ class ResultsModel(_ResultsModel):
             Molecule-wide scalar metrics appended after all group columns.
             E.g. ``['n_components', 'mean_branching']``.
         """
+        if halogens is None:
+            halogens = _ALL_HALOGENS
         return super().to_fingerprint(
             group_selection=group_selection,
             count_mode=count_mode,
@@ -128,6 +133,8 @@ class ResultsModel(_ResultsModel):
             saturation=saturation,
             graph_metrics=graph_metrics,
             molecule_metrics=molecule_metrics,
+            pfas_groups=pfas_groups,
+            preset=preset,
             **kwargs,
         )
 
@@ -136,7 +143,7 @@ class ResultsModel(_ResultsModel):
 # Wrapper functions with all-halogens defaults
 # ---------------------------------------------------------------------------
 
-def parse_smiles(smiles, bycomponent=False, output_format='list',
+def parse_smiles(smiles, *, bycomponent=False, output_format='list',
                  limit_effective_graph_resistance=None,
                  compute_component_metrics=True,
                  halogens=None, form=None, saturation=None, **kwargs):
@@ -175,7 +182,7 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     return result
 
 
-def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
+def parse_mols(mols, *, output_format='list', include_PFAS_definitions=True,
                limit_effective_graph_resistance=None,
                compute_component_metrics=True,
                halogens=None, form=None, saturation=None, **kwargs):
@@ -211,9 +218,9 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
     return result
 
 
-def generate_fingerprint(smiles, selected_groups=None, representation='vector',
+def generate_fingerprint(smiles, *, selected_groups=None, representation='vector',
                          count_mode='binary',
-                         halogens: Union[str, List[str]] = _ALL_HALOGENS,
+                         halogens: Optional[Union[str, List[str]]] = None,
                          saturation: Optional[str] = 'per',
                          **kwargs):
     """Generate halogen-group fingerprints, defaulting to all halogens.
@@ -233,6 +240,8 @@ def generate_fingerprint(smiles, selected_groups=None, representation='vector',
     --------
     PFASGroups.generate_fingerprint : fluorine-only default version.
     """
+    if halogens is None:
+        halogens = _ALL_HALOGENS
     return _generate_fingerprint_base(
         smiles,
         selected_groups=selected_groups,
