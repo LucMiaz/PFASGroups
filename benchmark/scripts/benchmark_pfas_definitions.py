@@ -30,9 +30,9 @@ from rdkit.Chem import Descriptors, rdMolDescriptors
 # Add parent directory to path
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
-root_dir = os.path.dirname(parent_dir)  # Go up to the HalogenGroups root
+root_dir = os.path.dirname(parent_dir)  # Go up to the PFASGroups root
 sys.path.append(parent_dir)
-sys.path.append(root_dir)  # Add root to path for HalogenGroups imports
+sys.path.append(root_dir)  # Add root to path for PFASGroups imports
 
 
 class PFASDefinitionBenchmark:
@@ -54,9 +54,9 @@ class PFASDefinitionBenchmark:
 
         # Load PFAS definitions (lazy import to allow export without RDKit/Numpy)
         if load_definitions:
-            from HalogenGroups.PFASDefinitionModel import PFASDefinition
-            # Use relative path from benchmark/scripts to HalogenGroups/data
-            definitions_path = os.path.join(script_dir, '..', '..', 'HalogenGroups', 'data', 'PFAS_definitions_smarts.json')
+            from PFASGroups import PFASDefinition
+            # Use relative path from benchmark/scripts to PFASGroups/data
+            definitions_path = os.path.join(script_dir, '..', '..', 'PFASGroups', 'data', 'PFAS_definitions_smarts.json')
             with open(definitions_path, 'r') as f:
                 definitions_data = json.load(f)
             
@@ -946,7 +946,7 @@ class PFASDefinitionBenchmark:
         print(f"PERFORMANCE BENCHMARK ({num_molecules} molecules)")
         print("="*80)
         
-        from HalogenGroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol
+        from PFASGroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol
         
         results = {
             'category': 'performance',
