@@ -51,6 +51,9 @@ _COMPONENT_GRAPH_METRICS = {
     'size',
 }
 
+# Supported count-mode names
+_COUNT_MODES = {'binary', 'count', 'max_component', 'total_component'}
+
 # Supported molecule-wide metric names
 _MOL_METRIC_KEYS = {
     'n_components', 'total_size', 'mean_size', 'max_size',
@@ -66,8 +69,7 @@ _MOL_METRIC_KEYS = {
 
 FINGERPRINT_PRESETS: Dict[str, Any] = {
     'best': {
-        'count_mode': 'binary',
-        'graph_metrics': ['effective_graph_resistance'],
+        'component_metrics': ['binary', 'effective_graph_resistance'],
         'molecule_metrics': None,
         'description': (
             'Rank 1 — binary + effective_graph_resistance.\n'
@@ -76,8 +78,7 @@ FINGERPRINT_PRESETS: Dict[str, Any] = {
         ),
     },
     'best_2': {
-        'count_mode': 'binary',
-        'graph_metrics': ['branching', 'effective_graph_resistance'],
+        'component_metrics': ['binary', 'branching', 'effective_graph_resistance'],
         'molecule_metrics': None,
         'description': (
             'Rank 2 — binary + branching + effective_graph_resistance.\n'
@@ -85,8 +86,7 @@ FINGERPRINT_PRESETS: Dict[str, Any] = {
         ),
     },
     'best_3': {
-        'count_mode': 'binary',
-        'graph_metrics': ['branching', 'mean_eccentricity', 'effective_graph_resistance'],
+        'component_metrics': ['binary', 'branching', 'mean_eccentricity', 'effective_graph_resistance'],
         'molecule_metrics': None,
         'description': (
             'Rank 3 — binary + branching + mean_eccentricity + effective_graph_resistance.\n'
@@ -94,8 +94,7 @@ FINGERPRINT_PRESETS: Dict[str, Any] = {
         ),
     },
     'best_4': {
-        'count_mode': 'total_component',
-        'graph_metrics': ['branching', 'mean_eccentricity', 'effective_graph_resistance'],
+        'component_metrics': ['total_component', 'branching', 'mean_eccentricity', 'effective_graph_resistance'],
         'molecule_metrics': None,
         'description': (
             'Rank 4 — total_component + branching + mean_eccentricity + effective_graph_resistance.\n'
@@ -103,9 +102,8 @@ FINGERPRINT_PRESETS: Dict[str, Any] = {
         ),
     },
     'best_5': {
-        'count_mode': 'binary',
-        'graph_metrics': ['branching', 'mean_eccentricity', 'diameter', 'radius',
-                          'effective_graph_resistance'],
+        'component_metrics': ['binary', 'branching', 'mean_eccentricity', 'diameter', 'radius',
+                              'effective_graph_resistance'],
         'molecule_metrics': None,
         'description': (
             'Rank 5 — binary + 5 graph metrics.\n'
@@ -113,20 +111,17 @@ FINGERPRINT_PRESETS: Dict[str, Any] = {
         ),
     },
     'binary': {
-        'count_mode': 'binary',
-        'graph_metrics': [],
+        'component_metrics': ['binary'],
         'molecule_metrics': None,
-        'description': 'Plain binary fingerprint — 1 if group present, 0 absent. No graph metrics.',
+        'description': 'Plain binary fingerprint — 1 if group present, 0 absent.',
     },
     'count': {
-        'count_mode': 'count',
-        'graph_metrics': [],
+        'component_metrics': ['count'],
         'molecule_metrics': None,
         'description': 'Count fingerprint — number of matched components per group.',
     },
     'max_component': {
-        'count_mode': 'max_component',
-        'graph_metrics': [],
+        'component_metrics': ['max_component'],
         'molecule_metrics': None,
         'description': 'Max-component fingerprint — maximum component size (C-atom count) per group.',
     },
@@ -159,10 +154,15 @@ class PFASFingerprint(np.ndarray):
         pre-computed group matches are reused—``parse_groups_in_mol`` is *not*
         called again.
     preset : str, optional
-        Named benchmark-validated configuration.  Overrides *count_mode*,
-        *graph_metrics*, and *molecule_metrics*.  See :data:`FINGERPRINT_PRESETS`.
-    count_mode : str, default ``'binary'``
-        ``'binary'``, ``'count'``, ``'max_component'``, or ``'total_component'``.
+        Named benchmark-validated configuration.  Overrides *component_metrics*
+        and *molecule_metrics*.  See :data:`FINGERPRINT_PRESETS`.
+    component_metrics : list[str], default ``['binary']``
+        Ordered list of per-component metrics.  Each entry produces one block of
+        ``n_groups`` columns.  Valid values are count modes
+        (``'binary'``, ``'count'``, ``'max_component'``, ``'total_component'``)
+        and per-group graph metric names (``'effective_graph_resistance'``,
+        ``'min_dist_to_barycenter'``, ``'branching'``, …).
+        Example: ``['binary', 'effective_graph_resistance']`` → 2 × n_groups columns.
     group_selection : str, default ``'all'``
         Which groups to include: ``'all'``, ``'oecd'``, ``'generic'``,
         ``'telomers'``, or ``'generic+telomers'``.
@@ -173,11 +173,6 @@ class PFASFingerprint(np.ndarray):
         halogens produce stacked column blocks suffixed with ``[F]``, ``[Cl]``, etc.
     saturation : str | None, default ``'per'``
         ``'per'``, ``'poly'``, or ``None`` (no saturation filter).
-    graph_metrics : list[str], optional
-        Per-group component graph metrics appended as extra column blocks after
-        the base columns.  Each metric adds ``n_base_cols`` more columns.
-        Supported: ``'branching'``, ``'mean_eccentricity'``, ``'diameter'``,
-        ``'radius'``, ``'effective_graph_resistance'``, and more.
     molecule_metrics : list[str], optional
         Molecule-wide scalar metrics appended as final columns.
         Supported: ``'n_components'``, ``'total_size'``, ``'mean_branching'``, etc.
@@ -193,10 +188,9 @@ class PFASFingerprint(np.ndarray):
         Column names (includes metric suffixes and ``mol:`` prefix for
         molecule metrics).
     group_selection : str
-    count_mode : str
+    component_metrics : list[str]
     halogens : list[str]
     saturation : str | None
-    graph_metrics : list[str]
     molecule_metrics : list[str]
     preset : str | None
 
@@ -219,24 +213,26 @@ class PFASFingerprint(np.ndarray):
 
     >>> # OECD groups, count mode
     >>> fp_oecd = PFASFingerprint("OC(=O)C(F)(F)F",
-    ...                           group_selection='oecd', count_mode='count')
+    ...                           group_selection='oecd', component_metrics=['count'])
     """
 
     # Metadata attribute names — propagated by __array_finalize__
     _METADATA_ATTRS: Tuple[str, ...] = (
-        'smiles', 'group_names', 'group_selection', 'count_mode',
-        'halogens', 'saturation', 'graph_metrics', 'molecule_metrics', 'preset',
+        'smiles', 'group_names', 'group_selection', 'component_metrics',
+        'halogens', 'saturation', 'molecule_metrics', 'preset',
+        '_match_cache', '_pfas_groups',
     )
     _METADATA_DEFAULTS: Dict[str, Any] = {
         'smiles': [],
         'group_names': [],
         'group_selection': 'all',
-        'count_mode': 'binary',
+        'component_metrics': ['binary'],
         'halogens': [],
         'saturation': 'per',
-        'graph_metrics': [],
         'molecule_metrics': [],
         'preset': None,
+        '_match_cache': {},
+        '_pfas_groups': None,
     }
 
     # ------------------------------------------------------------------
@@ -247,21 +243,34 @@ class PFASFingerprint(np.ndarray):
         cls,
         source: Union[str, List[str], 'MoleculeResult', 'ResultsModel'],
         preset: Optional[str] = None,
-        count_mode: str = 'binary',
+        component_metrics: Optional[List[str]] = None,
         group_selection: str = 'all',
         selected_group_ids: Optional[List[int]] = None,
         halogens: Union[str, List[str]] = 'F',
         saturation: Optional[str] = 'per',
-        graph_metrics: Optional[List[str]] = None,
         molecule_metrics: Optional[List[str]] = None,
         pfas_groups: Optional[list] = None,
+        # Backward-compat aliases (deprecated)
+        count_mode: Optional[str] = None,
+        graph_metrics: Optional[List[str]] = None,
+        # Internal — pass a pre-built match cache to skip re-parsing
+        _match_cache: Optional[Dict[str, Dict]] = None,
+        progress: bool = False,
     ) -> 'PFASFingerprint':
         # Lazy import avoids circular dependency at module load time.
         from .results_model import MoleculeResult, ResultsModel  # noqa: F401
 
-        # ── Resolve preset ────────────────────────────────────────────
-        resolved_cm = count_mode
-        resolved_gm: List[str] = list(graph_metrics) if graph_metrics else []
+        # ── Backward-compat: convert count_mode/graph_metrics → component_metrics ─
+        if count_mode is not None or graph_metrics is not None:
+            warnings.warn(
+                "count_mode and graph_metrics are deprecated; use component_metrics instead.",
+                DeprecationWarning, stacklevel=2,
+            )
+            if component_metrics is None:
+                component_metrics = [count_mode or 'binary'] + list(graph_metrics or [])
+
+        # ── Resolve component_metrics ─────────────────────────────────
+        resolved_cm: List[str] = list(component_metrics) if component_metrics else ['binary']
         resolved_mm: List[str] = list(molecule_metrics) if molecule_metrics else []
 
         if preset is not None:
@@ -271,18 +280,19 @@ class PFASFingerprint(np.ndarray):
                     f"Available: {sorted(FINGERPRINT_PRESETS)}"
                 )
             _p = FINGERPRINT_PRESETS[preset]
-            resolved_cm = _p.get('count_mode', count_mode)
-            if _p.get('graph_metrics') is not None:
-                resolved_gm = list(_p['graph_metrics'])
+            if _p.get('component_metrics') is not None:
+                resolved_cm = list(_p['component_metrics'])
             if _p.get('molecule_metrics') is not None:
                 resolved_mm = list(_p['molecule_metrics'])
 
         # ── Validate metric names ─────────────────────────────────────
-        bad_gm = [m for m in resolved_gm if m not in _COMPONENT_GRAPH_METRICS]
-        if bad_gm:
+        valid_metrics = _COUNT_MODES | _COMPONENT_GRAPH_METRICS
+        bad = [m for m in resolved_cm if m not in valid_metrics]
+        if bad:
             raise ValueError(
-                f"Unsupported graph_metrics: {bad_gm}. "
-                f"Supported: {sorted(_COMPONENT_GRAPH_METRICS)}"
+                f"Unsupported component_metrics: {bad}. "
+                f"Count modes: {sorted(_COUNT_MODES)}. "
+                f"Graph metrics: {sorted(_COMPONENT_GRAPH_METRICS)}"
             )
         bad_mm = [m for m in resolved_mm if m not in _MOL_METRIC_KEYS]
         if bad_mm:
@@ -328,7 +338,7 @@ class PFASFingerprint(np.ndarray):
             }
         elif isinstance(source, list):
             smiles_list = source
-            precomputed = None
+            precomputed = _match_cache  # None when fresh, dict when cached
         else:
             raise TypeError(
                 f"source must be str, list[str], MoleculeResult, or ResultsModel; "
@@ -336,12 +346,17 @@ class PFASFingerprint(np.ndarray):
             )
 
         # ── Compute fingerprint matrix ────────────────────────────────
-        matrix, col_names = cls._compute_matrix(
+        matrix, col_names, computed_cache = cls._compute_matrix(
             smiles_list, sel_groups, halogens_list,
             resolved_cm, saturation,
-            resolved_gm, resolved_mm,
+            resolved_mm,
             precomputed, pfas_groups,
+            progress=progress,
         )
+
+        # Build the full match cache (merge input + newly computed)
+        full_cache: Dict[str, Dict] = dict(_match_cache or {})
+        full_cache.update(computed_cache)
 
         # ── Build numpy array (1-D for single, 2-D for batch) ─────────
         arr = matrix[0] if single else matrix
@@ -351,12 +366,13 @@ class PFASFingerprint(np.ndarray):
         obj.smiles = smiles_list
         obj.group_names = col_names
         obj.group_selection = group_selection
-        obj.count_mode = resolved_cm
+        obj.component_metrics = resolved_cm
         obj.halogens = halogens_list
         obj.saturation = saturation
-        obj.graph_metrics = resolved_gm
         obj.molecule_metrics = resolved_mm
         obj.preset = preset
+        obj._match_cache = full_cache
+        obj._pfas_groups = pfas_groups
 
         return obj
 
@@ -374,10 +390,9 @@ class PFASFingerprint(np.ndarray):
         smiles: List[str],
         group_names: List[str],
         group_selection: str = 'all',
-        count_mode: str = 'binary',
+        component_metrics: Optional[List[str]] = None,
         halogens: Optional[List[str]] = None,
         saturation: Optional[str] = None,
-        graph_metrics: Optional[List[str]] = None,
         molecule_metrics: Optional[List[str]] = None,
     ) -> 'PFASFingerprint':
         """Internal factory — wraps a pre-computed array with metadata.
@@ -395,12 +410,13 @@ class PFASFingerprint(np.ndarray):
         obj.smiles = list(smiles)
         obj.group_names = list(group_names)
         obj.group_selection = group_selection
-        obj.count_mode = count_mode
+        obj.component_metrics = list(component_metrics) if component_metrics else ['binary']
         obj.halogens = list(halogens) if halogens else []
         obj.saturation = saturation
-        obj.graph_metrics = list(graph_metrics) if graph_metrics else []
         obj.molecule_metrics = list(molecule_metrics) if molecule_metrics else []
         obj.preset = None
+        obj._match_cache = {}
+        obj._pfas_groups = None
         return obj
 
     # ------------------------------------------------------------------
@@ -542,14 +558,23 @@ class PFASFingerprint(np.ndarray):
         smiles_list: List[str],
         sel_groups: list,
         halogens_list: List[str],
-        count_mode: str,
+        component_metrics: List[str],
         saturation: Optional[str],
-        graph_metrics: List[str],
         mol_metrics: List[str],
         precomputed: Optional[Dict[str, Any]],
         pfas_groups: list,
-    ) -> Tuple[np.ndarray, List[str]]:
-        """Compute the ``(n_molecules, n_columns)`` matrix and column names."""
+        progress: bool = False,
+    ) -> Tuple[np.ndarray, List[str], Dict[str, Dict]]:
+        """Compute the ``(n_molecules, n_columns)`` matrix and column names.
+
+        Returns
+        -------
+        tuple
+            ``(matrix, col_names, match_cache)`` where *match_cache* is
+            ``{smiles: {halogen: {group_id: match_info}}}`` — the pre-parsed
+            group matches for each molecule, suitable for reuse via
+            :meth:`get_fingerprint`.
+        """
         multi_hal = len(halogens_list) > 1
 
         # ── Column names ──────────────────────────────────────────────
@@ -559,18 +584,28 @@ class PFASFingerprint(np.ndarray):
             base_names = [g.name for g in sel_groups]
 
         n_base = len(base_names)
-        gm_names: List[str] = [
-            f"{name} [{gm}]"
-            for gm in graph_metrics
+        # One column block per component_metric, each named with a [metric] suffix
+        col_names: List[str] = [
+            f"{name} [{m}]"
+            for m in component_metrics
             for name in base_names
         ]
         mm_names = [f"mol:{m}" for m in mol_metrics]
-        col_names = base_names + gm_names + mm_names
+        col_names += mm_names
         n_cols = len(col_names)
 
         matrix = np.zeros((len(smiles_list), n_cols), dtype=float)
+        _cache: Dict[str, Dict] = {}  # accumulate per-SMILES match dicts
 
-        for row_idx, smi in enumerate(smiles_list):
+        _iter = enumerate(smiles_list)
+        if progress:
+            try:
+                from tqdm.auto import tqdm as _tqdm
+            except ImportError:
+                from tqdm import tqdm as _tqdm
+            _iter = _tqdm(_iter, desc='PFASFingerprint', total=len(smiles_list))
+
+        for row_idx, smi in _iter:
             try:
                 mol = Chem.MolFromSmiles(smi)
                 if mol is None:
@@ -600,24 +635,11 @@ class PFASFingerprint(np.ndarray):
                             for g, mc, sizes, comps in all_matches
                         }
 
-                # ── Base columns ──────────────────────────────────────
-                if multi_hal:
-                    for hi, h in enumerate(halogens_list):
-                        off = hi * len(sel_groups)
-                        for gi, g in enumerate(sel_groups):
-                            if g.id in match_dicts[h]:
-                                matrix[row_idx, off + gi] = cls._encode_count(
-                                    match_dicts[h][g.id], count_mode
-                                )
-                else:
-                    md0 = match_dicts[halogens_list[0]]
-                    for gi, g in enumerate(sel_groups):
-                        if g.id in md0:
-                            matrix[row_idx, gi] = cls._encode_count(md0[g.id], count_mode)
+                _cache[smi] = dict(match_dicts)  # store for reuse
 
-                # ── Per-group graph metric blocks ─────────────────────
-                for bi, gm in enumerate(graph_metrics):
-                    col_off = n_base + bi * n_base
+                # ── One block per component_metric ────────────────────
+                for bi, m in enumerate(component_metrics):
+                    col_off = bi * n_base
                     for ci in range(n_base):
                         if multi_hal:
                             hi = ci // len(sel_groups)
@@ -628,19 +650,23 @@ class PFASFingerprint(np.ndarray):
                             gi = ci
                             g = sel_groups[gi]
                             md = match_dicts[halogens_list[0]]
-                        if g.id in md:
+                        if g.id not in md:
+                            continue
+                        if m in _COUNT_MODES:
+                            matrix[row_idx, col_off + ci] = cls._encode_count(md[g.id], m)
+                        else:
                             comps = md[g.id].get('matched_components', [])
-                            matrix[row_idx, col_off + ci] = cls._agg_metric(comps, gm)
+                            matrix[row_idx, col_off + ci] = cls._agg_metric(comps, m)
 
                 # ── Molecule-level metric columns ─────────────────────
                 if mol_metrics:
-                    mm_start = n_base + len(graph_metrics) * n_base
+                    mm_start = n_base * len(component_metrics)
                     matrix[row_idx, mm_start:] = cls._mol_metric_vec(match_dicts, mol_metrics)
 
             except Exception as exc:
                 raise ValueError(f"Error processing SMILES {smi!r}: {exc}") from exc
 
-        return matrix, col_names
+        return matrix, col_names, _cache
 
     # ------------------------------------------------------------------
     # Public properties
@@ -666,6 +692,123 @@ class PFASFingerprint(np.ndarray):
         """
         return np.atleast_2d(np.asarray(self))
 
+    @property
+    def formulas(self) -> List[str]:
+        """Molecular formulas for each molecule (computed lazily from SMILES)."""
+        return [CalcMolFormula(Chem.MolFromSmiles(s)) if Chem.MolFromSmiles(s) else ''
+                for s in self.smiles]
+
+    @property
+    def inchikeys(self) -> List[str]:
+        """InChIKeys for each molecule (computed lazily from SMILES)."""
+        from rdkit.Chem.inchi import MolToInchi, InchiToInchiKey  # type: ignore[import]
+        keys: List[str] = []
+        for s in self.smiles:
+            mol = Chem.MolFromSmiles(s)
+            if mol:
+                inchi = MolToInchi(mol)
+                keys.append(InchiToInchiKey(inchi) if inchi else '')
+            else:
+                keys.append('')
+        return keys
+
+    @property
+    def match_cache(self) -> Dict[str, Dict]:
+        """Pre-parsed group match dicts for every molecule.
+
+        Structure::
+
+            {smiles: {halogen: {group_id: {match_count, component_sizes, matched_components}}}}
+
+        Populated during initial fingerprint computation and reused by
+        :meth:`get_fingerprint` to avoid re-running the PFASGroups algorithm.
+        """
+        return getattr(self, '_match_cache', {})
+
+    @property
+    def has_cache(self) -> bool:
+        """True when a match cache is available for :meth:`get_fingerprint`."""
+        return bool(getattr(self, '_match_cache', {}))
+
+    # ------------------------------------------------------------------
+    # Derive new fingerprints from cached results
+    # ------------------------------------------------------------------
+
+    def get_fingerprint(
+        self,
+        preset: Optional[str] = None,
+        component_metrics: Optional[List[str]] = None,
+        group_selection: Optional[str] = None,
+        selected_group_ids: Optional[List[int]] = None,
+        molecule_metrics: Optional[List[str]] = None,
+        progress: bool = False,
+    ) -> 'PFASFingerprint':
+        """Derive a new fingerprint from the same molecules without re-parsing.
+
+        The PFASGroups algorithm (group matching, component detection, graph
+        metrics) only runs once — when *this* instance was created.
+        :meth:`get_fingerprint` re-encodes those cached results into a new
+        column layout determined by *preset*, *component_metrics*,
+        *group_selection*, and *molecule_metrics*.
+
+        Parameters
+        ----------
+        preset : str, optional
+            Named preset (see :data:`FINGERPRINT_PRESETS`).  Overrides
+            *component_metrics* and *molecule_metrics*.
+        component_metrics : list[str], optional
+            Per-component metrics.  Defaults to current instance's setting.
+        group_selection : str, optional
+            Group subset.  Defaults to current instance's ``group_selection``.
+        selected_group_ids : list[int], optional
+            Explicit group IDs (overrides *group_selection*).
+        molecule_metrics : list[str], optional
+            Molecule-wide scalar metrics.
+        progress : bool, default False
+            If True, display a tqdm progress bar.
+
+        Returns
+        -------
+        PFASFingerprint
+            A new fingerprint array that shares this instance's match cache.
+
+        Raises
+        ------
+        ValueError
+            If no match cache is available (e.g. object was loaded from SQL).
+
+        Examples
+        --------
+        >>> fp = PFASFingerprint(smiles_list, preset='best')
+        >>> fp_binary = fp.get_fingerprint(preset='binary')   # instant
+        >>> fp_rich   = fp.get_fingerprint(preset='best_5')   # instant
+        """
+        cache = getattr(self, '_match_cache', {})
+        if not cache:
+            raise ValueError(
+                "No match cache available on this PFASFingerprint instance. "
+                "get_fingerprint() requires the instance to have been created "
+                "from SMILES or a ResultsModel (not loaded from SQL/array)."
+            )
+
+        return PFASFingerprint(
+            self.smiles,
+            preset=preset,
+            component_metrics=component_metrics if component_metrics is not None else (
+                None if preset else self.component_metrics
+            ),
+            group_selection=group_selection or self.group_selection,
+            selected_group_ids=selected_group_ids,
+            halogens=self.halogens,
+            saturation=self.saturation,
+            molecule_metrics=molecule_metrics if molecule_metrics is not None else (
+                None if preset else self.molecule_metrics
+            ),
+            pfas_groups=getattr(self, '_pfas_groups', None),
+            _match_cache=cache,
+            progress=progress,
+        )
+
     # ------------------------------------------------------------------
     # Display
     # ------------------------------------------------------------------
@@ -677,14 +820,14 @@ class PFASFingerprint(np.ndarray):
             parts.append(f"preset={self.preset!r}")
         parts += [
             f"shape={self.shape}",
-            f"count_mode={self.count_mode!r}",
+            f"component_metrics={self.component_metrics!r}",
             f"group_selection={self.group_selection!r}",
             f"halogens={hal_str!r}",
         ]
-        if self.graph_metrics:
-            parts.append(f"graph_metrics={self.graph_metrics!r}")
         if self.molecule_metrics:
             parts.append(f"molecule_metrics={self.molecule_metrics!r}")
+        if getattr(self, '_match_cache', {}):
+            parts.append("cached=True")
         return f"PFASFingerprint({', '.join(parts)})"
 
     def _compute_group_distribution(self) -> np.ndarray:
@@ -709,12 +852,10 @@ class PFASFingerprint(np.ndarray):
             f"Group sel. : {self.group_selection}",
             f"Halogens   : {hal_str}",
             f"Saturation : {self.saturation}",
-            f"Count mode : {self.count_mode}",
+            f"Comp metr. : {', '.join(self.component_metrics)}",
         ]
         if self.preset:
             lines.append(f"Preset     : {self.preset}")
-        if self.graph_metrics:
-            lines.append(f"Graph metrics    : {', '.join(self.graph_metrics)}")
         if self.molecule_metrics:
             lines.append(f"Molecule metrics : {', '.join(self.molecule_metrics)}")
         lines += [
@@ -723,10 +864,11 @@ class PFASFingerprint(np.ndarray):
             f"Sparsity   : {1 - np.count_nonzero(mat) / max(mat.size, 1):.2%}",
         ]
 
-        # Most frequent base groups (skip metric-extension columns)
+        # Most frequent base groups (first component_metric block only)
+        first_m = self.component_metrics[0] if self.component_metrics else ''
         base_idx = [
             i for i, n in enumerate(self.group_names)
-            if '[' not in n and not n.startswith('mol:')
+            if n.endswith(f'[{first_m}]') or (not n.startswith('mol:') and '[' not in n)
         ] or list(range(self.n_columns))
 
         if mat.shape[0] > 0 and base_idx:
@@ -1109,9 +1251,10 @@ class PFASFingerprint(np.ndarray):
             if mat[i, j] > 0
         ]
         pd.DataFrame(rows).to_sql(table_name, engine, if_exists=if_exists, index=False)
+        import json as _json
         pd.DataFrame([{
             'group_selection': self.group_selection,
-            'count_mode': self.count_mode,
+            'component_metrics': _json.dumps(self.component_metrics),
             'n_molecules': self.n_molecules,
             'n_groups': self.n_columns,
         }]).to_sql(metadata_table, engine, if_exists=if_exists, index=False)
@@ -1154,9 +1297,14 @@ class PFASFingerprint(np.ndarray):
         else:
             raise ValueError("Either conn or filename must be provided")
 
+        import json as _json
         meta = pd.read_sql(f"SELECT * FROM {metadata_table} LIMIT 1", engine)
         group_selection = meta['group_selection'].iloc[0]
-        count_mode = meta['count_mode'].iloc[0]
+        # Support both new (component_metrics JSON) and legacy (count_mode string) schemas
+        if 'component_metrics' in meta.columns:
+            component_metrics = _json.loads(meta['component_metrics'].iloc[0])
+        else:
+            component_metrics = [meta['count_mode'].iloc[0]]
 
         query = f"SELECT * FROM {table_name}"
         if limit is not None:
@@ -1176,7 +1324,7 @@ class PFASFingerprint(np.ndarray):
             smiles=smiles_list,
             group_names=group_names,
             group_selection=group_selection,
-            count_mode=count_mode,
+            component_metrics=component_metrics,
         )
 
 
@@ -1188,12 +1336,15 @@ def generate_fingerprint(
     smiles: Union[str, List[str]],
     selected_groups: Union[List[int], range, None] = None,
     representation: str = 'vector',
-    count_mode: str = 'binary',
+    component_metrics: Optional[List[str]] = None,
     halogens: Union[str, List[str]] = 'F',
     saturation: Optional[str] = 'per',
-    graph_metrics: Optional[List[str]] = None,
     molecule_metrics: Optional[List[str]] = None,
     preset: Optional[str] = None,
+    # Backward-compat aliases (deprecated)
+    count_mode: Optional[str] = None,
+    graph_metrics: Optional[List[str]] = None,
+    progress: bool = False,
     **kwargs,
 ) -> Tuple[np.ndarray, Dict[str, Any]]:
     """Generate PFAS group fingerprints from SMILES strings.
@@ -1232,17 +1383,19 @@ def generate_fingerprint(
     fp = PFASFingerprint(
         smiles,
         preset=preset,
-        count_mode=count_mode,
+        component_metrics=component_metrics,
         selected_group_ids=list(selected_groups) if selected_groups is not None else None,
         halogens=halogens,
         saturation=saturation,
-        graph_metrics=graph_metrics,
         molecule_metrics=molecule_metrics,
+        count_mode=count_mode,
+        graph_metrics=graph_metrics,
+        progress=progress,
         **kwargs,
     )
     group_info: Dict[str, Any] = {
         'group_names': fp.group_names,
-        'count_mode': fp.count_mode,
+        'component_metrics': fp.component_metrics,
         'halogens': fp.halogens,
         'saturation': fp.saturation,
         'selected_group_ids': list(selected_groups) if selected_groups is not None else None,

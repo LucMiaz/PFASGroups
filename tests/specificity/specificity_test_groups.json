@@ -1,4 +1,8 @@
 [
+    {"source": "Side-chain aromatics", "target":"Heterocyclic azole", "edge_type": "both"},
+    {"source": "Side-chain aromatics", "target":"Heterocyclic azine", "edge_type": "both"},
+    {"source": "Polyhalogenated aryl compounds", "target":"Perhalogenated aryl compounds", "edge_type": "per"},
+    {"source": "Polyhalogenated cyclic compounds", "target":"Perhalogenated cyclic compounds", "edge_type": "per"},
     {"source": "carboxylic acid", "target": "Perfluoroalkyl carboxylic acids", "edge_type": "per"},
     {"source": "carboxylic acid", "target": "Polyfluoroalkyl carboxylic acid", "edge_type": "both"},
     {"source": "carboxylic acid", "target": "Perfluoroalkyl dicarboxylic acids", "edge_type": "oneway"},

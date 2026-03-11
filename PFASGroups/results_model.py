@@ -866,14 +866,17 @@ class MoleculeResult(dict):
     def to_fingerprint(
         self,
         group_selection: str = 'all',
-        count_mode: str = 'binary',
+        component_metrics: Optional[List[str]] = None,
         selected_group_ids: Optional[List[int]] = None,
         halogens: Union[str, List[str]] = 'F',
         saturation: Optional[str] = 'per',
-        graph_metrics: Optional[List[str]] = None,
         molecule_metrics: Optional[List[str]] = None,
         pfas_groups: Optional[List[Dict]] = None,
         preset: Optional[str] = None,
+        # Backward-compat aliases (deprecated)
+        count_mode: Optional[str] = None,
+        graph_metrics: Optional[List[str]] = None,
+        progress: bool = False,
         **kwargs,
     ) -> 'ResultsFingerprint':
         """Convert this molecule result to a ResultsFingerprint.
@@ -881,55 +884,44 @@ class MoleculeResult(dict):
         Parameters
         ----------
         group_selection : str, default 'all'
-            Which groups to include in fingerprint:
-            - 'all': All available groups
-            - 'oecd': OECD groups (IDs 1–28)
-            - 'generic': Generic functional-group groups (IDs 29–55)
-            - 'telomers': Telomer-related groups (IDs 74–116)
-            - 'generic+telomers': Combination of generic and telomer groups
-        count_mode : str, default 'binary'
-            How to encode group matches:
-            - 'binary': 1 if present, 0 if absent
-            - 'count': Number of matched components
-            - 'max_component': Maximum component size (C-atom count)
-            - 'total_component': Sum of all component sizes
+            Which groups to include: 'all', 'oecd', 'generic', 'telomers',
+            or 'generic+telomers'.
+        component_metrics : list of str, default ['binary']
+            Ordered list of per-component metrics.  Each entry produces one
+            block of n_groups columns.  Valid values are count modes
+            ('binary', 'count', 'max_component', 'total_component') and
+            per-group graph metric names ('effective_graph_resistance',
+            'min_dist_to_barycenter', 'branching', ...).
         selected_group_ids : list of int, optional
-            Explicit list of group IDs to include (overrides group_selection)
+            Explicit group IDs (overrides group_selection).
         halogens : str or list of str, default 'F'
-            Which halogen(s) to match component SMARTS against.
+            Which halogen(s) to match SMARTS against.
         saturation : str or None, default 'per'
-            Saturation filter applied to component SMARTS groups.
-        graph_metrics : list of str, optional
-            Per-group component graph metrics to append as extra columns
-            (one block of n_groups columns per metric, mean-aggregated over
-            matched components).  E.g. ``['branching', 'mean_eccentricity']``
-            yields a vector of length 3 × n_groups.
+            Saturation filter: 'per', 'poly', or None.
         molecule_metrics : list of str, optional
-            Molecule-wide scalar metrics appended after all group columns.
-            E.g. ``['n_components', 'mean_branching', 'max_diameter']``.
+            Molecule-wide scalar metrics appended as final columns.
         pfas_groups : list, optional
-            Custom list of PFAS group objects or dicts (injected by decorator).
+            Custom group objects (injected by decorator).
         preset : str, optional
-            Named benchmark-validated configuration.  When given, overrides
-            ``count_mode``, ``graph_metrics``, and ``molecule_metrics``.
-            See ``FINGERPRINT_PRESETS`` for available names.
+            Named configuration overriding component_metrics and molecule_metrics.
 
         Returns
         -------
         ResultsFingerprint
-            Fingerprint representation of this single molecule.
         """
         from .fingerprints import PFASFingerprint
         return PFASFingerprint(
             self,
             preset=preset,
-            count_mode=count_mode,
+            component_metrics=component_metrics,
             group_selection=group_selection,
             selected_group_ids=selected_group_ids,
             halogens=halogens,
             saturation=saturation,
-            graph_metrics=graph_metrics,
             molecule_metrics=molecule_metrics,
+            count_mode=count_mode,
+            graph_metrics=graph_metrics,
+            progress=progress,
         )
 
     def to_sql(
@@ -1867,84 +1859,64 @@ class ResultsModel(list):
     def to_fingerprint(
         self,
         group_selection: str = 'all',
-        count_mode: str = 'binary',
+        component_metrics: Optional[List[str]] = None,
         selected_group_ids: Optional[List[int]] = None,
         halogens: Union[str, List[str]] = 'F',
         saturation: Optional[str] = 'per',
-        graph_metrics: Optional[List[str]] = None,
         molecule_metrics: Optional[List[str]] = None,
         pfas_groups: Optional[List[Dict]] = None,
         preset: Optional[str] = None,
+        # Backward-compat aliases (deprecated)
+        count_mode: Optional[str] = None,
+        graph_metrics: Optional[List[str]] = None,
+        progress: bool = False,
         **kwargs,
     ) -> 'ResultsFingerprint':
-        """Convert ResultsModel to ResultsFingerprint for dimensionality reduction.
+        """Convert ResultsModel to ResultsFingerprint.
 
         Parameters
         ----------
         group_selection : str, default 'all'
-            Which groups to include in fingerprint:
-            - 'all': All available groups
-            - 'oecd': OECD groups (IDs 1–28)
-            - 'generic': Generic functional-group groups (IDs 29–55)
-            - 'telomers': Telomer-related groups (IDs 74–116)
-            - 'generic+telomers': Combination of generic and telomer groups
-        count_mode : str, default 'binary'
-            How to encode group matches:
-            - 'binary': 1 if present, 0 if absent
-            - 'count': Number of matched components
-            - 'max_component': Maximum component size (C-atom count)
-            - 'total_component': Sum of all component sizes
+            Which groups to include: 'all', 'oecd', 'generic', 'telomers',
+            or 'generic+telomers'.
+        component_metrics : list of str, default ['binary']
+            Ordered list of per-component metrics.  Each entry produces one
+            block of n_groups columns.  Valid values are count modes
+            ('binary', 'count', 'max_component', 'total_component') and
+            per-group graph metric names ('effective_graph_resistance',
+            'min_dist_to_barycenter', 'branching', ...).
+            Multiple halogens produce stacked blocks with ``[F]``, ``[Cl]`` suffixes.
         selected_group_ids : list of int, optional
-            Explicit list of group IDs to include (overrides group_selection)
+            Explicit group IDs (overrides group_selection).
         halogens : str or list of str, default 'F'
-            Which halogen(s) to match component SMARTS against.
-            - 'F' (default): fluorine only, fingerprint of length n_groups.
-            - Multiple values (e.g. ``['F', 'Cl', 'Br', 'I']``) → one fingerprint per
-              halogen, concatenated into a longer vector of length n_groups × n_halogens.
-              Group names are suffixed with ``[F]``, ``[Cl]``, etc.
-            Available: ``'F'``, ``'Cl'``, ``'Br'``, ``'I'``
+            Which halogen(s) to match SMARTS against.
         saturation : str or None, default 'per'
-            Saturation filter applied to component SMARTS groups:
-            - ``'per'``: perfluorinated / perhalogenated only
-            - ``'poly'``: polyfluorinated / polyhalogenated only
-            - ``None``: no filter
-        graph_metrics : list of str, optional
-            Per-group component graph metrics appended as extra column blocks
-            (n_groups columns per metric, mean-aggregated over matched
-            components).  E.g. ``['branching', 'mean_eccentricity']`` gives
-            a vector of length 3 × n_groups.  Group names are suffixed with
-            the metric in square brackets, e.g. ``"Perfluoroalkyl [branching]"``.
-            Supported: 'branching', 'mean_eccentricity', 'diameter', 'radius',
-            'component_fraction', 'min_dist_to_center', 'max_dist_to_periphery', …
+            'per', 'poly', or None.
         molecule_metrics : list of str, optional
-            Molecule-wide scalar metrics appended as extra columns *after* all
-            per-group columns.  These aggregate over ALL matched components
-            in the molecule (across all groups).
-            Supported: 'n_components', 'total_size', 'mean_size', 'max_size',
-            'mean_branching', 'max_branching', 'mean_eccentricity',
-            'max_diameter', 'mean_component_fraction', 'max_component_fraction'.
+            Molecule-wide scalar metrics appended after all component-metric columns.
+            E.g. ['n_components', 'mean_branching', 'max_diameter'].
+        pfas_groups : list, optional
+            Custom group objects (injected by decorator).
         preset : str, optional
-            Named benchmark-validated configuration.  When given, overrides
-            ``count_mode``, ``graph_metrics``, and ``molecule_metrics``.
-            Available: ``'best'``, ``'best_2'``, …, ``'binary'``, ``'count'``,
-            ``'max_component'``.  See ``FINGERPRINT_PRESETS`` for full list.
+            Named configuration overriding component_metrics and molecule_metrics.
 
         Returns
         -------
         ResultsFingerprint
-            Fingerprint representation of the results
         """
         from .fingerprints import PFASFingerprint
         return PFASFingerprint(
             self,
             preset=preset,
-            count_mode=count_mode,
+            component_metrics=component_metrics,
             group_selection=group_selection,
             selected_group_ids=selected_group_ids,
             halogens=halogens,
             saturation=saturation,
-            graph_metrics=graph_metrics,
             molecule_metrics=molecule_metrics,
+            count_mode=count_mode,
+            graph_metrics=graph_metrics,
+            progress=progress,
         )
 
     @classmethod

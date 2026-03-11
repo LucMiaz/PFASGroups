@@ -95,8 +95,8 @@ Parameters
        percentile=90.0,   # percentile cut-off for reference set
        halogens='F',      # halogens to include in fingerprint
        saturation=None,   # 'saturated', 'unsaturated', or None
-       count_mode='max_component',  # fingerprint count mode
-       return_scores=True,          # if False, return sorted smiles only
+       component_metrics=['max_component'],  # fingerprint component metrics
+       return_scores=True,                   # if False, return sorted smiles only
        ascending=False,   # if True, lowest score first
    )
 
@@ -124,9 +124,9 @@ Parameters
      - Halogen(s) used to build fingerprints for distance computation
    * - ``saturation``
      - Saturation filter passed to :func:`~PFASGroups.generate_fingerprint`
-   * - ``count_mode``
-     - Count mode for fingerprints: ``'max_component'``, ``'all'``, or
-       ``'binary'``
+   * - ``component_metrics``
+     - List of metrics for fingerprints: ``['max_component']``, ``['count']``,
+       ``['binary']``, or combined e.g. ``['binary', 'effective_graph_resistance']``
    * - ``return_scores``
      - If ``True`` (default), return ``[(smiles, score), …]``.  If ``False``,
        return ``[smiles, …]``.

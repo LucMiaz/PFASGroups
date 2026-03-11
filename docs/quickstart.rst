@@ -91,18 +91,21 @@ vector** (one column per group, fluorine only):
    # OECD groups only (IDs 1–28)
    fps_oecd, info = generate_fingerprint(smiles, selected_groups=range(0, 28))
 
-**Count modes** control how matches are encoded:
+**component_metrics** — control how matches are encoded:
 
 .. code-block:: python
 
    # binary (default): 1 = present, 0 = absent
-   fps_bin, _ = generate_fingerprint(smiles, count_mode='binary')
+   fps_bin, _ = generate_fingerprint(smiles, component_metrics=['binary'])
 
    # count: number of independent matches
-   fps_cnt, _ = generate_fingerprint(smiles, count_mode='count')
+   fps_cnt, _ = generate_fingerprint(smiles, component_metrics=['count'])
 
    # max_component: size (atom count) of the largest matching component
-   fps_max, _ = generate_fingerprint(smiles, count_mode='max_component')
+   fps_max, _ = generate_fingerprint(smiles, component_metrics=['max_component'])
+
+   # Add graph metric columns (binary + EGR, i.e. preset='best')
+   fps_best, _ = generate_fingerprint(smiles, component_metrics=['binary', 'effective_graph_resistance'])
 
 .. note::
 

@@ -29,6 +29,7 @@ PFASGroups/data/Halogen_groups_smarts.json
 PFASGroups/data/PFAS_definitions_smarts.json
 PFASGroups/data/component_smarts.json
 PFASGroups/data/component_smarts_halogens.json
+PFASGroups/data/diatomic_bonds_dict.json
 tests/test_component_fractions.py
 tests/test_component_ratios.py
 tests/test_comprehensive_metrics.py
@@ -41,7 +42,6 @@ tests/test_halogen_groups_smarts.py
 tests/test_linker_smarts.py
 tests/test_metrics.py
 tests/test_metrics_detailed.py
-tests/test_pfasgroups_legacy.py
 tests/test_pfasstructv5.py
 tests/test_prioritise.py
 tests/test_results_fingerprint.py

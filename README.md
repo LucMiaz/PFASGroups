@@ -428,6 +428,11 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+
+- **Version 3.2.0**: Use of BDE for computing graph resistance.
+
+- **Version 3.1.4**: Changed fingerprint parameters to molecule wide and component wide, with pre-configuration for best combinations.
+
 - **Version 3.1.0**: Added support for other halogens, changed names to be more generic (with some support for backward compatibility). Added component smarts for other halogens, cyclic and alkyl components.
 
 - **Version 2.2.4 (Feb 2026)**: Advanced fingerprint analysis with dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP), KL divergence comparison for dataset similarity assessment, and SQL persistence for fingerprints and results. Added molecule prioritization tool for screening applications, ranking by similarity to reference lists or by intrinsic fluorination properties. Includes new `ResultsFingerprint` class with comprehensive analysis methods, automated plot generation, and extensive documentation.

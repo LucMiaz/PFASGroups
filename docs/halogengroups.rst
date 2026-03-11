@@ -63,6 +63,23 @@ Quick Comparison
    results_eq  = pfas_parse(smiles, halogens=['F', 'Cl', 'Br', 'I'])
 
 
+.. warning::
+
+   **The default fingerprint width depends on which module you import from.**
+
+   ``parse_smiles`` from ``HalogenGroups`` returns a
+   ``HalogenGroups.ResultsModel`` subclass. Calling ``results.to_fingerprint()``
+   on that object **without** an explicit ``halogens`` argument produces a
+   464-column fingerprint (116 groups × 4 halogens), **not** the standard
+   116-column fluorine-only one.  To guarantee fluorine-only output,
+   always pass ``halogens='F'`` explicitly::
+
+      fp = results.to_fingerprint(halogens='F')   # always 116 columns
+
+   This applies to ``compute_config``, ``_txp_fingerprint``, and any similar
+   helpers in notebooks or scripts that pass ``**kwargs`` to
+   ``to_fingerprint()`` — the ``halogens`` key must be present in those kwargs.
+
 Functions with Altered Defaults
 ---------------------------------
 
@@ -157,6 +174,18 @@ Via ResultsModel
    fp_fc  = results.to_fingerprint(halogens=['F', 'Cl'])     # shape (n, 232)
    fp_oecd = results.to_fingerprint(
        group_selection='oecd', halogens=['F', 'Cl', 'Br', 'I'])  # shape (n, 112)
+
+   # Best preset (binary + effective_graph_resistance) with F only
+   fp_best = results.to_fingerprint(preset='best', halogens='F')  # shape (n, 232)
+
+   # Explicit component_metrics — count mode + graph metric with all halogens
+   fp_cm = results.to_fingerprint(
+       component_metrics=['binary', 'effective_graph_resistance'],
+       halogens=['F', 'Cl', 'Br', 'I'])  # shape (n, 928)  — 2 × 116 × 4
+
+Each entry in ``component_metrics`` adds one block of *n_groups × n_halogens*
+columns. The column naming follows the pattern ``"GroupName [halogen] [metric]"``
+(e.g. ``"Perfluoroalkyl [F] [binary]"``, ``"Perfluoroalkyl [F] [effective_graph_resistance]"``).
 
 
 Combining with Saturation Filters

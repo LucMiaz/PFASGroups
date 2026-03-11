@@ -119,9 +119,9 @@ generate_fingerprint
    * - ``representation``
      - ``'vector'``
      - ``'vector'``, ``'dict'``, ``'sparse'``, ``'detailed'``, or ``'int'``
-   * - ``count_mode``
-     - ``'binary'``
-     - ``'binary'``, ``'count'``, or ``'max_component'``
+   * - ``component_metrics``
+     - ``['binary']``
+     - List of metrics: count modes (``'binary'``, ``'count'``, ``'max_component'``, ``'total_component'``) and/or graph metrics (e.g. ``'effective_graph_resistance'``)
    * - ``halogens``
      - ``'F'``
      - Halogen(s) to include; string or list of strings

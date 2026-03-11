@@ -443,13 +443,13 @@ ALL_MOL_METRICS = [
 def _build_configs() -> list[tuple[str, str, dict]]:
     """Return list of (section, label, kwargs)."""
     cfgs: list[tuple[str, str, dict]] = []
-    for mode in ('binary', 'count', 'max_component', 'total_component'): #
-        cfgs.append(('Count modes', mode, dict(component_metrics=[mode])))
+    for mode in ('binary', 'count', 'max_component', 'total_component'):
+        cfgs.append(('Count modes', mode, dict(count_mode=mode)))
     for m in ALL_GRAPH_METRICS:
         cfgs.append(('Individual graph metrics', f'binary+{m}',
-                     dict(component_metrics=['binary', m])))
+                     dict(count_mode='binary', graph_metrics=[m])))
     cfgs.append(('Metric combinations', f'binary+ALL_graph ({len(ALL_GRAPH_METRICS)})',
-                 dict(component_metrics=['binary'] + list(ALL_GRAPH_METRICS))))
+                 dict(count_mode='binary', graph_metrics=list(ALL_GRAPH_METRICS))))
     for combo in [
         ['branching', 'diameter'],
         ['branching', 'effective_graph_resistance'],
@@ -458,18 +458,19 @@ def _build_configs() -> list[tuple[str, str, dict]]:
         ['branching', 'mean_eccentricity', 'diameter', 'radius', 'effective_graph_resistance'],
     ]:
         cfgs.append(('Metric combinations', 'binary+[' + ','.join(combo) + ']',
-                     dict(component_metrics=['binary'] + combo)))
+                     dict(count_mode='binary', graph_metrics=combo)))
     for combo in [['branching'], ['branching', 'diameter'],
                   ['branching', 'mean_eccentricity', 'effective_graph_resistance']]:
         cfgs.append(('Count + graph combos', 'total+[' + ','.join(combo) + ']',
-                     dict(component_metrics=['total_component'] + combo)))
+                     dict(count_mode='total_component', graph_metrics=combo)))
     for m in ALL_MOL_METRICS:
         cfgs.append(('Individual mol metrics', f'binary+mol:{m}',
-                     dict(component_metrics=['binary'], molecule_metrics=[m])))
+                     dict(count_mode='binary', molecule_metrics=[m])))
     cfgs.append(('Metric combinations', f'binary+ALL_mol ({len(ALL_MOL_METRICS)})',
-                 dict(component_metrics=['binary'], molecule_metrics=list(ALL_MOL_METRICS))))
+                 dict(count_mode='binary', molecule_metrics=list(ALL_MOL_METRICS))))
     cfgs.append(('Metric combinations', 'FULL (total+ALL_graph+ALL_mol)',
-                 dict(component_metrics=['total_component'] + list(ALL_GRAPH_METRICS),
+                 dict(count_mode='total_component',
+                      graph_metrics=list(ALL_GRAPH_METRICS),
                       molecule_metrics=list(ALL_MOL_METRICS))))
     return cfgs
 

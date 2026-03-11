@@ -13,8 +13,22 @@ The `ResultsFingerprint` class provides powerful tools for analyzing PFAS group 
 
 ## Quick Start
 
+> **Import determines the default `halogens`.**
+>
+> | Import | `to_fingerprint()` default | Vector length |
+> |--------|---------------------------|---------------|
+> | `from PFASGroups import parse_smiles` | `halogens='F'` | 116 |
+> | `from HalogenGroups import parse_smiles` | `halogens=['F','Cl','Br','I']` | 464 |
+>
+> `parse_smiles` from `HalogenGroups` returns a `HalogenGroups.ResultsModel` subclass
+> whose `to_fingerprint()` defaults to **all four halogens**.  If you call
+> `to_fingerprint()` without an explicit `halogens` argument after a `HalogenGroups`
+> import, you will silently obtain a 464-column fingerprint instead of the
+> 116-column fluorine-only one.  Always pass `halogens='F'` explicitly when
+> fluorine-only output is required, regardless of which import you used.
+
 ```python
-from HalogenGroups import parse_smiles
+from HalogenGroups import parse_smiles  # all-halogens default
 
 # Parse some PFAS molecules
 smiles_list = [
@@ -24,10 +38,10 @@ smiles_list = [
 
 results = parse_smiles(smiles_list)
 
-# Default fingerprint: all halogens, per-saturation, 116 groups × 4 → shape (2, 464)
-fp = results.to_fingerprint()
+# HalogenGroups default: all halogens → shape (2, 464)
+fp_all = results.to_fingerprint()
 
-# Fluorine only → shape (2, 116)
+# Always explicit when you want fluorine only → shape (2, 116)
 fp_f = results.to_fingerprint(halogens='F')
 
 # Stacked F + Cl fingerprint → shape (2, 232)
@@ -54,9 +68,9 @@ Convert a `ResultsModel` to a `ResultsFingerprint` for analysis.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `group_selection` | `str` | `'all'` | Which groups to include (see table below) |
-| `count_mode` | `str` | `'binary'` | Encoding method (`'binary'`, `'count'`, `'max_component'`) |
+| `component_metrics` | `list[str]` | `['binary']` | List of encoding metrics: count modes (`'binary'`, `'count'`, `'max_component'`, `'total_component'`) and/or per-group graph metrics (`'effective_graph_resistance'`, etc.) |
 | `selected_group_ids` | `list` | `None` | Explicit group IDs — overrides `group_selection` |
-| `halogens` | `str` or `list` | `['F','Cl','Br','I']` | Halogen(s) for component SMARTS matching (see below) |
+| `halogens` | `str` or `list` | `'F'` (**PFASGroups**) / `['F','Cl','Br','I']` (**HalogenGroups**) | Halogen(s) for component SMARTS matching (see below) |
 | `saturation` | `str` or `None` | `'per'` | Saturation filter: `'per'`, `'poly'`, or `None` |
 
 **Group selection options:**
@@ -109,7 +123,7 @@ fp = results.to_fingerprint(halogens='F', saturation='poly')
 fp = results.to_fingerprint(halogens='F', saturation=None)
 
 # Count encoding with OECD groups only
-fp_oecd = results.to_fingerprint(group_selection='oecd', count_mode='count')
+fp_oecd = results.to_fingerprint(group_selection='oecd', component_metrics=['count'])
 
 # Custom group selection
 fp_custom = results.to_fingerprint(selected_group_ids=[1, 2, 5, 10, 15])
@@ -394,7 +408,7 @@ smiles_list = [...]  # Your SMILES
 results = parse_smiles(smiles_list)
 
 # 2. Convert to fingerprints
-fp = results.to_fingerprint(group_selection='all', count_mode='binary')
+fp = results.to_fingerprint(group_selection='all', component_metrics=['binary'])
 print(fp.summary())
 
 # 3. Perform multiple dimensionality reductions
@@ -407,7 +421,7 @@ print(f"PCA variance explained: {np.cumsum(pca['explained_variance'])}")
 
 # 5. Compare with reference dataset
 ref_results = parse_smiles(reference_smiles)
-ref_fp = ref_results.to_fingerprint(group_selection='all', count_mode='binary')
+ref_fp = ref_results.to_fingerprint(group_selection='all', component_metrics=['binary'])
 kl_div = fp.compare_kld(ref_fp, method='minmax')
 print(f"KL divergence vs reference: {kl_div:.4f}")
 

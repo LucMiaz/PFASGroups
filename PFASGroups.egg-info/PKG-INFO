@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: PFASGroups
-Version: 3.1.2
+Version: 3.2.0
 Summary: A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, with a focus on per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 116 group classifications (28 OECD-defined PFAS groups, 45 generic groups and 43 telomers connected to halogenated components) with halogenated component size determination. Supports multi-halogen fingerprinting (F, Cl, Br, I) with per/poly saturation filtering and stackable fingerprint vectors.
 Author: Luc T. Miaz
 Author-email: "Luc T. Miaz" <luc@miaz.ch>
@@ -470,6 +470,11 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+
+- **Version 3.2.0**: Use of BDE for computing graph resistance.
+
+- **Version 3.1.4**: Changed fingerprint parameters to molecule wide and component wide, with pre-configuration for best combinations.
+
 - **Version 3.1.0**: Added support for other halogens, changed names to be more generic (with some support for backward compatibility). Added component smarts for other halogens, cyclic and alkyl components.
 
 - **Version 2.2.4 (Feb 2026)**: Advanced fingerprint analysis with dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP), KL divergence comparison for dataset similarity assessment, and SQL persistence for fingerprints and results. Added molecule prioritization tool for screening applications, ranking by similarity to reference lists or by intrinsic fluorination properties. Includes new `ResultsFingerprint` class with comprehensive analysis methods, automated plot generation, and extensive documentation.

@@ -43,7 +43,7 @@ def results():
 @pytest.fixture
 def fingerprint(results):
     """Create ResultsFingerprint from results."""
-    return results.to_fingerprint(group_selection='all', count_mode='binary')
+    return results.to_fingerprint(group_selection='all')
 
 
 class TestResultsModelToFingerprint:
@@ -73,69 +73,68 @@ class TestResultsModelToFingerprint:
         assert len(fp_generic.group_names) == 24
     
     def test_count_modes(self, results):
-        """Test different count modes."""
+        """Test different count modes via component_metrics."""
         # Binary
-        fp_binary = results.to_fingerprint(count_mode='binary')
+        fp_binary = results.to_fingerprint(component_metrics=['binary'])
         assert np.all((fp_binary.fingerprints == 0) | (fp_binary.fingerprints == 1))
-        
+
         # Count
-        fp_count = results.to_fingerprint(count_mode='count')
+        fp_count = results.to_fingerprint(component_metrics=['count'])
         assert np.all(fp_count.fingerprints >= 0)
-        
+
         # Max component
-        fp_max = results.to_fingerprint(count_mode='max_component')
+        fp_max = results.to_fingerprint(component_metrics=['max_component'])
         assert np.all(fp_max.fingerprints >= 0)
 
-        # Total component (new)
-        fp_total = results.to_fingerprint(count_mode='total_component')
+        # Total component
+        fp_total = results.to_fingerprint(component_metrics=['total_component'])
         assert np.all(fp_total.fingerprints >= 0)
         # total_component >= max_component entry-wise
         assert np.all(fp_total.fingerprints >= fp_max.fingerprints)
 
     def test_graph_metrics(self, results):
-        """Test per-group graph metrics extension."""
-        fp_base = results.to_fingerprint(count_mode='binary')
+        """Test per-group graph metrics via component_metrics."""
+        fp_base = results.to_fingerprint(component_metrics=['binary'])
         n_base = len(fp_base.group_names)
 
-        fp_gm = results.to_fingerprint(count_mode='binary',
-                                        graph_metrics=['branching'])
-        # One extra block of n_base columns
+        fp_gm = results.to_fingerprint(component_metrics=['binary', 'branching'])
+        # Two blocks of n_base columns
         assert len(fp_gm.group_names) == 2 * n_base
         assert fp_gm.fingerprints.shape[1] == 2 * n_base
-        # Metric columns are named with bracket suffix
+        # Both metrics appear in column names
+        assert any('[binary]' in n for n in fp_gm.group_names)
         assert any('[branching]' in n for n in fp_gm.group_names)
-        assert fp_gm.graph_metrics == ['branching']
+        assert fp_gm.component_metrics == ['binary', 'branching']
 
-        # Two metrics → 3× base width
-        fp_gm2 = results.to_fingerprint(count_mode='binary',
-                                          graph_metrics=['branching', 'mean_eccentricity'])
+        # Three metrics → 3× base width
+        fp_gm2 = results.to_fingerprint(
+            component_metrics=['binary', 'branching', 'mean_eccentricity'])
         assert len(fp_gm2.group_names) == 3 * n_base
         assert fp_gm2.fingerprints.shape[1] == 3 * n_base
 
     def test_molecule_metrics(self, results):
         """Test molecule-wide scalar metrics appended to the fingerprint."""
-        fp_base = results.to_fingerprint(count_mode='binary')
+        fp_base = results.to_fingerprint(component_metrics=['binary'])
         n_base = len(fp_base.group_names)
 
-        fp_mm = results.to_fingerprint(count_mode='binary',
-                                        molecule_metrics=['n_components', 'mean_branching'])
+        fp_mm = results.to_fingerprint(
+            component_metrics=['binary'],
+            molecule_metrics=['n_components', 'mean_branching'])
         assert len(fp_mm.group_names) == n_base + 2
         assert fp_mm.fingerprints.shape[1] == n_base + 2
-        # Column names include mol: prefix
         assert 'mol:n_components' in fp_mm.group_names
         assert 'mol:mean_branching' in fp_mm.group_names
         assert fp_mm.molecule_metrics == ['n_components', 'mean_branching']
-        # n_components must be non-negative
         mol_col = fp_mm.group_names.index('mol:n_components')
         assert np.all(fp_mm.fingerprints[:, mol_col] >= 0)
 
     def test_graph_and_molecule_metrics_combined(self, results):
-        """Test combining graph_metrics and molecule_metrics."""
-        fp_base = results.to_fingerprint(count_mode='binary')
+        """Test combining component graph metrics and molecule_metrics."""
+        fp_base = results.to_fingerprint(component_metrics=['binary'])
         n_base = len(fp_base.group_names)
-        fp = results.to_fingerprint(count_mode='binary',
-                                     graph_metrics=['branching'],
-                                     molecule_metrics=['n_components'])
+        fp = results.to_fingerprint(
+            component_metrics=['binary', 'branching'],
+            molecule_metrics=['n_components'])
         expected_cols = n_base * 2 + 1
         assert len(fp.group_names) == expected_cols
         assert fp.fingerprints.shape[1] == expected_cols
@@ -143,45 +142,43 @@ class TestResultsModelToFingerprint:
     def test_custom_group_ids(self, results):
         """Test custom group ID selection."""
         custom_ids = [1, 2, 5, 10]
-        fp = results.to_fingerprint(selected_group_ids=custom_ids, count_mode='binary', halogens='F')
+        fp = results.to_fingerprint(selected_group_ids=custom_ids, halogens='F')
         assert len(fp.group_names) == len(custom_ids)
 
     def test_halogen_default(self, results):
-        """Default halogen='F' gives 117 group names, no suffix."""
-        fp = results.to_fingerprint(halogens='F',count_mode='binary')
+        """Default halogen='F' gives 112 group names with [binary] metric suffix."""
+        fp = results.to_fingerprint(halogens='F')
         assert fp.halogens == ['F']
         assert fp.saturation == 'per'
         assert len(fp.group_names) == 112
-        assert not any('[' in name for name in fp.group_names)
+        assert all('[binary]' in name for name in fp.group_names)
 
     def test_halogen_stacking(self, results):
-        """Multiple halogens double (or triple) fingerprint width."""
-        fp_f = results.to_fingerprint(halogens='F',count_mode='binary')
-        fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'],count_mode='binary')
-        n_groups = len(fp_f.group_names)  # Both halogens use the same group set
+        """Multiple halogens double fingerprint width."""
+        fp_f  = results.to_fingerprint(halogens='F')
+        fp_fcl = results.to_fingerprint(halogens=['F', 'Cl'])
+        n_groups = len(fp_f.group_names)
         assert len(fp_fcl.group_names) == n_groups * 2
         assert fp_fcl.fingerprints.shape == (len(results), n_groups * 2)
-        # Names should be suffixed
-        assert all(name.endswith('[F]') or name.endswith('[Cl]')
-                   for name in fp_fcl.group_names)
-        # First half = F section, second half = Cl section
-        assert fp_fcl.group_names[0].endswith('[F]')
-        assert fp_fcl.group_names[n_groups].endswith('[Cl]')
+        # Each name contains the halogen tag and the metric tag
+        assert all('[F]' in name or '[Cl]' in name for name in fp_fcl.group_names)
+        assert '[F]' in fp_fcl.group_names[0]
+        assert '[Cl]' in fp_fcl.group_names[n_groups]
 
     def test_saturation_poly(self, results):
         """Saturation='poly' is accepted and stored."""
-        fp = results.to_fingerprint(halogens='F', saturation='poly',count_mode='binary')
+        fp = results.to_fingerprint(halogens='F', saturation='poly')
         assert fp.saturation == 'poly'
         assert fp.fingerprints.shape[0] == len(results)
 
     def test_saturation_none(self, results):
         """Saturation=None disables the saturation filter."""
-        fp = results.to_fingerprint(halogens='F', saturation=None,count_mode='binary')
+        fp = results.to_fingerprint(halogens='F', saturation=None)
         assert fp.saturation is None
 
     def test_halogen_telomers_selection(self, results):
         """Telomers selection uses correct ID range."""
-        fp = results.to_fingerprint(group_selection='telomers', count_mode='binary', halogens='F')
+        fp = results.to_fingerprint(group_selection='telomers', halogens='F')
         assert len(fp.group_names) == 42
 
 
@@ -216,7 +213,7 @@ class TestResultsFingerprint:
         assert 'PFASFingerprint' in repr_str
         assert 'shape=' in repr_str
         assert 'halogens' in repr_str
-        assert 'count_mode=' in repr_str
+        assert 'component_metrics=' in repr_str
     
     def test_summary(self, fingerprint):
         """Test summary method."""
@@ -351,7 +348,7 @@ class TestSQLOperations:
         assert len(fp_loaded.group_names) <= len(fingerprint.group_names)
         assert len(fp_loaded.group_names) > 0  # At least some groups saved
         assert fp_loaded.group_selection == fingerprint.group_selection
-        assert fp_loaded.count_mode == fingerprint.count_mode
+        assert fp_loaded.component_metrics == fingerprint.component_metrics
         
         # Check that fingerprints have the right shape
         assert fp_loaded.fingerprints.shape[0] == fingerprint.fingerprints.shape[0]
@@ -614,7 +611,7 @@ class TestDocumentation:
         assert 'PFASFingerprint' in repr_str
         assert 'shape=' in repr_str
         assert 'group_selection=' in repr_str
-        assert 'count_mode=' in repr_str
+        assert 'component_metrics=' in repr_str
     
     def test_method_docstrings(self):
         """Test that key methods have docstrings."""
@@ -654,8 +651,8 @@ class TestNumericalStability:
         """Test with identical SMILES."""
         identical_smiles = [TEST_SMILES[0]] * 3
         results = parse_smiles(identical_smiles)
-        fp = results.to_fingerprint(count_mode='binary')
-        
+        fp = results.to_fingerprint(component_metrics=['binary'])
+
         # Should not crash - note: identical SMILES may be deduplicated
         assert len(fp) >= 1  # At least one result
         

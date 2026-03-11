@@ -27,7 +27,8 @@ def prioritise_molecules(
     b: float = 1.0,
     percentile: float = 90.0,
     return_scores: bool = True,
-    ascending: bool = False
+    ascending: bool = False,
+    progress: bool = False,
 ) -> Union[ResultsModel, Tuple[ResultsModel, np.ndarray]]:
     """
     Prioritize PFAS molecules based on similarity to a reference or intrinsic properties.
@@ -179,9 +180,9 @@ def prioritise_molecules(
 
         # Check if list contains SMILES strings or Mol objects
         if isinstance(molecules[0], str):
-            results = parse_smiles(molecules)
+            results = parse_smiles(molecules, progress=progress)
         elif isinstance(molecules[0], Chem.Mol):
-            results = parse_mols(molecules)
+            results = parse_mols(molecules, progress=progress)
         else:
             raise TypeError(
                 f"molecules must be list of SMILES strings or RDKit Mol objects, "
@@ -197,7 +198,8 @@ def prioritise_molecules(
     if reference is not None:
         # Reference-based: cosine similarity of fingerprint vectors
         scores = _prioritise_by_reference(
-            results, reference, group_selection, count_mode, halogens, saturation
+            results, reference, group_selection, count_mode, halogens, saturation,
+            progress=progress,
         )
     else:
         # Intrinsic: fluorinated component characteristics
@@ -224,6 +226,7 @@ def _prioritise_by_reference(
     count_mode: str,
     halogens: Union[str, List[str]] = 'F',
     saturation: Optional[str] = None,
+    progress: bool = False,
 ) -> np.ndarray:
     """
     Prioritize by similarity to a reference set of molecules.
@@ -261,9 +264,9 @@ def _prioritise_by_reference(
         if len(reference) == 0:
             raise ValueError("reference list is empty")
         if isinstance(reference[0], str):
-            ref_results = parse_smiles(reference)
+            ref_results = parse_smiles(reference, progress=progress)
         elif isinstance(reference[0], Chem.Mol):
-            ref_results = parse_mols(reference)
+            ref_results = parse_mols(reference, progress=progress)
         else:
             raise TypeError(
                 f"reference must be list of SMILES strings or RDKit Mol objects, "

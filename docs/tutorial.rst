@@ -124,9 +124,12 @@ fluorine only, binary encoding):
 
 .. code-block:: python
 
-   fps_bin, _ = generate_fingerprint(smiles_list, count_mode='binary')       # default
-   fps_cnt, _ = generate_fingerprint(smiles_list, count_mode='count')
-   fps_max, _ = generate_fingerprint(smiles_list, count_mode='max_component')
+   fps_bin, _ = generate_fingerprint(smiles_list, component_metrics=['binary'])       # default
+   fps_cnt, _ = generate_fingerprint(smiles_list, component_metrics=['count'])
+   fps_max, _ = generate_fingerprint(smiles_list, component_metrics=['max_component'])
+
+   # Best benchmark config: binary + effective graph resistance (2 × n_groups cols)
+   fps_best, _ = generate_fingerprint(smiles_list, preset='best')
 
 Using ResultsModel.to_fingerprint
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,7 +145,7 @@ Using ResultsModel.to_fingerprint
    print(fp.fingerprints.shape)     # (3, 116)
    print(fp.group_names[:3])        # list of group-name strings
    print(fp.halogens)               # ['F']
-   print(fp.count_mode)             # 'binary'
+   print(fp.component_metrics)      # ['binary']
 
 Group selection with to_fingerprint:
 

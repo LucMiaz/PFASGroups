@@ -98,20 +98,126 @@ Component graph metrics
 For each matched component a molecular graph is constructed and the following
 metrics are computed (unless ``compute_component_metrics=False``):
 
-**Effective graph resistance** (Kirchhoff index)
+**Effective graph resistance** (BDE-weighted Kirchhoff index)
+
+Each bond :math:`(u,v)` with bond order :math:`b` is assigned a *conductance*
+proportional to the bond's dissociation energy:
 
 .. math::
 
-   R_e = n \sum_{i=2}^{n} \frac{1}{\lambda_i}
+   c_{uv} = \frac{\text{BDE}(Z_u,\, Z_v,\, b)}{\text{BDE}_\text{ref}}
 
-where :math:`\lambda_i` are the non-zero eigenvalues of the Laplacian and
-:math:`n` is the number of atoms.
+where:
 
-To limit computation time on very large components you can pass:
+* :math:`\text{BDE}(Z_u, Z_v, 1)` — single-bond dissociation energy (kcal/mol)
+  for the element pair :math:`(Z_u, Z_v)`, looked up from
+  ``PFASGroups/data/diatomic_bonds_dict.json`` (the same reference table used
+  by ``molecular_quantum_graph``).
+* :math:`\text{BDE}(Z_u, Z_v, b) = \text{BDE}(Z_u, Z_v, 1) \cdot f(b)` —
+  scaled by the **bond-order model** :math:`f(b)` described below.
+* :math:`\text{BDE}_\text{ref}` — the C–C single-bond BDE (~83 kcal/mol),
+  used as normalisation so that :math:`c_{CC,\text{single}} = 1`.
+
+Higher BDE → higher conductance → *shorter* effective resistance path.
+This means C–F bonds (BDE ≈ 130 kcal/mol, :math:`c \approx 1.56`) contribute
+less resistance than C–C bonds (BDE ≈ 83 kcal/mol, :math:`c = 1.0`).
+
+Bond-order model
+~~~~~~~~~~~~~~~~
+
+For bonds with order :math:`b > 1` (double, triple, aromatic), the single-bond
+BDE is scaled by :math:`f(b)` where :math:`f(1) = 1` by construction.
+PFASGroups attempts to load the calibrated model produced by
+``molecular_quantum_graph``'s ``bond_order_calibration.py`` from
+``molecular_quantum_graph/data/bond_order_model.json``.  Five functional forms
+are supported:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 12 35 18
+
+   * - Model
+     - Formula :math:`f(b)`
+     - Default params
+   * - ``linear``  *(fallback)*
+     - :math:`1 + \alpha\,(b-1)`
+     - :math:`\alpha = 0.3`
+   * - ``power``
+     - :math:`b^{\,\beta}`
+     - :math:`\beta = 0.6`
+   * - ``log``
+     - :math:`1 + a\,\ln b`
+     - :math:`a = 1.0`
+   * - ``poly2``
+     - :math:`1 + a\,(b-1) + c\,(b-1)^2`
+     - —
+   * - ``poly3``
+     - :math:`1 + a\,(b-1) + b_2\,(b-1)^2 + c\,(b-1)^3`
+     - —
+
+When ``bond_order_model.json`` is absent (e.g. ``molecular_quantum_graph`` is
+not installed), the **linear model with** :math:`\alpha = 0.3` is used
+automatically.
+
+Resistance distance and Kirchhoff index
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The **weighted Laplacian** :math:`L` is assembled from the per-bond conductances.
+The exact resistance distance between atoms :math:`u` and :math:`v` is then:
+
+.. math::
+
+   R(u,v) = L^+_{uu} + L^+_{vv} - 2\,L^+_{uv}
+
+where :math:`L^+` is the **Moore–Penrose pseudoinverse** of :math:`L` (computed
+via ``numpy.linalg.pinv``).
+
+The **Kirchhoff index** (reported as ``effective_graph_resistance``) satisfies
+
+.. math::
+
+   K_f = \sum_{u < v} R(u, v) = n \sum_{i=2}^{n} \frac{1}{\lambda_i(L)}
+
+Physical properties of :math:`R(u,v)`:
+
+* **Symmetry**: :math:`R(u,v) = R(v,u)`
+* **Positivity**: :math:`R(u,v) > 0` for :math:`u \neq v` in a connected graph
+* **Triangle inequality**: :math:`R(i,k) \leq R(i,j) + R(j,k)`
+* **Monotone with chain length**: for a linear homologous PFCA series,
+  :math:`K_f` increases strictly with :math:`n` (fluorinated carbons)
+* **Branching reduces** :math:`K_f`: branched isomers have lower :math:`K_f`
+  than the linear chain of the same carbon count, because branching shortens
+  the maximum pairwise path
+
+Accessing resistance metrics
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+All resistance values are available per-component in the parse results:
 
 .. code-block:: python
 
-   results = parse_smiles(smiles, limit_effective_graph_resistance=500)
+   from PFASGroups import parse_smiles
+
+   results = parse_smiles('OC(=O)C(F)(F)C(F)(F)C(F)(F)F', halogens='F')
+   comp = results[0]['matches'][0]['components'][0]
+
+   # BDE-weighted Kirchhoff index
+   print(comp['effective_graph_resistance'])
+
+   # BDE-weighted resistance from functional group to structural landmarks
+   print(comp['min_resistance_dist_to_barycenter'])
+   print(comp['min_resistance_dist_to_center'])
+   print(comp['max_resistance_dist_to_periphery'])
+
+To limit computation time on very large components:
+
+.. code-block:: python
+
+   # Only compute resistance for components with < 200 atoms
+   results = parse_smiles(smiles, limit_effective_graph_resistance=200)
+
+   # Skip resistance entirely
+   results = parse_smiles(smiles, limit_effective_graph_resistance=0)
 
 **Atom count** — number of heavy atoms in the component.
 
@@ -134,12 +240,12 @@ mode is:
 Default F-only column count: 116 × 1 = **116**.
 All-halogen column count: 116 × 4 = **464** (see :ref:`multi_halogen_fingerprint`).
 
-Three ``count_mode`` options are available:
+Four count encoding values are available as items in ``component_metrics``:
 
 .. list-table::
    :header-rows: 1
 
-   * - count_mode
+   * - component_metrics value
      - Cell value
    * - ``'binary'`` (default)
      - 1 if any match exists, 0 otherwise
@@ -147,6 +253,8 @@ Three ``count_mode`` options are available:
      - Number of matching components
    * - ``'max_component'``
      - Size of the largest matching component (atom count)
+   * - ``'total_component'``
+     - Sum of all matching component sizes (atom count)
 
 PFAS definition classification
 --------------------------------

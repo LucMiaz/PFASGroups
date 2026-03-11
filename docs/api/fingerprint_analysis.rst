@@ -12,7 +12,7 @@
 
    print(fp.fingerprints.shape)        # (2, 116)  — 116 groups, F only, binary
    print(fp.group_selection)           # 'all'
-   print(fp.count_mode)                # 'binary'
+   print(fp.component_metrics)         # ['binary']
 
    # PCA in two lines
    coords = fp.perform_pca(n_components=2)
@@ -58,7 +58,7 @@ Via :meth:`~PFASGroups.ResultsModel.to_fingerprint`:
    print(fp.group_names[:2])        # e.g. ['perfluoromethyl', 'perfluoroalkyl']
 
    # OECD groups only, count mode
-   fp_oecd = results.to_fingerprint(group_selection='oecd', count_mode='count')
+   fp_oecd = results.to_fingerprint(group_selection='oecd', component_metrics=['count'])
    print(fp_oecd.fingerprints.shape)   # (3, 28)
 
 Or use :func:`~PFASGroups.generate_fingerprint` directly for a numpy array
@@ -93,8 +93,8 @@ Attributes
      - List of halogen symbols used, e.g. ``['F']`` or ``['F', 'Cl', 'Br', 'I']``
    * - ``saturation``
      - Saturation filter used (``'per'``, ``'poly'``, or ``None``)
-   * - ``count_mode``
-     - Count mode used: ``'binary'``, ``'count'``, or ``'max_component'``
+   * - ``component_metrics``
+     - List of metrics used: e.g. ``['binary']`` or ``['binary', 'effective_graph_resistance']``
 
 Dimensionality reduction
 -------------------------
@@ -209,7 +209,7 @@ to_sql / from_sql
    print(fp2.fingerprints.shape)
 
 Matrices are stored in sparse format.  Metadata (``halogens``,
-``saturation``, ``count_mode``, ``group_names``) is preserved.
+``saturation``, ``component_metrics``, ``group_names``) is preserved.
 
 Summary
 ~~~~~~~
@@ -226,6 +226,6 @@ Summary
    # Groups: 116
    # Group selection: all
    # Halogens: F
-   # Count mode: binary
+   # Comp metr. : ['binary']
    # Fingerprint shape: (3, 116)
    # Non-zero entries: 2

@@ -46,8 +46,9 @@ Its length equals the number of input SMILES.
      - Access the i-th :class:`MoleculeResult`
    * - ``results.to_dataframe()``
      - Flatten all matches to a ``pandas.DataFrame``
-   * - ``results.to_fingerprint(group_selection='all', count_mode='binary', halogens='F', saturation='per')``
-     - Convert to a :class:`ResultsFingerprint`
+   * - ``results.to_fingerprint(group_selection='all', component_metrics=['binary'], halogens='F', saturation='per')``
+     - Convert to a :class:`ResultsFingerprint` (**PFASGroups** default: ``halogens='F'``, 116 cols;
+       **HalogenGroups** subclass default: ``halogens=['F','Cl','Br','I']``, 464 cols)
    * - ``results.to_sql(filename)``
      - Persist to a SQLite or PostgreSQL database
    * - ``ResultsModel.from_sql(filename)``
@@ -55,17 +56,31 @@ Its length equals the number of input SMILES.
 
 to_fingerprint options:
 
+.. note::
+
+   The default value of ``halogens`` depends on which module the
+   :class:`ResultsModel` came from:
+
+   * ``from PFASGroups import parse_smiles`` → ``halogens='F'`` (116 columns)
+   * ``from HalogenGroups import parse_smiles`` → ``halogens=['F','Cl','Br','I']`` (464 columns)
+
+   Always pass ``halogens`` explicitly in reusable helpers or notebook functions
+   to avoid silent fingerprint-width changes when the import source changes.
+
 .. code-block:: python
 
-   # Default: all 116 groups, F only, binary
+   # PFASGroups default: all 116 groups, F only, binary → (n, 116)
    fp = results.to_fingerprint()                                   # (n, 116)
 
+   # Always-explicit (safe in any import context)
+   fp = results.to_fingerprint(halogens='F')                       # (n, 116)
+
    # OECD groups only
-   fp = results.to_fingerprint(group_selection='oecd')            # (n, 28)
+   fp = results.to_fingerprint(group_selection='oecd', halogens='F')  # (n, 28)
 
    # Count or max-component encoding
-   fp = results.to_fingerprint(count_mode='count')
-   fp = results.to_fingerprint(count_mode='max_component')
+   fp = results.to_fingerprint(component_metrics=['count'], halogens='F')
+   fp = results.to_fingerprint(component_metrics=['max_component'], halogens='F')
 
    # Multi-halogen (advanced) — see halogengroups page
    fp = results.to_fingerprint(halogens=['F', 'Cl', 'Br', 'I'])  # (n, 464)

@@ -75,66 +75,45 @@ class ResultsModel(_ResultsModel):
         self,
         *,
         group_selection: str = 'all',
-        count_mode: str = 'binary',
+        component_metrics: Optional[List[str]] = None,
         selected_group_ids: Optional[List[int]] = None,
         halogens: Optional[Union[str, List[str]]] = None,
         saturation: Optional[str] = 'per',
-        graph_metrics: Optional[List[str]] = None,
         molecule_metrics: Optional[List[str]] = None,
         pfas_groups: Optional[List[Dict]] = None,
         preset: Optional[str] = None,
+        # Backward-compat aliases (deprecated)
+        count_mode: Optional[str] = None,
+        graph_metrics: Optional[List[str]] = None,
         **kwargs,
     ) -> 'ResultsFingerprint':
-        """Convert ResultsModel to ResultsFingerprint for dimensionality reduction.
+        """Convert ResultsModel to ResultsFingerprint.
+
+        Identical to ``PFASGroups.ResultsModel.to_fingerprint`` except the
+        default for ``halogens`` is ``['F', 'Cl', 'Br', 'I']`` (all halogens)
+        instead of ``'F'``.
 
         Parameters
         ----------
-        group_selection : str, default 'all'
-            Which groups to include in fingerprint:
-            - 'all': All available groups
-            - 'oecd': OECD groups (IDs 1–28)
-            - 'generic': Generic functional-group groups (IDs 29–55)
-            - 'telomers': Telomer-related groups (IDs 74–116)
-            - 'generic+telomers': Combination of generic and telomer groups
-        count_mode : str, default 'binary'
-            How to encode group matches:
-            - 'binary': 1 if present, 0 if absent
-            - 'count': Number of matched components
-            - 'max_component': Maximum component size (C-atom count)
-            - 'total_component': Sum of all component sizes
-        selected_group_ids : list of int, optional
-            Explicit list of group IDs to include (overrides group_selection)
+        component_metrics : list of str, default ['binary']
+            Ordered list of per-component metrics (count modes and/or graph
+            metrics).  See ``PFASGroups.ResultsModel.to_fingerprint``.
         halogens : str or list of str, default ['F', 'Cl', 'Br', 'I']
-            Which halogen(s) to match component SMARTS against.
-            Multiple values produce one fingerprint per halogen,
-            concatenated into a vector of length n_groups × n_halogens.
-            Group names are suffixed with ``[F]``, ``[Cl]``, etc.
-            Available: ``'F'``, ``'Cl'``, ``'Br'``, ``'I'``
-        saturation : str or None, default 'per'
-            Saturation filter applied to component SMARTS groups:
-            - ``'per'``: perhalogenated only
-            - ``'poly'``: polyhalogenated only
-            - ``None``: no filter
-        graph_metrics : list of str, optional
-            Per-group component graph metrics appended as extra column blocks
-            (n_groups columns per metric, mean-aggregated).
-            E.g. ``['branching', 'mean_eccentricity']`` yields 3 × n_groups cols.
-        molecule_metrics : list of str, optional
-            Molecule-wide scalar metrics appended after all group columns.
-            E.g. ``['n_components', 'mean_branching']``.
+            Which halogen(s) to match SMARTS against.
         """
         if halogens is None:
             halogens = _ALL_HALOGENS
         return super().to_fingerprint(
             group_selection=group_selection,
-            count_mode=count_mode,
+            component_metrics=component_metrics,
             selected_group_ids=selected_group_ids,
             halogens=halogens,
             saturation=saturation,
-            graph_metrics=graph_metrics,
             molecule_metrics=molecule_metrics,
             pfas_groups=pfas_groups,
             preset=preset,
+            count_mode=count_mode,
+            graph_metrics=graph_metrics,
             **kwargs,
         )
 
@@ -219,9 +198,10 @@ def parse_mols(mols, *, output_format='list', include_PFAS_definitions=True,
 
 
 def generate_fingerprint(smiles, *, selected_groups=None, representation='vector',
-                         count_mode='binary',
+                         component_metrics=None,
                          halogens: Optional[Union[str, List[str]]] = None,
                          saturation: Optional[str] = 'per',
+                         count_mode=None,
                          **kwargs):
     """Generate halogen-group fingerprints, defaulting to all halogens.
 
@@ -246,9 +226,10 @@ def generate_fingerprint(smiles, *, selected_groups=None, representation='vector
         smiles,
         selected_groups=selected_groups,
         representation=representation,
-        count_mode=count_mode,
+        component_metrics=component_metrics,
         halogens=halogens,
         saturation=saturation,
+        count_mode=count_mode,
         **kwargs,
     )
 

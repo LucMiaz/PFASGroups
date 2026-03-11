@@ -232,7 +232,8 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
 @rdkit_disable_log(level='warning')
 def parse_smiles(smiles, bycomponent=False, output_format='list',
                   limit_effective_graph_resistance=None, compute_component_metrics=True,
-                  halogens='F', form=None, saturation=None, **kwargs):
+                  halogens='F', form=None, saturation=None, progress=False,
+                  **kwargs):
     """
     Parse SMILES string(s) and return halogen group information.
 
@@ -266,6 +267,8 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
         Filter components by form type (e.g., 'alkyl', ['alkyl', 'cyclic'], or None for all)
     saturation : str or list of str, optional
         Filter components by saturation (e.g., 'per', 'poly', or None for all)
+    progress : bool, default False
+        If True, display a tqdm progress bar during parsing.
     **kwargs : dict
         Additional parameters (pfas_groups, componentSmartss, etc.)
 
@@ -284,7 +287,7 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     kwargs['halogens'] = halogens
     kwargs['form'] = form
     kwargs['saturation'] = saturation
-    return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, **kwargs)
+    return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, progress=progress, **kwargs)
 
 from .results_model import ResultsModel
 
@@ -302,6 +305,7 @@ def parse_from_database(
     components_table: str = "components",
     groups_table: str = "pfas_groups_in_compound",
     write_results: bool = True,
+    progress: bool = False,
     **kwargs
 ):
     """Parse halogen groups from molecules stored in a database.
@@ -337,6 +341,8 @@ def parse_from_database(
         Table name for halogen group matches.
     write_results : bool, default True
         Whether to write results back to database.
+    progress : bool, default False
+        If True, display a tqdm progress bar during parsing.
     **kwargs : dict
         Additional parameters passed to parse_mols (e.g., pfas_groups, componentSmartss).
 
@@ -444,7 +450,7 @@ def parse_from_database(
 
         # Parse this batch
         if mols:
-            batch_results = parse_mols(mols, **kwargs)
+            batch_results = parse_mols(mols, progress=progress, **kwargs)
             all_results.extend(batch_results)
 
     # Combine all results
@@ -575,18 +581,19 @@ def setup_halogen_groups_database(
     return stats
 
 
-def parse_mol(mol, **kwargs):
+def parse_mol(mol, progress=False, **kwargs):
     """Wrapper for parse_mols to handle single molecule input.
 
     Returns a single ``MoleculeResult`` when ``output_format='list'``
     (default), preserving backwards-compatible dict behaviour while
     enabling richer navigation helpers.
     """
-    return parse_mols([mol], **kwargs)[0]
+    return parse_mols([mol], progress=progress, **kwargs)[0]
 
 def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                limit_effective_graph_resistance=None, compute_component_metrics=True,
-               halogens='F', form=None, saturation=None, **kwargs):
+               halogens='F', form=None, saturation=None, progress=False,
+               **kwargs):
     """
     Parse RDKit molecule(s) and return halogen group information.
 
@@ -620,6 +627,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         Filter components by form type (e.g., 'alkyl', ['alkyl', 'cyclic'], or None for all)
     saturation : str or list of str, optional
         Filter components by saturation (e.g., 'per', 'poly', or None for all)
+    progress : bool, default False
+        If True, display a tqdm progress bar during parsing.
     **kwargs : dict
         Additional parameters (halogen_groups, componentSmartss, etc.)
 
@@ -631,7 +640,14 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
 
     # Parse all molecules
     results = {}
-    for mol in mols:
+    _iter = mols
+    if progress:
+        try:
+            from tqdm.auto import tqdm as _tqdm
+        except ImportError:
+            from tqdm import tqdm as _tqdm
+        _iter = _tqdm(mols, desc='parse_mols', total=len(mols))
+    for mol in _iter:
         # Add hydrogens to ensure consistent atom indexing
         mol_with_h = Chem.AddHs(mol)
         formula = CalcMolFormula(mol)
@@ -710,6 +726,30 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 mean_radius = sum(radii)/len(radii) if len(radii) > 0 else float('nan')
                 mean_resistance = sum(resistances)/len(resistances) if len(resistances) > 0 else float('nan')
 
+                # New BDE-resistance-derived metrics — filter out NaN before averaging
+                def _nanmean(vals):
+                    clean = [v for v in vals if v == v and v != float('inf')]
+                    return sum(clean) / len(clean) if clean else float('nan')
+
+                mean_resistance_distance_vals = [c.get('mean_resistance_distance', float('nan')) for c in matched_components]
+                resistance_diameter_vals      = [c.get('resistance_diameter', float('nan'))      for c in matched_components]
+                resistance_radius_vals        = [c.get('resistance_radius', float('nan'))        for c in matched_components]
+                mean_resistance_ecc_vals      = [c.get('mean_resistance_eccentricity', float('nan')) for c in matched_components]
+
+                mean_mean_resistance_distance = _nanmean(mean_resistance_distance_vals)
+                mean_resistance_diameter      = _nanmean(resistance_diameter_vals)
+                mean_resistance_radius        = _nanmean(resistance_radius_vals)
+                mean_mean_resistance_eccentricity = _nanmean(mean_resistance_ecc_vals)
+
+                # Resistance-distance-to-structural-feature summaries
+                min_res_dists_bc     = [c['min_resistance_dist_to_barycenter'] for c in matched_components if c['min_resistance_dist_to_barycenter'] < float('inf')]
+                min_res_dists_center = [c['min_resistance_dist_to_center']     for c in matched_components if c['min_resistance_dist_to_center']     < float('inf')]
+                max_res_dists_periph = [c['max_resistance_dist_to_periphery']  for c in matched_components if c['max_resistance_dist_to_periphery']  > 0]
+
+                mean_resistance_dist_to_barycenter = sum(min_res_dists_bc)     / len(min_res_dists_bc)     if min_res_dists_bc     else 0.0
+                mean_resistance_dist_to_center     = sum(min_res_dists_center) / len(min_res_dists_center) if min_res_dists_center else 0.0
+                mean_resistance_dist_to_periphery  = sum(max_res_dists_periph) / len(max_res_dists_periph) if max_res_dists_periph else 0.0
+
                 # Distance metrics summaries
                 min_dists_bc = [c['min_dist_to_barycenter'] for c in matched_components if c['min_dist_to_barycenter'] < float('inf')]
                 min_dists_center = [c['min_dist_to_center'] for c in matched_components if c['min_dist_to_center'] < float('inf')]
@@ -733,7 +773,15 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                     'mean_effective_graph_resistance': mean_resistance,
                     'mean_dist_to_barycenter': mean_dist_to_barycenter,
                     'mean_dist_to_center': mean_dist_to_center,
-                    'mean_dist_to_periphery': mean_dist_to_periphery
+                    'mean_dist_to_periphery': mean_dist_to_periphery,
+                    # New BDE-resistance-derived molecule-wide summaries
+                    'mean_resistance_distance': mean_mean_resistance_distance,
+                    'mean_resistance_diameter': mean_resistance_diameter,
+                    'mean_resistance_radius': mean_resistance_radius,
+                    'mean_resistance_eccentricity': mean_mean_resistance_eccentricity,
+                    'mean_resistance_dist_to_barycenter': mean_resistance_dist_to_barycenter,
+                    'mean_resistance_dist_to_center': mean_resistance_dist_to_center,
+                    'mean_resistance_dist_to_periphery': mean_resistance_dist_to_periphery,
                 }
             else:
                 summary_metrics = {
@@ -750,7 +798,15 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                     'mean_effective_graph_resistance': float('nan'),
                     'mean_dist_to_barycenter': 0,
                     'mean_dist_to_center': 0,
-                    'mean_dist_to_periphery': 0
+                    'mean_dist_to_periphery': 0,
+                    # New BDE-resistance-derived molecule-wide summaries
+                    'mean_resistance_distance': float('nan'),
+                    'mean_resistance_diameter': float('nan'),
+                    'mean_resistance_radius': float('nan'),
+                    'mean_resistance_eccentricity': float('nan'),
+                    'mean_resistance_dist_to_barycenter': 0.0,
+                    'mean_resistance_dist_to_center': 0.0,
+                    'mean_resistance_dist_to_periphery': 0.0,
                 }
 
             match_results.append({

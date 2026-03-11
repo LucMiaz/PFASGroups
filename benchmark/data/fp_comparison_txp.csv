@@ -1,0 +1,57 @@
+,label,mat,ok,kwargs
+0,egr+mdb,"[[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]",[ True  True  True ...  True  True  True],"{'component_metrics': ['effective_graph_resistance', 'min_dist_to_barycenter']}"
+1,egr,"[[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]",[ True  True  True ...  True  True  True],{'component_metrics': ['effective_graph_resistance']}
+2,mdb,"[[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]",[ True  True  True ...  True  True  True],{'component_metrics': ['min_dist_to_barycenter']}
+3,mrb,"[[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]",[ True  True  True ...  True  True  True],{'component_metrics': ['min_resistance_dist_to_barycenter']}
+4,mdc,"[[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]",[ True  True  True ...  True  True  True],{'component_metrics': ['min_dist_to_center']}
+5,mrc,"[[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]",[ True  True  True ...  True  True  True],{'component_metrics': ['min_resistance_dist_to_center']}
+6,egr+mdb+mol,"[[  0.   0.   0. ...   2.   0.   0.]
+ [  0.   0.   0. ...   0.   0.   0.]
+ [  0.   0.   0. ...   0.   0.   0.]
+ ...
+ [  0.   0.   0. ... 144.   1.   8.]
+ [  0.   0.   0. ... 204.   1.   9.]
+ [  0.   0.   0. ... 204.   1.   9.]]",[ True  True  True ...  True  True  True],"{'component_metrics': ['effective_graph_resistance', 'min_dist_to_barycenter'], 'molecule_metrics': ['n_components', 'total_size', 'max_branching', 'max_diameter']}"
+7,egr+mol,"[[  0.   0.   0. ...   2.   0.   0.]
+ [  0.   0.   0. ...   0.   0.   0.]
+ [  0.   0.   0. ...   0.   0.   0.]
+ ...
+ [  0.   0.   0. ... 144.   1.   8.]
+ [  0.   0.   0. ... 204.   1.   9.]
+ [  0.   0.   0. ... 204.   1.   9.]]",[ True  True  True ...  True  True  True],"{'component_metrics': ['effective_graph_resistance'], 'molecule_metrics': ['n_components', 'total_size', 'max_branching', 'max_diameter']}"
