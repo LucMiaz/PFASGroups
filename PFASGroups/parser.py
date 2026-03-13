@@ -4,16 +4,24 @@ HalogenGroups core functions.
 This module provides functions for parsing and plotting halogen groups.
 """
 
+import json
+import functools
 from typing import Optional
 
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+
 from .HalogenGroupModel import HalogenGroup
 from .PFASDefinitionModel import PFASDefinition
 from .ComponentsSolverModel import ComponentsSolver
-from .core import fragment_until_valence_is_correct, n_from_formula, add_componentSmarts, PFAS_DEFINITIONS_FILE, HALOGEN_GROUPS_FILE, rdkit_disable_log
-import json
-import functools
+from .core import (
+    fragment_until_valence_is_correct,
+    n_from_formula,
+    add_componentSmarts,
+    PFAS_DEFINITIONS_FILE,
+    HALOGEN_GROUPS_FILE,
+    rdkit_disable_log,
+)
 
 
 

@@ -1,14 +1,14 @@
-from PIL import Image
-import svgutils.transform as sg
-from rdkit.Chem import Draw
-from PIL import Image
 from io import BytesIO
-import svgutils.transform as sg
+from typing import Union
+
+from PIL import Image
 from rdkit import Chem
+from rdkit.Chem import Draw
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+import svgutils.transform as sg
+
 from .core import add_componentSmarts
 from .parser import parse_groups_in_mol
-from typing import Union
 def merge_raster(imgs,buffer,ncols):
     """Merge multiple raster images into a grid layout.
 

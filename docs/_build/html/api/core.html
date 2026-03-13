@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Core API &mdash; HalogenGroups / PFASGroups 3.1.3 documentation</title>
+  <title>Core API &mdash; HalogenGroups / PFASGroups 3.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -14,9 +14,9 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=eaea8fc6"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=4f6ddb47"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../_static/copybutton.js?v=d30a5ebd"></script>
     <script src="../_static/js/theme.js"></script>
@@ -90,7 +90,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithm.html#overlap-deduplication">Overlap deduplication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#component-graph-metrics">Component graph metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm.html#component-graph-metrics">Component graph metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#bond-order-model">Bond-order model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#resistance-distance-and-kirchhoff-index">Resistance distance and Kirchhoff index</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm.html#accessing-resistance-metrics">Accessing resistance metrics</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithm.html#fingerprint-generation">Fingerprint generation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algorithm.html#pfas-definition-classification">PFAS definition classification</a></li>
 </ul>
@@ -220,8 +225,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#PFASGroups.get_PFASDefinitions"><code class="docutils literal notranslate"><span class="pre">get_PFASDefinitions()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#get-componentsmartss">get_componentSmartss</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-componentsmartss">get_componentSMARTSs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PFASGroups.get_componentSMARTSs"><code class="docutils literal notranslate"><span class="pre">get_componentSMARTSs()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -247,6 +252,7 @@
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.svg"><code class="docutils literal notranslate"><span class="pre">ResultsModel.svg()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.summarise"><code class="docutils literal notranslate"><span class="pre">ResultsModel.summarise()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.table"><code class="docutils literal notranslate"><span class="pre">ResultsModel.table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.classify"><code class="docutils literal notranslate"><span class="pre">ResultsModel.classify()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.summary"><code class="docutils literal notranslate"><span class="pre">ResultsModel.summary()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.plot_all_components_with_group_colours"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot_all_components_with_group_colours()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.ResultsModel.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_sql()</span></code></a></li>
@@ -266,9 +272,11 @@
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.summarise"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summarise()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.summary"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summary()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.table"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.classify"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.classify()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.show"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.show()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.plot"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.plot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.svg"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.svg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.to_fingerprint"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.to_fingerprint()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="models.html#PFASGroups.MoleculeResult.to_sql"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.to_sql()</span></code></a></li>
 </ul>
 </li>
@@ -329,18 +337,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="fingerprint_analysis.html">Fingerprint Analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="fingerprint_analysis.html#resultsfingerprint">ResultsFingerprint</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.summary"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.summary()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_pca()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_kernel_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_kernel_pca()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_tsne"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_tsne()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_umap"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_umap()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.compare_kld"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.to_sql()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.from_sql()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#creating-a-resultsfingerprint">Creating a ResultsFingerprint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fingerprint_analysis.html#attributes">Attributes</a></li>
 </ul>
@@ -432,84 +429,48 @@
 <nav class="contents local" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#parsing" id="id7">Parsing</a></p>
+<li><p><a class="reference internal" href="#parsing" id="id1">Parsing</a></p>
 <ul>
-<li><p><a class="reference internal" href="#parse-smiles" id="id8">parse_smiles</a></p></li>
-<li><p><a class="reference internal" href="#parse-mols" id="id9">parse_mols</a></p></li>
-<li><p><a class="reference internal" href="#parse-mol" id="id10">parse_mol</a></p></li>
+<li><p><a class="reference internal" href="#parse-smiles" id="id2">parse_smiles</a></p></li>
+<li><p><a class="reference internal" href="#parse-mols" id="id3">parse_mols</a></p></li>
+<li><p><a class="reference internal" href="#parse-mol" id="id4">parse_mol</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#fingerprinting" id="id11">Fingerprinting</a></p>
+<li><p><a class="reference internal" href="#fingerprinting" id="id5">Fingerprinting</a></p>
 <ul>
-<li><p><a class="reference internal" href="#generate-fingerprint" id="id12">generate_fingerprint</a></p></li>
+<li><p><a class="reference internal" href="#generate-fingerprint" id="id6">generate_fingerprint</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#group-library" id="id13">Group library</a></p>
+<li><p><a class="reference internal" href="#group-library" id="id7">Group library</a></p>
 <ul>
-<li><p><a class="reference internal" href="#get-compiled-halogengroups" id="id14">get_compiled_HalogenGroups</a></p></li>
-<li><p><a class="reference internal" href="#get-halogengroups" id="id15">get_HalogenGroups</a></p></li>
-<li><p><a class="reference internal" href="#load-halogengroups" id="id16">load_HalogenGroups</a></p></li>
-<li><p><a class="reference internal" href="#get-pfasdefinitions" id="id17">get_PFASDefinitions</a></p></li>
-<li><p><a class="reference internal" href="#get-componentsmartss" id="id18">get_componentSmartss</a></p></li>
+<li><p><a class="reference internal" href="#get-compiled-halogengroups" id="id8">get_compiled_HalogenGroups</a></p></li>
+<li><p><a class="reference internal" href="#get-halogengroups" id="id9">get_HalogenGroups</a></p></li>
+<li><p><a class="reference internal" href="#load-halogengroups" id="id10">load_HalogenGroups</a></p></li>
+<li><p><a class="reference internal" href="#get-pfasdefinitions" id="id11">get_PFASDefinitions</a></p></li>
+<li><p><a class="reference internal" href="#get-componentsmartss" id="id12">get_componentSMARTSs</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#molecule-prioritization" id="id19">Molecule prioritization</a></p>
+<li><p><a class="reference internal" href="#molecule-prioritization" id="id13">Molecule prioritization</a></p>
 <ul>
-<li><p><a class="reference internal" href="#prioritise-molecules" id="id20">prioritise_molecules</a></p></li>
+<li><p><a class="reference internal" href="#prioritise-molecules" id="id14">prioritise_molecules</a></p></li>
 </ul>
 </li>
 </ul>
 </nav>
 <section id="parsing">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Parsing</a><a class="headerlink" href="#parsing" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Parsing</a><a class="headerlink" href="#parsing" title="Link to this heading"></a></h2>
 <section id="parse-smiles">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">parse_smiles</a><a class="headerlink" href="#parse-smiles" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">parse_smiles</a><a class="headerlink" href="#parse-smiles" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="PFASGroups.parse_smiles">
-<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">parse_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bycomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_effective_graph_resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_component_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.parse_smiles" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">parse_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bycomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_effective_graph_resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_component_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.parse_smiles" title="Link to this definition"></a></dt>
 <dd><p>Parse SMILES string(s) and return halogen group information.</p>
-<section id="parameters">
-<h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
-<dl class="simple">
-<dt>smiles<span class="classifier">str or list of str</span></dt><dd><p>Single SMILES string or list of SMILES strings</p>
-</dd>
-<dt>bycomponent<span class="classifier">bool</span></dt><dd><p>Whether to use component-based analysis</p>
-</dd>
-<dt>output_format<span class="classifier">str, default ‘list’</span></dt><dd><p>Output format: ‘list’ (default), ‘dataframe’, or ‘csv’
-- ‘list’: Returns nested lists of tuples (default behavior)
-- ‘dataframe’: Returns pandas DataFrame with one row per match
-- ‘csv’: Returns CSV string</p>
-</dd>
-<dt>limit_effective_graph_resistance<span class="classifier">int or None, default None</span></dt><dd><p>Maximum component size for computing effective graph resistance.
-- None: Compute for all components (default, may be slow for large molecules)
-- int &gt; 0: Only compute for components with fewer atoms than this limit
-- 0: Skip computation for all components (set to NaN)</p>
-</dd>
-<dt>compute_component_metrics<span class="classifier">bool, default True</span></dt><dd><p>Whether to compute graph metrics (diameter, radius, etc.) for components.
-- True: Compute all metrics (default)
-- False: Only compute component size, skip all other metrics</p>
-</dd>
-<dt>halogens<span class="classifier">str or list of str or None, default ‘F’</span></dt><dd><p>Filter components by halogen element.
-- ‘F’ (default): fluorine only
-- str (e.g. ‘Cl’): restrict to that single halogen
-- list (e.g. [‘F’, ‘Cl’]): restrict to those halogens
-- None: no filter (include all halogens)</p>
-</dd>
-<dt>form<span class="classifier">str or list of str, optional</span></dt><dd><p>Filter components by form type (e.g., ‘alkyl’, [‘alkyl’, ‘cyclic’], or None for all)</p>
-</dd>
-<dt>saturation<span class="classifier">str or list of str, optional</span></dt><dd><p>Filter components by saturation (e.g., ‘per’, ‘poly’, or None for all)</p>
-</dd>
-<dt><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs<span class="classifier">dict</span></dt><dd><p>Additional parameters (pfas_groups, componentSmartss, etc.)</p>
-</dd>
-</dl>
-</section>
-<section id="returns">
-<h4>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h4>
-<dl class="simple">
-<dt>list, pandas.DataFrame, or str</dt><dd><p>Depends on output_format parameter</p>
-</dd>
-</dl>
-</section>
+<p>This function accepts a single SMILES string or a list of SMILES and
+returns halogen-group parsing results. The output format can be a
+Python list (default), a pandas.DataFrame, or a CSV string.</p>
+<p>Common options include limiting computation of expensive metrics and
+filtering by halogen element. See the function signature for available
+arguments.</p>
 </dd></dl>
 
 <p><strong>Parameters:</strong></p>
@@ -570,53 +531,16 @@
 </div>
 </section>
 <section id="parse-mols">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">parse_mols</a><a class="headerlink" href="#parse-mols" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">parse_mols</a><a class="headerlink" href="#parse-mols" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="PFASGroups.parse_mols">
-<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">parse_mols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_PFAS_definitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_effective_graph_resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_component_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_mols"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.parse_mols" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">parse_mols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_PFAS_definitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_effective_graph_resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_component_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_mols"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.parse_mols" title="Link to this definition"></a></dt>
 <dd><p>Parse RDKit molecule(s) and return halogen group information.</p>
-<section id="id3">
-<h4>Parameters:<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
-<dl class="simple">
-<dt>mols<span class="classifier">list of rdkit.Chem.Mol</span></dt><dd><p>Single RDKit molecule or list of molecules</p>
-</dd>
-<dt>bycomponent<span class="classifier">bool</span></dt><dd><p>Whether to use component-based analysis</p>
-</dd>
-<dt>output_format<span class="classifier">str, default ‘list’</span></dt><dd><p>Output format: ‘list’ (default), ‘dataframe’, or ‘csv’
-- ‘list’: Returns nested lists of tuples (default behavior)
-- ‘dataframe’: Returns pandas DataFrame with one row per match
-- ‘csv’: Returns CSV string</p>
-</dd>
-<dt>limit_effective_graph_resistance<span class="classifier">int or None, default None</span></dt><dd><p>Maximum component size for computing effective graph resistance.
-- None: Compute for all components (default, may be slow for large molecules)
-- int &gt; 0: Only compute for components with fewer atoms than this limit
-- 0: Skip computation for all components (set to NaN)</p>
-</dd>
-<dt>compute_component_metrics<span class="classifier">bool, default True</span></dt><dd><p>Whether to compute graph metrics (diameter, radius, etc.) for components.
-- True: Compute all metrics (default)
-- False: Only compute component size, skip all other metrics</p>
-</dd>
-<dt>halogens<span class="classifier">str or list of str or None, default ‘F’</span></dt><dd><p>Filter components by halogen element.
-- ‘F’ (default): fluorine only
-- str (e.g. ‘Cl’): restrict to that single halogen
-- list (e.g. [‘F’, ‘Cl’]): restrict to those halogens
-- None: no filter (include all halogens)</p>
-</dd>
-<dt>form<span class="classifier">str or list of str, optional</span></dt><dd><p>Filter components by form type (e.g., ‘alkyl’, [‘alkyl’, ‘cyclic’], or None for all)</p>
-</dd>
-<dt>saturation<span class="classifier">str or list of str, optional</span></dt><dd><p>Filter components by saturation (e.g., ‘per’, ‘poly’, or None for all)</p>
-</dd>
-<dt><a href="#id4"><span class="problematic" id="id5">**</span></a>kwargs<span class="classifier">dict</span></dt><dd><p>Additional parameters (halogen_groups, componentSmartss, etc.)</p>
-</dd>
-</dl>
-</section>
-<section id="id6">
-<h4>Returns:<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
-<dl class="simple">
-<dt>list, pandas.DataFrame, or str</dt><dd><p>Depends on output_format parameter</p>
-</dd>
-</dl>
-</section>
+<p>Accepts a single RDKit molecule or a list of molecules and returns
+parsed halogen-group results. The output can be a Python list,
+a pandas.DataFrame, or a CSV string depending on <code class="docutils literal notranslate"><span class="pre">output_format</span></code>.</p>
+<p>See the function signature for available filtering and computation
+options (halogen filters, component metric limits, etc.).</p>
 </dd></dl>
 
 <p>Like <a class="reference internal" href="#PFASGroups.parse_smiles" title="PFASGroups.parse_smiles"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a> but accepts RDKit <code class="docutils literal notranslate"><span class="pre">Mol</span></code> objects directly:</p>
@@ -629,10 +553,10 @@
 </div>
 </section>
 <section id="parse-mol">
-<h3><a class="toc-backref" href="#id10" role="doc-backlink">parse_mol</a><a class="headerlink" href="#parse-mol" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">parse_mol</a><a class="headerlink" href="#parse-mol" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="PFASGroups.parse_mol">
-<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">parse_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.parse_mol" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">parse_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#parse_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.parse_mol" title="Link to this definition"></a></dt>
 <dd><p>Wrapper for parse_mols to handle single molecule input.</p>
 <p>Returns a single <code class="docutils literal notranslate"><span class="pre">MoleculeResult</span></code> when <code class="docutils literal notranslate"><span class="pre">output_format='list'</span></code>
 (default), preserving backwards-compatible dict behaviour while
@@ -643,13 +567,44 @@ enabling richer navigation helpers.</p>
 </section>
 </section>
 <section id="fingerprinting">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink">Fingerprinting</a><a class="headerlink" href="#fingerprinting" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Fingerprinting</a><a class="headerlink" href="#fingerprinting" title="Link to this heading"></a></h2>
 <section id="generate-fingerprint">
-<h3><a class="toc-backref" href="#id12" role="doc-backlink">generate_fingerprint</a><a class="headerlink" href="#generate-fingerprint" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">generate_fingerprint</a><a class="headerlink" href="#generate-fingerprint" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="PFASGroups.generate_fingerprint">
-<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">generate_fingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.generate_fingerprint" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">generate_fingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#range" title="(in Python v3.14)"><span class="pre">range</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">representation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'vector'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'per'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/PFASGroups/fingerprints.html#generate_fingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.generate_fingerprint" title="Link to this definition"></a></dt>
+<dd><p>Generate PFAS group fingerprints from SMILES strings.</p>
+<p>Backward-compatible wrapper around <code class="xref py py-class docutils literal notranslate"><span class="pre">PFASFingerprint</span></code>.
+Returns <code class="docutils literal notranslate"><span class="pre">(fp_array,</span> <span class="pre">group_info)</span></code> where <code class="docutils literal notranslate"><span class="pre">group_info</span></code> is a dict
+containing <code class="docutils literal notranslate"><span class="pre">group_names</span></code>, <code class="docutils literal notranslate"><span class="pre">count_mode</span></code>, <code class="docutils literal notranslate"><span class="pre">halogens</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">saturation</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smiles</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>selected_groups</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> or </em><em>None</em>) – Group IDs to include (<code class="docutils literal notranslate"><span class="pre">None</span></code> = all groups).</p></li>
+<li><p><strong>representation</strong> (str, default <code class="docutils literal notranslate"><span class="pre">'vector'</span></code>) – Only <code class="docutils literal notranslate"><span class="pre">'vector'</span></code> is supported; other values are accepted but
+ignored (the result is always a NumPy array).</p></li>
+<li><p><strong>count_mode</strong> (str, default <code class="docutils literal notranslate"><span class="pre">'binary'</span></code>)</p></li>
+<li><p><strong>halogens</strong> (str or list of str, default <code class="docutils literal notranslate"><span class="pre">'F'</span></code>)</p></li>
+<li><p><strong>saturation</strong> (str or None, default <code class="docutils literal notranslate"><span class="pre">'per'</span></code>)</p></li>
+<li><p><strong>graph_metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em>)</p></li>
+<li><p><strong>molecule_metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em>)</p></li>
+<li><p><strong>preset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> or </em><em>None</em>)</p></li>
+<li><p><strong>**kwargs</strong> – Forwarded to <code class="xref py py-class docutils literal notranslate"><span class="pre">PFASFingerprint</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fp_array</strong> (<em>numpy.ndarray</em>) – Shape <code class="docutils literal notranslate"><span class="pre">(n_columns,)</span></code> for a single SMILES or
+<code class="docutils literal notranslate"><span class="pre">(n_molecules,</span> <span class="pre">n_columns)</span></code> for a list.</p></li>
+<li><p><strong>group_info</strong> (<em>dict</em>) – <code class="docutils literal notranslate"><span class="pre">{'group_names':</span> <span class="pre">[...],</span> <span class="pre">'count_mode':</span> <span class="pre">...,</span> <span class="pre">'halogens':</span> <span class="pre">[...],</span>
+<span class="pre">'saturation':</span> <span class="pre">...,</span> <span class="pre">'selected_group_ids':</span> <span class="pre">[...]</span> <span class="pre">|</span> <span class="pre">None}</span></code></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
 
 <p><strong>Parameters:</strong></p>
 <table class="docutils align-default">
@@ -677,9 +632,9 @@ enabling richer navigation helpers.</p>
 <td><p><code class="docutils literal notranslate"><span class="pre">'vector'</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'vector'</span></code>, <code class="docutils literal notranslate"><span class="pre">'dict'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sparse'</span></code>, <code class="docutils literal notranslate"><span class="pre">'detailed'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'int'</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">count_mode</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'binary'</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'binary'</span></code>, <code class="docutils literal notranslate"><span class="pre">'count'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'max_component'</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">component_metrics</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">['binary']</span></code></p></td>
+<td><p>List of metrics: count modes (<code class="docutils literal notranslate"><span class="pre">'binary'</span></code>, <code class="docutils literal notranslate"><span class="pre">'count'</span></code>, <code class="docutils literal notranslate"><span class="pre">'max_component'</span></code>, <code class="docutils literal notranslate"><span class="pre">'total_component'</span></code>) and/or graph metrics (e.g. <code class="docutils literal notranslate"><span class="pre">'effective_graph_resistance'</span></code>)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">halogens</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'F'</span></code></p></td>
@@ -716,13 +671,39 @@ enabling richer navigation helpers.</p>
 </section>
 </section>
 <section id="group-library">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink">Group library</a><a class="headerlink" href="#group-library" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Group library</a><a class="headerlink" href="#group-library" title="Link to this heading"></a></h2>
 <section id="get-compiled-halogengroups">
-<h3><a class="toc-backref" href="#id14" role="doc-backlink">get_compiled_HalogenGroups</a><a class="headerlink" href="#get-compiled-halogengroups" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">get_compiled_HalogenGroups</a><a class="headerlink" href="#get-compiled-halogengroups" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="PFASGroups.get_compiled_HalogenGroups">
-<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_compiled_HalogenGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.get_compiled_HalogenGroups" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_compiled_HalogenGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/getter.html#get_compiled_HalogenGroups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.get_compiled_HalogenGroups" title="Link to this definition"></a></dt>
+<dd><p>Return compiled HalogenGroup instances (compute=True groups only).</p>
+<p>Unlike <a class="reference internal" href="#PFASGroups.get_HalogenGroups" title="PFASGroups.get_HalogenGroups"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_HalogenGroups()</span></code></a> which returns raw JSON dicts, this
+function returns ready-to-use <a class="reference internal" href="models.html#PFASGroups.HalogenGroup" title="PFASGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances that can
+be directly passed to <a class="reference internal" href="#PFASGroups.parse_smiles" title="PFASGroups.parse_smiles"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a> or extended with custom groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>All compiled groups, suitable for passing as <em>pfas_groups</em> to
+<a class="reference internal" href="#PFASGroups.parse_smiles" title="PFASGroups.parse_smiles"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_smiles()</span></code></a> or <code class="xref py py-class docutils literal notranslate"><span class="pre">PFASFingerprint</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a> of <a class="reference internal" href="models.html#PFASGroups.HalogenGroup" title="PFASGroups.HalogenGroup">HalogenGroup</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">PFASgroups</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_compiled_HalogenGroups</span><span class="p">,</span> <span class="n">HalogenGroup</span><span class="p">,</span> <span class="n">parse_smiles</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groups</span> <span class="o">=</span> <span class="n">get_compiled_HalogenGroups</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">HalogenGroup</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="nb">id</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Perfluoroalkyl nitrates&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">smarts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;[C$(C[ON+](=O)[O-])]&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">componentSaturation</span><span class="o">=</span><span class="s2">&quot;per&quot;</span><span class="p">,</span> <span class="n">componentHalogens</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">componentForm</span><span class="o">=</span><span class="s2">&quot;alkyl&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;eq&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;gte&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span>
+<span class="gp">... </span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">parse_smiles</span><span class="p">([</span><span class="s2">&quot;FC(F)(F)C(F)(F)ON(=O)=O&quot;</span><span class="p">],</span> <span class="n">pfas_groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <p>Returns a list of compiled <a class="reference internal" href="models.html#PFASGroups.HalogenGroup" title="PFASGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances
 (116 groups with <code class="docutils literal notranslate"><span class="pre">compute=True</span></code>):</p>
@@ -735,17 +716,17 @@ enabling richer navigation helpers.</p>
 </div>
 </section>
 <section id="get-halogengroups">
-<h3><a class="toc-backref" href="#id15" role="doc-backlink">get_HalogenGroups</a><a class="headerlink" href="#get-halogengroups" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">get_HalogenGroups</a><a class="headerlink" href="#get-halogengroups" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="PFASGroups.get_HalogenGroups">
-<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_HalogenGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.get_HalogenGroups" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_HalogenGroups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/getter.html#get_HalogenGroups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.get_HalogenGroups" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <p>Returns raw JSON-like dicts (internal format). Prefer
 <a class="reference internal" href="#PFASGroups.get_compiled_HalogenGroups" title="PFASGroups.get_compiled_HalogenGroups"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_compiled_HalogenGroups()</span></code></a> for most uses.</p>
 </section>
 <section id="load-halogengroups">
-<h3><a class="toc-backref" href="#id16" role="doc-backlink">load_HalogenGroups</a><a class="headerlink" href="#load-halogengroups" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">load_HalogenGroups</a><a class="headerlink" href="#load-halogengroups" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="PFASGroups.load_HalogenGroups">
 <span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">load_HalogenGroups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/parser.html#load_HalogenGroups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.load_HalogenGroups" title="Link to this definition"></a></dt>
@@ -755,31 +736,31 @@ enabling richer navigation helpers.</p>
 <p>Compile a list of raw group dicts into <a class="reference internal" href="models.html#PFASGroups.HalogenGroup" title="PFASGroups.HalogenGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a> instances.</p>
 </section>
 <section id="get-pfasdefinitions">
-<h3><a class="toc-backref" href="#id17" role="doc-backlink">get_PFASDefinitions</a><a class="headerlink" href="#get-pfasdefinitions" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">get_PFASDefinitions</a><a class="headerlink" href="#get-pfasdefinitions" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="PFASGroups.get_PFASDefinitions">
-<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_PFASDefinitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.get_PFASDefinitions" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_PFASDefinitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PFASGroups/getter.html#get_PFASDefinitions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.get_PFASDefinitions" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <p>Returns the list of <a class="reference internal" href="models.html#PFASGroups.PFASDefinition" title="PFASGroups.PFASDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a> objects.</p>
 </section>
 <section id="get-componentsmartss">
-<h3><a class="toc-backref" href="#id18" role="doc-backlink">get_componentSmartss</a><a class="headerlink" href="#get-componentsmartss" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">get_componentSMARTSs</a><a class="headerlink" href="#get-componentsmartss" title="Link to this heading"></a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="PFASGroups.get_componentSmartss">
-<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_componentSmartss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.get_componentSmartss" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="PFASGroups.get_componentSMARTSs">
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">get_componentSMARTSs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PFASGroups.get_componentSMARTSs" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <p>Returns component-level SMARTS patterns used for saturation filtering.</p>
 </section>
 </section>
 <section id="molecule-prioritization">
-<h2><a class="toc-backref" href="#id19" role="doc-backlink">Molecule prioritization</a><a class="headerlink" href="#molecule-prioritization" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Molecule prioritization</a><a class="headerlink" href="#molecule-prioritization" title="Link to this heading"></a></h2>
 <section id="prioritise-molecules">
-<h3><a class="toc-backref" href="#id20" role="doc-backlink">prioritise_molecules</a><a class="headerlink" href="#prioritise-molecules" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">prioritise_molecules</a><a class="headerlink" href="#prioritise-molecules" title="Link to this heading"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="PFASGroups.prioritise_molecules">
-<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">prioritise_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://www.rdkit.org/docs/source/rdkit.Chem.rdchem.html#rdkit.Chem.rdchem.Mol" title="(in The RDKit v2025.09)"><span class="pre">Mol</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://www.rdkit.org/docs/source/rdkit.Chem.rdchem.html#rdkit.Chem.rdchem.Mol" title="(in The RDKit v2025.09)"><span class="pre">Mol</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'max_component'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/PFASGroups/prioritise.html#prioritise_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.prioritise_molecules" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">PFASGroups.</span></span><span class="sig-name descname"><span class="pre">prioritise_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://www.rdkit.org/docs/source/rdkit.Chem.rdchem.html#rdkit.Chem.rdchem.Mol" title="(in The RDKit v2025.09)"><span class="pre">Mol</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://www.rdkit.org/docs/source/rdkit.Chem.rdchem.html#rdkit.Chem.rdchem.Mol" title="(in The RDKit v2025.09)"><span class="pre">Mol</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'max_component'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halogens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="models.html#PFASGroups.ResultsModel" title="PFASGroups.results_model.ResultsModel"><span class="pre">ResultsModel</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/PFASGroups/prioritise.html#prioritise_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PFASGroups.prioritise_molecules" title="Link to this definition"></a></dt>
 <dd><p>Prioritize PFAS molecules based on similarity to a reference or intrinsic properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -888,7 +869,7 @@ mean fingerprint of the reference set:</p>
 <dl class="simple">
 <dt><a class="reference internal" href="models.html#PFASGroups.ResultsModel.to_fingerprint" title="PFASGroups.ResultsModel.to_fingerprint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResultsModel.to_fingerprint</span></code></a></dt><dd><p>Convert results to fingerprints</p>
 </dd>
-<dt><a class="reference internal" href="fingerprint_analysis.html#PFASGroups.ResultsFingerprint.compare_kld" title="PFASGroups.ResultsFingerprint.compare_kld"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld</span></code></a></dt><dd><p>Compare fingerprint distributions</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld</span></code></dt><dd><p>Compare fingerprint distributions</p>
 </dd>
 </dl>
 </div>
