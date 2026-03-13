@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PFASGroups.parser &mdash; HalogenGroups / PFASGroups 3.1.3 documentation</title>
+  <title>PFASGroups.parser &mdash; HalogenGroups / PFASGroups 3.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -13,9 +13,9 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=eaea8fc6"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=4f6ddb47"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=d30a5ebd"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -87,7 +87,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#overlap-deduplication">Overlap deduplication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#component-graph-metrics">Component graph metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#component-graph-metrics">Component graph metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#bond-order-model">Bond-order model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#resistance-distance-and-kirchhoff-index">Resistance distance and Kirchhoff index</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../algorithm.html#accessing-resistance-metrics">Accessing resistance metrics</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#fingerprint-generation">Fingerprint generation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../algorithm.html#pfas-definition-classification">PFAS definition classification</a></li>
 </ul>
@@ -233,111 +238,18 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/models.html">Data Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#resultsmodel">ResultsModel</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel"><code class="docutils literal notranslate"><span class="pre">ResultsModel</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsModel.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.from_raw"><code class="docutils literal notranslate"><span class="pre">ResultsModel.from_raw()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.iter_group_matches"><code class="docutils literal notranslate"><span class="pre">ResultsModel.iter_group_matches()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.plot_components_for_group"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot_components_for_group()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.show"><code class="docutils literal notranslate"><span class="pre">ResultsModel.show()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.plot"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.svg"><code class="docutils literal notranslate"><span class="pre">ResultsModel.svg()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.summarise"><code class="docutils literal notranslate"><span class="pre">ResultsModel.summarise()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.table"><code class="docutils literal notranslate"><span class="pre">ResultsModel.table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.summary"><code class="docutils literal notranslate"><span class="pre">ResultsModel.summary()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.plot_all_components_with_group_colours"><code class="docutils literal notranslate"><span class="pre">ResultsModel.plot_all_components_with_group_colours()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_sql()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.to_fingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsModel.to_fingerprint()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.ResultsModel.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsModel.from_sql()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#moleculeresult">MoleculeResult</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult"><code class="docutils literal notranslate"><span class="pre">MoleculeResult</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.smiles"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.smiles</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.mol_with_h"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.mol_with_h</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.matches</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.iter_group_matches"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.iter_group_matches()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.collect_component_atoms"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.collect_component_atoms()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.summarise"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summarise()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.summary"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.summary()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.table"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.show"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.show()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.plot"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.plot()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.svg"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.svg()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.MoleculeResult.to_sql"><code class="docutils literal notranslate"><span class="pre">MoleculeResult.to_sql()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#resultsmodel">ResultsModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#moleculeresult">MoleculeResult</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/models.html#groupmatch">GroupMatch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/models.html#matchcomponent">MatchComponent</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/models.html#resultsfingerprint">ResultsFingerprint</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#halogengroup">HalogenGroup</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup"><code class="docutils literal notranslate"><span class="pre">HalogenGroup</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.id"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.id</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.name"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSmarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.componentForm"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentForm</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.componentHalogens"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentHalogens</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.componentSaturation"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.componentSaturation</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.max_dist_from_comp"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.max_dist_from_comp</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.linker_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.linker_smarts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraints</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.__init__"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.set_component_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_component_smarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.set_componentSmarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.set_componentSmarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.constraint_gte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_gte()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.constraint_lte"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_lte()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.constraint_eq"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_eq()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.constraint_only"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_only()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.constraint_rel"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.constraint_rel()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.formula_dict_satisfies_constraints"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.formula_dict_satisfies_constraints()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.find_matched_atoms"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_matched_atoms()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.component_satisfies_all_smarts"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.component_satisfies_all_smarts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.find_alkyl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_alkyl_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.find_aryl_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_aryl_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.find_components"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.find_components()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.HalogenGroup.test"><code class="docutils literal notranslate"><span class="pre">HalogenGroup.test()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#pfasdefinition">PFASDefinition</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition"><code class="docutils literal notranslate"><span class="pre">PFASDefinition</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.id"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.id</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.name"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.description"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.description</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.fluorineRatio"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.fluorineRatio</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.smarts_strings"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_strings</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.smarts_patterns"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.smarts_patterns</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.includeHydrogen"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.includeHydrogen</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.requireBoth"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.requireBoth</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.__init__"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.applies_to_molecule"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.applies_to_molecule()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/models.html#PFASGroups.PFASDefinition.test"><code class="docutils literal notranslate"><span class="pre">PFASDefinition.test()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#halogengroup">HalogenGroup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/models.html#pfasdefinition">PFASDefinition</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/fingerprint_analysis.html">Fingerprint Analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../api/fingerprint_analysis.html#resultsfingerprint">ResultsFingerprint</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.__init__"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.summary"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.summary()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_pca()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_kernel_pca"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_kernel_pca()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_tsne"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_tsne()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.perform_umap"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.perform_umap()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.compare_kld"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.compare_kld()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.to_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.to_sql()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint.from_sql"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint.from_sql()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/fingerprint_analysis.html#PFASGroups.ResultsFingerprint"><code class="docutils literal notranslate"><span class="pre">ResultsFingerprint</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/fingerprint_analysis.html#creating-a-resultsfingerprint">Creating a ResultsFingerprint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/fingerprint_analysis.html#attributes">Attributes</a></li>
 </ul>
@@ -429,6 +341,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.ComponentsSolverModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentsSolver</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">fragment_until_valence_is_correct</span><span class="p">,</span> <span class="n">n_from_formula</span><span class="p">,</span> <span class="n">add_componentSmarts</span><span class="p">,</span> <span class="n">PFAS_DEFINITIONS_FILE</span><span class="p">,</span> <span class="n">HALOGEN_GROUPS_FILE</span><span class="p">,</span> <span class="n">rdkit_disable_log</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 
 
 
@@ -448,8 +361,9 @@
     <span class="c1"># list groups aggregated by groups with compute=FALSE</span>
     <span class="n">agg_pfg</span> <span class="o">=</span> <span class="p">{</span><span class="n">ppf</span><span class="p">:</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">pfg_names</span><span class="o">.</span><span class="n">get</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">ppf</span><span class="o">.</span><span class="n">re_search</span><span class="o">.</span><span class="n">search</span><span class="p">,</span><span class="n">pfg_names</span><span class="o">.</span><span class="n">keys</span><span class="p">()))))</span> <span class="k">for</span> <span class="n">ppf</span> <span class="ow">in</span> <span class="n">agg_pfg</span><span class="p">}</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">,</span><span class="n">pfg</span><span class="p">)</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_groups&#39;</span><span class="p">,[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pfg</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">excludeHalogens</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">excludeHalogens</span><span class="p">)</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;halogens&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;Cl&#39;</span><span class="p">,</span><span class="s1">&#39;Br&#39;</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">]))])</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;agg_pfas_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;agg_pfas_groups&#39;</span><span class="p">,</span><span class="n">agg_pfg</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">wrapper</span>
@@ -464,6 +378,7 @@
         <span class="n">pfg</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="n">pfg</span> <span class="o">=</span> <span class="p">[</span><span class="n">PFASDefinition</span><span class="p">(</span><span class="o">**</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pfg</span><span class="p">]</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;pfas_definitions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pfas_definitions&#39;</span><span class="p">,</span><span class="n">pfg</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -476,6 +391,7 @@
 <span class="sd">    Adds componentsSolver to function (creates it per call with the molecule)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">mol</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="c1"># Add hydrogens to molecule before creating ComponentsSolver</span>
@@ -484,13 +400,19 @@
             <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>  <span class="c1"># Convert to mutable list</span>
             <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span>
             <span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>  <span class="c1"># Convert back to tuple</span>
+            <span class="n">halogens</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;halogens&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;Cl&#39;</span><span class="p">,</span><span class="s1">&#39;Br&#39;</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">])</span>
+            <span class="n">_smarts</span> <span class="o">=</span> <span class="s1">&#39;[</span><span class="si">{}</span><span class="s1">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">halogens</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">halogens</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">halogens</span><span class="si">}</span><span class="s1">]&#39;</span>
+            <span class="c1"># check organic halogen:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatch</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">_smarts</span><span class="p">)):</span>
+                <span class="c1">#logger.debug(&quot;No organic halogens found, skipping componentsSolver&quot;)</span>
+                <span class="k">return</span> <span class="p">[],</span> <span class="n">mol</span>
             <span class="c1"># Pass through component metric options</span>
             <span class="n">solver_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="s1">&#39;limit_effective_graph_resistance&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
                 <span class="n">solver_kwargs</span><span class="p">[</span><span class="s1">&#39;limit_effective_graph_resistance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;limit_effective_graph_resistance&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="s1">&#39;compute_component_metrics&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
                 <span class="n">solver_kwargs</span><span class="p">[</span><span class="s1">&#39;compute_component_metrics&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;compute_component_metrics&#39;</span><span class="p">]</span>
-            <span class="k">with</span> <span class="n">ComponentsSolver</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">solver_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">fluorinated_components_dict</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">ComponentsSolver</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">halogens</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;halogens&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">solver_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">fluorinated_components_dict</span><span class="p">:</span>
                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;fluorinated_components_dict&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fluorinated_components_dict&#39;</span><span class="p">,</span><span class="n">fluorinated_components_dict</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">wrapper</span>
@@ -525,6 +447,7 @@
 <span class="nd">@add_componentSmarts</span><span class="p">()</span>
 <span class="nd">@load_HalogenGroups</span><span class="p">()</span>
 <span class="nd">@load_componentsSolver</span><span class="p">()</span>
+<span class="nd">@rdkit_disable_log</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;warning&#39;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_groups_in_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">fluorinated_components_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pfas_groups</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterates over halogen groups and finds the ones that match the molecule.</span>
 
@@ -643,47 +566,17 @@
 <span class="nd">@rdkit_disable_log</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;warning&#39;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span>
                   <span class="n">limit_effective_graph_resistance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compute_component_metrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                  <span class="n">halogens</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parse SMILES string(s) and return halogen group information.</span>
+                  <span class="n">halogens</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse SMILES string(s) and return halogen group information.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    -----------</span>
-<span class="sd">    smiles : str or list of str</span>
-<span class="sd">        Single SMILES string or list of SMILES strings</span>
-<span class="sd">    bycomponent : bool</span>
-<span class="sd">        Whether to use component-based analysis</span>
-<span class="sd">    output_format : str, default &#39;list&#39;</span>
-<span class="sd">        Output format: &#39;list&#39; (default), &#39;dataframe&#39;, or &#39;csv&#39;</span>
-<span class="sd">        - &#39;list&#39;: Returns nested lists of tuples (default behavior)</span>
-<span class="sd">        - &#39;dataframe&#39;: Returns pandas DataFrame with one row per match</span>
-<span class="sd">        - &#39;csv&#39;: Returns CSV string</span>
-<span class="sd">    limit_effective_graph_resistance : int or None, default None</span>
-<span class="sd">        Maximum component size for computing effective graph resistance.</span>
-<span class="sd">        - None: Compute for all components (default, may be slow for large molecules)</span>
-<span class="sd">        - int &gt; 0: Only compute for components with fewer atoms than this limit</span>
-<span class="sd">        - 0: Skip computation for all components (set to NaN)</span>
-<span class="sd">    compute_component_metrics : bool, default True</span>
-<span class="sd">        Whether to compute graph metrics (diameter, radius, etc.) for components.</span>
-<span class="sd">        - True: Compute all metrics (default)</span>
-<span class="sd">        - False: Only compute component size, skip all other metrics</span>
-<span class="sd">    halogens : str or list of str or None, default &#39;F&#39;</span>
-<span class="sd">        Filter components by halogen element.</span>
-<span class="sd">        - &#39;F&#39; (default): fluorine only</span>
-<span class="sd">        - str (e.g. &#39;Cl&#39;): restrict to that single halogen</span>
-<span class="sd">        - list (e.g. [&#39;F&#39;, &#39;Cl&#39;]): restrict to those halogens</span>
-<span class="sd">        - None: no filter (include all halogens)</span>
-<span class="sd">    form : str or list of str, optional</span>
-<span class="sd">        Filter components by form type (e.g., &#39;alkyl&#39;, [&#39;alkyl&#39;, &#39;cyclic&#39;], or None for all)</span>
-<span class="sd">    saturation : str or list of str, optional</span>
-<span class="sd">        Filter components by saturation (e.g., &#39;per&#39;, &#39;poly&#39;, or None for all)</span>
-<span class="sd">    **kwargs : dict</span>
-<span class="sd">        Additional parameters (pfas_groups, componentSmartss, etc.)</span>
+<span class="sd">    This function accepts a single SMILES string or a list of SMILES and</span>
+<span class="sd">    returns halogen-group parsing results. The output format can be a</span>
+<span class="sd">    Python list (default), a pandas.DataFrame, or a CSV string.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    --------</span>
-<span class="sd">    list, pandas.DataFrame, or str</span>
-<span class="sd">        Depends on output_format parameter</span>
+<span class="sd">    Common options include limiting computation of expensive metrics and</span>
+<span class="sd">    filtering by halogen element. See the function signature for available</span>
+<span class="sd">    arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Convert single input to list for uniform processing</span>
     <span class="n">single_input</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
@@ -695,7 +588,7 @@
     <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;halogens&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">halogens</span>
     <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span>
     <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;saturation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">saturation</span>
-    <span class="k">return</span> <span class="n">parse_mols</span><span class="p">(</span><span class="n">mol_list</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="n">bycomponent</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="n">output_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">parse_mols</span><span class="p">(</span><span class="n">mol_list</span><span class="p">,</span> <span class="n">bycomponent</span><span class="o">=</span><span class="n">bycomponent</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="n">output_format</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.results_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResultsModel</span>
@@ -714,6 +607,7 @@
     <span class="n">components_table</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;components&quot;</span><span class="p">,</span>
     <span class="n">groups_table</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pfas_groups_in_compound&quot;</span><span class="p">,</span>
     <span class="n">write_results</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse halogen groups from molecules stored in a database.</span>
@@ -749,6 +643,8 @@
 <span class="sd">        Table name for halogen group matches.</span>
 <span class="sd">    write_results : bool, default True</span>
 <span class="sd">        Whether to write results back to database.</span>
+<span class="sd">    progress : bool, default False</span>
+<span class="sd">        If True, display a tqdm progress bar during parsing.</span>
 <span class="sd">    **kwargs : dict</span>
 <span class="sd">        Additional parameters passed to parse_mols (e.g., pfas_groups, componentSmartss).</span>
 
@@ -856,7 +752,7 @@
 
         <span class="c1"># Parse this batch</span>
         <span class="k">if</span> <span class="n">mols</span><span class="p">:</span>
-            <span class="n">batch_results</span> <span class="o">=</span> <span class="n">parse_mols</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">batch_results</span> <span class="o">=</span> <span class="n">parse_mols</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">all_results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">batch_results</span><span class="p">)</span>
 
     <span class="c1"># Combine all results</span>
@@ -989,66 +885,42 @@
 
 <div class="viewcode-block" id="parse_mol">
 <a class="viewcode-back" href="../../api/core.html#PFASGroups.parse_mol">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">parse_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for parse_mols to handle single molecule input.</span>
 
 <span class="sd">    Returns a single ``MoleculeResult`` when ``output_format=&#39;list&#39;``</span>
 <span class="sd">    (default), preserving backwards-compatible dict behaviour while</span>
 <span class="sd">    enabling richer navigation helpers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">parse_mols</span><span class="p">([</span><span class="n">mol</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="n">parse_mols</span><span class="p">([</span><span class="n">mol</span><span class="p">],</span> <span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="parse_mols">
 <a class="viewcode-back" href="../../api/core.html#PFASGroups.parse_mols">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_mols</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="n">include_PFAS_definitions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                <span class="n">limit_effective_graph_resistance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compute_component_metrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-               <span class="n">halogens</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parse RDKit molecule(s) and return halogen group information.</span>
+               <span class="n">halogens</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+               <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse RDKit molecule(s) and return halogen group information.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    -----------</span>
-<span class="sd">    mols : list of rdkit.Chem.Mol</span>
-<span class="sd">        Single RDKit molecule or list of molecules</span>
-<span class="sd">    bycomponent : bool</span>
-<span class="sd">        Whether to use component-based analysis</span>
-<span class="sd">    output_format : str, default &#39;list&#39;</span>
-<span class="sd">        Output format: &#39;list&#39; (default), &#39;dataframe&#39;, or &#39;csv&#39;</span>
-<span class="sd">        - &#39;list&#39;: Returns nested lists of tuples (default behavior)</span>
-<span class="sd">        - &#39;dataframe&#39;: Returns pandas DataFrame with one row per match</span>
-<span class="sd">        - &#39;csv&#39;: Returns CSV string</span>
-<span class="sd">    limit_effective_graph_resistance : int or None, default None</span>
-<span class="sd">        Maximum component size for computing effective graph resistance.</span>
-<span class="sd">        - None: Compute for all components (default, may be slow for large molecules)</span>
-<span class="sd">        - int &gt; 0: Only compute for components with fewer atoms than this limit</span>
-<span class="sd">        - 0: Skip computation for all components (set to NaN)</span>
-<span class="sd">    compute_component_metrics : bool, default True</span>
-<span class="sd">        Whether to compute graph metrics (diameter, radius, etc.) for components.</span>
-<span class="sd">        - True: Compute all metrics (default)</span>
-<span class="sd">        - False: Only compute component size, skip all other metrics</span>
-<span class="sd">    halogens : str or list of str or None, default &#39;F&#39;</span>
-<span class="sd">        Filter components by halogen element.</span>
-<span class="sd">        - &#39;F&#39; (default): fluorine only</span>
-<span class="sd">        - str (e.g. &#39;Cl&#39;): restrict to that single halogen</span>
-<span class="sd">        - list (e.g. [&#39;F&#39;, &#39;Cl&#39;]): restrict to those halogens</span>
-<span class="sd">        - None: no filter (include all halogens)</span>
-<span class="sd">    form : str or list of str, optional</span>
-<span class="sd">        Filter components by form type (e.g., &#39;alkyl&#39;, [&#39;alkyl&#39;, &#39;cyclic&#39;], or None for all)</span>
-<span class="sd">    saturation : str or list of str, optional</span>
-<span class="sd">        Filter components by saturation (e.g., &#39;per&#39;, &#39;poly&#39;, or None for all)</span>
-<span class="sd">    **kwargs : dict</span>
-<span class="sd">        Additional parameters (halogen_groups, componentSmartss, etc.)</span>
+<span class="sd">    Accepts a single RDKit molecule or a list of molecules and returns</span>
+<span class="sd">    parsed halogen-group results. The output can be a Python list,</span>
+<span class="sd">    a pandas.DataFrame, or a CSV string depending on ``output_format``.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    --------</span>
-<span class="sd">    list, pandas.DataFrame, or str</span>
-<span class="sd">        Depends on output_format parameter</span>
+<span class="sd">    See the function signature for available filtering and computation</span>
+<span class="sd">    options (halogen filters, component metric limits, etc.).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Parse all molecules</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">mols</span><span class="p">:</span>
+    <span class="n">_iter</span> <span class="o">=</span> <span class="n">mols</span>
+    <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">_tqdm</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">_tqdm</span>
+        <span class="n">_iter</span> <span class="o">=</span> <span class="n">_tqdm</span><span class="p">(</span><span class="n">mols</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;parse_mols&#39;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">mols</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">_iter</span><span class="p">:</span>
         <span class="c1"># Add hydrogens to ensure consistent atom indexing</span>
         <span class="n">mol_with_h</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
         <span class="n">formula</span> <span class="o">=</span> <span class="n">CalcMolFormula</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
@@ -1127,6 +999,30 @@
                 <span class="n">mean_radius</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
                 <span class="n">mean_resistance</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">resistances</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">resistances</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">resistances</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
 
+                <span class="c1"># New BDE-resistance-derived metrics — filter out NaN before averaging</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">_nanmean</span><span class="p">(</span><span class="n">vals</span><span class="p">):</span>
+                    <span class="n">clean</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span>
+                    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">clean</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">clean</span><span class="p">)</span> <span class="k">if</span> <span class="n">clean</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+
+                <span class="n">mean_resistance_distance_vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mean_resistance_distance&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">]</span>
+                <span class="n">resistance_diameter_vals</span>      <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resistance_diameter&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">))</span>      <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">]</span>
+                <span class="n">resistance_radius_vals</span>        <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resistance_radius&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">))</span>        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">]</span>
+                <span class="n">mean_resistance_ecc_vals</span>      <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mean_resistance_eccentricity&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span><span class="p">]</span>
+
+                <span class="n">mean_mean_resistance_distance</span> <span class="o">=</span> <span class="n">_nanmean</span><span class="p">(</span><span class="n">mean_resistance_distance_vals</span><span class="p">)</span>
+                <span class="n">mean_resistance_diameter</span>      <span class="o">=</span> <span class="n">_nanmean</span><span class="p">(</span><span class="n">resistance_diameter_vals</span><span class="p">)</span>
+                <span class="n">mean_resistance_radius</span>        <span class="o">=</span> <span class="n">_nanmean</span><span class="p">(</span><span class="n">resistance_radius_vals</span><span class="p">)</span>
+                <span class="n">mean_mean_resistance_eccentricity</span> <span class="o">=</span> <span class="n">_nanmean</span><span class="p">(</span><span class="n">mean_resistance_ecc_vals</span><span class="p">)</span>
+
+                <span class="c1"># Resistance-distance-to-structural-feature summaries</span>
+                <span class="n">min_res_dists_bc</span>     <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_resistance_dist_to_barycenter&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_resistance_dist_to_barycenter&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span>
+                <span class="n">min_res_dists_center</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_resistance_dist_to_center&#39;</span><span class="p">]</span>     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_resistance_dist_to_center&#39;</span><span class="p">]</span>     <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span>
+                <span class="n">max_res_dists_periph</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;max_resistance_dist_to_periphery&#39;</span><span class="p">]</span>  <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;max_resistance_dist_to_periphery&#39;</span><span class="p">]</span>  <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+                <span class="n">mean_resistance_dist_to_barycenter</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">min_res_dists_bc</span><span class="p">)</span>     <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">min_res_dists_bc</span><span class="p">)</span>     <span class="k">if</span> <span class="n">min_res_dists_bc</span>     <span class="k">else</span> <span class="mf">0.0</span>
+                <span class="n">mean_resistance_dist_to_center</span>     <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">min_res_dists_center</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">min_res_dists_center</span><span class="p">)</span> <span class="k">if</span> <span class="n">min_res_dists_center</span> <span class="k">else</span> <span class="mf">0.0</span>
+                <span class="n">mean_resistance_dist_to_periphery</span>  <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">max_res_dists_periph</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">max_res_dists_periph</span><span class="p">)</span> <span class="k">if</span> <span class="n">max_res_dists_periph</span> <span class="k">else</span> <span class="mf">0.0</span>
+
                 <span class="c1"># Distance metrics summaries</span>
                 <span class="n">min_dists_bc</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_dist_to_barycenter&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_dist_to_barycenter&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span>
                 <span class="n">min_dists_center</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_dist_to_center&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">matched_components</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s1">&#39;min_dist_to_center&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span>
@@ -1150,7 +1046,15 @@
                     <span class="s1">&#39;mean_effective_graph_resistance&#39;</span><span class="p">:</span> <span class="n">mean_resistance</span><span class="p">,</span>
                     <span class="s1">&#39;mean_dist_to_barycenter&#39;</span><span class="p">:</span> <span class="n">mean_dist_to_barycenter</span><span class="p">,</span>
                     <span class="s1">&#39;mean_dist_to_center&#39;</span><span class="p">:</span> <span class="n">mean_dist_to_center</span><span class="p">,</span>
-                    <span class="s1">&#39;mean_dist_to_periphery&#39;</span><span class="p">:</span> <span class="n">mean_dist_to_periphery</span>
+                    <span class="s1">&#39;mean_dist_to_periphery&#39;</span><span class="p">:</span> <span class="n">mean_dist_to_periphery</span><span class="p">,</span>
+                    <span class="c1"># New BDE-resistance-derived molecule-wide summaries</span>
+                    <span class="s1">&#39;mean_resistance_distance&#39;</span><span class="p">:</span> <span class="n">mean_mean_resistance_distance</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_resistance_diameter&#39;</span><span class="p">:</span> <span class="n">mean_resistance_diameter</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_resistance_radius&#39;</span><span class="p">:</span> <span class="n">mean_resistance_radius</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_resistance_eccentricity&#39;</span><span class="p">:</span> <span class="n">mean_mean_resistance_eccentricity</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_resistance_dist_to_barycenter&#39;</span><span class="p">:</span> <span class="n">mean_resistance_dist_to_barycenter</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_resistance_dist_to_center&#39;</span><span class="p">:</span> <span class="n">mean_resistance_dist_to_center</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_resistance_dist_to_periphery&#39;</span><span class="p">:</span> <span class="n">mean_resistance_dist_to_periphery</span><span class="p">,</span>
                 <span class="p">}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">summary_metrics</span> <span class="o">=</span> <span class="p">{</span>
@@ -1167,7 +1071,15 @@
                     <span class="s1">&#39;mean_effective_graph_resistance&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">),</span>
                     <span class="s1">&#39;mean_dist_to_barycenter&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
                     <span class="s1">&#39;mean_dist_to_center&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="s1">&#39;mean_dist_to_periphery&#39;</span><span class="p">:</span> <span class="mi">0</span>
+                    <span class="s1">&#39;mean_dist_to_periphery&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="c1"># New BDE-resistance-derived molecule-wide summaries</span>
+                    <span class="s1">&#39;mean_resistance_distance&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;mean_resistance_diameter&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;mean_resistance_radius&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;mean_resistance_eccentricity&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;mean_resistance_dist_to_barycenter&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_resistance_dist_to_center&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="s1">&#39;mean_resistance_dist_to_periphery&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
                 <span class="p">}</span>
 
             <span class="n">match_results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
