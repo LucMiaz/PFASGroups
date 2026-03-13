@@ -3,7 +3,7 @@ from .core import HALOGEN_GROUPS_FILE, PFAS_DEFINITIONS_FILE
 from .HalogenGroupModel import HalogenGroup
 import json
 @add_componentSmarts()
-def get_componentSmartss(**kwargs):
+def get_componentSMARTSs(**kwargs):
     return kwargs.get('componentSmartss')
 
 @load_HalogenGroups()

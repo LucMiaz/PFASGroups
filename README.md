@@ -79,7 +79,7 @@ PFASGroups/
 │   ├── HalogenGroupModel.py         #   HalogenGroup data model
 │   ├── PFASDefinitionModel.py       #   PFASDefinition model
 │   ├── ComponentsSolverModel.py     #   Graph-based path-finding solver
-│   ├── getter.py                    #   get_HalogenGroups, get_componentSmartss, …
+│   ├── getter.py                    #   get_HalogenGroups, get_componentSMARTSs, …
 │   ├── cli.py                       #   Command-line interface (halogengroups / pfasgroups)
 │   ├── prioritise.py                #   prioritise_molecules
 │   ├── generate_homologues.py       #   Homologue series generation
@@ -350,9 +350,9 @@ Use custom pathtype definitions and PFAS groups:
 
 ```python
 # Load custom files entirely
-from HalogenGroups import get_componentSmartss, get_HalogenGroups, parse_smiles
+from HalogenGroups import get_componentSMARTSs, get_HalogenGroups, parse_smiles
 
-custom_paths = get_componentSmartss(filename='my_component_smartss.json')
+custom_paths = get_componentSMARTSs(filename='my_component_smartss.json')
 custom_groups = get_HalogenGroups(filename='my_groups.json')
 
 results = parse_smiles(
@@ -364,7 +364,7 @@ results = parse_smiles(
 
 ```python
 # Or extend defaults with your custom groups
-from HalogenGroups import get_HalogenGroups, HalogenGroup, parse_smiles, compile_componentSmarts, get_componentSmartss
+from HalogenGroups import get_HalogenGroups, HalogenGroup, parse_smiles, compile_componentSmarts, get_componentSMARTSs
 
 # Add custom PFAS groups
 groups = get_HalogenGroups()  # Get defaults
@@ -395,7 +395,7 @@ groups.append(HalogenGroup(
 ))
 
 # Add custom path types (e.g., chlorinated analogs)
-paths = get_componentSmartss()
+paths = get_componentSMARTSs()
 paths['Perchlorinated'] = compile_componentSmarts(
     "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # component pattern
     "[C;X4](Cl)(Cl)Cl"                     # end pattern

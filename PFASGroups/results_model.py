@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple, Union
 import os
-import warnings
 
 if TYPE_CHECKING:
     try:
@@ -15,7 +14,6 @@ from rdkit import Chem
 from rdkit.Chem import Draw
 from PIL import Image
 from io import BytesIO
-import numpy as np
 import pandas as pd
 from .parser import load_HalogenGroups
 
@@ -111,8 +109,8 @@ def _get_component_meta() -> Dict[str, Dict[str, Optional[str]]]:
     if _COMPONENT_META_CACHE is not None:
         return _COMPONENT_META_CACHE
     try:
-        from .core import get_componentSmartss
-        raw = get_componentSmartss()
+        from .core import get_componentSMARTSs
+        raw = get_componentSMARTSs()
         _COMPONENT_META_CACHE = {
             name: {
                 "halogen":    info.get("halogen"),
@@ -1920,7 +1918,7 @@ class ResultsModel(list):
 
         return _grid_images(imgs, buffer=4, ncols=ncols)
 
-    def to_sql(
+    def to_sql_all(
         self,
         conn: Optional[Union[str, 'sqlalchemy.engine.Engine']] = None,
         filename: Optional[str] = None,
@@ -1956,7 +1954,7 @@ class ResultsModel(list):
         >>> # Using SQLAlchemy engine
         >>> from sqlalchemy import create_engine
         >>> engine = create_engine('sqlite:///pfas.db')
-        >>> results.to_sql(conn=engine)
+        >>> results.to_sql_all(conn=engine)
         >>>
         >>> # Using filename (legacy)
         >>> results.to_sql(filename='pfas.db')

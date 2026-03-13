@@ -195,10 +195,10 @@ get_PFASDefinitions
 
 Returns the list of :class:`PFASDefinition` objects.
 
-get_componentSmartss
+get_componentSMARTSs
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: get_componentSmartss
+.. autofunction:: get_componentSMARTSs
 
 Returns component-level SMARTS patterns used for saturation filtering.
 

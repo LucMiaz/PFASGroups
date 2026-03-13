@@ -222,8 +222,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASGroups.get_PFASDefinitions"><code class="docutils literal notranslate"><span class="pre">get_PFASDefinitions()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-componentsmartss">get_componentSmartss</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASGroups.get_componentSmartss"><code class="docutils literal notranslate"><span class="pre">get_componentSmartss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/core.html#get-componentsmartss">get_componentSMARTSs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/core.html#PFASGroups.get_componentSMARTSs"><code class="docutils literal notranslate"><span class="pre">get_componentSMARTSs()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -524,8 +524,8 @@
     <span class="k">if</span> <span class="n">_COMPONENT_META_CACHE</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_COMPONENT_META_CACHE</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_componentSmartss</span>
-        <span class="n">raw</span> <span class="o">=</span> <span class="n">get_componentSmartss</span><span class="p">()</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_componentSMARTSs</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">get_componentSMARTSs</span><span class="p">()</span>
         <span class="n">_COMPONENT_META_CACHE</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">name</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;halogen&quot;</span><span class="p">:</span>    <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;halogen&quot;</span><span class="p">),</span>
