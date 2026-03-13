@@ -1,10 +1,11 @@
 import os
 import json
 import functools
-import networkx as nx
 import re
-from rdkit import Chem
 from typing import Union
+
+import networkx as nx
+from rdkit import Chem
 from rdkit import rdBase
 
 # --- Load SMARTS paths from component_smarts.json ---
