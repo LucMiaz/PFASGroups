@@ -30,6 +30,12 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 
 ## Installation
 
+### From Pypi
+
+```sh
+pip install PFASGroups
+```
+
 ### From source (recommended for development)
 
 **Prerequisites**: Python ≥ 3.7, RDKit (install via conda or pip before the steps below).
@@ -41,12 +47,6 @@ cd PFASGroups
 
 # Install in editable mode (development install)
 pip install -e .
-
-# Optional: install development dependencies (pytest, coverage)
-pip install -e ".[dev]"
-
-# Optional: install database support (SQLAlchemy)
-pip install -e ".[database]"
 ```
 
 > **Note for conda users**: install RDKit via conda before running pip:
