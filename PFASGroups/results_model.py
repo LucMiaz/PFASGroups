@@ -126,6 +126,52 @@ def _get_component_meta() -> Dict[str, Dict[str, Optional[str]]]:
     return _COMPONENT_META_CACHE
 
 
+# ---------------------------------------------------------------------------
+# Group-info cache and classification helpers
+# ---------------------------------------------------------------------------
+
+_GROUP_INFO_CACHE: Optional[Dict[int, Dict[str, str]]] = None
+
+
+def _get_group_info() -> Dict[int, Dict[str, str]]:
+    """Return a dict mapping group_id → {name, category}.
+
+    Category is one of ``'OECD'``, ``'generic'``, ``'telomer'``, or ``'other'``.
+    """
+    global _GROUP_INFO_CACHE
+    if _GROUP_INFO_CACHE is not None:
+        return _GROUP_INFO_CACHE
+    try:
+        from .getter import get_HalogenGroups
+        raw = get_HalogenGroups()
+        _GROUP_INFO_CACHE = {
+            g["id"]: {
+                "name":     g.get("name", ""),
+                "category": g.get("test", {}).get("category", "other"),
+            }
+            for g in raw
+        }
+    except Exception:
+        _GROUP_INFO_CACHE = {}
+    return _GROUP_INFO_CACHE
+
+
+# Groups always excluded from the non-OECD category label (perhalogenated /
+# polyhalogenated alkyl catch-alls that add no structural specificity).
+_CLASSIFY_EXCLUDED_IDS: frozenset = frozenset({51, 52})
+
+# Name subsumption for non-OECD classification: when a more-specific group
+# name (key) is present, every name in its list is suppressed.
+# Keys and values must match exactly the ``group_name`` values stored in
+# match results (i.e. the ``name`` field from the raw group JSON).
+_SUBSUMES: Dict[str, List[str]] = {
+    "sulfonamide":         ["amine"],
+    "amide":               ["amine"],
+    "Telomer sulfonamide": ["amine"],
+    "phosphonamide":       ["amine"],
+}
+
+
 def _grid_images(imgs: Sequence[Image.Image], buffer: int = 4, ncols: int = 3) -> Tuple[Image.Image, int, int]:
     """Arrange PIL images in a simple grid layout.
 
@@ -604,6 +650,102 @@ class MoleculeResult(dict):
             lines.append(f"{idx}\t{match_type}\t{name}\t{components}")
 
         return "\n".join(lines)
+
+    def classify(self) -> Tuple[str, int]:
+        """Classify the molecule's PFAS content into a category label.
+
+        Returns
+        -------
+        (category, total_component_size) : Tuple[str, int]
+            *category* — a short label describing the main PFAS groups present:
+
+            * If one or more **OECD** groups are matched, returns their names
+              joined by ``", "``.
+            * Otherwise, returns a ``"per-"`` or ``"poly-"`` prefixed string
+              listing the matched **generic** / **telomeric** group names
+              (excluding groups 51 & 52), separated by ``", "``.
+              ``"per-"`` is used only when **all** matched component SMARTS
+              carry ``saturation='per'``; ``"poly-"`` otherwise.
+              Name subsumption is applied: e.g. ``"amine"`` is suppressed
+              when ``"sulfonamide"`` or ``"amide"`` is present.
+
+            *total_component_size* — sum of :attr:`ComponentView.size` (C-atom
+            count) across **all** matched group components.
+        """
+        group_info = _get_group_info()
+        meta = _get_component_meta()
+
+        oecd_names: List[str] = []
+        non_oecd: List[Tuple[int, str]] = []  # (group_id, name)
+        total_size: int = 0
+        seen_oecd: set = set()
+        seen_non_oecd_ids: set = set()
+
+        for m in self.iter_group_matches():
+            gid = m.group_id
+            if gid is None:
+                continue
+            info = group_info.get(gid, {})
+            cat = info.get("category", "other")
+            name = m.group_name or info.get("name", f"group_{gid}")
+
+            # Accumulate total component size across ALL groups
+            for comp in m.components:
+                total_size += comp.size
+
+            if cat == "OECD":
+                if name not in seen_oecd:
+                    seen_oecd.add(name)
+                    oecd_names.append(name)
+            elif cat in ("generic", "telomer"):
+                if gid not in _CLASSIFY_EXCLUDED_IDS and gid not in seen_non_oecd_ids:
+                    seen_non_oecd_ids.add(gid)
+                    non_oecd.append((gid, name))
+
+        # --- OECD priority -----------------------------------------------
+        if oecd_names:
+            return ", ".join(oecd_names), total_size
+
+        # --- Non-OECD (generic + telomeric) --------------------------------
+        if not non_oecd:
+            return "unclassified", total_size
+
+        # Apply name subsumption
+        matched_name_set = {name for _, name in non_oecd}
+        suppressed: set = set()
+        for name in matched_name_set:
+            for s in _SUBSUMES.get(name, []):
+                if s in matched_name_set:
+                    suppressed.add(s)
+
+        filtered_names: List[str] = [
+            name for _, name in non_oecd if name not in suppressed
+        ]
+
+        # Determine per/poly prefix from component saturation metadata
+        all_per = True
+        any_sat = False
+        for m in self.iter_group_matches():
+            gid = m.group_id
+            if gid is None or gid in _CLASSIFY_EXCLUDED_IDS:
+                continue
+            if group_info.get(gid, {}).get("category", "other") not in ("generic", "telomer"):
+                continue
+            for comp in m.components:
+                sl = comp.smarts_label
+                sl_str = str(sl) if isinstance(sl, list) else (sl or "")
+                sat = meta.get(sl_str, {}).get("saturation")
+                if sat is not None:
+                    any_sat = True
+                    if sat != "per":
+                        all_per = False
+
+        prefix = "per" if (any_sat and all_per) else "poly"
+        label = (
+            f"{prefix}-{', '.join(filtered_names)}" if filtered_names
+            else "unclassified"
+        )
+        return label, total_size
 
     def show(
         self,
@@ -1606,6 +1748,33 @@ class ResultsModel(list):
             )
 
         return "\n".join(lines)
+
+    def classify(self) -> pd.DataFrame:
+        """Return a classification DataFrame with one row per molecule.
+
+        Each molecule is classified by :meth:`MoleculeResult.classify`.
+
+        Returns
+        -------
+        pandas.DataFrame
+            Columns:
+
+            * ``smiles`` — molecule SMILES.
+            * ``category`` — classification label: OECD group name(s) if
+              matched, otherwise ``"per-"``/``"poly-"`` + generic/telomeric
+              group names (comma-separated).
+            * ``total_component_size`` — sum of C-atom counts across all
+              matched group components.
+        """
+        rows = []
+        for mol_res in self:  # type: ignore[assignment]
+            category, total_size = mol_res.classify()
+            rows.append({
+                "smiles":               mol_res.smiles,
+                "category":             category,
+                "total_component_size": total_size,
+            })
+        return pd.DataFrame(rows, columns=["smiles", "category", "total_component_size"])
 
     def summary(self) -> None:
         """Print a detailed coloured summary of matched groups across all molecules.

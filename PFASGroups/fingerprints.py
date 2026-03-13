@@ -233,6 +233,7 @@ class PFASFingerprint(np.ndarray):
         'preset': None,
         '_match_cache': {},
         '_pfas_groups': None,
+        'invalid_smiles': [],   # list of (row_idx, smi, error_msg) for skipped rows
     }
 
     # ------------------------------------------------------------------
@@ -346,7 +347,7 @@ class PFASFingerprint(np.ndarray):
             )
 
         # ── Compute fingerprint matrix ────────────────────────────────
-        matrix, col_names, computed_cache = cls._compute_matrix(
+        matrix, col_names, computed_cache, invalid = cls._compute_matrix(
             smiles_list, sel_groups, halogens_list,
             resolved_cm, saturation,
             resolved_mm,
@@ -373,6 +374,7 @@ class PFASFingerprint(np.ndarray):
         obj.preset = preset
         obj._match_cache = full_cache
         obj._pfas_groups = pfas_groups
+        obj.invalid_smiles = invalid  # list of (row_idx, smi, error_msg)
 
         return obj
 
@@ -597,6 +599,8 @@ class PFASFingerprint(np.ndarray):
         matrix = np.zeros((len(smiles_list), n_cols), dtype=float)
         _cache: Dict[str, Dict] = {}  # accumulate per-SMILES match dicts
 
+        _invalid: List[Tuple[int, str, str]] = []
+
         _iter = enumerate(smiles_list)
         if progress:
             try:
@@ -664,9 +668,24 @@ class PFASFingerprint(np.ndarray):
                     matrix[row_idx, mm_start:] = cls._mol_metric_vec(match_dicts, mol_metrics)
 
             except Exception as exc:
-                raise ValueError(f"Error processing SMILES {smi!r}: {exc}") from exc
+                _invalid.append((row_idx, smi, str(exc)))
+                warnings.warn(
+                    f"Skipping invalid SMILES at index {row_idx} ({smi!r}): {exc}",
+                    UserWarning,
+                    stacklevel=2,
+                )
+                # row stays as zeros — already initialised above
 
-        return matrix, col_names, _cache
+        if _invalid:
+            n_inv = len(_invalid)
+            warnings.warn(
+                f"{n_inv} SMILES could not be processed and were set to zero vectors. "
+                f"Access .invalid_smiles for details.",
+                UserWarning,
+                stacklevel=2,
+            )
+
+        return matrix, col_names, _cache, _invalid
 
     # ------------------------------------------------------------------
     # Public properties
@@ -676,6 +695,22 @@ class PFASFingerprint(np.ndarray):
     def n_molecules(self) -> int:
         """Number of molecules (always 1 for a 1-D fingerprint)."""
         return 1 if self.ndim == 1 else self.shape[0]
+
+    @property
+    def valid_mask(self) -> 'np.ndarray':
+        """Boolean array of shape ``(n_molecules,)``; ``False`` for rows that
+        could not be processed (invalid / non-kekulizable SMILES).
+
+        Use this to filter downstream matrices::
+
+            fp = PFASFingerprint(smiles_list, preset='best')
+            mat = np.asarray(fp)[fp.valid_mask]
+        """
+        mask = np.ones(self.n_molecules, dtype=bool)
+        for row_idx, _smi, _err in (getattr(self, 'invalid_smiles', None) or []):
+            if row_idx < len(mask):
+                mask[row_idx] = False
+        return mask
 
     @property
     def n_columns(self) -> int:

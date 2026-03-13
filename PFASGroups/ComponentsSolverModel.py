@@ -226,7 +226,7 @@ class ComponentsSolver:
         non_hf_atoms = [
             atom.GetIdx()
             for atom in self.mol.GetAtoms()
-            if atom.GetSymbol() not in ['H', 'F']
+            if atom.GetSymbol() not in ['H', 'F','Cl','Br','I']
         ]
         if not non_hf_atoms:
             return 0.0

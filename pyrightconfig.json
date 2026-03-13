@@ -1,0 +1,8 @@
+{
+  "include": ["PFASGroups", "HalogenGroups", "tests", "benchmark"],
+  "reportMissingImports": "none",
+  "reportMissingModuleSource": "none",
+  "reportMissingTypeStubs": "none",
+  "reportUndefinedVariable": "none",
+  "typeCheckingMode": "basic"
+}

@@ -116,6 +116,7 @@ def parse_definitions_in_mol(mol, **kwargs):
 @add_componentSmarts()
 @load_HalogenGroups()
 @load_componentsSolver()
+@rdkit_disable_log(level='warning')
 def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = None, **kwargs):
     """Iterates over halogen groups and finds the ones that match the molecule.
 

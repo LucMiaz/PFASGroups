@@ -409,7 +409,7 @@ def create_comparison_heatmap(single_analysis):
     ))
     
     fig.update_layout(
-        title="HalogenGroup vs PFAS-Atlas Detection Performance Comparison<br><sub>Single Functional Group MoleculesHalogenGroupnGroups Module Performance</sub>",
+        title="HalogenGroup vs PFAS-Atlas Detection Performance Comparison<br><sub>Single Functional Group Molecules - HalogenGroups Module Performance</sub>",
         xaxis_title="PFAS Functional Groups",
         yaxis_title="Detection Systems", 
         font_size=12,
@@ -569,11 +569,11 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
     
     # Calculate overall statistics
     total_single = sum(data['total_molecules'] for data in single_analysis.values())
-    HalogenGroup_single_success = sum(datHalogenGroupnGroups_correct'] for data in single_analysis.values())
+    HalogenGroup_single_success = sum(data['HalogenGroups_correct'] for data in single_analysis.values())
     atlas_single_success = sum(data['atlas_any_detection'] for data in single_analysis.values())
     
     total_multi = sum(data['total_molecules'] for data in multi_analysis.values())
-    HalogenGroup_multi_success = sum(datHalogenGroupnGroups_any_detection'] for data in multi_analysis.values())
+    HalogenGroup_multi_success = sum(data['HalogenGroups_any_detection'] for data in multi_analysis.values())
     atlas_multi_success = sum(data['atlas_classifications'] for data in multi_analysis.values())
     
     # Create links
@@ -593,29 +593,29 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
         if m['molecule_data'].get('generation_type') == 'single_group':
             expected = m['molecule_data']['group_name']
             atlas = m['atlas_result'].get('second_class','None')
-            HalogenGroup_ids = HalogenGroupnGroups_result']['detected_groups']
-            HalogenGroup = [lookup[id] for id HalogenGroupnGroups_ids if id!=49 and id!=50 and id > 28]
-            HalogenGroup = [f"- {reverse_lookup.get(pf)}: {pf}" for pf HalogenGroupnGroups]
-            HalogenGroup_oecd = [lookup[id] for id HalogenGroupnGroups_ids if id<= 28]
-            HalogenGroup_oecd = [f"- {reverse_lookup.get(pf)}: {pf}" for pf HalogenGroupnGroups_oecd]
+            HalogenGroup_ids = m['HalogenGroups_result']['detected_groups']
+            HalogenGroup = [lookup[id] for id in HalogenGroup_ids if id!=49 and id!=50 and id > 28]
+            HalogenGroup = [f"- {reverse_lookup.get(pf)}: {pf}" for pf in HalogenGroup]
+            HalogenGroup_oecd = [lookup[id] for id in HalogenGroup_ids if id<= 28]
+            HalogenGroup_oecd = [f"- {reverse_lookup.get(pf)}: {pf}" for pf in HalogenGroup_oecd]
             expected = f"{reverse_lookup.get(expected)}: {expected}"
             # Collect unique nodes
             nodes_set.add(expected)
             nodes_atlas_set.add(atlas)
-            nodes_HalogenGroup_set.updaHalogenGroupnGroups)
-            nodes_HalogenGroup_oecd_set.updaHalogenGroupnGroups_oecd)
+            nodes_HalogenGroup_set.update(HalogenGroup)
+            nodes_HalogenGroup_oecd_set.update(HalogenGroup_oecd)
             # Build connection dictionaries
             pfas_atlas[expected][atlas] = pfas_atlas.setdefault(expected,{}).get(atlas,0)+1
             for pfg in HalogenGroup:
-                pfas_HalogenGroup[expected][pfg] = pfHalogenGroupnGroups.setdefault(expected,{}).get(pfg,0)+1
+                pfas_HalogenGroup[expected][pfg] = pfas_HalogenGroup.setdefault(expected,{}).get(pfg,0)+1
             for pfg in HalogenGroup_oecd:
-                pfas_HalogenGroup_oecd[expected][pfg] = pfHalogenGroupnGroups_oecd.setdefault(expected,{}).get(pfg,0)+1
+                pfas_HalogenGroup_oecd[expected][pfg] = pfas_HalogenGroup_oecd.setdefault(expected,{}).get(pfg,0)+1
 
     # Create deduplicated node lists
     nodes = sorted(list(nodes_set))
     nodes_atlas = sorted(list(nodes_atlas_set))
-    nodes_HalogenGroup = sorted(list(nodHalogenGroupnGroups_set))
-    nodes_HalogenGroup_oecd = sorted(list(nodHalogenGroupnGroups_oecd_set))
+    nodes_HalogenGroup = sorted(list(nodes_HalogenGroup_set))
+    nodes_HalogenGroup_oecd = sorted(list(nodes_HalogenGroup_oecd_set))
 
     # Create nodes for Atlas diagram
     pfas_atlas_nodes = [
@@ -648,17 +648,17 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
     )
 
     # For HalogenGroup nodes: source nodes in blue, target nodes in green gradient
-    num_HalogenGroup_target_nodes = len(nodHalogenGroupnGroups)
+    num_HalogenGroup_target_nodes = len(nodes_HalogenGroup)
     node_HalogenGroup_colors = (
         ["rgba(31, 119, 180, 0.8)"] * num_source_nodes +  # Source nodes in blue
-        px.colors.sample_colorscale("Greens", [0.4 + (i * 0.6 / max(1, num_HalogenGroup_target_nodes - 1)) for i in range(nHalogenGroupnGroups_target_nodes)])
+        px.colors.sample_colorscale("Greens", [0.4 + (i * 0.6 / max(1, num_HalogenGroup_target_nodes - 1)) for i in range(num_HalogenGroup_target_nodes)])
     )
 
     # For HalogenGroup nodes: source nodes in blue, target nodes in green gradient
-    num_HalogenGroup_oecd_target_nodes = len(nodHalogenGroupnGroups_oecd)
+    num_HalogenGroup_oecd_target_nodes = len(nodes_HalogenGroup_oecd)
     node_HalogenGroup_oecd_colors = (
         ["rgba(31, 119, 180, 0.8)"] * num_source_nodes +  # Source nodes in blue
-        px.colors.sample_colorscale("Greens", [0.4 + (i * 0.6 / max(1, num_HalogenGroup_oecd_target_nodes - 1)) for i in range(nHalogenGroupnGroups_oecd_target_nodes)])
+        px.colors.sample_colorscale("Greens", [0.4 + (i * 0.6 / max(1, num_HalogenGroup_oecd_target_nodes - 1)) for i in range(num_HalogenGroup_oecd_target_nodes)])
     )
     
     # Create links for PFAS-Atlas diagram
@@ -706,10 +706,10 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
     pfas_atlas_link_colors = ["rgba(255, 127, 14, 0.3)"] * len(pfas_atlas_values)
 
     # HalogenGroup links: semi-transparent green
-    pfas_HalogenGroup_link_colors = ["rgba(44, 160, 44, 0.3)"] * len(pfHalogenGroupnGroups_values)
+    pfas_HalogenGroup_link_colors = ["rgba(44, 160, 44, 0.3)"] * len(pfas_HalogenGroup_values)
 
     # HalogenGroup links: semi-transparent green
-    pfas_HalogenGroup_oecd_link_colors = ["rgba(44, 160, 44, 0.3)"] * len(pfHalogenGroupnGroups_oecd_values)
+    pfas_HalogenGroup_oecd_link_colors = ["rgba(44, 160, 44, 0.3)"] * len(pfas_HalogenGroup_oecd_values)
     
     fig_atlas = go.Figure(data=[go.Sankey(
         node=dict(
@@ -780,7 +780,7 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
         height=600
     )
 
-    figs = [fig_atlas, fig_HalogenGroup, fHalogenGroupnGroups_oecd]
+    figs = [fig_atlas, fig_HalogenGroup, fig_HalogenGroup_oecd]
     return figs
 
 def analyze_oecd_benchmark(oecd_results):
