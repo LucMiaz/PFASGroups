@@ -11,7 +11,7 @@ import json
 
 
 from .parser import parse_smiles, get_componentSMARTSs, get_PFASGroups
-from .fingerprints import PFASFingerprint
+from .embeddings import PFASEmbedding
 from rdkit import Chem
 
 
@@ -346,10 +346,10 @@ def cmd_fingerprint(args):
     if args.groups:
         selected_groups = parse_group_selection(args.groups)
 
-    # Normalise representation arg: PFASFingerprint is now a numpy array subclass;
+    # Normalise representation arg: PFASEmbedding is now a numpy array subclass;
     # the array itself is the fingerprint matrix.
     import numpy as np
-    rfp = PFASFingerprint(
+    rfp = PFASEmbedding(
         smiles_list,
         count_mode=args.count_mode,
         halogens=kwargs.pop('halogens', 'F'),

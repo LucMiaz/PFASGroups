@@ -6,7 +6,6 @@ Verifies:
 - Branching sensitivity: branched isomers have lower EGR than linear
 - Bond-order effect: stronger bonds (higher BDE) reduce resistance
 - Exact Kirchhoff identity: K_f == n * sum(1/lambda_i) for non-zero eigenvalues
-- Resistance distance symmetry and triangle inequality
 - SMARTS-distance metrics use genuine BDE-weighted R(u,v)
 - Arithmetic correctness for a trivial 2-atom graph
 - Fallback/skip paths (limit_effective_graph_resistance)
@@ -105,24 +104,36 @@ class TestTwoAtomGraph:
 
     def test_two_node_kirchhoff(self):
         solver = self._make_cc_solver()
-        # The fluorinated component is both carbons (2 C atoms)
-        # Find the component containing both carbons
+        # The fluorinated component contains both carbons (2 C atoms).
+        # Find the 2-node component and verify K_f = 1/c via _kirchhoff_index.
         for comps in solver.components.values():
             for comp in comps:
                 if len(comp) == 2:
                     subG = solver.G.subgraph(comp)
-                    kirchhoff, rdist = solver._bde_resistance_matrix(subG)
+                    kirchhoff = solver._kirchhoff_index(subG, uniform=False)
                     nodes = list(comp)
-                    r = rdist[(nodes[0], nodes[1])]
-                    # K_f for 2 nodes = single resistance = 1/c
+                    # K_f for a 2-node graph = 1 / conductance of the single edge
                     scheme = solver.bde_scheme
                     z0 = solver.G.nodes[nodes[0]]['element']
                     z1 = solver.G.nodes[nodes[1]]['element']
                     bond_order = subG.edges[nodes[0], nodes[1]].get('order', 1.0)
                     c = scheme.conductance(z0, z1, bond_order)
                     expected = 1.0 / c
-                    assert abs(r - expected) < 1e-9, f'R(0,1) expected {expected}, got {r}'
-                    assert abs(kirchhoff - expected) < 1e-9
+                    assert abs(kirchhoff - expected) < 1e-9, (
+                        f'K_f expected {expected}, got {kirchhoff}'
+                    )
+
+    def test_two_node_uniform_kirchhoff(self):
+        """With uniform weights (c=1) on a 2-node graph, K_f must equal 1.0."""
+        solver = self._make_cc_solver()
+        for comps in solver.components.values():
+            for comp in comps:
+                if len(comp) == 2:
+                    subG = solver.G.subgraph(comp)
+                    kirchhoff_uniform = solver._kirchhoff_index(subG, uniform=True)
+                    assert abs(kirchhoff_uniform - 1.0) < 1e-9, (
+                        f'Uniform K_f expected 1.0, got {kirchhoff_uniform}'
+                    )
 
 
 # ── EGR physical properties ────────────────────────────────────────────────────
@@ -247,7 +258,7 @@ class TestKirchhoffIdentity:
                 subG = solver.G.subgraph(comp)
                 if not __import__('networkx').is_connected(subG):
                     continue
-                kirchhoff_pinv, _ = solver._bde_resistance_matrix(subG)
+                kirchhoff_pinv = solver._kirchhoff_index(subG, uniform=False)
                 kirchhoff_eig = self._kirchhoff_via_eigenvalues(subG, scheme)
                 assert abs(kirchhoff_pinv - kirchhoff_eig) < 1e-6, (
                     f'Pseudoinverse K_f ({kirchhoff_pinv:.6f}) differs from '
@@ -255,175 +266,69 @@ class TestKirchhoffIdentity:
                 )
 
 
-# ── Resistance distance properties ────────────────────────────────────────────
-
-class TestResistanceDistanceProperties:
-
-    def _get_rdist(self, smiles: str) -> dict:
-        mol = Chem.MolFromSmiles(smiles)
-        solver = ComponentsSolver(mol)
-        for comps in solver.components.values():
-            for comp in comps:
-                if len(comp) >= 2:
-                    subG = solver.G.subgraph(comp)
-                    if __import__('networkx').is_connected(subG):
-                        _, rdist = solver._bde_resistance_matrix(subG)
-                        return rdist
-        return {}
-
-    @pytest.mark.parametrize('smiles', [
-        'OC(=O)C(F)(F)C(F)(F)C(F)(F)F',
-        'OC(=O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F',
-    ])
-    def test_rdist_symmetry(self, smiles):
-        rdist = self._get_rdist(smiles)
-        for (u, v), r in rdist.items():
-            assert abs(r - rdist.get((v, u), float('nan'))) < 1e-12, \
-                f'R({u},{v}) != R({v},{u}): {r} vs {rdist.get((v,u))}'
-
-    @pytest.mark.parametrize('smiles', [
-        'OC(=O)C(F)(F)C(F)(F)C(F)(F)F',
-        'OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F',
-    ])
-    def test_rdist_positive(self, smiles):
-        rdist = self._get_rdist(smiles)
-        for (u, v), r in rdist.items():
-            if u != v:
-                assert r > 0, f'R({u},{v}) = {r} should be positive'
-
-    @pytest.mark.parametrize('smiles', [
-        'OC(=O)C(F)(F)C(F)(F)C(F)(F)F',
-    ])
-    def test_rdist_triangle_inequality(self, smiles):
-        """Resistance distance satisfies the triangle inequality: R(i,k) <= R(i,j)+R(j,k)."""
-        rdist = self._get_rdist(smiles)
-        nodes = list({u for u, _ in rdist})
-        violations = []
-        for i in nodes:
-            for j in nodes:
-                for k in nodes:
-                    if i == j or j == k or i == k:
-                        continue
-                    rij = rdist.get((i, j))
-                    rjk = rdist.get((j, k))
-                    rik = rdist.get((i, k))
-                    if rij is None or rjk is None or rik is None:
-                        continue
-                    if rik > rij + rjk + 1e-9:
-                        violations.append((i, j, k, rik, rij + rjk))
-        assert not violations, f'Triangle inequality violated: {violations[:3]}'
-
-
 # ── SMARTS-distance metrics use BDE resistance ─────────────────────────────────
 
 class TestSmartsResistanceMetrics:
 
-    def test_resistance_dist_differs_from_hop_dist(self):
-        """min_resistance_dist_to_barycenter should differ from the plain
-        hop distance when C-F bonds (higher BDE) are present, because BDE
-        weighting changes the effective path cost.
-        """
-        # Use a structure with a branch point where C-F and C-C conductances differ
-        smi = 'OC(=O)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F'
-        comp = _first_comp_metrics(smi)
-        hop   = comp['min_dist_to_barycenter']
-        rdist = comp['min_resistance_dist_to_barycenter']
-        # Both must be finite and non-negative
-        assert not math.isnan(rdist), 'min_resistance_dist_to_barycenter is NaN'
-        assert rdist >= 0
-
-    def test_periphery_resistance_finite(self):
-        smi = 'OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F'
-        comp = _first_comp_metrics(smi)
-        assert not math.isnan(comp.get('max_resistance_dist_to_periphery', float('nan')))
-        assert comp.get('max_resistance_dist_to_periphery', -1) >= 0
-
     def test_all_resistance_metrics_present(self):
         smi = 'OC(=O)C(F)(F)C(F)(F)C(F)(F)F'
         comp = _first_comp_metrics(smi)
-        for key in ('effective_graph_resistance',
-                    'min_resistance_dist_to_barycenter',
-                    'min_resistance_dist_to_center',
-                    'max_resistance_dist_to_periphery',
-                    'mean_resistance_distance',
-                    'resistance_diameter',
-                    'resistance_radius',
-                    'mean_resistance_eccentricity',
-                    'median_resistance_eccentricity'):
+        for key in (
+            'effective_graph_resistance',
+            'effective_graph_resistance_BDE',
+            'branching',
+            'mean_eccentricity',
+            'diameter',
+            'radius',
+            'component_fraction',
+            'min_dist_to_barycenter',
+            'min_dist_to_center',
+            'max_dist_to_periphery',
+        ):
             assert key in comp, f'{key} missing from component metrics'
-            assert not math.isnan(comp[key]), f'{key} is NaN'
+            val = comp[key]
+            assert val is not None, f'{key} is None'
+            assert not math.isnan(float(val)), f'{key} is NaN'
 
 
-# ── New molecule-wide resistance metrics ───────────────────────────────────────
+# ── New EGR-BDE variant tests ──────────────────────────────────────────────────
 
-class TestNewResistanceMetrics:
-    """Verify the new per-component and molecule-wide BDE-resistance metrics."""
+class TestEGRBDEVariant:
+    """Tests for the new effective_graph_resistance_BDE metric."""
 
-    def test_mean_resistance_distance_positive(self):
-        """mean_resistance_distance > 0 for any multi-atom component."""
+    def test_egr_bde_present(self):
+        """effective_graph_resistance_BDE must be present and finite in component metrics."""
         comp = _first_comp_metrics('OC(=O)C(F)(F)C(F)(F)C(F)(F)F')
-        mrd = comp['mean_resistance_distance']
-        assert not math.isnan(mrd), 'mean_resistance_distance is NaN'
-        assert mrd > 0
-
-    def test_mean_resistance_distance_less_than_egr(self):
-        """mean_resistance_distance = EGR / C(n,2) < EGR for n > 2."""
-        comp = _first_comp_metrics('OC(=O)C(F)(F)C(F)(F)C(F)(F)F')
-        mrd = comp['mean_resistance_distance']
-        egr = comp['effective_graph_resistance']
-        assert mrd < egr, f'mean_resistance_distance ({mrd}) should be < EGR ({egr}) for n>2'
-
-    def test_resistance_diameter_geq_radius(self):
-        """resistance_diameter >= resistance_radius (same as hop-count)."""
-        comp = _first_comp_metrics('OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F')
-        rd = comp['resistance_diameter']
-        rr = comp['resistance_radius']
-        assert not math.isnan(rd) and not math.isnan(rr)
-        assert rd >= rr, f'resistance_diameter ({rd}) < resistance_radius ({rr})'
-
-    def test_resistance_diameter_increases_with_chain(self):
-        """Resistance diameter should grow as the chain lengthens."""
-        s3 = 'OC(=O)C(F)(F)C(F)(F)F'
-        s5 = 'OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F'
-        rd3 = _first_comp_metrics(s3)['resistance_diameter']
-        rd5 = _first_comp_metrics(s5)['resistance_diameter']
-        assert rd5 > rd3, f'C5 resistance diameter ({rd5}) should exceed C3 ({rd3})'
-
-    def test_mean_resistance_eccentricity_between_radius_and_diameter(self):
-        """resistance_radius <= mean_resistance_eccentricity <= resistance_diameter."""
-        comp = _first_comp_metrics('OC(=O)C(F)(F)C(F)(F)C(F)(F)F')
-        rr   = comp['resistance_radius']
-        mre  = comp['mean_resistance_eccentricity']
-        rd   = comp['resistance_diameter']
-        assert rr <= mre + 1e-9, f'radius ({rr}) > mean_ecc ({mre})'
-        assert mre <= rd + 1e-9, f'mean_ecc ({mre}) > diameter ({rd})'
-
-    def test_molecule_wide_metrics_present(self):
-        """parse_smiles HalogenGroup match summary dicts should contain the new molecule-wide keys."""
-        results = parse_smiles('OC(=O)C(F)(F)C(F)(F)C(F)(F)F', halogens='F')
-        halogen_matches = [m for m in results[0]['matches'] if m.get('type') == 'HalogenGroup']
-        assert halogen_matches, 'Expected at least one HalogenGroup match'
-        for match in halogen_matches:
-            for key in ('mean_resistance_distance', 'mean_resistance_diameter',
-                        'mean_resistance_radius', 'mean_resistance_eccentricity',
-                        'mean_resistance_dist_to_barycenter',
-                        'mean_resistance_dist_to_center',
-                        'mean_resistance_dist_to_periphery'):
-                assert key in match, f'{key} missing from HalogenGroup match summary'
-
-    def test_branching_lowers_resistance_diameter(self):
-        """A 4-node star (K_{1,3}) has a smaller resistance diameter than a 4-node path (P4).
-
-        P4 resistance diameter = max R(u,v) between the two ends ≈ 20/3c  (roughly)
-        K_{1,3} resistance diameter = max R(leaf,leaf) = 2/c (through center)
-        """
-        path = 'OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F'  # 4-C path
-        star = 'OC(=O)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F'  # 4-C star (K_{1,3})
-        rd_path = _first_comp_metrics(path)['resistance_diameter']
-        rd_star = _first_comp_metrics(star)['resistance_diameter']
-        assert rd_path > rd_star, (
-            f'P4 resistance diameter ({rd_path}) should > K_{{1,3}} ({rd_star})'
+        assert 'effective_graph_resistance_BDE' in comp, (
+            'effective_graph_resistance_BDE missing from component metrics'
         )
+        val = comp['effective_graph_resistance_BDE']
+        assert not math.isnan(float(val)), 'effective_graph_resistance_BDE is NaN'
+
+    def test_egr_bde_different_from_uniform(self):
+        """effective_graph_resistance (uniform) should differ from effective_graph_resistance_BDE
+        (BDE-weighted, 1-hop expanded) for a typical PFAS molecule."""
+        smi = 'OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F'
+        comp = _first_comp_metrics(smi)
+        egr_uniform = comp['effective_graph_resistance']
+        egr_bde = comp['effective_graph_resistance_BDE']
+        # They are computed on different graphs with different weights, so they should differ.
+        assert egr_uniform != egr_bde, (
+            f'effective_graph_resistance ({egr_uniform}) should differ from '
+            f'effective_graph_resistance_BDE ({egr_bde})'
+        )
+
+    def test_egr_bde_positive(self):
+        """effective_graph_resistance_BDE must be positive for all components."""
+        smi = 'OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F'
+        results = parse_smiles(smi, halogens='F')
+        for match in results[0]['matches']:
+            for comp in match.get('components', []):
+                val = comp.get('effective_graph_resistance_BDE', float('nan'))
+                if not math.isnan(float(val)):
+                    assert float(val) > 0, (
+                        f'effective_graph_resistance_BDE should be positive, got {val}'
+                    )
 
 
 # ── limit_effective_graph_resistance ──────────────────────────────────────────

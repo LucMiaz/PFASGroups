@@ -42,16 +42,19 @@ from PFASGroups import (
     HomologueEntry,
     generate_degradation_products,
     MoleculeResult,
-    ResultsFingerprint,
+    PFASEmbedding,
     prioritise_molecules,
     prioritize_molecules,
     get_priority_statistics,
+    FINGERPRINT_PRESETS,
+    EMBEDDING_PRESETS,
+    generate_embedding,
 )
 from PFASGroups import (
     parse_smiles as _parse_smiles_base,
     parse_mols as _parse_mols_base,
     generate_fingerprint as _generate_fingerprint_base,
-    ResultsModel as _ResultsModel,
+    PFASEmbeddingSet as _PFASEmbeddingSet,
 )
 
 __version__ = "3.1.0"
@@ -60,15 +63,15 @@ _ALL_HALOGENS = ['F', 'Cl', 'Br', 'I']
 
 
 # ---------------------------------------------------------------------------
-# ResultsModel subclass with all-halogens default in to_fingerprint()
+# PFASEmbeddingSet subclass — kept for backward compatibility.
+# halogens are already baked in at parse time; to_array() does not re-parse.
 # ---------------------------------------------------------------------------
 
-class ResultsModel(_ResultsModel):
-    """ResultsModel with all-halogens default for fingerprint generation.
+class PFASEmbeddingSet(_PFASEmbeddingSet):
+    """PFASEmbeddingSet with all-halogens default in to_fingerprint().
 
-    Identical to ``PFASGroups.ResultsModel`` except that
-    :meth:`to_fingerprint` defaults to ``halogens=['F', 'Cl', 'Br', 'I']``
-    instead of ``halogens='F'``.
+    Identical to ``PFASGroups.PFASEmbeddingSet`` except that the deprecated
+    :meth:`to_fingerprint` records that all four halogens were used.
     """
 
     def to_fingerprint(
@@ -82,32 +85,21 @@ class ResultsModel(_ResultsModel):
         molecule_metrics: Optional[List[str]] = None,
         pfas_groups: Optional[List[Dict]] = None,
         preset: Optional[str] = None,
-        # Backward-compat aliases (deprecated)
         count_mode: Optional[str] = None,
         graph_metrics: Optional[List[str]] = None,
         **kwargs,
-    ) -> 'ResultsFingerprint':
-        """Convert ResultsModel to ResultsFingerprint.
+    ):
+        """Deprecated — use :meth:`to_array` instead.
 
-        Identical to ``PFASGroups.ResultsModel.to_fingerprint`` except the
-        default for ``halogens`` is ``['F', 'Cl', 'Br', 'I']`` (all halogens)
-        instead of ``'F'``.
-
-        Parameters
-        ----------
-        component_metrics : list of str, default ['binary']
-            Ordered list of per-component metrics (count modes and/or graph
-            metrics).  See ``PFASGroups.ResultsModel.to_fingerprint``.
-        halogens : str or list of str, default ['F', 'Cl', 'Br', 'I']
-            Which halogen(s) to match SMARTS against.
+        ``halogens`` is accepted for backward compatibility but has no effect:
+        the halogen filter is applied at parse time (in :func:`parse_smiles`),
+        not at embedding time.
         """
-        if halogens is None:
-            halogens = _ALL_HALOGENS
         return super().to_fingerprint(
             group_selection=group_selection,
             component_metrics=component_metrics,
             selected_group_ids=selected_group_ids,
-            halogens=halogens,
+            halogens=halogens or _ALL_HALOGENS,
             saturation=saturation,
             molecule_metrics=molecule_metrics,
             pfas_groups=pfas_groups,
@@ -116,6 +108,10 @@ class ResultsModel(_ResultsModel):
             graph_metrics=graph_metrics,
             **kwargs,
         )
+
+
+# Backward-compatible alias
+ResultsModel = PFASEmbeddingSet
 
 
 # ---------------------------------------------------------------------------
@@ -154,10 +150,10 @@ def parse_smiles(smiles, *, bycomponent=False, output_format='list',
         saturation=saturation,
         **kwargs,
     )
-    # Wrap result in HalogenGroups ResultsModel so that to_fingerprint()
+    # Wrap result in HalogenGroups PFASEmbeddingSet so that to_fingerprint()
     # also defaults to all halogens.
-    if isinstance(result, _ResultsModel):
-        return ResultsModel(result)
+    if isinstance(result, _PFASEmbeddingSet):
+        return PFASEmbeddingSet(result)
     return result
 
 
@@ -192,8 +188,8 @@ def parse_mols(mols, *, output_format='list', include_PFAS_definitions=True,
         saturation=saturation,
         **kwargs,
     )
-    if isinstance(result, _ResultsModel):
-        return ResultsModel(result)
+    if isinstance(result, _PFASEmbeddingSet):
+        return PFASEmbeddingSet(result)
     return result
 
 
@@ -213,8 +209,7 @@ def generate_fingerprint(smiles, *, selected_groups=None, representation='vector
     ----------
     smiles : str or list of str
     halogens : str or list of str, default ['F', 'Cl', 'Br', 'I']
-        Halogens to include. Multiple values produce a stacked fingerprint
-        of length n_groups × n_halogens.
+        Halogens to include.
 
     See Also
     --------
@@ -244,10 +239,12 @@ __all__ = [
     'parse_from_database', 'setup_halogen_groups_database',
     'compile_componentSmarts', 'compile_componentSmartss', 'load_HalogenGroups',
     'plot_HalogenGroups', 'plot_mol', 'plot_mols',
-    'get_componentSMARTSs', 'get_HalogenGroups', 'get_compiled_HalogenGroups', 'get_compiled_PFASGroups', 'get_PFASDefinitions',
-    'generate_fingerprint',
+    'get_componentSMARTSs', 'get_HalogenGroups', 'get_compiled_HalogenGroups',
+    'get_compiled_PFASGroups', 'get_PFASDefinitions',
+    'generate_fingerprint', 'generate_embedding',
+    'FINGERPRINT_PRESETS', 'EMBEDDING_PRESETS',
     'generate_homologues', 'HomologueSeries', 'HomologueEntry',
     'generate_degradation_products',
-    'ResultsModel', 'MoleculeResult', 'ResultsFingerprint',
+    'PFASEmbedding', 'PFASEmbeddingSet', 'ResultsModel', 'MoleculeResult',
     'prioritise_molecules', 'prioritize_molecules', 'get_priority_statistics',
 ]

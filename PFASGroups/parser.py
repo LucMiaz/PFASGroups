@@ -89,6 +89,10 @@ def load_componentsSolver(**kwargs):
                 solver_kwargs['limit_effective_graph_resistance'] = kwargs['limit_effective_graph_resistance']
             if 'compute_component_metrics' in kwargs:
                 solver_kwargs['compute_component_metrics'] = kwargs['compute_component_metrics']
+            if 'resistance_weights' in kwargs:
+                solver_kwargs['resistance_weights'] = kwargs['resistance_weights']
+            if 'component_expansion' in kwargs:
+                solver_kwargs['component_expansion'] = kwargs['component_expansion']
             with ComponentsSolver(mol, halogens=kwargs.get('halogens'), **solver_kwargs) as fluorinated_components_dict:
                 kwargs['fluorinated_components_dict'] = kwargs.get('fluorinated_components_dict',fluorinated_components_dict)
                 return func(*args, **kwargs)
@@ -298,7 +302,7 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     kwargs['saturation'] = saturation
     return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, progress=progress, **kwargs)
 
-from .results_model import ResultsModel
+from .results_model import PFASEmbeddingSet
 
 
 def parse_from_database(
@@ -735,29 +739,13 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 mean_radius = sum(radii)/len(radii) if len(radii) > 0 else float('nan')
                 mean_resistance = sum(resistances)/len(resistances) if len(resistances) > 0 else float('nan')
 
-                # New BDE-resistance-derived metrics — filter out NaN before averaging
                 def _nanmean(vals):
                     clean = [v for v in vals if v == v and v != float('inf')]
                     return sum(clean) / len(clean) if clean else float('nan')
 
-                mean_resistance_distance_vals = [c.get('mean_resistance_distance', float('nan')) for c in matched_components]
-                resistance_diameter_vals      = [c.get('resistance_diameter', float('nan'))      for c in matched_components]
-                resistance_radius_vals        = [c.get('resistance_radius', float('nan'))        for c in matched_components]
-                mean_resistance_ecc_vals      = [c.get('mean_resistance_eccentricity', float('nan')) for c in matched_components]
-
-                mean_mean_resistance_distance = _nanmean(mean_resistance_distance_vals)
-                mean_resistance_diameter      = _nanmean(resistance_diameter_vals)
-                mean_resistance_radius        = _nanmean(resistance_radius_vals)
-                mean_mean_resistance_eccentricity = _nanmean(mean_resistance_ecc_vals)
-
-                # Resistance-distance-to-structural-feature summaries
-                min_res_dists_bc     = [c['min_resistance_dist_to_barycenter'] for c in matched_components if c['min_resistance_dist_to_barycenter'] < float('inf')]
-                min_res_dists_center = [c['min_resistance_dist_to_center']     for c in matched_components if c['min_resistance_dist_to_center']     < float('inf')]
-                max_res_dists_periph = [c['max_resistance_dist_to_periphery']  for c in matched_components if c['max_resistance_dist_to_periphery']  > 0]
-
-                mean_resistance_dist_to_barycenter = sum(min_res_dists_bc)     / len(min_res_dists_bc)     if min_res_dists_bc     else 0.0
-                mean_resistance_dist_to_center     = sum(min_res_dists_center) / len(min_res_dists_center) if min_res_dists_center else 0.0
-                mean_resistance_dist_to_periphery  = sum(max_res_dists_periph) / len(max_res_dists_periph) if max_res_dists_periph else 0.0
+                # BDE-weighted EGR on expanded component
+                egr_bde_vals = [c.get('effective_graph_resistance_BDE', float('nan')) for c in matched_components]
+                mean_effective_graph_resistance_BDE = _nanmean(egr_bde_vals)
 
                 # Distance metrics summaries
                 min_dists_bc = [c['min_dist_to_barycenter'] for c in matched_components if c['min_dist_to_barycenter'] < float('inf')]
@@ -780,17 +768,10 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                     'mean_diameter': mean_diameter,
                     'mean_radius': mean_radius,
                     'mean_effective_graph_resistance': mean_resistance,
+                    'mean_effective_graph_resistance_BDE': mean_effective_graph_resistance_BDE,
                     'mean_dist_to_barycenter': mean_dist_to_barycenter,
                     'mean_dist_to_center': mean_dist_to_center,
                     'mean_dist_to_periphery': mean_dist_to_periphery,
-                    # New BDE-resistance-derived molecule-wide summaries
-                    'mean_resistance_distance': mean_mean_resistance_distance,
-                    'mean_resistance_diameter': mean_resistance_diameter,
-                    'mean_resistance_radius': mean_resistance_radius,
-                    'mean_resistance_eccentricity': mean_mean_resistance_eccentricity,
-                    'mean_resistance_dist_to_barycenter': mean_resistance_dist_to_barycenter,
-                    'mean_resistance_dist_to_center': mean_resistance_dist_to_center,
-                    'mean_resistance_dist_to_periphery': mean_resistance_dist_to_periphery,
                 }
             else:
                 summary_metrics = {
@@ -805,17 +786,10 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                     'mean_diameter': float('nan'),
                     'mean_radius': float('nan'),
                     'mean_effective_graph_resistance': float('nan'),
+                    'mean_effective_graph_resistance_BDE': float('nan'),
                     'mean_dist_to_barycenter': 0,
                     'mean_dist_to_center': 0,
                     'mean_dist_to_periphery': 0,
-                    # New BDE-resistance-derived molecule-wide summaries
-                    'mean_resistance_distance': float('nan'),
-                    'mean_resistance_diameter': float('nan'),
-                    'mean_resistance_radius': float('nan'),
-                    'mean_resistance_eccentricity': float('nan'),
-                    'mean_resistance_dist_to_barycenter': 0.0,
-                    'mean_resistance_dist_to_center': 0.0,
-                    'mean_resistance_dist_to_periphery': 0.0,
                 }
 
             match_results.append({
@@ -878,7 +852,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
     # Default: list-like container with navigation helpers that
     # remains JSON-serialisable and behaves like a normal list of
     # dicts for existing consumers.
-    return ResultsModel(results_list)
+    return PFASEmbeddingSet(results_list)
 
 def compile_componentSmarts(chain_smarts, end_smarts):
     """

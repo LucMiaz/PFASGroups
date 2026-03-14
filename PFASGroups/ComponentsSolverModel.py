@@ -407,51 +407,48 @@ class ComponentsSolver:
 
         return augmented
 
-    def _bde_resistance_matrix(self, subG):
-        """Compute pairwise BDE-weighted resistance distances via Laplacian pseudoinverse.
+    def _kirchhoff_index(self, subG, uniform: bool = False) -> float:
+        """Kirchhoff (effective graph resistance) index via Laplacian pseudoinverse.
 
-        Edge conductance = BDE(z1, z2, bond_order) / ref_BDE.
-        Resistance distance R(u,v) = L+[u,u] + L+[v,v] - 2*L+[u,v]
-        where L+ is the Moore-Penrose pseudoinverse of the weighted Laplacian.
+        Parameters
+        ----------
+        subG : networkx.Graph
+            Subgraph to operate on (original component or 1-hop expanded).
+        uniform : bool
+            True  → all edge conductances = 1 (topological / unweighted).
+            False → BDE-calibrated conductances (bond-strength weighted).
 
         Returns
         -------
-        tuple(float, dict)
-            (kirchhoff_index, {(node_i, node_j): resistance_distance})
-            The dict is keyed by ordered (i, j) pairs where i < j by node list index.
+        float
+            Sum of all pairwise effective resistance distances.
         """
         nodes = list(subG.nodes())
         n = len(nodes)
         idx = {node: i for i, node in enumerate(nodes)}
 
-        # Build weighted Laplacian
         L = np.zeros((n, n), dtype=float)
         for u, v, data in subG.edges(data=True):
-            bond_order = data.get('order', 1.0)
-            z_u = subG.nodes[u].get('element', 6)
-            z_v = subG.nodes[v].get('element', 6)
-            c = self.bde_scheme.conductance(z_u, z_v, bond_order)
+            if uniform:
+                c = 1.0
+            else:
+                bond_order = data.get('order', 1.0)
+                z_u = subG.nodes[u].get('element', 6)
+                z_v = subG.nodes[v].get('element', 6)
+                c = self.bde_scheme.conductance(z_u, z_v, bond_order)
             i, j = idx[u], idx[v]
             L[i, i] += c
             L[j, j] += c
             L[i, j] -= c
             L[j, i] -= c
 
-        # Pseudoinverse (handles the one zero eigenvalue of connected graph)
         Lp = np.linalg.pinv(L)
-
-        # Pairwise resistance distances R(i,j) = Lp[i,i] + Lp[j,j] - 2*Lp[i,j]
         diag = np.diag(Lp)
         kirchhoff = 0.0
-        rdist = {}
         for i in range(n):
             for j in range(i + 1, n):
-                r = diag[i] + diag[j] - 2.0 * Lp[i, j]
-                r = max(r, 0.0)  # numerical guard
-                kirchhoff += r
-                rdist[(nodes[i], nodes[j])] = r
-                rdist[(nodes[j], nodes[i])] = r
-        return kirchhoff, rdist
+                kirchhoff += max(diag[i] + diag[j] - 2.0 * Lp[i, j], 0.0)
+        return kirchhoff
 
     def compute_component_metrics(self, component):
         """Compute comprehensive graph metrics for a component.
@@ -485,18 +482,12 @@ class ComponentsSolver:
                 'periphery': [],
                 'barycenter': [],
                 'effective_graph_resistance': float('nan'),
-                '_rdist': {},
-                'mean_resistance_distance': float('nan'),
-                'resistance_eccentricity_values': {},
-                'resistance_diameter': float('nan'),
-                'resistance_radius': float('nan'),
-                'resistance_closeness_values': {},
+                'effective_graph_resistance_BDE': float('nan'),
             }
 
-        # Use frozenset for caching
-        comp_key = frozenset(component)
-        if comp_key in self._component_metrics_cache:
-            return self._component_metrics_cache[comp_key]
+        cache_key = frozenset(component)
+        if cache_key in self._component_metrics_cache:
+            return self._component_metrics_cache[cache_key]
 
         if len(component) <= 1:
             metrics = {
@@ -507,14 +498,9 @@ class ComponentsSolver:
                 'periphery': list(component),
                 'barycenter': list(component),
                 'effective_graph_resistance': 0.0,
-                '_rdist': {},
-                'mean_resistance_distance': 0.0,
-                'resistance_eccentricity_values': {},
-                'resistance_diameter': 0.0,
-                'resistance_radius': 0.0,
-                'resistance_closeness_values': {},
+                'effective_graph_resistance_BDE': 0.0,
             }
-            self._component_metrics_cache[comp_key] = metrics
+            self._component_metrics_cache[cache_key] = metrics
             return metrics
 
         # Create subgraph for this component
@@ -522,7 +508,6 @@ class ComponentsSolver:
 
         # Check if connected
         if not nx.is_connected(subG):
-            # For disconnected components, compute metrics separately
             metrics = {
                 'diameter': float('inf'),
                 'radius': 0,
@@ -531,14 +516,9 @@ class ComponentsSolver:
                 'periphery': [],
                 'barycenter': [],
                 'effective_graph_resistance': float('inf'),
-                '_rdist': {},
-                'mean_resistance_distance': float('nan'),
-                'resistance_eccentricity_values': {},
-                'resistance_diameter': float('nan'),
-                'resistance_radius': float('nan'),
-                'resistance_closeness_values': {},
+                'effective_graph_resistance_BDE': float('inf'),
             }
-            self._component_metrics_cache[comp_key] = metrics
+            self._component_metrics_cache[cache_key] = metrics
             return metrics
 
         try:
@@ -562,10 +542,9 @@ class ComponentsSolver:
             min_total_dist = min(total_distances.values())
             barycenter = [node for node, dist in total_distances.items() if dist == min_total_dist]
 
-            # BDE-weighted effective graph resistance (Kirchhoff index)
-            # Edge conductance = BDE(z1,z2,bond_order) / ref_BDE.
-            # Uses exact Laplacian pseudoinverse; falls back to NaN when skipped.
-            _rdist = {}
+            # Effective graph resistance (Kirchhoff index) — two variants:
+            #   uniform:  topological (edge weights = 1), original C-skeleton component
+            #   BDE:      bond-strength-weighted, component expanded 1 hop to include F/H/Cl/Br…
             try:
                 should_compute_resistance = (
                     self.limit_effective_graph_resistance is None or
@@ -574,37 +553,19 @@ class ComponentsSolver:
                 )
 
                 if should_compute_resistance:
-                    effective_graph_resistance, _rdist = self._bde_resistance_matrix(subG)
+                    effective_graph_resistance = self._kirchhoff_index(subG, uniform=True)
+                    # 1-hop expansion: add all neighbours of every component node
+                    expanded = set(component)
+                    for node in list(component):
+                        expanded.update(self.G.neighbors(node))
+                    subG_exp = self.G.subgraph(expanded)
+                    effective_graph_resistance_BDE = self._kirchhoff_index(subG_exp, uniform=False)
                 else:
                     effective_graph_resistance = float('nan')
+                    effective_graph_resistance_BDE = float('nan')
             except Exception:
                 effective_graph_resistance = float('nan')
-
-            # Derive per-node resistance-eccentricity and normalised metrics from _rdist
-            n_comp = len(component)
-            if _rdist and n_comp > 1:
-                # mean_resistance_distance: Kirchhoff index / C(n,2)  (size-normalised EGR)
-                mean_resistance_distance = effective_graph_resistance / (n_comp * (n_comp - 1) / 2.0)
-                # resistance eccentricity: max R(u,v) over v for each u  (BDE-weighted eccentricity)
-                resistance_eccentricity_values = {}
-                for node in subG.nodes():
-                    resistance_eccentricity_values[node] = max(
-                        (_rdist.get((node, other), 0.0) for other in subG.nodes() if other != node),
-                        default=0.0,
-                    )
-                resistance_diameter = max(resistance_eccentricity_values.values())
-                resistance_radius = min(resistance_eccentricity_values.values())
-                # resistance closeness: (n-1) / sum R(u,v) over v≠u  (higher = more central)
-                resistance_closeness_values = {}
-                for node in subG.nodes():
-                    sum_r = sum(_rdist.get((node, other), 0.0) for other in subG.nodes() if other != node)
-                    resistance_closeness_values[node] = (n_comp - 1) / sum_r if sum_r > 0 else 0.0
-            else:
-                mean_resistance_distance = float('nan')
-                resistance_eccentricity_values = {}
-                resistance_diameter = float('nan')
-                resistance_radius = float('nan')
-                resistance_closeness_values = {}
+                effective_graph_resistance_BDE = float('nan')
 
             metrics = {
                 'diameter': diameter,
@@ -614,13 +575,7 @@ class ComponentsSolver:
                 'periphery': periphery,
                 'barycenter': barycenter,
                 'effective_graph_resistance': effective_graph_resistance,
-                '_rdist': _rdist,
-                # New resistance-derived metrics
-                'mean_resistance_distance': mean_resistance_distance,
-                'resistance_eccentricity_values': resistance_eccentricity_values,
-                'resistance_diameter': resistance_diameter,
-                'resistance_radius': resistance_radius,
-                'resistance_closeness_values': resistance_closeness_values,
+                'effective_graph_resistance_BDE': effective_graph_resistance_BDE,
             }
 
         except Exception as e:
@@ -633,15 +588,10 @@ class ComponentsSolver:
                 'periphery': [],
                 'barycenter': [],
                 'effective_graph_resistance': float('nan'),
-                '_rdist': {},
-                'mean_resistance_distance': float('nan'),
-                'resistance_eccentricity_values': {},
-                'resistance_diameter': float('nan'),
-                'resistance_radius': float('nan'),
-                'resistance_closeness_values': {},
+                'effective_graph_resistance_BDE': float('nan'),
             }
 
-        self._component_metrics_cache[comp_key] = metrics
+        self._component_metrics_cache[cache_key] = metrics
         return metrics
 
     def compute_smarts_component_metrics(self, component, smarts_matches):
@@ -668,89 +618,56 @@ class ComponentsSolver:
         if len(smarts_in_comp) == 0 or len(component) <= 1:
             return {
                 'min_dist_to_barycenter': 0,
-                'min_resistance_dist_to_barycenter': 0.0,
                 'min_dist_to_center': 0,
-                'min_resistance_dist_to_center': 0.0,
                 'max_dist_to_periphery': 0,
-                'max_resistance_dist_to_periphery': 0.0
             }
 
         subG = self.G.subgraph(component)
 
-        # Initialize metrics
         min_dist_to_barycenter = float('inf')
-        min_resistance_to_barycenter = float('inf')
         min_dist_to_center = float('inf')
-        min_resistance_to_center = float('inf')
         max_dist_to_periphery = 0
-        max_resistance_to_periphery = 0.0
 
         try:
-            # Compute distances from SMARTS matches to structural features
             for smarts_node in smarts_in_comp:
                 if smarts_node not in subG:
                     continue
 
-                # BDE-weighted resistance distances (from cached pseudoinverse computation)
-                _rdist = comp_metrics.get('_rdist', {})
-
-                # Distances to barycenter nodes
                 for bc_node in comp_metrics['barycenter']:
                     try:
                         dist = nx.shortest_path_length(subG, smarts_node, bc_node)
                         min_dist_to_barycenter = min(min_dist_to_barycenter, dist)
-                        r = _rdist.get((smarts_node, bc_node),
-                                       _rdist.get((bc_node, smarts_node), float(dist)))
-                        min_resistance_to_barycenter = min(min_resistance_to_barycenter, r)
                     except Exception:
                         pass
 
-                # Distances to center nodes
                 for center_node in comp_metrics['center']:
                     try:
                         dist = nx.shortest_path_length(subG, smarts_node, center_node)
                         min_dist_to_center = min(min_dist_to_center, dist)
-                        r = _rdist.get((smarts_node, center_node),
-                                       _rdist.get((center_node, smarts_node), float(dist)))
-                        min_resistance_to_center = min(min_resistance_to_center, r)
                     except Exception:
                         pass
 
-                # Distances to periphery nodes
                 for periph_node in comp_metrics['periphery']:
                     try:
                         dist = nx.shortest_path_length(subG, smarts_node, periph_node)
                         max_dist_to_periphery = max(max_dist_to_periphery, dist)
-                        r = _rdist.get((smarts_node, periph_node),
-                                       _rdist.get((periph_node, smarts_node), float(dist)))
-                        max_resistance_to_periphery = max(max_resistance_to_periphery, r)
                     except Exception:
                         pass
 
-            # Handle cases where no valid distances were found
             if min_dist_to_barycenter == float('inf'):
                 min_dist_to_barycenter = 0
-                min_resistance_to_barycenter = 0.0
             if min_dist_to_center == float('inf'):
                 min_dist_to_center = 0
-                min_resistance_to_center = 0.0
 
-        except Exception as e:
-            # Fallback values
+        except Exception:
             min_dist_to_barycenter = 0
-            min_resistance_to_barycenter = 0.0
             min_dist_to_center = 0
-            min_resistance_to_center = 0.0
             max_dist_to_periphery = 0
-            max_resistance_to_periphery = 0.0
 
         return {
             'min_dist_to_barycenter': min_dist_to_barycenter,
-            'min_resistance_dist_to_barycenter': min_resistance_to_barycenter,
             'min_dist_to_center': min_dist_to_center,
-            'min_resistance_dist_to_center': min_resistance_to_center,
             'max_dist_to_periphery': max_dist_to_periphery,
-            'max_resistance_dist_to_periphery': max_resistance_to_periphery
         }
 
     def get_matched_component_dict(self, component, smarts_matches=None, smarts_type='unknown', pfas_group=None, comp_id = None):
@@ -804,21 +721,6 @@ class ComponentsSolver:
         else:
             mean_eccentricity = 0.0
             median_eccentricity = 0.0
-
-        # Calculate mean and median resistance eccentricity from resistance_eccentricity_values
-        resistance_eccentricity_values = comp_metrics.get('resistance_eccentricity_values', {})
-        if len(resistance_eccentricity_values) > 0:
-            recc_list = list(resistance_eccentricity_values.values())
-            mean_resistance_eccentricity = sum(recc_list) / len(recc_list)
-            sorted_recc = sorted(recc_list)
-            nr = len(sorted_recc)
-            if nr % 2 == 0:
-                median_resistance_eccentricity = (sorted_recc[nr//2 - 1] + sorted_recc[nr//2]) / 2.0
-            else:
-                median_resistance_eccentricity = sorted_recc[nr//2]
-        else:
-            mean_resistance_eccentricity = float('nan')
-            median_resistance_eccentricity = float('nan')
 
         # Calculate component fraction based on carbon atoms only
         # Count carbon atoms in component
@@ -877,25 +779,17 @@ class ComponentsSolver:
             'diameter': comp_metrics.get('diameter', float('nan')),
             'radius': comp_metrics.get('radius', float('nan')),
             'effective_graph_resistance': comp_metrics.get('effective_graph_resistance', float('nan')),
+            'effective_graph_resistance_BDE': comp_metrics.get('effective_graph_resistance_BDE', float('nan')),
             'eccentricity_values': comp_metrics.get('eccentricity_values', {}),
             'mean_eccentricity': mean_eccentricity,
             'median_eccentricity': median_eccentricity,
             'center': comp_metrics.get('center', []),
             'periphery': comp_metrics.get('periphery', []),
             'barycenter': comp_metrics.get('barycenter', []),
-            # New BDE-resistance-derived metrics
-            'mean_resistance_distance': comp_metrics.get('mean_resistance_distance', float('nan')),
-            'resistance_diameter': comp_metrics.get('resistance_diameter', float('nan')),
-            'resistance_radius': comp_metrics.get('resistance_radius', float('nan')),
-            'mean_resistance_eccentricity': mean_resistance_eccentricity,
-            'median_resistance_eccentricity': median_resistance_eccentricity,
             # Distance metrics (with defaults)
             'min_dist_to_barycenter': 0,
-            'min_resistance_dist_to_barycenter': 0.0,
             'min_dist_to_center': 0,
-            'min_resistance_dist_to_center': 0.0,
             'max_dist_to_periphery': 0,
-            'max_resistance_dist_to_periphery': 0.0,
             # Halogen density metrics — component-level (F, Cl, Br, I)
             **_comp_hal_vals,
             # Global molecule-level halogen density (for context)
@@ -913,11 +807,8 @@ class ComponentsSolver:
         if smarts_metrics is not None:
             result.update({
                 'min_dist_to_barycenter': smarts_metrics.get('min_dist_to_barycenter', 0),
-                'min_resistance_dist_to_barycenter': smarts_metrics.get('min_resistance_dist_to_barycenter', 0.0),
                 'min_dist_to_center': smarts_metrics.get('min_dist_to_center', 0),
-                'min_resistance_dist_to_center': smarts_metrics.get('min_resistance_dist_to_center', 0.0),
                 'max_dist_to_periphery': smarts_metrics.get('max_dist_to_periphery', 0),
-                'max_resistance_dist_to_periphery': smarts_metrics.get('max_resistance_dist_to_periphery', 0.0)
             })
 
         return result

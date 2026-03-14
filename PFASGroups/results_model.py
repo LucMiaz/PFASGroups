@@ -15,7 +15,110 @@ from rdkit.Chem import Draw
 from PIL import Image
 from io import BytesIO
 import pandas as pd
+import numpy as np
 from .parser import load_HalogenGroups
+
+# ---------------------------------------------------------------------------
+# Embedding helpers (used by PFASEmbedding.to_array / PFASEmbeddingSet.to_array)
+# ---------------------------------------------------------------------------
+
+def _finite(v) -> bool:
+    """True when v is a real, finite number (not NaN/Inf)."""
+    try:
+        return v == v and abs(v) != float('inf')
+    except TypeError:
+        return False
+
+
+def _agg(comps: list, metric: str, aggregation: str) -> float:
+    """Aggregate *metric* over component dicts using mean or median."""
+    vals = [c[metric] for c in comps if c.get(metric) is not None and _finite(c[metric])]
+    if not vals:
+        return 0.0
+    if aggregation == 'median':
+        return float(np.median(vals))
+    return float(np.mean(vals))
+
+
+def _encode_count(match, mode: str) -> float:
+    """Scalar encoding for one matched group given count *mode*."""
+    if match is None or not match.get('components'):
+        return 0.0
+    comps = match['components']
+    if mode == 'binary':
+        return 1.0
+    if mode == 'count':
+        return float(len(comps))
+    if mode == 'max_component':
+        return float(max(c.get('size', 0) for c in comps))
+    if mode == 'total_component':
+        return float(sum(c.get('size', 0) for c in comps))
+    return 0.0
+
+
+def _mol_metric(all_comps: list, metric: str) -> float:
+    """Molecule-wide scalar for *metric* over all matched components."""
+    if metric == 'n_components':
+        return float(len(all_comps))
+    if metric == 'total_size':
+        return float(sum(c.get('size', 0) or 0 for c in all_comps))
+    if metric == 'mean_size':
+        sizes = [c.get('size', 0) or 0 for c in all_comps]
+        return float(np.mean(sizes)) if sizes else 0.0
+    if metric == 'max_size':
+        sizes = [c.get('size', 0) or 0 for c in all_comps]
+        return float(max(sizes)) if sizes else 0.0
+    if metric == 'mean_branching':
+        return _agg(all_comps, 'branching', 'mean')
+    if metric == 'max_branching':
+        vals = [c.get('branching') for c in all_comps if c.get('branching') is not None]
+        return float(max(vals)) if vals else 0.0
+    if metric == 'mean_eccentricity':
+        return _agg(all_comps, 'mean_eccentricity', 'mean')
+    if metric == 'max_diameter':
+        vals = [c.get('diameter') for c in all_comps if c.get('diameter') is not None]
+        return float(max(vals)) if vals else 0.0
+    if metric == 'mean_component_fraction':
+        return _agg(all_comps, 'component_fraction', 'mean')
+    if metric == 'max_component_fraction':
+        vals = [c.get('component_fraction') for c in all_comps if c.get('component_fraction') is not None]
+        return float(max(vals)) if vals else 0.0
+    return 0.0
+
+
+def _select_groups(group_selection, selected_group_ids, pfas_groups):
+    """Translate group_selection / selected_group_ids to a list of group objects."""
+    id_to_group = {g.id: g for g in pfas_groups}
+
+    if selected_group_ids is not None:
+        return [id_to_group[gid] for gid in selected_group_ids if gid in id_to_group]
+
+    if group_selection is None or group_selection == 'all':
+        return list(pfas_groups)
+    if group_selection == 'oecd':
+        return [id_to_group[gid] for gid in range(1, 29) if gid in id_to_group]
+    if group_selection == 'generic':
+        return [id_to_group[gid] for gid in range(29, 56) if gid in id_to_group]
+    if group_selection == 'telomers':
+        return [id_to_group[gid] for gid in range(74, 117) if gid in id_to_group]
+    if group_selection == 'generic+telomers':
+        ids = list(range(29, 56)) + list(range(74, 117))
+        return [id_to_group[gid] for gid in ids if gid in id_to_group]
+
+    from .getter import get_HalogenGroups
+    raw = get_HalogenGroups()
+    compute_raw = [g for g in raw if g.get('compute', True)]
+    matching_ids = {
+        g['id'] for g in compute_raw
+        if g.get('test', {}).get('category', 'other') == group_selection
+    }
+    if matching_ids:
+        return [id_to_group[gid] for gid in matching_ids if gid in id_to_group]
+
+    raise ValueError(
+        f"Unknown group_selection: {group_selection!r}. "
+        f"Choose from: 'all', 'oecd', 'generic', 'telomers', 'generic+telomers'"
+    )
 
 Color = Tuple[float, float, float]
 
@@ -456,11 +559,13 @@ class MatchView(dict):
         return [ComponentView(c) for c in self.get("components", [])]
 
 
-class MoleculeResult(dict):
-    """Wrapper for a single molecule result entry.
+class PFASEmbedding(dict):
+    """Single-molecule PFAS result and embedding generator.
 
-    This subclasses ``dict`` so existing code that expects a mapping
-    continues to work unchanged.
+    Subclasses :class:`dict` so all existing code accessing ``result['smiles']``,
+    ``result['matches']``, etc. continues to work unchanged.  Call
+    :meth:`to_array` to produce a numeric embedding vector from the stored
+    parsed data.
     """
 
     @property
@@ -1002,7 +1107,6 @@ class MoleculeResult(dict):
         grid.save(filename)
         return filename
 
-    @load_HalogenGroups()
     def to_fingerprint(
         self,
         group_selection: str = 'all',
@@ -1013,56 +1117,144 @@ class MoleculeResult(dict):
         molecule_metrics: Optional[List[str]] = None,
         pfas_groups: Optional[List[Dict]] = None,
         preset: Optional[str] = None,
-        # Backward-compat aliases (deprecated)
         count_mode: Optional[str] = None,
         graph_metrics: Optional[List[str]] = None,
         progress: bool = False,
         **kwargs,
-    ) -> 'ResultsFingerprint':
-        """Convert this molecule result to a ResultsFingerprint.
+    ) -> np.ndarray:
+        """Deprecated. Use :meth:`to_array` instead."""
+        import warnings
+        warnings.warn(
+            "to_fingerprint() is deprecated; use to_array() instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        if count_mode is not None or graph_metrics is not None:
+            if component_metrics is None:
+                component_metrics = [count_mode or 'binary'] + list(graph_metrics or [])
+        return self.to_array(
+            component_metrics=component_metrics,
+            molecule_metrics=molecule_metrics,
+            group_selection=group_selection,
+            selected_group_ids=selected_group_ids,
+            preset=preset,
+            pfas_groups=pfas_groups,
+        )
+
+    def to_array(
+        self,
+        component_metrics: Optional[List[str]] = None,
+        molecule_metrics: Optional[List[str]] = None,
+        group_selection: str = 'all',
+        selected_group_ids: Optional[List[int]] = None,
+        aggregation: str = 'mean',
+        preset: Optional[str] = None,
+        pfas_groups=None,
+    ) -> np.ndarray:
+        """Generate a 1-D embedding vector for this molecule.
 
         Parameters
         ----------
-        group_selection : str, default 'all'
-            Which groups to include: 'all', 'oecd', 'generic', 'telomers',
-            or 'generic+telomers'.
         component_metrics : list of str, default ['binary']
-            Ordered list of per-component metrics.  Each entry produces one
-            block of n_groups columns.  Valid values are count modes
-            ('binary', 'count', 'max_component', 'total_component') and
-            per-group graph metric names ('effective_graph_resistance',
-            'min_dist_to_barycenter', 'branching', ...).
+            Per-component metrics.  Count modes: 'binary', 'count',
+            'max_component', 'total_component'.  Graph metrics:
+            'effective_graph_resistance', 'effective_graph_resistance_BDE',
+            'branching', 'mean_eccentricity', etc.
+        molecule_metrics : list of str, optional
+            Molecule-wide scalars appended after all component columns:
+            'n_components', 'total_size', 'mean_branching', etc.
+        group_selection : str, default 'all'
+            'all', 'oecd', 'generic', 'telomers', or 'generic+telomers'.
         selected_group_ids : list of int, optional
             Explicit group IDs (overrides group_selection).
-        halogens : str or list of str, default 'F'
-            Which halogen(s) to match SMARTS against.
-        saturation : str or None, default 'per'
-            Saturation filter: 'per', 'poly', or None.
-        molecule_metrics : list of str, optional
-            Molecule-wide scalar metrics appended as final columns.
-        pfas_groups : list, optional
-            Custom group objects (injected by decorator).
+        aggregation : str, default 'mean'
+            How to aggregate multiple matched components per group:
+            'mean' or 'median'.
         preset : str, optional
-            Named configuration overriding component_metrics and molecule_metrics.
+            Named configuration from ``EMBEDDING_PRESETS``.
+        pfas_groups : list, optional
+            Custom group list (loaded from defaults when None).
 
         Returns
         -------
-        ResultsFingerprint
+        np.ndarray
+            1-D float array of length ``n_groups × len(component_metrics)
+            + len(molecule_metrics)``.
         """
-        from .fingerprints import PFASFingerprint
-        return PFASFingerprint(
-            self,
-            preset=preset,
-            component_metrics=component_metrics,
-            group_selection=group_selection,
-            selected_group_ids=selected_group_ids,
-            halogens=halogens,
-            saturation=saturation,
-            molecule_metrics=molecule_metrics,
-            count_mode=count_mode,
-            graph_metrics=graph_metrics,
-            progress=progress,
-        )
+        from .embeddings import FINGERPRINT_PRESETS, _COUNT_MODES
+        from .getter import get_compiled_HalogenGroups
+
+        resolved_cm: List[str] = list(component_metrics) if component_metrics else ['binary']
+        resolved_mm: List[str] = list(molecule_metrics) if molecule_metrics else []
+
+        if preset is not None:
+            if preset not in FINGERPRINT_PRESETS:
+                raise ValueError(f"Unknown preset: {preset!r}. Available: {sorted(FINGERPRINT_PRESETS)}")
+            _p = FINGERPRINT_PRESETS[preset]
+            if _p.get('component_metrics') is not None:
+                resolved_cm = list(_p['component_metrics'])
+            if _p.get('molecule_metrics') is not None:
+                resolved_mm = list(_p['molecule_metrics'])
+
+        if pfas_groups is None:
+            pfas_groups = get_compiled_HalogenGroups()
+
+        sel_groups = _select_groups(group_selection, selected_group_ids, pfas_groups)
+        match_by_id = {m['id']: m for m in self.get('matches', [])}
+
+        row: List[float] = []
+        for m in resolved_cm:
+            for g in sel_groups:
+                match = match_by_id.get(g.id)
+                if match is None:
+                    row.append(0.0)
+                elif m in _COUNT_MODES:
+                    row.append(_encode_count(match, m))
+                else:
+                    comps = match.get('components', [])
+                    row.append(_agg(comps, m, aggregation))
+
+        all_comps = [c for m in match_by_id.values() for c in m.get('components', [])]
+        for m in resolved_mm:
+            row.append(_mol_metric(all_comps, m))
+
+        return np.array(row, dtype=float)
+
+    def column_names(
+        self,
+        component_metrics: Optional[List[str]] = None,
+        molecule_metrics: Optional[List[str]] = None,
+        group_selection: str = 'all',
+        selected_group_ids: Optional[List[int]] = None,
+        preset: Optional[str] = None,
+        pfas_groups=None,
+    ) -> List[str]:
+        """Return the list of column labels for :meth:`to_array` without computing values.
+
+        Parameters match those of :meth:`to_array` (``aggregation`` is not
+        relevant for column names).
+        """
+        from .embeddings import FINGERPRINT_PRESETS
+        from .getter import get_compiled_HalogenGroups
+
+        resolved_cm: List[str] = list(component_metrics) if component_metrics else ['binary']
+        resolved_mm: List[str] = list(molecule_metrics) if molecule_metrics else []
+
+        if preset is not None:
+            _p = FINGERPRINT_PRESETS.get(preset, {})
+            if _p.get('component_metrics') is not None:
+                resolved_cm = list(_p['component_metrics'])
+            if _p.get('molecule_metrics') is not None:
+                resolved_mm = list(_p['molecule_metrics'])
+
+        if pfas_groups is None:
+            pfas_groups = get_compiled_HalogenGroups()
+
+        sel_groups = _select_groups(group_selection, selected_group_ids, pfas_groups)
+
+        names = [f"{g.name} [{m}]" for m in resolved_cm for g in sel_groups]
+        names += [f"mol:{m}" for m in resolved_mm]
+        return names
 
     def to_sql(
         self,
@@ -1171,19 +1363,32 @@ class MoleculeResult(dict):
             df_groups.to_sql(groups_table, engine, if_exists=if_exists, index=False)
 
 
-class ResultsModel(list):
-    """List-like container for HalogenGroups results.
+class PFASEmbeddingSet(list):
+    """List-like container for multiple :class:`PFASEmbedding` results.
 
-    This subclasses ``list`` of molecule result dicts, so existing code
-    that iterates over a list of results continues to work. It adds
-    convenience methods for navigating and visualising components.
+    Subclasses :class:`list` so existing code that iterates over results
+    continues to work.  Call :meth:`to_array` to produce a
+    ``(n_molecules, n_columns)`` matrix from all stored results.
     """
 
     def __init__(self, iterable: Iterable[Dict[str, Any]] = ()):  # type: ignore[override]
-        super().__init__(MoleculeResult(m) if not isinstance(m, MoleculeResult) else m for m in iterable)
+        super().__init__(PFASEmbedding(m) if not isinstance(m, PFASEmbedding) else m for m in iterable)
+
+    @property
+    def matches(self) -> List[MatchView]:
+        """Flattened list of all MatchView objects across all molecules.
+
+        Some older code expects a ``matches`` attribute on a ResultsModel
+        instance. Provide a read-only aggregated view by concatenating the
+        per-molecule match lists.
+        """
+        out: List[MatchView] = []
+        for mol_res in self:  # type: ignore[assignment]
+            out.extend(mol_res.matches)
+        return out
 
     @classmethod
-    def from_raw(cls, results: Iterable[Dict[str, Any]]) -> "ResultsModel":
+    def from_raw(cls, results: Iterable[Dict[str, Any]]) -> "PFASEmbeddingSet":
         """Wrap an existing list of result dicts without changing them."""
 
         return cls(results)
@@ -1478,37 +1683,36 @@ class ResultsModel(list):
         else:
             raise ValueError("Either filename (for SQLite) or dbname (for PostgreSQL) must be provided.")
 
-        # Prepare components data
+        # Prepare components data across all molecules in this ResultsModel
         components_data = []
-        for match in self.matches:
-            if not match.is_group:
-                continue
-            for comp in match.components:
-                smarts = comp.smarts_label
-                components_data.append({
-                    'smiles': self.smiles,
-                    'group_id': match.group_id,
-                    'group_name': match.group_name,
-                    'smarts_label': str(smarts) if isinstance(smarts, list) else smarts,
-                    'component_atoms': ','.join(map(str, comp.atoms)),
-                })
-
-        # Prepare groups data
         groups_data = []
-        group_counts: Dict[Tuple[int, str], int] = {}
-        for match in self.matches:
-            if not match.is_group:
-                continue
-            key = (match.group_id, match.group_name or '')
-            group_counts[key] = group_counts.get(key, 0) + 1
 
-        for (group_id, group_name), count in group_counts.items():
-            groups_data.append({
-                'smiles': self.smiles,
-                'group_id': group_id,
-                'group_name': group_name,
-                'match_count': count,
-            })
+        for mol_res in self:  # type: ignore[assignment]
+            # local counts per molecule
+            local_group_counts: Dict[Tuple[Optional[int], str], int] = {}
+            for match in mol_res.matches:
+                if not match.is_group:
+                    continue
+                for comp in match.components:
+                    smarts = comp.smarts_label
+                    components_data.append({
+                        'smiles': mol_res.smiles,
+                        'group_id': match.group_id,
+                        'group_name': match.group_name,
+                        'smarts_label': str(smarts) if isinstance(smarts, list) else smarts,
+                        'component_atoms': ','.join(map(str, comp.atoms)),
+                    })
+
+                key = (match.group_id, match.group_name or '')
+                local_group_counts[key] = local_group_counts.get(key, 0) + 1
+
+            for (group_id, group_name), count in local_group_counts.items():
+                groups_data.append({
+                    'smiles': mol_res.smiles,
+                    'group_id': group_id,
+                    'group_name': group_name,
+                    'match_count': count,
+                })
 
         # Write to database
         if components_data:
@@ -2022,7 +2226,6 @@ class ResultsModel(list):
         if groups_data:
             df_groups = pd.DataFrame(groups_data)
             df_groups.to_sql(groups_table, engine, if_exists=if_exists, index=False)
-    @load_HalogenGroups()
     def to_fingerprint(
         self,
         group_selection: str = 'all',
@@ -2033,58 +2236,83 @@ class ResultsModel(list):
         molecule_metrics: Optional[List[str]] = None,
         pfas_groups: Optional[List[Dict]] = None,
         preset: Optional[str] = None,
-        # Backward-compat aliases (deprecated)
         count_mode: Optional[str] = None,
         graph_metrics: Optional[List[str]] = None,
         progress: bool = False,
         **kwargs,
-    ) -> 'ResultsFingerprint':
-        """Convert ResultsModel to ResultsFingerprint.
-
-        Parameters
-        ----------
-        group_selection : str, default 'all'
-            Which groups to include: 'all', 'oecd', 'generic', 'telomers',
-            or 'generic+telomers'.
-        component_metrics : list of str, default ['binary']
-            Ordered list of per-component metrics.  Each entry produces one
-            block of n_groups columns.  Valid values are count modes
-            ('binary', 'count', 'max_component', 'total_component') and
-            per-group graph metric names ('effective_graph_resistance',
-            'min_dist_to_barycenter', 'branching', ...).
-            Multiple halogens produce stacked blocks with ``[F]``, ``[Cl]`` suffixes.
-        selected_group_ids : list of int, optional
-            Explicit group IDs (overrides group_selection).
-        halogens : str or list of str, default 'F'
-            Which halogen(s) to match SMARTS against.
-        saturation : str or None, default 'per'
-            'per', 'poly', or None.
-        molecule_metrics : list of str, optional
-            Molecule-wide scalar metrics appended after all component-metric columns.
-            E.g. ['n_components', 'mean_branching', 'max_diameter'].
-        pfas_groups : list, optional
-            Custom group objects (injected by decorator).
-        preset : str, optional
-            Named configuration overriding component_metrics and molecule_metrics.
-
-        Returns
-        -------
-        ResultsFingerprint
-        """
-        from .fingerprints import PFASFingerprint
-        return PFASFingerprint(
-            self,
-            preset=preset,
+    ) -> np.ndarray:
+        """Deprecated. Use :meth:`to_array` instead."""
+        import warnings
+        warnings.warn(
+            "to_fingerprint() is deprecated; use to_array() instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        if count_mode is not None or graph_metrics is not None:
+            if component_metrics is None:
+                component_metrics = [count_mode or 'binary'] + list(graph_metrics or [])
+        return self.to_array(
             component_metrics=component_metrics,
+            molecule_metrics=molecule_metrics,
             group_selection=group_selection,
             selected_group_ids=selected_group_ids,
-            halogens=halogens,
-            saturation=saturation,
-            molecule_metrics=molecule_metrics,
-            count_mode=count_mode,
-            graph_metrics=graph_metrics,
-            progress=progress,
+            preset=preset,
+            pfas_groups=pfas_groups,
         )
+
+    def to_array(
+        self,
+        component_metrics: Optional[List[str]] = None,
+        molecule_metrics: Optional[List[str]] = None,
+        group_selection: str = 'all',
+        selected_group_ids: Optional[List[int]] = None,
+        aggregation: str = 'mean',
+        preset: Optional[str] = None,
+        pfas_groups=None,
+    ) -> np.ndarray:
+        """Stack per-molecule embedding rows into a ``(n_mols, n_cols)`` matrix.
+
+        Parameters match those of :meth:`PFASEmbedding.to_array`.
+        """
+        from .getter import get_compiled_HalogenGroups
+        if pfas_groups is None:
+            pfas_groups = get_compiled_HalogenGroups()
+        rows = [
+            mol.to_array(
+                component_metrics=component_metrics,
+                molecule_metrics=molecule_metrics,
+                group_selection=group_selection,
+                selected_group_ids=selected_group_ids,
+                aggregation=aggregation,
+                preset=preset,
+                pfas_groups=pfas_groups,
+            )
+            for mol in self
+        ]
+        if not rows:
+            return np.zeros((0, 0), dtype=float)
+        return np.vstack(rows)
+
+    def column_names(
+        self,
+        component_metrics: Optional[List[str]] = None,
+        molecule_metrics: Optional[List[str]] = None,
+        group_selection: str = 'all',
+        selected_group_ids: Optional[List[int]] = None,
+        preset: Optional[str] = None,
+        pfas_groups=None,
+    ) -> List[str]:
+        """Return column labels (delegates to first element)."""
+        if self:
+            return self[0].column_names(
+                component_metrics=component_metrics,
+                molecule_metrics=molecule_metrics,
+                group_selection=group_selection,
+                selected_group_ids=selected_group_ids,
+                preset=preset,
+                pfas_groups=pfas_groups,
+            )
+        return []
 
     @classmethod
     def from_sql(
@@ -2094,7 +2322,7 @@ class ResultsModel(list):
         components_table: str = "components",
         groups_table: str = "pfas_groups_in_compound",
         limit: Optional[int] = None,
-    ) -> "ResultsModel":
+    ) -> "PFASEmbeddingSet":
         """Load results from SQL database.
 
         Parameters
@@ -2161,5 +2389,6 @@ class ResultsModel(list):
         return cls(results)
 
 
-# ResultsFingerprint is now PFASFingerprint — kept as alias.
-from .fingerprints import PFASFingerprint as ResultsFingerprint
+# Backward-compatible aliases
+MoleculeResult = PFASEmbedding
+ResultsModel = PFASEmbeddingSet
