@@ -178,13 +178,12 @@ def compute_pfasgroups_fps(
     # Probe one molecule to get n_groups and group_names (use a simple valid SMILES)
     _probe_fp, _probe_info = generate_fingerprint(
         'FC(F)(F)C(=O)O',
-        representation='vector',
         count_mode='binary',
         halogens=halogens,
         saturation=None,
     )
     n_groups    = len(_probe_fp)
-    group_names = _probe_info['group_names']
+    group_names = _probe_info  # now a list of column names, e.g. "Perfluoroalkyl [binary]"
     n           = len(smiles_list)
     X           = np.zeros((n, n_groups), dtype=np.uint8)
     errors      = 0
@@ -199,7 +198,6 @@ def compute_pfasgroups_fps(
         try:
             fp, _ = generate_fingerprint(
                 smi,
-                representation='vector',
                 count_mode='binary',
                 halogens=halogens,
                 saturation=None,
@@ -816,7 +814,7 @@ def test_pfasgroups_fp_known_molecules(smiles, name, expect_nonzero):
     """PFASGroups FP should be non-zero for PFAS and zero for non-PFAS."""
     from HalogenGroups import generate_fingerprint
     fp, _ = generate_fingerprint(
-        smiles, representation='vector', count_mode='binary',
+        smiles, count_mode='binary',
         halogens='F', saturation=None,
     )
     nonzero = any(v > 0 for v in fp)

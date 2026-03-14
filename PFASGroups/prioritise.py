@@ -15,33 +15,35 @@ import numpy as np
 from rdkit import Chem
 
 from .parser import parse_smiles, parse_mols
-from .results_model import ResultsModel
+from .results_model import PFASEmbeddingSet
 
 
 def prioritise_molecules(
-    molecules: Union[List[str], List[Chem.Mol], ResultsModel],
-    reference: Optional[Union[List[str], List[Chem.Mol], ResultsModel]] = None,
+    molecules: Union[List[str], List[Chem.Mol], PFASEmbeddingSet],
+    reference: Optional[Union[List[str], List[Chem.Mol], PFASEmbeddingSet]] = None,
     group_selection: str = 'all',
-    count_mode: str = 'max_component',    halogens: Union[str, List[str]] = 'F',
-    saturation: Optional[str] = None,    a: float = 1.0,
+    count_mode: str = 'max_component',
+    halogens: Union[str, List[str]] = 'F',
+    saturation: Optional[str] = None,
+    a: float = 1.0,
     b: float = 1.0,
     percentile: float = 90.0,
     return_scores: bool = True,
     ascending: bool = False,
     progress: bool = False,
-) -> Union[ResultsModel, Tuple[ResultsModel, np.ndarray]]:
+) -> Union[PFASEmbeddingSet, Tuple[PFASEmbeddingSet, np.ndarray]]:
     """
     Prioritize PFAS molecules based on similarity to a reference or intrinsic properties.
 
     Parameters
     ----------
-    molecules : list of str, list of rdkit.Chem.Mol, or ResultsModel
+    molecules : list of str, list of rdkit.Chem.Mol, or PFASEmbeddingSet
         Molecules to prioritize. Can be:
         - List of SMILES strings
         - List of RDKit molecule objects
-        - ResultsModel object (pre-computed results)
+        - PFASEmbeddingSet object (pre-computed results)
 
-    reference : list of str, list of rdkit.Chem.Mol, ResultsModel, or None
+    reference : list of str, list of rdkit.Chem.Mol, PFASEmbeddingSet, or None
         Reference molecules for similarity comparison. If provided, molecules are
         prioritized by distributional similarity (lower KL divergence = higher priority).
         If None, prioritization is based on intrinsic fluorinated component properties.
@@ -62,7 +64,7 @@ def prioritise_molecules(
 
     halogens : str or list of str, default 'F'
         Which halogen(s) to include when generating fingerprints for reference
-        comparison.  Passed directly to ``ResultsModel.to_fingerprint``.
+        comparison.  Passed directly to ``PFASEmbeddingSet.to_fingerprint``.
 
     saturation : str or None, default None
         Saturation filter applied to component SMARTS when generating
@@ -97,11 +99,11 @@ def prioritise_molecules(
 
     Returns
     -------
-    ResultsModel or tuple
+    PFASEmbeddingSet or tuple
         If return_scores=True: (prioritized_results, scores)
         If return_scores=False: prioritized_results only
 
-        prioritized_results : ResultsModel
+        prioritized_results : PFASEmbeddingSet
             Molecules sorted by priority
         scores : np.ndarray
             Priority scores for each molecule
@@ -168,11 +170,11 @@ def prioritise_molecules(
 
     See Also
     --------
-    ResultsModel.to_fingerprint : Convert results to fingerprints
-    ResultsFingerprint.compare_kld : Compare fingerprint distributions
+    PFASEmbeddingSet.to_array : Convert results to fingerprints
+    PFASEmbedding.compare_kld : Compare embedding distributions
     """
-    # Step 1: Convert input to ResultsModel if needed
-    if isinstance(molecules, ResultsModel):
+    # Step 1: Convert input to PFASEmbeddingSet if needed
+    if isinstance(molecules, PFASEmbeddingSet):
         results = molecules
     elif isinstance(molecules, list):
         if len(molecules) == 0:
@@ -190,13 +192,13 @@ def prioritise_molecules(
             )
     else:
         raise TypeError(
-            f"molecules must be list of SMILES/Mol objects or ResultsModel, "
+            f"molecules must be list of SMILES/Mol objects or PFASEmbeddingSet, "
             f"got {type(molecules)}"
         )
 
     # Step 2: Compute priority scores
     if reference is not None:
-        # Reference-based: cosine similarity of fingerprint vectors
+        # Reference-based: cosine similarity of embedding vectors
         scores = _prioritise_by_reference(
             results, reference, group_selection, count_mode, halogens, saturation,
             progress=progress,
@@ -211,7 +213,7 @@ def prioritise_molecules(
         sorted_indices = sorted_indices[::-1]
 
     # Create prioritized results
-    prioritized_results = ResultsModel([results[i] for i in sorted_indices])
+    prioritized_results = PFASEmbeddingSet([results[i] for i in sorted_indices])
 
     if return_scores:
         return prioritized_results, scores[sorted_indices]
@@ -220,53 +222,49 @@ def prioritise_molecules(
 
 
 def _prioritise_by_reference(
-    results: ResultsModel,
-    reference: Union[List[str], List[Chem.Mol], ResultsModel],
+    results: PFASEmbeddingSet,
+    reference: Union[List[str], List[Chem.Mol], PFASEmbeddingSet],
     group_selection: str,
     count_mode: str,
     halogens: Union[str, List[str]] = 'F',
     saturation: Optional[str] = None,
     progress: bool = False,
 ) -> np.ndarray:
-    """
-    Prioritize by similarity to a reference set of molecules.
-
-    Each candidate is scored by the cosine similarity between its fingerprint
-    vector and the mean fingerprint of the reference set.  This produces
-    genuinely different scores for molecules with different group profiles, even
-    when individual molecules only activate a small number of groups.
-
-    (KL divergence between a full reference distribution and each *individual*
-    molecule is unsuitable here: any molecule with zero group matches produces
-    an all-epsilon vector that normalises to the same uniform distribution,
-    collapsing all such candidates to an identical score.)
+    """Prioritize by cosine similarity to the mean embedding of a reference set.
 
     Parameters
     ----------
-    results : ResultsModel
-        Molecules to prioritize
-    reference : list of str, list of rdkit.Chem.Mol, or ResultsModel
-        Reference molecules
+    results : PFASEmbeddingSet
+        Molecules to prioritize.
+    reference : list of str, list of rdkit.Chem.Mol, or PFASEmbeddingSet
+        Reference molecules.
     group_selection : str
-        PFAS group selection
+        PFAS group selection ('all', 'oecd', 'generic', …).
     count_mode : str
-        Fingerprint encoding mode
+        Count mode for the embedding ('binary', 'count', 'max_component', …).
+    halogens : str or list of str, default 'F'
+        Passed to parse_smiles / parse_mols for the reference.
+    saturation : str or None, default None
+        Passed to parse_smiles / parse_mols for the reference.
+    progress : bool, default False
 
     Returns
     -------
     np.ndarray
-        Priority scores in [0, 1] (higher = more similar to reference)
+        Priority scores in [0, 1] (higher = more similar to reference).
     """
-    # Convert reference to ResultsModel if needed
-    if isinstance(reference, ResultsModel):
+    # Convert reference to PFASEmbeddingSet if needed
+    if isinstance(reference, PFASEmbeddingSet):
         ref_results = reference
     elif isinstance(reference, list):
         if len(reference) == 0:
             raise ValueError("reference list is empty")
         if isinstance(reference[0], str):
-            ref_results = parse_smiles(reference, progress=progress)
+            ref_results = parse_smiles(reference, halogens=halogens,
+                                       saturation=saturation, progress=progress)
         elif isinstance(reference[0], Chem.Mol):
-            ref_results = parse_mols(reference, progress=progress)
+            ref_results = parse_mols(reference, halogens=halogens,
+                                     saturation=saturation, progress=progress)
         else:
             raise TypeError(
                 f"reference must be list of SMILES strings or RDKit Mol objects, "
@@ -274,55 +272,48 @@ def _prioritise_by_reference(
             )
     else:
         raise TypeError(
-            f"reference must be list of SMILES/Mol objects or ResultsModel, "
+            f"reference must be list of SMILES/Mol objects or PFASEmbeddingSet, "
             f"got {type(reference)}"
         )
 
-    # Build the reference mean-frequency vector (one entry per group)
-    ref_fp = ref_results.to_fingerprint(
+    # Build mean reference vector: shape (n_cols,)
+    ref_mat = ref_results.to_array(
         group_selection=group_selection,
-        count_mode=count_mode,
-        halogens=halogens,
-        saturation=saturation,
+        component_metrics=[count_mode],
     )
-    # Mean across molecules → shape (n_groups,)
-    ref_vec = np.mean(ref_fp.fingerprints, axis=0).astype(float)
+    ref_vec = np.mean(np.asarray(ref_mat), axis=0).astype(float)
     ref_norm = float(np.linalg.norm(ref_vec))
 
     if ref_norm == 0.0:
-        raise ValueError(
-            "Reference fingerprint is all-zero: no molecules in the reference "
-            "matched any group for the given group_selection / saturation / halogens "
-            "settings. Try saturation=None to include both per- and polyfluorinated "
-            "components, or broaden group_selection."
+        import warnings
+        warnings.warn(
+            "Reference embedding is all-zero: no molecules in the reference "
+            "matched any group for the given group_selection / count_mode settings. "
+            "Returning zero scores.",
+            UserWarning,
+            stacklevel=3,
         )
+        return np.zeros(len(results), dtype=float)
 
-    # Build the candidate fingerprint matrix in a single batch call
-    cand_fp = results.to_fingerprint(
+    # Build candidate matrix: shape (n_candidates, n_cols)
+    cand_mat = np.asarray(results.to_array(
         group_selection=group_selection,
-        count_mode=count_mode,
-        halogens=halogens,
-        saturation=saturation,
-    )
-    # Each row is one candidate → shape (n_candidates, n_groups)
-    cand_mat = cand_fp.fingerprints.astype(float)
+        component_metrics=[count_mode],
+    )).astype(float)
 
     # Cosine similarity: score_i = (cand_i · ref_vec) / (||cand_i|| × ||ref_vec||)
-    # Candidates with no group matches get score 0.
-    dot_products = cand_mat @ ref_vec                        # (n_candidates,)
-    cand_norms   = np.linalg.norm(cand_mat, axis=1)         # (n_candidates,)
+    dot_products = cand_mat @ ref_vec                    # (n_candidates,)
+    cand_norms   = np.linalg.norm(cand_mat, axis=1)     # (n_candidates,)
 
-    # Avoid 0/0 by pre-masking: only divide where the candidate norm is positive.
     scores = np.zeros(len(dot_products), dtype=float)
     nonzero = cand_norms > 0
     scores[nonzero] = dot_products[nonzero] / (cand_norms[nonzero] * ref_norm)
 
-    # Clip to [0, 1] (fingerprints are non-negative, so cosine similarity ≥ 0)
     return np.clip(scores, 0.0, 1.0)
 
 
 def _prioritise_by_components(
-    results: ResultsModel,
+    results: PFASEmbeddingSet,
     a: float,
     b: float,
     percentile: float
@@ -334,7 +325,7 @@ def _prioritise_by_components(
 
     Parameters
     ----------
-    results : ResultsModel
+    results : PFASEmbeddingSet
         Molecules to prioritize
     a : float
         Weight for total component size
@@ -379,7 +370,7 @@ def _prioritise_by_components(
 
 
 def get_priority_statistics(
-    results: ResultsModel,
+    results: PFASEmbeddingSet,
     scores: np.ndarray,
     top_n: int = 10
 ) -> Dict:
@@ -388,7 +379,7 @@ def get_priority_statistics(
 
     Parameters
     ----------
-    results : ResultsModel
+    results : PFASEmbeddingSet
         Prioritized molecules
     scores : np.ndarray
         Priority scores

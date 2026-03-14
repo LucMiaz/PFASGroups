@@ -361,7 +361,7 @@ def parse_from_database(
 
     Returns
     -------
-    ResultsModel
+    PFASEmbeddingSet
         Parsed results for all molecules.
 
     Examples
@@ -597,7 +597,7 @@ def setup_halogen_groups_database(
 def parse_mol(mol, progress=False, **kwargs):
     """Wrapper for parse_mols to handle single molecule input.
 
-    Returns a single ``MoleculeResult`` when ``output_format='list'``
+    Returns a single ``PFASEmbedding`` when ``output_format='list'``
     (default), preserving backwards-compatible dict behaviour while
     enabling richer navigation helpers.
     """

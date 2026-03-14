@@ -19,6 +19,11 @@ import numpy as np
 from .parser import load_HalogenGroups
 
 # ---------------------------------------------------------------------------
+# Sentinel for "argument not supplied" (distinct from None)
+# ---------------------------------------------------------------------------
+_UNSET = object()
+
+# ---------------------------------------------------------------------------
 # Embedding helpers (used by PFASEmbedding.to_array / PFASEmbeddingSet.to_array)
 # ---------------------------------------------------------------------------
 
@@ -559,6 +564,59 @@ class MatchView(dict):
         return [ComponentView(c) for c in self.get("components", [])]
 
 
+class EmbeddingArray(np.ndarray):
+    """A numpy array subclass that carries molecule identity metadata.
+
+    Returned by :meth:`PFASEmbedding.to_array` (1-D) and
+    :meth:`PFASEmbeddingSet.to_array` (2-D).  All standard numpy operations
+    work unchanged; the extra attributes allow callers to trace each row back
+    to its source molecule.
+
+    Attributes
+    ----------
+    smiles : str or list of str
+        SMILES string(s) for the molecule(s).
+    inchi : str or list of str
+        InChI string(s).
+    inchikey : str or list of str
+        InChIKey(s).
+    source : PFASEmbedding or PFASEmbeddingSet
+        Reference to the originating result object.
+    """
+
+    def __new__(cls, array, smiles='', inchi='', inchikey='', source=None):
+        obj = np.asarray(array).view(cls)
+        obj._emb_smiles   = smiles
+        obj._emb_inchi    = inchi
+        obj._emb_inchikey = inchikey
+        obj._emb_source   = source
+        return obj
+
+    def __array_finalize__(self, obj):
+        if obj is None:
+            return
+        self._emb_smiles   = getattr(obj, '_emb_smiles',   '')
+        self._emb_inchi    = getattr(obj, '_emb_inchi',    '')
+        self._emb_inchikey = getattr(obj, '_emb_inchikey', '')
+        self._emb_source   = getattr(obj, '_emb_source',   None)
+
+    @property
+    def smiles(self):
+        return self._emb_smiles
+
+    @property
+    def inchi(self):
+        return self._emb_inchi
+
+    @property
+    def inchikey(self):
+        return self._emb_inchikey
+
+    @property
+    def source(self):
+        return self._emb_source
+
+
 class PFASEmbedding(dict):
     """Single-molecule PFAS result and embedding generator.
 
@@ -647,7 +705,7 @@ class PFASEmbedding(dict):
                 total_definition_matches += 1
 
         lines: List[str] = []
-        lines.append(_ansi("MoleculeResult summary", _ANSI_BOLD))
+        lines.append(_ansi("PFASEmbedding summary", _ANSI_BOLD))
         lines.append(f"- SMILES: {self.smiles}")
         lines.append(f"- PFAS group matches: {total_group_matches}")
         lines.append(f"- PFAS definition matches: {total_definition_matches}")
@@ -1143,15 +1201,19 @@ class PFASEmbedding(dict):
 
     def to_array(
         self,
-        component_metrics: Optional[List[str]] = None,
-        molecule_metrics: Optional[List[str]] = None,
-        group_selection: str = 'all',
-        selected_group_ids: Optional[List[int]] = None,
-        aggregation: str = 'mean',
-        preset: Optional[str] = None,
-        pfas_groups=None,
+        component_metrics=_UNSET,
+        molecule_metrics=_UNSET,
+        group_selection=_UNSET,
+        selected_group_ids=_UNSET,
+        aggregation=_UNSET,
+        preset=_UNSET,
+        pfas_groups=_UNSET,
     ) -> np.ndarray:
         """Generate a 1-D embedding vector for this molecule.
+
+        When called with no arguments, returns the last cached embedding (or
+        binary by default on the first call).  Pass explicit arguments to
+        override and update the cache.
 
         Parameters
         ----------
@@ -1181,6 +1243,24 @@ class PFASEmbedding(dict):
             1-D float array of length ``n_groups × len(component_metrics)
             + len(molecule_metrics)``.
         """
+        # Return last cached result when called with no arguments
+        _no_args = (
+            component_metrics is _UNSET and molecule_metrics is _UNSET and
+            group_selection is _UNSET and selected_group_ids is _UNSET and
+            aggregation is _UNSET and preset is _UNSET and pfas_groups is _UNSET
+        )
+        if _no_args and getattr(self, '_last_array', None) is not None:
+            return self._last_array
+
+        # Resolve sentinels to actual defaults
+        if component_metrics is _UNSET: component_metrics = None
+        if molecule_metrics is _UNSET:  molecule_metrics = None
+        if group_selection is _UNSET:   group_selection = 'all'
+        if selected_group_ids is _UNSET: selected_group_ids = None
+        if aggregation is _UNSET:       aggregation = 'mean'
+        if preset is _UNSET:            preset = None
+        if pfas_groups is _UNSET:       pfas_groups = None
+
         from .embeddings import FINGERPRINT_PRESETS, _COUNT_MODES
         from .getter import get_compiled_HalogenGroups
 
@@ -1218,7 +1298,16 @@ class PFASEmbedding(dict):
         for m in resolved_mm:
             row.append(_mol_metric(all_comps, m))
 
-        return np.array(row, dtype=float)
+        result = EmbeddingArray(
+            np.array(row, dtype=float),
+            smiles=self.get('smiles', ''),
+            inchi=self.get('inchi', ''),
+            inchikey=self.get('inchikey', ''),
+            source=self,
+        )
+        if _no_args:
+            self._last_array = result
+        return result
 
     def column_names(
         self,
@@ -1399,7 +1488,7 @@ class PFASEmbeddingSet(list):
         self,
         group_id: Optional[int] = None,
         group_name: Optional[str] = None,
-    ) -> Iterator[Tuple[MoleculeResult, MatchView]]:
+    ) -> Iterator[Tuple["PFASEmbedding", MatchView]]:
         """Iterate over all PFAS group matches across all molecules."""
 
         for mol_res in self:  # type: ignore[assignment]
@@ -1887,7 +1976,7 @@ class PFASEmbeddingSet(list):
         unique_groups = len(group_counts)
 
         lines: List[str] = []
-        lines.append(_ansi("ResultsModel summary", _ANSI_BOLD))
+        lines.append(_ansi("PFASEmbeddingSet summary", _ANSI_BOLD))
         lines.append(f"- Molecules: {total_molecules}")
         lines.append(
             f"- PFAS group matches: {total_group_matches} (unique groups: {unique_groups})"
@@ -2262,18 +2351,39 @@ class PFASEmbeddingSet(list):
 
     def to_array(
         self,
-        component_metrics: Optional[List[str]] = None,
-        molecule_metrics: Optional[List[str]] = None,
-        group_selection: str = 'all',
-        selected_group_ids: Optional[List[int]] = None,
-        aggregation: str = 'mean',
-        preset: Optional[str] = None,
-        pfas_groups=None,
-    ) -> np.ndarray:
+        component_metrics=_UNSET,
+        molecule_metrics=_UNSET,
+        group_selection=_UNSET,
+        selected_group_ids=_UNSET,
+        aggregation=_UNSET,
+        preset=_UNSET,
+        pfas_groups=_UNSET,
+    ) -> "EmbeddingArray":
         """Stack per-molecule embedding rows into a ``(n_mols, n_cols)`` matrix.
+
+        When called with no arguments, returns the last cached embedding (or
+        binary by default on the first call).  Pass explicit arguments to
+        override and update the cache.
 
         Parameters match those of :meth:`PFASEmbedding.to_array`.
         """
+        _no_args = (
+            component_metrics is _UNSET and molecule_metrics is _UNSET and
+            group_selection is _UNSET and selected_group_ids is _UNSET and
+            aggregation is _UNSET and preset is _UNSET and pfas_groups is _UNSET
+        )
+        if _no_args and getattr(self, '_last_array', None) is not None:
+            return self._last_array
+
+        # Resolve sentinels to defaults
+        if component_metrics is _UNSET: component_metrics = None
+        if molecule_metrics is _UNSET:  molecule_metrics = None
+        if group_selection is _UNSET:   group_selection = 'all'
+        if selected_group_ids is _UNSET: selected_group_ids = None
+        if aggregation is _UNSET:       aggregation = 'mean'
+        if preset is _UNSET:            preset = None
+        if pfas_groups is _UNSET:       pfas_groups = None
+
         from .getter import get_compiled_HalogenGroups
         if pfas_groups is None:
             pfas_groups = get_compiled_HalogenGroups()
@@ -2290,8 +2400,340 @@ class PFASEmbeddingSet(list):
             for mol in self
         ]
         if not rows:
-            return np.zeros((0, 0), dtype=float)
-        return np.vstack(rows)
+            mat = np.zeros((0, 0), dtype=float)
+        else:
+            mat = np.vstack(rows)
+
+        all_smiles   = [m.get('smiles', '')   for m in self]
+        all_inchi    = [m.get('inchi', '')    for m in self]
+        all_inchikey = [m.get('inchikey', '') for m in self]
+        result = EmbeddingArray(mat, smiles=all_smiles, inchi=all_inchi,
+                                inchikey=all_inchikey, source=self)
+        if _no_args:
+            self._last_array = result
+        return result
+
+    # ------------------------------------------------------------------
+    # Analysis methods
+    # ------------------------------------------------------------------
+
+    def compare_kld(
+        self,
+        other: "PFASEmbeddingSet",
+        method: str = 'minmax',
+    ) -> float:
+        """Compare two sets using KL divergence on group-occurrence frequencies.
+
+        Parameters
+        ----------
+        other : PFASEmbeddingSet
+            Second set to compare against.
+        method : str, default ``'minmax'``
+            ``'forward'``, ``'reverse'``, ``'symmetric'``, or ``'minmax'``
+            (normalised symmetric KLD).
+
+        Returns
+        -------
+        float
+            KL divergence value (lower = more similar).
+        """
+        from scipy.stats import entropy as _entropy
+
+        p_mat = self.to_array()
+        q_mat = other.to_array()
+
+        if p_mat.shape[1] != q_mat.shape[1]:
+            raise ValueError(
+                f"Column count mismatch: {p_mat.shape[1]} vs {q_mat.shape[1]}. "
+                "Call to_array() with explicit arguments on both sets to ensure "
+                "the same embedding configuration."
+            )
+
+        eps = 1e-10
+        p = np.sum(np.atleast_2d(np.asarray(p_mat)) > 0, axis=0).astype(float) + eps
+        q = np.sum(np.atleast_2d(np.asarray(q_mat)) > 0, axis=0).astype(float) + eps
+        p /= p.sum()
+        q /= q.sum()
+
+        if method == 'forward':
+            return float(_entropy(p, q))
+        if method == 'reverse':
+            return float(_entropy(q, p))
+        if method == 'symmetric':
+            return float((_entropy(p, q) + _entropy(q, p)) / 2)
+        if method == 'minmax':
+            kl_fwd = _entropy(p, q)
+            kl_rev = _entropy(q, p)
+            kl_sym = (kl_fwd + kl_rev) / 2
+            max_kl = np.log(len(p))
+            return float(kl_sym / max_kl) if max_kl > 0 else 0.0
+        raise ValueError(f"Unknown method: {method!r}. Choose from 'forward', 'reverse', 'symmetric', 'minmax'.")
+
+    def perform_pca(
+        self,
+        n_components: int = 2,
+        plot: bool = True,
+        output_file: Optional[str] = None,
+    ) -> Dict:
+        """Perform PCA on the embedding matrix.
+
+        Parameters
+        ----------
+        n_components : int, default 2
+        plot : bool, default True
+        output_file : str, optional
+
+        Returns
+        -------
+        dict
+            Keys: ``'transformed'``, ``'explained_variance'``, ``'components'``,
+            ``'pca_model'``, ``'scaler'``.
+        """
+        try:
+            from sklearn.decomposition import PCA
+            from sklearn.preprocessing import StandardScaler
+            import matplotlib.pyplot as plt
+        except ImportError as exc:
+            raise ImportError(
+                "scikit-learn and matplotlib required: pip install scikit-learn matplotlib"
+            ) from exc
+
+        mat = np.atleast_2d(np.asarray(self.to_array()))
+        scaler = StandardScaler()
+        X = scaler.fit_transform(mat)
+        pca = PCA(n_components=n_components)
+        X_pca = pca.fit_transform(X)
+
+        if plot and n_components >= 2:
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+            ax1.scatter(X_pca[:, 0], X_pca[:, 1], alpha=0.6, s=50)
+            ax1.set_xlabel(f'PC1 ({pca.explained_variance_ratio_[0]:.1%} variance)')
+            ax1.set_ylabel(f'PC2 ({pca.explained_variance_ratio_[1]:.1%} variance)')
+            ax1.set_title('PCA of PFAS Group Embeddings')
+            ax1.grid(True, alpha=0.3)
+            ax2.bar(range(1, n_components + 1), pca.explained_variance_ratio_)
+            ax2.set_xlabel('Principal Component')
+            ax2.set_ylabel('Explained Variance Ratio')
+            ax2.set_title('Scree Plot')
+            ax2.grid(True, alpha=0.3)
+            plt.tight_layout()
+            if output_file:
+                plt.savefig(output_file, dpi=300, bbox_inches='tight')
+            else:
+                plt.show()
+            plt.close()
+
+        return {
+            'transformed': X_pca,
+            'explained_variance': pca.explained_variance_ratio_,
+            'components': pca.components_,
+            'pca_model': pca,
+            'scaler': scaler,
+        }
+
+    def perform_kernel_pca(
+        self,
+        n_components: int = 2,
+        kernel: str = 'rbf',
+        gamma: Optional[float] = None,
+        plot: bool = True,
+        output_file: Optional[str] = None,
+    ) -> Dict:
+        """Perform kernel PCA on the embedding matrix.
+
+        Parameters
+        ----------
+        n_components : int, default 2
+        kernel : str, default ``'rbf'``
+        gamma : float, optional
+        plot : bool, default True
+        output_file : str, optional
+
+        Returns
+        -------
+        dict
+            Keys: ``'transformed'``, ``'kpca_model'``, ``'scaler'``, ``'kernel'``, ``'gamma'``.
+        """
+        try:
+            from sklearn.decomposition import KernelPCA
+            from sklearn.preprocessing import StandardScaler
+            import matplotlib.pyplot as plt
+        except ImportError as exc:
+            raise ImportError(
+                "scikit-learn and matplotlib required: pip install scikit-learn matplotlib"
+            ) from exc
+
+        mat = np.atleast_2d(np.asarray(self.to_array()))
+        scaler = StandardScaler()
+        X = scaler.fit_transform(mat)
+        gamma = gamma if gamma is not None else 1.0 / X.shape[1]
+        kpca = KernelPCA(n_components=n_components, kernel=kernel, gamma=gamma)
+        X_kpca = kpca.fit_transform(X)
+
+        if plot and n_components >= 2:
+            fig, ax = plt.subplots(figsize=(8, 6))
+            ax.scatter(X_kpca[:, 0], X_kpca[:, 1], alpha=0.6, s=50)
+            ax.set_xlabel('Kernel PC1')
+            ax.set_ylabel('Kernel PC2')
+            ax.set_title(f'Kernel PCA ({kernel}) of PFAS Group Embeddings')
+            ax.grid(True, alpha=0.3)
+            plt.tight_layout()
+            if output_file:
+                plt.savefig(output_file, dpi=300, bbox_inches='tight')
+            else:
+                plt.show()
+            plt.close()
+
+        return {
+            'transformed': X_kpca,
+            'kpca_model': kpca,
+            'scaler': scaler,
+            'kernel': kernel,
+            'gamma': gamma,
+        }
+
+    def perform_tsne(
+        self,
+        n_components: int = 2,
+        perplexity: float = 30.0,
+        learning_rate: float = 200.0,
+        max_iter: int = 1000,
+        plot: bool = True,
+        output_file: Optional[str] = None,
+    ) -> Dict:
+        """Perform t-SNE dimensionality reduction on the embedding matrix.
+
+        Parameters
+        ----------
+        n_components : int, default 2
+        perplexity : float, default 30.0
+        learning_rate : float, default 200.0
+        max_iter : int, default 1000
+        plot : bool, default True
+        output_file : str, optional
+
+        Returns
+        -------
+        dict
+            Keys: ``'transformed'``, ``'tsne_model'``, ``'scaler'``, ``'perplexity'``.
+        """
+        try:
+            from sklearn.manifold import TSNE
+            from sklearn.preprocessing import StandardScaler
+            import matplotlib.pyplot as plt
+        except ImportError as exc:
+            raise ImportError(
+                "scikit-learn and matplotlib required: pip install scikit-learn matplotlib"
+            ) from exc
+
+        mat = np.atleast_2d(np.asarray(self.to_array()))
+        scaler = StandardScaler()
+        X = scaler.fit_transform(mat)
+        tsne = TSNE(
+            n_components=n_components,
+            perplexity=perplexity,
+            learning_rate=learning_rate,
+            max_iter=max_iter,
+            random_state=42,
+        )
+        X_tsne = tsne.fit_transform(X)
+
+        if plot and n_components >= 2:
+            fig, ax = plt.subplots(figsize=(8, 6))
+            ax.scatter(X_tsne[:, 0], X_tsne[:, 1], alpha=0.6, s=50)
+            ax.set_xlabel('t-SNE 1')
+            ax.set_ylabel('t-SNE 2')
+            ax.set_title(f't-SNE (perplexity={perplexity}) of PFAS Group Embeddings')
+            ax.grid(True, alpha=0.3)
+            plt.tight_layout()
+            if output_file:
+                plt.savefig(output_file, dpi=300, bbox_inches='tight')
+            else:
+                plt.show()
+            plt.close()
+
+        return {
+            'transformed': X_tsne,
+            'tsne_model': tsne,
+            'scaler': scaler,
+            'perplexity': perplexity,
+        }
+
+    def perform_umap(
+        self,
+        n_components: int = 2,
+        n_neighbors: int = 15,
+        min_dist: float = 0.1,
+        metric: str = 'euclidean',
+        plot: bool = True,
+        output_file: Optional[str] = None,
+    ) -> Dict:
+        """Perform UMAP dimensionality reduction on the embedding matrix.
+
+        Parameters
+        ----------
+        n_components : int, default 2
+        n_neighbors : int, default 15
+        min_dist : float, default 0.1
+        metric : str, default ``'euclidean'``
+        plot : bool, default True
+        output_file : str, optional
+
+        Returns
+        -------
+        dict
+            Keys: ``'transformed'``, ``'umap_model'``, ``'scaler'``, ``'n_neighbors'``, ``'min_dist'``.
+        """
+        try:
+            import umap
+            from sklearn.preprocessing import StandardScaler
+            import matplotlib.pyplot as plt
+        except ImportError as exc:
+            raise ImportError(
+                "umap-learn and matplotlib required: pip install umap-learn matplotlib"
+            ) from exc
+
+        import warnings as _warnings
+        import os as _os
+        _os.environ.setdefault('KMP_DUPLICATE_LIB_OK', 'TRUE')
+
+        mat = np.atleast_2d(np.asarray(self.to_array()))
+        scaler = StandardScaler()
+        X = scaler.fit_transform(mat)
+
+        with _warnings.catch_warnings():
+            _warnings.filterwarnings('ignore', message=r'.*n_jobs.*overridden.*', category=UserWarning)
+            _warnings.filterwarnings('ignore', message=r'.*Intel OpenMP.*LLVM OpenMP.*', category=RuntimeWarning)
+            reducer = umap.UMAP(
+                n_components=n_components,
+                n_neighbors=n_neighbors,
+                min_dist=min_dist,
+                metric=metric,
+                random_state=42,
+            )
+            X_umap = reducer.fit_transform(X)
+
+        if plot and n_components >= 2:
+            fig, ax = plt.subplots(figsize=(8, 6))
+            ax.scatter(X_umap[:, 0], X_umap[:, 1], alpha=0.6, s=50)
+            ax.set_xlabel('UMAP 1')
+            ax.set_ylabel('UMAP 2')
+            ax.set_title(f'UMAP (n_neighbors={n_neighbors}) of PFAS Group Embeddings')
+            ax.grid(True, alpha=0.3)
+            plt.tight_layout()
+            if output_file:
+                plt.savefig(output_file, dpi=300, bbox_inches='tight')
+            else:
+                plt.show()
+            plt.close()
+
+        return {
+            'transformed': X_umap,
+            'umap_model': reducer,
+            'scaler': scaler,
+            'n_neighbors': n_neighbors,
+            'min_dist': min_dist,
+        }
 
     def column_names(
         self,
