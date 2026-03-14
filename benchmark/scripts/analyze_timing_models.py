@@ -44,8 +44,8 @@ df = pd.DataFrame([{
     'molecule_id': d['molecule_id'],
     'chain_length': d['chain_length'],
     'num_atoms': d['num_atoms'],
-    'HalogenGroups_time_avg': d['HalogenGroups_time_avg'],
-    'HalogenGroups_time_std': d['HalogenGroups_time_std']
+    'PFASGroups_time_avg': d['PFASGroups_time_avg'],
+    'PFASGroups_time_std': d['PFASGroups_time_std']
 } for d in timing_data])
 
 # Exponential model: t = a * exp(b * n)
@@ -54,7 +54,7 @@ def exponential_model(n, a, b):
 
 # Fit the model
 x_data = df['num_atoms'].values
-y_data = df['HalogenGroups_time_avg'].values
+y_data = df['PFASGroups_time_avg'].values
 
 if SCIPY_AVAILABLE:
     # Initial guess for parameters
@@ -107,8 +107,8 @@ print(f"\nDataset Statistics:")
 print(f"  Number of molecules: {len(df)}")
 print(f"  Atom count range: {df['num_atoms'].min()} - {df['num_atoms'].max()}")
 print(f"  Chain length range: {df['chain_length'].min()} - {df['chain_length'].max()}")
-print(f"  Mean execution time: {df['HalogenGroups_time_avg'].mean()*1000:.2f} ms")
-print(f"  Median execution time: {df['HalogenGroups_time_avg'].median()*1000:.2f} ms")
+print(f"  Mean execution time: {df['PFASGroups_time_avg'].mean()*1000:.2f} ms")
+print(f"  Median execution time: {df['PFASGroups_time_avg'].median()*1000:.2f} ms")
 
 # Create visualization if matplotlib is available
 if MATPLOTLIB_AVAILABLE:
@@ -122,7 +122,7 @@ if MATPLOTLIB_AVAILABLE:
              label=f'Fit: t = {a_fit:.2e} × exp({b_fit:.4f} × n)\nR² = {r_squared:.4f}')
     ax1.set_xlabel('Number of atoms', fontsize=12)
     ax1.set_ylabel('Execution time (ms)', fontsize=12)
-    ax1.set_title('HalogenGroups Timing vs Molecular Size\n(All Metrics Enabled)', fontsize=13, fontweight='bold')
+    ax1.set_title('PFASGroups Timing vs Molecular Size\n(All Metrics Enabled)', fontsize=13, fontweight='bold')
     ax1.legend(fontsize=10)
     ax1.grid(True, alpha=0.3)
     
@@ -165,9 +165,9 @@ results = {
         'n_molecules': int(len(df)),
         'atom_count_range': [int(df['num_atoms'].min()), int(df['num_atoms'].max())],
         'chain_length_range': [int(df['chain_length'].min()), int(df['chain_length'].max())],
-        'mean_time_ms': float(df['HalogenGroups_time_avg'].mean() * 1000),
-        'median_time_ms': float(df['HalogenGroups_time_avg'].median() * 1000),
-        'std_time_ms': float(df['HalogenGroups_time_avg'].std() * 1000)
+        'mean_time_ms': float(df['PFASGroups_time_avg'].mean() * 1000),
+        'median_time_ms': float(df['PFASGroups_time_avg'].median() * 1000),
+        'std_time_ms': float(df['PFASGroups_time_avg'].std() * 1000)
     }
 }
 
@@ -179,4 +179,4 @@ print("=" * 80)
 
 # Generate LaTeX table row
 print("\nLaTeX Table Row:")
-print(f"All metrics & ${a_fit:.2e}$ & ${b_fit:.4f}$ & ${r_squared:.4f}$ & {df['HalogenGroups_time_avg'].mean()*1000:.1f} & {df['HalogenGroups_time_avg'].median()*1000:.1f} \\\\")
+print(f"All metrics & ${a_fit:.2e}$ & ${b_fit:.4f}$ & ${r_squared:.4f}$ & {df['PFASGroups_time_avg'].mean()*1000:.1f} & {df['PFASGroups_time_avg'].median()*1000:.1f} \\\\")

@@ -202,7 +202,7 @@ def analyze_system_comparison(results):
         
         # Collect timing data
         if 'execution_time' in result['HalogenGroup_result']:
-            single_analysis[group_id]['HalogenGroup_times'].append(result['HalogenGroups_result']['execution_time'])
+            single_analysis[group_id]['HalogenGroup_times'].append(result['PFASGroups_result']['execution_time'])
         if 'execution_time' in result['atlas_result']:
             single_analysis[group_id]['atlas_times'].append(result['atlas_result']['execution_time'])
     
@@ -260,7 +260,7 @@ def analyze_system_comparison(results):
     # Calculate average timing statistics for single groups
     for group_id, data in single_analysis.items():
         if data['HalogenGroup_times']:
-            data['HalogenGroup_avg_time'] = sum(data['HalogenGroups_times']) / len(data['HalogenGroups_times'])
+            data['HalogenGroup_avg_time'] = sum(data['PFASGroups_times']) / len(data['PFASGroups_times'])
         if data['atlas_times']:
             data['atlas_avg_time'] = sum(data['atlas_times']) / len(data['atlas_times'])
     
@@ -409,7 +409,7 @@ def create_comparison_heatmap(single_analysis):
     ))
     
     fig.update_layout(
-        title="HalogenGroup vs PFAS-Atlas Detection Performance Comparison<br><sub>Single Functional Group Molecules - HalogenGroups Module Performance</sub>",
+        title="HalogenGroup vs PFAS-Atlas Detection Performance Comparison<br><sub>Single Functional Group Molecules - PFASGroups Module Performance</sub>",
         xaxis_title="PFAS Functional Groups",
         yaxis_title="Detection Systems", 
         font_size=12,
@@ -569,11 +569,11 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
     
     # Calculate overall statistics
     total_single = sum(data['total_molecules'] for data in single_analysis.values())
-    HalogenGroup_single_success = sum(data['HalogenGroups_correct'] for data in single_analysis.values())
+    HalogenGroup_single_success = sum(data['PFASGroups_correct'] for data in single_analysis.values())
     atlas_single_success = sum(data['atlas_any_detection'] for data in single_analysis.values())
     
     total_multi = sum(data['total_molecules'] for data in multi_analysis.values())
-    HalogenGroup_multi_success = sum(data['HalogenGroups_any_detection'] for data in multi_analysis.values())
+    HalogenGroup_multi_success = sum(data['PFASGroups_any_detection'] for data in multi_analysis.values())
     atlas_multi_success = sum(data['atlas_classifications'] for data in multi_analysis.values())
     
     # Create links
@@ -593,7 +593,7 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
         if m['molecule_data'].get('generation_type') == 'single_group':
             expected = m['molecule_data']['group_name']
             atlas = m['atlas_result'].get('second_class','None')
-            HalogenGroup_ids = m['HalogenGroups_result']['detected_groups']
+            HalogenGroup_ids = m['PFASGroups_result']['detected_groups']
             HalogenGroup = [lookup[id] for id in HalogenGroup_ids if id!=49 and id!=50 and id > 28]
             HalogenGroup = [f"- {reverse_lookup.get(pf)}: {pf}" for pf in HalogenGroup]
             HalogenGroup_oecd = [lookup[id] for id in HalogenGroup_ids if id<= 28]
@@ -843,7 +843,7 @@ def create_single_group_atlas_sankey(single_analysis):
     HalogenGroup_success_count = 0
     
     for group_id, data in single_analysis.items():
-        HalogenGroup_success_count += datHalogenGroupnGroups_correct']
+        HalogenGroup_success_count += data['PFASGroups_correct']
         
         # We need to track Atlas second_class for each group's successful HalogenGroup detection
         # This would require access to individual results, not just aggregated data
@@ -936,7 +936,7 @@ def create_multi_group_HalogenGroup_sankey(multi_analysis):
         combo_labels.append(combo_str)
         
         total = data['total_molecules']
-        detected = data['HalogenGroup_any_detection']
+        detected = data['PFASGroups_any_detection']
         rate = (detected / total * 100) if total > 0 else 0
         detection_rates.append(detected)
     
@@ -954,8 +954,7 @@ def create_multi_group_HalogenGroup_sankey(multi_analysis):
             thickness=20,
             line=dict(color="black", width=0.5),
             label=nodes,
-            color=["rgba(31, 119, 180, 0.8)"] + px.colors.sample_colorscale("Viridis", 
-                                                                           [i/(len(combo_labels)-1) for i in range(len(combo_labels))])
+            color=["rgba(31, 119, 180, 0.8)"] + px.colors.sample_colorscale("Viridis",                         [i/(len(combo_labels)-1) for i in range(len(combo_labels))])
         ),
         link=dict(
             source=sources,
@@ -1019,10 +1018,10 @@ def create_oecd_html_report(oecd_analysis, timestamp):
     """Create OECD benchmark HTML report"""
     
     total_molecules = oecd_analysis['total_molecules']
-    HalogenGroup_detections = oecd_analysiHalogenGroupnGroups_detections']
+    HalogenGroup_detections = oecd_analysis['PFASGroups_detections']
     atlas_detections = oecd_analysis['atlas_detections']
     
-    HalogenGroup_rate HalogenGroupnGroups_detections / total_molecules * 100) if total_molecules > 0 else 0
+    HalogenGroup_rate = (HalogenGroup_detections / total_molecules * 100) if total_molecules > 0 else 0
     atlas_rate = (atlas_detections / total_molecules * 100) if total_molecules > 0 else 0
     
     # Create class breakdown chart
@@ -1447,14 +1446,14 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
     total_single_molecules = sum(data['total_molecules'] for data in single_analysis.values())
     total_multi_molecules = sum(data['total_molecules'] for data in multi_analysis.values())
     
-    HalogenGroup_single_success = sum(datHalogenGroupnGroups_correct'] for data in single_analysis.values())
-    HalogenGroup_single_rate HalogenGroupnGroups_single_success / total_single_molecules * 100) if total_single_molecules > 0 else 0
+    HalogenGroup_single_success = sum(data['PFASGroups_correct'] for data in single_analysis.values())
+    HalogenGroup_single_rate = (HalogenGroup_single_success / total_single_molecules * 100) if total_single_molecules > 0 else 0
     
     atlas_single_success = sum(data['atlas_any_detection'] for data in single_analysis.values())
     atlas_single_rate = (atlas_single_success / total_single_molecules * 100) if total_single_molecules > 0 else 0
     
-    HalogenGroup_multi_success = sum(datHalogenGroupnGroups_any_detection'] for data in multi_analysis.values())
-    HalogenGroup_multi_rate HalogenGroupnGroups_multi_success / total_multi_molecules * 100) if total_multi_molecules > 0 else 0
+    HalogenGroup_multi_success = sum(data['PFASGroups_any_detection'] for data in multi_analysis.values())
+    HalogenGroup_multi_rate = (HalogenGroup_multi_success / total_multi_molecules * 100) if total_multi_molecules > 0 else 0
     
     atlas_multi_success = sum(data['atlas_classifications'] for data in multi_analysis.values())
     atlas_multi_rate = (atlas_multi_success / total_multi_molecules * 100) if total_multi_molecules > 0 else 0

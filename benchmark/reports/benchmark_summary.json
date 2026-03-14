@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "timestamp": "2026-03-13T22:53:15.101018",
+    "timing_file": "data/pfas_timing_benchmark_no_metrics_20260313_223709.json",
+    "enhanced_file": "data/pfas_enhanced_benchmark_20260313_184120.json",
+    "complex_file": "data/pfas_complex_branched_benchmark_20260313_223733.json",
+    "highly_file": "data/pfas_highly_branched_benchmark_20260313_223758.json",
+    "telomer_file": "data/telomer_validation_results.json"
+  },
+  "timing": {
+    "n_molecules": 2500,
+    "mean_time_ms": 179.8476739810378,
+    "median_time_ms": 24.875276899547316,
+    "min_time_ms": 5.3105128012248315,
+    "max_time_ms": 3009.3997280011536
+  },
+  "enhanced": {
+    "total": 3920,
+    "detected": 3920,
+    "detection_rate": 100.0
+  },
+  "complex_branched": {
+    "total": 300,
+    "PFASGroups_detected": 300,
+    "atlas_detected": 300,
+    "PFASGroups_detection_rate": 100.0,
+    "atlas_detection_rate": 100.0
+  },
+  "highly_branched": {
+    "total": 375,
+    "PFASGroups_passed": 45,
+    "atlas_passed": 375,
+    "PFASGroups_pass_rate": 12.0,
+    "atlas_pass_rate": 100.0
+  },
+  "telomer_validation": {
+    "total": 785,
+    "detected": 734,
+    "detection_rate": 93.5031847133758
+  }
+}

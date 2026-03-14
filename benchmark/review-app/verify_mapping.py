@@ -1,7 +1,7 @@
 import json
 
 # Read source data
-with open('../../HalogenGroups/data/PFAS_groups_smarts.json', 'r', encoding='utf-8') as f:
+with open('../../PFASGroupsta/PFAS_groups_smarts.json', 'r', encoding='utf-8') as f:
     source_data = json.load(f)
 
 print(f'Total groups in source: {len(source_data)}')

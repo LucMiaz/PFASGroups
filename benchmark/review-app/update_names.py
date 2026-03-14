@@ -2,7 +2,7 @@ import json
 import os
 
 # Read the PFAS groups data
-json_path = os.path.join('..', '..', 'HalogenGroups', 'data', 'PFAS_groups_smarts.json')
+json_path = os.path.join('..', '..', 'PFASGroups'data', 'PFAS_groups_smarts.json')
 with open(json_path, 'r', encoding='utf-8') as f:
     data = json.load(f)
 

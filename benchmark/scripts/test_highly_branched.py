@@ -3,7 +3,7 @@
 Test suite for highly branched PFAS compounds
 Tests functional groups 29-59 (excluding cyclic 54-57 and groups without SMARTS 49-50)
 attached at different distances (0, 1, 2 bonds) from perfluorinated components of varying sizes
-Compares HalogenGroups and PFAS-Atlas detection
+Compares PFASGroups and PFAS-Atlas detection
 """
 
 import sys
@@ -12,17 +12,17 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-# Add parent directory to path to import HalogenGroups
+# Add parent directory to path to import PFASGroups
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 try:
     from PFASGroups import parse_smiles
-    HalogenGroupS_AVAILABLE = True
+    PFASGroups_AVAILABLE = True
 except ImportError:
-    print("❌ Error: Could not import HalogenGroups module")
+    print("❌ Error: Could not import PFASGroups module")
     print("   Make sure you're running from the benchmark directory")
     print("   and PFASGroups is installed in your environment")
-    HalogenGroupS_AVAILABLE = False
+    PFASGroups_AVAILABLE = False
     sys.exit(1)
 
 # Try to import PFAS-Atlas
@@ -40,7 +40,7 @@ except ImportError:
         ATLAS_AVAILABLE = True
         print("✅ PFAS-Atlas available (fallback import)")
     except ImportError:
-        print("⚠️  PFAS-Atlas not available - will only test HalogenGroups")
+        print("⚠️  PFAS-Atlas not available - will only test PFASGroups")
         ATLAS_AVAILABLE = False
 
 # Functional groups to test (29-59, excluding cyclic and no-SMARTS)
@@ -107,13 +107,13 @@ def attach_functional_group(component_size, func_group, distance):
     return smiles
 
 
-def analyze_molecule_HalogenGroups(smiles):
-    """Analyze a molecule using HalogenGroups"""
+def analyze_molecule_PFASGroups(smiles):
+    """Analyze a molecule using PFASGroups"""
     try:
         result = parse_smiles(smiles)
         return result
     except Exception as e:
-        print(f"     Error analyzing with HalogenGroups: {str(e)}")
+        print(f"     Error analyzing with PFASGroups: {str(e)}")
         return None
 
 
@@ -143,16 +143,16 @@ def run_benchmark():
     print(f"Component sizes: 1-{component_max} CF2 units")
     print(f"Distances: 0-{distance_max} bonds from component start")
     if ATLAS_AVAILABLE:
-        print("Comparing HalogenGroups and PFAS-Atlas detection")
+        print("Comparing PFASGroups and PFAS-Atlas detection")
     else:
-        print("Testing HalogenGroups only (PFAS-Atlas not available)")
+        print("Testing PFASGroups only (PFAS-Atlas not available)")
     print("=" * 80)
     print()
     
     results = {
         'total': 0,
-        'HalogenGroups_success': 0,
-        'HalogenGroups_failed': 0,
+        'PFASGroups_success': 0,
+        'PFASGroups_failed': 0,
         'atlas_success': 0,
         'atlas_failed': 0,
         'details': []
@@ -174,8 +174,8 @@ def run_benchmark():
                 print(f"  Component Size: {component_size}, Distance: {distance}")
                 print(f"  SMILES: {smiles}")
                 
-                # Test with HalogenGroups
-                pfas_analysis = analyze_molecule_HalogenGroups(smiles)
+                # Test with PFASGroups
+                pfas_analysis = analyze_molecule_PFASGroups(smiles)
                 pfas_passed = False
                 
                 if pfas_analysis and len(pfas_analysis) > 0:
@@ -184,9 +184,9 @@ def run_benchmark():
                     found_perfluoro = any(m['id'] in [49, 50] for a in pfas_analysis for m in a['matches'])
                     
                     if found_group:
-                        results['HalogenGroups_success'] += 1
+                        results['PFASGroups_success'] += 1
                         pfas_passed = True
-                        print(f"  ✅ HalogenGroups PASS - Group {group_id} ({group_info['name']}) detected")
+                        print(f"  ✅ PFASGroups PASS - Group {group_id} ({group_info['name']}) detected")
                         
                         # Log component information
                         for m in pfas_analysis:
@@ -197,8 +197,8 @@ def run_benchmark():
                                     print(f"       Component size: {size}")
                                     break
                     else:
-                        results['HalogenGroups_failed'] += 1
-                        print(f"  ❌ HalogenGroups FAIL - Group {group_id} ({group_info['name']}) NOT detected")
+                        results['PFASGroups_failed'] += 1
+                        print(f"  ❌ PFASGroups FAIL - Group {group_id} ({group_info['name']}) NOT detected")
                         detected = ', '.join([f"{m['id']}:{m.get('group_name', m.get('definition_name', 'unknown'))}" for a in pfas_analysis for m in a['matches'][:5]])
                         print(f"     Detected groups: {detected}")
                     
@@ -210,8 +210,8 @@ def run_benchmark():
                                     print(f"     Perfluoroalkyl component: ✓ (size: {chain_size})")
                                     break
                 else:
-                    results['HalogenGroups_failed'] += 1
-                    print(f"  ❌ HalogenGroups FAIL - Analysis error or invalid SMILES")
+                    results['PFASGroups_failed'] += 1
+                    print(f"  ❌ PFASGroups FAIL - Analysis error or invalid SMILES")
                 
                 # Test with PFAS-Atlas
                 atlas_passed = False
@@ -235,7 +235,7 @@ def run_benchmark():
                     'group_name': group_info['name'],
                     'distance': distance,
                     'smiles': smiles,
-                    'HalogenGroups_passed': pfas_passed,
+                    'PFASGroups_passed': pfas_passed,
                     'atlas_passed': atlas_passed if ATLAS_AVAILABLE else None,
                     'atlas_predictions': atlas_predictions if ATLAS_AVAILABLE else None
                 })
@@ -245,37 +245,37 @@ def run_benchmark():
     print("📈 TEST SUMMARY")
     print("=" * 80)
     print(f"Total tests: {results['total']}")
-    print(f"\nHalogenGroups Results:")
-    print(f"  Passed: {results['HalogenGroups_success']} ({results['HalogenGroups_success']/results['total']*100:.1f}%)")
-    print(f"  Failed: {results['HalogenGroups_failed']} ({results['HalogenGroups_failed']/results['total']*100:.1f}%)")
+    print(f"\nPFASGroups Results:")
+    print(f"  Passed: {results['PFASGroups_success']} ({results['PFASGroups_success']/results['total']*100:.1f}%)")
+    print(f"  Failed: {results['PFASGroups_failed']} ({results['PFASGroups_failed']/results['total']*100:.1f}%)")
     
     if ATLAS_AVAILABLE:
         print(f"\nPFAS-Atlas Results:")
         print(f"  Passed: {results['atlas_success']} ({results['atlas_success']/results['total']*100:.1f}%)")
         print(f"  Failed: {results['atlas_failed']} ({results['atlas_failed']/results['total']*100:.1f}%)")
     
-    HalogenGroups_success_pct = results['HalogenGroups_success'] / results['total'] * 100
+    PFASGroups_success_pct = results['PFASGroups_success'] / results['total'] * 100
     
-    # Failures by group for HalogenGroups
-    HalogenGroups_failures_by_group = {}
+    # Failures by group for PFASGroups
+    PFASGroups_failures_by_group = {}
     for detail in results['details']:
-        if not detail['HalogenGroups_passed']:
+        if not detail['PFASGroups_passed']:
             gid = detail['group_id']
-            if gid not in HalogenGroups_failures_by_group:
-                HalogenGroups_failures_by_group[gid] = {
+            if gid not in PFASGroups_failures_by_group:
+                PFASGroups_failures_by_group[gid] = {
                     'name': detail['group_name'],
                     'count': 0,
                     'distances': set(),
                     'component_sizes': set()
                 }
-            HalogenGroups_failures_by_group[gid]['count'] += 1
-            HalogenGroups_failures_by_group[gid]['distances'].add(detail['distance'])
-            HalogenGroups_failures_by_group[gid]['component_sizes'].add(detail['component_size'])
+            PFASGroups_failures_by_group[gid]['count'] += 1
+            PFASGroups_failures_by_group[gid]['distances'].add(detail['distance'])
+            PFASGroups_failures_by_group[gid]['component_sizes'].add(detail['component_size'])
     
-    if HalogenGroups_failures_by_group:
-        print("\n❌ HalogenGroups Failures by Functional Group:")
+    if PFASGroups_failures_by_group:
+        print("\n❌ PFASGroups Failures by Functional Group:")
         print("-" * 80)
-        for gid, info in sorted(HalogenGroups_failures_by_group.items()):
+        for gid, info in sorted(PFASGroups_failures_by_group.items()):
             print(f"  Group {gid} ({info['name']}): {info['count']} failures")
             print(f"    At distances: {', '.join(map(str, sorted(info['distances'])))}")
             print(f"    With component sizes: {', '.join(map(str, sorted(info['component_sizes'])))}")
@@ -305,21 +305,21 @@ def run_benchmark():
                 print(f"    At distances: {', '.join(map(str, sorted(info['distances'])))}")
                 print(f"    With component sizes: {', '.join(map(str, sorted(info['component_sizes'])))}")
     
-    # Success rate by distance for HalogenGroups
-    print("\n📊 HalogenGroups Success Rate by Distance:")
+    # Success rate by distance for PFASGroups
+    print("\n📊 PFASGroups Success Rate by Distance:")
     print("-" * 80)
     for dist in range(3):
         dist_tests = [d for d in results['details'] if d['distance'] == dist]
-        dist_success = sum(1 for d in dist_tests if d['HalogenGroups_passed'])
+        dist_success = sum(1 for d in dist_tests if d['PFASGroups_passed'])
         dist_pct = (dist_success / len(dist_tests) * 100) if dist_tests else 0
         print(f"  Distance {dist}: {dist_success}/{len(dist_tests)} ({dist_pct:.1f}%)")
     
-    # Success rate by component size for HalogenGroups
-    print("\n📊 HalogenGroups Success Rate by Component Size:")
+    # Success rate by component size for PFASGroups
+    print("\n📊 PFASGroups Success Rate by Component Size:")
     print("-" * 80)
     for size in range(1, 6):
         size_tests = [d for d in results['details'] if d['component_size'] == size]
-        size_success = sum(1 for d in size_tests if d['HalogenGroups_passed'])
+        size_success = sum(1 for d in size_tests if d['PFASGroups_passed'])
         size_pct = (size_success / len(size_tests) * 100) if size_tests else 0
         print(f"  Size {size}: {size_success}/{len(size_tests)} ({size_pct:.1f}%)")
     
@@ -354,26 +354,26 @@ def run_benchmark():
             'timestamp': timestamp,
             'test_type': 'highly_branched',
             'total_tests': results['total'],
-            'HalogenGroups_success_rate': HalogenGroups_success_pct,
+            'PFASGroups_success_rate': PFASGroups_success_pct,
             'atlas_available': ATLAS_AVAILABLE,
             'atlas_success_rate': (results['atlas_success'] / results['total'] * 100) if ATLAS_AVAILABLE else None
         },
         'summary': {
             'total': results['total'],
-            'HalogenGroups_passed': results['HalogenGroups_success'],
-            'HalogenGroups_failed': results['HalogenGroups_failed'],
+            'PFASGroups_passed': results['PFASGroups_success'],
+            'PFASGroups_failed': results['PFASGroups_failed'],
             'atlas_passed': results['atlas_success'] if ATLAS_AVAILABLE else None,
             'atlas_failed': results['atlas_failed'] if ATLAS_AVAILABLE else None
         },
         'details': results['details'],
-        'HalogenGroups_failures_by_group': {
+        'PFASGroups_failures_by_group': {
             str(gid): {
                 'name': info['name'],
                 'count': info['count'],
                 'distances': sorted(list(info['distances'])),
                 'component_sizes': sorted(list(info['component_sizes']))
             }
-            for gid, info in HalogenGroups_failures_by_group.items()
+            for gid, info in PFASGroups_failures_by_group.items()
         },
         'atlas_failures_by_group': {
             str(gid): {

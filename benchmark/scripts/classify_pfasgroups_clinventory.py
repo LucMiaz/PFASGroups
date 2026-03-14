@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 Classify fluorine-containing molecules in the clinventory database using
-PFASGroups (HalogenGroups restricted to F-only, i.e. halogens='F').
+PFASGroups (PFASGroups restricted to F-only, i.e. halogens='F').
 
-This is the PFAS-focused variant of classify_halogengroups_clinventory.py.
+This is the PFAS-focused variant of classify_PFASGroups_clinventory.py.
 It fetches every molecule that contains at least one fluorine atom, runs
 ``parse_mol(mol, halogens='F', include_PFAS_definitions=False)`` on each,
 records per-molecule timing, and writes a JSON result file to:
@@ -12,7 +12,7 @@ records per-molecule timing, and writes a JSON result file to:
 
 Restricting to F-only skips matching against chlorine, bromine, and iodine
 SMARTS patterns, which is expected to give a measurable speed gain for F-only
-molecules compared to full HalogenGroups.
+molecules compared to full PFASGroups.
 
 Usage (from the benchmark/ directory):
     python scripts/classify_pfasgroups_clinventory.py [OPTIONS]
@@ -35,7 +35,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 # ---------------------------------------------------------------------------
-# Path setup — prefer local HalogenGroups repo
+# Path setup — prefer local PFASGroups repo
 # ---------------------------------------------------------------------------
 SCRIPT_DIR    = Path(__file__).resolve().parent
 BENCHMARK_DIR = SCRIPT_DIR.parent
@@ -52,12 +52,12 @@ except ImportError as exc:
     sys.exit(1)
 
 try:
-    from HalogenGroups import parse_mol, get_HalogenGroups
-    from HalogenGroups.core import rdkit_disable_log
+    from PFASGroups import parse_mol, get_HalogenGroups
+    from PFASGroups.core import rdkit_disable_log
     rdkit_disable_log()
-    HALOGENGROUPS_AVAILABLE = True
+    PFASGroups_AVAILABLE = True
 except ImportError as exc:
-    print(f"ERROR: HalogenGroups not available: {exc}")
+    print(f"ERROR: PFASGroups not available: {exc}")
     sys.exit(1)
 
 try:
@@ -153,7 +153,7 @@ def fetch_molecules(conn, all_halogens: bool, limit: Optional[int], offset: int,
 # ---------------------------------------------------------------------------
 
 def classify_molecule(mol_id: int, smiles: str, formula: Optional[str]) -> Dict:
-    """Run HalogenGroups parse_mol(halogens='F') and return a result dict."""
+    """Run PFASGroups parse_mol(halogens='F') and return a result dict."""
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         return {
@@ -180,7 +180,7 @@ def classify_molecule(mol_id: int, smiles: str, formula: Optional[str]) -> Dict:
 
     t0 = time.perf_counter()
     try:
-        # Key difference vs HalogenGroups benchmark: restrict to F patterns only
+        # Key difference vs PFASGroups benchmark: restrict to F patterns only
         result = parse_mol(mol, halogens='F', include_PFAS_definitions=False)
         elapsed_ms = (time.perf_counter() - t0) * 1000.0
 

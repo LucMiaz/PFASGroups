@@ -12,10 +12,10 @@ for table in tables:
 
 print()
 
-# Check structure of HalogenGroups_results table
-cursor.execute("PRAGMA table_info(HalogenGroups_results)")
+# Check structure of PFASGroupssults table
+cursor.execute("PRAGMA table_info(PFASGroupssults)")
 columns = cursor.fetchall()
-print('HalogenGroups_results columns:')
+print('PFASGroupssults columns:')
 for col in columns:
     print(f'  {col[1]} ({col[2]})')
 
@@ -25,12 +25,12 @@ print()
 cursor.execute('''
     SELECT m.id, m.smiles, p.detected_groups, p.success
     FROM molecules m
-    LEFT JOIN HalogenGroups_results p ON m.id = p.molecule_id
+    LEFT JOIN PFASGroupssults p ON m.id = p.molecule_id
     WHERE m.dataset_type='highly_branched'
     LIMIT 10
 ''')
 
-print('Sample highly_branched molecules with HalogenGroups results:')
+print('Sample highly_branched molecules with PFASGroupssults:')
 for row in cursor.fetchall():
     mol_id, smiles, detected_groups, success = row
     print(f'ID {mol_id}: {smiles[:40]}... | Success: {success} | Groups: {detected_groups}')
