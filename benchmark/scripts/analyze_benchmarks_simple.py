@@ -25,7 +25,7 @@ def load_json(path: str):
 def summarize_timing(data):
     if not data:
         return {}
-    times = [row.get("HalogenGroups_time_avg") for row in data if row.get("HalogenGroups_time_avg") is not None]
+    times = [row.get("PFASGroups_time_avg") for row in data if row.get("PFASGroups_time_avg") is not None]
     if not times:
         return {"n_molecules": len(data)}
     return {
@@ -40,7 +40,7 @@ def summarize_timing(data):
 def summarize_enhanced(data):
     if not data:
         return {}
-    detected = sum(1 for row in data if row.get("HalogenGroups_result", {}).get("detected_groups"))
+    detected = sum(1 for row in data if row.get("PFASGroups_result", {}).get("detected_groups"))
     return {
         "total": len(data),
         "detected": detected,
@@ -57,13 +57,13 @@ def summarize_complex(data):
     for test_case in data:
         molecules = test_case.get("molecules", []) or []
         total += len(molecules)
-        pfas_detected += sum(1 for mol in molecules if mol.get("HalogenGroups_detected") is True)
+        pfas_detected += sum(1 for mol in molecules if mol.get("PFASGroups_detected") is True)
         atlas_detected += sum(1 for mol in molecules if mol.get("atlas_detected") is True)
     return {
         "total": total,
-        "HalogenGroups_detected": pfas_detected,
+        "PFASGroups_detected": pfas_detected,
         "atlas_detected": atlas_detected,
-        "HalogenGroups_detection_rate": (pfas_detected / total) * 100 if total else 0.0,
+        "PFASGroups_detection_rate": (pfas_detected / total) * 100 if total else 0.0,
         "atlas_detection_rate": (atlas_detected / total) * 100 if total else 0.0,
     }
 
@@ -79,14 +79,14 @@ def summarize_highly_branched(data):
         return {}
 
     total = len(details)
-    passed = sum(1 for row in details if row.get("HalogenGroups_passed") is True)
+    passed = sum(1 for row in details if row.get("PFASGroups_passed") is True)
     atlas_passed = sum(1 for row in details if row.get("atlas_passed") is True)
 
     return {
         "total": total,
-        "HalogenGroups_passed": passed,
+        "PFASGroups_passed": passed,
         "atlas_passed": atlas_passed,
-        "HalogenGroups_pass_rate": (passed / total) * 100 if total else 0.0,
+        "PFASGroups_pass_rate": (passed / total) * 100 if total else 0.0,
         "atlas_pass_rate": (atlas_passed / total) * 100 if total else 0.0,
     }
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Compare PFASGroups fingerprints (HalogenGroups) against TxP_PFAS (CSRML) chemotype fingerprints.
+Compare PFASGroups fingerprints (PFASGroups) against TxP_PFAS (CSRML) chemotype fingerprints.
 
 Reference:
   Richard et al., "A New CSRML Structure-Based Fingerprint Method for Profiling and
@@ -12,7 +12,7 @@ TxP_PFAS (129 chemotypes) consists of:
   - ~73 PFAS-specific chain features: linear perfluoro chains (capped/uncapped, C1-C11+),
     branching, fluorotelomers (n1/n2/n3), alternate halogenation (Cl/Br/I), cyclics/aromatics
 
-PFASGroups / HalogenGroups: algorithmic detection of perhalogenated/polyhalogenated
+PFASGroups / PFASGroups: algorithmic detection of perhalogenated/polyhalogenated
   structural components (88 groups); binary fingerprint optionally per halogen.
 
 What this script computes
@@ -157,7 +157,7 @@ def compute_pfasgroups_fps(
     """
     Generate binary PFASGroups fingerprints for a list of SMILES.
 
-    generate_fingerprint is decorated with @load_HalogenGroups() which automatically
+    generate_fingerprint is decorated with @load_PFASGroups() which automatically
     injects the pfas_groups (list of HalogenGroup objects); do NOT pass pfas_groups
     explicitly to avoid overriding with the wrong type.
 
@@ -172,7 +172,7 @@ def compute_pfasgroups_fps(
     X           : np.ndarray of shape (n, n_groups) – binary (uint8)
     group_names : list of str, length n_groups
     """
-    from HalogenGroups import generate_fingerprint
+    from PFASGroups import generate_fingerprint
 
     # Probe one molecule to get n_groups and group_names (use a simple valid SMILES)
     _probe_fp, _probe_info = generate_fingerprint(
@@ -294,7 +294,7 @@ def plot_coverage(freq_pg, names_pg, outdir, freq_tx=None, names_tx=None):
     if n_panels == 1:
         axes = [axes]
 
-    datasets = [(freq_pg, names_pg, 'PFASGroups (HalogenGroups)', _BLUE)]
+    datasets = [(freq_pg, names_pg, 'PFASGroups (PFASGroups)', _BLUE)]
     if freq_tx is not None:
         datasets.append((freq_tx, names_tx, 'TxP_PFAS (CSRML)', _RED))
 
@@ -395,7 +395,7 @@ def plot_pca(X_pg, outdir, X_tx=None):
     if n_panels == 1:
         axes = [axes]
 
-    datasets = [(X_pg, 'PFASGroups (HalogenGroups)', _BLUE)]
+    datasets = [(X_pg, 'PFASGroups (PFASGroups)', _BLUE)]
     if X_tx is not None:
         datasets.append((X_tx, 'TxP_PFAS (CSRML)', _RED))
 
@@ -813,7 +813,7 @@ _KNOWN_PFAS = [
 @pytest.mark.parametrize('smiles,name,expect_nonzero', _KNOWN_PFAS)
 def test_pfasgroups_fp_known_molecules(smiles, name, expect_nonzero):
     """PFASGroups FP should be non-zero for PFAS and zero for non-PFAS."""
-    from HalogenGroups import generate_fingerprint
+    from PFASGroups import generate_fingerprint
     fp, _ = generate_fingerprint(
         smiles, representation='vector', count_mode='binary',
         halogens='F', saturation=None,

@@ -78,10 +78,10 @@ def analyze_timing_performance(timing_results):
     print(f"   • Total molecules tested: {stats['total_molecules']}")
     print(f"   • Iterations per molecule: {stats['iterations_per_molecule']}")
     if iterations > 1:
-        print(f"   • HalogenGroup: {statHalogenGroupnGroups_avg_time']:.2f}±{sHalogenGroupogenGroups_std_time']:.2f}ms avg (median:HalogenGroupHalogenGroups_median_time']:.2f}ms) | Individual sHalogenGroups['HalogenGroups_avg_std']:.2f}ms")
+        print(f"   • HalogenGroup: {statHalogenGroupnGroups_avg_time']:.2f}±{sHalogenGroupogenGroups_std_time']:.2f}ms avg (median:HalogenGroupPFASGroups_median_time']:.2f}ms) | Individual sPFASGroups['PFASGroups_avg_std']:.2f}ms")
         print(f"   • PFAS-Atlas: {stats['atlas_avg_time']:.2f}±{stats['atlas_std_time']:.2f}ms avg (median: {stats['atlas_median_time']:.2f}ms) | Individual std: {stats['atlas_avg_std']:.2f}ms")
     else:
-        print(f"   • HalogenGroup: {statHalogenGroupnGroups_avg_time']:.2f}±{sHalogenGroupogenGroups_std_time']:.2f}ms avg (median:HalogenGroupHalogenGroups_median_time']:.2f}ms)")
+        print(f"   • HalogenGroup: {statHalogenGroupnGroups_avg_time']:.2f}±{sHalogenGroupogenGroups_std_time']:.2f}ms avg (median:HalogenGroupPFASGroups_median_time']:.2f}ms)")
         print(f"   • PFAS-Atlas: {stats['atlas_avg_time']:.2f}±{stats['atlas_std_time']:.2f}ms avg (median: {stats['atlas_median_time']:.2f}ms)")
     print(f"   • Speed ratio: {stats['speed_ratio']:.1f}x (Atlas/HalogenGroup)")
     print(f"   • Chain length range: {stats['chain_length_range'][0]}-{stats['chain_length_range'][1]}")
@@ -774,8 +774,8 @@ def main():
     json_report = {
         "summary": {
             "total_molecules": len(timing_results),
-            "HalogenGroup_avg_time": stats['HalogenGroups_avg_time'],
-            "HalogenGroup_std_time": stats['HalogenGroups_std_time'],
+            "HalogenGroup_avg_time": stats['PFASGroups_avg_time'],
+            "HalogenGroup_std_time": stats['PFASGroups_std_time'],
             "atlas_avg_time": stats['atlas_avg_time'],
             "atlas_std_time": stats['atlas_std_time'],
             "speed_ratio": stats['speed_ratio'],
@@ -836,7 +836,7 @@ def main():
     else:
         print(f"   • Both systems have comparable performance ({stats['speed_ratio']:.1f}x ratio)")
     
-    if stats['HalogenGroup_std_time'] > stats['HalogenGroups_avg_time'] * 0.5:
+    if stats['HalogenGroup_std_time'] > stats['PFASGroups_avg_time'] * 0.5:
         print(f"   • HalogenGroup shows high timing variability - consider profiling edge cases")
     if stats['atlas_std_time'] > stats['atlas_avg_time'] * 0.5:
         print(f"   • PFAS-Atlas shows high timing variability - consider profiling edge cases")

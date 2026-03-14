@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-Classify all molecules in the clinventory database using HalogenGroups.
+Classify all molecules in the clinventory database using PFASGroups.
 
 Fetches every molecule that has at least one halogen (F, Cl, Br, I) from the
-`molecules` table, runs HalogenGroups parse_mol on each, records per-molecule
+`molecules` table, runs PFASGroups parse_mol on each, records per-molecule
 timing, and writes a JSON result file to:
 
-    data/halogengroups_clinventory_<TIMESTAMP>.json
+    data/PFASGroups_clinventory_<TIMESTAMP>.json
 
 Usage (from the benchmark/ directory):
-    python scripts/classify_halogengroups_clinventory.py [OPTIONS]
+    python scripts/classify_PFASGroups_clinventory.py [OPTIONS]
 
 Environment variables (can also be passed as CLI flags):
     DATABASE_NAME      default: clinventory
@@ -29,7 +29,7 @@ from pathlib import Path
 from typing import List, Optional, Tuple, Dict
 
 # ---------------------------------------------------------------------------
-# Path setup — prefer local HalogenGroups repo
+# Path setup — prefer local PFASGroups repo
 # ---------------------------------------------------------------------------
 SCRIPT_DIR = Path(__file__).resolve().parent
 BENCHMARK_DIR = SCRIPT_DIR.parent
@@ -47,12 +47,12 @@ except ImportError as exc:
     sys.exit(1)
 
 try:
-    from HalogenGroups import parse_mol, get_HalogenGroups
-    from HalogenGroups.core import rdkit_disable_log
+    from PFASGroups import parse_mol, get_HalogenGroups
+    from PFASGroups.core import rdkit_disable_log
     rdkit_disable_log()
-    HALOGENGROUPS_AVAILABLE = True
+    PFASGroups_AVAILABLE = True
 except ImportError as exc:
-    print(f"ERROR: HalogenGroups not available: {exc}")
+    print(f"ERROR: PFASGroups not available: {exc}")
     sys.exit(1)
 
 try:
@@ -69,7 +69,7 @@ except ImportError:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description="Classify clinventory molecules with HalogenGroups"
+        description="Classify clinventory molecules with PFASGroups"
     )
     p.add_argument("--db-name",     default=os.environ.get("DATABASE_NAME", "clinventory"))
     p.add_argument("--db-user",     default=os.environ.get("DATABASE_USER", "luc"))
@@ -136,7 +136,7 @@ def fetch_molecules(conn, all_molecules: bool, limit: Optional[int], offset: int
 # ---------------------------------------------------------------------------
 
 def classify_molecule(mol_id: int, smiles: str, formula: Optional[str]) -> Dict:
-    """Run HalogenGroups parse_mol and return a result dict."""
+    """Run PFASGroups parse_mol and return a result dict."""
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         return {
@@ -271,7 +271,7 @@ def main():
     password = get_password(args)
 
     print("=" * 70)
-    print("HalogenGroups — clinventory classification benchmark")
+    print("PFASGroups — clinventory classification benchmark")
     print("=" * 70)
     print(f"  DB   : {args.db_user}@{args.db_host}:{args.db_port}/{args.db_name}")
 
@@ -353,7 +353,7 @@ def main():
     timing_by_halogen_class = {c: stats(ts) for c, ts in halogen_cls_times.items()}
 
     summary = {
-        "tool": "HalogenGroups",
+        "tool": "PFASGroups",
         "timestamp": timestamp,
         "db": {"name": args.db_name, "host": args.db_host, "port": args.db_port, "user": args.db_user},
         "n_molecules_fetched": n_total,
@@ -373,7 +373,7 @@ def main():
     # Save
     data_dir = BENCHMARK_DIR / "data"
     data_dir.mkdir(exist_ok=True)
-    out_path = args.output or (data_dir / f"halogengroups_clinventory_{timestamp}.json")
+    out_path = args.output or (data_dir / f"PFASGroups_clinventory_{timestamp}.json")
     with open(out_path, "w") as f:
         json.dump(summary, f, indent=2)
     print(f"\nResults saved to: {out_path}")

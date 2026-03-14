@@ -29,10 +29,10 @@ try:
     from PFASGroups.parser import parse_mol
     from PFASGroups.generate_mol import generate_random_mol, generate_random_carbon_chain, fluorinate_mol, append_functional_groups
     from PFASGroups.core import mol_to_nx, rdkit_disable_log
-    HalogenGroupS_AVAILABLE = True
+    PFASGroups_AVAILABLE = True
 except ImportError:
     print("❌ PFASGroups not available")
-    HalogenGroupS_AVAILABLE = False
+    PFASGroups_AVAILABLE = False
 
 # Try to import PFAS-Atlas
 atlas_dir = os.path.join(os.path.dirname(repo_root), 'PFAS-atlas')
@@ -512,7 +512,7 @@ class EnhancedPFASBenchmark:
             'include_definitions': include_PFAS_definitions
         }
         
-        if not HalogenGroupS_AVAILABLE:
+        if not PFASGroups_AVAILABLE:
             PFASGroups_result['error'] = 'PFASGroups not available'
             return PFASGroups_result
         

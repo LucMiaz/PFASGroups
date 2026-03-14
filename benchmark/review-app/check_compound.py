@@ -15,10 +15,10 @@ for m in data:
 if mol:
     print('Found molecule:')
     print(f'SMILES: {mol["molecule_data"]["smiles"]}')
-    print(f'\nDetected groups: {mol["HalogenGroups_result"]["detected_groups"]}')
+    print(f'\nDetected groups: {mol["PFASGroups_result"]["detected_groups"]}')
     
     print('\nGroup matches:')
-    for match in mol['HalogenGroups_result']['matches']:
+    for match in mol['PFASGroups_result']['matches']:
         if match['type'] == 'group':
             print(f'  ID {match["id"]}: {match["name"]}')
     
@@ -30,7 +30,7 @@ if mol:
     
     groups_dict = {g['id']: g for g in groups_map}
     
-    for gid in mol["HalogenGroups_result"]["detected_groups"]:
+    for gid in mol["PFASGroups_result"]["detected_groups"]:
         if gid in groups_dict:
             print(f'  ID {gid}: {groups_dict[gid]["name"]} (alias: {groups_dict[gid]["alias"]})')
         else:

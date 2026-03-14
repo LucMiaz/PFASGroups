@@ -561,7 +561,7 @@ def _section_colours(sections: list[str]) -> dict[str, tuple]:
 def compute_all_fingerprints(smiles: list[str],
                              fp_configs: list[tuple[str, str, dict]]) -> list[dict]:
     """Parse all SMILES once, then compute each FP config."""
-    from HalogenGroups import parse_smiles
+    from PFASGroups import parse_smiles
 
     parsed = []
     for smi in smiles:

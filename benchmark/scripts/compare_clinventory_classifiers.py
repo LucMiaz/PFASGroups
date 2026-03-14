@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Compare HalogenGroups vs PFAS-Atlas clinventory classification results.
+Compare PFASGroups vs PFAS-Atlas clinventory classification results.
 
-Loads the two JSON files produced by classify_halogengroups_clinventory.py and
+Loads the two JSON files produced by classify_PFASGroups_clinventory.py and
 classify_pfasatlas_clinventory.py, then:
   • Generates timing comparison plots (overall, by atom-count bracket, by halogen class)
   • Generates PFAS-detection agreement plots
@@ -11,7 +11,7 @@ classify_pfasatlas_clinventory.py, then:
 
 Usage (from the benchmark/ directory):
     python scripts/compare_clinventory_classifiers.py \\
-        [--hg-file  data/halogengroups_clinventory_*.json] \\
+        [--hg-file  data/PFASGroups_clinventory_*.json] \\
         [--atlas-file data/pfasatlas_clinventory_*.json]
 """
 
@@ -68,9 +68,9 @@ HALOGEN_CLASSES = [
 ]
 
 COLORS = {
-    "HalogenGroups": "#1f77b4",   # blue
+    "PFASGroups": "#1f77b4",   # blue
     "PFAS-Atlas":    "#d62728",   # red
-    "PFASGroups":    "#ff7f0e",   # orange  (F-only HalogenGroups)
+    "PFASGroups":    "#ff7f0e",   # orange  (F-only PFASGroups)
 }
 
 def latest_file(pattern: str) -> Optional[Path]:
@@ -152,8 +152,8 @@ def plot_timing_box(hg_times: list, atlas_times: list, imgs_dir: Path):
     colors = []
     if hg_times:
         data.append(hg_times)
-        labels.append("HalogenGroups")
-        colors.append(COLORS["HalogenGroups"])
+        labels.append("PFASGroups")
+        colors.append(COLORS["PFASGroups"])
     if atlas_times:
         data.append(atlas_times)
         labels.append("PFAS-Atlas")
@@ -181,8 +181,8 @@ def plot_timing_by_bracket(hg_data: dict, atlas_data: dict, imgs_dir: Path):
     width = 0.35
 
     fig, ax = plt.subplots(figsize=(9, 4))
-    bars1 = ax.bar([i - width/2 for i in x], hg_med,   width, label="HalogenGroups",
-                   color=COLORS["HalogenGroups"], alpha=0.8)
+    bars1 = ax.bar([i - width/2 for i in x], hg_med,   width, label="PFASGroups",
+                   color=COLORS["PFASGroups"], alpha=0.8)
     bars2 = ax.bar([i + width/2 for i in x], atlas_med, width, label="PFAS-Atlas",
                    color=COLORS["PFAS-Atlas"],    alpha=0.8)
 
@@ -206,8 +206,8 @@ def plot_timing_by_halogen(hg_data: dict, atlas_data: dict, imgs_dir: Path):
     width = 0.35
 
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.bar([i - width/2 for i in x], hg_med,    width, label="HalogenGroups",
-           color=COLORS["HalogenGroups"], alpha=0.8)
+    ax.bar([i - width/2 for i in x], hg_med,    width, label="PFASGroups",
+           color=COLORS["PFASGroups"], alpha=0.8)
     ax.bar([i + width/2 for i in x], atlas_med, width, label="PFAS-Atlas",
            color=COLORS["PFAS-Atlas"],    alpha=0.8)
     ax.set_xticks(list(x))
@@ -219,7 +219,7 @@ def plot_timing_by_halogen(hg_data: dict, atlas_data: dict, imgs_dir: Path):
 
 
 def plot_timing_ratio_by_bracket(hg_data: dict, atlas_data: dict, imgs_dir: Path):
-    """Bar chart of HalogenGroups/PFAS-Atlas timing ratio per bracket."""
+    """Bar chart of PFASGroups/PFAS-Atlas timing ratio per bracket."""
     if not MATPLOTLIB:
         return
     apply_style()
@@ -231,14 +231,14 @@ def plot_timing_ratio_by_bracket(hg_data: dict, atlas_data: dict, imgs_dir: Path
         ratios.append(hg_m / at_m if at_m > 0 else float("nan"))
 
     fig, ax = plt.subplots(figsize=(9, 4))
-    colors_r = [COLORS["HalogenGroups"] if r >= 1 else COLORS["PFAS-Atlas"] for r in ratios]
+    colors_r = [COLORS["PFASGroups"] if r >= 1 else COLORS["PFAS-Atlas"] for r in ratios]
     ax.bar(range(len(brackets)), ratios, color=colors_r, alpha=0.8)
     ax.axhline(1.0, color="gray", linestyle="--", linewidth=1)
     ax.set_xticks(range(len(brackets)))
     ax.set_xticklabels(brackets, rotation=25, ha="right")
-    ax.set_ylabel("Timing ratio  (HalogenGroups / PFAS-Atlas)")
-    ax.set_title("Relative timing by molecular size (ratio > 1 → HalogenGroups slower)")
-    hg_patch  = mpatches.Patch(color=COLORS["HalogenGroups"], label="HalogenGroups faster")
+    ax.set_ylabel("Timing ratio  (PFASGroups / PFAS-Atlas)")
+    ax.set_title("Relative timing by molecular size (ratio > 1 → PFASGroups slower)")
+    hg_patch  = mpatches.Patch(color=COLORS["PFASGroups"], label="PFASGroups faster")
     at_patch  = mpatches.Patch(color=COLORS["PFAS-Atlas"], label="PFAS-Atlas faster")
     ax.legend(handles=[hg_patch, at_patch])
     save_fig(fig, "clinventory_timing_ratio_by_bracket", imgs_dir)
@@ -251,10 +251,10 @@ def plot_classification_agreement(matrix: dict, imgs_dir: Path):
     apply_style()
     keys   = ["both_pfas", "only_hg", "only_atlas", "neither"]
     labels = ["Both classify\nas PFAS",
-              "HalogenGroups\nonly",
+              "PFASGroups\nonly",
               "PFAS-Atlas\nonly",
               "Neither"]
-    colors = ["#2ca02c", COLORS["HalogenGroups"], COLORS["PFAS-Atlas"], "#7f7f7f"]
+    colors = ["#2ca02c", COLORS["PFASGroups"], COLORS["PFAS-Atlas"], "#7f7f7f"]
     values = [matrix.get(k, 0) for k in keys]
     total  = sum(values)
 
@@ -312,7 +312,7 @@ def plot_atlas_class_distribution(class_dist: dict, imgs_dir: Path):
 
 
 def plot_hg_groups_distribution(group_name_counts: dict, imgs_dir: Path):
-    """Horizontal bar chart of top-20 HalogenGroups group matches."""
+    """Horizontal bar chart of top-20 PFASGroups group matches."""
     if not MATPLOTLIB:
         return
     apply_style()
@@ -321,18 +321,18 @@ def plot_hg_groups_distribution(group_name_counts: dict, imgs_dir: Path):
     values = [v for _, v in items]
 
     fig, ax = plt.subplots(figsize=(8, max(4, len(labels) * 0.45)))
-    ax.barh(range(len(labels)), values, color=COLORS["HalogenGroups"], alpha=0.8)
+    ax.barh(range(len(labels)), values, color=COLORS["PFASGroups"], alpha=0.8)
     ax.set_yticks(range(len(labels)))
     ax.set_yticklabels(labels, fontsize=9)
     ax.invert_yaxis()
     ax.set_xlabel("Number of molecules matched")
-    ax.set_title("HalogenGroups — top-20 most frequent groups")
+    ax.set_title("PFASGroups — top-20 most frequent groups")
     plt.tight_layout()
     save_fig(fig, "clinventory_hg_top_groups", imgs_dir)
 
 
 # ---------------------------------------------------------------------------
-# Three-way plots (HalogenGroups / PFASGroups / PFAS-Atlas)
+# Three-way plots (PFASGroups / PFASGroups / PFAS-Atlas)
 # ---------------------------------------------------------------------------
 
 def plot_timing_box_three(hg_times: list, pfg_times: list, atlas_times: list,
@@ -343,7 +343,7 @@ def plot_timing_box_three(hg_times: list, pfg_times: list, atlas_times: list,
     apply_style()
     data, labels, colors = [], [], []
     for times, label, color in [
-        (hg_times,   "HalogenGroups",    COLORS["HalogenGroups"]),
+        (hg_times,   "PFASGroups",    COLORS["PFASGroups"]),
         (pfg_times,  "PFASGroups (F)",   COLORS["PFASGroups"]),
         (atlas_times, "PFAS-Atlas",      COLORS["PFAS-Atlas"]),
     ]:
@@ -372,7 +372,7 @@ def plot_timing_cdf_three(hg_times: list, pfg_times: list, atlas_times: list,
     apply_style()
     fig, ax = plt.subplots(figsize=(7, 4))
     for times, label, color in [
-        (hg_times,   "HalogenGroups",   COLORS["HalogenGroups"]),
+        (hg_times,   "PFASGroups",   COLORS["PFASGroups"]),
         (pfg_times,  "PFASGroups (F)",  COLORS["PFASGroups"]),
         (atlas_times, "PFAS-Atlas",     COLORS["PFAS-Atlas"]),
     ]:
@@ -405,8 +405,8 @@ def plot_timing_by_bracket_three(hg_data: dict, pfg_data: dict, atlas_data: dict
     width = 0.25
 
     fig, ax = plt.subplots(figsize=(10, 4))
-    ax.bar([i - width for i in x],     hg_med,    width, label="HalogenGroups",
-           color=COLORS["HalogenGroups"], alpha=0.8)
+    ax.bar([i - width for i in x],     hg_med,    width, label="PFASGroups",
+           color=COLORS["PFASGroups"], alpha=0.8)
     ax.bar([i           for i in x],   pfg_med,   width, label="PFASGroups (F)",
            color=COLORS["PFASGroups"],   alpha=0.8)
     ax.bar([i + width for i in x],     atlas_med, width, label="PFAS-Atlas",
@@ -422,8 +422,8 @@ def plot_timing_by_bracket_three(hg_data: dict, pfg_data: dict, atlas_data: dict
 def plot_f_only_speedup(hg_data: dict, pfg_data: dict, imgs_dir: Path):
     """Bar chart showing per-bracket speed gain when restricting to halogens='F'.
 
-    Ratio = HalogenGroups median / PFASGroups median; values > 1 mean
-    PFASGroups (F-only) is faster than full HalogenGroups.
+    Ratio = PFASGroups median / PFASGroups median; values > 1 mean
+    PFASGroups (F-only) is faster than full PFASGroups.
     """
     if not MATPLOTLIB:
         return
@@ -441,7 +441,7 @@ def plot_f_only_speedup(hg_data: dict, pfg_data: dict, imgs_dir: Path):
     ax.axhline(1.0, color="gray", linestyle="--", linewidth=1)
     ax.set_xticks(range(len(brackets)))
     ax.set_xticklabels(brackets, rotation=25, ha="right")
-    ax.set_ylabel("Speed-up factor  (HalogenGroups / PFASGroups)")
+    ax.set_ylabel("Speed-up factor  (PFASGroups / PFASGroups)")
     ax.set_title(
         "Speed gain from restricting to F-only (halogens=\'F\')\n"
         "Values > 1 mean PFASGroups is faster"
@@ -458,7 +458,7 @@ def plot_f_only_speedup(hg_data: dict, pfg_data: dict, imgs_dir: Path):
     ax.legend(
         handles=[
             _mp.Patch(color="#2ca02c", label="PFASGroups faster (ratio>1)"),
-            _mp.Patch(color="#d62728", label="HalogenGroups faster (ratio<1)"),
+            _mp.Patch(color="#d62728", label="PFASGroups faster (ratio<1)"),
         ]
     )
     save_fig(fig, "clinventory_f_only_speedup", imgs_dir)
@@ -491,12 +491,12 @@ def plot_three_way_agreement(hg_map: dict, pfg_map: dict, atlas_map: dict,
             "label": tool_key,
         }
 
-    matrices = [("HalogenGroups", _matrix(hg_map,  "HalogenGroups")),
+    matrices = [("PFASGroups", _matrix(hg_map,  "PFASGroups")),
                 ("PFASGroups (F)", _matrix(pfg_map, "PFASGroups"))]
 
     keys   = ["both_pfas", "only_tool", "only_atlas", "neither"]
     xlabel = ["Both PFAS", "Tool only", "Atlas only", "Neither"]
-    tool_colors = {"HalogenGroups": COLORS["HalogenGroups"],
+    tool_colors = {"PFASGroups": COLORS["PFASGroups"],
                    "PFASGroups (F)": COLORS["PFASGroups"]}
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 4))
@@ -530,7 +530,7 @@ def plot_timing_cdf(hg_times: list, atlas_times: list, imgs_dir: Path):
     apply_style()
     fig, ax = plt.subplots(figsize=(7, 4))
     for times, label, color in [
-        (hg_times, "HalogenGroups", COLORS["HalogenGroups"]),
+        (hg_times, "PFASGroups", COLORS["PFASGroups"]),
         (atlas_times, "PFAS-Atlas", COLORS["PFAS-Atlas"]),
     ]:
         if not times:
@@ -646,7 +646,7 @@ def build_comparison(hg: dict, atlas: dict,
         ),
     }
 
-    # HalogenGroups group name frequency
+    # PFASGroups group name frequency
     group_name_counts: dict = defaultdict(int)
     for hg_r in hg_map.values():
         for name in hg_r.get("group_names", []):
@@ -747,10 +747,10 @@ def _cohen_kappa(tp, fp, fn, tn) -> float:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description="Compare HalogenGroups / PFASGroups / PFAS-Atlas clinventory results"
+        description="Compare PFASGroups / PFASGroups / PFAS-Atlas clinventory results"
     )
     p.add_argument("--hg-file",        type=Path, default=None,
-                   help="Path to HalogenGroups JSON.  Auto-detected if omitted.")
+                   help="Path to PFASGroups JSON.  Auto-detected if omitted.")
     p.add_argument("--pfasgroups-file", type=Path, default=None,
                    help="Path to PFASGroups (F-only) JSON.  Auto-detected if omitted.")
     p.add_argument("--atlas-file",     type=Path, default=None,
@@ -766,12 +766,12 @@ def main():
     imgs_dir = BENCHMARK_DIR / "imgs"
 
     # Load files
-    hg_path  = args.hg_file   or latest_file(str(data_dir / "halogengroups_clinventory_*.json"))
+    hg_path  = args.hg_file   or latest_file(str(data_dir / "PFASGroups_clinventory_*.json"))
     pfg_path = args.pfasgroups_file or latest_file(str(data_dir / "pfasgroups_clinventory_*.json"))
     atlas_path = args.atlas_file or latest_file(str(data_dir / "pfasatlas_clinventory_*.json"))
 
     if not hg_path or not Path(hg_path).exists():
-        print(f"ERROR: HalogenGroups result file not found (searched: {data_dir / 'halogengroups_clinventory_*.json'})")
+        print(f"ERROR: PFASGroups result file not found (searched: {data_dir / 'PFASGroups_clinventory_*.json'})")
         sys.exit(1)
     if not atlas_path or not Path(atlas_path).exists():
         print(f"ERROR: PFAS-Atlas result file not found (searched: {data_dir / 'pfasatlas_clinventory_*.json'})")
@@ -780,7 +780,7 @@ def main():
     print("=" * 70)
     print("Clinventory classifier comparison")
     print("=" * 70)
-    print(f"  HalogenGroups : {hg_path}")
+    print(f"  PFASGroups : {hg_path}")
     if pfg_path and Path(pfg_path).exists():
         print(f"  PFASGroups(F) : {pfg_path}")
     else:
@@ -795,7 +795,7 @@ def main():
         with open(pfg_path) as f:
             pfasgroups = json.load(f)
 
-    print(f"\n  HalogenGroups : {hg['n_molecules_fetched']:,} molecules")
+    print(f"\n  PFASGroups : {hg['n_molecules_fetched']:,} molecules")
     if pfasgroups:
         print(f"  PFASGroups(F) : {pfasgroups['n_molecules_fetched']:,} molecules")
     print(f"  PFAS-Atlas    : {atlas['n_molecules_fetched']:,} molecules")
@@ -818,7 +818,7 @@ def main():
     # -----------------------------------------------------------------------
     print("\nGenerating plots …")
 
-    # Two-way plots (HalogenGroups vs PFAS-Atlas) — always produced
+    # Two-way plots (PFASGroups vs PFAS-Atlas) — always produced
     plot_timing_box(hg_times, atlas_times, imgs_dir)
     plot_timing_cdf(hg_times, atlas_times, imgs_dir)
     plot_timing_by_bracket(
@@ -881,7 +881,7 @@ def main():
     print(f"\n  Timing (per molecule, ms):")
     print(f"    {'Tool':<20s}  {'Median':>8s}  {'Mean':>8s}  {'Std':>8s}  {'P95':>8s}")
     print(f"    {'-'*56}")
-    for tool, key in [("HalogenGroups", "hg"), ("PFAS-Atlas", "atlas")]:
+    for tool, key in [("PFASGroups", "hg"), ("PFAS-Atlas", "atlas")]:
         s = to[key]
         if s:
             print(f"    {tool:<20s}  {s['median']:>8.3f}  {s['mean']:>8.3f}"
@@ -898,7 +898,7 @@ def main():
         pfg_med    = pto.get("pfasgroups", {}).get("median", float("nan"))
         speedup    = cmp.get("pfasgroups_speedup_overall", float("nan"))
         print(f"\n  PFASGroups (F-only) on {pfasgroups['n_molecules_fetched']:,} F-molecules:")
-        print(f"    HalogenGroups median  : {hg_med_pfg:.3f} ms/mol")
+        print(f"    PFASGroups median  : {hg_med_pfg:.3f} ms/mol")
         print(f"    PFASGroups    median  : {pfg_med:.3f} ms/mol")
         try:
             if not math.isnan(speedup):
@@ -917,7 +917,7 @@ def main():
 
     print(f"\n  Classification agreement ({am['total']:,} paired molecules):")
     print(f"    Both classify as F/PFAS  : {am['both_pfas']:>7,}  ({100*am['both_pfas']/max(am['total'],1):.1f}%)")
-    print(f"    HalogenGroups only (F)   : {am['only_hg']:>7,}  ({100*am['only_hg']/max(am['total'],1):.1f}%)")
+    print(f"    PFASGroups only (F)   : {am['only_hg']:>7,}  ({100*am['only_hg']/max(am['total'],1):.1f}%)")
     print(f"    PFAS-Atlas only          : {am['only_atlas']:>7,}  ({100*am['only_atlas']/max(am['total'],1):.1f}%)")
     print(f"    Neither classifies       : {am['neither']:>7,}  ({100*am['neither']/max(am['total'],1):.1f}%)")
     print(f"    Overall agreement        : {am['agreement_pct']:.1f}%")
