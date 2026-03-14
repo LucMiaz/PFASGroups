@@ -730,6 +730,9 @@ class PFASEmbedding(dict):
 
         return "\n".join(lines)
 
+    def __str__(self) -> str:
+        return self.summarise()
+
     def summary(self) -> None:
         """Print a detailed coloured summary of matched groups and components.
 
@@ -1996,6 +1999,9 @@ class PFASEmbeddingSet(list):
                 lines.append(f"  * {hal_code}{_ANSI_BOLD}{name}{_ANSI_RESET}: {count} match(es)")
 
         return "\n".join(lines)
+
+    def __str__(self) -> str:
+        return self.summarise()
 
     def table(self) -> str:
         """Return a more detailed text table with one row per molecule.

@@ -5,11 +5,11 @@ Five-minute overview of the most common PFASGroups workflows.
 
 .. code-block:: python
 
-   from PFASGroups import parse_smiles, generate_fingerprint
+   from PFASGroups import parse_smiles, generate_embedding
 
    results = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
-   fps, info = generate_fingerprint(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
-   print(fps.shape)   # (2, 116)
+   arr, cols = generate_embedding(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
+   print(arr.shape)   # (2, n_groups)
 
 .. contents:: Contents
    :local:
@@ -30,24 +30,24 @@ Parsing SMILES
 
    results = parse_smiles(smiles)
 
-``results`` is a :class:`~PFASGroups.ResultsModel` — a list-like container
-of :class:`~PFASGroups.MoleculeResult` objects, one per input SMILES.
+``results`` is a :class:`~PFASGroups.PFASEmbeddingSet` — a list-like container
+of :class:`~PFASGroups.PFASEmbedding` objects (dict subclass), one per input SMILES.
 
 Accessing matches
 -----------------
 
 .. code-block:: python
 
-   mol = results[0]                        # first molecule
-   print(mol.smiles)                       # canonical SMILES
-   print(mol.is_PFAS)                      # True / False
+   mol = results[0]                             # first molecule (PFASEmbedding)
+   print(mol.smiles)                            # canonical SMILES
+   print(bool(mol.matches))                     # True if any group matched
 
-   for match in mol.matches:
-       print(match.group_name)             # e.g. "perfluoroalkyl"
-       print(match.group_id)              # integer group ID
-       print(match.is_PFAS)
-       for comp in match.components:
-           print(comp.atoms)              # list of atom indices
+   for match in mol.matches:                    # iterate over MatchView objects
+       if match.is_group:
+           print(match.group_name)              # e.g. "Perfluoroalkyl"
+           print(match.group_id)               # integer group ID
+           for comp in match.components:
+               print(comp.atoms)               # list of atom indices
 
 Loop over only molecules that have at least one match:
 
@@ -64,53 +64,62 @@ Converting to a DataFrame
 
    df = results.to_dataframe()
    print(df.columns.tolist())
-   # ['smiles', 'inchi', 'group_name', 'group_id', 'is_PFAS', ...]
+   # ['smiles', 'inchi', 'group_name', 'group_id', ...]
 
-Generating fingerprints
------------------------
+Generating embeddings
+---------------------
 
-Fingerprints encode group matches as a fixed-length vector suitable for
-machine learning.  By default PFASGroups produces a **116-column binary
-vector** (one column per group, fluorine only):
+Embeddings encode group matches as a fixed-length numeric vector suitable for
+machine learning.  By default PFASGroups produces a **binary vector** with one
+column per group (fluorine only):
 
 .. code-block:: python
 
-   from PFASGroups import generate_fingerprint
+   from PFASGroups import generate_embedding, parse_smiles
 
    smiles = ["CCCC(F)(F)F", "FC(F)(F)C(=O)O", "OCCOCCO"]
-   fps, info = generate_fingerprint(smiles)
 
-   print(fps.shape)                  # (3, 116) — 116 groups, F only
-   print(type(fps))                  # numpy.ndarray
-   print(info['group_names'][:3])    # ['perfluoromethyl', 'perfluoroalkyl', ...]
+   # Convenience function — parses and returns (array, column_names)
+   arr, cols = generate_embedding(smiles)
+   print(arr.shape)   # (3, n_groups) — one row per molecule
+   print(type(arr))   # numpy.ndarray
+   print(cols[:2])    # ['Perfluoromethyl [binary]', 'Perfluoroalkyl [binary]', ...]
+
+   # From a pre-parsed set
+   results = parse_smiles(smiles)
+   arr  = results.to_array()    # (3, n_groups) matrix
+   cols = results.column_names()  # matching column labels
 
 **Group selection** — restrict to a subset of groups:
 
 .. code-block:: python
 
-   # OECD groups only (IDs 1–28)
-   fps_oecd, info = generate_fingerprint(smiles, selected_groups=range(0, 28))
+   # OECD groups only
+   arr_oecd, cols_oecd = generate_embedding(smiles, group_selection='oecd')
+
+   # From a pre-parsed set
+   arr_oecd = results.to_array(group_selection='oecd')
 
 **component_metrics** — control how matches are encoded:
 
 .. code-block:: python
 
    # binary (default): 1 = present, 0 = absent
-   fps_bin, _ = generate_fingerprint(smiles, component_metrics=['binary'])
+   arr_bin, _ = generate_embedding(smiles, component_metrics=['binary'])
 
    # count: number of independent matches
-   fps_cnt, _ = generate_fingerprint(smiles, component_metrics=['count'])
+   arr_cnt, _ = generate_embedding(smiles, component_metrics=['count'])
 
    # max_component: size (atom count) of the largest matching component
-   fps_max, _ = generate_fingerprint(smiles, component_metrics=['max_component'])
+   arr_max, _ = generate_embedding(smiles, component_metrics=['max_component'])
 
-   # Add graph metric columns (binary + EGR, i.e. preset='best')
-   fps_best, _ = generate_fingerprint(smiles, component_metrics=['binary', 'effective_graph_resistance'])
+   # Preset combining binary + effective graph resistance ('best')
+   arr_best, _ = generate_embedding(smiles, preset='best')
 
 .. note::
 
-   For multi-halogen fingerprints covering F, Cl, Br and I (4 × 116 = 464
-   columns), see :ref:`multi-halogen fingerprinting <multi_halogen_fingerprint>` in
+   For multi-halogen embeddings covering F, Cl, Br and I, see
+   :ref:`multi-halogen fingerprinting <multi_halogen_fingerprint>` in
    :doc:`halogengroups`.
 
 PFAS definition screening
@@ -126,8 +135,9 @@ PFAS definition screening
    )
 
    for mol in results:
-       for defn in mol.pfas_definition_matches:
-           print(mol.smiles, "matches", defn.definition_name)
+       for match in mol.matches:
+           if match.is_definition:
+               print(mol.smiles, "matches", match.get("definition_name"))
 
 Saturation filter
 -----------------

@@ -60,8 +60,9 @@ After installation, both `HalogenGroups` (all halogens by default) and `PFASgrou
 
 ```python
 from PFASGroups import parse_smiles
-results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O")
-print(results[0].matched_groups)
+results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O")   # → PFASEmbeddingSet
+print(results)        # prints PFASEmbeddingSet summary (molecule count, matched groups, …)
+print(results[0])     # prints PFASEmbedding summary for the first molecule
 ```
 
 ## Repository Structure
@@ -74,8 +75,8 @@ PFASGroups/
 │   ├── __init__.py                  #   Public API
 │   ├── core.py                      #   SMARTS matching engine, component detection, decorators
 │   ├── parser.py                    #   parse_smiles / parse_mols entry points
-│   ├── fingerprints.py              #   generate_fingerprint
-│   ├── results_model.py             #   ResultsModel, ResultsFingerprint, MoleculeResult
+│   ├── fingerprints.py              #   generate_embedding (generate_fingerprint deprecated)
+│   ├── results_model.py             #   PFASEmbeddingSet, PFASEmbedding
 │   ├── HalogenGroupModel.py         #   HalogenGroup data model
 │   ├── PFASDefinitionModel.py       #   PFASDefinition model
 │   ├── ComponentsSolverModel.py     #   Graph-based path-finding solver
@@ -154,13 +155,13 @@ CLI equivalents:
 
 ```bash
 # Skip all component graph metrics (fastest)
-halogengroups parse --no-component-metrics "C(C(F)(F)F)F"
+pfasgroups parse --no-component-metrics "C(C(F)(F)F)F"
 
 # Skip effective graph resistance entirely
-halogengroups parse --limit-effective-graph-resistance 0 "C(C(F)(F)F)F"
+pfasgroups parse --limit-effective-graph-resistance 0 "C(C(F)(F)F)F"
 
 # Compute resistance only for components below a size threshold
-halogengroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
+pfasgroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
 ```
 
 ## Quick Start
@@ -168,35 +169,37 @@ halogengroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
 ### Python API
 
 ```python
-from HalogenGroups import parse_smiles, generate_fingerprint
+from PFASGroups import parse_smiles, generate_embedding
 
-# Parse PFAS structures
+# Parse PFAS structures — returns a PFASEmbeddingSet
 smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
-results = parse_smiles(smiles_list)
+results = parse_smiles(smiles_list)           # → PFASEmbeddingSet
+print(results)                                # summary: molecule count, top groups, …
+print(results[0])                             # per-molecule summary for first entry
 
-# Generate fingerprints for machine learning
-fingerprints, group_info = generate_fingerprint(smiles_list)
+# Generate an embedding matrix and column names in one call
+arr, cols = generate_embedding(smiles_list)   # arr.shape == (2, n_groups)
 
-# New in v2.2.4: Advanced fingerprint analysis
-fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
+# Embedding from a pre-parsed set (avoids re-parsing)
+arr  = results.to_array()                     # default: binary, all groups
+arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
+cols = results.column_names()                 # matching column labels
 
 # Filter components by halogen, form, and saturation
-results_f = parse_smiles(smiles_list, halogens='F')  # Fluorine only
-results_pfa = parse_smiles(smiles_list, halogens='F', saturation='per', form='alkyl')  # Perfluoroalkyl only
+results_f      = parse_smiles(smiles_list, halogens='F')  # Fluorine only
+results_pfa    = parse_smiles(smiles_list, halogens='F', saturation='per', form='alkyl')  # Perfluoroalkyl only
 results_cyclic = parse_smiles(smiles_list, form='cyclic')  # Cyclic forms only
 
-# Dimensionality reduction
-pca_results = fp.perform_pca(n_components=5, plot=True)
-tsne_results = fp.perform_tsne(perplexity=30, plot=True)
-umap_results = fp.perform_umap(n_neighbors=15, plot=True)
+# Dimensionality reduction (methods on PFASEmbeddingSet)
+pca_result  = results.perform_pca(n_components=5, plot=True)
+tsne_result = results.perform_tsne(perplexity=30, plot=True)
+umap_result = results.perform_umap(n_neighbors=15, plot=True)
 
-# Compare datasets using KL divergence
+# Compare two datasets using KL divergence
 other_results = parse_smiles(other_smiles_list)
-other_fp = other_results.to_fingerprint(group_selection='oecd')
-similarity = fp.compare_kld(other_fp, method='minmax')
+similarity = results.compare_kld(other_results, method='minmax')
 
-# Save/load to SQL database
-fp.to_sql(filename='fingerprints.db')
+# Save to SQL database
 results.to_sql(filename='results.db')
 
 # New in v2.2.4: Prioritization tool for screening and ranking
@@ -286,7 +289,7 @@ to analyse all halogens at once:
 ### Option A – import `HalogenGroups` (all halogens by default)
 
 ```python
-from HalogenGroups import parse_smiles, generate_fingerprint
+from HalogenGroups import parse_smiles, generate_embedding
 
 smiles_list = [
     "C(C(F)(F)F)F",          # fluorinated
@@ -295,19 +298,20 @@ smiles_list = [
 ]
 
 # halogens defaults to ['F','Cl','Br','I'] — no extra argument needed
-results = parse_smiles(smiles_list)
+results = parse_smiles(smiles_list)           # → PFASEmbeddingSet
 
-# to_fingerprint() also defaults to all halogens
-fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
+# to_array() reads the halogen info already captured during parsing
+arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
+cols = results.column_names(group_selection='oecd')
 
-# generate_fingerprint() works the same way
-fingerprints, group_info = generate_fingerprint(smiles_list)
+# generate_embedding() also defaults to all halogens
+arr, cols = generate_embedding(smiles_list)
 ```
 
 ### Option B – import `PFASgroups` and specify `halogens` explicitly
 
 ```python
-from PFASgroups import parse_smiles, generate_fingerprint
+from PFASgroups import parse_smiles, generate_embedding
 
 smiles_list = [
     "C(C(F)(F)F)F",
@@ -316,15 +320,12 @@ smiles_list = [
 ]
 
 # Explicitly pass all halogens
-results = parse_smiles(smiles_list, halogens=['F', 'Cl', 'Br', 'I'])
+results = parse_smiles(smiles_list, halogens=['F', 'Cl', 'Br', 'I'])  # → PFASEmbeddingSet
 
-fp = results.to_fingerprint(
-    group_selection='oecd',
-    count_mode='binary',
-    halogens=['F', 'Cl', 'Br', 'I'],
-)
+arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
+cols = results.column_names(group_selection='oecd')
 
-fingerprints, group_info = generate_fingerprint(
+arr, cols = generate_embedding(
     smiles_list,
     halogens=['F', 'Cl', 'Br', 'I'],
 )
@@ -435,9 +436,9 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 
 - **Version 3.1.0**: Added support for other halogens, changed names to be more generic (with some support for backward compatibility). Added component smarts for other halogens, cyclic and alkyl components.
 
-- **Version 2.2.4 (Feb 2026)**: Advanced fingerprint analysis with dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP), KL divergence comparison for dataset similarity assessment, and SQL persistence for fingerprints and results. Added molecule prioritization tool for screening applications, ranking by similarity to reference lists or by intrinsic fluorination properties. Includes new `ResultsFingerprint` class with comprehensive analysis methods, automated plot generation, and extensive documentation.
+- **Version 2.2.4 (Feb 2026)**: Advanced fingerprint analysis with dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP), KL divergence comparison for dataset similarity assessment, and SQL persistence for results. Added molecule prioritization tool for screening applications, ranking by similarity to reference lists or by intrinsic fluorination properties. Introduced `PFASEmbeddingSet` and `PFASEmbedding` with comprehensive analysis methods, automated plot generation, and extensive documentation.
 
-- **Version 2.2.3 (Feb 2026)**: Added resultsModel to offer easier plotting and summarising capabilities for results.
+- **Version 2.2.3 (Feb 2026)**: Added `PFASEmbeddingSet` container to offer easier plotting and summarising capabilities for results.
 
 - **Version 2.2 (Feb 2026)**: Added linked_smarts option to specify a restriction on path between smarts groups and fluorinated component. Added new PFASgroups (telomers). **v2.2.2** Fixed telomers and added examples and counter-examples to each PFASgroup. Removed boundary O in fluorinated components (for both Per and Polyalkyl components).
 
@@ -450,22 +451,24 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 Major enhancement adding comprehensive dimensionality reduction and statistical comparison capabilities:
 
 **New Features:**
-- **ResultsFingerprint Class**: Advanced fingerprint analysis with flexible group selection
+- **PFASEmbeddingSet / PFASEmbedding**: Unified result container with flexible embedding generation
 - **Dimensionality Reduction**: PCA, kernel-PCA, t-SNE, and UMAP with automatic plotting
 - **Statistical Comparison**: KL divergence for comparing dataset compositions
-- **Database Persistence**: SQL save/load for fingerprints and results
+- **Database Persistence**: SQL save/load for results
 - **Molecule Prioritization**: Screening and ranking tool for PFAS datasets
 - **Comprehensive Documentation**: Complete API reference, examples, and 100+ tests
 
 **Key Methods:**
-- `ResultsModel.to_fingerprint()`: Convert results to analyzable fingerprints
-- `ResultsFingerprint.perform_pca()`: Principal Component Analysis
-- `ResultsFingerprint.perform_kernel_pca()`: Non-linear kernel PCA
-- `ResultsFingerprint.perform_tsne()`: t-SNE visualization
-- `ResultsFingerprint.perform_umap()`: Fast UMAP dimensionality reduction
-- `ResultsFingerprint.compare_kld()`: Dataset similarity via KL divergence
+- `PFASEmbeddingSet.to_array()`: Generate numeric embedding matrix from parsed results
+- `PFASEmbeddingSet.column_names()`: Column labels matching `to_array()` output
+- `PFASEmbeddingSet.perform_pca()`: Principal Component Analysis
+- `PFASEmbeddingSet.perform_kernel_pca()`: Non-linear kernel PCA
+- `PFASEmbeddingSet.perform_tsne()`: t-SNE visualization
+- `PFASEmbeddingSet.perform_umap()`: Fast UMAP dimensionality reduction
+- `PFASEmbeddingSet.compare_kld()`: Dataset similarity via KL divergence
+- `generate_embedding()`: Parse SMILES and return `(array, column_names)` in one call
 - `prioritise_molecules()`: Rank molecules by similarity or fluorination properties
-- SQL operations: `to_sql()` and `from_sql()` for persistence
+- `PFASEmbeddingSet.to_sql()`: Persist results to a SQLite/PostgreSQL database
 
 **Prioritization Strategies:**
 - **Reference-based**: Rank by distributional similarity to known PFAS (e.g., persistent chemicals)
@@ -483,10 +486,10 @@ Major enhancement adding comprehensive dimensionality reduction and statistical 
 
 See `docs/ResultsFingerprint_Guide.md`, `docs/prioritization.rst`, `examples/results_fingerprint_analysis.py`, and `examples/prioritization_examples.py` for details.
 
-### Version 2.2.3 (February 2026) - ResultsModel Container
+### Version 2.2.3 (February 2026) - PFASEmbeddingSet Container
 
 **New Features:**
-- ResultsModel container with visualization helpers
+- `PFASEmbeddingSet` container with visualization helpers
 - Enhanced component plotting utilities
 - Improved documentation and examples
 

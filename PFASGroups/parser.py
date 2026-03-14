@@ -467,7 +467,7 @@ def parse_from_database(
             all_results.extend(batch_results)
 
     # Combine all results
-    results = ResultsModel(all_results)
+    results = PFASEmbeddingSet(all_results)
 
     # Write results to database if requested
     if write_results and len(results) > 0:

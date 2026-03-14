@@ -1,5 +1,5 @@
-﻿Fingerprint Analysis
-====================
+﻿Embedding Analysis
+==================
 
 .. currentmodule:: PFASGroups
 
@@ -8,41 +8,41 @@
    from PFASGroups import parse_smiles
 
    results = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
-   fp = results.to_fingerprint()
+   arr = results.to_array()
 
-   print(fp.fingerprints.shape)        # (2, 116)  — 116 groups, F only, binary
-   print(fp.group_selection)           # 'all'
-   print(fp.component_metrics)         # ['binary']
+   print(arr.shape)                        # (2, 112)  — 112 groups, F only, binary
+   cols = results.column_names()           # list of 112 column label strings
 
    # PCA in two lines
-   coords = fp.perform_pca(n_components=2)
-   print(coords['transformed'].shape)  # (2, 2)
+   pca_result = results.perform_pca(n_components=2)
+   print(pca_result['transformed'].shape)  # (2, 2)
 
-The :class:`ResultsFingerprint` class wraps a numpy fingerprint matrix and
-provides group selection, three count encoding modes, dimensionality
-reduction, distribution comparison, and database I/O.
+:func:`parse_smiles` returns a :class:`PFASEmbeddingSet` — a list of
+:class:`PFASEmbedding` objects, one per molecule.  Call :meth:`~PFASEmbeddingSet.to_array`
+on the set to get a ``(n_mols, n_cols)`` numpy matrix, or call it on a single
+:class:`PFASEmbedding` for a 1-D vector.
 
-.. note::
+.. seealso::
 
-   **Attribute name**: the fingerprint matrix is stored as ``fp.fingerprints``
-   (a ``numpy.ndarray``), **not** ``fp.matrix``.
+   :doc:`/ResultsFingerprint_Guide` — complete metric reference with formulas,
+   preset benchmarks, and group selection tables.
 
 .. contents:: Contents
    :local:
    :depth: 2
 
-ResultsFingerprint
-------------------
+PFASEmbeddingSet
+----------------
 
-.. autoclass:: ResultsFingerprint
+.. autoclass:: PFASEmbeddingSet
    :members:
    :undoc-members:
    :show-inheritance:
 
-Creating a ResultsFingerprint
+Generating an embedding array
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Via :meth:`~PFASGroups.ResultsModel.to_fingerprint`:
+Via :meth:`~PFASGroups.PFASEmbeddingSet.to_array`:
 
 .. code-block:: python
 
@@ -51,50 +51,60 @@ Via :meth:`~PFASGroups.ResultsModel.to_fingerprint`:
    smiles = ["CCCC(F)(F)F", "FC(F)(F)C(=O)O", "OCCOCCO"]
    results = parse_smiles(smiles)
 
-   # Default: all 116 groups, fluorine only, binary encoding
-   fp = results.to_fingerprint()
-   print(fp.fingerprints.shape)     # (3, 116)
-   print(fp.halogens)               # ['F']
-   print(fp.group_names[:2])        # e.g. ['perfluoromethyl', 'perfluoroalkyl']
+   # Default: all 112 groups, fluorine only, binary encoding
+   arr = results.to_array()
+   print(arr.shape)                      # (3, 112)
+   cols = results.column_names()         # list of 112 column label strings
 
    # OECD groups only, count mode
-   fp_oecd = results.to_fingerprint(group_selection='oecd', component_metrics=['count'])
-   print(fp_oecd.fingerprints.shape)   # (3, 28)
+   arr_oecd = results.to_array(group_selection='oecd', component_metrics=['count'])
+   print(arr_oecd.shape)                 # (3, 28)
 
-Or use :func:`~PFASGroups.generate_fingerprint` directly for a numpy array
-without the :class:`ResultsFingerprint` wrapper:
+   # Best-performing preset (binary + effective_graph_resistance)
+   arr_best = results.to_array(preset='best')
+   cols_best = results.column_names(preset='best')
+   print(arr_best.shape)                 # (3, 224)  — 112 groups × 2 metrics
+
+   # Single-molecule embedding
+   vec = results[0].to_array(preset='best')   # 1-D array, length 224
+
+Or use :func:`~PFASGroups.generate_embedding` for a ``(array, column_names)`` tuple
+in one call:
 
 .. code-block:: python
 
-   from PFASGroups import generate_fingerprint
+   from PFASGroups import generate_embedding
 
-   fps, info = generate_fingerprint(smiles)
-   print(fps.shape)                  # (3, 116)
-   print(info['group_names'][:2])    # list of group name strings
+   arr, cols = generate_embedding(smiles, preset='best')
+   print(arr.shape)                      # (3, 224)
+   print(cols[:2])                       # e.g. ['Perfluoroalkyl [binary]', 'Perfluoroalkyl [effective_graph_resistance]']
 
-Attributes
-~~~~~~~~~~~
+Key attributes
+~~~~~~~~~~~~~~
+
+:class:`PFASEmbeddingSet` is a plain list of :class:`PFASEmbedding` dicts.
+The embedding matrix is computed on demand; no matrix is stored on the object.
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 75
+   :widths: 30 70
 
-   * - Attribute
+   * - Attribute / method
      - Description
-   * - ``fingerprints``
-     - ``numpy.ndarray`` of shape ``(n_mols, n_groups)``
-   * - ``smiles``
-     - List of SMILES (one per row)
-   * - ``group_names``
-     - List of group-name strings (one per column)
-   * - ``group_selection``
-     - Selection used: ``'all'``, ``'oecd'``, ``'generic'``, ``'telomers'``, or ``'generic+telomers'``
-   * - ``halogens``
-     - List of halogen symbols used, e.g. ``['F']`` or ``['F', 'Cl', 'Br', 'I']``
-   * - ``saturation``
-     - Saturation filter used (``'per'``, ``'poly'``, or ``None``)
-   * - ``component_metrics``
-     - List of metrics used: e.g. ``['binary']`` or ``['binary', 'effective_graph_resistance']``
+   * - ``results.to_array(...)``
+     - ``numpy.ndarray`` of shape ``(n_mols, n_cols)``
+   * - ``results.column_names(...)``
+     - List of column label strings; same arguments as ``to_array()``
+   * - ``results[i]``
+     - :class:`PFASEmbedding` for molecule *i* (dict subclass)
+   * - ``results[i].smiles``
+     - SMILES string of molecule *i*
+   * - ``results[i].to_array(...)``
+     - 1-D embedding vector for one molecule
+   * - ``results[i].summarise()``
+     - Returns a formatted string summary of matched PFAS groups
+   * - ``results[i].summary()``
+     - Prints the formatted summary to stdout
 
 Dimensionality reduction
 -------------------------
@@ -102,31 +112,35 @@ Dimensionality reduction
 perform_pca
 ~~~~~~~~~~~
 
-.. automethod:: ResultsFingerprint.perform_pca
+.. automethod:: PFASEmbeddingSet.perform_pca
    :no-index:
 
 .. code-block:: python
 
-   result = fp.perform_pca(n_components=2, plot=True)
-   coords = result['transformed']   # numpy array (n_mols, 2)
+   result = results.perform_pca(n_components=2, plot=True)
+   coords = result['transformed']    # numpy array (n_mols, 2)
+   evr   = result['explained_variance']   # variance ratios per component
 
 **Parameters:**
 
 - ``n_components`` (int, default 2): Number of PCA components
-- ``plot`` (bool, default True): Generate and display a scatter plot
+- ``plot`` (bool, default True): Generate and display a scatter plot + scree plot
 - ``output_file`` (str, optional): File path to save the plot
 
-*Requires*: scikit-learn
+**Returns:** dict with keys ``'transformed'``, ``'explained_variance'``,
+``'components'``, ``'pca_model'``, ``'scaler'``.
+
+*Requires*: scikit-learn, matplotlib
 
 perform_tsne
 ~~~~~~~~~~~~
 
-.. automethod:: ResultsFingerprint.perform_tsne
+.. automethod:: PFASEmbeddingSet.perform_tsne
    :no-index:
 
 .. code-block:: python
 
-   result = fp.perform_tsne(n_components=2, perplexity=5, plot=True)
+   result = results.perform_tsne(n_components=2, perplexity=5, plot=True)
    coords = result['transformed']
 
 **Parameters:**
@@ -134,20 +148,24 @@ perform_tsne
 - ``n_components`` (int, default 2)
 - ``perplexity`` (float, default 30.0): t-SNE perplexity (typically 5–50;
   must be less than the number of molecules)
-- ``n_iter`` (int, default 1000)
+- ``learning_rate`` (float, default 200.0)
+- ``max_iter`` (int, default 1000)
 - ``plot`` (bool, default True)
 
-*Requires*: scikit-learn
+**Returns:** dict with keys ``'transformed'``, ``'tsne_model'``, ``'scaler'``,
+``'perplexity'``.
+
+*Requires*: scikit-learn, matplotlib
 
 perform_umap
 ~~~~~~~~~~~~
 
-.. automethod:: ResultsFingerprint.perform_umap
+.. automethod:: PFASEmbeddingSet.perform_umap
    :no-index:
 
 .. code-block:: python
 
-   result = fp.perform_umap(n_components=2, n_neighbors=15, plot=True)
+   result = results.perform_umap(n_components=2, n_neighbors=15, plot=True)
    coords = result['transformed']
 
 **Parameters:**
@@ -155,9 +173,13 @@ perform_umap
 - ``n_components`` (int, default 2)
 - ``n_neighbors`` (int, default 15): UMAP local neighborhood size
 - ``min_dist`` (float, default 0.1): Minimum distance between embedded points
+- ``metric`` (str, default ``'euclidean'``)
 - ``plot`` (bool, default True)
 
-*Requires*: umap-learn (``pip install umap-learn``)
+**Returns:** dict with keys ``'transformed'``, ``'umap_model'``, ``'scaler'``,
+``'n_neighbors'``, ``'min_dist'``.
+
+*Requires*: umap-learn (``pip install umap-learn``), matplotlib
 
 Statistical comparison
 -----------------------
@@ -165,27 +187,30 @@ Statistical comparison
 compare_kld
 ~~~~~~~~~~~
 
-.. automethod:: ResultsFingerprint.compare_kld
+.. automethod:: PFASEmbeddingSet.compare_kld
    :no-index:
 
-Compute per-group KL divergence between two fingerprint distributions:
+Compute KL divergence between the group-occurrence frequencies of two sets:
 
 .. code-block:: python
 
-   fp_a = parse_smiles(set_a).to_fingerprint()
-   fp_b = parse_smiles(set_b).to_fingerprint()
+   results_a = parse_smiles(set_a)
+   results_b = parse_smiles(set_b)
 
-   result = fp_a.compare_kld(fp_b, method='minmax')
-   # result: dict with 'kl_divergences', 'sorted_groups', 'total_kl', ...
+   kld = results_a.compare_kld(results_b, method='minmax')
+   # kld: float — normalised symmetric KLD (lower = more similar distributions)
 
 **Parameters:**
 
-- ``other`` (:class:`ResultsFingerprint`): The comparison fingerprint
+- ``other`` (:class:`PFASEmbeddingSet`): The comparison set
 - ``method`` (str, default ``'minmax'``):
-  - ``'minmax'``: normalise each column to [0, 1] before comparison
+
+  - ``'minmax'``: normalised symmetric KLD ∈ [0, 1]
   - ``'forward'``: KL(self ‖ other)
   - ``'reverse'``: KL(other ‖ self)
   - ``'symmetric'``: average of forward + reverse
+
+**Returns:** ``float``
 
 Database I/O
 ------------
@@ -193,39 +218,23 @@ Database I/O
 to_sql / from_sql
 ~~~~~~~~~~~~~~~~~
 
-.. automethod:: ResultsFingerprint.to_sql
+.. automethod:: PFASEmbeddingSet.to_sql
    :no-index:
-.. automethod:: ResultsFingerprint.from_sql
+.. automethod:: PFASEmbeddingSet.from_sql
    :no-index:
 
 .. code-block:: python
 
    # Save to SQLite
-   fp.to_sql("fingerprints.db")
+   results.to_sql(filename="pfas_results.db")
 
    # Load back
-   from PFASGroups.results_model import ResultsFingerprint
-   fp2 = ResultsFingerprint.from_sql("fingerprints.db")
-   print(fp2.fingerprints.shape)
+   from PFASGroups import PFASEmbeddingSet
+   results2 = PFASEmbeddingSet.from_sql(filename="pfas_results.db")
 
-Matrices are stored in sparse format.  Metadata (``halogens``,
-``saturation``, ``component_metrics``, ``group_names``) is preserved.
+   # PostgreSQL
+   results.to_sql(dbname="mydb", user="alice", password="secret", host="localhost")
 
-Summary
-~~~~~~~
-
-.. automethod:: ResultsFingerprint.summary
-   :no-index:
-
-.. code-block:: python
-
-   print(fp.summary())
-   # ResultsFingerprint Summary
-   # ==========================
-   # Molecules: 3
-   # Groups: 116
-   # Group selection: all
-   # Halogens: F
-   # Comp metr. : ['binary']
-   # Fingerprint shape: (3, 116)
-   # Non-zero entries: 2
+Component and group-level data are stored in two tables
+(``components`` and ``pfas_groups_in_compound`` by default).
+Pass ``if_exists='replace'`` to overwrite existing tables.
