@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple, Union
 import os
+import re
+from pathlib import Path
 
 if TYPE_CHECKING:
     try:
@@ -17,6 +19,39 @@ from io import BytesIO
 import pandas as pd
 import numpy as np
 from .parser import load_HalogenGroups
+
+
+def _load_palette() -> List[str]:
+    """Load hex colours from color_scheme.yaml (stdlib only, no pyyaml needed)."""
+    _defaults = ["#E15D0B", "#306DBA", "#9D206C", "#51127C"]
+    try:
+        _p = Path(__file__).parent / "data" / "color_scheme.yaml"
+        _colors = re.findall(r'"(#[0-9A-Fa-f]{6})"', _p.read_text())
+        if len(_colors) >= 4:
+            return _colors[:4]
+    except Exception:
+        pass
+    return _defaults
+
+
+_PALETTE = _load_palette()
+# C0=orange, C1=blue (FG table), C2=magenta (metrics table), C3=dark-purple
+_C0, _C1, _C2, _C3 = _PALETTE
+
+
+def _hex_to_rgb_float(h: str) -> Tuple[float, float, float]:
+    """Convert a '#RRGGBB' hex string to an RGB float triple in [0, 1]."""
+    h = h.lstrip('#')
+    return tuple(int(h[i:i+2], 16) / 255.0 for i in (0, 2, 4))  # type: ignore
+
+
+def _lighter(h: str, factor: float = 0.82) -> str:
+    """Return a lighter hex colour by blending *h* with white."""
+    r, g, b = _hex_to_rgb_float(h)
+    r2 = int((r + (1 - r) * factor) * 255)
+    g2 = int((g + (1 - g) * factor) * 255)
+    b2 = int((b + (1 - b) * factor) * 255)
+    return f'#{r2:02X}{g2:02X}{b2:02X}'
 
 # ---------------------------------------------------------------------------
 # Sentinel for "argument not supplied" (distinct from None)
@@ -158,12 +193,12 @@ def _ansi(text: str, *codes: str) -> str:
 # Molecule-highlight colour palettes (RGB float triples, 0–1)
 # ---------------------------------------------------------------------------
 
-# Highlight colours by halogen element
+# Highlight colours by halogen element — mapped to the project colour palette
 _HALOGEN_COLORS: Dict[str, Color] = {
-    "F":  (0.20, 0.70, 0.95),  # cyan-blue
-    "Cl": (0.20, 0.80, 0.30),  # green
-    "Br": (0.95, 0.75, 0.10),  # amber
-    "I":  (0.80, 0.20, 0.85),  # violet
+    "F":  _hex_to_rgb_float(_C1),   # blue  (most common PFAS element)
+    "Cl": _hex_to_rgb_float(_C0),   # orange
+    "Br": _hex_to_rgb_float(_C2),   # magenta
+    "I":  _hex_to_rgb_float(_C3),   # dark purple
 }
 _HALOGEN_COLOR_DEFAULT: Color = (0.75, 0.75, 0.75)  # grey for unknown
 
@@ -192,12 +227,12 @@ def _component_color(halogen: Optional[str], form: Optional[str], saturation: Op
 
 # Simple color palette to distinguish PFAS groups in highlight plots (legacy fallback)
 _GROUP_COLORS: List[Color] = [
-    (0.90, 0.10, 0.10),  # red
-    (0.10, 0.40, 0.90),  # blue
-    (0.10, 0.70, 0.10),  # green
-    (0.90, 0.60, 0.10),  # orange
-    (0.60, 0.10, 0.70),  # purple
-    (0.00, 0.70, 0.70),  # teal
+    _hex_to_rgb_float(_C0),  # orange
+    _hex_to_rgb_float(_C1),  # blue
+    _hex_to_rgb_float(_C2),  # magenta
+    _hex_to_rgb_float(_C3),  # dark purple
+    (0.00, 0.70, 0.70),      # teal (extra)
+    (0.60, 0.60, 0.60),      # grey (extra)
 ]
 
 # ---------------------------------------------------------------------------
@@ -431,15 +466,15 @@ def _mol_image_with_table(
 
     for j in range(len(col_labels_fg)):
         cell = tbl[0, j]
-        cell.set_facecolor('#3B5BA5')
+        cell.set_facecolor(_C1)
         cell.set_text_props(color='white', fontweight='bold')
-        cell.set_edgecolor('#3B5BA5')
+        cell.set_edgecolor(_C1)
 
     for i in range(len(cell_text_fg)):
         for j in range(len(col_labels_fg)):
             cell = tbl[i + 1, j]
-            cell.set_facecolor('#EEF2FF' if i % 2 == 0 else 'white')
-            cell.set_edgecolor('#C0C8E8')
+            cell.set_facecolor(_lighter(_C1) if i % 2 == 0 else 'white')
+            cell.set_edgecolor(_lighter(_C1, factor=0.55))
 
     # --- Component-wide metrics table (table 2) ---
     if comp_metrics:
@@ -460,14 +495,14 @@ def _mol_image_with_table(
 
         for j in range(len(col_labels_m)):
             cell = tbl2[0, j]
-            cell.set_facecolor('#2E7D32')
+            cell.set_facecolor(_C2)
             cell.set_text_props(color='white', fontweight='bold')
-            cell.set_edgecolor('#2E7D32')
+            cell.set_edgecolor(_C2)
 
         for j in range(len(col_labels_m)):
             cell = tbl2[1, j]
-            cell.set_facecolor('#E8F5E9')
-            cell.set_edgecolor('#A5D6A7')
+            cell.set_facecolor(_lighter(_C2))
+            cell.set_edgecolor(_lighter(_C2, factor=0.55))
 
     fig.patch.set_facecolor('white')
     buf = _io.BytesIO()

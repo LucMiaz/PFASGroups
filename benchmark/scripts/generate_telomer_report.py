@@ -54,7 +54,7 @@ def generate_telomer_report():
             background: #f5f5f5;
         }}
         .header {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #E15D0B 0%, #51127C 100%);
             color: white;
             padding: 30px;
             border-radius: 10px;
@@ -82,7 +82,7 @@ def generate_telomer_report():
         .stat-value {{
             font-size: 36px;
             font-weight: bold;
-            color: #667eea;
+            color: #306DBA;
             margin: 10px 0;
         }}
         .stat-label {{
@@ -101,7 +101,7 @@ def generate_telomer_report():
         h2 {{
             color: #333;
             margin-top: 0;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid #306DBA;
             padding-bottom: 10px;
         }}
         table {{
@@ -131,7 +131,7 @@ def generate_telomer_report():
         }}
         .progress-fill {{
             height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #E15D0B 0%, #51127C 100%);
             display: flex;
             align-items: center;
             padding: 0 15px;
@@ -147,7 +147,7 @@ def generate_telomer_report():
         }}
         .group-badge {{
             display: inline-block;
-            background: #667eea;
+            background: #306DBA;
             color: white;
             padding: 4px 8px;
             border-radius: 4px;
@@ -318,7 +318,7 @@ def generate_telomer_report():
     output_file = Path('../reports/telomer_validation.html')
     output_file.parent.mkdir(parents=True, exist_ok=True)
     
-    with open(output_file, 'w') as f:
+    with open(output_file, 'w', encoding='utf-8', errors='replace') as f:
         f.write(html)
     
     print(f"\u2705 Telomer validation report generated: {output_file}")

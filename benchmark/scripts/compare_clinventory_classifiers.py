@@ -35,6 +35,7 @@ try:
     import matplotlib.pyplot as plt
     import matplotlib.patches as mpatches
     from matplotlib.ticker import MaxNLocator
+    plt.style.use('seaborn-v0_8-whitegrid')
     MATPLOTLIB = True
 except ImportError:
     MATPLOTLIB = False
@@ -67,10 +68,27 @@ HALOGEN_CLASSES = [
     "No halogen",
 ]
 
+def _load_palette():
+    """Load hex colours from color_scheme.yaml (stdlib only, no pyyaml needed)."""
+    import re
+    from pathlib import Path
+    _defaults = ["#E15D0B", "#306DBA", "#9D206C", "#51127C"]
+    try:
+        _p = Path(__file__).parent.parent.parent / "PFASGroups" / "data" / "color_scheme.yaml"
+        _colors = re.findall(r'"(#[0-9A-Fa-f]{6})"', _p.read_text())
+        if len(_colors) >= 4:
+            return _colors[:4]
+    except Exception:
+        pass
+    return _defaults
+
+_PALETTE = _load_palette()
+# C0=orange (PFASGroups/HalogenGroups), C1=blue (PFAS-Atlas), C2=magenta (F-only), C3=dark-purple
+_C0, _C1, _C2, _C3 = _PALETTE
+
 COLORS = {
-    "PFASGroups": "#1f77b4",   # blue
-    "PFAS-Atlas":    "#d62728",   # red
-    "PFASGroups":    "#ff7f0e",   # orange  (F-only PFASGroups)
+    "PFASGroups": _C0,
+    "PFAS-Atlas": _C1,
 }
 
 def latest_file(pattern: str) -> Optional[Path]:

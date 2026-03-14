@@ -2,33 +2,33 @@
   "model": "t = a * exp(b * n)",
   "parameters": {
     "a": {
-      "value": 0.05542806349954726,
-      "error": 0.0014377544049369254,
+      "value": 0.08061616172984362,
+      "error": 0.0019576179014935053,
       "unit": "seconds"
     },
     "b": {
-      "value": 0.005798124028755866,
-      "error": 4.832913760746482e-05,
+      "value": 0.005619224106080127,
+      "error": 4.5275959429711286e-05,
       "unit": "atoms\u207b\u00b9"
     }
   },
   "quality_metrics": {
-    "r_squared": 0.9009888754716834,
-    "pearson_correlation": 0.8949085284211982,
+    "r_squared": 0.9094420620216768,
+    "pearson_correlation": 0.9172785239197394,
     "p_value": 0.0
   },
   "dataset_statistics": {
     "n_molecules": 2500,
     "atom_count_range": [
       11,
-      618
+      619
     ],
     "chain_length_range": [
       5,
       200
     ],
-    "mean_time_ms": 179.84767398103781,
-    "median_time_ms": 24.875276899547316,
-    "std_time_ms": 368.42279479213215
+    "mean_time_ms": 249.42498050739286,
+    "median_time_ms": 25.83758500040858,
+    "std_time_ms": 499.5783248872216
   }
 }

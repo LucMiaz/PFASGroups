@@ -1,0 +1,51 @@
+{
+  "summary": {
+    "total_molecules": 2500,
+    "HalogenGroup_avg_time": 249.4249805073929,
+    "HalogenGroup_std_time": 499.4783992286789,
+    "atlas_avg_time": 63.56660170399875,
+    "atlas_std_time": 72.99024407929784,
+    "speed_ratio": 0.2548525876385291,
+    "iterations": 5,
+    "timestamp": "20260314_213610"
+  },
+  "system_specs": {
+    "system": "Linux",
+    "platform": "Linux-6.17.0-14-generic-x86_64-with-glibc2.39",
+    "architecture": "64bit",
+    "python_version": "3.9.23",
+    "cpu_name": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
+    "cpu_cores_logical": 8,
+    "cpu_cores_physical": 4,
+    "total_memory_gb": 15.49,
+    "available_memory_gb": 7.9
+  },
+  "figures": [
+    {
+      "title": "Timing Scatter Plot",
+      "url": "/imgs/timing_scatter_20260314_213610.png",
+      "description": "Scatter plot showing execution times vs molecular properties"
+    },
+    {
+      "title": "Timing Distribution",
+      "url": "/imgs/timing_distribution_20260314_213610.png",
+      "description": "Distribution of execution times for both systems"
+    },
+    {
+      "title": "Scaling Analysis",
+      "url": "/imgs/timing_scaling_20260314_213610.png",
+      "description": "Performance scaling with molecular complexity"
+    },
+    {
+      "title": "Runtime Ratio Histogram",
+      "url": "/imgs/timing_ratio_hist_20260314_213610.png",
+      "description": "Distribution of HalogenGroup/Atlas runtime ratios"
+    },
+    {
+      "title": "Runtime Ratio Summary Table",
+      "url": "/imgs/timing_ratio_table_20260314_213610.png",
+      "description": "Summary statistics for HalogenGroup/Atlas runtime ratios"
+    }
+  ],
+  "html_report": "/reports/timing_analysis_20260314_213610.html"
+}

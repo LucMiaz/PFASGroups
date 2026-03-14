@@ -28,6 +28,23 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+# LaTeX row-color hex codes (no leading #; requires \usepackage[table]{xcolor})
+_LX_HDR = "D6E4F5"   # light C1 blue – header rows
+_LX_C0L = "FAEADE"   # light C0 orange – HalogenGroups/PFASGroups rows
+_LX_C1L = "D6E4F5"   # light C1 blue  – PFAS-Atlas rows
+_LX_C2L = "F2DCE9"   # light C2 magenta – third-category rows
+_LATEX_COLOR_DEFS = (
+    "%% Colour palette – requires: \\usepackage[table]{xcolor}\n"
+    "\\definecolor{PGC0}{HTML}{E15D0B}\n"
+    "\\definecolor{PGC1}{HTML}{306DBA}\n"
+    "\\definecolor{PGC2}{HTML}{9D206C}\n"
+    "\\definecolor{PGC3}{HTML}{51127C}\n"
+    "\\definecolor{PGC0L}{HTML}{FAEADE}\n"
+    "\\definecolor{PGC1L}{HTML}{D6E4F5}\n"
+    "\\definecolor{PGC2L}{HTML}{F2DCE9}\n"
+    "\n"
+)
+
 SCRIPT_DIR   = Path(__file__).resolve().parent
 BENCHMARK_DIR = SCRIPT_DIR.parent
 
@@ -105,7 +122,7 @@ def table_overall_timing(hg: dict, atlas: dict) -> str:
         r"\label{tab:clinventory_timing_overall}",
         r"\begin{tabular}{lrrrrrr}",
         r"\toprule",
-        r"\textbf{Method} & \textbf{$n$} & \textbf{Median} & \textbf{Mean}"
+        r"\rowcolor[HTML]{D6E4F5}\textbf{Method} & \textbf{$n$} & \textbf{Median} & \textbf{Mean}"
         r" & \textbf{Std} & \textbf{P95} & \textbf{Total (s)} \\",
         r"\midrule",
     ]
@@ -120,7 +137,8 @@ def table_overall_timing(hg: dict, atlas: dict) -> str:
         std   = fmt(s.get("std_ms"), 3)
         p95   = fmt(s.get("p95_ms"), 3)
         total = fmt(data.get("total_classification_time_s"), 1)
-        lines.append(f"  {esc(label)} & {n} & {med} & {mean} & {std} & {p95} & {total} \\\\")
+        _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if label == "HalogenGroups" else f"\\rowcolor[HTML]{{{_LX_C1L}}}"
+        lines.append(f"  {_rc}{esc(label)} & {n} & {med} & {mean} & {std} & {p95} & {total} \\\\")
 
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
     return "\n".join(lines)
@@ -141,17 +159,17 @@ def table_timing_by_bracket(hg: dict, atlas: dict) -> str:
         r"\label{tab:clinventory_timing_bracket}",
         r"\begin{tabular}{lrrrrrr}",
         r"\toprule",
-        r" & \multicolumn{2}{c}{\textbf{HalogenGroups}} &"
+        r"\rowcolor[HTML]{D6E4F5} & \multicolumn{2}{c}{\textbf{HalogenGroups}} &"
         r" \multicolumn{2}{c}{\textbf{PFAS-Atlas}} &"
-        r" \multicolumn{2}{c}{\textbf{Ratio (HG/Atlas)}} \\",
+        r" \multicolumn{2}{c}{\textbf{Ratio (HG/Atlas)}} \\\\",
         r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}",
-        r"\textbf{Bracket} & \textbf{$n$} & \textbf{Median (ms)}"
+        r"\rowcolor[HTML]{D6E4F5}\textbf{Bracket} & \textbf{$n$} & \textbf{Median (ms)}"
         r" & \textbf{$n$} & \textbf{Median (ms)}"
         r" & \textbf{Median} & \\",
         r"\midrule",
     ]
 
-    for b in brackets:
+    for _bi, b in enumerate(brackets, 1):
         hg_s    = hg_br.get(b, {})
         atlas_s = atlas_br.get(b, {})
         n_hg    = fmt_int(hg_s.get("n"))
@@ -162,7 +180,8 @@ def table_timing_by_bracket(hg: dict, atlas: dict) -> str:
         hm = hg_s.get("median_ms") or 0
         am = atlas_s.get("median_ms") or 0
         ratio = fmt(hm / am if am > 0 else float("nan"), 2)
-        lines.append(f"  {esc(b)} & {n_hg} & {med_hg} & {n_at} & {med_at} & {ratio} \\\\")
+        _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if _bi % 2 == 1 else ""
+        lines.append(f"  {_rc}{esc(b)} & {n_hg} & {med_hg} & {n_at} & {med_at} & {ratio} \\\\")
 
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
     return "\n".join(lines)
@@ -183,17 +202,17 @@ def table_timing_by_halogen(hg: dict, atlas: dict) -> str:
         r"\label{tab:clinventory_timing_halogen}",
         r"\begin{tabular}{lrrrrrr}",
         r"\toprule",
-        r" & \multicolumn{2}{c}{\textbf{HalogenGroups}} &"
+        r"\rowcolor[HTML]{D6E4F5} & \multicolumn{2}{c}{\textbf{HalogenGroups}} &"
         r" \multicolumn{2}{c}{\textbf{PFAS-Atlas}} &"
-        r" \multicolumn{2}{c}{\textbf{Ratio (HG/Atlas)}} \\",
+        r" \multicolumn{2}{c}{\textbf{Ratio (HG/Atlas)}} \\\\",
         r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}",
-        r"\textbf{Halogen class} & \textbf{$n$} & \textbf{Median (ms)}"
+        r"\rowcolor[HTML]{D6E4F5}\textbf{Halogen class} & \textbf{$n$} & \textbf{Median (ms)}"
         r" & \textbf{$n$} & \textbf{Median (ms)}"
         r" & \textbf{Median} & \\",
         r"\midrule",
     ]
 
-    for c in classes:
+    for _ci, c in enumerate(classes, 1):
         hg_s    = hg_h.get(c, {})
         atlas_s = atlas_h.get(c, {})
         n_hg    = fmt_int(hg_s.get("n"))
@@ -203,7 +222,8 @@ def table_timing_by_halogen(hg: dict, atlas: dict) -> str:
         hm = hg_s.get("median_ms") or 0
         am = atlas_s.get("median_ms") or 0
         ratio = fmt(hm / am if am > 0 else float("nan"), 2)
-        lines.append(f"  {esc(c)} & {n_hg} & {med_hg} & {n_at} & {med_at} & {ratio} \\\\")
+        _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if _ci % 2 == 1 else ""
+        lines.append(f"  {_rc}{esc(c)} & {n_hg} & {med_hg} & {n_at} & {med_at} & {ratio} \\\\")
 
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
     return "\n".join(lines)
@@ -224,11 +244,11 @@ def table_agreement(cmp: dict) -> str:
         r"\label{tab:clinventory_agreement}",
         r"\begin{tabular}{lrr}",
         r"\toprule",
-        r"\textbf{Category} & \textbf{Molecules} & \textbf{\%} \\",
+        r"\rowcolor[HTML]{D6E4F5}\textbf{Category} & \textbf{Molecules} & \textbf{\%} \\\\",
         r"\midrule",
-        f"  Both classify as F/PFAS & {fmt_int(am.get('both_pfas'))} & {pct(am.get('both_pfas',0), total)} \\\\",
-        f"  HalogenGroups only (F detected) & {fmt_int(am.get('only_hg'))} & {pct(am.get('only_hg',0), total)} \\\\",
-        f"  PFAS-Atlas only & {fmt_int(am.get('only_atlas'))} & {pct(am.get('only_atlas',0), total)} \\\\",
+        f"  \\rowcolor[HTML]{{{_LX_C0L}}}Both classify as F/PFAS & {fmt_int(am.get('both_pfas'))} & {pct(am.get('both_pfas',0), total)} \\\\",
+        f"  \\rowcolor[HTML]{{{_LX_C2L}}}HalogenGroups only (F detected) & {fmt_int(am.get('only_hg'))} & {pct(am.get('only_hg',0), total)} \\\\",
+        f"  \\rowcolor[HTML]{{{_LX_C1L}}}PFAS-Atlas only & {fmt_int(am.get('only_atlas'))} & {pct(am.get('only_atlas',0), total)} \\\\",
         f"  Neither classifies & {fmt_int(am.get('neither'))} & {pct(am.get('neither',0), total)} \\\\",
         r"\midrule",
         f"  \\textbf{{Total}} & \\textbf{{{fmt_int(total)}}} & 100.0\\% \\\\",
@@ -257,11 +277,12 @@ def table_atlas_classes(atlas: dict) -> str:
         r"\label{tab:clinventory_atlas_classes}",
         r"\begin{tabular}{lrr}",
         r"\toprule",
-        r"\textbf{PFAS-Atlas class} & \textbf{Molecules} & \textbf{\%} \\",
+        r"\rowcolor[HTML]{D6E4F5}\textbf{PFAS-Atlas class} & \textbf{Molecules} & \textbf{\%} \\\\",
         r"\midrule",
     ]
-    for cls, cnt in items:
-        lines.append(f"  {esc(cls)} & {fmt_int(cnt)} & {pct(cnt, total)} \\\\")
+    for _i, (cls, cnt) in enumerate(items, 1):
+        _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if _i % 2 == 1 else ""
+        lines.append(f"  {_rc}{esc(cls)} & {fmt_int(cnt)} & {pct(cnt, total)} \\\\")
     lines += [
         r"\midrule",
         f"  \\textbf{{Total}} & \\textbf{{{fmt_int(total)}}} & 100.0\\% \\\\",
@@ -287,11 +308,12 @@ def table_hg_top_groups(cmp: dict, n: int = 20) -> str:
         r"\label{tab:clinventory_hg_top_groups}",
         r"\begin{tabular}{lrr}",
         r"\toprule",
-        r"\textbf{Group name} & \textbf{Molecules} & \textbf{\%\ of matches} \\",
+        r"\rowcolor[HTML]{D6E4F5}\textbf{Group name} & \textbf{Molecules} & \textbf{\%\ of matches} \\\\",
         r"\midrule",
     ]
-    for name, cnt in items:
-        lines.append(f"  {esc(str(name))} & {fmt_int(cnt)} & {pct(cnt, total)} \\\\")
+    for _i, (name, cnt) in enumerate(items, 1):
+        _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if _i % 2 == 1 else ""
+        lines.append(f"  {_rc}{esc(str(name))} & {fmt_int(cnt)} & {pct(cnt, total)} \\\\")
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
     return "\n".join(lines)
 
@@ -327,13 +349,13 @@ def table_speedup_pfasgroups(hg: dict, pfasgroups: dict, cmp: dict) -> str:
         r"\label{tab:clinventory_pfasgroups_speedup}",
         r"\begin{tabular}{lrrrr}",
         r"\toprule",
-        r"\textbf{Bracket} & \textbf{$n$}"
+        r"\rowcolor[HTML]{D6E4F5}\textbf{Bracket} & \textbf{$n$}"
         r" & \textbf{HG median (ms)}"
         r" & \textbf{PFASGroups median (ms)}"
-        r" & \textbf{Speed-up} \\",
+        r" & \textbf{Speed-up} \\\\",
         r"\midrule",
     ]
-    for b in brackets:
+    for _bi, b in enumerate(brackets, 1):
         d    = pfg_br[b]
         n_b  = fmt_int(d.get("n") or (d.get("hg") or {}).get("n"))
         hg_d = d.get("hg") or {}
@@ -345,8 +367,9 @@ def table_speedup_pfasgroups(hg: dict, pfasgroups: dict, cmp: dict) -> str:
             continue
         if r_v is None:
             r_v = hm / pm if pm > 0 else float("nan")
+        _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if _bi % 2 == 1 else ""
         lines.append(
-            f"  {esc(b)} & {n_b} & {fmt(hm, 3)} & {fmt(pm, 3)} & {fmt(r_v, 2)} \\\\"
+            f"  {_rc}{esc(b)} & {n_b} & {fmt(hm, 3)} & {fmt(pm, 3)} & {fmt(r_v, 2)} \\\\"
         )
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}", ""]
     return "\n".join(lines)
@@ -367,11 +390,11 @@ def table_pfasgroups_agreement(cmp: dict) -> str:
         r"\label{tab:clinventory_pfasgroups_agreement}",
         r"\begin{tabular}{lrr}",
         r"\toprule",
-        r"\textbf{Category} & \textbf{Molecules} & \textbf{\%} \\",
+        r"\rowcolor[HTML]{D6E4F5}\textbf{Category} & \textbf{Molecules} & \textbf{\%} \\\\",
         r"\midrule",
-        f"  Both classify as F/PFAS & {fmt_int(am.get('both_pfas'))} & {pct(am.get('both_pfas',0), total)} \\\\",
-        f"  PFASGroups only (F detected) & {fmt_int(am.get('only_pfasgroups'))} & {pct(am.get('only_pfasgroups',0), total)} \\\\",
-        f"  PFAS-Atlas only & {fmt_int(am.get('only_atlas'))} & {pct(am.get('only_atlas',0), total)} \\\\",
+        f"  \\rowcolor[HTML]{{{_LX_C0L}}}Both classify as F/PFAS & {fmt_int(am.get('both_pfas'))} & {pct(am.get('both_pfas',0), total)} \\\\",
+        f"  \\rowcolor[HTML]{{{_LX_C2L}}}PFASGroups only (F detected) & {fmt_int(am.get('only_pfasgroups'))} & {pct(am.get('only_pfasgroups',0), total)} \\\\",
+        f"  \\rowcolor[HTML]{{{_LX_C1L}}}PFAS-Atlas only & {fmt_int(am.get('only_atlas'))} & {pct(am.get('only_atlas',0), total)} \\\\",
         f"  Neither classifies & {fmt_int(am.get('neither'))} & {pct(am.get('neither',0), total)} \\\\",
         r"\midrule",
         f"  \\textbf{{Total}} & \\textbf{{{fmt_int(total)}}} & 100.0\\% \\\\",
@@ -503,7 +526,10 @@ def main():
     reports_dir = BENCHMARK_DIR / "reports"
     reports_dir.mkdir(exist_ok=True, parents=True)
 
-    hg_path    = args.hg_file    or latest_file(str(data_dir / "halogengroups_clinventory_*.json"))
+    hg_path    = args.hg_file    or latest_file(str(data_dir / "pfasgroups_clinventory_*.json"))
+                              # also try the capitalised variant written by classify_halogengroups_clinventory.py
+    if not hg_path:
+        hg_path = latest_file(str(data_dir / "PFASGroups_clinventory_*.json"))
     atlas_path = args.atlas_file or latest_file(str(data_dir / "pfasatlas_clinventory_*.json"))
     cmp_path   = args.cmp_file   or latest_file(str(data_dir / "clinventory_comparison_*.json"))
     pfg_path   = getattr(args, "pfasgroups_file", None) or latest_file(
@@ -542,8 +568,14 @@ def main():
     # -----------------------------------------------------------------------
     # Tables file
     tables_parts = [
-        f"% Clinventory comparison tables \u2014 generated {datetime.now().isoformat()}\n",
-        "% Requires: booktabs, siunitx\n\n",
+        f"% Clinventory comparison tables \u2014 generated {datetime.now().isoformat()}\n",        "%% Colour palette – requires: \\usepackage[table]{xcolor}\n"
+        "\\definecolor{PGC0}{HTML}{E15D0B}\n"
+        "\\definecolor{PGC1}{HTML}{306DBA}\n"
+        "\\definecolor{PGC2}{HTML}{9D206C}\n"
+        "\\definecolor{PGC3}{HTML}{51127C}\n"
+        "\\definecolor{PGC0L}{HTML}{FAEADE}\n"
+        "\\definecolor{PGC1L}{HTML}{D6E4F5}\n"
+        "\\definecolor{PGC2L}{HTML}{F2DCE9}\n"        "% Requires: booktabs, siunitx\n\n",
         table_overall_timing(hg, atlas),
         table_timing_by_bracket(hg, atlas),
         table_timing_by_halogen(hg, atlas),

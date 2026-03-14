@@ -9,9 +9,11 @@ It automatically finds the most recent benchmark files and generates a unified a
 import json
 import sys
 import os
+import re
 from datetime import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
+plt.style.use('seaborn-v0_8-whitegrid')
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -22,6 +24,29 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 import shutil
 from collections import defaultdict
+
+
+def _load_palette():
+    """Load hex colours from color_scheme.yaml (stdlib only, no pyyaml needed)."""
+    _defaults = ["#E15D0B", "#306DBA", "#9D206C", "#51127C"]
+    try:
+        _p = Path(__file__).parent.parent.parent / "PFASGroups" / "data" / "color_scheme.yaml"
+        _colors = re.findall(r'"(#[0-9A-Fa-f]{6})"', _p.read_text())
+        if len(_colors) >= 4:
+            return _colors[:4]
+    except Exception:
+        pass
+    return _defaults
+
+
+_PALETTE = _load_palette()
+# C0=orange (PFASGroups/HalogenGroups), C1=blue (PFAS-Atlas), C2=magenta, C3=dark-purple
+_C0, _C1, _C2, _C3 = _PALETTE
+
+
+def _hex_to_rgba(h: str, a: float = 0.8) -> str:
+    r, g, b = int(h[1:3], 16), int(h[3:5], 16), int(h[5:7], 16)
+    return f"rgba({r},{g},{b},{a})"
 
 # Import the enhanced Sankey diagrams from enhanced_analysis
 try:
@@ -550,14 +575,14 @@ def create_oecd_sankey_diagram(oecd_correspondence):
                 thickness=20,
                 line=dict(color="black", width=0.5),
                 label=all_nodes,
-                color=["rgba(31, 119, 180, 0.8)" for _ in source_nodes] + 
+                color=[_hex_to_rgba(_C0) for _ in source_nodes] + 
                       ["rgba(44, 160, 44, 0.8)" for _ in target_nodes]
             ),
             link=dict(
                 source=[link['source'] for link in links],
                 target=[link['target'] for link in links],
                 value=[link['value'] for link in links],
-                color=["rgba(44, 160, 44, 0.3)" for _ in links]
+                color=[_hex_to_rgba(_C2, 0.3) for _ in links]
             )
         )])
         
@@ -699,7 +724,6 @@ def create_time_performance_plot(data):
     if not data:
         return None
     
-    plt.style.use('seaborn-v0_8')
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 12))
     fig.suptitle('Time Performance Analysis Across Molecule Sizes', fontsize=16, fontweight='bold')
     
@@ -707,8 +731,8 @@ def create_time_performance_plot(data):
     df = pd.DataFrame(data)
     
     # Plot 1: Execution time vs number of atoms
-    ax1.scatter(df['num_atoms'], df['PFASGroups_time_avg'] * 1000, alpha=0.6, label='PFASGroups', color='blue', s=20)
-    ax1.scatter(df['num_atoms'], df['atlas_time_avg'] * 1000, alpha=0.6, label='PFAS-Atlas', color='red', s=20)
+    ax1.scatter(df['num_atoms'], df['PFASGroups_time_avg'] * 1000, alpha=0.6, label='PFASGroups', color=_C0, s=20)
+    ax1.scatter(df['num_atoms'], df['atlas_time_avg'] * 1000, alpha=0.6, label='PFAS-Atlas', color=_C1, s=20)
     ax1.set_xlabel('Number of Atoms')
     ax1.set_ylabel('Average Time (ms)')
     ax1.set_title('Execution Time vs Molecule Size')
@@ -717,7 +741,7 @@ def create_time_performance_plot(data):
     
     # Plot 2: Performance ratio vs chain length
     ratio = (df['atlas_time_avg'] / df['PFASGroups_time_avg']).fillna(1)
-    ax2.scatter(df['chain_length'], ratio, alpha=0.6, color='green', s=20)
+    ax2.scatter(df['chain_length'], ratio, alpha=0.6, color=_C2, s=20)
     ax2.set_xlabel('Chain Length (Carbon Count)')
     ax2.set_ylabel('Performance Ratio (Atlas/PFASGroups)')
     ax2.set_title('Performance Ratio vs Chain Length')
@@ -733,9 +757,9 @@ def create_time_performance_plot(data):
     
     x_pos = np.arange(len(df['size_bin'].cat.categories))
     bp1 = ax3.boxplot(pfas_times_binned, positions=x_pos-0.2, widths=0.3, patch_artist=True, 
-                      boxprops=dict(facecolor='lightblue'), labels=df['size_bin'].cat.categories)
+                      boxprops=dict(facecolor='#FAEADE'), labels=df['size_bin'].cat.categories)
     bp2 = ax3.boxplot(atlas_times_binned, positions=x_pos+0.2, widths=0.3, patch_artist=True, 
-                      boxprops=dict(facecolor='lightcoral'), labels=df['size_bin'].cat.categories)
+                      boxprops=dict(facecolor='#D6E4F5'), labels=df['size_bin'].cat.categories)
     
     ax3.set_xlabel('Molecule Size Bins')
     ax3.set_ylabel('Execution Time (ms)')
@@ -758,9 +782,9 @@ def create_time_performance_plot(data):
     atlas_stds = chain_stats[('atlas_time_avg', 'std')] * 1000
     
     ax4.errorbar(chain_lengths, pfas_medians, yerr=pfas_stds, label='PFASGroups', 
-                 marker='o', capsize=5, capthick=2, color='blue')
+                 marker='o', capsize=5, capthick=2, color=_C0)
     ax4.errorbar(chain_lengths, atlas_medians, yerr=atlas_stds, label='PFAS-Atlas', 
-                 marker='s', capsize=5, capthick=2, color='red')
+                 marker='s', capsize=5, capthick=2, color=_C1)
     ax4.set_xlabel('Chain Length')
     ax4.set_ylabel('Median Time ± Std (ms)')
     ax4.set_title('Scaling Performance with Chain Length')
@@ -887,7 +911,7 @@ def create_sankey_diagram(enhanced_data):
             thickness=20,
             line=dict(color="black", width=0.5),
             label=all_nodes,
-            color=["lightblue" if node in pfas_groups else "lightcoral" for node in all_nodes]
+            color=[_C0 if node in pfas_groups else _C1 for node in all_nodes]
         ),
         link=dict(
             source=source,
@@ -956,7 +980,6 @@ def create_sankey_alternative_plot(enhanced_data):
                 correspondence_matrix[group_name][atlas_class] += 1
     
     # Create heatmap visualization
-    plt.style.use('seaborn-v0_8')
     pfas_groups_list = sorted(list(pfas_groups))
     atlas_classes_list = sorted(list(atlas_classes))
     
@@ -1056,14 +1079,14 @@ def create_interactive_time_performance_plot(data):
         if len(pfas_times) > 0:
             fig.add_trace(
                 go.Box(y=pfas_times, name=f'PFASGroups-{bin_name}', 
-                      marker_color='lightblue', showlegend=False,
+                      marker_color=_C0, showlegend=False,
                       hovertemplate='Size: %s<br>Time: %%{y:.2f} ms<extra></extra>' % bin_name),
                 row=2, col=1
             )
         if len(atlas_times) > 0:
             fig.add_trace(
                 go.Box(y=atlas_times, name=f'Atlas-{bin_name}', 
-                      marker_color='lightcoral', showlegend=False,
+                      marker_color=_C1, showlegend=False,
                       hovertemplate='Size: %s<br>Time: %%{y:.2f} ms<extra></extra>' % bin_name),
                 row=2, col=1
             )
@@ -1180,7 +1203,7 @@ def create_interactive_sankey_diagram(enhanced_data):
             thickness=20,
             line=dict(color="black", width=0.5),
             label=all_nodes,
-            color=["lightblue" if i < len(source_nodes) else "lightcoral" for i in range(len(all_nodes))]
+            color=[_C0 if i < len(source_nodes) else _C1 for i in range(len(all_nodes))]
         ),
         link=dict(
             source=source_indices,
@@ -1292,9 +1315,6 @@ def analyze_complex_benchmark(data):
 
 def create_unified_visualization(benchmark_results):
     """Create a unified visualization combining all benchmark results."""
-    plt.style.use('default')
-    sns.set_palette("husl")
-    
     fig, axes = plt.subplots(2, 3, figsize=(18, 12))
     fig.suptitle('Unified PFAS Benchmark Analysis Dashboard', fontsize=16, fontweight='bold')
     
@@ -1329,7 +1349,7 @@ def create_unified_visualization(benchmark_results):
         timing = benchmark_results['timing']
         systems = ['PFASGroups', 'PFAS-Atlas']
         times = [timing['avg_PFASGroups_time'], timing['avg_atlas_time']]
-        colors = ['skyblue', 'lightcoral']
+        colors = [_C0, _C1]
         bars = ax2.bar(systems, times, color=colors, alpha=0.7)
         ax2.set_ylabel('Average Time (seconds)')
         ax2.set_title('Average Processing Time')
@@ -1349,7 +1369,7 @@ def create_unified_visualization(benchmark_results):
         nonfluor = benchmark_results['nonfluorinated']
         systems = ['PFASGroups', 'PFAS-Atlas']
         specificity = [nonfluor['PFASGroups_specificity'], nonfluor['atlas_specificity']]
-        colors = ['lightgreen', 'lightsalmon']
+        colors = [_C0, _C1]
         bars = ax3.bar(systems, specificity, color=colors, alpha=0.7)
         ax3.set_ylabel('Specificity (%)')
         ax3.set_title('Specificity (Non-PFAS Exclusion)')
@@ -1370,7 +1390,7 @@ def create_unified_visualization(benchmark_results):
         timing = benchmark_results['timing']
         # Create a histogram of molecule sizes
         sizes = np.random.normal(timing['size_range']['avg_atoms'], 10, 200)  # Placeholder
-        ax4.hist(sizes, bins=15, alpha=0.7, color='steelblue', edgecolor='black')
+        ax4.hist(sizes, bins=15, alpha=0.7, color=_C0, edgecolor='black')
         ax4.set_xlabel('Number of Atoms')
         ax4.set_ylabel('Frequency')
         ax4.set_title('Molecule Size Distribution')
@@ -1422,7 +1442,7 @@ def create_unified_visualization(benchmark_results):
         metrics = ['Detection', 'Accuracy']
         pfas_values = [complex_data['atlas_detection_rate'], complex_data['PFASGroups_accuracy']]
         
-        bars = ax6.bar(metrics, pfas_values, color=['lightblue', 'lightgreen'], alpha=0.7)
+        bars = ax6.bar(metrics, pfas_values, color=[_C1, _C0], alpha=0.7)
         ax6.set_ylabel('Performance (%)')
         ax6.set_title('Complex Structure Performance')
         ax6.set_ylim(90, 105)
@@ -1522,7 +1542,7 @@ def generate_unified_html_report(benchmark_results, plot_base64=None):
                 line-height: 1.6;
             }}
             .header {{ 
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: linear-gradient(135deg, #E15D0B 0%, #51127C 100%);
                 color: white;
                 padding: 30px; 
                 text-align: center;

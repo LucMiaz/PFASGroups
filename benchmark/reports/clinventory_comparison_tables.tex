@@ -1,0 +1,190 @@
+% Clinventory comparison tables — generated 2026-03-14T21:37:17.446051
+
+%% Colour palette – requires: \usepackage[table]{xcolor}
+\definecolor{PGC0}{HTML}{E15D0B}
+\definecolor{PGC1}{HTML}{306DBA}
+\definecolor{PGC2}{HTML}{9D206C}
+\definecolor{PGC3}{HTML}{51127C}
+\definecolor{PGC0L}{HTML}{FAEADE}
+\definecolor{PGC1L}{HTML}{D6E4F5}
+\definecolor{PGC2L}{HTML}{F2DCE9}
+% Requires: booktabs, siunitx
+
+
+\begin{table}[htbp]
+\centering
+\caption{Overall per-molecule classification timing (ms) for
+  HalogenGroups and PFAS-Atlas on the C\&L inventory.}
+\label{tab:clinventory_timing_overall}
+\begin{tabular}{lrrrrrr}
+\toprule
+\rowcolor[HTML]{D6E4F5}\textbf{Method} & \textbf{$n$} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{P95} & \textbf{Total (s)} \\
+\midrule
+  \rowcolor[HTML]{FAEADE}HalogenGroups & 28,328 & 10.371 & 12.736 & 8.191 & 28.843 & 367.3 \\
+  \rowcolor[HTML]{D6E4F5}PFAS-Atlas & 28,328 & 0.986 & 5.074 & 11.301 & 34.443 & 150.2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Median per-molecule timing (ms) by molecular size (heavy-atom count)
+  for both classifiers.}
+\label{tab:clinventory_timing_bracket}
+\begin{tabular}{lrrrrrr}
+\toprule
+\rowcolor[HTML]{D6E4F5} & \multicolumn{2}{c}{\textbf{HalogenGroups}} & \multicolumn{2}{c}{\textbf{PFAS-Atlas}} & \multicolumn{2}{c}{\textbf{Ratio (HG/Atlas)}} \\\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+\rowcolor[HTML]{D6E4F5}\textbf{Bracket} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{Median} & \\
+\midrule
+  \rowcolor[HTML]{FAEADE}tiny (<10) & 2,838 & 6.088 & 2,838 & 1.128 & 5.39 \\
+  small (10-19) & 20,640 & 9.892 & 20,640 & 0.940 & 10.53 \\
+  \rowcolor[HTML]{FAEADE}medium (20-34) & 4,125 & 21.055 & 4,125 & 1.099 & 19.16 \\
+  large (35-59) & 676 & 37.130 & 676 & 1.293 & 28.71 \\
+  \rowcolor[HTML]{FAEADE}very large (>=60) & 49 & 56.817 & 49 & 1.956 & 29.04 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Median per-molecule timing (ms) by halogen composition for both classifiers.}
+\label{tab:clinventory_timing_halogen}
+\begin{tabular}{lrrrrrr}
+\toprule
+\rowcolor[HTML]{D6E4F5} & \multicolumn{2}{c}{\textbf{HalogenGroups}} & \multicolumn{2}{c}{\textbf{PFAS-Atlas}} & \multicolumn{2}{c}{\textbf{Ratio (HG/Atlas)}} \\\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+\rowcolor[HTML]{D6E4F5}\textbf{Halogen class} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{$n$} & \textbf{Median (ms)} & \textbf{Median} & \\
+\midrule
+  \rowcolor[HTML]{FAEADE}F only & 19,666 & 11.070 & 19,666 & 1.013 & 10.93 \\
+  Mixed (F + other) & 8,637 & 8.882 & 8,637 & 0.939 & 9.46 \\
+  \rowcolor[HTML]{FAEADE}Other halogen (no F) & 3 & 0.780 & 3 & 0.963 & 0.81 \\
+  No halogen & 22 & 0.593 & 22 & 1.007 & 0.59 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Classification agreement between HalogenGroups (presence of
+  F-containing group) and PFAS-Atlas (any PFAS classification) across
+  the common set of molecules.  Cohen's $\kappa$ measures agreement
+  beyond chance.}
+\label{tab:clinventory_agreement}
+\begin{tabular}{lrr}
+\toprule
+\rowcolor[HTML]{D6E4F5}\textbf{Category} & \textbf{Molecules} & \textbf{\%} \\\\
+\midrule
+  \rowcolor[HTML]{FAEADE}Both classify as F/PFAS & 20,736 & 73.2\% \\
+  \rowcolor[HTML]{F2DCE9}HalogenGroups only (F detected) & 6,469 & 22.8\% \\
+  \rowcolor[HTML]{D6E4F5}PFAS-Atlas only & 112 & 0.4\% \\
+  Neither classifies & 1,011 & 3.6\% \\
+\midrule
+  \textbf{Total} & \textbf{28,328} & 100.0\% \\
+\midrule
+  Overall agreement & \multicolumn{2}{r}{76.8\%} \\
+  Cohen's $\kappa$ & \multicolumn{2}{r}{0.178} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution of PFAS-Atlas primary classifications on  the fluorine-containing molecules of the C\&L inventory.}
+\label{tab:clinventory_atlas_classes}
+\begin{tabular}{lrr}
+\toprule
+\rowcolor[HTML]{D6E4F5}\textbf{PFAS-Atlas class} & \textbf{Molecules} & \textbf{\%} \\\\
+\midrule
+  \rowcolor[HTML]{FAEADE}Other PFASs & 18,054 & 63.7\% \\
+  Not PFAS & 7,475 & 26.4\% \\
+  \rowcolor[HTML]{FAEADE}Other PFASs, cyclic & 1,001 & 3.5\% \\
+  PFAA precursors & 492 & 1.7\% \\
+  \rowcolor[HTML]{FAEADE}Polyfluoroalkyl acids & 480 & 1.7\% \\
+  Polyfluoroalkyl acids, cyclic & 442 & 1.6\% \\
+  \rowcolor[HTML]{FAEADE}PFAA precursors, cyclic & 270 & 1.0\% \\
+  PFAAs & 101 & 0.4\% \\
+  \rowcolor[HTML]{FAEADE}PFAAs, cyclic & 8 & 0.0\% \\
+  error & 5 & 0.0\% \\
+\midrule
+  \textbf{Total} & \textbf{28,328} & 100.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Top 20 most frequently matched HalogenGroups functional groups
+  in the C\&L inventory (by number of molecules matched).}
+\label{tab:clinventory_hg_top_groups}
+\begin{tabular}{lrr}
+\toprule
+\rowcolor[HTML]{D6E4F5}\textbf{Group name} & \textbf{Molecules} & \textbf{\%\ of matches} \\\\
+\midrule
+  \rowcolor[HTML]{FAEADE}Perhalogenated aryl compounds & 14,067 & 18.3\% \\
+  Polyhalogenated aryl compounds & 14,067 & 18.3\% \\
+  \rowcolor[HTML]{FAEADE}polyhalogenated alkyl & 13,320 & 17.3\% \\
+  perhalogenated alkyl & 10,244 & 13.3\% \\
+  \rowcolor[HTML]{FAEADE}Side-chain aromatics & 6,567 & 8.5\% \\
+  Side-chain fluorinated aromatics & 5,399 & 7.0\% \\
+  \rowcolor[HTML]{FAEADE}Heterocyclic azine & 1,936 & 2.5\% \\
+  ether & 1,719 & 2.2\% \\
+  \rowcolor[HTML]{FAEADE}Heterocyclic azole & 1,501 & 2.0\% \\
+  Polyhalogenated cyclic compounds & 1,402 & 1.8\% \\
+  \rowcolor[HTML]{FAEADE}Perhalogenated cyclic compounds & 1,068 & 1.4\% \\
+  Telomer methyl & 689 & 0.9\% \\
+  \rowcolor[HTML]{FAEADE}amine & 577 & 0.8\% \\
+  amide & 461 & 0.6\% \\
+  \rowcolor[HTML]{FAEADE}carboxylic acid & 405 & 0.5\% \\
+  alcohol & 392 & 0.5\% \\
+  \rowcolor[HTML]{FAEADE}ketone & 373 & 0.5\% \\
+  bromide & 223 & 0.3\% \\
+  \rowcolor[HTML]{FAEADE}chloride & 211 & 0.3\% \\
+  alkene & 202 & 0.3\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Speed gain from restricting HalogenGroups to fluorine-only
+  patterns (\texttt{halogens=`F'}, PFASGroups mode) vs.\ full
+  HalogenGroups on the F-containing molecules of the C\&L inventory.
+  Speed-up factor $=$ HalogenGroups median / PFASGroups median;
+  values $>1$ indicate PFASGroups is faster.}
+\label{tab:clinventory_pfasgroups_speedup}
+\begin{tabular}{lrrrr}
+\toprule
+\rowcolor[HTML]{D6E4F5}\textbf{Bracket} & \textbf{$n$} & \textbf{HG median (ms)} & \textbf{PFASGroups median (ms)} & \textbf{Speed-up} \\\\
+\midrule
+  \rowcolor[HTML]{FAEADE}tiny (<10) & 2,838 & 6.088 & 6.088 & 1.00 \\
+  small (10-19) & 20,640 & 9.892 & 9.892 & 1.00 \\
+  \rowcolor[HTML]{FAEADE}medium (20-34) & 4,125 & 21.055 & 21.055 & 1.00 \\
+  large (35-59) & 676 & 37.130 & 37.130 & 1.00 \\
+  \rowcolor[HTML]{FAEADE}very large (>=60) & 49 & 56.817 & 56.817 & 1.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Classification agreement between PFASGroups
+  (\texttt{halogens=`F'}, F-group detection) and PFAS-Atlas
+  (any PFAS classification) on fluorine-containing molecules.}
+\label{tab:clinventory_pfasgroups_agreement}
+\begin{tabular}{lrr}
+\toprule
+\rowcolor[HTML]{D6E4F5}\textbf{Category} & \textbf{Molecules} & \textbf{\%} \\\\
+\midrule
+  \rowcolor[HTML]{FAEADE}Both classify as F/PFAS & 20,736 & 73.2\% \\
+  \rowcolor[HTML]{F2DCE9}PFASGroups only (F detected) & 6,469 & 22.8\% \\
+  \rowcolor[HTML]{D6E4F5}PFAS-Atlas only & 112 & 0.4\% \\
+  Neither classifies & 1,011 & 3.6\% \\
+\midrule
+  \textbf{Total} & \textbf{28,328} & 100.0\% \\
+\midrule
+  Overall agreement & \multicolumn{2}{r}{76.8\%} \\
+  Cohen's $\kappa$ & \multicolumn{2}{r}{0.178} \\
+\bottomrule
+\end{tabular}
+\end{table}

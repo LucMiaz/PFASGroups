@@ -13,6 +13,21 @@ from datetime import datetime
 from pathlib import Path
 from collections import defaultdict
 
+# LaTeX row-color hex codes (no leading #; requires \usepackage[table]{xcolor})
+_LX_C0L = "FAEADE"   # light C0 orange – detected/HalogenGroups rows
+_LX_C1L = "D6E4F5"   # light C1 blue  – header rows
+_LATEX_COLOR_DEFS = (
+    "%% Colour palette – requires: \\usepackage[table]{xcolor}\n"
+    "\\definecolor{PGC0}{HTML}{E15D0B}\n"
+    "\\definecolor{PGC1}{HTML}{306DBA}\n"
+    "\\definecolor{PGC2}{HTML}{9D206C}\n"
+    "\\definecolor{PGC3}{HTML}{51127C}\n"
+    "\\definecolor{PGC0L}{HTML}{FAEADE}\n"
+    "\\definecolor{PGC1L}{HTML}{D6E4F5}\n"
+    "\\definecolor{PGC2L}{HTML}{F2DCE9}\n"
+    "\n"
+)
+
 # Setup paths
 script_dir = Path(__file__).parent
 data_dir = script_dir.parent / 'data'
@@ -63,7 +78,7 @@ def generate_telomer_latex():
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     # Header
-    latex_content.append(r"""%% LaTeX content for telomer validation results
+    latex_content.append(_LATEX_COLOR_DEFS + r"""%% LaTeX content for telomer validation results
 %% Generated: """ + timestamp + r"""
 %% Include in article with: \input{PFASGroups_telomer_validation.tex}
 %%
@@ -90,12 +105,12 @@ Fluorotelomer compounds represent a critical class of PFAS that contain telomer 
 \label{tab:telomer_validation}
 \begin{tabular}{lrr}
 \toprule
-\textbf{Metric} & \textbf{Count} & \textbf{Percentage} \\
+\rowcolor[HTML]{D6E4F5}\textbf{Metric} & \textbf{Count} & \textbf{Percentage} \\
 \midrule
 """)
     
     latex_content.append(f"Total telomers tested & {total_tested:,} & 100.0\\% \\\\\n")
-    latex_content.append(f"Successfully detected & {detected:,} & {detection_rate:.1f}\\% \\\\\n")
+    latex_content.append(f"\\rowcolor[HTML]{{{_LX_C0L}}}Successfully detected & {detected:,} & {detection_rate:.1f}\\% \\\\\n")
     if total_tested > 0:
         not_detected_pct = (not_detected/total_tested*100)
         latex_content.append(f"Not detected & {not_detected:,} & {not_detected_pct:.1f}\\% \\\\\n")
@@ -118,19 +133,19 @@ Table~\ref{tab:telomer_groups} shows the detection counts for different types of
 \label{tab:telomer_groups}
 \begin{tabular}{clrr}
 \toprule
-\textbf{ID} & \textbf{Group Name} & \textbf{Detected} & \textbf{Percentage} \\
+\rowcolor[HTML]{D6E4F5}\textbf{ID} & \textbf{Group Name} & \textbf{Detected} & \textbf{Percentage} \\
 \midrule
 """)
         
         total_group_detections = sum(g['count'] for g in group_counts)
         # Sort by count descending, limit to top 15
-        for group_info in sorted(group_counts, key=lambda x: x['count'], reverse=True)[:15]:
+        for _gi, group_info in enumerate(sorted(group_counts, key=lambda x: x['count'], reverse=True)[:15], 1):
             group_id = group_info['id']
             group_name = group_info['name']
             count = group_info['count']
             pct = (count / total_group_detections * 100) if total_group_detections > 0 else 0
-            
-            latex_content.append(f"{group_id} & {group_name} & {count} & {pct:.1f}\\% \\\\\n")
+            _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if _gi % 2 == 1 else ""
+            latex_content.append(f"{_rc}{group_id} & {group_name} & {count} & {pct:.1f}\\% \\\\\n")
         
         latex_content.append(r"""\bottomrule
 \end{tabular}

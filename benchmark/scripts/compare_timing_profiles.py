@@ -23,6 +23,7 @@ except ImportError:
 
 try:
     import matplotlib.pyplot as plt
+    plt.style.use('seaborn-v0_8-whitegrid')
     MATPLOTLIB_AVAILABLE = True
 except ImportError:
     MATPLOTLIB_AVAILABLE = False
@@ -34,10 +35,28 @@ PROFILE_LABELS = {
     "no_resistance": "No resistance",
     "no_metrics": "No metrics"
 }
+def _load_palette():
+    """Load hex colours from color_scheme.yaml (stdlib only, no pyyaml needed)."""
+    import re
+    from pathlib import Path
+    _defaults = ["#E15D0B", "#306DBA", "#9D206C", "#51127C"]
+    try:
+        _p = Path(__file__).parent.parent.parent / "PFASGroups" / "data" / "color_scheme.yaml"
+        _colors = re.findall(r'"(#[0-9A-Fa-f]{6})"', _p.read_text())
+        if len(_colors) >= 4:
+            return _colors[:4]
+    except Exception:
+        pass
+    return _defaults
+
+_PALETTE = _load_palette()
+# C0=orange, C1=blue, C2=magenta, C3=dark-purple
+_C0, _C1, _C2, _C3 = _PALETTE
+
 PROFILE_COLORS = {
-    "full": "#1f77b4",
-    "no_resistance": "#ff7f0e",
-    "no_metrics": "#2ca02c"
+    "full": _C1,
+    "no_resistance": _C2,
+    "no_metrics": _C3,
 }
 
 
@@ -132,6 +151,7 @@ def plot_comparison(results):
     comparison_path = "reports/timing_profiles_comparison.png"
     fig.tight_layout()
     fig.savefig(comparison_path, dpi=300, bbox_inches="tight")
+    fig.savefig(comparison_path.replace(".png", ".pdf"), dpi=300, bbox_inches="tight")
 
     # Residuals plot
     fig_res, ax_res = plt.subplots(figsize=(10, 6))
@@ -151,6 +171,7 @@ def plot_comparison(results):
     residuals_path = "reports/timing_profiles_residuals.png"
     fig_res.tight_layout()
     fig_res.savefig(residuals_path, dpi=300, bbox_inches="tight")
+    fig_res.savefig(residuals_path.replace(".png", ".pdf"), dpi=300, bbox_inches="tight")
 
     return comparison_path, residuals_path
 

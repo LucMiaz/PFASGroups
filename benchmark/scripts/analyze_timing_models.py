@@ -7,6 +7,7 @@ Creates models for:
 """
 
 import json
+import re
 import numpy as np
 import pandas as pd
 try:
@@ -19,6 +20,7 @@ except ImportError:
 
 try:
     import matplotlib.pyplot as plt
+    plt.style.use('seaborn-v0_8-whitegrid')
     MATPLOTLIB_AVAILABLE = True
 except ImportError:
     MATPLOTLIB_AVAILABLE = False
@@ -26,6 +28,24 @@ except ImportError:
 
 import glob
 from pathlib import Path
+
+
+def _load_palette():
+    """Load hex colours from color_scheme.yaml (stdlib only, no pyyaml needed)."""
+    _defaults = ["#E15D0B", "#306DBA", "#9D206C", "#51127C"]
+    try:
+        _p = Path(__file__).parent.parent.parent / "PFASGroups" / "data" / "color_scheme.yaml"
+        _colors = re.findall(r'"(#[0-9A-Fa-f]{6})"', _p.read_text())
+        if len(_colors) >= 4:
+            return _colors[:4]
+    except Exception:
+        pass
+    return _defaults
+
+
+_PALETTE = _load_palette()
+# C0=orange (data/residuals), C1=blue (fit line)
+_C0, _C1, _C2, _C3 = _PALETTE
 
 # Load the latest timing benchmark data
 timing_files = sorted(glob.glob('data/pfas_timing_benchmark_*.json'), key=lambda x: Path(x).stat().st_mtime, reverse=True)
@@ -115,10 +135,10 @@ if MATPLOTLIB_AVAILABLE:
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
     
     # Plot 1: Data and fitted curve
-    ax1.scatter(x_data, y_data * 1000, alpha=0.5, s=30, label='Measured data')
+    ax1.scatter(x_data, y_data * 1000, alpha=0.5, s=30, color=_C0, label='Measured data')
     x_fit = np.linspace(x_data.min(), x_data.max(), 100)
     y_fit = exponential_model(x_fit, a_fit, b_fit)
-    ax1.plot(x_fit, y_fit * 1000, 'r-', linewidth=2, 
+    ax1.plot(x_fit, y_fit * 1000, '-', color=_C1, linewidth=2,
              label=f'Fit: t = {a_fit:.2e} × exp({b_fit:.4f} × n)\nR² = {r_squared:.4f}')
     ax1.set_xlabel('Number of atoms', fontsize=12)
     ax1.set_ylabel('Execution time (ms)', fontsize=12)
@@ -128,8 +148,8 @@ if MATPLOTLIB_AVAILABLE:
     
     # Plot 2: Residuals
     residuals_ms = residuals * 1000
-    ax2.scatter(x_data, residuals_ms, alpha=0.5, s=30)
-    ax2.axhline(y=0, color='r', linestyle='--', linewidth=1)
+    ax2.scatter(x_data, residuals_ms, alpha=0.5, s=30, color=_C0)
+    ax2.axhline(y=0, color='#888888', linestyle='--', linewidth=1)
     ax2.set_xlabel('Number of atoms', fontsize=12)
     ax2.set_ylabel('Residuals (ms)', fontsize=12)
     ax2.set_title('Residual Analysis', fontsize=13, fontweight='bold')
@@ -137,7 +157,8 @@ if MATPLOTLIB_AVAILABLE:
     
     plt.tight_layout()
     plt.savefig('reports/timing_analysis_all_metrics.png', dpi=300, bbox_inches='tight')
-    print(f"\nPlot saved to: reports/timing_analysis_all_metrics.png")
+    plt.savefig('reports/timing_analysis_all_metrics.pdf', dpi=300, bbox_inches='tight')
+    print(f"\nPlot saved to: reports/timing_analysis_all_metrics.png / .pdf")
 else:
     print("\nSkipping plot generation (matplotlib not available)")
 

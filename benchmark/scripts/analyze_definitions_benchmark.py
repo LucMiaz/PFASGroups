@@ -9,16 +9,19 @@ Creates comprehensive analysis reports with visualizations:
 """
 
 import json
+import re
 import sys
 import os
 from datetime import datetime
 from collections import defaultdict, Counter
+from pathlib import Path
 import numpy as np
 import pandas as pd
 
 # Plotting libraries
 import matplotlib.pyplot as plt
 import seaborn as sns
+plt.style.use('seaborn-v0_8-whitegrid')
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
@@ -27,6 +30,24 @@ from plotly.subplots import make_subplots
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
 sys.path.append(parent_dir)
+
+
+def _load_palette():
+    """Load hex colours from color_scheme.yaml (stdlib only, no pyyaml needed)."""
+    _defaults = ["#E15D0B", "#306DBA", "#9D206C", "#51127C"]
+    try:
+        _p = Path(__file__).parent.parent.parent / "PFASGroups" / "data" / "color_scheme.yaml"
+        _colors = re.findall(r'"(#[0-9A-Fa-f]{6})"', _p.read_text())
+        if len(_colors) >= 4:
+            return _colors[:4]
+    except Exception:
+        pass
+    return _defaults
+
+
+_PALETTE = _load_palette()
+# C0=orange (measurements/data), C1=blue (trend/fit), C2=magenta, C3=dark-purple
+_C0, _C1, _C2, _C3 = _PALETTE
 
 
 class DefinitionBenchmarkAnalyzer:
@@ -265,7 +286,8 @@ class DefinitionBenchmarkAnalyzer:
         
         output_file = os.path.join(self.figures_dir, 'concordance_matrix.png')
         plt.savefig(output_file, dpi=300, bbox_inches='tight')
-        print(f"   Saved to {output_file}")
+        plt.savefig(output_file.replace('.png', '.pdf'), dpi=300, bbox_inches='tight')
+        print(f"   Saved to {output_file} / .pdf")
         plt.close()
         
         return fig
@@ -351,7 +373,7 @@ class DefinitionBenchmarkAnalyzer:
             x=sizes,
             y=times_ms,
             mode='markers',
-            marker=dict(size=5, color='steelblue', opacity=0.5),
+            marker=dict(size=5, color=_C0, opacity=0.5),
             name='Measurements',
             hovertemplate='Atoms: %{x}<br>Time: %{y:.2f} ms<extra></extra>'
         ))
@@ -366,7 +388,7 @@ class DefinitionBenchmarkAnalyzer:
             x=x_trend,
             y=y_trend,
             mode='lines',
-            line=dict(color='red', width=2),
+            line=dict(color=_C1, width=2),
             name='Trend (polynomial)',
             hovertemplate='Trend<extra></extra>'
         ))

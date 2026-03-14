@@ -16,6 +16,25 @@ from collections import defaultdict
 from datetime import datetime
 import math
 
+# LaTeX color identifiers for table row highlighting
+# Requires \usepackage[table]{xcolor} in the article preamble
+_LX_HDR = "D6E4F5"   # light C1 blue – header rows
+_LX_C0L = "FAEADE"   # light C0 orange – HalogenGroups/PFASGroups rows
+_LX_C1L = "D6E4F5"   # light C1 blue – PFAS-Atlas rows
+_LX_C2L = "F2DCE9"   # light C2 magenta – third-category rows
+_LX_ALT = "F5F5F5"   # light grey – alternating data rows
+_LATEX_COLOR_DEFS = (
+    "%% Colour palette – requires: \\usepackage[table]{xcolor}\n"
+    "\\definecolor{PGC0}{HTML}{E15D0B}\n"
+    "\\definecolor{PGC1}{HTML}{306DBA}\n"
+    "\\definecolor{PGC2}{HTML}{9D206C}\n"
+    "\\definecolor{PGC3}{HTML}{51127C}\n"
+    "\\definecolor{PGC0L}{HTML}{FAEADE}\n"
+    "\\definecolor{PGC1L}{HTML}{D6E4F5}\n"
+    "\\definecolor{PGC2L}{HTML}{F2DCE9}\n"
+    "\n"
+)
+
 def get_latest_file(pattern):
     """Get the most recent file matching the pattern."""
     files = glob.glob(pattern)
@@ -130,7 +149,7 @@ if definitions_data:
 latex_content = []
 
 # Document header
-latex_content.append(r"""%% LaTeX tables and text for HalogenGroups article
+latex_content.append(_LATEX_COLOR_DEFS + r"""%% LaTeX tables and text for HalogenGroups article
 %% Generated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + r"""
 %% 
 %% Include in your article with: \input{HalogenGroups_results.tex}
@@ -153,7 +172,7 @@ Table~\ref{tab:datasets} provides an overview of the benchmark datasets used to 
 \label{tab:datasets}
 \begin{tabular}{lrrp{6cm}}
 \toprule
-\textbf{Dataset} & \textbf{N} & \textbf{Source} & \textbf{Description} \\
+\rowcolor[HTML]{D6E4F5}\textbf{Dataset} & \textbf{N} & \textbf{Source} & \textbf{Description} \\
 \midrule
 """)
 
@@ -195,7 +214,7 @@ Table~\ref{tab:definitions_accuracy} shows the classification performance of fiv
 \label{tab:definitions_accuracy}
 \begin{tabular}{lrrrrrrr}
 \toprule
-\textbf{Definition} & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} \\
+\rowcolor[HTML]{D6E4F5}\textbf{Definition} & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} \\
 \midrule
 """)
     
@@ -250,11 +269,11 @@ Table~\ref{tab:HalogenGroups_accuracy} shows the classification performance of H
 \label{tab:HalogenGroups_accuracy}
 \begin{tabular}{lrrrrrrr}
 \toprule
-\textbf{Method} & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} \\
+\rowcolor[HTML]{D6E4F5}\textbf{Method} & \textbf{TP} & \textbf{TN} & \textbf{FP} & \textbf{FN} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} \\
 \midrule
 """)
 
-latex_content.append(f"HalogenGroups & {pg_tp} & {pg_tn} & {pg_fp} & {pg_fn} & {pg_accuracy:.1f}\\% & {pg_precision:.1f}\\% & {pg_recall:.1f}\\% \\\\\n")
+latex_content.append(f"\\rowcolor[HTML]{{{_LX_C0L}}}HalogenGroups & {pg_tp} & {pg_tn} & {pg_fp} & {pg_fn} & {pg_accuracy:.1f}\\% & {pg_precision:.1f}\\% & {pg_recall:.1f}\\% \\\\\n")
 
 latex_content.append(r"""\bottomrule
 \end{tabular}
@@ -281,7 +300,7 @@ Table~\ref{tab:oecd_accuracy} shows the detection accuracy for PFAS groups in th
 \label{tab:oecd_accuracy}
 \begin{tabular}{clrrrr}
 \toprule
-\textbf{ID} & \textbf{Group Name} & \textbf{N} & \textbf{Detected} & \textbf{Accuracy (\%)} & \textbf{Atlas Agreement (\%)} \\
+\rowcolor[HTML]{D6E4F5}\textbf{ID} & \textbf{Group Name} & \textbf{N} & \textbf{Detected} & \textbf{Accuracy (\%)} & \textbf{Atlas Agreement (\%)} \\
 \midrule
 """)
 
@@ -321,7 +340,8 @@ for i, (group_name, stats) in enumerate(sorted_groups, 1):
     agreement = (atlas_agree / total * 100) if total > 0 else 0
     
     escaped_name = escape_latex(group_name)
-    latex_content.append(f"{i} & {escaped_name} & {total} & {detected} & {accuracy:.1f} & {agreement:.1f} \\\\\n")
+    _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if i % 2 == 1 else ""
+    latex_content.append(f"{_rc}{i} & {escaped_name} & {total} & {detected} & {accuracy:.1f} & {agreement:.1f} \\\\\n")
 
 # Overall statistics
 total_oecd = len(oecd_data)
@@ -354,21 +374,21 @@ Table~\ref{tab:timing_overall} presents timing statistics for HalogenGroups and 
 \label{tab:timing_overall}
 \begin{tabular}{lrrrrrr}
 \toprule
-\textbf{Tool} & \textbf{N} & \textbf{Mean} & \textbf{Median} & \textbf{SD} & \textbf{Min} & \textbf{Max} \\
+\rowcolor[HTML]{D6E4F5}\textbf{Tool} & \textbf{N} & \textbf{Mean} & \textbf{Median} & \textbf{SD} & \textbf{Min} & \textbf{Max} \\
 \midrule
 """)
 
 # Calculate timing statistics
-pg_times = [r['HalogenGroups_time_avg'] * 1000 for r in timing_data]  # Convert to ms
+pg_times = [r['PFASGroups_time_avg'] * 1000 for r in timing_data]  # Convert to ms
 atlas_times = [r['atlas_time_avg'] * 1000 for r in timing_data if 'atlas_time_avg' in r]
 
 pg_stats = calculate_statistics(pg_times)
 atlas_stats = calculate_statistics(atlas_times) if atlas_times else {}
 
-latex_content.append(f"HalogenGroups & {pg_stats['n']:,} & {format_number(pg_stats['mean'])} & {format_number(pg_stats['median'])} & {format_number(pg_stats['std'])} & {format_number(pg_stats['min'])} & {format_number(pg_stats['max'])} \\\\\n")
+latex_content.append(f"\\rowcolor[HTML]{{{_LX_C0L}}}HalogenGroups & {pg_stats['n']:,} & {format_number(pg_stats['mean'])} & {format_number(pg_stats['median'])} & {format_number(pg_stats['std'])} & {format_number(pg_stats['min'])} & {format_number(pg_stats['max'])} \\\\\n")
 
 if atlas_stats:
-    latex_content.append(f"PFAS-Atlas & {atlas_stats['n']:,} & {format_number(atlas_stats['mean'])} & {format_number(atlas_stats['median'])} & {format_number(atlas_stats['std'])} & {format_number(atlas_stats['min'])} & {format_number(atlas_stats['max'])} \\\\\n")
+    latex_content.append(f"\\rowcolor[HTML]{{{_LX_C1L}}}PFAS-Atlas & {atlas_stats['n']:,} & {format_number(atlas_stats['mean'])} & {format_number(atlas_stats['median'])} & {format_number(atlas_stats['std'])} & {format_number(atlas_stats['min'])} & {format_number(atlas_stats['max'])} \\\\\n")
     
     speedup = atlas_stats['mean'] / pg_stats['mean'] if pg_stats['mean'] > 0 else 0
     latex_content.append(r"""\midrule
@@ -392,27 +412,28 @@ Table~\ref{tab:timing_by_size} shows how execution time scales with molecule siz
 \label{tab:timing_by_size}
 \begin{tabular}{lrrrrr}
 \toprule
-\textbf{Size Range} & \textbf{N} & \textbf{PG Mean} & \textbf{PG SD} & \textbf{Atlas Mean} & \textbf{Atlas SD} \\
+\rowcolor[HTML]{D6E4F5}\textbf{Size Range} & \textbf{N} & \textbf{PG Mean} & \textbf{PG SD} & \textbf{Atlas Mean} & \textbf{Atlas SD} \\
 \midrule
 """)
 
 # Group by size ranges
 size_ranges = [(0, 20), (20, 40), (40, 60), (60, 80), (80, 100), (100, 150), (150, 200), (200, 500)]
 
-for min_size, max_size in size_ranges:
+for _si, (min_size, max_size) in enumerate(size_ranges, 1):
     range_data = [r for r in timing_data if min_size <= r['num_atoms'] < max_size]
     
     if not range_data:
         continue
     
-    pg_range_times = [r['HalogenGroups_time_avg'] * 1000 for r in range_data]
+    pg_range_times = [r['PFASGroups_time_avg'] * 1000 for r in range_data]
     atlas_range_times = [r['atlas_time_avg'] * 1000 for r in range_data if 'atlas_time_avg' in r]
     
     pg_range_stats = calculate_statistics(pg_range_times)
     atlas_range_stats = calculate_statistics(atlas_range_times) if atlas_range_times else {}
     
     range_label = f"{min_size}--{max_size}"
-    latex_content.append(f"{range_label} & {pg_range_stats['n']} & {format_number(pg_range_stats['mean'])} & {format_number(pg_range_stats['std'])} & ")
+    _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if _si % 2 == 1 else ""
+    latex_content.append(f"{_rc}{range_label} & {pg_range_stats['n']} & {format_number(pg_range_stats['mean'])} & {format_number(pg_range_stats['std'])} & ")
     
     if atlas_range_stats:
         latex_content.append(f"{format_number(atlas_range_stats['mean'])} & {format_number(atlas_range_stats['std'])} \\\\\n")
@@ -441,7 +462,7 @@ where $t$ is execution time (seconds), $n$ is number of atoms, and parameters we
 
 # Fit exponential model
 timing_atoms = [r['num_atoms'] for r in timing_data]
-timing_pg = [r['HalogenGroups_time_avg'] for r in timing_data]
+timing_pg = [r['PFASGroups_time_avg'] for r in timing_data]
 
 # Log-linear regression
 log_timing = [math.log(max(t, 1e-10)) for t in timing_pg]
@@ -467,7 +488,7 @@ latex_content.append(r"""\begin{table}[htbp]
 \label{tab:timing_model}
 \begin{tabular}{lrl}
 \toprule
-\textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+\rowcolor[HTML]{D6E4F5}\textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
 \midrule
 """)
 
@@ -496,7 +517,7 @@ Table~\ref{tab:group_type_performance} compares detection rates and timing for d
 \label{tab:group_type_performance}
 \begin{tabular}{lrrrrr}
 \toprule
-\textbf{Category} & \textbf{Groups} & \textbf{Tested} & \textbf{Detected (\%)} & \textbf{Mean Time (ms)} & \textbf{False Pos. (\%)} \\
+\rowcolor[HTML]{D6E4F5}\textbf{Category} & \textbf{Groups} & \textbf{Tested} & \textbf{Detected (\%)} & \textbf{Mean Time (ms)} & \textbf{False Pos. (\%)} \\
 \midrule
 """)
 
@@ -536,8 +557,9 @@ for cat_name, group_ids in categories.items():
             'fp': false_pos
         }
 
-for cat_name, stats in sorted(category_stats.items()):
-    latex_content.append(f"{cat_name} & {stats['groups']} & {stats['tested']} & {stats['pct']:.1f} & {format_number(stats['time'])} & {stats['fp']:.1f} \\\\\n")
+for _ci, (cat_name, stats) in enumerate(sorted(category_stats.items()), 1):
+    _rc = f"\\rowcolor[HTML]{{{_LX_C0L}}}" if _ci % 2 == 1 else ""
+    latex_content.append(f"{_rc}{cat_name} & {stats['groups']} & {stats['tested']} & {stats['pct']:.1f} & {format_number(stats['time'])} & {stats['fp']:.1f} \\\\\n")
 
 latex_content.append(r"""\bottomrule
 \end{tabular}
@@ -560,7 +582,7 @@ Table~\ref{tab:atlas_comparison} provides a detailed comparison of HalogenGroups
 \label{tab:atlas_comparison}
 \begin{tabular}{lrrrr}
 \toprule
-\textbf{Metric} & \textbf{HalogenGroups} & \textbf{PFAS-Atlas} & \textbf{Agreement (\%)} & \textbf{Advantage} \\
+\rowcolor[HTML]{D6E4F5}\textbf{Metric} & \textbf{HalogenGroups} & \textbf{PFAS-Atlas} & \textbf{Agreement (\%)} & \textbf{Advantage} \\
 \midrule
 """)
 
@@ -572,18 +594,18 @@ agreement = sum(1 for r in oecd_data
 
 agreement_pct = (agreement / len(oecd_data) * 100) if oecd_data else 0
 
-latex_content.append(f"PFAS Detection Rate & {pg_detected/len(oecd_data)*100:.1f}\\% & {atlas_detected/len(oecd_data)*100:.1f}\\% & {agreement_pct:.1f} & -- \\\\\n")
+latex_content.append(f"\\rowcolor[HTML]{{{_LX_C0L}}}PFAS Detection Rate & {pg_detected/len(oecd_data)*100:.1f}\\% & {atlas_detected/len(oecd_data)*100:.1f}\\% & {agreement_pct:.1f} & -- \\\\\n")
 
 # Timing comparison
 if pg_stats and atlas_stats:
     speedup = atlas_stats['mean'] / pg_stats['mean']
     advantage = 'HalogenGroups' if speedup > 1 else 'PFAS-Atlas'
     latex_content.append(f"Mean Exec. Time (ms) & {format_number(pg_stats['mean'])} & {format_number(atlas_stats['mean'])} & -- & {advantage} \\\\\n")
-    latex_content.append(f"Speedup Factor & -- & -- & -- & {abs(speedup):.2f}$\\times$ \\\\\n")
+    latex_content.append(f"\\rowcolor[HTML]{{{_LX_ALT}}}Speedup Factor & -- & -- & -- & {abs(speedup):.2f}$\\times$ \\\\\n")
 
 # Group specificity
 pg_groups = sum(1 for r in oecd_data if r.get('HalogenGroups_result', {}).get('groups_detected'))
-latex_content.append(f"Detailed Groups & {pg_groups} & -- & -- & HalogenGroups \\\\\n")
+latex_content.append(f"\\rowcolor[HTML]{{{_LX_C2L}}}Detailed Groups & {pg_groups} & -- & -- & HalogenGroups \\\\\n")
 
 latex_content.append(r"""\bottomrule
 \end{tabular}
@@ -631,11 +653,11 @@ latex_content.append(r"""\section*{Statistical Summary}
 The benchmark results demonstrate that HalogenGroups achieves high accuracy in PFAS detection across diverse molecular structures. Key findings include:
 
 \begin{itemize}
-\item \textbf{Detection Accuracy:} Overall accuracy of """ + f"{overall_accuracy:.1f}" + r"""\% on the OECD reference database (""" + f"{len(oecd_data):,}" + r""" compounds), with individual group accuracies ranging from """ + f"{min(accuracy for _, stats in sorted_groups for accuracy in [stats['detected']/stats['total']*100] if stats['total'] > 0):.1f}" + r"""\% to """ + f"{max(accuracy for _, stats in sorted_groups for accuracy in [stats['detected']/stats['total']*100] if stats['total'] > 0):.1f}" + r"""\%.
+\item \textbf{Detection Accuracy:} Overall accuracy of """ + f"{overall_accuracy:.1f}" + r"""\% on the OECD reference database (""" + f"{len(oecd_data):,}" + r""" compounds), with individual group accuracies ranging from """ + f"{min((accuracy for _, stats in sorted_groups for accuracy in [stats['detected']/stats['total']*100] if stats['total'] > 0), default=0.0):.1f}" + r"""\% to """ + f"{max((accuracy for _, stats in sorted_groups for accuracy in [stats['detected']/stats['total']*100] if stats['total'] > 0), default=0.0):.1f}" + r"""\%.
 
 \item \textbf{Classification Performance:} HalogenGroups achieves """ + f"{pg_accuracy:.1f}" + r"""\% overall classification accuracy with """ + f"{pg_precision:.1f}" + r"""\% precision, """ + f"{pg_recall:.1f}" + r"""\% recall (sensitivity), """ + f"{pg_specificity:.1f}" + r"""\% specificity, and F1-score of """ + f"{pg_f1:.1f}" + r"""\% across """ + f"{pg_total:,}" + r""" test cases (""" + f"{pg_tp}" + r""" TP, """ + f"{pg_tn}" + r""" TN, """ + f"{pg_fp}" + r""" FP, """ + f"{pg_fn}" + r""" FN).""" + (r"""
 
-\item \textbf{PFAS Definitions Benchmark:} Comparison of five PFAS definition systems shows accuracy ranging from """ + f"{min(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}" + r"""\% to """ + f"{max(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}" + r"""\% across OECD, EU, OPPT, UK, and PFASTRUCTv5 definitions.""" if definitions_data else "") + r"""
+\item \textbf{PFAS Definitions Benchmark:} Comparison of five PFAS definition systems shows accuracy ranging from """ + f"{min((((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items() if (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) > 0), default=0.0):.1f}" + r"""\% to """ + f"{max((((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items() if (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) > 0), default=0.0):.1f}" + r"""\% across OECD, EU, OPPT, UK, and PFASTRUCTv5 definitions.""" if definitions_data else "") + r"""
 
 \item \textbf{Performance Scaling:} Execution time follows an exponential model ($R^2 = """ + f"{r_squared:.4f}" + r"""$) with mean processing time of """ + f"{pg_stats['mean']:.2f}" + r""" ms per molecule and median of """ + f"{pg_stats['median']:.2f}" + r""" ms.
 
@@ -666,7 +688,7 @@ summary_content = [
     r"""%% HalogenGroups Performance Summary for Abstract/Introduction
 %% Generated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + r"""
 
-The HalogenGroups algorithm was validated on """ + f"{len(oecd_data):,}" + r""" reference compounds from the OECD database, achieving """ + f"{overall_accuracy:.1f}" + r"""\% accuracy in PFAS detection and classification with """ + f"{pg_precision:.1f}" + r"""\% precision and """ + f"{pg_recall:.1f}" + r"""\% recall. """ + (f"Benchmarking of five PFAS definition systems (OECD, EU, OPPT, UK, PFASTRUCTv5) showed accuracy ranging from {min(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}\\% to {max(((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items()):.1f}\\%. " if definitions_data else "") + r"""Performance analysis on """ + f"{len(timing_data):,}" + r""" molecules of varying complexity showed execution times ranging from """ + f"{pg_stats['min']:.2f}" + r""" to """ + f"{pg_stats['max']:.2f}" + r""" ms (mean: """ + f"{pg_stats['mean']:.2f}" + r""" ms, median: """ + f"{pg_stats['median']:.2f}" + r""" ms). The algorithm successfully identified all 55 functional groups in """ + f"{len(enhanced_data):,}" + r""" systematically generated test molecules and demonstrated robust handling of complex branched structures. """,
+The HalogenGroups algorithm was validated on """ + f"{len(oecd_data):,}" + r""" reference compounds from the OECD database, achieving """ + f"{overall_accuracy:.1f}" + r"""\% accuracy in PFAS detection and classification with """ + f"{pg_precision:.1f}" + r"""\% precision and """ + f"{pg_recall:.1f}" + r"""\% recall. """ + (f"Benchmarking of five PFAS definition systems (OECD, EU, OPPT, UK, PFASTRUCTv5) showed accuracy ranging from {min((((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items() if (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) > 0), default=0.0):.1f}\\% to {max((((def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0)) / (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) * 100) for def_name, def_stats in definitions_data.get('definitions', {}).items() if (def_stats.get('true_positives', 0) + def_stats.get('true_negatives', 0) + def_stats.get('false_positives', 0) + def_stats.get('false_negatives', 0)) > 0), default=0.0):.1f}\\%. " if definitions_data else "") + r"""Performance analysis on """ + f"{len(timing_data):,}" + r""" molecules of varying complexity showed execution times ranging from """ + f"{pg_stats['min']:.2f}" + r""" to """ + f"{pg_stats['max']:.2f}" + r""" ms (mean: """ + f"{pg_stats['mean']:.2f}" + r""" ms, median: """ + f"{pg_stats['median']:.2f}" + r""" ms). The algorithm successfully identified all 55 functional groups in """ + f"{len(enhanced_data):,}" + r""" systematically generated test molecules and demonstrated robust handling of complex branched structures. """,
     (f"Compared to PFAS-Atlas, HalogenGroups showed {speedup:.2f}$\\times$ speedup" if speedup > 1 else f"performance comparable to PFAS-Atlas") + r""" while providing detailed functional group identification and chain length quantification.
 
 """
