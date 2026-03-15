@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "name": "Perfluoroalkyl carboxylic acids",
+        "name": "OECD perfluoroalkyl carboxylic acids",
         "alias": "PFCAs",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -89,7 +89,7 @@
     },
     {
         "id": 2,
-        "name": "Polyfluoroalkyl carboxylic acid",
+        "name": "OECD polyfluoroalkyl carboxylic acid",
         "alias": "PolyFCAs",
         "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
@@ -178,7 +178,7 @@
     },
     {
         "id": 3,
-        "name": "Perfluoroalkyl dicarboxylic acids",
+        "name": "OECD perfluoroalkyl dicarboxylic acids",
         "alias": "PFdiCAs",
         "componentSmarts": "Perfluoroalkyl",
         "max_dist_from_comp": 1,
@@ -268,7 +268,7 @@
     },
     {
         "id": 4,
-        "name": "Perfluoroalkylether carboxylic acids",
+        "name": "OECD perfluoroalkylether carboxylic acids",
         "alias": "PFECAs",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -355,7 +355,7 @@
     },
     {
         "id": 5,
-        "name": "Polyfluoroalkylether carboxylic acid",
+        "name": "OECD polyfluoroalkylether carboxylic acid",
         "alias": "PolyFECAs",
         "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
@@ -449,7 +449,7 @@
     },
     {
         "id": 6,
-        "name": "Perfluoroalkyl sulfonic acids",
+        "name": "OECD perfluoroalkyl sulfonic acids",
         "alias": "PFSAs",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -536,7 +536,7 @@
     },
     {
         "id": 7,
-        "name": "Polyfluoroalkyl sulfonic acid",
+        "name": "OECD polyfluoroalkyl sulfonic acid",
         "alias": "PolyFSAs",
         "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
@@ -633,7 +633,7 @@
     },
     {
         "id": 8,
-        "name": "Perfluoroalkyl disulfonic acids",
+        "name": "OECD perfluoroalkyl disulfonic acids",
         "alias": "PFdiSAs",
         "componentSmarts": "Perfluoroalkyl",
         "max_dist_from_comp": 1,
@@ -724,7 +724,7 @@
     },
     {
         "id": 9,
-        "name": "Perfluoroalkylether sulfonic acids",
+        "name": "OECD perfluoroalkylether sulfonic acids",
         "alias": "PFESAs",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -831,7 +831,7 @@
     },
     {
         "id": 10,
-        "name": "Polyfluoroalkylether sulfonic acid",
+        "name": "OECD polyfluoroalkylether sulfonic acid",
         "alias": "PolyFESAs",
         "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
@@ -945,7 +945,7 @@
     },
     {
         "id": 11,
-        "name": "Perfluoroalkyl sulfinic acids",
+        "name": "OECD perfluoroalkyl sulfinic acids",
         "alias": "PFSiAs",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -1031,7 +1031,7 @@
     },
     {
         "id": 12,
-        "name": "Perfluoroalkyl phosphonic acids",
+        "name": "OECD perfluoroalkyl phosphonic acids",
         "alias": "PFPAs",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -1114,7 +1114,7 @@
     },
     {
         "id": 13,
-        "name": "Perfluoroalkyl phosphinic acids",
+        "name": "OECD perfluoroalkyl phosphinic acids",
         "alias": "PFPiAs",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -1197,7 +1197,7 @@
     },
     {
         "id": 14,
-        "name": "Perfluoroalkyl alcohols",
+        "name": "OECD perfluoroalkyl alcohols",
         "alias": "Perfluoroalkyl alcohols",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -1276,8 +1276,8 @@
     },
     {
         "id": 15,
-        "name": "Telomer alcohols",
-        "alias": "Telomer alcohols",
+        "name": "OECD telomer alcohols",
+        "alias": "telomer alcohols",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
         "max_dist_from_comp": 0,
@@ -1341,7 +1341,7 @@
     },
     {
         "id": 16,
-        "name": "Perfluoropolyethers",
+        "name": "OECD perfluoropolyethers",
         "alias": "PFPEs",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -1425,7 +1425,7 @@
     },
     {
         "id": 17,
-        "name": "Hydrofluoroethers",
+        "name": "OECD hydrofluoroethers",
         "alias": "HFEs",
         "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
@@ -1511,7 +1511,7 @@
     },
     {
         "id": 18,
-        "name": "Perfluoroalkene",
+        "name": "OECD perfluoroalkene",
         "alias": "Perfluoroalkene",
         "componentSmarts": null,
         "max_dist_from_comp": 16,
@@ -1585,7 +1585,7 @@
     },
     {
         "id": 19,
-        "name": "Hydrofluoroolefins",
+        "name": "OECD hydrofluoroolefins",
         "alias": "HFOs",
         "componentSmarts": "Polyfluoroalkyl",
         "max_dist_from_comp": 16,
@@ -1661,7 +1661,7 @@
     },
     {
         "id": 20,
-        "name": "Hydrofluorocarbons",
+        "name": "OECD hydrofluorocarbons",
         "alias": "HFCs",
         "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
@@ -1742,7 +1742,7 @@
     },
     {
         "id": 21,
-        "name": "Semi-fluorinated alkanes",
+        "name": "OECD semi-fluorinated alkanes",
         "alias": "SFAs",
         "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
@@ -1826,7 +1826,7 @@
     },
     {
         "id": 22,
-        "name": "Side-chain fluorinated aromatics",
+        "name": "OECD side-chain fluorinated aromatics",
         "alias": "Side-chain fluorinated aromatics",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -1888,7 +1888,7 @@
     },
     {
         "id": 23,
-        "name": "Perfluoroalkane",
+        "name": "OECD perfluoroalkane",
         "alias": "Perfluoroalkane",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -1963,7 +1963,7 @@
     },
     {
         "id": 24,
-        "name": "Perfluoroalkyl-tert-amines",
+        "name": "OECD perfluoroalkyl-tert-amines",
         "alias": "Perfluoroalkyl-tert-amines",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -2045,7 +2045,7 @@
     },
     {
         "id": 25,
-        "name": "Perfluoroalkyl iodides",
+        "name": "OECD perfluoroalkyl iodides",
         "alias": "PFAIs",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -2119,7 +2119,7 @@
     },
     {
         "id": 26,
-        "name": "Perfluoroalkane sulfonyl fluorides",
+        "name": "OECD perfluoroalkane sulfonyl fluorides",
         "alias": "PASFs",
         "componentSmarts": "Perfluoroalkyl",
         "max_dist_from_comp": 0,
@@ -2192,7 +2192,7 @@
     },
     {
         "id": 27,
-        "name": "Perfluoroalkyl ketones",
+        "name": "OECD perfluoroalkyl ketones",
         "alias": "Perfluoroalkyl ketones",
         "componentSmarts": "Perfluoroalkyl",
         "linker_smarts": null,
@@ -2273,7 +2273,7 @@
     },
     {
         "id": 28,
-        "name": "Semi-fluoroalkyl ketones",
+        "name": "OECD semi-fluoroalkyl ketones",
         "alias": "Semi-fluoroalkyl ketones",
         "componentSmarts": "Polyfluoroalkyl",
         "linker_smarts": null,
@@ -3674,7 +3674,7 @@
         }
     },
     {
-        "name": "Heterocyclic azole",
+        "name": "heterocyclic azole",
         "alias": "heterocyclic azole",
         "id": 47,
         "componentSmarts": null,
@@ -3743,7 +3743,7 @@
         }
     },
     {
-        "name": "Heterocyclic azine",
+        "name": "heterocyclic azine",
         "alias": "heterocyclic azine",
         "id": 48,
         "componentSmarts": null,
@@ -4193,7 +4193,7 @@
     },
     {
         "id": 55,
-        "name": "Side-chain aromatics",
+        "name": "side-chain aromatics",
         "alias": "Side-chain aromatics",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -4256,7 +4256,7 @@
     },
     {
         "id": 56,
-        "name": "Perhalogenated cyclic compounds",
+        "name": "perhalogenated cyclic compounds",
         "alias": "Perhalogenated cyclic compounds",
         "componentSmarts": null,
         "componentForm": "cyclic",
@@ -4320,7 +4320,7 @@
     },
     {
         "id": 57,
-        "name": "Polyhalogenated cyclic compounds",
+        "name": "polyhalogenated cyclic compounds",
         "alias": "Polyhalogenated cyclic compounds",
         "componentSmarts": null,
         "componentForm": "cyclic",
@@ -4383,7 +4383,7 @@
     },
     {
         "id": 58,
-        "name": "Perhalogenated aryl compounds",
+        "name": "perhalogenated aryl compounds",
         "alias": "Perhalogenated aryl compounds",
         "componentSmarts": null,
         "componentForm": "aryl",
@@ -4447,7 +4447,7 @@
     },
     {
         "id": 59,
-        "name": "Polyhalogenated aryl compounds",
+        "name": "polyhalogenated aryl compounds",
         "alias": "Polyhalogenated aryl compounds",
         "componentSmarts": null,
         "componentForm": "aryl",
@@ -4511,7 +4511,7 @@
     },
     {
         "id": 60,
-        "name": "Peroxydes",
+        "name": "peroxydes",
         "alias": "Peroxydes",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -4582,7 +4582,7 @@
     },
     {
         "id": 61,
-        "name": "Benzoyl peroxydes",
+        "name": "benzoyl peroxydes",
         "alias": "Benzoyl peroxydes",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -4645,7 +4645,7 @@
     },
     {
         "id": 62,
-        "name": "Silane",
+        "name": "silane",
         "alias": "Silane",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -4714,7 +4714,7 @@
     },
     {
         "id": 63,
-        "name": "Trichlorosilane",
+        "name": "trichlorosilane",
         "alias": "Trichlorosilane",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -4779,7 +4779,7 @@
     },
     {
         "id": 64,
-        "name": "Acrylate",
+        "name": "acrylate",
         "alias": "Acrylate",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -4847,7 +4847,7 @@
     },
     {
         "id": 65,
-        "name": "Methacrylate",
+        "name": "methacrylate",
         "alias": "Methacrylate",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -4915,7 +4915,7 @@
     },
     {
         "id": 66,
-        "name": "Betaine",
+        "name": "betaine",
         "alias": "Betaine",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -4976,7 +4976,7 @@
     },
     {
         "id": 67,
-        "name": "Thiocyanic acid",
+        "name": "thiocyanic acid",
         "alias": "Thiocyanic acid",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -5041,7 +5041,7 @@
     },
     {
         "id": 68,
-        "name": "Thia keto propanoic acid",
+        "name": "thia keto propanoic acid",
         "alias": "Thia keto propanoic acid",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -5114,7 +5114,7 @@
     },
     {
         "id": 69,
-        "name": "Glucuronate",
+        "name": "glucuronate",
         "alias": "Glucuronate",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -5186,7 +5186,7 @@
     },
     {
         "id": 70,
-        "name": "Glycine",
+        "name": "glycine",
         "alias": "Glycine",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -5247,7 +5247,7 @@
     },
     {
         "id": 71,
-        "name": "Sulfonamidoethanol",
+        "name": "sulfonamidoethanol",
         "alias": "Sulfonamidoethanol",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -5317,7 +5317,7 @@
     },
     {
         "id": 72,
-        "name": "Sulfonyl propanoic acid",
+        "name": "sulfonyl propanoic acid",
         "alias": "Sulfonyl propanoic acid",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -5382,7 +5382,7 @@
     },
     {
         "id": 73,
-        "name": "Sulfinyl amido sulfonic acid",
+        "name": "sulfinyl amido sulfonic acid",
         "alias": "Sulfinyl amido sulfonic acid",
         "componentSmarts": null,
         "linker_smarts": null,
@@ -5448,8 +5448,8 @@
     },
     {
         "id": 74,
-        "name": "Telomer silane",
-        "alias": "Telomer silane",
+        "name": "telomer silane",
+        "alias": "telomer silane",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -5506,8 +5506,8 @@
     },
     {
         "id": 75,
-        "name": "Telomer trichlorosilane",
-        "alias": "Telomer trichlorosilane",
+        "name": "telomer trichlorosilane",
+        "alias": "telomer trichlorosilane",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -5564,7 +5564,7 @@
     },
     {
         "id": 76,
-        "name": "Telomer iodide",
+        "name": "telomer iodide",
         "alias": "FTI",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -5653,7 +5653,7 @@
     },
     {
         "id": 77,
-        "name": "Telomer aldehyde",
+        "name": "telomer aldehyde",
         "alias": "FTUCA",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -5742,7 +5742,7 @@
     },
     {
         "id": 78,
-        "name": "Telomer carboxylic acids",
+        "name": "telomer carboxylic acids",
         "alias": "FTCA",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -5831,7 +5831,7 @@
     },
     {
         "id": 79,
-        "name": "Telomer ethoxylates",
+        "name": "telomer ethoxylates",
         "alias": "FTEO",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -5924,7 +5924,7 @@
     },
     {
         "id": 80,
-        "name": "Telomer sulfonic acid",
+        "name": "telomer sulfonic acid",
         "alias": "FTSA",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6014,7 +6014,7 @@
     },
     {
         "id": 81,
-        "name": "Telomer monophosphate",
+        "name": "telomer monophosphate",
         "alias": "monoPAP",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6103,7 +6103,7 @@
     },
     {
         "id": 82,
-        "name": "Telomer diphosphate",
+        "name": "telomer diphosphate",
         "alias": "diPAP",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6192,7 +6192,7 @@
     },
     {
         "id": 83,
-        "name": "Telomer triphosphate",
+        "name": "telomer triphosphate",
         "alias": "triPAP",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6281,7 +6281,7 @@
     },
     {
         "id": 84,
-        "name": "Telomer acrylate",
+        "name": "telomer acrylate",
         "alias": "FTAC",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6370,7 +6370,7 @@
     },
     {
         "id": 85,
-        "name": "Telomer methacrylate",
+        "name": "telomer methacrylate",
         "alias": "FTMAC",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6444,7 +6444,7 @@
     },
     {
         "id": 86,
-        "name": "Telomer alcohol",
+        "name": "telomer alcohol",
         "alias": "FTO",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6533,7 +6533,7 @@
     },
     {
         "id": 87,
-        "name": "Telomer sulfure",
+        "name": "telomer sulfure",
         "alias": "FTS",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6622,7 +6622,7 @@
     },
     {
         "id": 88,
-        "name": "Telomer sulfonamide",
+        "name": "telomer sulfonamide",
         "alias": "FTS",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6713,7 +6713,7 @@
     },
     {
         "id": 89,
-        "name": "Telomer silyl",
+        "name": "telomer silyl",
         "alias": "FTSi",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6771,7 +6771,7 @@
     },
     {
         "id": 90,
-        "name": "Telomer betaine",
+        "name": "telomer betaine",
         "alias": "FTB",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6861,7 +6861,7 @@
     },
     {
         "id": 91,
-        "name": "Telomer ester",
+        "name": "telomer ester",
         "alias": "FTEs",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -6934,8 +6934,8 @@
     },
     {
         "id": 92,
-        "name": "Telomer thiocyanic acid",
-        "alias": "Telomer thiocyanic acid",
+        "name": "telomer thiocyanic acid",
+        "alias": "telomer thiocyanic acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -7000,8 +7000,8 @@
     },
     {
         "id": 93,
-        "name": "Telomer alkene",
-        "alias": "Telomer alkene",
+        "name": "telomer alkene",
+        "alias": "telomer alkene",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
@@ -7080,8 +7080,8 @@
     },
     {
         "id": 94,
-        "name": "Telomer trimethylamine",
-        "alias": "Telomer trimethylamine",
+        "name": "telomer trimethylamine",
+        "alias": "telomer trimethylamine",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -7169,8 +7169,8 @@
     },
     {
         "id": 95,
-        "name": "Telomer sulfinic acid",
-        "alias": "Telomer sulfinic acid",
+        "name": "telomer sulfinic acid",
+        "alias": "telomer sulfinic acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -7259,8 +7259,8 @@
     },
     {
         "id": 96,
-        "name": "Telomer sulfenic acid",
-        "alias": "Telomer sulfenic acid",
+        "name": "telomer sulfenic acid",
+        "alias": "telomer sulfenic acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -7349,8 +7349,8 @@
     },
     {
         "id": 97,
-        "name": "Telomer sulfuric acid",
-        "alias": "Telomer sulfuric acid",
+        "name": "telomer sulfuric acid",
+        "alias": "telomer sulfuric acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -7439,8 +7439,8 @@
     },
     {
         "id": 98,
-        "name": "Telomer methyl",
-        "alias": "Telomer methyl",
+        "name": "telomer methyl",
+        "alias": "telomer methyl",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -7500,8 +7500,8 @@
     },
     {
         "id": 99,
-        "name": "Telomer glucuronic acid",
-        "alias": "Telomer glucuronic acid",
+        "name": "telomer glucuronic acid",
+        "alias": "telomer glucuronic acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -7581,8 +7581,8 @@
     },
     {
         "id": 100,
-        "name": "Telomer formaldehyde bisulfite",
-        "alias": "Telomer formaldehyde bisulfite",
+        "name": "telomer formaldehyde bisulfite",
+        "alias": "telomer formaldehyde bisulfite",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -7671,7 +7671,7 @@
     },
     {
         "id": 101,
-        "name": "Telomer unsaturated carboxylic acids",
+        "name": "telomer unsaturated carboxylic acids",
         "alias": "FTUCA",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -7756,8 +7756,8 @@
     },
     {
         "id": 102,
-        "name": "Telomer thia keto propanoic acid",
-        "alias": "Telomer thia keto propanoic acid",
+        "name": "telomer thia keto propanoic acid",
+        "alias": "telomer thia keto propanoic acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -7845,8 +7845,8 @@
     },
     {
         "id": 103,
-        "name": "Telomer glycine",
-        "alias": "Telomer glycine",
+        "name": "telomer glycine",
+        "alias": "telomer glycine",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CH1X4$(C(F))]",
@@ -7935,7 +7935,7 @@
     },
     {
         "id": 104,
-        "name": "Telomer sulfonamidoethanol",
+        "name": "telomer sulfonamidoethanol",
         "alias": "FOSE",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -8026,7 +8026,7 @@
     },
     {
         "id": 105,
-        "name": "Telomer ether carboxylic acids",
+        "name": "telomer ether carboxylic acids",
         "alias": "FTCA",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -8116,8 +8116,8 @@
     },
     {
         "id": 106,
-        "name": "Telomer sulfonyl propanoic acid",
-        "alias": "Telomer sulfonyl propanoic acid",
+        "name": "telomer sulfonyl propanoic acid",
+        "alias": "telomer sulfonyl propanoic acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -8206,8 +8206,8 @@
     },
     {
         "id": 107,
-        "name": "Telomer sulfinyl amido sulfonic acid",
-        "alias": "Telomer sulfinyl amido sulfonic acid",
+        "name": "telomer sulfinyl amido sulfonic acid",
+        "alias": "telomer sulfinyl amido sulfonic acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -8297,8 +8297,8 @@
     },
     {
         "id": 108,
-        "name": "Telomer sulfinyl",
-        "alias": "Telomer sulfinyl",
+        "name": "telomer sulfinyl",
+        "alias": "telomer sulfinyl",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -8379,8 +8379,8 @@
     },
     {
         "id": 109,
-        "name": "Telomer sulfone",
-        "alias": "Telomer sulfone",
+        "name": "telomer sulfone",
+        "alias": "telomer sulfone",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -8469,8 +8469,8 @@
     },
     {
         "id": 110,
-        "name": "Telomer acetylsulfanylhydroxypropanoic acid",
-        "alias": "Telomer acetylsulfanylhydroxypropanoic acid",
+        "name": "telomer acetylsulfanylhydroxypropanoic acid",
+        "alias": "telomer acetylsulfanylhydroxypropanoic acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -8559,8 +8559,8 @@
     },
     {
         "id": 111,
-        "name": "Telomer acetylhydroxyethanethioate",
-        "alias": "Telomer acetylhydroxyethanethioate",
+        "name": "telomer acetylhydroxyethanethioate",
+        "alias": "telomer acetylhydroxyethanethioate",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -8649,8 +8649,8 @@
     },
     {
         "id": 112,
-        "name": "Telomer amino propanoic acid",
-        "alias": "Telomer amino propanoic acid",
+        "name": "telomer amino propanoic acid",
+        "alias": "telomer amino propanoic acid",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -8739,8 +8739,8 @@
     },
     {
         "id": 113,
-        "name": "Telomer amino ethyl trimethyl ammonium",
-        "alias": "Telomer amino ethyl trimethyl ammonium",
+        "name": "telomer amino ethyl trimethyl ammonium",
+        "alias": "telomer amino ethyl trimethyl ammonium",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4]",
@@ -8828,8 +8828,8 @@
     },
     {
         "id": 114,
-        "name": "Telomer unsaturated halogen",
-        "alias": "Telomer unsaturated halogen",
+        "name": "telomer unsaturated halogen",
+        "alias": "telomer unsaturated halogen",
         "componentSmarts": null,
         "componentSaturation": "per",
         "linker_smarts": "[CH2X4,CX3H1!$(CO)]",
@@ -8912,7 +8912,7 @@
     },
     {
         "id": 115,
-        "name": "Telomer unsaturated iodide",
+        "name": "telomer unsaturated iodide",
         "alias": "FTI",
         "componentSmarts": null,
         "componentSaturation": "per",
@@ -9004,8 +9004,8 @@
     },
     {
         "id": 116,
-        "name": "Telomers",
-        "alias": "Telomers",
+        "name": "telomers",
+        "alias": "telomers",
         "componentSmarts": null,
         "componentSaturation": "per",
         "constraints": {},
