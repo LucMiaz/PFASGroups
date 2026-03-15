@@ -14,6 +14,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
 plt.style.use('seaborn-v0_8-whitegrid')
+plt.rcParams['font.family'] = 'Ubuntu'
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -22,6 +23,9 @@ from io import BytesIO
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
+import plotly.io as pio
+pio.templates["_ubuntu"] = go.layout.Template(layout={"font": {"family": "Ubuntu"}})
+pio.templates.default = "plotly+_ubuntu"
 import shutil
 from collections import defaultdict
 

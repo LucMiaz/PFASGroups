@@ -140,6 +140,7 @@ STYLE = {
     "axes.spines.top": False,
     "axes.spines.right": False,
     "font.size": 10,
+    "font.family": "Ubuntu",
 }
 
 def apply_style():

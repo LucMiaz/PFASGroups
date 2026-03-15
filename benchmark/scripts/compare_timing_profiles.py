@@ -24,6 +24,7 @@ except ImportError:
 try:
     import matplotlib.pyplot as plt
     plt.style.use('seaborn-v0_8-whitegrid')
+    plt.rcParams['font.family'] = 'Ubuntu'
     MATPLOTLIB_AVAILABLE = True
 except ImportError:
     MATPLOTLIB_AVAILABLE = False
