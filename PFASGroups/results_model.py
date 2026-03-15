@@ -360,8 +360,9 @@ def _grid_images(imgs: Sequence[Image.Image], buffer: int = 4, ncols: int = 3) -
 def _mol_image_with_table(
     mol_img: Image.Image,
     entries: List[Tuple[str, str, str, str, str]],
-    comp_metrics: Optional[Tuple[str, str, str, str]] = None,
+    comp_metrics: Optional[Tuple[str, ...]] = None,
     mol_label: str = "",
+    halogen_label: str = "",
     font_size: int = 9,
 ) -> Image.Image:
     """Composite a molecule image (PIL) with two formatted matplotlib tables.
@@ -371,13 +372,17 @@ def _mol_image_with_table(
     mol_img : PIL Image
         The molecule drawing produced by RDKit (no legend text).
     entries : list of tuples
-        Each tuple: (group_name, smarts_label, dist_center, dist_periphery, chain_pct)
+        Each tuple: (group_name, smarts_label, dist_center, dist_periphery)
         FG-specific metrics per matched component row.
     comp_metrics : tuple of str or None
-        Component-wide row: (size, branching, eccentricity, diameter).
+        Component-wide row: (size, branching, eccentricity, diameter, radius,
+        eff_graph_resistance, bde_eff_graph_resistance, chain_pct).
         When provided, rendered in a separate second table below the FG table.
     mol_label : str
         Optional header shown above the table (e.g. "mol#1").
+    halogen_label : str
+        Optional halogen element symbol (e.g. "F") shown as a badge in the
+        top-right corner of the molecule image.
     font_size : int
         Font size for table body text.
 
@@ -412,6 +417,15 @@ def _mol_image_with_table(
     ax_mol = fig.add_axes([0, 1 - mol_ratio, 1, mol_ratio])
     ax_mol.imshow(mol_img)
     ax_mol.axis('off')
+    if halogen_label:
+        ax_mol.text(
+            0.98, 0.98, halogen_label,
+            ha='right', va='top',
+            fontsize=font_size + 1, fontweight='bold',
+            color='white',
+            bbox=dict(boxstyle='round,pad=0.2', facecolor=_C0, edgecolor='none', alpha=0.85),
+            transform=ax_mol.transAxes,
+        )
 
     tbl_ratio = 1.0 - mol_ratio
 
@@ -445,13 +459,13 @@ def _mol_image_with_table(
         )
 
     # --- FG-specific table (table 1) ---
-    col_labels_fg = ["Group", "SMARTS", "Dist.Ctr", "Dist.Per", "% chain"]
-    col_widths_fg = [0.35, 0.30, 0.11, 0.11, 0.13]
+    col_labels_fg = ["Group", "SMARTS", "Dist.Ctr", "Dist.Per"]
+    col_widths_fg = [0.35, 0.30, 0.175, 0.175]
 
     cell_text_fg = [
-        [grp, sls or "\u2014", dct, dpr, frc]
-        for grp, sls, dct, dpr, frc in entries
-    ] or [["\u2014", "\u2014", "\u2014", "\u2014", "\u2014"]]
+        [grp, sls or "\u2014", dct, dpr]
+        for grp, sls, dct, dpr, *_ in entries
+    ] or [["\u2014", "\u2014", "\u2014", "\u2014"]]
 
     tbl = ax_tbl.table(
         cellText=cell_text_fg,
@@ -478,8 +492,8 @@ def _mol_image_with_table(
 
     # --- Component-wide metrics table (table 2) ---
     if comp_metrics:
-        col_labels_m = ["Size", "Branch.", "Ecc.", "Diam."]
-        col_widths_m = [0.22, 0.26, 0.26, 0.26]
+        col_labels_m = ["Size", "Branch.", "Ecc.", "ø", "Radius", "Eff.Res.", "% C"]
+        col_widths_m = [0.11, 0.13, 0.13, 0.10, 0.12, 0.19, 0.22]
         cell_text_m = [list(comp_metrics)]
 
         tbl2 = ax_tbl.table(
@@ -570,6 +584,21 @@ class ComponentView:
     def diameter(self) -> Optional[float]:
         """Graph diameter of the component (longest shortest path)."""
         return self.data.get("diameter")
+
+    @property
+    def radius(self) -> Optional[float]:
+        """Graph radius of the component (minimum eccentricity)."""
+        return self.data.get("radius")
+
+    @property
+    def effective_graph_resistance(self) -> Optional[float]:
+        """Effective graph resistance (Kirchhoff index) of the component."""
+        return self.data.get("effective_graph_resistance")
+
+    @property
+    def effective_graph_resistance_BDE(self) -> Optional[float]:
+        """BDE-weighted effective graph resistance of the component."""
+        return self.data.get("effective_graph_resistance_BDE")
 
 
 class MatchView(dict):
@@ -1018,26 +1047,31 @@ class PFASEmbedding(dict):
                     # Build component-wide metrics once per unique atom set
                     import math as _math
                     size_str = str(comp.size)
-                    br_v  = comp.branching
-                    ecc_v = comp.mean_eccentricity
+                    br_v   = comp.branching
+                    ecc_v  = comp.mean_eccentricity
                     diam_v = comp.diameter
+                    rad_v  = comp.radius
+                    egr_v  = comp.effective_graph_resistance
+                    frc_v  = comp.component_fraction
                     br_str   = f"{br_v:.2f}"   if br_v   is not None else "\u2014"
                     ecc_str  = f"{ecc_v:.2f}"  if ecc_v  is not None else "\u2014"
-                    diam_str = (f"{float(diam_v):.0f}" if diam_v is not None and not _math.isnan(float(diam_v)) else "\u2014")
+                    diam_str = (f"{float(diam_v):.0f}"  if diam_v is not None and not (isinstance(diam_v, float) and (_math.isnan(diam_v) or _math.isinf(diam_v))) else "\u2014")
+                    rad_str  = (f"{float(rad_v):.0f}"   if rad_v  is not None and not (isinstance(rad_v,  float) and (_math.isnan(rad_v)  or _math.isinf(rad_v)))  else "\u2014")
+                    egr_str  = (f"{float(egr_v):.2f}"   if egr_v  is not None and not (isinstance(egr_v,  float) and (_math.isnan(egr_v)  or _math.isinf(egr_v)))  else "\u2014")
+                    frc_str  = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
                     comp_groups[key] = {
                         'atoms': sorted(atoms),
                         'colour': colour,
+                        'halogen': halogen,
                         'entries': [],
-                        'comp_metrics': (size_str, br_str, ecc_str, diam_str),
+                        'comp_metrics': (size_str, br_str, ecc_str, diam_str, rad_str, egr_str, frc_str),
                     }
-                # FG-specific entry: group name, SMARTS type, dist-to-center, dist-to-periphery, % chain
+                # FG-specific entry: group name, SMARTS type, dist-to-center, dist-to-periphery
                 dct_v = comp.min_dist_to_center
                 dpr_v = comp.max_dist_to_periphery
-                frc_v = comp.component_fraction
                 dct_str = str(dct_v) if dct_v is not None else "\u2014"
                 dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
-                frc_str = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
-                entry = (base_label, sl_str, dct_str, dpr_str, frc_str)
+                entry = (base_label, sl_str, dct_str, dpr_str)
                 if entry not in comp_groups[key]['entries']:
                     comp_groups[key]['entries'].append(entry)
 
@@ -1048,6 +1082,7 @@ class PFASEmbedding(dict):
             colour = data['colour']
             entries = data['entries']
             comp_metrics = data.get('comp_metrics')
+            halogen_lbl = data.get('halogen') or ""
 
             atom_colours: Dict[int, Color] = {a: colour for a in atoms}
             d2d = Draw.MolDraw2DCairo(subwidth, subheight)
@@ -1065,7 +1100,7 @@ class PFASEmbedding(dict):
             )
             d2d.FinishDrawing()
             mol_img = Image.open(BytesIO(d2d.GetDrawingText()))
-            imgs.append(_mol_image_with_table(mol_img, entries, comp_metrics=comp_metrics))
+            imgs.append(_mol_image_with_table(mol_img, entries, comp_metrics=comp_metrics, halogen_label=halogen_lbl))
 
         if not imgs:
             raise ValueError("No PFAS group components found to display.")
@@ -1137,22 +1172,26 @@ class PFASEmbedding(dict):
                     br_v   = comp.branching
                     ecc_v  = comp.mean_eccentricity
                     diam_v = comp.diameter
+                    rad_v  = comp.radius
+                    egr_v  = comp.effective_graph_resistance
+                    frc_v  = comp.component_fraction
                     br_str   = f"{br_v:.2f}"  if br_v  is not None else "\u2014"
                     ecc_str  = f"{ecc_v:.2f}" if ecc_v is not None else "\u2014"
-                    diam_str = (f"{float(diam_v):.0f}" if diam_v is not None and not _math.isnan(float(diam_v)) else "\u2014")
+                    diam_str = (f"{float(diam_v):.0f}"  if diam_v is not None and not (isinstance(diam_v, float) and (_math.isnan(diam_v) or _math.isinf(diam_v))) else "\u2014")
+                    rad_str  = (f"{float(rad_v):.0f}"   if rad_v  is not None and not (isinstance(rad_v,  float) and (_math.isnan(rad_v)  or _math.isinf(rad_v)))  else "\u2014")
+                    egr_str  = (f"{float(egr_v):.2f}"   if egr_v  is not None and not (isinstance(egr_v,  float) and (_math.isnan(egr_v)  or _math.isinf(egr_v)))  else "\u2014")
+                    frc_str  = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
                     comp_groups[key] = {
                         'atoms': sorted(atoms),
                         'entries': [],
-                        'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str),
+                        'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str, rad_str, egr_str, frc_str),
                     }
                 # FG-specific entry
                 dct_v = comp.min_dist_to_center
                 dpr_v = comp.max_dist_to_periphery
-                frc_v = comp.component_fraction
                 dct_str = str(dct_v) if dct_v is not None else "\u2014"
                 dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
-                frc_str = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
-                entry = (base_label, sl_str, dct_str, dpr_str, frc_str)
+                entry = (base_label, sl_str, dct_str, dpr_str)
                 if entry not in comp_groups[key]['entries']:
                     comp_groups[key]['entries'].append(entry)
 
@@ -1165,15 +1204,15 @@ class PFASEmbedding(dict):
             n = len(entries)
 
             lines: List[str] = []
-            for grp, sls, dct, dpr, frc in entries:
+            for grp, sls, dct, dpr in entries:
                 line = f"\u2022 {grp}"
                 if sls:
                     line += f" | {sls}"
-                line += f"  dct={dct}  dpr={dpr}  chain={frc}"
+                line += f"  dct={dct}  dpr={dpr}"
                 lines.append(line)
             if comp_metrics:
-                sz, br, ecc, diam = comp_metrics
-                lines.append(f"  size={sz}  br={br}  ecc={ecc}  diam={diam}")
+                sz, br, ecc, diam, rad, egr, frc = comp_metrics
+                lines.append(f"  size={sz}  br={br}  ecc={ecc}  diam={diam}  rad={rad}  egr={egr}  chain={frc}")
             legend = "\n".join(lines)
 
             effective_height = max(subheight, 220 + n * 38)
@@ -1689,22 +1728,27 @@ class PFASEmbeddingSet(list):
                         br_v   = comp.branching
                         ecc_v  = comp.mean_eccentricity
                         diam_v = comp.diameter
+                        rad_v  = comp.radius
+                        egr_v  = comp.effective_graph_resistance
+                        frc_v  = comp.component_fraction
                         br_str   = f"{br_v:.2f}"  if br_v  is not None else "\u2014"
                         ecc_str  = f"{ecc_v:.2f}" if ecc_v is not None else "\u2014"
-                        diam_str = (f"{float(diam_v):.0f}" if diam_v is not None and not _math.isnan(float(diam_v)) else "\u2014")
+                        diam_str = (f"{float(diam_v):.0f}"  if diam_v is not None and not (isinstance(diam_v, float) and (_math.isnan(diam_v) or _math.isinf(diam_v))) else "\u2014")
+                        rad_str  = (f"{float(rad_v):.0f}"   if rad_v  is not None and not (isinstance(rad_v,  float) and (_math.isnan(rad_v)  or _math.isinf(rad_v)))  else "\u2014")
+                        egr_str  = (f"{float(egr_v):.2f}"   if egr_v  is not None and not (isinstance(egr_v,  float) and (_math.isnan(egr_v)  or _math.isinf(egr_v)))  else "\u2014")
+                        frc_str  = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
                         comp_groups[key] = {
                             'atoms': sorted(atoms),
                             'colour': colour,
+                            'halogen': halogen,
                             'entries': [],
-                            'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str),
+                            'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str, rad_str, egr_str, frc_str),
                         }
                     dct_v = comp.min_dist_to_center
                     dpr_v = comp.max_dist_to_periphery
-                    frc_v = comp.component_fraction
                     dct_str = str(dct_v) if dct_v is not None else "\u2014"
                     dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
-                    frc_str = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
-                    entry = (base_label, sl_str, dct_str, dpr_str, frc_str)
+                    entry = (base_label, sl_str, dct_str, dpr_str)
                     if entry not in comp_groups[key]['entries']:
                         comp_groups[key]['entries'].append(entry)
 
@@ -1713,6 +1757,7 @@ class PFASEmbeddingSet(list):
                 colour = data['colour']
                 entries = data['entries']
                 comp_metrics = data.get('comp_metrics')
+                halogen_lbl = data.get('halogen') or ""
 
                 atom_colours: Dict[int, Color] = {a: colour for a in atoms}
                 d2d = Draw.MolDraw2DCairo(subwidth, subheight)
@@ -1731,7 +1776,8 @@ class PFASEmbeddingSet(list):
                 d2d.FinishDrawing()
                 mol_img = Image.open(BytesIO(d2d.GetDrawingText()))
                 imgs.append(_mol_image_with_table(
-                    mol_img, entries, comp_metrics=comp_metrics, mol_label=f"mol#{mol_index + 1}"
+                    mol_img, entries, comp_metrics=comp_metrics,
+                    mol_label=f"mol#{mol_index + 1}", halogen_label=halogen_lbl
                 ))
 
         if not imgs:
@@ -1912,21 +1958,25 @@ class PFASEmbeddingSet(list):
                         br_v   = comp.branching
                         ecc_v  = comp.mean_eccentricity
                         diam_v = comp.diameter
+                        rad_v  = comp.radius
+                        egr_v  = comp.effective_graph_resistance
+                        frc_v  = comp.component_fraction
                         br_str   = f"{br_v:.2f}"  if br_v  is not None else "\u2014"
                         ecc_str  = f"{ecc_v:.2f}" if ecc_v is not None else "\u2014"
-                        diam_str = (f"{float(diam_v):.0f}" if diam_v is not None and not _math.isnan(float(diam_v)) else "\u2014")
+                        diam_str = (f"{float(diam_v):.0f}"  if diam_v is not None and not (isinstance(diam_v, float) and (_math.isnan(diam_v) or _math.isinf(diam_v))) else "\u2014")
+                        rad_str  = (f"{float(rad_v):.0f}"   if rad_v  is not None and not (isinstance(rad_v,  float) and (_math.isnan(rad_v)  or _math.isinf(rad_v)))  else "\u2014")
+                        egr_str  = (f"{float(egr_v):.2f}"   if egr_v  is not None and not (isinstance(egr_v,  float) and (_math.isnan(egr_v)  or _math.isinf(egr_v)))  else "\u2014")
+                        frc_str  = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
                         comp_groups[key] = {
                             'atoms': sorted(atoms),
                             'entries': [],
-                            'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str),
+                            'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str, rad_str, egr_str, frc_str),
                         }
                     dct_v = comp.min_dist_to_center
                     dpr_v = comp.max_dist_to_periphery
-                    frc_v = comp.component_fraction
                     dct_str = str(dct_v) if dct_v is not None else "\u2014"
                     dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
-                    frc_str = f"{frc_v*100:.0f}%" if frc_v is not None else "\u2014"
-                    entry = (base_label, sl_str, dct_str, dpr_str, frc_str)
+                    entry = (base_label, sl_str, dct_str, dpr_str)
                     if entry not in comp_groups[key]['entries']:
                         comp_groups[key]['entries'].append(entry)
 
@@ -1937,15 +1987,15 @@ class PFASEmbeddingSet(list):
                 n = len(entries)
 
                 lines: List[str] = [f"mol#{mol_index + 1}"]
-                for grp, sls, dct, dpr, frc in entries:
+                for grp, sls, dct, dpr in entries:
                     line = f"\u2022 {grp}"
                     if sls:
                         line += f" | {sls}"
-                    line += f"  dct={dct}  dpr={dpr}  chain={frc}"
+                    line += f"  dct={dct}  dpr={dpr}"
                     lines.append(line)
                 if comp_metrics:
-                    sz, br, ecc, diam = comp_metrics
-                    lines.append(f"  size={sz}  br={br}  ecc={ecc}  diam={diam}")
+                    sz, br, ecc, diam, rad, egr, frc = comp_metrics
+                    lines.append(f"  size={sz}  br={br}  ecc={ecc}  diam={diam}  rad={rad}  egr={egr}  chain={frc}")
                 legend = "\n".join(lines)
 
                 effective_height = max(subheight, 220 + (n + 1) * 38)
@@ -2533,6 +2583,7 @@ class PFASEmbeddingSet(list):
         try:
             from sklearn.decomposition import PCA
             from sklearn.preprocessing import StandardScaler
+            import matplotlib
             import matplotlib.pyplot as plt
         except ImportError as exc:
             raise ImportError(
@@ -2560,7 +2611,7 @@ class PFASEmbeddingSet(list):
             plt.tight_layout()
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches='tight')
-            else:
+            elif matplotlib.get_backend() != 'agg':
                 plt.show()
             plt.close()
 
@@ -2598,6 +2649,7 @@ class PFASEmbeddingSet(list):
         try:
             from sklearn.decomposition import KernelPCA
             from sklearn.preprocessing import StandardScaler
+            import matplotlib
             import matplotlib.pyplot as plt
         except ImportError as exc:
             raise ImportError(
@@ -2621,7 +2673,7 @@ class PFASEmbeddingSet(list):
             plt.tight_layout()
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches='tight')
-            else:
+            elif matplotlib.get_backend() != 'agg':
                 plt.show()
             plt.close()
 
@@ -2661,6 +2713,7 @@ class PFASEmbeddingSet(list):
         try:
             from sklearn.manifold import TSNE
             from sklearn.preprocessing import StandardScaler
+            import matplotlib
             import matplotlib.pyplot as plt
         except ImportError as exc:
             raise ImportError(
@@ -2689,7 +2742,7 @@ class PFASEmbeddingSet(list):
             plt.tight_layout()
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches='tight')
-            else:
+            elif matplotlib.get_backend() != 'agg':
                 plt.show()
             plt.close()
 
@@ -2728,6 +2781,7 @@ class PFASEmbeddingSet(list):
         try:
             import umap
             from sklearn.preprocessing import StandardScaler
+            import matplotlib
             import matplotlib.pyplot as plt
         except ImportError as exc:
             raise ImportError(
@@ -2764,7 +2818,7 @@ class PFASEmbeddingSet(list):
             plt.tight_layout()
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches='tight')
-            else:
+            elif matplotlib.get_backend() != 'agg':
                 plt.show()
             plt.close()
 
