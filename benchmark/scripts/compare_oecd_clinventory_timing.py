@@ -32,7 +32,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-
+from PFASGroups import rdkit_disable_log
 # ---------------------------------------------------------------------------
 # Path setup
 # ---------------------------------------------------------------------------
@@ -311,6 +311,7 @@ def fetch_clinventory(db_params: dict, limit: Optional[int],
 # ---------------------------------------------------------------------------
 # Main classification loop for one dataset
 # ---------------------------------------------------------------------------
+@rdkit_disable_log()
 def classify_dataset(
     molecules: List[dict],
     dataset_name: str,
@@ -834,6 +835,7 @@ def parse_args() -> argparse.Namespace:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+@rdkit_disable_log(level='warning')
 def main():
     args = parse_args()
     ts   = datetime.now().strftime("%Y%m%d_%H%M%S")
