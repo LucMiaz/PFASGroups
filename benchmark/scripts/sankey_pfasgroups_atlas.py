@@ -3,7 +3,7 @@
 Sankey diagrams: PFASGroups groups → PFAS-Atlas categories.
 
 Left side:  individual PFASGroups group IDs and names (format: "ID: name")
-Right side: PFAS-Atlas atlas_class1 classification
+Right side: PFAS-Atlas atlas_class2 classification (falls back to atlas_class1)
 
 Each side is labelled with the algorithm name.
 Colors are shades of the project palette (color_scheme.yaml) + grey for
@@ -355,7 +355,7 @@ _NOT_CLASSIFIED_NONE    = "Not classified (no fluorinated component)"
 
 def build_flows(
     records: List[dict],
-    right_key: str = "atlas_class1",
+    right_key: str = "atlas_class2",
     top_n: int = 20,
     group_ids: Optional[set] = None,
     exclude_not_pfas: bool = False,
@@ -364,7 +364,7 @@ def build_flows(
     Returns list of (left_label, right_label, count).
 
     Left:  'name (id XX)'  (or _NOT_CLASSIFIED_GENERIC / _NOT_CLASSIFIED_NONE if no groups matched).
-    Right: atlas_class2 value.
+    Right: atlas_class2 value (falls back to atlas_class1 when class2 is absent).
     Rare groups (outside top_n by molecule count) are merged into _OTHER_GROUPS.
     If group_ids is given, only groups whose id is in that set are kept;
     molecules with none of those groups are split into the two Not-classified buckets.
@@ -753,7 +753,7 @@ def main() -> None:
             unclassified = [
                 r for r in ds_records
                 if not any(g["gid"] in group_ids for g in r.get("pg_groups", []))
-                and r.get("atlas_class1") not in _pfas_not
+                and (r.get("atlas_class2") or r.get("atlas_class1")) not in _pfas_not
             ]
             csv_stem = f"unclassified_{safe_ds}{groups_suffix}_{ts}"
             csv_path = args.outdir / f"{csv_stem}.csv"
