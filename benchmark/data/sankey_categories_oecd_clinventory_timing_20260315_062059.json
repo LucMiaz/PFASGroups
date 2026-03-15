@@ -1,0 +1,302 @@
+[
+  {
+    "id": "DTXSID00145182",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00166413",
+    "pg_label_oecd": "Hydrofluoroolefins",
+    "pg_label_generic": "alkene",
+    "pg_label_generic_tel": "alkene"
+  },
+  {
+    "id": "DTXSID00184314",
+    "pg_label_oecd": "Hydrofluorocarbons, Perfluoroalkane",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00184995",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00187143",
+    "pg_label_oecd": "Hydrofluorocarbons",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00188993",
+    "pg_label_oecd": "Semi-fluoroalkyl ketones",
+    "pg_label_generic": "ketone",
+    "pg_label_generic_tel": "ketone"
+  },
+  {
+    "id": "DTXSID00188998",
+    "pg_label_oecd": "Perfluoroalkene, Hydrofluoroolefins",
+    "pg_label_generic": "alkene",
+    "pg_label_generic_tel": "alkene"
+  },
+  {
+    "id": "DTXSID00189465",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Heterocyclic azine, amine",
+    "pg_label_generic_tel": "Heterocyclic azine, amine"
+  },
+  {
+    "id": "DTXSID00190839",
+    "pg_label_oecd": "Semi-fluorinated alkanes",
+    "pg_label_generic": "chloride",
+    "pg_label_generic_tel": "chloride"
+  },
+  {
+    "id": "DTXSID00190950",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "alcohol",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00192353",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00194615",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "ester, Acrylate",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00195203",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00196230",
+    "pg_label_oecd": "Semi-fluorinated alkanes",
+    "pg_label_generic": "iodide",
+    "pg_label_generic_tel": "iodide"
+  },
+  {
+    "id": "DTXSID00210900",
+    "pg_label_oecd": "Perfluoroalkyl alcohols",
+    "pg_label_generic": "alcohol",
+    "pg_label_generic_tel": "alcohol"
+  },
+  {
+    "id": "DTXSID00223797",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00226440",
+    "pg_label_oecd": "Perfluoroalkene, Hydrofluoroolefins",
+    "pg_label_generic": "alkene",
+    "pg_label_generic_tel": "alkene"
+  },
+  {
+    "id": "DTXSID00227578",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "sulfonamide",
+    "pg_label_generic_tel": "sulfonamide"
+  },
+  {
+    "id": "DTXSID00234929",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "sulfonamide",
+    "pg_label_generic_tel": "sulfonamide"
+  },
+  {
+    "id": "DTXSID00239570",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "sulfonic acid",
+    "pg_label_generic_tel": "sulfonic acid"
+  },
+  {
+    "id": "DTXSID00239595",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00239858",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "sulfonamide, Sulfonamidoethanol",
+    "pg_label_generic_tel": "sulfonamide, Sulfonamidoethanol"
+  },
+  {
+    "id": "DTXSID00240984",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID0027141",
+    "pg_label_oecd": "Perfluoroalkyl-tert-amines",
+    "pg_label_generic": "amine",
+    "pg_label_generic_tel": "amine"
+  },
+  {
+    "id": "DTXSID00335703",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00336619",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00338835",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "amide",
+    "pg_label_generic_tel": "amide"
+  },
+  {
+    "id": "DTXSID00344572",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "amide",
+    "pg_label_generic_tel": "amide"
+  },
+  {
+    "id": "DTXSID00346051",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "alkene",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00365621",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "amide",
+    "pg_label_generic_tel": "amide"
+  },
+  {
+    "id": "DTXSID0036926",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Perhalogenated cyclic compounds",
+    "pg_label_generic_tel": "Perhalogenated cyclic compounds"
+  },
+  {
+    "id": "DTXSID00369821",
+    "pg_label_oecd": "Perfluoroalkyl dicarboxylic acids",
+    "pg_label_generic": "carboxylic acid",
+    "pg_label_generic_tel": "carboxylic acid"
+  },
+  {
+    "id": "DTXSID00369826",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "alcohol",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00370992",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "ether",
+    "pg_label_generic_tel": "ether"
+  },
+  {
+    "id": "DTXSID00371287",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "alkene",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00371601",
+    "pg_label_oecd": "Semi-fluorinated alkanes",
+    "pg_label_generic": "bromide",
+    "pg_label_generic_tel": "bromide"
+  },
+  {
+    "id": "DTXSID00375104",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "ester, Acrylate",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00375109",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "sulfonic acid, iodide",
+    "pg_label_generic_tel": "sulfonic acid, iodide"
+  },
+  {
+    "id": "DTXSID00377688",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "ether",
+    "pg_label_generic_tel": "ether"
+  },
+  {
+    "id": "DTXSID00377825",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00379248",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00379268",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00379288",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00379561",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00379566",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00379703",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Telomers"
+  },
+  {
+    "id": "DTXSID00379783",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "ester, Perhalogenated cyclic compounds",
+    "pg_label_generic_tel": "ester, Perhalogenated cyclic compounds"
+  },
+  {
+    "id": "DTXSID00379829",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "acyl halide, chloride",
+    "pg_label_generic_tel": "acyl halide, chloride"
+  },
+  {
+    "id": "DTXSID00379884",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "Not PFAS",
+    "pg_label_generic_tel": "Not PFAS"
+  },
+  {
+    "id": "DTXSID00379925",
+    "pg_label_oecd": "Not PFAS",
+    "pg_label_generic": "acyl halide, chloride",
+    "pg_label_generic_tel": "acyl halide, chloride"
+  }
+]

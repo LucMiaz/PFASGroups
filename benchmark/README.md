@@ -178,6 +178,7 @@ and initialises the SQLite database. Called automatically by `quick-start.*`.
 | `generate_telomer_report.py` | Reads `data/telomer_validation_results.json` and produces an HTML report with group detection rates and examples for the review app. |
 | `generate_telomer_latex.py` | Writes LaTeX table fragments for the telomer validation section of the article. |
 | `generate_clinventory_latex.py` | Writes LaTeX table and narrative text fragments for the clinventory comparison section of the article. |
+| `sankey_pfasgroups_atlas.py` | Generates interactive Sankey diagrams mapping PFASGroups categories (left) to PFAS-Atlas categories (right) for all datasets (OECD, clinventory, clinventory F-only). Produces three classification views per dataset: OECD groups, generic groups, and generic+telomers. Outputs self-contained HTML files; PNG/PDF require a display. Run with `--sample N` for a quick preview. |
 
 ### Utilities
 
@@ -210,6 +211,7 @@ Common naming patterns:
 | `pfasatlas_clinventory_<TS>.json` | `classify_pfasatlas_clinventory.py` |
 | `clinventory_comparison_<TS>.json` | `compare_clinventory_classifiers.py` |
 | `oecd_clinventory_timing_<TS>.json` | `compare_oecd_clinventory_timing.py` |
+| `sankey_categories_<stem>.json` | `sankey_pfasgroups_atlas.py` (classification cache) |
 | `timing_analysis_<TS>.json` | `analyze_timing.py` |
 | `PubChem_fluorotelomers.sdf` | Static — PubChem fluorotelomer reference dataset |
 

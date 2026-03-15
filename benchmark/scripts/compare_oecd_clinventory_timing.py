@@ -125,6 +125,7 @@ def _load_palette() -> List[str]:
 
 _PALETTE = _load_palette()
 _C0, _C1, _C2, _C3 = _PALETTE          # orange, blue, magenta, dark-purple
+_C4 = "#2DAA5F"                         # green — clinventory (F-only) dataset
 
 COLORS = {
     "PFASGroups": _C0,
@@ -133,14 +134,17 @@ COLORS = {
     "clinventory": _C3,
 }
 
-DATASET_MARKERS = {"OECD": "o", "clinventory": "s"}
-DATASET_LS      = {"OECD": "-", "clinventory": "--"}
+DATASET_MARKERS = {"OECD": "o", "clinventory": "s", "clinventory (F)": "^"}
+DATASET_LS      = {"OECD": "-", "clinventory": "--", "clinventory (F)": ":"}
+DATASET_COLORS  = {"OECD": _C2, "clinventory": _C3, "clinventory (F)": _C4}
 
 STYLE = {
     "axes.spines.top":   False,
     "axes.spines.right": False,
     "font.size": 10,
     "figure.dpi": 150,
+    "font.family":       "sans-serif",
+    "font.sans-serif":   ["Ubuntu", "DejaVu Sans", "Arial", "sans-serif"],
 }
 
 def apply_style():
@@ -470,7 +474,7 @@ def plot_timing_cdf(datasets: Dict[str, List[dict]], imgs_dir: Path):
     apply_style()
     fig, ax = plt.subplots(figsize=(8, 4))
 
-    linestyles = {"OECD": "-", "clinventory": "--"}
+    linestyles = DATASET_LS
     for ds_name, records in datasets.items():
         ls = linestyles.get(ds_name, "-")
         for tool, key, color in [
@@ -579,7 +583,7 @@ def plot_timing_scatter(datasets: Dict[str, List[dict]], imgs_dir: Path):
     fig, axes = plt.subplots(1, 2, figsize=(13, 4))
     titles = ["PFASGroups", "PFAS-Atlas"]
     keys   = ["pg_time_ms", "atlas_time_ms"]
-    colors_ds = {"OECD": _C2, "clinventory": _C3}
+    colors_ds = DATASET_COLORS
 
     for ax, title, key in zip(axes, titles, keys):
         for ds_name, records in datasets.items():
@@ -611,7 +615,7 @@ def plot_timing_scatter(datasets: Dict[str, List[dict]], imgs_dir: Path):
 def _plot_hist_compare(ax, datasets: Dict[str, List[dict]], key: str,
                        xlabel: str, bins: int = 40, log: bool = False):
     """Overlapping histograms for a complexity metric across datasets."""
-    colors_ds = {"OECD": _C2, "clinventory": _C3}
+    colors_ds = DATASET_COLORS
     for ds_name, records in datasets.items():
         vals = [r[key] for r in records if r.get(key) is not None]
         if not vals:
@@ -669,7 +673,7 @@ def plot_complexity_boxplots(datasets: Dict[str, List[dict]], imgs_dir: Path):
     n = len(metrics)
     fig, axes = plt.subplots(2, 3, figsize=(14, 7))
     axes_flat = axes.flatten()
-    colors_ds = {"OECD": _C2, "clinventory": _C3}
+    colors_ds = DATASET_COLORS
 
     for ax, (key, label) in zip(axes_flat, metrics):
         data, tick_labels, bcolors = [], [], []
@@ -707,7 +711,7 @@ def plot_fluorine_ratio_vs_timing(datasets: Dict[str, List[dict]],
     fig, axes = plt.subplots(1, 2, figsize=(13, 4))
     titles = ["PFASGroups", "PFAS-Atlas"]
     keys   = ["pg_time_ms", "atlas_time_ms"]
-    colors_ds = {"OECD": _C2, "clinventory": _C3}
+    colors_ds = DATASET_COLORS
 
     for ax, title, key in zip(axes, titles, keys):
         for ds_name, records in datasets.items():
@@ -738,7 +742,7 @@ def plot_component_size_distribution(datasets: Dict[str, List[dict]],
         return
     apply_style()
     fig, ax = plt.subplots(figsize=(7, 4))
-    colors_ds = {"OECD": _C2, "clinventory": _C3}
+    colors_ds = DATASET_COLORS
 
     for ds_name, records in datasets.items():
         vals = [r["pg_max_comp_size"] for r in records
@@ -800,6 +804,124 @@ def plot_agreement(datasets: Dict[str, List[dict]], imgs_dir: Path):
                  fontweight="bold")
     plt.tight_layout()
     save_fig(fig, "oecd_clinventory_agreement", imgs_dir)
+
+
+# ---------------------------------------------------------------------------
+# ── SUMMARY TABLES ──────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+def save_summary_tables(
+    datasets: Dict[str, List[dict]],
+    reports_dir: Path,
+    ts: str,
+    atlas_enabled: bool,
+) -> None:
+    """Write timing and complexity summary tables to .tex and .md files."""
+    reports_dir.mkdir(exist_ok=True, parents=True)
+
+    def _med(v: list) -> float:
+        return sorted(v)[len(v) // 2] if v else float("nan")
+
+    def _tex_escape(s: str) -> str:
+        return s.replace("_", r"\_").replace("&", r"\&")
+
+    # ── Collect timing rows ───────────────────────────────────────────────
+    timing_rows: List[tuple] = []
+    for ds_name, recs in datasets.items():
+        tools = [("PFASGroups", "pg_time_ms")]
+        if atlas_enabled:
+            tools.append(("PFAS-Atlas", "atlas_time_ms"))
+        for tool, key in tools:
+            times = [r[key] for r in recs if r.get(key)]
+            if not times:
+                continue
+            s = stats(times)
+            timing_rows.append((ds_name, tool, s["n"], s["median"], s["mean"], s["p95"]))
+
+    # ── Collect complexity rows ───────────────────────────────────────────
+    complexity_rows: List[tuple] = []
+    for ds_name, recs in datasets.items():
+        valid = [r for r in recs if r.get("n_heavy_atoms")]
+        if not valid:
+            continue
+        ha  = [r["n_heavy_atoms"]    for r in valid]
+        fr  = [r["fluorine_ratio"]   for r in valid]
+        bi  = [r["branching_index"]  for r in valid]
+        mcs = [r["pg_max_comp_size"] for r in valid if r.get("pg_max_comp_size")]
+        complexity_rows.append((
+            ds_name, len(valid),
+            _med(ha), _med(fr), _med(bi), _med(mcs),
+        ))
+
+    # ── Markdown ─────────────────────────────────────────────────────────
+    md: List[str] = [
+        f"# OECD × clinventory timing summary — {ts}\n",
+        "## Timing (ms per molecule)\n",
+        "| Dataset | Tool | n | Median | Mean | P95 |",
+        "|---------|------|--:|-------:|-----:|----:|",
+    ]
+    for ds, tool, n, med, mean, p95 in timing_rows:
+        md.append(f"| {ds} | {tool} | {n:,} | {med:.3f} | {mean:.3f} | {p95:.3f} |")
+    md += [
+        "",
+        "## Complexity (median values)\n",
+        "| Dataset | n | Size | F ratio | Branching | Comp. size |",
+        "|---------|--:|-----:|--------:|----------:|-----------:|",
+    ]
+    for ds, n, sz, fr, bi, cs in complexity_rows:
+        md.append(f"| {ds} | {n:,} | {sz:.0f} | {fr:.2f} | {bi:.2f} | {cs:.0f} |")
+    md_path = reports_dir / f"oecd_clinventory_timing_summary_{ts}.md"
+    md_path.write_text("\n".join(md) + "\n", encoding="utf-8")
+    print(f"  Saved: reports/{md_path.name}")
+
+    # ── LaTeX ─────────────────────────────────────────────────────────────
+    tex: List[str] = [
+        r"% Generated by compare_oecd_clinventory_timing.py — " + ts,
+        r"\begin{table}[htbp]",
+        r"\centering",
+        r"\caption{Per-molecule classification timing (ms) for each dataset and tool.}",
+        r"\label{tab:oecd_clinventory_timing}",
+        r"\begin{tabular}{llrrrr}",
+        r"\toprule",
+        r"Dataset & Tool & $n$ & Median & Mean & $P_{95}$ \\\\",
+        r"\midrule",
+    ]
+    prev_ds: Optional[str] = None
+    for ds, tool, n, med, mean, p95 in timing_rows:
+        if ds != prev_ds and prev_ds is not None:
+            tex.append(r"\midrule")
+        ds_cell = _tex_escape(ds) if ds != prev_ds else ""
+        tex.append(
+            f"{ds_cell} & {_tex_escape(tool)} & {n:,} &"
+            f" {med:.3f} & {mean:.3f} & {p95:.3f} \\\\"
+        )
+        prev_ds = ds
+    tex += [
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\end{table}",
+        "",
+        r"\begin{table}[htbp]",
+        r"\centering",
+        r"\caption{Molecular-complexity statistics (median values) per dataset.}",
+        r"\label{tab:oecd_clinventory_complexity}",
+        r"\begin{tabular}{lrrrrr}",
+        r"\toprule",
+        r"Dataset & $n$ & Size & F ratio & Branching & Comp.\ size \\\\",
+        r"\midrule",
+    ]
+    for ds, n, sz, fr, bi, cs in complexity_rows:
+        tex.append(
+            f"{_tex_escape(ds)} & {n:,} & {sz:.0f} &"
+            f" {fr:.2f} & {bi:.2f} & {cs:.0f} \\\\"
+        )
+    tex += [
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\end{table}",
+    ]
+    tex_path = reports_dir / f"oecd_clinventory_timing_summary_{ts}.tex"
+    tex_path.write_text("\n".join(tex) + "\n", encoding="utf-8")
+    print(f"  Saved: reports/{tex_path.name}")
 
 
 # ---------------------------------------------------------------------------
@@ -878,6 +1000,7 @@ def main():
 
     # ── clinventory dataset ───────────────────────────────────────────────
     clin_records: List[dict] = []
+    clin_f_records: List[dict] = []
     if args.no_clinventory:
         print("\n[2/2]  clinventory: skipped (--no-clinventory)")
     elif not PSYCOPG2:
@@ -902,6 +1025,7 @@ def main():
                 print(f"  {len(clin_mols):,} molecules fetched from DB")
                 print("  Classifying …")
                 clin_records = classify_dataset(clin_mols, "clinventory", atlas_enabled)
+                clin_f_records = [r for r in clin_records if r.get("n_fluorine", 0) > 0]
             except Exception as exc:
                 print(f"  WARNING: DB unavailable ({exc}) — clinventory skipped")
 
@@ -910,6 +1034,9 @@ def main():
     datasets: Dict[str, List[dict]] = {"OECD": oecd_records}
     if clin_records:
         datasets["clinventory"] = clin_records
+    if clin_f_records:
+        print(f"  Derived F-only subset: {len(clin_f_records):,} fluorine-containing molecules")
+        datasets["clinventory (F)"] = clin_f_records
 
     # ── Save JSON ─────────────────────────────────────────────────────────
     out_path = args.output or (data_dir / f"oecd_clinventory_timing_{ts}.json")
@@ -960,15 +1087,15 @@ def main():
     # ── Summary table ─────────────────────────────────────────────────────
     print("\n" + "=" * 70)
     print("TIMING SUMMARY  (ms per molecule)")
-    print(f"  {'Dataset':<15} {'Tool':<15} {'n':>6} {'Median':>8} {'Mean':>8} {'P95':>8}")
-    print("  " + "-" * 60)
+    print(f"  {'Dataset':<20} {'Tool':<15} {'n':>6} {'Median':>8} {'Mean':>8} {'P95':>8}")
+    print("  " + "-" * 65)
     for ds_name, recs in datasets.items():
         for tool, key in [("PFASGroups", "pg_time_ms"), ("PFAS-Atlas", "atlas_time_ms")]:
             times = [r[key] for r in recs if r.get(key)]
             if not times:
                 continue
             s = stats(times)
-            print(f"  {ds_name:<15} {tool:<15} {s['n']:>6,} "
+            print(f"  {ds_name:<20} {tool:<15} {s['n']:>6,} "
                   f"{s['median']:>8.3f} {s['mean']:>8.3f} {s['p95']:>8.3f}")
     print()
 
@@ -988,6 +1115,11 @@ def main():
               f"branching_med={_med(bi):.2f}  "
               f"comp_size_med={_med(mcs):.0f}")
     print("=" * 70)
+
+    # ── Save summary tables (.tex and .md) ───────────────────────────────
+    reports_dir = BENCHMARK_DIR / "reports"
+    print("\nSaving summary tables …")
+    save_summary_tables(datasets, reports_dir, ts, atlas_enabled)
 
 
 if __name__ == "__main__":
