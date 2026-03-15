@@ -19,7 +19,7 @@ def test_fraction_analysis_pfoa():
 
     found = False
     for match in result['matches']:
-        if 'Perfluoroalkyl carboxylic acid' in match.get('group_name', ''):
+        if 'perfluoroalkyl carboxylic acid' in match.get('group_name', '').lower():
             found = True
             total_fraction = match.get('total_components_fraction', 0)
             assert 0 <= total_fraction <= 1

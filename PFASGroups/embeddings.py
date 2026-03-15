@@ -1561,6 +1561,13 @@ def generate_fingerprint(
         "generate_fingerprint is deprecated; use generate_embedding instead.",
         DeprecationWarning, stacklevel=2,
     )
+    # Convert deprecated count_mode / graph_metrics to component_metrics here so
+    # generate_embedding does not fire a second DeprecationWarning.
+    if count_mode is not None or graph_metrics is not None:
+        if component_metrics is None:
+            component_metrics = [count_mode or 'binary'] + list(graph_metrics or [])
+        count_mode = None
+        graph_metrics = None
     return generate_embedding(
         smiles,
         component_metrics=component_metrics,
@@ -1568,8 +1575,6 @@ def generate_fingerprint(
         halogens=halogens,
         saturation=saturation,
         preset=preset,
-        count_mode=count_mode,
-        graph_metrics=graph_metrics,
         selected_groups=selected_groups,
         progress=progress,
     )

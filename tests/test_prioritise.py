@@ -181,12 +181,15 @@ class TestPrioritiseMolecules:
             return_scores=True
         )
         
-        results_oecd, scores_oecd = prioritise_molecules(
-            TEST_SMILES,
-            reference=REFERENCE_SMILES,
-            group_selection='oecd',
-            return_scores=True
-        )
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            results_oecd, scores_oecd = prioritise_molecules(
+                TEST_SMILES,
+                reference=REFERENCE_SMILES,
+                group_selection='oecd',
+                return_scores=True
+            )
         
         # Results might be similar but not identical
         assert len(results_all) == len(results_oecd)

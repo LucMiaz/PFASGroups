@@ -141,6 +141,7 @@ STYLE = {
     "axes.spines.right": False,
     "font.size": 10,
     "figure.dpi": 150,
+    "font.family": "Ubuntu",
 }
 
 def apply_style():

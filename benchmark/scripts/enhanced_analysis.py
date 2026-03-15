@@ -10,9 +10,13 @@ import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import plotly.express as px
 from plotly.subplots import make_subplots
+import plotly.io as pio
+pio.templates["_ubuntu"] = go.layout.Template(layout={"font": {"family": "Ubuntu"}})
+pio.templates.default = "plotly+_ubuntu"
 import seaborn as sns
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-v0_8-whitegrid')
+plt.rcParams['font.family'] = 'Ubuntu'
 from collections import defaultdict, Counter
 from datetime import datetime
 import sys

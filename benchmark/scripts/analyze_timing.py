@@ -9,6 +9,9 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
+import plotly.io as pio
+pio.templates["_ubuntu"] = go.layout.Template(layout={"font": {"family": "Ubuntu"}})
+pio.templates.default = "plotly+_ubuntu"
 from datetime import datetime
 import sys
 import os
