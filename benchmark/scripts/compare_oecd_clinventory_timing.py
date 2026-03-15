@@ -76,11 +76,12 @@ except ImportError:
         _cp = None  # handled in main
 
 def _atlas_classify(smiles: str):
-    """Return (class1, is_pfas) or raise."""
+    """Return (class1, class2, is_pfas) or raise."""
     result = _cp(smiles)  # type: ignore[misc]
     class1 = result[0] if result else "Unknown"
+    class2 = result[1] if result and len(result) > 1 else class1
     is_pfas = class1 not in ("Not PFAS", "Unknown", "", None)
-    return class1, is_pfas
+    return class1, class2, is_pfas
 
 try:
     import psycopg2
@@ -255,17 +256,17 @@ def run_pfasgroups(mol) -> Tuple[dict, float, Optional[str]]:
         return {}, 0.0, str(exc)
 
 
-def run_atlas(smiles: str) -> Tuple[str, bool, float, Optional[str]]:
-    """Return (class1, is_pfas, elapsed_ms, error_str)."""
+def run_atlas(smiles: str) -> Tuple[str, str, bool, float, Optional[str]]:
+    """Return (class1, class2, is_pfas, elapsed_ms, error_str)."""
     if _cp is None:
-        return "unavailable", False, 0.0, "atlas not installed"
+        return "unavailable", "unavailable", False, 0.0, "atlas not installed"
     try:
         t0 = time.perf_counter()
-        class1, is_pfas = _atlas_classify(smiles)
+        class1, class2, is_pfas = _atlas_classify(smiles)
         elapsed = (time.perf_counter() - t0) * 1000.0
-        return class1, is_pfas, elapsed, None
+        return class1, class2, is_pfas, elapsed, None
     except Exception as exc:
-        return "error", False, 0.0, str(exc)
+        return "error", "error", False, 0.0, str(exc)
 
 
 # ---------------------------------------------------------------------------
@@ -376,7 +377,7 @@ def classify_dataset(
         # PFAS-Atlas (optional)
         if atlas_enabled and _cp is not None:
             canon = Chem.MolToSmiles(mol)
-            at_class1, at_is_pfas, at_ms, at_err = run_atlas(canon)
+            at_class1, at_class2, at_is_pfas, at_ms, at_err = run_atlas(canon)
             if at_err:
                 n_errors_at += 1
             base.update({
@@ -384,6 +385,7 @@ def classify_dataset(
                 "atlas_error":   at_err,
                 "atlas_is_pfas": at_is_pfas,
                 "atlas_class1":  at_class1,
+                "atlas_class2":  at_class2,
             })
         else:
             base.update({
@@ -391,6 +393,7 @@ def classify_dataset(
                 "atlas_error":   "disabled",
                 "atlas_is_pfas": None,
                 "atlas_class1":  None,
+                "atlas_class2":  None,
             })
 
         records.append(base)
