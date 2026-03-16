@@ -76,7 +76,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#eu-reach">EU REACH</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#oppt-2023">OPPT 2023</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#uk-environment-agency">UK Environment Agency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#pfastructv5">PFASTRUCTv5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#PFASSTRUCTv5">PFASSTRUCTv5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#retrieving-definition-objects">Retrieving definition objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pfas_definitions.html#checking-a-single-molecule">Checking a single molecule</a></li>
 </ul>
@@ -149,7 +149,7 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarking</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#validation-against-pfastructv5">Validation against PFASTRUCTv5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#validation-against-PFASSTRUCTv5">Validation against PFASSTRUCTv5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#comparison-with-csrml-classifier">Comparison with CSRML classifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-the-benchmark-scripts">Running the benchmark scripts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#performance">Performance</a></li>
@@ -428,20 +428,20 @@ and completeness of the PFASGroups library.</p>
 <nav class="contents local" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#validation-against-pfastructv5" id="id1">Validation against PFASTRUCTv5</a></p></li>
+<li><p><a class="reference internal" href="#validation-against-PFASSTRUCTv5" id="id1">Validation against PFASSTRUCTv5</a></p></li>
 <li><p><a class="reference internal" href="#comparison-with-csrml-classifier" id="id2">Comparison with CSRML classifier</a></p></li>
 <li><p><a class="reference internal" href="#running-the-benchmark-scripts" id="id3">Running the benchmark scripts</a></p></li>
 <li><p><a class="reference internal" href="#performance" id="id4">Performance</a></p></li>
 </ul>
 </nav>
-<section id="validation-against-pfastructv5">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Validation against PFASTRUCTv5</a><a class="headerlink" href="#validation-against-pfastructv5" title="Link to this heading"></a></h2>
-<p><strong>Dataset</strong>: PFASTRUCTv5 is a curated annotated PFAS structure database
+<section id="validation-against-PFASSTRUCTv5">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Validation against PFASSTRUCTv5</a><a class="headerlink" href="#validation-against-PFASSTRUCTv5" title="Link to this heading"></a></h2>
+<p><strong>Dataset</strong>: PFASSTRUCTv5 is a curated annotated PFAS structure database
 containing ~14 000 structures
 (<a class="reference external" href="https://zenodo.org/record/7370805">Schymanski et al. 2023</a>).</p>
 <p><strong>Method</strong>: Each structure was parsed with <code class="docutils literal notranslate"><span class="pre">parse_smiles()</span></code> using the
 default fluorine-only mode and OECD 2021 group definitions.  The binary
-PFAS/non-PFAS label from PFASTRUCTv5 was used as the ground truth.</p>
+PFAS/non-PFAS label from PFASSTRUCTv5 was used as the ground truth.</p>
 <p><strong>Results</strong>:</p>
 <table class="docutils align-default">
 <colgroup>
@@ -496,7 +496,7 @@ CSRML rule set.</p></li>
 <p>Benchmark scripts are available in the <code class="docutils literal notranslate"><span class="pre">benchmark/</span></code> directory of the source
 repository:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>benchmark
-<span class="c1"># Reproduce PFASTRUCTv5 validation</span>
+<span class="c1"># Reproduce PFASSTRUCTv5 validation</span>
 python<span class="w"> </span>benchmark_pfasstructv5.py
 
 <span class="c1"># Compare with CSRML classifier</span>

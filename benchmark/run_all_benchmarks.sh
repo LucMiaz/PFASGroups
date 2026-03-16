@@ -346,7 +346,7 @@ echo "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 echo "   • Complex Branched: Tests complex molecular structures"
 echo "   • Highly Branched: Tests functional groups on perfluorinated components"
 echo "   • Telomer Validation: Tests detection of fluorotelomers on PubChem dataset"
-echo "   • PFAS Definitions: Benchmarks 5 PFAS definitions (OECD, EU, OPPT, UK, PFASTRUCTv5)"
+echo "   • PFAS Definitions: Benchmarks 5 PFAS definitions (OECD, EU, OPPT, UK, PFASSTRUCTv5)"
 echo "   • Comprehensive Statistics: LaTeX tables and benchmark summary (reports/benchmark_summary.json)"
 echo ""
 
