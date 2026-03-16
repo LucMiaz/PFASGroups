@@ -6,7 +6,7 @@
       "EU PFAS Restriction",
       "OPPT 2023",
       "UK PFAS Definition",
-      "PFASTRUCTv5"
+      "PFASSTRUCTv5"
     ]
   },
   "benchmarks": {
@@ -47,7 +47,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -97,7 +97,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -147,7 +147,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -197,7 +197,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -242,7 +242,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -291,7 +291,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -341,7 +341,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -391,7 +391,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -441,7 +441,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -491,7 +491,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -541,7 +541,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -591,7 +591,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -641,7 +641,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -691,7 +691,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -741,7 +741,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -791,7 +791,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -841,7 +841,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -891,7 +891,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -941,7 +941,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -991,7 +991,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1041,7 +1041,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1091,7 +1091,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1141,7 +1141,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1191,7 +1191,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1340,7 +1340,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1375,7 +1375,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1410,7 +1410,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1470,7 +1470,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1505,7 +1505,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1540,7 +1540,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1575,7 +1575,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1620,7 +1620,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1669,7 +1669,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1718,7 +1718,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1757,7 +1757,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1792,7 +1792,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1832,7 +1832,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1874,7 +1874,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -1953,7 +1953,7 @@
           "molecule_name": "Fluoroethane",
           "category": "general",
           "detected_by": [
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             5
@@ -1965,7 +1965,7 @@
           "molecule_name": "1,4-difluorobutane",
           "category": "general",
           "detected_by": [
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             5
@@ -1977,7 +1977,7 @@
           "molecule_name": "1,3-difluoropropane",
           "category": "general",
           "detected_by": [
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             5
@@ -1989,7 +1989,7 @@
           "molecule_name": "Trifluoromethyl chloride (CF3-Cl) - halogen exclusion",
           "category": "general",
           "detected_by": [
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             5
@@ -2001,7 +2001,7 @@
           "molecule_name": "Trifluoromethyl bromide (CF3-Br) - halogen exclusion",
           "category": "general",
           "detected_by": [
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             5
@@ -2013,7 +2013,7 @@
           "molecule_name": "Trifluoromethyl iodide (CF3-I) - halogen exclusion",
           "category": "general",
           "detected_by": [
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             5
@@ -2025,7 +2025,7 @@
           "molecule_name": "Fluoroform (CHF3) - H exclusion",
           "category": "general",
           "detected_by": [
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             5
@@ -2039,7 +2039,7 @@
           "detected_by": [
             "OECD Definition",
             "UK PFAS Definition",
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             1,
@@ -2055,7 +2055,7 @@
           "detected_by": [
             "OECD Definition",
             "UK PFAS Definition",
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             1,
@@ -2071,7 +2071,7 @@
           "detected_by": [
             "OECD Definition",
             "UK PFAS Definition",
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             1,
@@ -2085,7 +2085,7 @@
           "molecule_name": "1-Chloro-1,1-difluoroethane (CF2Cl-CH3) - halogen exclusion",
           "category": "general",
           "detected_by": [
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             5
@@ -2097,7 +2097,7 @@
           "molecule_name": "1,1-Difluoroethane (CF2H-CH3) - H exclusion",
           "category": "general",
           "detected_by": [
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             5
@@ -2110,7 +2110,7 @@
           "category": "general",
           "detected_by": [
             "OECD Definition",
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             1,
@@ -2124,7 +2124,7 @@
           "category": "general",
           "detected_by": [
             "OECD Definition",
-            "PFASTRUCTv5"
+            "PFASSTRUCTv5"
           ],
           "detected_ids": [
             1,
@@ -2183,7 +2183,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2228,7 +2228,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2272,7 +2272,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2321,7 +2321,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2371,7 +2371,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2421,7 +2421,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2466,7 +2466,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2495,7 +2495,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2541,7 +2541,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2591,7 +2591,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2641,7 +2641,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2691,7 +2691,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2736,7 +2736,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2785,7 +2785,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2830,7 +2830,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2895,7 +2895,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2943,7 +2943,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -2988,7 +2988,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3037,7 +3037,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3082,7 +3082,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3129,7 +3129,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3177,7 +3177,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3224,7 +3224,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3257,7 +3257,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3285,7 +3285,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3313,7 +3313,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3341,7 +3341,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3374,7 +3374,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3408,7 +3408,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3526,7 +3526,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3560,7 +3560,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3637,7 +3637,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3679,7 +3679,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3729,7 +3729,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3761,7 +3761,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3789,7 +3789,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3817,7 +3817,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3845,7 +3845,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3883,7 +3883,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3923,7 +3923,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -3963,7 +3963,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4037,7 +4037,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4077,7 +4077,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4117,7 +4117,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4157,7 +4157,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4202,7 +4202,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4253,7 +4253,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4305,7 +4305,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4357,7 +4357,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4399,7 +4399,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4507,7 +4507,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4559,7 +4559,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4613,7 +4613,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4633,7 +4633,7 @@
             "test_passed": true
           }
         ],
-        "PFASTRUCTv5_specific": [
+        "PFASSTRUCTv5_specific": [
           {
             "smiles": "FC(F)(F)C(F)(F)CCCCCCCC",
             "valid": true,
@@ -4667,7 +4667,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4739,7 +4739,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4782,7 +4782,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4828,7 +4828,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4874,7 +4874,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4915,7 +4915,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4955,7 +4955,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -4995,7 +4995,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5025,7 +5025,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5053,7 +5053,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5081,7 +5081,7 @@
             "detected_definitions": [
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5124,7 +5124,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5170,7 +5170,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5216,7 +5216,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5267,7 +5267,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5319,7 +5319,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5366,7 +5366,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5417,7 +5417,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5464,7 +5464,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],
@@ -5515,7 +5515,7 @@
               },
               {
                 "id": 5,
-                "name": "PFASTRUCTv5",
+                "name": "PFASSTRUCTv5",
                 "match_id": "D5"
               }
             ],

@@ -68,13 +68,13 @@ UK Environment Agency
 **Rule**: Polymers or oligomers with a perfluorinated backbone or with
 perfluorinated side-chains.
 
-PFASTRUCTv5
+PFASSTRUCTv5
 -----------
 
 **Reference**: `Schymanski et al., PFASSTRUCTV5 annotated structure database
 <https://zenodo.org/record/7370805>`_
 
-PFASTRUCTv5 is a curated database of PFAS structures.  PFASGroups ships
+PFASSTRUCTv5 is a curated database of PFAS structures.  PFASGroups ships
 an integrated classifier that reproduces the binary PFAS/non-PFAS label from
 this database for molecules whose structural motifs overlap with the
 library groups.

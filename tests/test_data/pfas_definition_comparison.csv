@@ -1,11 +1,11 @@
-SMILES,Description,Expected_OECD,Expected_EU,Expected_OPPT,Expected_UK,Expected_PFASTRUCTv5
+SMILES,Description,Expected_OECD,Expected_EU,Expected_OPPT,Expected_UK,Expected_PFASSTRUCTv5
 C(F)(F)(F)C(F)(F)C(F)(F)F,Basic perfluoroalkyl chain,True,True,True,True,True
 CC(F)(F)CC,CF2 bonded to H - key difference OECD vs UK,True,True,False,False,True
 C(F)(F)(F)CN,CF3-CH2-NH2 - N not directly bonded to CF group,True,True,False,True,True
 C(F)(F)(Cl)C,CF3 bonded to Cl - excluded by OECD and UK,False,False,False,False,True
 C(F)(F)(F)C(OC)(F)C(F)(F)F,CF3-C(F)(OMe)-CF3 - matches OPPT criterion 2,True,True,True,True,True
-C(F)(F)N(C)C(F)(F)F,CF2-N(Me)-CF2 - heteroatom bridge matches PFASTRUCTv5 not OPPT,True,True,False,True,True
-C(F)(F)C(F)C(F)(F)Cl,CF2-CHF-CF2-Cl - matches PFASTRUCTv5 pattern 2 not OPPT,False,False,False,False,True
-C(F)(F)(CCC)C(F)(CCC)CCC,CF2-CF quaternary centers - matches OECD EU OPPT not PFASTRUCTv5 (F ratio 0.23),True,True,True,False,False
+C(F)(F)N(C)C(F)(F)F,CF2-N(Me)-CF2 - heteroatom bridge matches PFASSTRUCTv5 not OPPT,True,True,False,True,True
+C(F)(F)C(F)C(F)(F)Cl,CF2-CHF-CF2-Cl - matches PFASSTRUCTv5 pattern 2 not OPPT,False,False,False,False,True
+C(F)(F)(CCC)C(F)(CCC)CCC,CF2-CF quaternary centers - matches OECD EU OPPT not PFASSTRUCTv5 (F ratio 0.23),True,True,True,False,False
 FC1C(F)C(F)C(F)C(F)C1F,Cyclic perfluorinated,False,False,False,False,True
 

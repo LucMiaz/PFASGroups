@@ -85,7 +85,7 @@ DEFINITION_NAME_MAP = {
     'EU': 'EU PFAS Restriction',
     'OPPT': 'OPPT 2023',
     'UK': 'UK PFAS Definition',
-    'PFASTRUCTv5': 'PFASTRUCTv5'
+    'PFASSTRUCTv5': 'PFASSTRUCTv5'
 }
 
 
@@ -160,7 +160,7 @@ def test_definition_comparison_all(definitions, comparison_data):
         pytest.fail('\n'.join(report))
 
 
-@pytest.mark.parametrize('def_key', ['OECD', 'EU', 'OPPT', 'UK', 'PFASTRUCTv5'])
+@pytest.mark.parametrize('def_key', ['OECD', 'EU', 'OPPT', 'UK', 'PFASSTRUCTv5'])
 def test_definition_comparison_by_definition(definitions, comparison_data, def_key):
     """Test each definition separately (allows for better test reporting)."""
     def_name = DEFINITION_NAME_MAP.get(def_key, def_key)

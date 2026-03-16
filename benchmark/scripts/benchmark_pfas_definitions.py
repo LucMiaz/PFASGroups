@@ -6,7 +6,7 @@ This module provides thorough benchmarking for the 5 PFAS definitions:
 2. EU PFAS Restriction  
 3. OPPT 2023
 4. UK PFAS Definition
-5. PFASTRUCTv5
+5. PFASSTRUCTv5
 
 The benchmark evaluates:
 - Accuracy: Correct identification of known PFAS
@@ -261,14 +261,14 @@ class PFASDefinitionBenchmark:
                 # UK is similar to OECD but different exclusions
                 ('FC(F)(F)C(F)(F)F', 'Should match UK', True),
             ],
-            'PFASTRUCTv5_specific': [
+            'PFASSTRUCTv5_specific': [
                 # Has fluorine ratio criterion (>= 0.3) OR structural patterns
                 # Basic threshold tests
                 ('FC(F)(F)C(F)(F)CCCCCCCC', 'Lower F ratio - test threshold', True),
                 ('FC(F)(F)CCCCCCCCCCCC', 'Very low F ratio (~0.15)', False),
                 
-                # Validation test set from PFASTRUCTv5 reference (23 compounds)
-                # TRUE POSITIVES (should be detected by PFASTRUCTv5)
+                # Validation test set from PFASSTRUCTv5 reference (23 compounds)
+                # TRUE POSITIVES (should be detected by PFASSTRUCTv5)
                 ('C(=O)(C(F)(F)Cl)C(F)(F)Cl', '1,3-Dichloro-1,1,3,3-tetrafluoropropan-2-one (DTXSID1073159)', True),
                 ('COC(C(OC(C(=O)C(F)(F)F)(F)F)F)(F)F', '1,1,1,3,3-Pentafluoro-3-(1,2,2-trifluoro-2-methoxyethoxy)propan-2-one (DTXSID40748237)', True),
                 ('C(C(=O)CC(C(=O)C(F)(F)F)(F)F)C(C(=O)C(F)(F)F)(F)F', '2,5,8-Nonanetrione, decafluoro- (DTXSID60435490)', True),
@@ -289,7 +289,7 @@ class PFASDefinitionBenchmark:
                 ('CCCOC(=O)C(=C(F)F)C(F)(F)F', 'Propyl 3,3-difluoro-2-(trifluoromethyl)prop-2-enoate (DTXSID80804225)', True),
                 ('C[N+](C)(CCCNS(=O)(=O)CCC(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)CC(=O)[O-]', '6:2 Fluorotelomer sulfonamide betaine (DTXSID4041284)', True),
                 
-                # TRUE NEGATIVES (should NOT be detected by PFASTRUCTv5)
+                # TRUE NEGATIVES (should NOT be detected by PFASSTRUCTv5)
                 ('CCCCC(CC(C(F)(F)Br)(F)Cl)Br', '1,4-dibromo-2-chloro-1,1,2-trifluorooctane - low F ratio (DTXSID10382122)', False),
                 ('C(C(OC(Cl)(Cl)Cl)(F)F)(F)Cl', '2-Chloro-1,1,2-trifluoro-1-(trichloromethoxy)ethane - low F ratio (DTXSID30963477)', False),
                 ('C1=COC(=C1)C=C(S(=O)(=O)C(F)(F)F)S(=O)(=O)C(F)(F)F', '2-[2,2-Bis(trifluoromethanesulfonyl)ethenyl]furan - borderline (DTXSID10711579)', False),
@@ -371,7 +371,7 @@ class PFASDefinitionBenchmark:
                 'eu': 'EU_specific',
                 'oppt': 'OPPT_specific',
                 'uk': 'UK_specific',
-                'pfastructv5': 'PFASTRUCTv5_specific'
+                'PFASSTRUCTv5': 'PFASSTRUCTv5_specific'
             }
 
             for row in reader:
@@ -436,7 +436,7 @@ class PFASDefinitionBenchmark:
             'EU_specific': 'EU',
             'OPPT_specific': 'OPPT',
             'UK_specific': 'UK',
-            'PFASTRUCTv5_specific': 'PFASTRUCTv5'
+            'PFASSTRUCTv5_specific': 'PFASSTRUCTv5'
         }
         for def_key, tests in self.definition_specific_tests.items():
             label = def_label_map.get(def_key, def_key)
@@ -808,7 +808,7 @@ class PFASDefinitionBenchmark:
                         target_def_id = 3
                     elif 'UK' in def_category:
                         target_def_id = 4
-                    elif 'PFASTRUCTv5' in def_category:
+                    elif 'PFASSTRUCTv5' in def_category:
                         target_def_id = 5
                     else:
                         target_def_id = None
