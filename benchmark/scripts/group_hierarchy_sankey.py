@@ -36,6 +36,8 @@ try:
     import plotly.io as pio
 except ImportError:
     sys.exit("ERROR: plotly not available.  pip install plotly")
+else:
+    pio.templates.default = "plotly_white"
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -607,9 +609,8 @@ def build_sankey(
             source=srcs, target=tgts, value=vals,
             color=lcols, customdata=llabs,
             hovertemplate="%{customdata}<extra></extra>",
-        ),
-    ))
-
+        ))
+    )
     # Legend
     for leg_col, leg_name in [
         (_C2,   f"{dataset_name} → polyfluoroalkyl"),
@@ -650,7 +651,8 @@ def build_sankey(
                 f"Polyfluoro cyclic: {n_poly_cyclic:,}  ·  "
                 f"{len(all_real_shown)} real groups{compact_note}</sup>"
             ),
-            x=0.5, font=dict(size=12),
+            x=0.5, font=dict(size=12, family='Ubuntu'),
+
         ),
         font=dict(family="Ubuntu, DejaVu Sans, sans-serif", size=10),
         paper_bgcolor="white",
