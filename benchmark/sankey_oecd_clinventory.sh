@@ -5,6 +5,7 @@
 set -uo pipefail
 
 SCRIPT="scripts/sankey_pfasgroups_atlas.py"
+ENRICH="scripts/enrich_atlas_class2.py"
 
 # ── Colour helpers ────────────────────────────────────────────────────────────
 RED='\033[0;31m'; GREEN='\033[0;32m'; CYAN='\033[0;36m'
@@ -32,21 +33,24 @@ run_job() {
 
 total_t0=$SECONDS
 
+# ── Enrich timing JSON with atlas_class2 if missing ──────────────────────────
+echo -e "\n${CYAN}${BOLD}▶ Enriching timing JSON with atlas_class2 (if needed)${RESET}"
+conda run -n pfasatlas python "$ENRICH"
+
 # ── Jobs ──────────────────────────────────────────────────────────────────────
-run_job "Groups 1-28 — top-28 labels, exclude non-PFAS" \
-    --top-n 28 --groups 1-28 --exclude-not-pfas
+# 1 & 2 — long diagrams: all groups visible, detailed class 2 on the right
+run_job "Groups 1-28 — all labels, Atlas class 2 (detailed)" \
+    --groups 1-28 --top-n 28 --right-key atlas_class2 --exclude-not-pfas
 
-run_job "Groups 1-28 — top-12 labels, exclude non-PFAS" \
-    --top-n 12 --groups 1-28 --exclude-not-pfas
+run_job "Groups 29-115 — all labels, Atlas class 2 (detailed)" \
+    --groups 29-115 --top-n 87 --right-key atlas_class2 --exclude-not-pfas
 
-run_job "Groups 29-115 — top-12 labels, exclude non-PFAS" \
-    --top-n 12 --groups 29-115 --exclude-not-pfas
+# 3 & 4 — compact diagrams: top-12 groups, broad class 1 on the right
+run_job "Groups 1-28 — top-12 labels, Atlas class 1 (broad)" \
+    --groups 1-28 --top-n 12 --right-key atlas_class1 --exclude-not-pfas
 
-run_job "Groups 29-115 — top-25 labels, exclude non-PFAS" \
-    --top-n 25 --groups 29-115 --exclude-not-pfas
-
-run_job "All groups — top-12 labels, exclude non-PFAS" \
-    --top-n 12 --exclude-not-pfas
+run_job "Groups 29-115 — top-12 labels, Atlas class 1 (broad)" \
+    --groups 29-115 --top-n 12 --right-key atlas_class1 --exclude-not-pfas
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 total_elapsed=$(( SECONDS - total_t0 ))

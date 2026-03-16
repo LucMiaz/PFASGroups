@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import re
 import sys
 import time
@@ -191,9 +192,12 @@ _ATLAS_FIXED: Dict[str, str] = {
     "Si PFASs":                             _lerp_color(_C0, _C2, 0.40),
     "(Hg,Sn,Ge,Sb,Se,B) PFASs":           _lerp_color(_C0, _C2, 0.60),
     "others":                               _lerp_color(_C0, "#ffffff", 0.80),
-    # ── cyclic variants of class2 ────────────────────────────────────────────
-    "Not PFAS by current definition":       _GREY,
+    # ── non-cyclic entries seen in practice but not listed above ─────────────
+    "PFAK derivatives":                     _lerp_color(_C1, "#2DAA5F", 0.40),
+    "PFPEs":                                _lerp_color(_C0, "#ffffff", 0.55),
+    "Perfluoroalkyl-tert-amines":           _lerp_color(_C0, "#ffffff", 0.75),
     # ── fallback / error nodes ───────────────────────────────────────────────
+    "Not PFAS by current definition":       _GREY,
     "error":                                _LGREY,
     "unavailable":                          _LGREY,
     "Unknown":                              _LGREY,
@@ -419,14 +423,30 @@ def build_flows(
 # ---------------------------------------------------------------------------
 # Color assignment
 # ---------------------------------------------------------------------------
+def _atlas_node_color(label: str) -> str:
+    """Look up a color for an Atlas class2 node label.
+
+    If the label is not in ``_ATLAS_FIXED`` but ends with '', cyclic', the
+    color is derived automatically from the non-cyclic base (lightened toward
+    white by 35 %).
+    """
+    if label in _ATLAS_FIXED:
+        return _ATLAS_FIXED[label]
+    if label.endswith(", cyclic"):
+        base = label[: -len(", cyclic")]
+        base_color = _ATLAS_FIXED.get(base, _C0)
+        return _lerp_color(base_color, "#ffffff", 0.35)
+    return _C0
+
+
 def assign_colors(
     left_labels: List[str],
     right_labels: List[str],
 ) -> Tuple[Dict[str, str], Dict[str, str]]:
     """Return (left_color_map, right_color_map) keyed by label string."""
-    # Right side — Atlas fixed palette
+    # Right side — Atlas fixed palette (with auto cyclic fallback)
     right_colors: Dict[str, str] = {
-        lab: _ATLAS_FIXED.get(lab, _C0) for lab in right_labels
+        lab: _atlas_node_color(lab) for lab in right_labels
     }
 
     # Left side — separate by group category
@@ -532,11 +552,11 @@ def plot_sankey(
     # ── Layout parameters ────────────────────────────────────────────────
     n_left    = len(left_labels_ordered)
     n_right   = len(right_labels_ordered)
-    px_per_node = 22
-    height_px = max(920, (max(n_left, n_right) * px_per_node) + 160)
+    NODE_THICKNESS = 20
+    height_px = max(920, n_left * 50 + 200)
     width_px  = 1640
     margin_t  = 110
-    margin_b  = 30
+    margin_b  = 40
     margin_l  = 20
     margin_r  = 20
 
@@ -546,15 +566,13 @@ def plot_sankey(
         f"{lab}  ({all_totals.get(lab, 0):,})" for lab in all_labels
     ]
 
-    # node_x forces left/right column placement; Plotly computes y from flow
-    # volumes so labels stay aligned with their nodes (arrangement="snap").
     node_x = [0.001] * n_left + [0.999] * n_right
 
     fig = go.Figure(go.Sankey(
         arrangement="snap",
         node=dict(
-            pad=max(4, min(15, int(300 / max(n_left, 1)))),
-            thickness=20,
+            pad=8,
+            thickness=NODE_THICKNESS,
             line=dict(color="white", width=0.5),
             label=full_labels,
             color=node_colors,
@@ -665,6 +683,13 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--exclude-not-pfas", action="store_true",
                    help="Drop molecules that are unmatched by PFASGroups AND "
                         "classified as non-PFAS by Atlas (removes Not classified → Not PFAS flows)")
+    p.add_argument("--right-key", default="atlas_class2",
+                   choices=["atlas_class1", "atlas_class2"],
+                   help="Atlas field to use for the right-side nodes "
+                        "(default: atlas_class2 — detailed; atlas_class1 — broad)")
+    p.add_argument("--combine-datasets", action="store_true",
+                   help="Combine all datasets into a single Sankey instead of "
+                        "one per dataset")
     return p.parse_args()
 
 
@@ -725,24 +750,34 @@ def main() -> None:
         groups_suffix = f"_groups{lo}-{hi}"
         print(f"Group filter: IDs {lo}–{hi} ({len(group_ids)} IDs)")
 
+    right_key    = args.right_key
+    class_label  = " (detailed categories)" if right_key == "atlas_class2" else ""
+    right_suffix = "_class2" if right_key == "atlas_class2" else "_class1"
+
+    # ── Build dataset iterator ────────────────────────────────────────────
+    if args.combine_datasets:
+        ds_items: List[Tuple[str, List[dict]]] = [("OECD + CLinventory", molecules)]
+    else:
+        ds_items = list(by_dataset.items())
+
     # ── Generate Sankeys ──────────────────────────────────────────────────
     args.outdir.mkdir(exist_ok=True, parents=True)
     print()
 
-    for ds_name, ds_records in by_dataset.items():
-        safe_ds = ds_name.replace(" ", "_").replace("(", "").replace(")", "")
+    for ds_name, ds_records in ds_items:
+        safe_ds = re.sub(r'_+', '_', ds_name.replace(" ", "_").replace("(", "").replace(")", "").replace("+", "")).strip("_")
         print(f"{'='*70}")
         print(f"Dataset: {ds_name}  ({len(ds_records):,} molecules)")
         print(f"{'='*70}")
 
-        flows = build_flows(ds_records, right_key="atlas_class2", top_n=args.top_n,
+        flows = build_flows(ds_records, right_key=right_key, top_n=args.top_n,
                             group_ids=group_ids, exclude_not_pfas=args.exclude_not_pfas)
-        title = f"PFASGroups → PFAS-Atlas  |  {ds_name}"
+        title = f"PFASGroups → PFAS-Atlas{class_label}  |  {ds_name}"
         if groups_suffix:
             title += f"  |  groups {lo}–{hi}"
         print_flows(flows, title)
 
-        stem = f"sankey_{safe_ds}{groups_suffix}_{ts}"
+        stem = f"sankey_{safe_ds}{groups_suffix}{right_suffix}_{ts}"
         out_base = args.outdir / stem
         print(f"\n  Writing Sankey: {stem}.*")
         plot_sankey(flows, title, out_base, min_flow=args.min_flow)
