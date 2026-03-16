@@ -185,7 +185,7 @@ Write-Host "   • Non-Fluorinated: Ensures proper exclusion of non-PFAS"
 Write-Host "   • Complex Branched: Tests complex molecular structures"
 Write-Host "   • Highly Branched: Tests functional groups on perfluorinated components"
 Write-Host "   • Telomer Validation: Tests detection of fluorotelomers on PubChem dataset"
-Write-Host "   • PFAS Definitions: Benchmarks 5 PFAS definitions (OECD, EU, OPPT, UK, PFASTRUCTv5)"
+Write-Host "   • PFAS Definitions: Benchmarks 5 PFAS definitions (OECD, EU, OPPT, UK, PFASSTRUCTv5)"
 Write-Host "   • Comprehensive Statistics: LaTeX tables and benchmark summary (reports/benchmark_summary.json)"
 Write-Host ""
 

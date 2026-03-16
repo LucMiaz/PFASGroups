@@ -125,7 +125,7 @@
     },
     {
         "id": 5,
-        "name": "PFASTRUCTv5",
+        "name": "PFASSTRUCTv5",
         "smarts": [
             "F[#6](F)(F)[#6](F)",
             "F[#6](F)[#6](F)(F)",

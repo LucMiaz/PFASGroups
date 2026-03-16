@@ -67,7 +67,7 @@ class DefinitionBenchmarkAnalyzer:
             2: "EU PFAS Restriction",
             3: "OPPT 2023",
             4: "UK PFAS Definition",
-            5: "PFASTRUCTv5"
+            5: "PFASSTRUCTv5"
         }
         
         self.output_dir = os.path.dirname(benchmark_file)

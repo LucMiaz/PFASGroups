@@ -151,7 +151,7 @@ and initialises the SQLite database. Called automatically by `quick-start.*`.
 | Script | Purpose |
 |--------|---------|
 | `enhanced_pfas_benchmark.py` | Interactive benchmark menu (options 1–6): functional groups, OECD validation, timing (3 profiles), non-fluorinated exclusion, complex branched structures. Primary data-collection script. |
-| `benchmark_pfas_definitions.py` | Benchmarks five PFAS definitions (OECD, EU Restriction, OPPT 2023, UK, PFASTRUCTv5) for accuracy, specificity, sensitivity, and inter-definition agreement. |
+| `benchmark_pfas_definitions.py` | Benchmarks five PFAS definitions (OECD, EU Restriction, OPPT 2023, UK, PFASSTRUCTv5) for accuracy, specificity, sensitivity, and inter-definition agreement. |
 | `test_highly_branched.py` | Tests functional groups 29–59 at varying branching distances (0–2 bonds) from perfluorinated chains; compares PFASGroups vs PFAS-Atlas detection. |
 | `validate_telomers.py` | Validates telomer detection against a PubChem fluorotelomer SDF dataset. |
 | `classify_halogengroups_clinventory.py` | Classifies all halogen-containing molecules in the PostgreSQL `clinventory` database with **HalogenGroups** (full halogen set). Writes `data/PFASGroups_clinventory_<TS>.json`. |

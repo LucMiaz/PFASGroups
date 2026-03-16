@@ -1,7 +1,7 @@
 """
 Tests that every molecule in the PFASSTRUCTv5 inventory (Richard et al. 2023,
 DOI: 10.1021/acs.chemrestox.2c00403) is classified as PFAS by HalogenGroups
-PFAS definition 5 ('PFASTRUCTv5').
+PFAS definition 5 ('PFASSTRUCTv5').
 
 Pytest mode  : runs on a deterministic sample of PYTEST_SAMPLE_SIZE molecules.
 Direct mode  : ``python test_pfasstructv5_against_richard2023.py``
@@ -50,7 +50,7 @@ KNOWN_UNMATCHED: frozenset[str] = _load_known_unmatched()
 # full dataset to give a representative, deterministic selection).
 PYTEST_SAMPLE_SIZE = 10
 
-# PFAS definition to check (id=5, name='PFASTRUCTv5')
+# PFAS definition to check (id=5, name='PFASSTRUCTv5')
 PFAS_DEFINITION_ID = 5
 
 # ---------------------------------------------------------------------------

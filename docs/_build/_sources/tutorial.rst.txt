@@ -208,7 +208,7 @@ PFAS definition screening
            print(mol.smiles, "->", names)
 
 Available definitions: OECD 2021, EU REACH, OPPT 2023, UK Environment Agency,
-PFASTRUCTv5.  See :doc:`pfas_definitions` for details.
+PFASSTRUCTv5.  See :doc:`pfas_definitions` for details.
 
 Molecule prioritization
 -------------------------

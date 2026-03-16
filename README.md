@@ -572,7 +572,7 @@ See the table in the [Benchmark Summary](#benchmark-summary-feb-2026-using-v-223
 
 ### PFASSTRUCTv5 validation against Richard *et al.* 2023
 
-The PFASSTRUCTv5 definition (definition ID 5, `'PFASTRUCTv5'`, fluorineRatio ≥ 0.3) was validated against the PFASSTRUCTV5 list (update August 2022) in [DSSTox database](https://comptox.epa.gov/dashboard/chemical-lists/PFASSTRUCTV5), downloaded on 2 March 2026 as SDF v3000.
+The PFASSTRUCTv5 definition (definition ID 5, `'PFASSTRUCTv5'`, fluorineRatio ≥ 0.3) was validated against the PFASSTRUCTV5 list (update August 2022) in [DSSTox database](https://comptox.epa.gov/dashboard/chemical-lists/PFASSTRUCTV5), downloaded on 2 March 2026 as SDF v3000.
 
 The inventory (`tests/test_data/PFASSTRUCTV5_20221101.sdf`, 14,735 structures) was used as a positive test set: every molecule is expected to satisfy the PFASSTRUCTv5 definition. The automated test `tests/test_pfasstructv5.py` checks this:
 

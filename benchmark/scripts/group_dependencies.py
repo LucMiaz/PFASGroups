@@ -45,7 +45,12 @@ SCRIPT_DIR    = Path(__file__).resolve().parent
 BENCHMARK_DIR = SCRIPT_DIR.parent
 REPO_ROOT     = BENCHMARK_DIR.parent
 GROUPS_JSON   = REPO_ROOT / "PFASGroups" / "data" / "Halogen_groups_smarts.json"
-RULES_JSON    = REPO_ROOT / "tests" / "test_data" / "specificity_test_groups.json"
+_RULES_CANDIDATES = [
+    REPO_ROOT.parent / "zeropmdb" / "database" / "elements" / "data" / "specificity_test_groups.json",
+    REPO_ROOT / "tests" / "test_data" / "specificity_test_groups.json",
+]
+RULES_JSON = next((p for p in _RULES_CANDIDATES if p.exists()),
+                  _RULES_CANDIDATES[-1])
 
 _C0 = "#E15D0B"; _C1 = "#306DBA"; _C2 = "#9D206C"; _C3 = "#51127C"
 _GREY = "#888888"; _LGREY = "#BBBBBB"
@@ -189,7 +194,7 @@ def load_rules(rules_path: Path, active_ids: set) -> List[Tuple[int, int, str]]:
     return edges
 
 # ---------------------------------------------------------------------------
-# Layout via networkx
+# Layout — networkx kamada_kawai (needs scipy) with pure-Python FR fallback
 # ---------------------------------------------------------------------------
 def compute_layout(
     group_ids: List[int],
@@ -197,33 +202,100 @@ def compute_layout(
     pairs: List[Dict],
     min_jaccard_layout: float = 0.05,
 ) -> Dict[int, Tuple[float, float]]:
-    """Return {gid: (x,y)} using networkx kamada_kawai_layout."""
+    """Return {gid: (x,y)} using networkx kamada_kawai_layout (preferred) or
+    a pure-Python Fruchterman-Reingold fallback if scipy is unavailable.
+
+    Rule edges use weight 2.0; overlap pairs contribute their jaccard value.
+    """
     try:
         import networkx as nx
-    except ImportError:
-        print("WARNING: networkx not available; using circular fallback.")
-        angles = {g: 2*math.pi*i/max(len(group_ids),1)
-                  for i, g in enumerate(sorted(group_ids))}
-        return {g: (math.cos(a), math.sin(a)) for g, a in angles.items()}
+        G = nx.Graph()
+        G.add_nodes_from(group_ids)
+        for s, t, _ in rule_edges:
+            if s in G.nodes and t in G.nodes:
+                existing = G[s][t]["weight"] if G.has_edge(s, t) else 0.0
+                G.add_edge(s, t, weight=max(existing, 2.0))
+        for row in pairs:
+            if row["jaccard"] < min_jaccard_layout:
+                continue
+            g1, g2 = row["gid1"], row["gid2"]
+            if g1 in G.nodes and g2 in G.nodes:
+                w = row["jaccard"]
+                if G.has_edge(g1, g2):
+                    G[g1][g2]["weight"] = max(G[g1][g2]["weight"], w)
+                else:
+                    G.add_edge(g1, g2, weight=w)
+        pos_nx = nx.kamada_kawai_layout(G, weight="weight")
+        print("  Layout: kamada_kawai")
+        return {int(g): (float(x), float(y)) for g, (x, y) in pos_nx.items()}
+    except Exception as exc:
+        print(f"  kamada_kawai failed ({exc}); falling back to pure-Python FR layout")
+        return _fr_layout(group_ids, rule_edges, pairs, min_jaccard_layout)
 
-    G = nx.Graph()
-    G.add_nodes_from(group_ids)
+
+def _fr_layout(
+    group_ids: List[int],
+    rule_edges: List[Tuple[int, int, str]],
+    pairs: List[Dict],
+    min_jaccard_layout: float = 0.05,
+    iterations: int = 500,
+    seed: int = 42,
+) -> Dict[int, Tuple[float, float]]:
+    """Pure-Python Fruchterman-Reingold, no numpy/scipy required."""
+    import random
+    rng = random.Random(seed)
+    n = max(len(group_ids), 1)
+    pos: Dict[int, List[float]] = {}
+    for i, gid in enumerate(group_ids):
+        angle = 2.0 * math.pi * i / n
+        r = 1.0 + rng.uniform(-0.04, 0.04)
+        pos[gid] = [r * math.cos(angle), r * math.sin(angle)]
+    adj: Dict[Tuple[int, int], float] = {}
     for s, t, _ in rule_edges:
-        if s in G.nodes and t in G.nodes:
-            existing = G[s][t]["weight"] if G.has_edge(s, t) else 0.0
-            G.add_edge(s, t, weight=max(existing, 2.0))
+        if s in pos and t in pos:
+            key = (min(s, t), max(s, t))
+            adj[key] = max(adj.get(key, 0.0), 2.0)
     for row in pairs:
-        if row["jaccard"] < min_jaccard_layout:
-            continue
         g1, g2 = row["gid1"], row["gid2"]
-        if g1 in G.nodes and g2 in G.nodes:
-            w = row["jaccard"]
-            if G.has_edge(g1, g2):
-                G[g1][g2]["weight"] = max(G[g1][g2]["weight"], w)
-            else:
-                G.add_edge(g1, g2, weight=w)
-    pos_nx = nx.kamada_kawai_layout(G, weight="weight")
-    return {int(g): (float(x), float(y)) for g, (x, y) in pos_nx.items()}
+        if g1 in pos and g2 in pos and row["jaccard"] >= min_jaccard_layout:
+            key = (min(g1, g2), max(g1, g2))
+            adj[key] = max(adj.get(key, 0.0), row["jaccard"])
+    gids_list = list(pos.keys())
+    k_fr = math.sqrt(1.0 / n)
+    for it in range(iterations):
+        temp = 0.15 * (1.0 - it / iterations)
+        disp: Dict[int, List[float]] = {gid: [0.0, 0.0] for gid in gids_list}
+        for i in range(len(gids_list)):
+            u = gids_list[i]
+            for j in range(i + 1, len(gids_list)):
+                v = gids_list[j]
+                dx = pos[u][0] - pos[v][0]
+                dy = pos[u][1] - pos[v][1]
+                d  = math.sqrt(dx * dx + dy * dy) or 1e-4
+                f  = k_fr * k_fr / d
+                disp[u][0] += dx / d * f
+                disp[u][1] += dy / d * f
+                disp[v][0] -= dx / d * f
+                disp[v][1] -= dy / d * f
+        for (a, b), w in adj.items():
+            dx = pos[a][0] - pos[b][0]
+            dy = pos[a][1] - pos[b][1]
+            d  = math.sqrt(dx * dx + dy * dy) or 1e-4
+            f  = d * d / k_fr * w
+            disp[a][0] -= dx / d * f
+            disp[a][1] -= dy / d * f
+            disp[b][0] += dx / d * f
+            disp[b][1] += dy / d * f
+        for gid in gids_list:
+            disp[gid][0] -= 0.02 * pos[gid][0]
+            disp[gid][1] -= 0.02 * pos[gid][1]
+        for gid in gids_list:
+            dx, dy = disp[gid]
+            d = math.sqrt(dx * dx + dy * dy) or 1e-4
+            scale = min(d, temp) / d
+            pos[gid][0] += dx * scale
+            pos[gid][1] += dy * scale
+    return {gid: (pos[gid][0], pos[gid][1]) for gid in gids_list}
 
 # ---------------------------------------------------------------------------
 # Plot (plotly)
@@ -423,6 +495,8 @@ def parse_args() -> argparse.Namespace:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     p.add_argument("--overlap", type=Path, default=_find_default_overlap(),
                    metavar="CSV", help="Path to pfasgroup_overlap.csv")
+    p.add_argument("--min-compounds",         type=int,   default=1000,
+                   help="Exclude groups with fewer than this many compounds")
     p.add_argument("--min-jaccard",           type=float, default=0.05)
     p.add_argument("--containment-threshold", type=float, default=0.90)
     p.add_argument("--top-residual",          type=int,   default=25)
@@ -445,9 +519,21 @@ def main() -> None:
     print(f"Reading overlap data from {args.overlap} ...")
     group_data, pairs = load_overlap(Path(args.overlap))
     print(f"  {len(group_data)} groups, {len(pairs):,} overlap pairs")
-    print("Loading dependency rules ...")
+
+    # Filter small groups if requested
+    if args.min_compounds > 0:
+        before = len(group_data)
+        group_data = {g: d for g, d in group_data.items()
+                      if d["n_compounds"] >= args.min_compounds}
+        pairs = [r for r in pairs
+                 if r["gid1"] in group_data and r["gid2"] in group_data]
+        print(f"  After --min-compounds={args.min_compounds}: "
+              f"{len(group_data)} groups (removed {before - len(group_data)}), "
+              f"{len(pairs):,} pairs")
+
+    print(f"Loading dependency rules from {RULES_JSON} ...")
     rule_edges = load_rules(RULES_JSON, set(group_data))
-    print("Computing layout ...")
+    print("Computing layout (pure-Python FR, may take a few seconds) ...")
     pos = compute_layout(list(group_data), rule_edges, pairs)
     args.outdir.mkdir(exist_ok=True, parents=True)
     ts      = datetime.now().strftime("%Y%m%d_%H%M%S")

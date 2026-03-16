@@ -17,16 +17,16 @@ and completeness of the PFASGroups library.
    :local:
    :depth: 2
 
-Validation against PFASTRUCTv5
+Validation against PFASSTRUCTv5
 --------------------------------
 
-**Dataset**: PFASTRUCTv5 is a curated annotated PFAS structure database
+**Dataset**: PFASSTRUCTv5 is a curated annotated PFAS structure database
 containing ~14 000 structures
 (`Schymanski et al. 2023 <https://zenodo.org/record/7370805>`_).
 
 **Method**: Each structure was parsed with ``parse_smiles()`` using the
 default fluorine-only mode and OECD 2021 group definitions.  The binary
-PFAS/non-PFAS label from PFASTRUCTv5 was used as the ground truth.
+PFAS/non-PFAS label from PFASSTRUCTv5 was used as the ground truth.
 
 **Results**:
 
@@ -77,7 +77,7 @@ repository:
 .. code-block:: bash
 
    cd benchmark
-   # Reproduce PFASTRUCTv5 validation
+   # Reproduce PFASSTRUCTv5 validation
    python benchmark_pfasstructv5.py
 
    # Compare with CSRML classifier

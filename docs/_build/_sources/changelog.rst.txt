@@ -83,5 +83,5 @@ Version 2.0
 
 - Complete rewrite of the SMARTS-based matcher.
 - New JSON-based group definition format.
-- Regulatory PFAS definition support (OECD, REACH, OPPT, UK EA, PFASTRUCTv5).
+- Regulatory PFAS definition support (OECD, REACH, OPPT, UK EA, PFASSTRUCTv5).
 - CLI entry points ``halogengroups`` / ``pfasgroups`` added.
