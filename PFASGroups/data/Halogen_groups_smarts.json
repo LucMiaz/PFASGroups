@@ -1291,7 +1291,7 @@
             "C(F)(F)F": 1
         },
         "test": {
-            "category": "telomer",
+            "category": "oecd",
             "F": {
                 "examples": [
                     "OCCCCCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
