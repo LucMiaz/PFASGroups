@@ -4,7 +4,6 @@ import pytest
 import numpy as np
 from HalogenGroups import parse_smiles
 from PFASGroups.PFASEmbeddings import PFASEmbedding, PFASEmbeddingSet
-from PFASGroups import generate_embedding
 
 TEST_SMILES = [
     "C(C(C(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)(C(=O)O)F",  # PFOA
@@ -174,34 +173,43 @@ class TestGenerateEmbedding:
 
     def test_returns_tuple(self):
         """generate_embedding returns a (array, column_names) tuple."""
-        result = generate_embedding(TEST_SMILES[0])
-        assert isinstance(result, tuple)
-        assert len(result) == 2
+        result = parse_smiles(TEST_SMILES[0])
+        arr = results.to_array()
+        assert isinstance(arr, tuple)
+        assert len(arr) == 2
 
     def test_single_smiles_1d(self):
         """Single SMILES gives a 1-D embedding array."""
-        arr, cols = generate_embedding(TEST_SMILES[0])
+        result = parse_smiles(TEST_SMILES[0])
+        arr = result.to_array()
         assert arr.ndim == 1
         assert arr.shape[0] > 0
 
     def test_list_smiles_2d(self):
         """List of SMILES gives a 2-D embedding array."""
-        arr, cols = generate_embedding(TEST_SMILES)
+        result = parse_smiles(TEST_SMILES)
+        arr = result.to_array()
         assert arr.ndim == 2
         assert arr.shape[0] == len(TEST_SMILES)
         assert arr.shape[1] > 0
 
     def test_column_names_length(self):
         """len(cols) == arr.shape[-1] for both 1-D and 2-D outputs."""
-        arr1, cols1 = generate_embedding(TEST_SMILES[0])
-        assert len(cols1) == arr1.shape[-1]
+        result = parse_smiles(TEST_SMILES[0])
+        arr = result.to_array()
+        cols = result.column_names()
+        assert len(cols) == arr.shape[-1]
 
-        arr2, cols2 = generate_embedding(TEST_SMILES)
+        result2 = parse_smiles(TEST_SMILES)
+        arr2 = result2.to_array()
+        cols2 = result2.column_names()
         assert len(cols2) == arr2.shape[-1]
 
     def test_preset(self):
         """preset='best' works and produces a non-empty result."""
-        arr, cols = generate_embedding(TEST_SMILES, preset='best')
+        result = parse_smiles(TEST_SMILES, preset='best')
+        arr = result.to_array()
+        cols = result.column_names()
         assert arr.size > 0
         assert len(cols) > 0
 

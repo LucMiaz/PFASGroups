@@ -68,16 +68,7 @@ Via :meth:`~PFASGroups.PFASEmbeddingSet.to_array`:
    # Single-molecule embedding
    vec = results[0].to_array(preset='best')   # 1-D array, length 224
 
-Or use :func:`~PFASGroups.generate_embedding` for a ``(array, column_names)`` tuple
-in one call:
 
-.. code-block:: python
-
-   from PFASGroups import generate_embedding
-
-   arr, cols = generate_embedding(smiles, preset='best')
-   print(arr.shape)                      # (3, 224)
-   print(cols[:2])                       # e.g. ['Perfluoroalkyl [binary]', 'Perfluoroalkyl [effective_graph_resistance]']
 
 Key attributes
 ~~~~~~~~~~~~~~

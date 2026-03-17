@@ -6,7 +6,7 @@ from .core import rdkit_disable_log, HALOGEN_GROUPS_FILE
 from .parser import parse_smiles, parse_mols, parse_mol, parse_groups_in_mol, parse_from_database, setup_halogen_groups_database, compile_componentSmarts, compile_componentSmartss, load_HalogenGroups
 from .draw_mols import plot_mol, plot_mols, plot_HalogenGroups
 from .getter import get_componentSMARTSs, get_HalogenGroups, get_compiled_HalogenGroups, get_compiled_PFASGroups, get_PFASDefinitions
-from .embeddings import FINGERPRINT_PRESETS, EMBEDDING_PRESETS, PFASFingerprint, generate_embedding, generate_fingerprint
+from .embeddings import FINGERPRINT_PRESETS, EMBEDDING_PRESETS
 from .generate_homologues import generate_homologues
 from .homologue_series import HomologueSeries, HomologueEntry
 from .fragmentation import generate_degradation_products

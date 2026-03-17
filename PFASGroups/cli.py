@@ -11,7 +11,7 @@ import json
 
 
 from .parser import parse_smiles, get_componentSMARTSs, get_PFASGroups
-from .embeddings import PFASEmbedding
+from .PFASEmbeddings import PFASEmbedding
 from rdkit import Chem
 
 

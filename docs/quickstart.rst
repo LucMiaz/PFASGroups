@@ -5,10 +5,10 @@ Five-minute overview of the most common PFASGroups workflows.
 
 .. code-block:: python
 
-   from PFASGroups import parse_smiles, generate_embedding
+   from PFASGroups import parse_smiles
 
    results = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
-   arr, cols = generate_embedding(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
+   arr, cols = results.to_array(), results.column_names()
    print(arr.shape)   # (2, n_groups)
 
 .. contents:: Contents
@@ -75,12 +75,13 @@ column per group (fluorine only):
 
 .. code-block:: python
 
-   from PFASGroups import generate_embedding, parse_smiles
+   from PFASGroups import parse_smiles
 
    smiles = ["CCCC(F)(F)F", "FC(F)(F)C(=O)O", "OCCOCCO"]
 
    # Convenience function — parses and returns (array, column_names)
-   arr, cols = generate_embedding(smiles)
+   results = parse_smiles(smiles)
+   arr, cols = results.to_array(), results.column_names()
    print(arr.shape)   # (3, n_groups) — one row per molecule
    print(type(arr))   # numpy.ndarray
    print(cols[:2])    # ['Perfluoromethyl [binary]', 'Perfluoroalkyl [binary]', ...]
@@ -95,7 +96,7 @@ column per group (fluorine only):
 .. code-block:: python
 
    # OECD groups only
-   arr_oecd, cols_oecd = generate_embedding(smiles, group_selection='oecd')
+   arr_oecd, cols_oecd = results.to_array(group_selection='oecd'), results.column_names(group_selection='oecd')
 
    # From a pre-parsed set
    arr_oecd = results.to_array(group_selection='oecd')
@@ -105,16 +106,16 @@ column per group (fluorine only):
 .. code-block:: python
 
    # binary (default): 1 = present, 0 = absent
-   arr_bin, _ = generate_embedding(smiles, component_metrics=['binary'])
+   arr_bin, _ = results.to_array(component_metrics=['binary']), results.column_names(component_metrics=['binary'])
 
    # count: number of independent matches
-   arr_cnt, _ = generate_embedding(smiles, component_metrics=['count'])
+   arr_cnt, _ = results.to_array(component_metrics=['count']), results.column_names(component_metrics=['count'])
 
    # max_component: size (atom count) of the largest matching component
-   arr_max, _ = generate_embedding(smiles, component_metrics=['max_component'])
+   arr_max, _ = results.to_array(component_metrics=['max_component']), results.column_names(component_metrics=['max_component'])
 
    # Preset combining binary + effective graph resistance ('best')
-   arr_best, _ = generate_embedding(smiles, preset='best')
+   arr_best, _ = results.to_array(preset='best'), results.column_names(preset='best')
 
 .. note::
 

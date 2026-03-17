@@ -48,12 +48,10 @@ from PFASGroups import (
     get_priority_statistics,
     FINGERPRINT_PRESETS,
     EMBEDDING_PRESETS,
-    generate_embedding,
 )
 from PFASGroups import (
     parse_smiles as _parse_smiles_base,
     parse_mols as _parse_mols_base,
-    generate_fingerprint as _generate_fingerprint_base,
     PFASEmbeddingSet as _PFASEmbeddingSet,
 )
 
@@ -241,7 +239,7 @@ __all__ = [
     'plot_HalogenGroups', 'plot_mol', 'plot_mols',
     'get_componentSMARTSs', 'get_HalogenGroups', 'get_compiled_HalogenGroups',
     'get_compiled_PFASGroups', 'get_PFASDefinitions',
-    'generate_fingerprint', 'generate_embedding',
+    'generate_fingerprint', 
     'FINGERPRINT_PRESETS', 'EMBEDDING_PRESETS',
     'generate_homologues', 'HomologueSeries', 'HomologueEntry',
     'generate_degradation_products',

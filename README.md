@@ -75,8 +75,8 @@ PFASGroups/
 │   ├── __init__.py                  #   Public API
 │   ├── core.py                      #   SMARTS matching engine, component detection, decorators
 │   ├── parser.py                    #   parse_smiles / parse_mols entry points
-│   ├── fingerprints.py              #   generate_embedding (generate_fingerprint deprecated)
-│   ├── results_model.py             #   PFASEmbeddingSet, PFASEmbedding
+│   ├── embeddings.py                #   presets
+│   ├── PFASEmbeddings.py            #   PFASEmbeddingSet, PFASEmbedding
 │   ├── HalogenGroupModel.py         #   HalogenGroup data model
 │   ├── PFASDefinitionModel.py       #   PFASDefinition model
 │   ├── ComponentsSolverModel.py     #   Graph-based path-finding solver
@@ -169,16 +169,13 @@ pfasgroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
 ### Python API
 
 ```python
-from PFASGroups import parse_smiles, generate_embedding
+from PFASGroups import parse_smiles
 
 # Parse PFAS structures — returns a PFASEmbeddingSet
 smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
 results = parse_smiles(smiles_list)           # → PFASEmbeddingSet
 print(results)                                # summary: molecule count, top groups, …
 print(results[0])                             # per-molecule summary for first entry
-
-# Generate an embedding matrix and column names in one call
-arr, cols = generate_embedding(smiles_list)   # arr.shape == (2, n_groups)
 
 # Embedding from a pre-parsed set (avoids re-parsing)
 arr  = results.to_array()                     # default: binary, all groups
@@ -289,7 +286,7 @@ to analyse all halogens at once:
 ### Option A – import `HalogenGroups` (all halogens by default)
 
 ```python
-from HalogenGroups import parse_smiles, generate_embedding
+from HalogenGroups import parse_smiles
 
 smiles_list = [
     "C(C(F)(F)F)F",          # fluorinated
@@ -304,14 +301,12 @@ results = parse_smiles(smiles_list)           # → PFASEmbeddingSet
 arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
 cols = results.column_names(group_selection='oecd')
 
-# generate_embedding() also defaults to all halogens
-arr, cols = generate_embedding(smiles_list)
 ```
 
 ### Option B – import `PFASgroups` and specify `halogens` explicitly
 
 ```python
-from PFASgroups import parse_smiles, generate_embedding
+from PFASgroups import parse_smiles
 
 smiles_list = [
     "C(C(F)(F)F)F",
@@ -324,11 +319,6 @@ results = parse_smiles(smiles_list, halogens=['F', 'Cl', 'Br', 'I'])  # → PFAS
 
 arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
 cols = results.column_names(group_selection='oecd')
-
-arr, cols = generate_embedding(
-    smiles_list,
-    halogens=['F', 'Cl', 'Br', 'I'],
-)
 ```
 
 Both approaches produce identical results. Use `HalogenGroups` when your workflow
@@ -466,7 +456,6 @@ Major enhancement adding comprehensive dimensionality reduction and statistical 
 - `PFASEmbeddingSet.perform_tsne()`: t-SNE visualization
 - `PFASEmbeddingSet.perform_umap()`: Fast UMAP dimensionality reduction
 - `PFASEmbeddingSet.compare_kld()`: Dataset similarity via KL divergence
-- `generate_embedding()`: Parse SMILES and return `(array, column_names)` in one call
 - `prioritise_molecules()`: Rank molecules by similarity or fluorination properties
 - `PFASEmbeddingSet.to_sql()`: Persist results to a SQLite/PostgreSQL database
 
