@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-03-14T06:20:20.852989+00:00",
+  "created_utc": "2026-03-17T09:41:14.011869+00:00",
   "used_legacy_exports": "(cached)",
   "used_clinventory": "(cached)",
   "n_ec_lookup": "(cached)",
@@ -8,9 +8,9 @@
   "n_arphale_rows_resolved": 12672,
   "match_strategy": "inchikey+formula",
   "files": {
-    "ec_lookup": "/home/luc/git/PFASGroups/benchmark/results/lookups/ec_to_structure_lookup.csv",
-    "cas_lookup": "/home/luc/git/PFASGroups/benchmark/results/lookups/cas_to_structure_lookup.csv",
-    "arphale_resolved": "/home/luc/git/PFASGroups/benchmark/results/lookups/arphale_resolved_structures.csv",
-    "common_matches": "/home/luc/git/PFASGroups/benchmark/results/lookups/common_inchikey_formula_matches.csv"
+    "ec_lookup": "c:\\Users\\luc\\git\\PFASGroups\\benchmark\\results\\lookups\\ec_to_structure_lookup.csv",
+    "cas_lookup": "c:\\Users\\luc\\git\\PFASGroups\\benchmark\\results\\lookups\\cas_to_structure_lookup.csv",
+    "arphale_resolved": "c:\\Users\\luc\\git\\PFASGroups\\benchmark\\results\\lookups\\arphale_resolved_structures.csv",
+    "common_matches": "c:\\Users\\luc\\git\\PFASGroups\\benchmark\\results\\lookups\\common_inchikey_formula_matches.csv"
   }
 }
