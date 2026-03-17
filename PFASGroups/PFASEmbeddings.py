@@ -1242,6 +1242,56 @@ class PFASEmbedding(dict):
         grid.save(filename)
         return filename
 
+    # ------------------------------------------------------------------
+    # Factory constructors
+    # ------------------------------------------------------------------
+
+    @classmethod
+    def from_smiles(cls, smiles: str, **kwargs) -> "PFASEmbedding":
+        """Parse a SMILES string and return a single :class:`PFASEmbedding`.
+
+        Parameters
+        ----------
+        smiles : str
+            SMILES string for one molecule.
+        **kwargs
+            Forwarded to :func:`~PFASGroups.parser.parse_smiles`
+            (e.g. ``halogens``, ``saturation``, ``progress``).
+        """
+        from .parser import parse_smiles
+        return parse_smiles(smiles, **kwargs)[0]
+
+    @classmethod
+    def from_mol(cls, mol, **kwargs) -> "PFASEmbedding":
+        """Parse an RDKit molecule and return a single :class:`PFASEmbedding`.
+
+        Parameters
+        ----------
+        mol : rdkit.Chem.Mol
+            RDKit molecule object.
+        **kwargs
+            Forwarded to :func:`~PFASGroups.parser.parse_mols`.
+        """
+        from .parser import parse_mols
+        return parse_mols([mol], **kwargs)[0]
+
+    @classmethod
+    def from_inchi(cls, inchi: str, **kwargs) -> "PFASEmbedding":
+        """Parse an InChI string and return a single :class:`PFASEmbedding`.
+
+        Parameters
+        ----------
+        inchi : str
+            InChI string for one molecule.
+        **kwargs
+            Forwarded to :func:`~PFASGroups.parser.parse_mols`.
+        """
+        from rdkit.Chem.inchi import MolFromInchi
+        mol = MolFromInchi(inchi)
+        if mol is None:
+            raise ValueError(f"Cannot parse InChI: {inchi!r}")
+        return cls.from_mol(mol, **kwargs)
+
     def to_fingerprint(
         self,
         group_selection: str = 'all',
@@ -1559,7 +1609,56 @@ class PFASEmbeddingSet(list):
 
         return cls(results)
 
-    # --- Navigation helpers -------------------------------------------------
+    @classmethod
+    def from_smiles(cls, smiles: Union[str, List[str]], **kwargs) -> "PFASEmbeddingSet":
+        """Parse SMILES string(s) and return a :class:`PFASEmbeddingSet`.
+
+        Parameters
+        ----------
+        smiles : str or list of str
+            One or more SMILES strings.
+        **kwargs
+            Forwarded to :func:`~PFASGroups.parser.parse_smiles`
+            (e.g. ``halogens``, ``saturation``, ``progress``).
+        """
+        from .parser import parse_smiles
+        return parse_smiles(smiles, **kwargs)
+
+    @classmethod
+    def from_mols(cls, mols, **kwargs) -> "PFASEmbeddingSet":
+        """Parse RDKit molecules and return a :class:`PFASEmbeddingSet`.
+
+        Parameters
+        ----------
+        mols : list of rdkit.Chem.Mol
+            List of RDKit molecule objects.
+        **kwargs
+            Forwarded to :func:`~PFASGroups.parser.parse_mols`.
+        """
+        from .parser import parse_mols
+        return parse_mols(list(mols), **kwargs)
+
+    @classmethod
+    def from_inchis(cls, inchis: List[str], **kwargs) -> "PFASEmbeddingSet":
+        """Parse InChI strings and return a :class:`PFASEmbeddingSet`.
+
+        Parameters
+        ----------
+        inchis : list of str
+            List of InChI strings.
+        **kwargs
+            Forwarded to :func:`~PFASGroups.parser.parse_mols`.
+        """
+        from rdkit.Chem.inchi import MolFromInchi
+        mols = []
+        for inchi in inchis:
+            mol = MolFromInchi(inchi)
+            if mol is None:
+                raise ValueError(f"Cannot parse InChI: {inchi!r}")
+            mols.append(mol)
+        return cls.from_mols(mols, **kwargs)
+
+
 
     def iter_group_matches(
         self,
@@ -2449,6 +2548,7 @@ class PFASEmbeddingSet(list):
         aggregation=_UNSET,
         preset=_UNSET,
         pfas_groups=_UNSET,
+        progress: bool = True,
     ) -> "EmbeddingArray":
         """Stack per-molecule embedding rows into a ``(n_mols, n_cols)`` matrix.
 
@@ -2456,7 +2556,10 @@ class PFASEmbeddingSet(list):
         binary by default on the first call).  Pass explicit arguments to
         override and update the cache.
 
-        Parameters match those of :meth:`PFASEmbedding.to_array`.
+        Parameters match those of :meth:`PFASEmbedding.to_array`, plus:
+
+        progress : bool, default True
+            Show a tqdm progress bar while computing embeddings.
         """
         _no_args = (
             component_metrics is _UNSET and molecule_metrics is _UNSET and
@@ -2478,6 +2581,15 @@ class PFASEmbeddingSet(list):
         from .getter import get_compiled_HalogenGroups
         if pfas_groups is None:
             pfas_groups = get_compiled_HalogenGroups()
+
+        _iter = self
+        if progress and len(self) > 1:
+            try:
+                from tqdm.auto import tqdm as _tqdm
+            except ImportError:
+                from tqdm import tqdm as _tqdm
+            _iter = _tqdm(self, desc='Computing embeddings', total=len(self))
+
         rows = [
             mol.to_array(
                 component_metrics=component_metrics,
@@ -2488,7 +2600,7 @@ class PFASEmbeddingSet(list):
                 preset=preset,
                 pfas_groups=pfas_groups,
             )
-            for mol in self
+            for mol in _iter
         ]
         if not rows:
             mat = np.zeros((0, 0), dtype=float)

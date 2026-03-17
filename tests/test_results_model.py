@@ -2,7 +2,7 @@
 
 import json
 
-from PFASGroups.results_model import ResultsModel
+from PFASGroups.PFASEmbeddings import ResultsModel
 
 
 def test_results_model_helpers():

@@ -7,7 +7,7 @@ import numpy as np
 from rdkit import Chem
 
 from HalogenGroups import parse_smiles, prioritise_molecules, prioritize_molecules, get_priority_statistics
-from PFASGroups.results_model import ResultsModel
+from PFASGroups.PFASEmbeddings import ResultsModel
 
 
 # Test molecules with varying fluorination

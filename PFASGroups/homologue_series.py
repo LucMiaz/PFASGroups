@@ -32,8 +32,8 @@ from rdkit import Chem
 from rdkit.Chem import Draw
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 
-# Re-use ANSI helpers and grid utility from results_model
-from .results_model import _ansi, _ANSI_BOLD, _ANSI_HALOGEN, _grid_images
+# Re-use ANSI helpers and grid utility from PFASEmbeddings
+from .PFASEmbeddings import _ansi, _ANSI_BOLD, _ANSI_HALOGEN, _grid_images
 
 Color = Tuple[float, float, float]
 

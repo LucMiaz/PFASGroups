@@ -218,7 +218,7 @@ def example_results_model_sql():
     
     # Load back
     print(f"\nLoading results from {db_file}...")
-    from PFASGroups.results_model import ResultsModel
+    from PFASGroups.PFASEmbeddings import ResultsModel
     results_loaded = ResultsModel.from_sql(filename=db_file)
     
     print(f"\nOriginal results: {len(results)} molecules")

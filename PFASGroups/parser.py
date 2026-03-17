@@ -302,7 +302,7 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     kwargs['saturation'] = saturation
     return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, progress=progress, **kwargs)
 
-from .results_model import PFASEmbeddingSet
+from .PFASEmbeddings import PFASEmbeddingSet
 
 
 def parse_from_database(

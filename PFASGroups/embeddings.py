@@ -36,7 +36,7 @@ from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from .parser import parse_groups_in_mol
 
 if TYPE_CHECKING:
-    from .results_model import MoleculeResult, ResultsModel
+    from .PFASEmbeddings import MoleculeResult, ResultsModel
 
 # ---------------------------------------------------------------------------
 # Valid values for the component_metrics parameter
@@ -165,15 +165,15 @@ class PFASEmbedding(np.ndarray):
     Shape convention
     ----------------
     - ``(n_columns,)`` for a single molecule (``str`` or
-      :class:`~PFASGroups.results_model.MoleculeResult` source).
+      :class:`~PFASGroups.PFASEmbeddings.MoleculeResult` source).
     - ``(n_molecules, n_columns)`` for multiple molecules (``list[str]`` or
-      :class:`~PFASGroups.results_model.ResultsModel` source).
+      :class:`~PFASGroups.PFASEmbeddings.ResultsModel` source).
 
     Parameters
     ----------
     source : str | list[str] | MoleculeResult | ResultsModel
-        Input molecules.  When a :class:`~PFASGroups.results_model.MoleculeResult`
-        or :class:`~PFASGroups.results_model.ResultsModel` is given the
+        Input molecules.  When a :class:`~PFASGroups.PFASEmbeddings.MoleculeResult`
+        or :class:`~PFASGroups.PFASEmbeddings.ResultsModel` is given the
         pre-computed group matches are reused—``parse_groups_in_mol`` is *not*
         called again.
     preset : str, optional
@@ -287,7 +287,7 @@ class PFASEmbedding(np.ndarray):
         progress: bool = False,
     ) -> 'PFASEmbedding':
         # Lazy import avoids circular dependency at module load time.
-        from .results_model import MoleculeResult, ResultsModel  # noqa: F401
+        from .PFASEmbeddings import MoleculeResult, ResultsModel  # noqa: F401
 
         # ── Backward-compat: convert count_mode/graph_metrics → component_metrics ─
         if count_mode is not None or graph_metrics is not None:
@@ -481,7 +481,7 @@ class PFASEmbedding(np.ndarray):
     @staticmethod
     def _match_dict_from_result(mol_result: 'MoleculeResult') -> Dict[int, Dict]:
         """Build ``{group_id: {match_count, component_sizes, matched_components}}``
-        from a pre-computed :class:`~PFASGroups.results_model.MoleculeResult`.
+        from a pre-computed :class:`~PFASGroups.PFASEmbeddings.MoleculeResult`.
         """
         result: Dict[int, Dict] = {}
         for match in mol_result.matches:
@@ -821,14 +821,14 @@ class PFASEmbedding(np.ndarray):
 
     @property
     def has_cache(self) -> bool:
-        """True when a match cache is available for :meth:`get_fingerprint`."""
+        """True when a match cache is available for :meth:`get_embedding`."""
         return bool(getattr(self, '_match_cache', {}))
 
     # ------------------------------------------------------------------
     # Derive new fingerprints from cached results
     # ------------------------------------------------------------------
 
-    def get_fingerprint(
+    def get_embedding(
         self,
         preset: Optional[str] = None,
         component_metrics: Optional[List[str]] = None,
@@ -837,11 +837,11 @@ class PFASEmbedding(np.ndarray):
         molecule_metrics: Optional[List[str]] = None,
         progress: bool = False,
     ) -> 'PFASEmbedding':
-        """Derive a new fingerprint from the same molecules without re-parsing.
+        """Derive a new embedding from the same molecules without re-parsing.
 
         The PFASGroups algorithm (group matching, component detection, graph
         metrics) only runs once — when *this* instance was created.
-        :meth:`get_fingerprint` re-encodes those cached results into a new
+        :meth:`get_embedding` re-encodes those cached results into a new
         column layout determined by *preset*, *component_metrics*,
         *group_selection*, and *molecule_metrics*.
 
@@ -863,8 +863,8 @@ class PFASEmbedding(np.ndarray):
 
         Returns
         -------
-        PFASFingerprint
-            A new fingerprint array that shares this instance's match cache.
+        PFASEmbedding
+            A new embedding array that shares this instance's match cache.
 
         Raises
         ------
@@ -874,18 +874,18 @@ class PFASEmbedding(np.ndarray):
         Examples
         --------
         >>> fp = PFASEmbedding(smiles_list, preset='best')
-        >>> fp_binary = fp.get_fingerprint(preset='binary')   # instant
-        >>> fp_rich   = fp.get_fingerprint(preset='best_5')   # instant
+        >>> fp_binary = fp.get_embedding(preset='binary')   # instant
+        >>> fp_rich   = fp.get_embedding(preset='best_5')   # instant
         """
         cache = getattr(self, '_match_cache', {})
         if not cache:
             raise ValueError(
-                "No match cache available on this PFASFingerprint instance. "
-                "get_fingerprint() requires the instance to have been created "
+                "No match cache available on this PFASEmbedding instance. "
+                "get_embedding() requires the instance to have been created "
                 "from SMILES or a ResultsModel (not loaded from SQL/array)."
             )
 
-        return PFASFingerprint(
+        return PFASEmbedding(
             self.smiles,
             preset=preset,
             component_metrics=component_metrics if component_metrics is not None else (
@@ -902,6 +902,15 @@ class PFASEmbedding(np.ndarray):
             _match_cache=cache,
             progress=progress,
         )
+
+    def get_fingerprint(self, *args, **kwargs) -> 'PFASEmbedding':
+        """Deprecated — use :meth:`get_embedding` instead."""
+        import warnings as _w
+        _w.warn(
+            "get_fingerprint() is deprecated; use get_embedding() instead.",
+            DeprecationWarning, stacklevel=2,
+        )
+        return self.get_embedding(*args, **kwargs)
 
     # ------------------------------------------------------------------
     # Display

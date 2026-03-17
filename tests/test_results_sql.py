@@ -6,7 +6,7 @@ import tempfile
 import pytest
 from pathlib import Path
 
-from PFASGroups.results_model import ResultsModel, MoleculeResult
+from PFASGroups.PFASEmbeddings import ResultsModel, MoleculeResult
 from HalogenGroups import parse_smiles
 
 

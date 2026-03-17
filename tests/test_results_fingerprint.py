@@ -3,7 +3,7 @@
 import pytest
 import numpy as np
 from HalogenGroups import parse_smiles
-from PFASGroups.results_model import PFASEmbedding, PFASEmbeddingSet
+from PFASGroups.PFASEmbeddings import PFASEmbedding, PFASEmbeddingSet
 from PFASGroups import generate_embedding
 
 TEST_SMILES = [

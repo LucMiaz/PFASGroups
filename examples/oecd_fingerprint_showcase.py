@@ -385,7 +385,7 @@ def demonstrate_sql_persistence(results, fp, output_dir='oecd_analysis'):
     
     # Load back and verify
     print(f"\nLoading data back from databases...")
-    from HalogenGroups.results_model import ResultsModel, ResultsFingerprint
+    from HalogenGroups.PFASEmbeddings import ResultsModel, ResultsFingerprint
     
     loaded_results = ResultsModel.from_sql(filename=results_db)
     loaded_fp = ResultsFingerprint.from_sql(filename=fingerprints_db)

@@ -15,7 +15,7 @@ import numpy as np
 from rdkit import Chem
 
 from .parser import parse_smiles, parse_mols
-from .results_model import PFASEmbeddingSet
+from .PFASEmbeddings import PFASEmbeddingSet
 
 
 def prioritise_molecules(

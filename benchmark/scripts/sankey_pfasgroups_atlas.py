@@ -53,7 +53,7 @@ except ImportError as _e:
 try:
     from PFASGroups import parse_mol
     from PFASGroups.core import rdkit_disable_log
-    from PFASGroups.results_model import _get_group_info, _CLASSIFY_EXCLUDED_IDS
+    from PFASGroups.PFASEmbeddings import _get_group_info, _CLASSIFY_EXCLUDED_IDS
     rdkit_disable_log()
 except ImportError as _e:
     sys.exit(f"ERROR: PFASGroups not available: {_e}")
