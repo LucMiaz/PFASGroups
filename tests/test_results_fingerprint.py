@@ -172,16 +172,18 @@ class TestGenerateEmbedding:
     """Tests for the generate_embedding() convenience function."""
 
     def test_returns_tuple(self):
-        """generate_embedding returns a (array, column_names) tuple."""
+        """parse_smiles on a single SMILES returns an object with to_array() and column_names()."""
         result = parse_smiles(TEST_SMILES[0])
-        arr = results.to_array()
-        assert isinstance(arr, tuple)
-        assert len(arr) == 2
+        arr = result[0].to_array()
+        cols = result[0].column_names()
+        assert isinstance(arr, np.ndarray)
+        assert isinstance(cols, list)
+        assert len(cols) == arr.shape[0]
 
     def test_single_smiles_1d(self):
         """Single SMILES gives a 1-D embedding array."""
         result = parse_smiles(TEST_SMILES[0])
-        arr = result.to_array()
+        arr = result[0].to_array()
         assert arr.ndim == 1
         assert arr.shape[0] > 0
 

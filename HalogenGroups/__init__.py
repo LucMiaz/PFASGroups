@@ -53,6 +53,7 @@ from PFASGroups import (
     parse_smiles as _parse_smiles_base,
     parse_mols as _parse_mols_base,
     PFASEmbeddingSet as _PFASEmbeddingSet,
+    generate_fingerprint as _generate_fingerprint_base,
 )
 
 __version__ = "3.1.0"

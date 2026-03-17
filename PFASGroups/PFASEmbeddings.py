@@ -3041,3 +3041,47 @@ class PFASEmbeddingSet(list):
 # Backward-compatible aliases
 MoleculeResult = PFASEmbedding
 ResultsModel = PFASEmbeddingSet
+
+
+def generate_fingerprint(
+    smiles,
+    *,
+    selected_groups=None,
+    representation='vector',
+    component_metrics=None,
+    halogens='F',
+    saturation='per',
+    count_mode=None,
+    **kwargs,
+):
+    """Generate a fingerprint vector for one or more SMILES strings.
+
+    Parameters
+    ----------
+    smiles : str or list of str
+        Input SMILES.
+    halogens : str or list of str, default 'F'
+        Halogens to include in the fingerprint.
+    saturation : str or None, default 'per'
+        Saturation filter.
+    count_mode : str or None
+        Fingerprint mode, e.g. 'binary' or 'count'.  When provided, overrides
+        *component_metrics*.
+    component_metrics : list of str or None
+        Explicit list of per-component metrics.
+
+    Returns
+    -------
+    tuple (array, column_names)
+        array : EmbeddingArray — 1-D for a single SMILES, 2-D for a list.
+        column_names : list of str.
+    """
+    from .parser import parse_smiles as _parse_smiles
+    resolved_cm = ([count_mode] if count_mode is not None else component_metrics) or None
+    result = _parse_smiles(smiles, halogens=halogens, saturation=saturation, **kwargs)
+    arr = result.to_array(component_metrics=resolved_cm)
+    cols = result.column_names(component_metrics=resolved_cm)
+    if isinstance(smiles, str):
+        arr = arr[0]  # squeeze (1, n_cols) → (n_cols,) for single SMILES
+    return arr, cols
+

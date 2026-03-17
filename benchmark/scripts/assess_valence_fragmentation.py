@@ -34,6 +34,8 @@ from rdkit import Chem
 from rdkit import rdBase
 rdBase.DisableLog("rdApp.warning")
 rdBase.DisableLog("rdApp.error")
+from getpass import getpass
+
 
 # ── local import ──────────────────────────────────────────────────────────────
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -59,7 +61,7 @@ def _build_engine():
     host = os.getenv("CLINVENTORY_DB_HOST",     "localhost")
     port = os.getenv("CLINVENTORY_DB_PORT",     "5432")
     user = os.getenv("CLINVENTORY_DB_USER",     os.getenv("USERNAME", os.getenv("USER", "postgres")))
-    pwd  = os.getenv("CLINVENTORY_DB_PASSWORD", "")
+    pwd  = getpass('DB password (leave empty for none): ') if os.getenv("CLINVENTORY_DB_PASSWORD") is None else os.getenv("CLINVENTORY_DB_PASSWORD")
 
     # prefer Unix socket when host is localhost and no password is set
     if host == "localhost" and not pwd:
@@ -142,7 +144,7 @@ def assess(table: str = "substances",
 
     t0 = time.perf_counter()
     print(f"Table: {table!r}  |  SMILES column: {col!r}  "
-          f"|  batch={batch:,}  |  limit={'all' if limit == 0 else limit:,}\n")
+          f"|  batch={batch:,}  |  limit={'all' if limit == 0 else f'{limit}'}\n")
 
     for smi in _iter_smiles(engine, table, col, batch, limit):
         n_total += 1
@@ -150,8 +152,10 @@ def assess(table: str = "substances",
         if mol is None:
             n_invalid += 1
             continue
-
-        mol = Chem.AddHs(mol)
+        try:
+            mol = Chem.AddHs(mol)
+        except:
+            pass  # if AddHs fails, we'll catch valence issues in the next step
         try:
             Chem.SanitizeMol(mol)
             n_clean += 1

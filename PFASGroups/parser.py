@@ -82,7 +82,7 @@ def load_componentsSolver(**kwargs):
             # check organic halogen:
             if not mol.GetSubstructMatch(Chem.MolFromSmarts(_smarts)):
                 #logger.debug("No organic halogens found, skipping componentsSolver")
-                return [], mol
+                return [], mol, CalcMolFormula(mol)
             # Pass through component metric options
             solver_kwargs = {}
             if 'limit_effective_graph_resistance' in kwargs:
@@ -239,7 +239,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
                     match_count = len(unique_components)
                     group_matches.append((agg_group, match_count, component_sizes, unique_components))
 
-    return group_matches, mol
+    return group_matches, mol, formula
 
 
 @rdkit_disable_log(level='warning')
@@ -662,8 +662,6 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         _iter = _tqdm(mols, desc='parse_mols', total=len(mols))
     for mol in _iter:
         # Add hydrogens to ensure consistent atom indexing
-        mol_with_h = Chem.AddHs(mol)
-        formula = CalcMolFormula(mol)
         bycomponent = kwargs.pop('bycomponent', False)
         # Pass through component metric options and filters
         kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
@@ -671,7 +669,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         kwargs['halogens'] = halogens
         kwargs['form'] = form
         kwargs['saturation'] = saturation
-        matches, mol_with_h = parse_groups_in_mol(mol, formula=formula, bycomponent=bycomponent, **kwargs)
+        matches, mol_with_h, formula = parse_groups_in_mol(mol, bycomponent=bycomponent, **kwargs)
         inchikey = Chem.MolToInchiKey(mol)
         inchi = Chem.MolToInchi(mol)
         smi = Chem.MolToSmiles(mol)
