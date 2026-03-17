@@ -191,25 +191,75 @@ def fragment_on_bond(mol, a1, a2):
     mms =  Chem.FragmentOnBonds(mol, [bond.GetIdx()], addDummies=False)
     return [x for x in Chem.GetMolFrags(mms, asMols=True, sanitizeFrags = False)]
 
-def fragment_until_valence_is_correct(mol, frags):
-    """Iterate over the molecule and fragment it until  valence is corrected"""
+def fragment_until_valence_is_correct(mol, frags, verbose=False, _events=None):
+    """Iterate over the molecule and fragment it until valence is corrected.
+
+    Parameters
+    ----------
+    mol : rdkit.Chem.Mol
+        Molecule to sanitize / fragment.
+    frags : list
+        Accumulator for sanitized fragment mols (pass ``[]`` on first call).
+    verbose : bool, optional
+        When *True* the function returns a 2-tuple ``(frags, events)`` instead
+        of just ``frags``.  *events* is a list of dicts, one per fragmentation
+        step, each containing:
+        ``atom_idx`` – index of the offending atom,
+        ``error`` – the original :class:`~rdkit.Chem.AtomValenceException`
+        message,
+        ``n_fragments`` – how many pieces the bond-cut produced,
+        ``smiles`` – SMILES of the fragment being cut (may be ``None`` if
+        RDKit cannot generate one for an unsanitized mol).
+    _events : list or None
+        Internal accumulator used during recursion; do **not** pass explicitly.
+
+    Returns
+    -------
+    list or tuple
+        * ``verbose=False``: list of sanitized :class:`rdkit.Chem.Mol` fragments.
+        * ``verbose=True``: ``(frags, events)`` 2-tuple.
+    """
+    if verbose and _events is None:
+        _events = []
     try:
         Chem.SanitizeMol(mol)
     except Chem.AtomValenceException as e:
         all = [int(x) for x in re.findall(r"(?<=#\s)(\d)",str(e))]
-        if len(all)==0:
+        if len(all) == 0:
+            if verbose:
+                return frags, _events
             raise e
         neighbours = mol.GetAtomWithIdx(all[0]).GetNeighbors()
-        atom = sorted([(mol.GetBondBetweenAtoms(all[0], x.GetIdx()).GetBondType(),x.GetIdx()) for x in neighbours], reverse = True)[0][1] # return index of neighbour with bond of highest degree
+        atom = sorted([(mol.GetBondBetweenAtoms(all[0], x.GetIdx()).GetBondType(), x.GetIdx()) for x in neighbours], reverse=True)[0][1]  # neighbour with bond of highest degree
         mols = fragment_on_bond(mol, all[0], atom)
+        if verbose:
+            try:
+                smi = Chem.MolToSmiles(mol)
+            except Exception:
+                smi = None
+            _events.append({
+                'atom_idx': all[0],
+                'error': str(e),
+                'n_fragments': len(mols),
+                'smiles': smi,
+            })
         for m in mols:
             try:
-                frags = fragment_until_valence_is_correct(m, frags)
+                if verbose:
+                    frags, _events = fragment_until_valence_is_correct(m, frags, verbose=True, _events=_events)
+                else:
+                    frags = fragment_until_valence_is_correct(m, frags)
             except IndexError:
                 # assume that element in frag is actually isolated
+                if verbose:
+                    return frags, _events
                 return frags
+        if verbose:
+            return frags, _events
         return frags
     else:
+        if verbose:
+            return frags + [mol], _events
         return frags + [mol]
 
 
