@@ -254,7 +254,13 @@ def fragment_until_valence_is_correct(mol, frags, verbose=False, _events=None):
                 return frags, _events
             raise e
         neighbours = mol.GetAtomWithIdx(all[0]).GetNeighbors()
-        atom = sorted([(mol.GetBondBetweenAtoms(all[0], x.GetIdx()).GetBondType(), x.GetIdx()) for x in neighbours], reverse=True)[0][1]  # neighbour with bond of highest degree
+        if not neighbours:
+            # Isolated atom with no bonds — cannot fragment; skip this fragment.
+            if verbose:
+                return frags, _events
+            return frags
+        bond_order_pairs = [(mol.GetBondBetweenAtoms(all[0], x.GetIdx()).GetBondType(), x.GetIdx()) for x in neighbours]
+        atom = sorted(bond_order_pairs, reverse=True)[0][1]  # neighbour with bond of highest degree
         mols = fragment_on_bond(mol, all[0], atom)
         if verbose:
             try:
@@ -273,8 +279,8 @@ def fragment_until_valence_is_correct(mol, frags, verbose=False, _events=None):
                     frags, _events = fragment_until_valence_is_correct(m, frags, verbose=True, _events=_events)
                 else:
                     frags = fragment_until_valence_is_correct(m, frags)
-            except IndexError:
-                # assume that element in frag is actually isolated
+            except Exception:
+                # Fragment could not be processed (isolated atom, bad valence, etc.) — skip it.
                 if verbose:
                     return frags, _events
                 return frags

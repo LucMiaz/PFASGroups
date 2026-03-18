@@ -30,7 +30,6 @@ import time
 import textwrap
 from collections import Counter
 
-from rdkit import Chem
 from rdkit import rdBase
 rdBase.DisableLog("rdApp.warning")
 rdBase.DisableLog("rdApp.error")
@@ -39,7 +38,7 @@ from getpass import getpass
 
 # ── local import ──────────────────────────────────────────────────────────────
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from PFASGroups.core import fragment_until_valence_is_correct  # noqa: E402
+from PFASGroups.parser import parse_smiles  # noqa: E402
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -146,35 +145,37 @@ def assess(table: str = "substances",
     print(f"Table: {table!r}  |  SMILES column: {col!r}  "
           f"|  batch={batch:,}  |  limit={'all' if limit == 0 else f'{limit}'}\n")
 
+    batch_smiles: list[str] = []
+
+    def _process_batch(smis: list[str]) -> None:
+        """Call parse_smiles(verbose=True) on a batch and accumulate stats."""
+        nonlocal n_invalid, n_fragmented, n_clean
+        import warnings as _warnings
+        with _warnings.catch_warnings(record=True):
+            _warnings.simplefilter("always")
+            _, verbose_info = parse_smiles(
+                smis,
+                verbose=True,
+                halogens=None,              # assess all compounds, not just PFAS
+                compute_component_metrics=False,  # skip graph metrics for speed
+            )
+        n_frag_batch = len(verbose_info['fragmented'])
+        n_inv_batch  = verbose_info['n_invalid']
+        n_invalid    += n_inv_batch
+        n_fragmented += n_frag_batch
+        n_clean      += len(smis) - n_inv_batch - n_frag_batch
+        for fe in verbose_info['fragmented']:
+            for ev in fe['events']:
+                all_events.append(ev)
+                atom_counter[ev.get('atom_symbol', 'unknown')] += 1
+
     for smi in _iter_smiles(engine, table, col, batch, limit):
+        batch_smiles.append(smi)
         n_total += 1
-        mol = Chem.MolFromSmiles(smi, sanitize=False)
-        if mol is None:
-            n_invalid += 1
-            continue
-        try:
-            mol = Chem.AddHs(mol)
-        except:
-            pass  # if AddHs fails, we'll catch valence issues in the next step
-        try:
-            Chem.SanitizeMol(mol)
-            n_clean += 1
-        except Chem.AtomValenceException:
-            # Use verbose=True to collect event details
-            _frags, events = fragment_until_valence_is_correct(mol, [], verbose=True)
-            if events:
-                n_fragmented += 1
-                for ev in events:
-                    all_events.append(ev)
-                    # Resolve atom index → element symbol from the original mol
-                    try:
-                        sym = mol.GetAtomWithIdx(ev["atom_idx"]).GetSymbol()
-                    except Exception:
-                        sym = "unknown"
-                    atom_counter[sym] += 1
-            else:
-                # fragment_until_valence returned empty events (raised internally)
-                n_fragmented += 1
+
+        if len(batch_smiles) >= batch:
+            _process_batch(batch_smiles)
+            batch_smiles = []
 
         if n_total % 10_000 == 0:
             elapsed = time.perf_counter() - t0
@@ -182,6 +183,10 @@ def assess(table: str = "substances",
             print(f"  {n_total:>8,}  processed  |  fragmented so far: "
                   f"{n_fragmented:,} ({100*n_fragmented/n_total:.2f}%)  "
                   f"|  {rate:,.0f} mol/s")
+
+    # flush the last (possibly partial) batch
+    if batch_smiles:
+        _process_batch(batch_smiles)
 
     elapsed = time.perf_counter() - t0
     print()

@@ -73,8 +73,6 @@ def load_componentsSolver(**kwargs):
             mol = args[0]
             # Add hydrogens to molecule before creating ComponentsSolver
             # This ensures atom indices are consistent throughout the analysis
-            formula = kwargs.get("formula", CalcMolFormula(mol))
-            kwargs['formula'] = formula
             try:
                 mol = Chem.AddHs(mol)
                 Chem.SanitizeMol(mol)
@@ -88,6 +86,8 @@ def load_componentsSolver(**kwargs):
                 formulas = [n_from_formula(formula)]# formula as a dictionary
             args = list(args)  # Convert to mutable list
             args[0] = mol
+            formula = kwargs.get("formula", CalcMolFormula(mol))
+            kwargs['formula'] = formula
             kwargs['formulas'] = formulas
             kwargs['frags'] = frags
             args = tuple(args)  # Convert back to tuple
@@ -252,6 +252,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
 def parse_smiles(smiles, bycomponent=False, output_format='list',
                   limit_effective_graph_resistance=None, compute_component_metrics=True,
                   halogens='F', form=None, saturation=None, progress=False,
+                  verbose=False,
                   **kwargs):
     """
     Parse SMILES string(s) and return halogen group information.
@@ -288,42 +289,66 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
         Filter components by saturation (e.g., 'per', 'poly', or None for all)
     progress : bool, default False
         If True, display a tqdm progress bar during parsing.
+    verbose : bool, default False
+        If True, collect fragmentation events from
+        :func:`~PFASGroups.core.fragment_until_valence_is_correct` for each
+        SMILES that could not be sanitised directly.  When *True* the
+        function returns a 2-tuple ``(result, verbose_info)`` where
+        ``verbose_info`` is a dict with keys:
+
+        ``fragmented``
+            List of per-SMILES dicts ``{'smiles': str, 'events': list,
+            'n_fragments': int}`` for every SMILES that triggered
+            fragmentation.  Each event dict contains ``atom_idx``,
+            ``atom_symbol``, ``error``, ``n_fragments``, and ``smiles``.
+        ``n_invalid``
+            Count of SMILES that could not be converted to a valid RDKit
+            molecule even after attempted fragmentation.
     **kwargs : dict
         Additional parameters (pfas_groups, componentSmartss, etc.)
 
     Returns:
     --------
     list, pandas.DataFrame, or str
-        Depends on output_format parameter
+        Depends on output_format parameter (or 2-tuple when verbose=True)
     """
     # Convert single input to list for uniform processing
     single_input = isinstance(smiles, str)
     smiles_list = [smiles] if single_input else smiles
+    import warnings
     mol_list = []
+    _frag_events: list = []  # populated when verbose=True
+    _n_invalid: int = 0
     for smi in smiles_list:
-        try:
-            mol = Chem.MolFromSmiles(str(smi))
-            Chem.SanitizeMol(mol)
-        except Exception:
-            mol = Chem.MolFromSmiles(str(smi), sanitize = False)
-            print(f"Warning: failed to parse SMILES '{smi}' with sanitization. Attempting without sanitization.")
-            frags = fragment_until_valence_is_correct(mol, [])
-            print(f"Fragmented into {len(frags)} pieces.")
-            if len(frags) == 0:
-                print(f"Error parsing SMILES '{smi}': no valid fragments found.")
-                mol = None
-            elif len(frags) == 1:
-                mol = frags[0]
-                
-            elif len(frags) > 1:
-                x1, x2 = frags.pop(0), frags.pop(0)
-                mol = Chem.CombineMols(x1,x2)
-                for frag in frags:
-                    mol = Chem.CombineMols(mol, frag)
-            kwargs.setdefault('fragmented_smiles', []).append(smi)
+        mol = Chem.MolFromSmiles(str(smi))  # normal parse + sanitize
         if mol is None:
-            import warnings
+            # Try without sanitization and fragment to recover
+            mol_raw = Chem.MolFromSmiles(str(smi), sanitize=False)
+            if mol_raw is not None:
+                if verbose:
+                    frags, events = fragment_until_valence_is_correct(mol_raw, [], verbose=True)
+                    # Enrich each event with the element symbol of the offending atom
+                    for ev in events:
+                        try:
+                            ev['atom_symbol'] = mol_raw.GetAtomWithIdx(ev['atom_idx']).GetSymbol()
+                        except Exception:
+                            ev['atom_symbol'] = 'unknown'
+                    _frag_events.append({'smiles': smi, 'events': events, 'n_fragments': len(frags)})
+                else:
+                    frags = fragment_until_valence_is_correct(mol_raw, [])
+                if len(frags) == 1:
+                    mol = frags[0]
+                elif len(frags) > 1:
+                    combined = frags[0]
+                    for frag in frags[1:]:
+                        combined = Chem.CombineMols(combined, frag)
+                    mol = combined
+                if mol is not None:
+                    kwargs.setdefault('fragmented_smiles', []).append(smi)
+        if mol is None:
             warnings.warn(f"parse_smiles: could not parse SMILES '{smi}' — skipping.", UserWarning, stacklevel=2)
+            if verbose:
+                _n_invalid += 1
         mol_list.append(mol)
     # Parse all molecules
     kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
@@ -333,8 +358,11 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     kwargs['saturation'] = saturation
     if len(mol_list)==0:
         raise ValueError("No valid SMILES provided for parsing.")
-    return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, progress=progress,
-                      _smiles_list=smiles_list, **kwargs)
+    result = parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, progress=progress,
+                        _smiles_list=smiles_list, **kwargs)
+    if verbose:
+        return result, {'fragmented': _frag_events, 'n_invalid': _n_invalid}
+    return result
 
 from .PFASEmbeddings import PFASEmbeddingSet
 
@@ -866,9 +894,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
             })
 
         results[inchikey].setdefault('matches',[]).extend(match_results)
-    if include_PFAS_definitions is True:
-        for i, mol in enumerate(mols):
-            formula = CalcMolFormula(mol)
+        if include_PFAS_definitions is True:
             formula_dict = n_from_formula(formula)
             definitions = parse_definitions_in_mol(mol, formula=formula_dict, **kwargs)
             inchikey = Chem.MolToInchiKey(mol)
