@@ -1,14 +1,31 @@
 """assess_valence_fragmentation.py
 ----------------------------------
-Count how many molecules in the clinventory database trigger
-``fragment_until_valence_is_correct`` during sanitisation.
+Count how many molecules trigger ``fragment_until_valence_is_correct``
+during sanitisation.  By default reads from the ECHA CLP Excel file;
+pass ``--db`` to switch to the legacy clinventory PostgreSQL database.
 
 Usage
 -----
-    python benchmark/assess_valence_fragmentation.py
+    # Default: read from Excel file
+    python benchmark/scripts/assess_valence_fragmentation.py
 
-Environment variables (all optional, fall back to localhost defaults)
----------------------------------------------------------------------
+    # Explicit file path / column
+    python benchmark/scripts/assess_valence_fragmentation.py \\
+        --file /path/to/substances.xlsx --col smiles
+
+    # Legacy: use the PostgreSQL database
+    python benchmark/scripts/assess_valence_fragmentation.py --db
+
+File source (default)
+---------------------
+    --file      path to an Excel (.xlsx/.xls) or CSV file
+                (default: <repo>/zeropm_db/database/lists/data_lists/echa_clp_with_smiles.xlsx)
+    --col       SMILES column name in the file   (default: smiles)
+    --limit     max rows to process, 0 = all     (default: 0)
+    --batch     rows processed per parse call    (default: 5000)
+
+DB source (only when --db is passed)
+-------------------------------------
     CLINVENTORY_DB_URL      full SQLAlchemy connection string, e.g.
                             ``postgresql://user:pwd@host:5432/clinventory``
     CLINVENTORY_DB_NAME     database name          (default: clinventory)
@@ -28,7 +45,15 @@ import os
 import sys
 import time
 import textwrap
+from pathlib import Path
 from collections import Counter
+
+# Default Excel file shipped with the zeropm_db repo
+_REPO_ROOT = Path(__file__).resolve().parents[3]  # …/PFASGroups/../
+_DEFAULT_FILE = (
+    _REPO_ROOT / "zeropm_db" / "database" / "lists" / "data_lists"
+    / "echa_clp_with_smiles.xlsx"
+)
 
 from rdkit import rdBase
 rdBase.DisableLog("rdApp.warning")
@@ -39,6 +64,32 @@ from getpass import getpass
 # ── local import ──────────────────────────────────────────────────────────────
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from PFASGroups.parser import parse_smiles  # noqa: E402
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# File helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _iter_smiles_from_file(filepath: str | Path, col: str, limit: int):
+    """Yield individual SMILES strings from an Excel or CSV file."""
+    try:
+        import pandas as pd
+    except ImportError as exc:
+        raise SystemExit("pandas is required: pip install pandas openpyxl") from exc
+
+    filepath = Path(filepath)
+    suffix = filepath.suffix.lower()
+    if suffix in (".xlsx", ".xls"):
+        df = pd.read_excel(filepath, usecols=[col])
+    elif suffix == ".csv":
+        df = pd.read_csv(filepath, usecols=[col])
+    else:
+        raise SystemExit(f"Unsupported file format: {suffix!r}  (use .xlsx, .xls, or .csv)")
+
+    series = df[col].dropna()
+    if limit > 0:
+        series = series.iloc[:limit]
+    yield from series.astype(str)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -92,22 +143,31 @@ def _iter_smiles(engine, table: str, col: str, batch: int, limit: int):
 # Analysis
 # ─────────────────────────────────────────────────────────────────────────────
 
-def assess(table: str = "substances",
+def assess(file: str | Path | None = None,
            col: str = "smiles",
            batch: int = 5_000,
-           limit: int = 0) -> dict:
-    """Scan the clinventory and report fragmentation statistics.
+           limit: int = 0,
+           use_db: bool = False,
+           table: str = "substances") -> dict:
+    """Scan a substance list and report fragmentation statistics.
 
     Parameters
     ----------
-    table : str
-        Table to query.
+    file : path-like or None
+        Path to an Excel (.xlsx/.xls) or CSV file containing SMILES.
+        Ignored when *use_db* is True.  Defaults to the ECHA CLP file
+        shipped with the zeropm_db repository.
     col : str
-        Column containing SMILES.
+        Column containing SMILES (applies to both file and DB sources).
     batch : int
-        Rows fetched per round-trip.
+        Rows processed per :func:`parse_smiles` call.
     limit : int
         Maximum molecules to process (0 = all).
+    use_db : bool
+        When True, read from the clinventory PostgreSQL database instead
+        of a file (legacy behaviour).
+    table : str
+        DB table name — only used when *use_db* is True.
 
     Returns
     -------
@@ -126,13 +186,23 @@ def assess(table: str = "substances",
     ``atom_counter``
         :class:`Counter` of problematic atom indices (element symbol).
     """
-    engine = _build_engine()
-    print(f"Connected to:  {engine.url!s}")
-
-    table    = os.getenv("CLINVENTORY_SMILES_TABLE", table)
-    col      = os.getenv("CLINVENTORY_SMILES_COL",   col)
-    batch    = int(os.getenv("CLINVENTORY_BATCH_SIZE", batch))
-    limit    = int(os.getenv("CLINVENTORY_LIMIT",      limit))
+    if use_db:
+        engine = _build_engine()
+        print(f"Connected to:  {engine.url!s}")
+        table  = os.getenv("CLINVENTORY_SMILES_TABLE", table)
+        col    = os.getenv("CLINVENTORY_SMILES_COL",   col)
+        batch  = int(os.getenv("CLINVENTORY_BATCH_SIZE", batch))
+        limit  = int(os.getenv("CLINVENTORY_LIMIT",      limit))
+        smiles_iter = _iter_smiles(engine, table, col, batch, limit)
+        source_label = f"DB table {table!r}  |  SMILES column: {col!r}"
+    else:
+        if file is None:
+            file = _DEFAULT_FILE
+        file = Path(file)
+        if not file.exists():
+            raise SystemExit(f"File not found: {file}")
+        smiles_iter = _iter_smiles_from_file(file, col, limit)
+        source_label = f"File: {file}  |  SMILES column: {col!r}"
 
     n_total      = 0
     n_invalid    = 0
@@ -142,8 +212,7 @@ def assess(table: str = "substances",
     atom_counter: Counter  = Counter()
 
     t0 = time.perf_counter()
-    print(f"Table: {table!r}  |  SMILES column: {col!r}  "
-          f"|  batch={batch:,}  |  limit={'all' if limit == 0 else f'{limit}'}\n")
+    print(f"{source_label}  |  batch={batch:,}  |  limit={'all' if limit == 0 else limit}\n")
 
     batch_smiles: list[str] = []
 
@@ -169,7 +238,7 @@ def assess(table: str = "substances",
                 all_events.append(ev)
                 atom_counter[ev.get('atom_symbol', 'unknown')] += 1
 
-    for smi in _iter_smiles(engine, table, col, batch, limit):
+    for smi in smiles_iter:
         batch_smiles.append(smi)
         n_total += 1
 
@@ -247,17 +316,43 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Assess how many clinventory molecules need valence fragmentation."
+        description=(
+            "Assess how many molecules need valence fragmentation.  "
+            "By default reads from the ECHA CLP Excel file; use --db to "
+            "switch to the clinventory PostgreSQL database."
+        )
     )
-    parser.add_argument("--table",  default="substances",
-                        help="DB table name (default: substances)")
-    parser.add_argument("--col",    default="smiles",
-                        help="SMILES column (default: smiles)")
-    parser.add_argument("--batch",  type=int, default=5_000,
-                        help="Rows per DB fetch (default: 5000)")
-    parser.add_argument("--limit",  type=int, default=0,
+    # ── source selection ───────────────────────────────────────────────
+    src = parser.add_mutually_exclusive_group()
+    src.add_argument(
+        "--file", default=None, metavar="PATH",
+        help=(
+            f"Excel (.xlsx/.xls) or CSV file with SMILES "
+            f"(default: {_DEFAULT_FILE})"
+        ),
+    )
+    src.add_argument(
+        "--db", action="store_true",
+        help="Read from the clinventory PostgreSQL database instead of a file.",
+    )
+    # ── shared options ─────────────────────────────────────────────────
+    parser.add_argument("--col",   default="smiles",
+                        help="SMILES column name (default: smiles)")
+    parser.add_argument("--batch", type=int, default=5_000,
+                        help="Rows per processing batch (default: 5000)")
+    parser.add_argument("--limit", type=int, default=0,
                         help="Max molecules to process, 0 = all (default: 0)")
+    # ── DB-only options ────────────────────────────────────────────────
+    parser.add_argument("--table", default="substances",
+                        help="DB table name, only used with --db (default: substances)")
     args = parser.parse_args()
 
-    stats = assess(table=args.table, col=args.col, batch=args.batch, limit=args.limit)
+    stats = assess(
+        file=args.file,
+        col=args.col,
+        batch=args.batch,
+        limit=args.limit,
+        use_db=args.db,
+        table=args.table,
+    )
     print_report(stats)
