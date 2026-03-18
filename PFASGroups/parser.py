@@ -71,6 +71,8 @@ def load_componentsSolver(**kwargs):
         @functools.wraps(func)
         def wrapper(*args,**kwargs):
             mol = args[0]
+            formula = kwargs.get("formula", CalcMolFormula(mol))
+            kwargs['formula'] = formula
             # Add hydrogens to molecule before creating ComponentsSolver
             # This ensures atom indices are consistent throughout the analysis
             try:
@@ -83,11 +85,9 @@ def load_componentsSolver(**kwargs):
                 kwargs.setdefault('fragmented_smiles', []).extend([Chem.MolToSmiles(mol)])
             else:
                 frags = [mol]
-                formulas = [n_from_formula(kwargs.get("formula", CalcMolFormula(mol)))]  # formula as a dictionary
+                formulas = [n_from_formula(kwargs['formula'])]  # formula as a dictionary
             args = list(args)  # Convert to mutable list
             args[0] = mol
-            formula = kwargs.get("formula", CalcMolFormula(mol))
-            kwargs['formula'] = formula
             kwargs['formulas'] = formulas
             kwargs['frags'] = frags
             args = tuple(args)  # Convert back to tuple
