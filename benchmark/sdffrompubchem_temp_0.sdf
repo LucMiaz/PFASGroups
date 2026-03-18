@@ -4348,3 +4348,1743 @@ C1(C(C(C(C(C1(F)F)(F)F)(F)F)(F)F)(F)F)(C(F)(F)F)S(=O)(=O)[O-].[K+]
 255
 
 $$$$
+71311159
+  -OEChem-03182605272D
+
+ 20 16  0     0  0  0  0  0  0999 V2000
+    3.4641    1.3660    0.0000 Cu  0  0  0  0  0  0  0  0  0  0  0  0
+    6.9282    0.3660    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    6.5622    1.7321    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.5622    0.0000    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    0.0000    0.3660    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    0.3660    1.7321    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    1.3660    0.0000    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3301    0.8660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5981    0.8660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.1962    2.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    1.7321    2.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    3.4641    4.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.1962    1.3660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.7321    1.3660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    6.0622    0.8660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    0.8660    0.8660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3301    0.2460    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5981    0.2460    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    4.0010    4.6760    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    2.9272    4.6760    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+  2 15  1  0  0  0  0
+  3 15  1  0  0  0  0
+  4 15  1  0  0  0  0
+  5 16  1  0  0  0  0
+  6 16  1  0  0  0  0
+  7 16  1  0  0  0  0
+  8 13  1  0  0  0  0
+  8 17  1  0  0  0  0
+  9 14  1  0  0  0  0
+  9 18  1  0  0  0  0
+ 10 13  2  0  0  0  0
+ 11 14  2  0  0  0  0
+ 12 19  1  0  0  0  0
+ 12 20  1  0  0  0  0
+ 13 15  1  0  0  0  0
+ 14 16  1  0  0  0  0
+M  END
+> <PUBCHEM_COMPOUND_CID>
+71311159
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+196
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+11
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+3
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+0
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcYBgOcAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAACAAAAAAAgBAACAAAAgAIAACQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+copper;bis(2,2,2-tris(fluoranyl)ethanoic acid);hydrate
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/2C2HF3O2.Cu.H2O/c2*3-2(4,5)1(6)7;;/h2*(H,6,7);;1H2
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+UXLSNKPEIUIWAD-UHFFFAOYSA-N
+
+> <PUBCHEM_EXACT_MASS>
+308.925889
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C4H4CuF6O5
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+309.61
+
+> <PUBCHEM_SMILES>
+C(=O)(C(F)(F)F)O.C(=O)(C(F)(F)F)O.O.[Cu]
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C(=O)(C(F)(F)F)O.C(=O)(C(F)(F)F)O.O.[Cu]
+
+> <PUBCHEM_CACTVS_TPSA>
+75.6
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+308.925889
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+16
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+4
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_NONSTANDARDBOND>
+1  8  6
+1  9  6
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+71399032
+  -OEChem-03182605272D
+
+ 14 13  0     0  0  0  0  0  0999 V2000
+    3.2321    0.6160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    4.2321   -1.1160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000   -1.2500    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    2.3660    0.1160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    3.3660   -1.6160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    5.0981   -0.6160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.0981    1.1160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    6.3301    1.2500    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.9641   -0.1160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.9641    1.6160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.7321   -0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.5981    0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    2.8660   -0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    5.4641    0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  1 11  1  0  0  0  0
+  2 11  1  0  0  0  0
+  3 13  1  0  0  0  0
+  4 13  1  0  0  0  0
+  5 13  1  0  0  0  0
+  6 12  1  0  0  0  0
+  7 12  1  0  0  0  0
+  8 14  1  0  0  0  0
+  9 14  1  0  0  0  0
+ 10 14  1  0  0  0  0
+ 11 12  1  0  0  0  0
+ 11 13  1  0  0  0  0
+ 12 14  1  0  0  0  0
+M  END
+> <PUBCHEM_COMPOUND_CID>
+71399032
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+215
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+5
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+0
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+1
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcQBgAcAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQIAAAAACAIAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAgAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluoro-butane
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+1,1,1,2,2-pentakis(chloranyl)-3,3,4,4,4-pentakis(fluoranyl)butane
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluoro-butane
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/C4Cl5F5/c5-1(6,3(7,8)9)2(10,11)4(12,13)14
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+IRXINJIOQHNGQZ-UHFFFAOYSA-N
+
+> <PUBCHEM_XLOGP3_AA>
+5
+
+> <PUBCHEM_EXACT_MASS>
+319.833329
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C4Cl5F5
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+320.3
+
+> <PUBCHEM_SMILES>
+C(C(C(Cl)(Cl)Cl)(Cl)Cl)(C(F)(F)F)(F)F
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C(C(C(Cl)(Cl)Cl)(Cl)Cl)(C(F)(F)F)(F)F
+
+> <PUBCHEM_CACTVS_TPSA>
+0
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+317.836279
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+14
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+1
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+23673610
+  -OEChem-03182605272D
+
+ 25 24  0     0  0  0  0  0  0999 V2000
+    5.8660    2.2990    0.0000 K   0  3  0  0  0  0  0  0  0  0  0  0
+    4.3660    1.4330    0.0000 S   0  0  0  0  0  0  0  0  0  0  0  0
+    5.7321    0.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.2321    0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000    0.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5000    0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.2321   -1.7990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.7321   -0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5000   -1.7990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000   -0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.3660   -2.2990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3660   -2.2990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.1340    1.5670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    2.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0603    0.7250    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.8660    2.2990    0.0000 O   0  5  0  0  0  0  0  0  0  0  0  0
+    3.8660    2.2990    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.3508    1.6067    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    3.8660    0.5670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.7321    0.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    0.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.7321   -0.9330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000   -0.9330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.8660   -1.4330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    1.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  2 16  1  0  0  0  0
+  2 17  2  0  0  0  0
+  2 18  2  0  0  0  0
+  2 19  1  0  0  0  0
+  3 20  1  0  0  0  0
+  4 20  1  0  0  0  0
+  5 21  1  0  0  0  0
+  6 21  1  0  0  0  0
+  7 22  1  0  0  0  0
+  8 22  1  0  0  0  0
+  9 23  1  0  0  0  0
+ 10 23  1  0  0  0  0
+ 11 24  1  0  0  0  0
+ 12 24  1  0  0  0  0
+ 13 25  1  0  0  0  0
+ 14 25  1  0  0  0  0
+ 15 25  1  0  0  0  0
+ 19 20  1  0  0  0  0
+ 19 21  1  0  0  0  0
+ 19 25  1  0  0  0  0
+ 20 22  1  0  0  0  0
+ 21 23  1  0  0  0  0
+ 22 24  1  0  0  0  0
+ 23 24  1  0  0  0  0
+M  CHG  2   1   1  16  -1
+M  END
+> <PUBCHEM_COMPOUND_CID>
+23673610
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+616
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+16
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+0
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+1
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcQBgMcBAQAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAACQQAAAAADAAAQBAAAAAAAAIAAAAAAHBAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAgAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)-1-cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decakis(fluoranyl)-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/C7HF13O3S.K/c8-2(9)1(7(18,19)20,24(21,22)23)3(10,11)5(14,15)6(16,17)4(2,12)13;/h(H,21,22,23);/q;+1/p-1
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+QWHNLWMMNRIUNZ-UHFFFAOYSA-M
+
+> <PUBCHEM_EXACT_MASS>
+449.8997626
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C7F13KO3S
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+450.22
+
+> <PUBCHEM_SMILES>
+C1(C(C(C(C(C1(F)F)(F)F)(F)F)(F)F)(F)F)(C(F)(F)F)S(=O)(=O)[O-].[K+]
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C1(C(C(C(C(C1(F)F)(F)F)(F)F)(F)F)(F)F)(C(F)(F)F)S(=O)(=O)[O-].[K+]
+
+> <PUBCHEM_CACTVS_TPSA>
+65.6
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+449.8997626
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+25
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+2
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_NONSTANDARDBOND>
+1  16  7
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+71311159
+  -OEChem-03182605392D
+
+ 20 16  0     0  0  0  0  0  0999 V2000
+    3.4641    1.3660    0.0000 Cu  0  0  0  0  0  0  0  0  0  0  0  0
+    6.9282    0.3660    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    6.5622    1.7321    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.5622    0.0000    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    0.0000    0.3660    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    0.3660    1.7321    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    1.3660    0.0000    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3301    0.8660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5981    0.8660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.1962    2.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    1.7321    2.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    3.4641    4.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.1962    1.3660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.7321    1.3660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    6.0622    0.8660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    0.8660    0.8660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3301    0.2460    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5981    0.2460    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    4.0010    4.6760    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    2.9272    4.6760    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+  2 15  1  0  0  0  0
+  3 15  1  0  0  0  0
+  4 15  1  0  0  0  0
+  5 16  1  0  0  0  0
+  6 16  1  0  0  0  0
+  7 16  1  0  0  0  0
+  8 13  1  0  0  0  0
+  8 17  1  0  0  0  0
+  9 14  1  0  0  0  0
+  9 18  1  0  0  0  0
+ 10 13  2  0  0  0  0
+ 11 14  2  0  0  0  0
+ 12 19  1  0  0  0  0
+ 12 20  1  0  0  0  0
+ 13 15  1  0  0  0  0
+ 14 16  1  0  0  0  0
+M  END
+> <PUBCHEM_COMPOUND_CID>
+71311159
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+196
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+11
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+3
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+0
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcYBgOcAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAACAAAAAAAgBAACAAAAgAIAACQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+copper;bis(2,2,2-tris(fluoranyl)ethanoic acid);hydrate
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/2C2HF3O2.Cu.H2O/c2*3-2(4,5)1(6)7;;/h2*(H,6,7);;1H2
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+UXLSNKPEIUIWAD-UHFFFAOYSA-N
+
+> <PUBCHEM_EXACT_MASS>
+308.925889
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C4H4CuF6O5
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+309.61
+
+> <PUBCHEM_SMILES>
+C(=O)(C(F)(F)F)O.C(=O)(C(F)(F)F)O.O.[Cu]
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C(=O)(C(F)(F)F)O.C(=O)(C(F)(F)F)O.O.[Cu]
+
+> <PUBCHEM_CACTVS_TPSA>
+75.6
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+308.925889
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+16
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+4
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_NONSTANDARDBOND>
+1  8  6
+1  9  6
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+71399032
+  -OEChem-03182605392D
+
+ 14 13  0     0  0  0  0  0  0999 V2000
+    3.2321    0.6160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    4.2321   -1.1160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000   -1.2500    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    2.3660    0.1160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    3.3660   -1.6160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    5.0981   -0.6160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.0981    1.1160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    6.3301    1.2500    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.9641   -0.1160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.9641    1.6160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.7321   -0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.5981    0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    2.8660   -0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    5.4641    0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  1 11  1  0  0  0  0
+  2 11  1  0  0  0  0
+  3 13  1  0  0  0  0
+  4 13  1  0  0  0  0
+  5 13  1  0  0  0  0
+  6 12  1  0  0  0  0
+  7 12  1  0  0  0  0
+  8 14  1  0  0  0  0
+  9 14  1  0  0  0  0
+ 10 14  1  0  0  0  0
+ 11 12  1  0  0  0  0
+ 11 13  1  0  0  0  0
+ 12 14  1  0  0  0  0
+M  END
+> <PUBCHEM_COMPOUND_CID>
+71399032
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+215
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+5
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+0
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+1
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcQBgAcAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQIAAAAACAIAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAgAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluoro-butane
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+1,1,1,2,2-pentakis(chloranyl)-3,3,4,4,4-pentakis(fluoranyl)butane
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluoro-butane
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/C4Cl5F5/c5-1(6,3(7,8)9)2(10,11)4(12,13)14
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+IRXINJIOQHNGQZ-UHFFFAOYSA-N
+
+> <PUBCHEM_XLOGP3_AA>
+5
+
+> <PUBCHEM_EXACT_MASS>
+319.833329
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C4Cl5F5
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+320.3
+
+> <PUBCHEM_SMILES>
+C(C(C(Cl)(Cl)Cl)(Cl)Cl)(C(F)(F)F)(F)F
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C(C(C(Cl)(Cl)Cl)(Cl)Cl)(C(F)(F)F)(F)F
+
+> <PUBCHEM_CACTVS_TPSA>
+0
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+317.836279
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+14
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+1
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+23673610
+  -OEChem-03182605392D
+
+ 25 24  0     0  0  0  0  0  0999 V2000
+    5.8660    2.2990    0.0000 K   0  3  0  0  0  0  0  0  0  0  0  0
+    4.3660    1.4330    0.0000 S   0  0  0  0  0  0  0  0  0  0  0  0
+    5.7321    0.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.2321    0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000    0.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5000    0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.2321   -1.7990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.7321   -0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5000   -1.7990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000   -0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.3660   -2.2990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3660   -2.2990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.1340    1.5670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    2.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0603    0.7250    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.8660    2.2990    0.0000 O   0  5  0  0  0  0  0  0  0  0  0  0
+    3.8660    2.2990    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.3508    1.6067    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    3.8660    0.5670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.7321    0.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    0.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.7321   -0.9330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000   -0.9330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.8660   -1.4330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    1.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  2 16  1  0  0  0  0
+  2 17  2  0  0  0  0
+  2 18  2  0  0  0  0
+  2 19  1  0  0  0  0
+  3 20  1  0  0  0  0
+  4 20  1  0  0  0  0
+  5 21  1  0  0  0  0
+  6 21  1  0  0  0  0
+  7 22  1  0  0  0  0
+  8 22  1  0  0  0  0
+  9 23  1  0  0  0  0
+ 10 23  1  0  0  0  0
+ 11 24  1  0  0  0  0
+ 12 24  1  0  0  0  0
+ 13 25  1  0  0  0  0
+ 14 25  1  0  0  0  0
+ 15 25  1  0  0  0  0
+ 19 20  1  0  0  0  0
+ 19 21  1  0  0  0  0
+ 19 25  1  0  0  0  0
+ 20 22  1  0  0  0  0
+ 21 23  1  0  0  0  0
+ 22 24  1  0  0  0  0
+ 23 24  1  0  0  0  0
+M  CHG  2   1   1  16  -1
+M  END
+> <PUBCHEM_COMPOUND_CID>
+23673610
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+616
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+16
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+0
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+1
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcQBgMcBAQAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAACQQAAAAADAAAQBAAAAAAAAIAAAAAAHBAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAgAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)-1-cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decakis(fluoranyl)-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/C7HF13O3S.K/c8-2(9)1(7(18,19)20,24(21,22)23)3(10,11)5(14,15)6(16,17)4(2,12)13;/h(H,21,22,23);/q;+1/p-1
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+QWHNLWMMNRIUNZ-UHFFFAOYSA-M
+
+> <PUBCHEM_EXACT_MASS>
+449.8997626
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C7F13KO3S
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+450.22
+
+> <PUBCHEM_SMILES>
+C1(C(C(C(C(C1(F)F)(F)F)(F)F)(F)F)(F)F)(C(F)(F)F)S(=O)(=O)[O-].[K+]
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C1(C(C(C(C(C1(F)F)(F)F)(F)F)(F)F)(F)F)(C(F)(F)F)S(=O)(=O)[O-].[K+]
+
+> <PUBCHEM_CACTVS_TPSA>
+65.6
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+449.8997626
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+25
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+2
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_NONSTANDARDBOND>
+1  16  7
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+71311159
+  -OEChem-03182605472D
+
+ 20 16  0     0  0  0  0  0  0999 V2000
+    3.4641    1.3660    0.0000 Cu  0  0  0  0  0  0  0  0  0  0  0  0
+    6.9282    0.3660    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    6.5622    1.7321    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.5622    0.0000    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    0.0000    0.3660    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    0.3660    1.7321    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    1.3660    0.0000    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3301    0.8660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5981    0.8660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.1962    2.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    1.7321    2.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    3.4641    4.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.1962    1.3660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.7321    1.3660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    6.0622    0.8660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    0.8660    0.8660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3301    0.2460    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5981    0.2460    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    4.0010    4.6760    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    2.9272    4.6760    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+  2 15  1  0  0  0  0
+  3 15  1  0  0  0  0
+  4 15  1  0  0  0  0
+  5 16  1  0  0  0  0
+  6 16  1  0  0  0  0
+  7 16  1  0  0  0  0
+  8 13  1  0  0  0  0
+  8 17  1  0  0  0  0
+  9 14  1  0  0  0  0
+  9 18  1  0  0  0  0
+ 10 13  2  0  0  0  0
+ 11 14  2  0  0  0  0
+ 12 19  1  0  0  0  0
+ 12 20  1  0  0  0  0
+ 13 15  1  0  0  0  0
+ 14 16  1  0  0  0  0
+M  END
+> <PUBCHEM_COMPOUND_CID>
+71311159
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+196
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+11
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+3
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+0
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcYBgOcAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAACAAAAAAAgBAACAAAAgAIAACQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+copper;bis(2,2,2-tris(fluoranyl)ethanoic acid);hydrate
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/2C2HF3O2.Cu.H2O/c2*3-2(4,5)1(6)7;;/h2*(H,6,7);;1H2
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+UXLSNKPEIUIWAD-UHFFFAOYSA-N
+
+> <PUBCHEM_EXACT_MASS>
+308.925889
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C4H4CuF6O5
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+309.61
+
+> <PUBCHEM_SMILES>
+C(=O)(C(F)(F)F)O.C(=O)(C(F)(F)F)O.O.[Cu]
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C(=O)(C(F)(F)F)O.C(=O)(C(F)(F)F)O.O.[Cu]
+
+> <PUBCHEM_CACTVS_TPSA>
+75.6
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+308.925889
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+16
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+4
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_NONSTANDARDBOND>
+1  8  6
+1  9  6
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+71399032
+  -OEChem-03182605472D
+
+ 14 13  0     0  0  0  0  0  0999 V2000
+    3.2321    0.6160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    4.2321   -1.1160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000   -1.2500    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    2.3660    0.1160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    3.3660   -1.6160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    5.0981   -0.6160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.0981    1.1160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    6.3301    1.2500    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.9641   -0.1160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.9641    1.6160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.7321   -0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.5981    0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    2.8660   -0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    5.4641    0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  1 11  1  0  0  0  0
+  2 11  1  0  0  0  0
+  3 13  1  0  0  0  0
+  4 13  1  0  0  0  0
+  5 13  1  0  0  0  0
+  6 12  1  0  0  0  0
+  7 12  1  0  0  0  0
+  8 14  1  0  0  0  0
+  9 14  1  0  0  0  0
+ 10 14  1  0  0  0  0
+ 11 12  1  0  0  0  0
+ 11 13  1  0  0  0  0
+ 12 14  1  0  0  0  0
+M  END
+> <PUBCHEM_COMPOUND_CID>
+71399032
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+215
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+5
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+0
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+1
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcQBgAcAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQIAAAAACAIAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAgAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluoro-butane
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+1,1,1,2,2-pentakis(chloranyl)-3,3,4,4,4-pentakis(fluoranyl)butane
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluoro-butane
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/C4Cl5F5/c5-1(6,3(7,8)9)2(10,11)4(12,13)14
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+IRXINJIOQHNGQZ-UHFFFAOYSA-N
+
+> <PUBCHEM_XLOGP3_AA>
+5
+
+> <PUBCHEM_EXACT_MASS>
+319.833329
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C4Cl5F5
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+320.3
+
+> <PUBCHEM_SMILES>
+C(C(C(Cl)(Cl)Cl)(Cl)Cl)(C(F)(F)F)(F)F
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C(C(C(Cl)(Cl)Cl)(Cl)Cl)(C(F)(F)F)(F)F
+
+> <PUBCHEM_CACTVS_TPSA>
+0
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+317.836279
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+14
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+1
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+23673610
+  -OEChem-03182605472D
+
+ 25 24  0     0  0  0  0  0  0999 V2000
+    5.8660    2.2990    0.0000 K   0  3  0  0  0  0  0  0  0  0  0  0
+    4.3660    1.4330    0.0000 S   0  0  0  0  0  0  0  0  0  0  0  0
+    5.7321    0.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.2321    0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000    0.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5000    0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.2321   -1.7990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.7321   -0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5000   -1.7990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000   -0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.3660   -2.2990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3660   -2.2990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.1340    1.5670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    2.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0603    0.7250    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.8660    2.2990    0.0000 O   0  5  0  0  0  0  0  0  0  0  0  0
+    3.8660    2.2990    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.3508    1.6067    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    3.8660    0.5670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.7321    0.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    0.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.7321   -0.9330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000   -0.9330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.8660   -1.4330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    1.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  2 16  1  0  0  0  0
+  2 17  2  0  0  0  0
+  2 18  2  0  0  0  0
+  2 19  1  0  0  0  0
+  3 20  1  0  0  0  0
+  4 20  1  0  0  0  0
+  5 21  1  0  0  0  0
+  6 21  1  0  0  0  0
+  7 22  1  0  0  0  0
+  8 22  1  0  0  0  0
+  9 23  1  0  0  0  0
+ 10 23  1  0  0  0  0
+ 11 24  1  0  0  0  0
+ 12 24  1  0  0  0  0
+ 13 25  1  0  0  0  0
+ 14 25  1  0  0  0  0
+ 15 25  1  0  0  0  0
+ 19 20  1  0  0  0  0
+ 19 21  1  0  0  0  0
+ 19 25  1  0  0  0  0
+ 20 22  1  0  0  0  0
+ 21 23  1  0  0  0  0
+ 22 24  1  0  0  0  0
+ 23 24  1  0  0  0  0
+M  CHG  2   1   1  16  -1
+M  END
+> <PUBCHEM_COMPOUND_CID>
+23673610
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+616
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+16
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+0
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+1
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcQBgMcBAQAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAACQQAAAAADAAAQBAAAAAAAAIAAAAAAHBAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAgAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)-1-cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decakis(fluoranyl)-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/C7HF13O3S.K/c8-2(9)1(7(18,19)20,24(21,22)23)3(10,11)5(14,15)6(16,17)4(2,12)13;/h(H,21,22,23);/q;+1/p-1
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+QWHNLWMMNRIUNZ-UHFFFAOYSA-M
+
+> <PUBCHEM_EXACT_MASS>
+449.8997626
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C7F13KO3S
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+450.22
+
+> <PUBCHEM_SMILES>
+C1(C(C(C(C(C1(F)F)(F)F)(F)F)(F)F)(F)F)(C(F)(F)F)S(=O)(=O)[O-].[K+]
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C1(C(C(C(C(C1(F)F)(F)F)(F)F)(F)F)(F)F)(C(F)(F)F)S(=O)(=O)[O-].[K+]
+
+> <PUBCHEM_CACTVS_TPSA>
+65.6
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+449.8997626
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+25
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+2
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_NONSTANDARDBOND>
+1  16  7
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+71311159
+  -OEChem-03182605482D
+
+ 20 16  0     0  0  0  0  0  0999 V2000
+    3.4641    1.3660    0.0000 Cu  0  0  0  0  0  0  0  0  0  0  0  0
+    6.9282    0.3660    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    6.5622    1.7321    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.5622    0.0000    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    0.0000    0.3660    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    0.3660    1.7321    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    1.3660    0.0000    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3301    0.8660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5981    0.8660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.1962    2.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    1.7321    2.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    3.4641    4.3660    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.1962    1.3660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.7321    1.3660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    6.0622    0.8660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    0.8660    0.8660    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3301    0.2460    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5981    0.2460    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    4.0010    4.6760    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+    2.9272    4.6760    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+  2 15  1  0  0  0  0
+  3 15  1  0  0  0  0
+  4 15  1  0  0  0  0
+  5 16  1  0  0  0  0
+  6 16  1  0  0  0  0
+  7 16  1  0  0  0  0
+  8 13  1  0  0  0  0
+  8 17  1  0  0  0  0
+  9 14  1  0  0  0  0
+  9 18  1  0  0  0  0
+ 10 13  2  0  0  0  0
+ 11 14  2  0  0  0  0
+ 12 19  1  0  0  0  0
+ 12 20  1  0  0  0  0
+ 13 15  1  0  0  0  0
+ 14 16  1  0  0  0  0
+M  END
+> <PUBCHEM_COMPOUND_CID>
+71311159
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+196
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+11
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+3
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+0
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcYBgOcAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAACAAAAAAAgBAACAAAAgAIAACQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+copper;bis(2,2,2-tris(fluoranyl)ethanoic acid);hydrate
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+copper;bis(2,2,2-trifluoroacetic acid);hydrate
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/2C2HF3O2.Cu.H2O/c2*3-2(4,5)1(6)7;;/h2*(H,6,7);;1H2
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+UXLSNKPEIUIWAD-UHFFFAOYSA-N
+
+> <PUBCHEM_EXACT_MASS>
+308.925889
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C4H4CuF6O5
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+309.61
+
+> <PUBCHEM_SMILES>
+C(=O)(C(F)(F)F)O.C(=O)(C(F)(F)F)O.O.[Cu]
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C(=O)(C(F)(F)F)O.C(=O)(C(F)(F)F)O.O.[Cu]
+
+> <PUBCHEM_CACTVS_TPSA>
+75.6
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+308.925889
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+16
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+4
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_NONSTANDARDBOND>
+1  8  6
+1  9  6
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+71399032
+  -OEChem-03182605482D
+
+ 14 13  0     0  0  0  0  0  0999 V2000
+    3.2321    0.6160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    4.2321   -1.1160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000   -1.2500    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    2.3660    0.1160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    3.3660   -1.6160    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+    5.0981   -0.6160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.0981    1.1160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    6.3301    1.2500    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.9641   -0.1160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.9641    1.6160    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.7321   -0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.5981    0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    2.8660   -0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    5.4641    0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  1 11  1  0  0  0  0
+  2 11  1  0  0  0  0
+  3 13  1  0  0  0  0
+  4 13  1  0  0  0  0
+  5 13  1  0  0  0  0
+  6 12  1  0  0  0  0
+  7 12  1  0  0  0  0
+  8 14  1  0  0  0  0
+  9 14  1  0  0  0  0
+ 10 14  1  0  0  0  0
+ 11 12  1  0  0  0  0
+ 11 13  1  0  0  0  0
+ 12 14  1  0  0  0  0
+M  END
+> <PUBCHEM_COMPOUND_CID>
+71399032
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+215
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+5
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+0
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+1
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcQBgAcAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQIAAAAACAIAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAgAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluoro-butane
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluorobutane
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+1,1,1,2,2-pentakis(chloranyl)-3,3,4,4,4-pentakis(fluoranyl)butane
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+1,1,1,2,2-pentachloro-3,3,4,4,4-pentafluoro-butane
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/C4Cl5F5/c5-1(6,3(7,8)9)2(10,11)4(12,13)14
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+IRXINJIOQHNGQZ-UHFFFAOYSA-N
+
+> <PUBCHEM_XLOGP3_AA>
+5
+
+> <PUBCHEM_EXACT_MASS>
+319.833329
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C4Cl5F5
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+320.3
+
+> <PUBCHEM_SMILES>
+C(C(C(Cl)(Cl)Cl)(Cl)Cl)(C(F)(F)F)(F)F
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C(C(C(Cl)(Cl)Cl)(Cl)Cl)(C(F)(F)F)(F)F
+
+> <PUBCHEM_CACTVS_TPSA>
+0
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+317.836279
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+14
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+1
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$
+23673610
+  -OEChem-03182605482D
+
+ 25 24  0     0  0  0  0  0  0999 V2000
+    5.8660    2.2990    0.0000 K   0  3  0  0  0  0  0  0  0  0  0  0
+    4.3660    1.4330    0.0000 S   0  0  0  0  0  0  0  0  0  0  0  0
+    5.7321    0.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.2321    0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000    0.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5000    0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.2321   -1.7990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    5.7321   -0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5000   -1.7990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000   -0.9330    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.3660   -2.2990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.3660   -2.2990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.1340    1.5670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    2.0670    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0603    0.7250    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0
+    4.8660    2.2990    0.0000 O   0  5  0  0  0  0  0  0  0  0  0  0
+    3.8660    2.2990    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    5.3508    1.6067    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    3.8660    0.5670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.7321    0.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    0.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    4.7321   -0.9330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000   -0.9330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.8660   -1.4330    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    1.0670    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  2 16  1  0  0  0  0
+  2 17  2  0  0  0  0
+  2 18  2  0  0  0  0
+  2 19  1  0  0  0  0
+  3 20  1  0  0  0  0
+  4 20  1  0  0  0  0
+  5 21  1  0  0  0  0
+  6 21  1  0  0  0  0
+  7 22  1  0  0  0  0
+  8 22  1  0  0  0  0
+  9 23  1  0  0  0  0
+ 10 23  1  0  0  0  0
+ 11 24  1  0  0  0  0
+ 12 24  1  0  0  0  0
+ 13 25  1  0  0  0  0
+ 14 25  1  0  0  0  0
+ 15 25  1  0  0  0  0
+ 19 20  1  0  0  0  0
+ 19 21  1  0  0  0  0
+ 19 25  1  0  0  0  0
+ 20 22  1  0  0  0  0
+ 21 23  1  0  0  0  0
+ 22 24  1  0  0  0  0
+ 23 24  1  0  0  0  0
+M  CHG  2   1   1  16  -1
+M  END
+> <PUBCHEM_COMPOUND_CID>
+23673610
+
+> <PUBCHEM_COMPOUND_CANONICALIZED>
+1
+
+> <PUBCHEM_CACTVS_COMPLEXITY>
+616
+
+> <PUBCHEM_CACTVS_HBOND_ACCEPTOR>
+16
+
+> <PUBCHEM_CACTVS_HBOND_DONOR>
+0
+
+> <PUBCHEM_CACTVS_ROTATABLE_BOND>
+1
+
+> <PUBCHEM_CACTVS_SUBSKEYS>
+AAADcQBgMcBAQAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAACQQAAAAADAAAQBAAAAAAAAIAAAAAAHBAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAgAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+
+> <PUBCHEM_IUPAC_OPENEYE_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_CAS_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)-1-cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_NAME_MARKUP>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decakis(fluoranyl)-1-(trifluoromethyl)cyclohexane-1-sulfonate
+
+> <PUBCHEM_IUPAC_TRADITIONAL_NAME>
+potassium 2,2,3,3,4,4,5,5,6,6-decafluoro-1-(trifluoromethyl)cyclohexanesulfonate
+
+> <PUBCHEM_IUPAC_INCHI>
+InChI=1S/C7HF13O3S.K/c8-2(9)1(7(18,19)20,24(21,22)23)3(10,11)5(14,15)6(16,17)4(2,12)13;/h(H,21,22,23);/q;+1/p-1
+
+> <PUBCHEM_IUPAC_INCHIKEY>
+QWHNLWMMNRIUNZ-UHFFFAOYSA-M
+
+> <PUBCHEM_EXACT_MASS>
+449.8997626
+
+> <PUBCHEM_MOLECULAR_FORMULA>
+C7F13KO3S
+
+> <PUBCHEM_MOLECULAR_WEIGHT>
+450.22
+
+> <PUBCHEM_SMILES>
+C1(C(C(C(C(C1(F)F)(F)F)(F)F)(F)F)(F)F)(C(F)(F)F)S(=O)(=O)[O-].[K+]
+
+> <PUBCHEM_CONNECTIVITY_SMILES>
+C1(C(C(C(C(C1(F)F)(F)F)(F)F)(F)F)(F)F)(C(F)(F)F)S(=O)(=O)[O-].[K+]
+
+> <PUBCHEM_CACTVS_TPSA>
+65.6
+
+> <PUBCHEM_MONOISOTOPIC_WEIGHT>
+449.8997626
+
+> <PUBCHEM_TOTAL_CHARGE>
+0
+
+> <PUBCHEM_HEAVY_ATOM_COUNT>
+25
+
+> <PUBCHEM_ATOM_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ATOM_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_DEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_BOND_UDEF_STEREO_COUNT>
+0
+
+> <PUBCHEM_ISOTOPIC_ATOM_COUNT>
+0
+
+> <PUBCHEM_COMPONENT_COUNT>
+2
+
+> <PUBCHEM_CACTVS_TAUTO_COUNT>
+-1
+
+> <PUBCHEM_NONSTANDARDBOND>
+1  16  7
+
+> <PUBCHEM_COORDINATE_TYPE>
+1
+5
+255
+
+$$$$

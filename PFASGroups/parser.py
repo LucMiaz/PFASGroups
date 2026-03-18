@@ -78,7 +78,7 @@ def load_componentsSolver(**kwargs):
             try:
                 mol = Chem.AddHs(mol)
                 Chem.SanitizeMol(mol)
-            except Chem.AtomValenceException:
+            except (Chem.AtomValenceException, Chem.KekulizeException):
                 #logger.debug("failed sanitisation, fragmenting")
                 frags = fragment_until_valence_is_correct(mol, [])
                 formulas = [n_from_formula(CalcMolFormula(frag)) for frag in frags]

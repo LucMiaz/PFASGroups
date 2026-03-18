@@ -223,8 +223,14 @@ def fragment_until_valence_is_correct(mol, frags, verbose=False, _events=None):
         _events = []
     try:
         Chem.SanitizeMol(mol)
-    except Chem.AtomValenceException as e:
-        all = [int(x) for x in re.findall(r"(?<=#\s)(\d)",str(e))]
+    except (Chem.AtomValenceException, Chem.KekulizeException) as e:
+        e_str = str(e)
+        # AtomValenceException format: "atom # 6 N, ..." → digit after "# "
+        all = [int(x) for x in re.findall(r"(?<=#\s)(\d+)", e_str)]
+        if not all:
+            # KekulizeException format: "Unkekulized atoms: 1 2 3 5 6"
+            if 'atoms:' in e_str:
+                all = [int(x) for x in re.findall(r'\d+', e_str.split('atoms:', 1)[-1])]
         if len(all) == 0:
             if verbose:
                 return frags, _events
