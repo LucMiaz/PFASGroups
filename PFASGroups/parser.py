@@ -83,7 +83,7 @@ def load_componentsSolver(**kwargs):
                 kwargs.setdefault('fragmented_smiles', []).extend([Chem.MolToSmiles(mol)])
             else:
                 frags = [mol]
-                formulas = [n_from_formula(formula)]# formula as a dictionary
+                formulas = [n_from_formula(kwargs.get("formula", CalcMolFormula(mol)))]  # formula as a dictionary
             args = list(args)  # Convert to mutable list
             args[0] = mol
             formula = kwargs.get("formula", CalcMolFormula(mol))
