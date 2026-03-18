@@ -1,15 +1,16 @@
 """
-Example: ResultsFingerprint Analysis with Dimensionality Reduction
+Example: PFASEmbeddingSet Analysis with Dimensionality Reduction
 
 This script demonstrates how to:
-1. Convert ResultsModel to ResultsFingerprint
-2. Perform dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP)
-3. Compare fingerprints using KL divergence
-4. Save/load fingerprints to/from SQL
+1. Parse SMILES strings with parse_smiles() -> PFASEmbeddingSet
+2. Generate embedding arrays with to_array() (replaces deprecated to_fingerprint())
+3. Perform dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP)
+4. Compare embedding sets using KL divergence
+5. Save/load results to/from SQL
 """
 
 import numpy as np
-from HalogenGroups import parse_smiles
+from PFASGroups import parse_smiles, PFASEmbeddingSet
 
 # Example PFAS molecules
 smiles_list_1 = [
@@ -29,67 +30,71 @@ smiles_list_2 = [
 ]
 
 
-def example_basic_conversion():
-    """Example 1: Convert results to fingerprints with different group selections."""
+def example_basic_embedding():
+    """Example 1: Parse SMILES and generate embeddings with different configurations."""
     print("=" * 80)
-    print("Example 1: Converting ResultsModel to ResultsFingerprint")
+    print("Example 1: Parsing SMILES and Generating Embeddings")
     print("=" * 80)
-    
-    # Parse SMILES
+
+    # Parse SMILES -> PFASEmbeddingSet
     results = parse_smiles(smiles_list_1)
     print(f"Parsed {len(results)} molecules")
-    
-    # Convert to fingerprints with different group selections
-    print("\n1. All groups:")
-    fp_all = results.to_fingerprint(group_selection='all', count_mode='binary')
-    print(fp_all.summary())
-    
-    print("\n2. OECD groups only:")
-    fp_oecd = results.to_fingerprint(group_selection='oecd', count_mode='binary')
-    print(fp_oecd)
-    
-    print("\n3. Generic groups only:")
-    fp_generic = results.to_fingerprint(group_selection='generic', count_mode='binary')
-    print(fp_generic)
-    
-    print("\n4. Count mode (instead of binary):")
-    fp_count = results.to_fingerprint(group_selection='all', count_mode='count')
-    print(fp_count)
-    print(f"Sample fingerprint values: {fp_count.fingerprints[0][:10]}")
-    
-    return fp_all, fp_oecd
+
+    # Inspect the first molecule (PFASEmbedding has a .summary() method)
+    print("\n1. Single-molecule summary:")
+    results[0].summary()
+
+    # Generate embedding arrays. to_array() is the primary method;
+    # the old to_fingerprint() is deprecated.
+    print("\n2. Binary embedding (all groups):")
+    arr_all = results.to_array(component_metrics=['binary'])
+    print(f"  Shape: {arr_all.shape}  (n_molecules × n_groups)")
+
+    print("\n3. OECD groups only:")
+    arr_oecd = results.to_array(component_metrics=['binary'], group_selection='oecd')
+    print(f"  Shape: {arr_oecd.shape}")
+
+    print("\n4. Generic groups only:")
+    arr_generic = results.to_array(component_metrics=['binary'], group_selection='generic')
+    print(f"  Shape: {arr_generic.shape}")
+
+    print("\n5. Count mode (instead of binary):")
+    arr_count = results.to_array(component_metrics=['count'])
+    print(f"  Shape: {arr_count.shape}")
+    print(f"  Sample row (first 10 values): {arr_count[0][:10]}")
+
+    return results
 
 
-def example_pca_analysis(fp):
+def example_pca_analysis(results):
     """Example 2: Perform PCA analysis."""
     print("\n" + "=" * 80)
     print("Example 2: PCA Analysis")
     print("=" * 80)
-    
-    # Perform PCA with 5 components
-    pca_results = fp.perform_pca(
+
+    # perform_pca() is called directly on PFASEmbeddingSet; it calls to_array() internally.
+    pca_results = results.perform_pca(
         n_components=5,
         plot=True,
         output_file="pfas_pca_analysis.png"
     )
-    
+
     print(f"Explained variance ratio: {pca_results['explained_variance']}")
     print(f"Cumulative variance: {np.cumsum(pca_results['explained_variance'])}")
     print(f"Transformed data shape: {pca_results['transformed'].shape}")
-    
+
     return pca_results
 
 
-def example_kernel_pca(fp):
+def example_kernel_pca(results):
     """Example 3: Perform kernel PCA analysis."""
     print("\n" + "=" * 80)
     print("Example 3: Kernel PCA Analysis")
     print("=" * 80)
-    
-    # Try different kernels
+
     for kernel in ['rbf', 'poly', 'sigmoid']:
         print(f"\n{kernel.upper()} kernel:")
-        kpca_results = fp.perform_kernel_pca(
+        kpca_results = results.perform_kernel_pca(
             n_components=2,
             kernel=kernel,
             plot=True,
@@ -98,45 +103,43 @@ def example_kernel_pca(fp):
         print(f"Transformed data shape: {kpca_results['transformed'].shape}")
 
 
-def example_tsne(fp):
+def example_tsne(results):
     """Example 4: Perform t-SNE analysis."""
     print("\n" + "=" * 80)
     print("Example 4: t-SNE Analysis")
     print("=" * 80)
-    
-    # t-SNE with default parameters
-    tsne_results = fp.perform_tsne(
+
+    tsne_results = results.perform_tsne(
         n_components=2,
         perplexity=30.0,
         plot=True,
         output_file="pfas_tsne_analysis.png"
     )
-    
+
     print(f"Transformed data shape: {tsne_results['transformed'].shape}")
     print(f"Perplexity used: {tsne_results['perplexity']}")
-    
+
     return tsne_results
 
 
-def example_umap(fp):
+def example_umap(results):
     """Example 5: Perform UMAP analysis."""
     print("\n" + "=" * 80)
     print("Example 5: UMAP Analysis")
     print("=" * 80)
-    
+
     try:
-        # UMAP with default parameters
-        umap_results = fp.perform_umap(
+        umap_results = results.perform_umap(
             n_components=2,
             n_neighbors=15,
             plot=True,
             output_file="pfas_umap_analysis.png"
         )
-        
+
         print(f"Transformed data shape: {umap_results['transformed'].shape}")
         print(f"n_neighbors: {umap_results['n_neighbors']}")
         print(f"min_dist: {umap_results['min_dist']}")
-        
+
         return umap_results
     except ImportError:
         print("UMAP not installed. Install with: pip install umap-learn")
@@ -144,30 +147,25 @@ def example_umap(fp):
 
 
 def example_kl_divergence():
-    """Example 6: Compare fingerprints using KL divergence."""
+    """Example 6: Compare two PFASEmbeddingSets using KL divergence."""
     print("\n" + "=" * 80)
-    print("Example 6: Comparing Fingerprints with KL Divergence")
+    print("Example 6: Comparing Embedding Sets with KL Divergence")
     print("=" * 80)
-    
-    # Create two fingerprint sets
+
+    # compare_kld() is called directly on PFASEmbeddingSet
     results_1 = parse_smiles(smiles_list_1)
     results_2 = parse_smiles(smiles_list_2)
-    
-    fp_1 = results_1.to_fingerprint(group_selection='all', count_mode='binary')
-    fp_2 = results_2.to_fingerprint(group_selection='all', count_mode='binary')
-    
-    print(f"Fingerprint 1: {len(fp_1)} molecules")
-    print(f"Fingerprint 2: {len(fp_2)} molecules")
-    
-    # Compare using different methods
+
+    print(f"Set 1: {len(results_1)} molecules")
+    print(f"Set 2: {len(results_2)} molecules")
+
     methods = ['minmax', 'forward', 'reverse', 'symmetric']
     print("\nKL Divergence comparisons:")
     for method in methods:
-        kld = fp_1.compare_kld(fp_2, method=method)
+        kld = results_1.compare_kld(results_2, method=method)
         print(f"  {method:10s}: {kld:.6f}")
-    
-    # Interpretation
-    kld_minmax = fp_1.compare_kld(fp_2, method='minmax')
+
+    kld_minmax = results_1.compare_kld(results_2, method='minmax')
     if kld_minmax < 0.1:
         print(f"\nInterpretation: Very similar distributions (KL={kld_minmax:.4f})")
     elif kld_minmax < 0.3:
@@ -176,92 +174,74 @@ def example_kl_divergence():
         print(f"\nInterpretation: Different distributions (KL={kld_minmax:.4f})")
 
 
-def example_sql_save_load(fp):
-    """Example 7: Save and load fingerprints to/from SQL."""
+def example_sql_save_load(results):
+    """Example 7: Save and load a PFASEmbeddingSet to/from SQLite."""
     print("\n" + "=" * 80)
     print("Example 7: SQL Save/Load")
     print("=" * 80)
-    
-    # Save to SQLite database
-    db_file = "pfas_fingerprints.db"
-    print(f"\nSaving fingerprints to {db_file}...")
-    fp.to_sql(filename=db_file, if_exists='replace')
-    
-    # Load back from database
-    print(f"\nLoading fingerprints from {db_file}...")
-    fp_loaded = fp.__class__.from_sql(filename=db_file)
-    
-    print(f"\nOriginal fingerprints: {fp}")
-    print(f"Loaded fingerprints: {fp_loaded}")
-    
-    # Verify they match
-    if np.allclose(fp.fingerprints, fp_loaded.fingerprints):
-        print("✓ Fingerprints match after save/load!")
-    else:
-        print("✗ Warning: Fingerprints don't match after save/load")
-    
-    return fp_loaded
 
-
-def example_results_model_sql():
-    """Example 8: Save and load ResultsModel to/from SQL."""
-    print("\n" + "=" * 80)
-    print("Example 8: ResultsModel SQL Save/Load")
-    print("=" * 80)
-    
-    # Parse and save
-    results = parse_smiles(smiles_list_1[:3])  # Use subset for demo
-    
     db_file = "pfas_results.db"
-    print(f"\nSaving results to {db_file}...")
+    print(f"\nSaving {len(results)} molecules to {db_file}...")
     results.to_sql(filename=db_file, if_exists='replace')
-    
-    # Load back
-    print(f"\nLoading results from {db_file}...")
-    from PFASGroups.PFASEmbeddings import ResultsModel
-    results_loaded = ResultsModel.from_sql(filename=db_file)
-    
-    print(f"\nOriginal results: {len(results)} molecules")
-    print(f"Loaded results: {len(results_loaded)} molecules")
-    
-    for i, (orig, loaded) in enumerate(zip(results, results_loaded)):
-        print(f"Molecule {i+1}:")
-        print(f"  Original SMILES: {orig.smiles}")
-        print(f"  Loaded SMILES: {loaded.smiles}")
-        print(f"  Original matches: {len(orig.matches)}")
-        print(f"  Loaded matches: {len(loaded.matches)}")
+
+    print(f"\nLoading from {db_file}...")
+    loaded = PFASEmbeddingSet.from_sql(filename=db_file)
+    print(f"Loaded {len(loaded)} molecules")
+
+    for i, mol in enumerate(loaded):
+        print(f"  Molecule {i+1}: {mol.smiles}  (matches: {len(mol.matches)})")
+
+    return loaded
+
+
+def example_per_molecule_access():
+    """Example 8: Per-molecule access via PFASEmbedding."""
+    print("\n" + "=" * 80)
+    print("Example 8: Per-Molecule Access (PFASEmbedding)")
+    print("=" * 80)
+
+    results = parse_smiles(smiles_list_1[:3])
+
+    for mol in results:
+        print(f"\nSMILES : {mol.smiles}")
+        category, total_size = mol.classify()
+        print(f"  Category        : {category}")
+        print(f"  Total chain size: {total_size}")
+        print(f"  Group matches   : {sum(1 for m in mol.matches if m.is_group)}")
+        vec = mol.to_array(component_metrics=['binary'])
+        print(f"  Active groups   : {int(vec.sum())} / {len(vec)}")
 
 
 def main():
     """Run all examples."""
     print("\n" + "=" * 80)
-    print("PFAS ResultsFingerprint Analysis Examples")
+    print("PFASGroups PFASEmbeddingSet Analysis Examples")
     print("=" * 80)
-    
-    # Example 1: Basic conversion
-    fp_all, fp_oecd = example_basic_conversion()
-    
+
+    # Example 1: Parse and embed
+    results_1 = example_basic_embedding()
+
     # Example 2: PCA
-    pca_results = example_pca_analysis(fp_all)
-    
+    example_pca_analysis(results_1)
+
     # Example 3: Kernel PCA
-    example_kernel_pca(fp_all)
-    
+    example_kernel_pca(results_1)
+
     # Example 4: t-SNE
-    tsne_results = example_tsne(fp_all)
-    
+    example_tsne(results_1)
+
     # Example 5: UMAP
-    umap_results = example_umap(fp_all)
-    
-    # Example 6: KL divergence comparison
+    example_umap(results_1)
+
+    # Example 6: KL divergence
     example_kl_divergence()
-    
-    # Example 7: SQL save/load for fingerprints
-    fp_loaded = example_sql_save_load(fp_all)
-    
-    # Example 8: SQL save/load for ResultsModel
-    example_results_model_sql()
-    
+
+    # Example 7: SQL save/load
+    example_sql_save_load(results_1)
+
+    # Example 8: Per-molecule API
+    example_per_molecule_access()
+
     print("\n" + "=" * 80)
     print("All examples completed successfully!")
     print("=" * 80)
@@ -269,8 +249,7 @@ def main():
     print("  - pfas_pca_analysis.png")
     print("  - pfas_kpca_*.png")
     print("  - pfas_tsne_analysis.png")
-    print("  - pfas_umap_analysis.png (if umap-learn is installed)")
-    print("  - pfas_fingerprints.db")
+    print("  - pfas_umap_analysis.png  (if umap-learn is installed)")
     print("  - pfas_results.db")
 
 

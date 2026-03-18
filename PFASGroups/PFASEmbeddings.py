@@ -2539,6 +2539,29 @@ class PFASEmbeddingSet(list):
             pfas_groups=pfas_groups,
         )
 
+    # ------------------------------------------------------------------
+    # Convenience aliases for backward compatibility / PFASFingerprint API
+    # ------------------------------------------------------------------
+
+    @property
+    def n_molecules(self) -> int:
+        """Number of molecules in this set."""
+        return len(self)
+
+    @property
+    def has_cache(self) -> bool:
+        """Always True — PFASEmbeddingSet stores pre-parsed results."""
+        return True
+
+    @property
+    def match_cache(self) -> "PFASEmbeddingSet":
+        """Alias for the set itself (backward compat with PFASFingerprint API)."""
+        return self
+
+    def get_embedding(self, **kwargs) -> "EmbeddingArray":
+        """Alias for :meth:`to_array` (backward compat with PFASFingerprint API)."""
+        return self.to_array(**kwargs)
+
     def to_array(
         self,
         component_metrics=_UNSET,

@@ -4,6 +4,8 @@ from .PFASDefinitionModel import PFASDefinition
 from .ComponentsSolverModel import ComponentsSolver
 from .core import rdkit_disable_log, HALOGEN_GROUPS_FILE
 from .parser import parse_smiles, parse_mols, parse_mol, parse_groups_in_mol, parse_from_database, setup_halogen_groups_database, compile_componentSmarts, compile_componentSmartss, load_HalogenGroups
+# PFASFingerprint: convenience alias for parse_smiles — returns a PFASEmbeddingSet
+PFASFingerprint = parse_smiles
 from .draw_mols import plot_mol, plot_mols, plot_HalogenGroups
 from .getter import get_componentSMARTSs, get_HalogenGroups, get_compiled_HalogenGroups, get_compiled_PFASGroups, get_PFASDefinitions
 from .embeddings import FINGERPRINT_PRESETS, EMBEDDING_PRESETS

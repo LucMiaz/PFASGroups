@@ -6,7 +6,7 @@ This script demonstrates how to use the prioritise_molecules function
 to rank PFAS compounds based on different criteria.
 """
 
-from HalogenGroups import prioritise_molecules, get_priority_statistics
+from PFASGroups import prioritise_molecules, get_priority_statistics
 import numpy as np
 
 
@@ -49,7 +49,7 @@ def example_reference_based():
     print(f"{'Rank':<6} {'Score':<8} {'SMILES':<60}")
     print("-" * 74)
     for i in range(min(5, len(results))):
-        smiles = results[i]['smiles'][:57] + "..." if len(results[i]['smiles']) > 60 else results[i]['smiles']
+        smiles = results[i].smiles[:57] + "..." if len(results[i].smiles) > 60 else results[i].smiles
         print(f"{i+1:<6} {scores[i]:<8.4f} {smiles}")
     
     # Get statistics
@@ -93,7 +93,7 @@ def example_environmental_persistence():
     print(f"{'Rank':<6} {'Score':<10} {'SMILES':<60}")
     print("-" * 76)
     for i in range(min(3, len(results))):
-        smiles = results[i]['smiles'][:57] + "..." if len(results[i]['smiles']) > 60 else results[i]['smiles']
+        smiles = results[i].smiles[:57] + "..." if len(results[i].smiles) > 60 else results[i].smiles
         print(f"{i+1:<6} {scores[i]:<10.2f} {smiles}")
 
 
@@ -128,7 +128,7 @@ def example_bioaccumulation():
     print(f"{'Rank':<6} {'Score':<10} {'SMILES':<60}")
     print("-" * 76)
     for i in range(len(results)):
-        smiles = results[i]['smiles'][:57] + "..." if len(results[i]['smiles']) > 60 else results[i]['smiles']
+        smiles = results[i].smiles[:57] + "..." if len(results[i].smiles) > 60 else results[i].smiles
         print(f"{i+1:<6} {scores[i]:<10.2f} {smiles}")
     
     stats = get_priority_statistics(results, scores)
@@ -164,7 +164,7 @@ def example_total_fluorination():
     print(f"{'Rank':<6} {'Score':<10} {'SMILES':<60}")
     print("-" * 76)
     for i in range(len(results)):
-        smiles = results[i]['smiles']
+        smiles = results[i].smiles
         print(f"{i+1:<6} {scores[i]:<10.2f} {smiles}")
 
 
@@ -213,7 +213,7 @@ def example_comparison():
             results, scores = all_results[strategy_name]
             # Find this molecule's score
             for j, result in enumerate(results):
-                if result['smiles'] == smiles:
+                if result.smiles == smiles:
                     rank = j + 1
                     score = scores[j]
                     print(f"#{rank} ({score:.1f}){' ':<10}", end="")
@@ -225,7 +225,7 @@ def main():
     """Run all examples."""
     print("\n" + "=" * 80)
     print("PFAS MOLECULE PRIORITIZATION EXAMPLES")
-    print("HalogenGroups v2.2.4")
+    print("PFASGroups v3.2.0")
     print("=" * 80)
     
     example_reference_based()
