@@ -73,9 +73,23 @@ def load_componentsSolver(**kwargs):
             mol = args[0]
             # Add hydrogens to molecule before creating ComponentsSolver
             # This ensures atom indices are consistent throughout the analysis
-            mol = Chem.AddHs(mol)
+            formula = kwargs.get("formula", CalcMolFormula(mol))
+            kwargs['formula'] = formula
+            try:
+                mol = Chem.AddHs(mol)
+                Chem.SanitizeMol(mol)
+            except Chem.AtomValenceException:
+                #logger.debug("failed sanitisation, fragmenting")
+                frags = fragment_until_valence_is_correct(mol, [])
+                formulas = [n_from_formula(CalcMolFormula(frag)) for frag in frags]
+                kwargs.setdefault('fragmented_smiles', []).extend([Chem.MolToSmiles(mol)])
+            else:
+                frags = [mol]
+                formulas = [n_from_formula(formula)]# formula as a dictionary
             args = list(args)  # Convert to mutable list
             args[0] = mol
+            kwargs['formulas'] = formulas
+            kwargs['frags'] = frags
             args = tuple(args)  # Convert back to tuple
             halogens = kwargs.get('halogens', ['F','Cl','Br','I'])
             _smarts = '[{}]'.format(','.join(halogens)) if isinstance(halogens, list) else f'[{halogens}]'
@@ -167,17 +181,9 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
     4. with smarts defined and formula constraints: search for substructure matches of smarts, and for given componentSmarts for the HalogenGroup, search for connected components of fluorinated atoms where smarts match is in the component
 
     """
-    mol = Chem.AddHs(mol)
     formula = kwargs.get("formula", CalcMolFormula(mol))
-    try:
-        Chem.SanitizeMol(mol)
-    except Chem.AtomValenceException:
-        #logger.debug("failed sanitisation, fragmenting")
-        frags = fragment_until_valence_is_correct(mol, [])
-        formulas = [n_from_formula(CalcMolFormula(frag)) for frag in frags]
-    else:
-        frags = [mol]
-        formulas = [n_from_formula(formula)]# formula as a dictionary
+    formulas = kwargs['formulas']
+    frags = kwargs['frags']
     agg_pfas_groups = kwargs.get('agg_pfas_groups',{})
     # halogen groups
     group_matches = []
@@ -293,14 +299,42 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     # Convert single input to list for uniform processing
     single_input = isinstance(smiles, str)
     smiles_list = [smiles] if single_input else smiles
-    mol_list = [Chem.MolFromSmiles(smi) for smi in smiles_list]
+    mol_list = []
+    for smi in smiles_list:
+        try:
+            mol = Chem.MolFromSmiles(str(smi))
+            Chem.SanitizeMol(mol)
+        except Exception:
+            mol = Chem.MolFromSmiles(str(smi), sanitize = False)
+            print(f"Warning: failed to parse SMILES '{smi}' with sanitization. Attempting without sanitization.")
+            frags = fragment_until_valence_is_correct(mol, [])
+            print(f"Fragmented into {len(frags)} pieces.")
+            if len(frags) == 0:
+                print(f"Error parsing SMILES '{smi}': no valid fragments found.")
+                mol = None
+            elif len(frags) == 1:
+                mol = frags[0]
+                
+            elif len(frags) > 1:
+                x1, x2 = frags.pop(0), frags.pop(0)
+                mol = Chem.CombineMols(x1,x2)
+                for frag in frags:
+                    mol = Chem.CombineMols(mol, frag)
+            kwargs.setdefault('fragmented_smiles', []).append(smi)
+        if mol is None:
+            import warnings
+            warnings.warn(f"parse_smiles: could not parse SMILES '{smi}' — skipping.", UserWarning, stacklevel=2)
+        mol_list.append(mol)
     # Parse all molecules
     kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
     kwargs['compute_component_metrics'] = compute_component_metrics
     kwargs['halogens'] = halogens
     kwargs['form'] = form
     kwargs['saturation'] = saturation
-    return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, progress=progress, **kwargs)
+    if len(mol_list)==0:
+        raise ValueError("No valid SMILES provided for parsing.")
+    return parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, progress=progress,
+                      _smiles_list=smiles_list, **kwargs)
 
 from .PFASEmbeddings import PFASEmbeddingSet
 
@@ -606,7 +640,7 @@ def parse_mol(mol, progress=False, **kwargs):
 def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                limit_effective_graph_resistance=None, compute_component_metrics=True,
                halogens='F', form=None, saturation=None, progress=False,
-               **kwargs):
+               _smiles_list=None, **kwargs):
     """
     Parse RDKit molecule(s) and return halogen group information.
 
@@ -652,15 +686,29 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
     """
 
     # Parse all molecules
+    import warnings
     results = {}
-    _iter = mols
+    _iter = enumerate(mols)
     if progress:
         try:
             from tqdm.auto import tqdm as _tqdm
         except ImportError:
             from tqdm import tqdm as _tqdm
-        _iter = _tqdm(mols, desc='parse_mols', total=len(mols))
-    for mol in _iter:
+        _iter = _tqdm(list(_iter), desc='parse_mols', total=len(mols))
+    for mol_idx, mol in _iter:
+        orig_smi = (_smiles_list[mol_idx] if _smiles_list is not None and mol_idx < len(_smiles_list) else None)
+        if mol is None:
+            # Invalid SMILES — already warned in parse_smiles; insert empty result keyed by index
+            _key = f'__invalid_{mol_idx}__'
+            results[_key] = {
+                'smiles': orig_smi or '',
+                'inchikey': None,
+                'inchi': None,
+                'formula': None,
+                'matches': [],
+                'error': 'invalid_smiles',
+            }
+            continue
         # Add hydrogens to ensure consistent atom indexing
         bycomponent = kwargs.pop('bycomponent', False)
         # Pass through component metric options and filters
@@ -669,7 +717,21 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         kwargs['halogens'] = halogens
         kwargs['form'] = form
         kwargs['saturation'] = saturation
-        matches, mol_with_h, formula = parse_groups_in_mol(mol, bycomponent=bycomponent, **kwargs)
+        try:
+            matches, mol_with_h, formula = parse_groups_in_mol(mol, bycomponent=bycomponent, **kwargs)
+        except Exception as exc:
+            _smi_repr = orig_smi or Chem.MolToSmiles(mol)
+            warnings.warn(f"parse_mols: error parsing '{_smi_repr}' — {exc}. Skipping.", UserWarning, stacklevel=2)
+            _key = f'__error_{mol_idx}__'
+            results[_key] = {
+                'smiles': _smi_repr,
+                'inchikey': Chem.MolToInchiKey(mol),
+                'inchi': Chem.MolToInchi(mol),
+                'formula': None,
+                'matches': [],
+                'error': str(exc),
+            }
+            continue
         inchikey = Chem.MolToInchiKey(mol)
         inchi = Chem.MolToInchi(mol)
         smi = Chem.MolToSmiles(mol)
@@ -850,6 +912,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
     # Default: list-like container with navigation helpers that
     # remains JSON-serialisable and behaves like a normal list of
     # dicts for existing consumers.
+    if kwargs.get('fragmented_smiles',None):
+        print(f"Note: {len(kwargs['fragmented_smiles'])} SMILES {'were' if len(kwargs['fragmented_smiles']) > 1 else 'was'} fragmented during parsing due to valence issues. Original SMILES are included in 'smiles' field of results for reference.")
     return PFASEmbeddingSet(results_list)
 
 def compile_componentSmarts(chain_smarts, end_smarts):
