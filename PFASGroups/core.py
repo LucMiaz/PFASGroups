@@ -223,8 +223,26 @@ def fragment_until_valence_is_correct(mol, frags, verbose=False, _events=None):
         _events = []
     try:
         Chem.SanitizeMol(mol)
-    except (Chem.AtomValenceException, Chem.KekulizeException) as e:
+    except (Chem.AtomValenceException, Chem.KekulizeException, Chem.AtomKekulizeException) as e:
         e_str = str(e)
+        # Kekulization failures (KekulizeException / AtomKekulizeException) mean the ring
+        # system has no valid Kekulé form.  Fragmenting on ring bonds does not help because
+        # the open-chain fragment retains AROMATIC bond types that still can't be kekulized.
+        # Instead, re-sanitize while skipping only the kekulization step so the molecule
+        # keeps its aromatic bonds — sufficient for SMARTS matching.  If even that fails,
+        # skip the fragment entirely ("ignore the ring") rather than crashing.
+        if 'Kekulize' in type(e).__name__:
+            try:
+                _skip_kekule = Chem.SanitizeFlags.SANITIZE_ALL ^ Chem.SanitizeFlags.SANITIZE_KEKULIZE
+                Chem.SanitizeMol(mol, _skip_kekule)
+                if verbose:
+                    return frags + [mol], _events
+                return frags + [mol]
+            except Exception:
+                # Truly unresolvable — skip this fragment silently
+                if verbose:
+                    return frags, _events
+                return frags
         # AtomValenceException format: "atom # 6 N, ..." → digit after "# "
         all = [int(x) for x in re.findall(r"(?<=#\s)(\d+)", e_str)]
         if not all:
