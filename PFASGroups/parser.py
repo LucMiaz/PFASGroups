@@ -325,17 +325,20 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
             # Try without sanitization and fragment to recover
             mol_raw = Chem.MolFromSmiles(str(smi), sanitize=False)
             if mol_raw is not None:
-                if verbose:
-                    frags, events = fragment_until_valence_is_correct(mol_raw, [], verbose=True)
-                    # Enrich each event with the element symbol of the offending atom
-                    for ev in events:
-                        try:
-                            ev['atom_symbol'] = mol_raw.GetAtomWithIdx(ev['atom_idx']).GetSymbol()
-                        except Exception:
-                            ev['atom_symbol'] = 'unknown'
-                    _frag_events.append({'smiles': smi, 'events': events, 'n_fragments': len(frags)})
-                else:
-                    frags = fragment_until_valence_is_correct(mol_raw, [])
+                try:
+                    if verbose:
+                        frags, events = fragment_until_valence_is_correct(mol_raw, [], verbose=True)
+                        # Enrich each event with the element symbol of the offending atom
+                        for ev in events:
+                            try:
+                                ev['atom_symbol'] = mol_raw.GetAtomWithIdx(ev['atom_idx']).GetSymbol()
+                            except Exception:
+                                ev['atom_symbol'] = 'unknown'
+                        _frag_events.append({'smiles': smi, 'events': events, 'n_fragments': len(frags)})
+                    else:
+                        frags = fragment_until_valence_is_correct(mol_raw, [])
+                except Exception:
+                    frags = []
                 if len(frags) == 1:
                     mol = frags[0]
                 elif len(frags) > 1:

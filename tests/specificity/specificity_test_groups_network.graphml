@@ -1,11 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d0" for="edge" attr.name="edge_type" attr.type="string"/>
-<graph edgedefault="directed"><node id="carboxylic acid"/>
+<graph edgedefault="directed"><node id="Side-chain aromatics"/>
+<node id="Heterocyclic azole"/>
+<node id="Heterocyclic azine"/>
+<node id="Polyhalogenated aryl compounds"/>
+<node id="Perhalogenated aryl compounds"/>
+<node id="Polyhalogenated cyclic compounds"/>
+<node id="Perhalogenated cyclic compounds"/>
+<node id="carboxylic acid"/>
 <node id="Perfluoroalkyl carboxylic acids"/>
 <node id="Polyfluoroalkyl carboxylic acid"/>
 <node id="Perfluoroalkyl dicarboxylic acids"/>
-<node id="Perfluoroalkylether carboxylic acids"/>
 <node id="Polyfluoroalkylether carboxylic acid"/>
+<node id="Perfluoroalkylether carboxylic acids"/>
 <node id="ether"/>
 <node id="Hydrofluoroethers"/>
 <node id="Perfluoropolyethers"/>
@@ -25,7 +32,6 @@
 <node id="Perfluoroalkyl phosphonic acids"/>
 <node id="phosphinic acid"/>
 <node id="Perfluoroalkyl phosphinic acids"/>
-<node id="Side-chain aromatics"/>
 <node id="Side-chain fluorinated aromatics"/>
 <node id="azole"/>
 <node id="azine"/>
@@ -41,38 +47,67 @@
 <node id="Perfluoroalkene"/>
 <node id="Hydrofluoroolefins"/>
 <node id="ethene"/>
+<node id="alkane"/>
+<node id="Semi-fluorinated alkanes"/>
+<node id="Hydrofluorocarbons"/>
+<node id="Perfluoroalkane"/>
+<node id="ester"/>
+<node id="Perfluoroalkane sulfonyl fluorides"/>
+<node id="acyl halide"/>
+<node id="alkyne"/>
+<edge source="Side-chain aromatics" target="Heterocyclic azole">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="Side-chain aromatics" target="Heterocyclic azine">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="Side-chain aromatics" target="Side-chain fluorinated aromatics">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="Side-chain aromatics" target="azole">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="Side-chain aromatics" target="azine">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="Side-chain aromatics" target="benzodioxole">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="Polyhalogenated aryl compounds" target="Perhalogenated aryl compounds">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="Perhalogenated aryl compounds" target="Polyhalogenated aryl compounds">
+  <data key="d0">per</data>
+</edge>
+<edge source="Polyhalogenated cyclic compounds" target="Perhalogenated cyclic compounds">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="Perhalogenated cyclic compounds" target="Polyhalogenated cyclic compounds">
+  <data key="d0">per</data>
+</edge>
 <edge source="carboxylic acid" target="Perfluoroalkyl carboxylic acids">
   <data key="d0">oneway</data>
 </edge>
 <edge source="carboxylic acid" target="Polyfluoroalkyl carboxylic acid">
   <data key="d0">oneway</data>
 </edge>
+<edge source="carboxylic acid" target="Perfluoroalkyl dicarboxylic acids">
+  <data key="d0">oneway</data>
+</edge>
 <edge source="Perfluoroalkyl carboxylic acids" target="carboxylic acid">
   <data key="d0">per</data>
-</edge>
-<edge source="Perfluoroalkyl carboxylic acids" target="Perfluoroalkyl dicarboxylic acids">
-  <data key="d0">oneway</data>
-</edge>
-<edge source="Perfluoroalkyl carboxylic acids" target="Perfluoroalkylether carboxylic acids">
-  <data key="d0">oneway</data>
 </edge>
 <edge source="Perfluoroalkyl carboxylic acids" target="Polyfluoroalkyl carboxylic acid">
   <data key="d0">per</data>
 </edge>
-<edge source="Polyfluoroalkyl carboxylic acid" target="carboxylic acid">
-  <data key="d0">poly</data>
-</edge>
-<edge source="Polyfluoroalkyl carboxylic acid" target="Polyfluoroalkylether carboxylic acid">
+<edge source="Polyfluoroalkyl carboxylic acid" target="Perfluoroalkyl carboxylic acids">
   <data key="d0">oneway</data>
 </edge>
-<edge source="Polyfluoroalkyl carboxylic acid" target="Perfluoroalkyl carboxylic acids">
+<edge source="Polyfluoroalkylether carboxylic acid" target="Perfluoroalkylether carboxylic acids">
   <data key="d0">oneway</data>
 </edge>
 <edge source="Perfluoroalkylether carboxylic acids" target="Polyfluoroalkylether carboxylic acid">
   <data key="d0">per</data>
-</edge>
-<edge source="Polyfluoroalkylether carboxylic acid" target="Perfluoroalkylether carboxylic acids">
-  <data key="d0">oneway</data>
 </edge>
 <edge source="ether" target="Hydrofluoroethers">
   <data key="d0">oneway</data>
@@ -94,9 +129,6 @@
 </edge>
 <edge source="ether" target="Polyfluoroalkylether sulfonic acid">
   <data key="d0">oneway</data>
-</edge>
-<edge source="Hydrofluoroethers" target="ether">
-  <data key="d0">per</data>
 </edge>
 <edge source="Hydrofluoroethers" target="Perfluoropolyethers">
   <data key="d0">oneway</data>
@@ -128,6 +160,9 @@
 <edge source="sulfonic acid" target="Polyfluoroalkyl sulfonic acid">
   <data key="d0">oneway</data>
 </edge>
+<edge source="sulfonic acid" target="Perfluoroalkyl disulfonic acids">
+  <data key="d0">oneway</data>
+</edge>
 <edge source="sulfonic acid" target="Perfluoroalkylether sulfonic acids">
   <data key="d0">oneway</data>
 </edge>
@@ -140,16 +175,7 @@
 <edge source="Perfluoroalkyl sulfonic acids" target="Polyfluoroalkyl sulfonic acid">
   <data key="d0">per</data>
 </edge>
-<edge source="Perfluoroalkyl sulfonic acids" target="Perfluoroalkyl disulfonic acids">
-  <data key="d0">oneway</data>
-</edge>
-<edge source="Polyfluoroalkyl sulfonic acid" target="sulfonic acid">
-  <data key="d0">poly</data>
-</edge>
 <edge source="Polyfluoroalkyl sulfonic acid" target="Perfluoroalkyl sulfonic acids">
-  <data key="d0">oneway</data>
-</edge>
-<edge source="Polyfluoroalkyl sulfonic acid" target="Polyfluoroalkylether sulfonic acid">
   <data key="d0">oneway</data>
 </edge>
 <edge source="sulfinic acid" target="Perfluoroalkyl sulfinic acids">
@@ -169,21 +195,6 @@
 </edge>
 <edge source="Perfluoroalkyl phosphinic acids" target="phosphinic acid">
   <data key="d0">per</data>
-</edge>
-<edge source="Side-chain aromatics" target="Side-chain fluorinated aromatics">
-  <data key="d0">oneway</data>
-</edge>
-<edge source="Side-chain aromatics" target="azole">
-  <data key="d0">oneway</data>
-</edge>
-<edge source="Side-chain aromatics" target="azine">
-  <data key="d0">oneway</data>
-</edge>
-<edge source="Side-chain aromatics" target="benzodioxole">
-  <data key="d0">oneway</data>
-</edge>
-<edge source="Side-chain fluorinated aromatics" target="Side-chain aromatics">
-  <data key="d0">poly</data>
 </edge>
 <edge source="Side-chain fluorinated aromatics" target="azole">
   <data key="d0">oneway</data>
@@ -233,10 +244,103 @@
 <edge source="Perfluoroalkene" target="alkene">
   <data key="d0">per</data>
 </edge>
-<edge source="Hydrofluoroolefins" target="alkene">
-  <data key="d0">poly</data>
+<edge source="alkane" target="Semi-fluorinated alkanes">
+  <data key="d0">oneway</data>
 </edge>
-<edge source="ethene" target="alkene">
-  <data key="d0">poly</data>
+<edge source="alkane" target="Hydrofluorocarbons">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkane">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl carboxylic acids">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Polyfluoroalkyl carboxylic acid">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl dicarboxylic acids">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkylether carboxylic acids">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Polyfluoroalkylether carboxylic acid">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl sulfonic acids">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Polyfluoroalkyl sulfonic acid">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl disulfonic acids">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkylether sulfonic acids">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Polyfluoroalkylether sulfonic acid">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl sulfinic acids">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl phosphonic acids">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl phosphinic acids">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl alcohols">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="fluorotelomer alcohols">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoropolyethers">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Hydrofluoroethers">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl-tert-amines">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl iodides">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="iodide">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="ester">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkane sulfonyl fluorides">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Perfluoroalkyl ketones">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="Semi-fluoroalkyl ketones">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="acyl halide">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="alkene">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="alkyne">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="alkane" target="ether">
+  <data key="d0">oneway</data>
+</edge>
+<edge source="Hydrofluorocarbons" target="alkane">
+  <data key="d0">per</data>
+</edge>
+<edge source="Perfluoroalkane" target="alkane">
+  <data key="d0">per</data>
 </edge>
 </graph></graphml>
