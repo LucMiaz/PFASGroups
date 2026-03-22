@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine,text
 from getpass import getpass
-from pubchem import dtxsid_to_smiles
+from pubchem import dtxsid_to_mols
 from tqdm import tqdm
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
@@ -8,23 +8,44 @@ user = input("Enter username for database connection: ")
 password = getpass(f"Enter password for database connection for {user}: ")
 engine = create_engine(f'mariadb+mariadbconnector://{user}:{password}@localhost/toxcast')
 
-def add_smiles(batch_size=1000):
+def add_smiles(batch_size=10):
+    # Fetch all chid/dtxsid pairs upfront so OFFSET drift can't happen.
     with engine.connect() as conn:
-        total = conn.execute(text("SELECT COUNT(*) FROM chemical")).scalar()
-    with tqdm(total = total) as pbar:
-        for i in range(0, total, batch_size):
-            with engine.connect() as conn:
-                result = conn.execute(text("SELECT chid, dsstox_substance_id FROM chemical LIMIT :limit OFFSET :offset"), {"limit": batch_size, "offset": i}).fetchall()
-                dtxsids = [row[1] for row in result]
-            smiles_dict = dtxsid_to_smiles(dtxsids, unique=True, join_smiles=False)
-            with engine.connect() as conn:
-                for dtxsid, smiles in smiles_dict.items():
-                    mol = Chem.MolFromSmiles(smiles)
-                    inchi = Chem.MolToInchi(mol) if mol is not None else None
-                    inchikey = Chem.MolToInchiKey(mol) if mol is not None else None
-                    formula = CalcMolFormula(mol) if mol is not None else None
-                    conn.execute(text("UPDATE chemical SET smiles = :smiles, inchi = :inchi, inchikey = :inchikey, formula = :formula WHERE dsstox_substance_id = :dtxsid"), {"smiles": smiles, "inchi": inchi, "inchikey": inchikey, "formula": formula, "dtxsid": dtxsid})
-            pbar.update(batch_size)
+        rows = conn.execute(
+            text("SELECT chid, dsstox_substance_id FROM chemical WHERE smiles IS NULL")
+        ).fetchall()
+
+    for i in tqdm(range(0, len(rows), batch_size)):
+        batch = rows[i : i + batch_size]
+        dtxsid_to_chid = {row[1]: row[0] for row in batch}
+        dtxsids = list(dtxsid_to_chid.keys())
+
+        mols_dict, failed = dtxsid_to_mols(dtxsids)
+        if failed:
+            tqdm.write(f"Failed: {failed}")
+
+        with engine.connect() as conn:
+            for dtxsid, mol_list in mols_dict.items():
+                if not mol_list:
+                    continue
+                mol = mol_list[0]  # max_cids=1 so there is exactly one
+                if mol is None:
+                    continue
+                conn.execute(
+                    text(
+                        "UPDATE chemical SET smiles=:smiles, inchi=:inchi,"
+                        " inchikey=:inchikey, formula=:formula"
+                        " WHERE dsstox_substance_id=:dtxsid"
+                    ),
+                    {
+                        "smiles":    Chem.MolToSmiles(mol),
+                        "inchi":     Chem.MolToInchi(mol),
+                        "inchikey":  Chem.MolToInchiKey(mol),
+                        "formula":   CalcMolFormula(mol),
+                        "dtxsid":    dtxsid,
+                    },
+                )
+            conn.commit()  # persist the batch
 
 if __name__ == "__main__":
     add_smiles()

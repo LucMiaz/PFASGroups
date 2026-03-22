@@ -1,0 +1,13 @@
+﻿conda : python: can't open file 'C:\\Users\\luc\\git\\overleaf_PFASgroups_artic
+le\\benchmark\\scripts\\compare_fingerprints_toxcast.py': [Errno 2] No such 
+file or directory
+At line:1 char:1
++ conda run -n chem --no-capture-output python -u benchmark/scripts/com ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (python: can't o...le or directory 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ERROR conda.cli.main_run:execute(127): `conda run python -u 
+benchmark/scripts/compare_fingerprints_toxcast.py` failed. (See above for 
+error)
