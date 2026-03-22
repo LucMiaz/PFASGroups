@@ -41,7 +41,8 @@ def load_HalogenGroups():
     def inner(func):
         @functools.wraps(func)
         def wrapper(*args,**kwargs):
-            kwargs['pfas_groups'] = kwargs.get('pfas_groups',[p for p in pfg if p.excludeHalogens is None or set(p.excludeHalogens).isdisjoint(kwargs.get('halogens', ['F','Cl','Br','I']))])
+            _halogens = kwargs.get('halogens', ['F','Cl','Br','I']) or ['F','Cl','Br','I']
+            kwargs['pfas_groups'] = kwargs.get('pfas_groups',[p for p in pfg if p.excludeHalogens is None or set(p.excludeHalogens).isdisjoint(_halogens)])
             kwargs['agg_pfas_groups'] = kwargs.get('agg_pfas_groups',agg_pfg)
             return func(*args, **kwargs)
         return wrapper
@@ -91,7 +92,7 @@ def load_componentsSolver(**kwargs):
             kwargs['formulas'] = formulas
             kwargs['frags'] = frags
             args = tuple(args)  # Convert back to tuple
-            halogens = kwargs.get('halogens', ['F','Cl','Br','I'])
+            halogens = kwargs.get('halogens', ['F','Cl','Br','I']) or ['F','Cl','Br','I']
             _smarts = '[{}]'.format(','.join(halogens)) if isinstance(halogens, list) else f'[{halogens}]'
             # check organic halogen:
             if not mol.GetSubstructMatch(Chem.MolFromSmarts(_smarts)):
