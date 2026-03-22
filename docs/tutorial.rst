@@ -104,13 +104,13 @@ Fingerprinting for machine learning
 -------------------------------------
 
 :func:`~PFASGroups.generate_fingerprint` converts a list of SMILES to a
-2-D numpy array.  By default the output has **116 columns** (one per group,
+2-D numpy array.  By default the output has **114 columns** (one per compiled group,
 fluorine only, binary encoding):
 
 .. code-block:: python
 
    fps, info = generate_fingerprint(smiles_list)
-   print(fps.shape)                  # (3, 116)
+   print(fps.shape)                  # (3, 114)
    print(info['group_names'][:3])    # e.g. ['perfluoromethyl', ...]
 
 **Selecting groups** — pass a list or range of 0-based indices:
@@ -131,6 +131,14 @@ fluorine only, binary encoding):
    # Best benchmark config: binary + effective graph resistance (2 × n_groups cols)
    fps_best, _ = generate_fingerprint(smiles_list, preset='best')
 
+   # n_spacer: telomer CH\ :sub:`2` spacer length
+   # Zero for non-telomers; encodes the 'm' in 'm:n' telomer notation
+   fps_ns = results.to_array(component_metrics=['n_spacer'])
+
+   # ring_size: smallest ring overlapping each matched component
+   # Zero for acyclic groups; 5 for azoles/furans; 6 for benzene/cyclohexane
+   fps_rs = results.to_array(component_metrics=['ring_size'])
+
 Using ResultsModel.to_fingerprint
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -142,7 +150,7 @@ Using ResultsModel.to_fingerprint
    results = parse_smiles(smiles_list)
    fp = results.to_fingerprint()
 
-   print(fp.fingerprints.shape)     # (3, 116)
+   print(fp.fingerprints.shape)     # (3, 114)
    print(fp.group_names[:3])        # list of group-name strings
    print(fp.halogens)               # ['F']
    print(fp.component_metrics)      # ['binary']
@@ -152,8 +160,8 @@ Group selection with to_fingerprint:
 .. code-block:: python
 
    fp_oecd = results.to_fingerprint(group_selection='oecd')       # 28 cols
-   fp_gen  = results.to_fingerprint(group_selection='generic')    # 45 cols
-   fp_all  = results.to_fingerprint(group_selection='all')        # 116 cols
+   fp_gen  = results.to_fingerprint(group_selection='generic')    # 48 cols
+   fp_all  = results.to_fingerprint(group_selection='all')        # 114 cols
 
 Dimensionality reduction
 --------------------------
@@ -188,10 +196,10 @@ pass ``halogens`` explicitly:
 
    results = parse_smiles(["ClCCCl", "BrCCBr"], halogens=['F', 'Cl', 'Br', 'I'])
 
-   # Multi-halogen fingerprint: 116 * 4 = 464 columns
+   # Multi-halogen fingerprint: 114 * 4 = 456 columns
    fps, info = generate_fingerprint(
        ["ClCCCl", "BrCCBr"], halogens=['F', 'Cl', 'Br', 'I'])
-   print(fps.shape)     # (2, 464)
+   print(fps.shape)     # (2, 456)
 
 See :doc:`halogengroups` for full documentation of multi-halogen mode.
 

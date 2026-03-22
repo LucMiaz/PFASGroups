@@ -9,11 +9,11 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 ## Key Features
 
 ### Core Capabilities
-- **Halogen Group Identification**: Automated detection of 113 functional groups:
-  - 28 PFAS OECD groups
-  - 45 non-telomer groups
-  - 40 fluorotelomer groups with linker validation (Groups 69-112)
-  - 1 aggregate pattern-matching group (Group 113: Telomers)
+- **Halogen Group Identification**: Automated detection of 119 functional groups (114 compiled for fluorine-only embedding):
+  - 27 PFAS OECD groups
+  - 48 generic functional groups (IDs 29–73, 117–119; the last 3 are halogen-context-dependent or recently added)
+  - 43 fluorotelomer-specific groups with CH₂ linker validation
+  - 1 aggregate pattern-matching group (Group 116: Telomers, `compute=False`)
 - **Atom Reference Requirement**: For non-telomer groups, SMARTS patterns must match atoms that are part of or directly connected to the fluorinated component (per/polyfluorinated carbons), respecting the `max_dist_from_comp` constraint
 - **Linker Validation**: CH₂-specific validation for 40 fluorotelomer groups to distinguish from direct-attachment analogues. Telomer groups use `linker_smarts` to allow functional groups separated from perfluoro chains by non-fluorinated linkers
 - **Aggregate Groups**: Pattern-matching groups that collect related PFAS groups via regex (e.g., Group 113 matches all "telomer" groups)
@@ -258,6 +258,70 @@ results_multi = parse_smiles(smiles_list, halogens=['F', 'Cl'])
 # - saturation: 'per' or 'poly' (or list like ['per', 'poly'] for both)
 # - form: 'alkyl' or 'cyclic' (or list like ['alkyl', 'cyclic'] for both)
 ```
+
+## Embedding with Graph Metrics
+
+The `to_array()` / `to_fingerprint()` methods accept a `component_metrics` list that
+stacks one block of *N_G* columns per metric (default `N_G = 114` for fluorine-only).
+
+```python
+import numpy as np
+from PFASGroups import parse_smiles, EMBEDDING_PRESETS
+
+smiles = [
+    "O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",  # PFOA
+    "O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",          # PFHpA
+    "OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",                              # 4:2 FTOH
+    "OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",               # 6:2 FTOH
+]
+results = parse_smiles(smiles)
+
+# --- binary embedding (default) ---
+arr_bin = results.to_array()                    # shape (4, 114)
+
+# --- preset 'best': binary + effective_graph_resistance ---
+# Best discrimination (mean Tanimoto 0.184, outperforms TxP-PFAS 129-bit)
+print(EMBEDDING_PRESETS['best']['description'])
+arr_best = results.to_array(preset='best')      # shape (4, 228) = 114 × 2
+
+# --- effective graph resistance directly ---
+arr_egr = results.to_array(
+    component_metrics=['binary', 'effective_graph_resistance']
+)                                               # shape (4, 228)
+
+# --- n_spacer: telomer CH₂ spacer length (encodes 'm' in 'm:n' notation) ---
+# Zero for non-telomers; distinguishes 2:1, 4:2, 6:2 FTOHs in a single column
+arr_ns = results.to_array(component_metrics=['n_spacer'])  # shape (4, 114)
+
+# --- ring_size: smallest ring overlapping each matched component ---
+# Zero for acyclic groups; 5 for azoles/furans; 6 for benzene/cyclohexane
+arr_rs = results.to_array(component_metrics=['ring_size'])  # shape (4, 114)
+
+# --- combined: EGR + n_spacer + ring_size + molecule-wide descriptors ---
+arr_combined = results.to_array(
+    component_metrics=['binary', 'effective_graph_resistance',
+                       'n_spacer', 'ring_size'],
+    molecule_metrics=['n_components', 'max_size',
+                      'mean_branching', 'max_branching',
+                      'mean_component_fraction', 'max_component_fraction'],
+)  # shape (4, 4*114 + 6) = (4, 462)
+
+# --- multi-halogen: one parse per halogen, then hstack ---
+arrs = []
+for hal in ['F', 'Cl', 'Br', 'I']:
+    r_hal = parse_smiles(smiles, halogens=hal)
+    arrs.append(r_hal.to_array(component_metrics=['effective_graph_resistance']))
+arr_4x = np.hstack(arrs)                        # shape (4, 456) = 4 × 114
+
+# --- column names ---
+cols = results.column_names(
+    component_metrics=['binary', 'effective_graph_resistance']
+)
+print(cols[:4])   # e.g. ['Perfluoroalkyl [binary]', ..., 'Perfluoroalkyl [EGR]', ...]
+```
+
+See [`examples/embedding_with_graph_metrics.py`](examples/embedding_with_graph_metrics.py)
+for a complete runnable script covering all options.
 
 CLI equivalents:
 

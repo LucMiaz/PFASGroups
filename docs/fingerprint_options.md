@@ -2,7 +2,7 @@
 
 ## All metrics
 
-Per-group metrics add $N_G$ columns (one per selected PFAS group; $N_G$ = 112 for `group_selection='all'`,
+Per-group metrics add $N_G$ columns (one per selected PFAS group; $N_G$ = 114 for `group_selection='all'` with the default fluorine-only embedding, 119 groups defined in total,
 28 for `'oecd'`, etc.), aggregated with `aggregation='mean'` (default) or `'median'` when a group
 has multiple matched components. Molecule-wide metrics add a single trailing column (prefixed `mol:`)
 independent of group selection. The number of halogens does not affect column count.
@@ -19,6 +19,8 @@ components across all groups.
 | per group | `max_component` | $N_G$ | int ≥ 0 | $x_g = \max_i \lvert C_i \rvert$ | — | Size (C-atoms) of the dominant matched fragment. Proxy for longest chain length; correlated with persistence and bioaccumulation potential. |
 | per group | `total_component` | $N_G$ | int ≥ 0 | $x_g = \sum_i \lvert C_i \rvert$ | — | Total halogenated carbon burden for this group. Measures cumulative fluorination load; useful for hazard scoring and mass-fraction estimation. |
 | per group | `size` | $N_G$ | int ≥ 0 | $s = \lvert V \rvert$ | yes | Raw fragment size independent of group identity. Redundant with `max_component` for single-component matches, but distinct when a group has multiple components. |
+| per group | `n_spacer` | $N_G$ | int ≥ 0 | $n = \lvert\text{CH}_2\text{ linker atoms}\rvert$ | yes | Telomer CH₂ spacer length — the "m" in "m:n" fluorotelomer notation, e.g. 2 for 4:2 FTOH, 4 for 6:2 FTOH. Zero for all non-telomer groups. Encodes the linker chain length validated by the `linker_smarts` constraint; enables one feature to distinguish 2:1, 4:2, 6:2, and 8:2 telomers. |
+| per group | `ring_size` | $N_G$ | int ≥ 0 | $r = \min\{\lvert R\rvert : R \in \mathcal{R}(G),\, R \cap C \neq \emptyset\}$ | yes | Size of the smallest ring overlapping the matched component. Zero for acyclic chains; 5 for five-membered heterocycles (azoles, furans, oxazolines); 6 for benzene rings and cyclohexane derivatives. Only non-zero for cyclic and aryl component forms. |
 | per group | `branching` | $N_G$ | float [0, 1] | $\beta = d(G)\,/\,(\lvert V\rvert - 1)$; $\beta = 1$ for a linear path, $\to 0$ for star topology | yes | Topological linearity of the halogenated chain. Linear perfluoroalkyl chains score near 1; highly branched or cyclic structures score lower. Complementary to $\Omega$ in multi-metric presets. |
 | per group | `mean_eccentricity` | $N_G$ | float ≥ 0 | $\bar\epsilon = \tfrac{1}{\lvert V\rvert}\sum_{v \in V}\epsilon(v)$ | yes | Average topological reach per atom. Large for long linear chains, small for compact rings. Correlated with chain-length-driven persistence. |
 | per group | `median_eccentricity` | $N_G$ | float ≥ 0 | $\tilde\epsilon = \mathrm{median}_{v \in V}\,\epsilon(v)$ | yes | Robust version of mean eccentricity; less sensitive to a single terminal atom. Useful for structures with heterogeneous fragment lengths. |

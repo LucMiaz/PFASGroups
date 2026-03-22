@@ -9,7 +9,7 @@ Five-minute overview of the most common PFASGroups workflows.
 
    results = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
    arr, cols = results.to_array(), results.column_names()
-   print(arr.shape)   # (2, n_groups)
+   print(arr.shape)   # (2, 114) — 114 groups compiled by default for fluorine-only
 
 .. contents:: Contents
    :local:
@@ -117,6 +117,33 @@ column per group (fluorine only):
    # Preset combining binary + effective graph resistance ('best')
    arr_best, _ = results.to_array(preset='best'), results.column_names(preset='best')
 
+**n_spacer** — telomer CH\ :sub:`2` spacer length (the ``m`` in ``m:n`` notation):
+
+.. code-block:: python
+
+   # n_spacer is 0 for non-telomers; encodes the linker length for
+   # fluorotelomers (2 for 4:2 FTOH, 4 for 6:2 FTOH, etc.)
+   arr_ns = results.to_array(component_metrics=['n_spacer'])
+   # Non-zero entries only appear for telomers group columns
+
+**ring_size** — smallest ring containing the matched component:
+
+.. code-block:: python
+
+   # ring_size is 0 for acyclic groups; 5 for azoles/furans; 6 for benzene/cyclohexane
+   arr_rs = results.to_array(component_metrics=['ring_size'])
+
+**Combined embedding** with multiple metrics and molecule-wide descriptors:
+
+.. code-block:: python
+
+   arr_combined = results.to_array(
+       component_metrics=['binary', 'effective_graph_resistance',
+                          'n_spacer', 'ring_size'],
+       molecule_metrics=['n_components', 'max_size',
+                         'mean_branching', 'max_component_fraction'],
+   )
+
 .. note::
 
    For multi-halogen embeddings covering F, Cl, Br and I, see
@@ -179,7 +206,7 @@ Command-line usage
    # Generate fingerprints
    pfasgroups fingerprint input.csv --output fps.csv
 
-   # List all 116 group names
+   # List all 119 group names (114 compiled by default for fluorine-only)
    pfasgroups list-groups
 
 See :doc:`cli` for the full CLI reference.
