@@ -115,10 +115,23 @@ MOL_METRICS = [
 
 # PFASGroups embedding configurations: name → to_array kwargs
 PFG_CONFIGS = {
-    "binary":     dict(component_metrics=["binary"]),
-    "binary+mol": dict(component_metrics=["binary"], molecule_metrics=MOL_METRICS),
-    "EGR":        dict(component_metrics=["effective_graph_resistance"]),
-    "EGR+mol":    dict(component_metrics=["effective_graph_resistance"],
+    "binary":          dict(component_metrics=["binary"]),
+    "binary+mol":      dict(component_metrics=["binary"], molecule_metrics=MOL_METRICS),
+    "EGR":             dict(component_metrics=["effective_graph_resistance"]),
+    "EGR+mol":         dict(component_metrics=["effective_graph_resistance"],
+                            molecule_metrics=MOL_METRICS),
+    "EGR+branch+mol":  dict(component_metrics=["effective_graph_resistance", "branching"],
+                            molecule_metrics=MOL_METRICS),
+    "EGR+spacer+mol":  dict(component_metrics=["effective_graph_resistance", "n_spacer"],
+                            molecule_metrics=MOL_METRICS),
+    "EGR+ring+mol":    dict(component_metrics=["effective_graph_resistance", "ring_size"],
+                            molecule_metrics=MOL_METRICS),
+}
+
+# All-halogen (F+Cl+Br+I) configs: 4×n_groups columns instead of n_groups
+PFG_CONFIGS_4X = {
+    "EGR_4X":     dict(component_metrics=["effective_graph_resistance"]),
+    "EGR_4X+mol": dict(component_metrics=["effective_graph_resistance"],
                        molecule_metrics=MOL_METRICS),
 }
 
@@ -128,19 +141,30 @@ MODEL_COLORS = {
     "GradientBoosting":        "#FF5722",  # deep-orange
 }
 FSET_COLORS_A = {
-    "TxP_PFAS":       "#E91E63",  # pink
-    "PFG_binary":     "#CE93D8",  # light purple
-    "PFG_binary+mol": "#9C27B0",  # purple
-    "PFG_EGR":        "#80CBC4",  # light teal
-    "PFG_EGR+mol":    "#009688",  # teal
+    "TxP_PFAS":            "#E91E63",  # pink
+    "PFG_binary":          "#CE93D8",  # light purple
+    "PFG_binary+mol":      "#9C27B0",  # purple
+    "PFG_EGR":             "#80CBC4",  # light teal
+    "PFG_EGR+mol":         "#009688",  # teal
+    "PFG_EGR+branch+mol":  "#00BCD4",  # cyan (EGR + per-component branching)
+    "PFG_EGR+spacer+mol":  "#FF9800",  # orange (EGR + telomer n-spacer)
+    "PFG_EGR+ring+mol":    "#8BC34A",  # light-green (EGR + ring size)
+    "PFG_EGR_4X":          "#26C6DA",  # cyan-blue (all halogens, EGR only)
+    "PFG_EGR_4X+mol":      "#00838F",  # dark cyan (all halogens, EGR+mol)
 }
 FSET_COLORS_B = {
-    "ToxPrint+TxP_PFAS":  "#607D8B",  # blue-grey
-    "Morgan+PFG_binary":     "#CE93D8",  # light purple
-    "Morgan+PFG_binary+mol": "#9C27B0",  # purple
-    "Morgan+PFG_EGR":        "#80CBC4",  # light teal
-    "Morgan+PFG_EGR+mol":    "#009688",  # teal
-    "Morgan":                "#2196F3",  # blue
+    "ToxPrint+TxP_PFAS":        "#607D8B",  # blue-grey
+    "Morgan+PFG_binary":         "#CE93D8",  # light purple
+    "Morgan+PFG_binary+mol":     "#9C27B0",  # purple
+    "Morgan+PFG_EGR":            "#80CBC4",  # light teal
+    "Morgan+PFG_EGR+mol":        "#009688",  # teal
+    "Morgan+PFG_EGR+branch+mol": "#00BCD4",  # cyan
+    "Morgan+PFG_EGR+spacer+mol": "#FF9800",  # orange
+    "Morgan+PFG_EGR+ring+mol":   "#8BC34A",  # light-green
+    "Morgan+PFG_EGR_4X+mol":     "#00838F",  # dark cyan (all halogens)
+    "ToxPrint+PFG_EGR+mol":      "#78909C",  # lighter blue-grey
+    "ToxPrint+PFG_EGR_4X+mol":   "#37474F",  # darker blue-grey
+    "Morgan":                    "#2196F3",  # blue
 }
 
 # ---------------------------------------------------------------------------
@@ -934,12 +958,20 @@ def main() -> None:
 
     print("\nComputing / loading PFASGroups embeddings …")
     pfg = build_pfg_matrices(smiles_all)
-    # pfg keys: 'binary' (n,115), 'binary+mol' (n,125), 'EGR' (n,115), 'EGR+mol' (n,125)
+    # pfg keys: 'binary' (n,~115), 'binary+mol' (n,~125), 'EGR' (n,~115), 'EGR+mol' (n,~125)
+
+    print("\nComputing / loading all-halogen (F+Cl+Br+I) PFASGroups embeddings …")
+    pfg_4x = build_pfg_matrices(smiles_all, configs=PFG_CONFIGS_4X, halogens=None)
+    # pfg_4x keys: 'EGR_4X' (n, ~460), 'EGR_4X+mol' (n, ~470)
 
     print("\nGenerating Morgan fingerprints …")
     X_morgan_all = build_morgan(smiles_all)                  # (9014, 512)
 
-    X_toxprint_txpp_all = np.hstack([X_toxprint_all, X_txpp_all]).astype(np.float32)  # (9014, 858)
+    X_toxprint_txpp_all  = np.hstack([X_toxprint_all, X_txpp_all]).astype(np.float32)     # ToxPrint+TxP_PFAS
+    X_toxprint_pfgegr_all   = np.hstack([X_toxprint_all,
+                                         pfg["EGR+mol"].astype(np.float32)])               # ToxPrint+PFG_EGR+mol
+    X_toxprint_pfgegr4x_all = np.hstack([X_toxprint_all,
+                                         pfg_4x["EGR_4X+mol"].astype(np.float32)])        # ToxPrint+PFG_EGR_4X+mol
 
     # ─────────────────────────────────────────────────────────────────────
     # EXPERIMENT A  ─  CF-containing chemicals (non-zero TxP_PFAS rows)
@@ -949,8 +981,9 @@ def main() -> None:
     print(f"  CF-containing (TxP_PFAS non-zero): {int(cf_mask.sum())} / {len(cf_mask)}")
 
     X_txpp_cf      = X_txpp_all[cf_mask].astype(np.float32)
-    pfg_cf = {name: arr[cf_mask].astype(np.float32) for name, arr in pfg.items()}
-    tox_cf = tox[cf_mask].reset_index(drop=True)
+    pfg_cf   = {name: arr[cf_mask].astype(np.float32) for name, arr in pfg.items()}
+    pfg_4x_cf= {name: arr[cf_mask].astype(np.float32) for name, arr in pfg_4x.items()}
+    tox_cf   = tox[cf_mask].reset_index(drop=True)
 
     cv_small = RepeatedStratifiedKFold(
         n_splits=OUTER_SPLITS_A, n_repeats=OUTER_REPEATS, random_state=RANDOM_STATE
@@ -958,11 +991,16 @@ def main() -> None:
 
     # Build Exp A feature-set list
     fsets_a: list[tuple[str, np.ndarray]] = [
-        ("TxP_PFAS",       X_txpp_cf),
-        ("PFG_binary",     pfg_cf["binary"]),
-        ("PFG_binary+mol", pfg_cf["binary+mol"]),
-        ("PFG_EGR",        pfg_cf["EGR"]),
-        ("PFG_EGR+mol",    pfg_cf["EGR+mol"]),
+        ("TxP_PFAS",            X_txpp_cf),
+        ("PFG_binary",          pfg_cf["binary"]),
+        ("PFG_binary+mol",      pfg_cf["binary+mol"]),
+        ("PFG_EGR",             pfg_cf["EGR"]),
+        ("PFG_EGR+mol",         pfg_cf["EGR+mol"]),
+        ("PFG_EGR+branch+mol",  pfg_cf["EGR+branch+mol"]),
+        ("PFG_EGR+spacer+mol",  pfg_cf["EGR+spacer+mol"]),
+        ("PFG_EGR+ring+mol",    pfg_cf["EGR+ring+mol"]),
+        ("PFG_EGR_4X",          pfg_4x_cf["EGR_4X"]),
+        ("PFG_EGR_4X+mol",      pfg_4x_cf["EGR_4X+mol"]),
     ]
 
     all_rows: list[dict] = []
@@ -991,12 +1029,18 @@ def main() -> None:
     # Build Exp B feature-set list
     X_morgan_f32 = X_morgan_all.astype(np.float32)
     fsets_b: list[tuple[str, np.ndarray]] = [
-        ("ToxPrint+TxP_PFAS",  X_toxprint_txpp_all),
-        ("Morgan+PFG_binary",     np.hstack([X_morgan_f32, pfg["binary"].astype(np.float32)])),
-        ("Morgan+PFG_binary+mol", np.hstack([X_morgan_f32, pfg["binary+mol"].astype(np.float32)])),
-        ("Morgan+PFG_EGR",        np.hstack([X_morgan_f32, pfg["EGR"].astype(np.float32)])),
-        ("Morgan+PFG_EGR+mol",    np.hstack([X_morgan_f32, pfg["EGR+mol"].astype(np.float32)])),
-        ("Morgan",              X_morgan_f32),
+        ("ToxPrint+TxP_PFAS",        X_toxprint_txpp_all),
+        ("Morgan+PFG_binary",         np.hstack([X_morgan_f32, pfg["binary"].astype(np.float32)])),
+        ("Morgan+PFG_binary+mol",     np.hstack([X_morgan_f32, pfg["binary+mol"].astype(np.float32)])),
+        ("Morgan+PFG_EGR",            np.hstack([X_morgan_f32, pfg["EGR"].astype(np.float32)])),
+        ("Morgan+PFG_EGR+mol",        np.hstack([X_morgan_f32, pfg["EGR+mol"].astype(np.float32)])),
+        ("Morgan+PFG_EGR+branch+mol", np.hstack([X_morgan_f32, pfg["EGR+branch+mol"].astype(np.float32)])),
+        ("Morgan+PFG_EGR+spacer+mol", np.hstack([X_morgan_f32, pfg["EGR+spacer+mol"].astype(np.float32)])),
+        ("Morgan+PFG_EGR+ring+mol",   np.hstack([X_morgan_f32, pfg["EGR+ring+mol"].astype(np.float32)])),
+        ("Morgan+PFG_EGR_4X+mol",     np.hstack([X_morgan_f32, pfg_4x["EGR_4X+mol"].astype(np.float32)])),
+        ("ToxPrint+PFG_EGR+mol",      X_toxprint_pfgegr_all),
+        ("ToxPrint+PFG_EGR_4X+mol",   X_toxprint_pfgegr4x_all),
+        ("Morgan",                    X_morgan_f32),
     ]
 
     for ep in LABEL_COLS:

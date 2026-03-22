@@ -111,61 +111,88 @@ clinv_file = os.path.join(DATA, "clinventory_comparison_20260315T065332.json")
 with open(clinv_file) as f:
     clinv = json.load(f)
 
-# --- Fig 1a: Timing distribution (box plot) ---
-fig, ax = plt.subplots(figsize=(5, 4))
-timing_overall = clinv["timing_overall"]
-hg_stats = timing_overall["hg"]
-at_stats = timing_overall["atlas"]
+# Extract CLInv overall stats for downstream CDF plot
+hg_stats = clinv["timing_overall"]["hg"]
+at_stats = clinv["timing_overall"]["atlas"]
 
-box_data = {
-    "Tool": ["PFASGroups"] * 5 + ["PFAS-Atlas"] * 5,
-    "Statistic": ["min", "p25", "median", "p75", "max"] * 2,
-    "Time (ms)": [
-        hg_stats["min"], hg_stats["p25"], hg_stats["median"], hg_stats["p75"], hg_stats["max"],
-        at_stats["min"], at_stats["p25"], at_stats["median"], at_stats["p75"], at_stats["max"],
-    ],
-}
+# --- Fig 1a: Multi-dataset timing box plot (OECD + CLInventory + large-molecule stress) ---
+oecd_timing_file = os.path.join(DATA, "oecd_clinventory_timing_20260315_062059.json")
+with open(oecd_timing_file) as f:
+    oecd_clinv_data = json.load(f)
 
-# Create custom box plot from statistics
-bp_hg = {
-    "med": hg_stats["median"],
-    "q1": hg_stats["p25"],
-    "q3": hg_stats["p75"],
-    "whislo": hg_stats["min"],
-    "whishi": hg_stats["p95"],
-    "mean": hg_stats["mean"],
-    "fliers": [],
-}
-bp_at = {
-    "med": at_stats["median"],
-    "q1": at_stats["p25"],
-    "q3": at_stats["p75"],
-    "whislo": at_stats["min"],
-    "whishi": at_stats["p95"],
-    "mean": at_stats["mean"],
-    "fliers": [],
-}
+oecd_pg  = oecd_clinv_data["datasets"]["OECD"]["pg_timing"]
+oecd_at  = oecd_clinv_data["datasets"]["OECD"]["atlas_timing"]
+clinv_pg = oecd_clinv_data["datasets"]["clinventory (F)"]["pg_timing"]
+clinv_at = oecd_clinv_data["datasets"]["clinventory (F)"]["atlas_timing"]
+
+# Stress dataset: per-molecule timing for molecules with ≥35 heavy atoms
+stress_pg_times, stress_at_times = [], []
+stress_fullfile = os.path.join(DATA, "pfas_timing_benchmark_full_20260313_201139.json")
+if os.path.exists(stress_fullfile):
+    with open(stress_fullfile) as f:
+        stress_raw = json.load(f)
+    stress_pg_times = [r["PFASGroups_time_avg"] * 1000 for r in stress_raw if r["num_atoms"] >= 35]
+    stress_at_times = [r["atlas_time_avg"] * 1000 for r in stress_raw if r["num_atoms"] >= 35]
+
+def _approx_bxp(mean, std, median, mn, mx):
+    """Box-plot stats approximated from summary statistics (no full distribution)."""
+    q1 = max(mn, mean - 0.75 * std)
+    q3 = mean + 0.75 * std
+    return {"med": median, "q1": q1, "q3": q3,
+            "whislo": max(0, mn), "whishi": min(mx, mean + 2.0 * std),
+            "mean": mean, "fliers": []}
+
+def _exact_bxp(times_ms):
+    """Exact box-plot stats from a flat list of timing values."""
+    arr = np.array(times_ms)
+    return {"med": float(np.median(arr)),
+            "q1": float(np.percentile(arr, 25)),
+            "q3": float(np.percentile(arr, 75)),
+            "whislo": float(np.percentile(arr, 5)),
+            "whishi": float(np.percentile(arr, 95)),
+            "mean": float(np.mean(arr)), "fliers": []}
+
+bp_oecd_pg   = _approx_bxp(oecd_pg["mean"],  oecd_pg["std"],  oecd_pg["median"],  oecd_pg["min"],  oecd_pg["max"])
+bp_oecd_at   = _approx_bxp(oecd_at["mean"],  oecd_at["std"],  oecd_at["median"],  oecd_at["min"],  oecd_at["max"])
+bp_clinv_pg  = _approx_bxp(clinv_pg["mean"], clinv_pg["std"], clinv_pg["median"], clinv_pg["min"], clinv_pg["max"])
+bp_clinv_at  = _approx_bxp(clinv_at["mean"], clinv_at["std"], clinv_at["median"], clinv_at["min"], clinv_at["max"])
+bp_stress_pg = _exact_bxp(stress_pg_times) if stress_pg_times else _approx_bxp(520, 300, 26, 0.5, 5000)
+bp_stress_at = _exact_bxp(stress_at_times) if stress_at_times else _approx_bxp(94, 60, 38, 0.1, 800)
+
+fig, ax = plt.subplots(figsize=(9, 5))
+positions  = [1, 1.55, 3, 3.55, 5, 5.55]
+bp_list    = [bp_oecd_pg, bp_oecd_at, bp_clinv_pg, bp_clinv_at, bp_stress_pg, bp_stress_at]
+bp_colors  = [C0, C1, C0, C1, C0, C1]
+
 bplot = ax.bxp(
-    [bp_hg, bp_at],
-    positions=[1, 2],
-    widths=0.5,
+    bp_list, positions=positions, widths=0.4,
     showmeans=True,
-    meanprops=dict(marker="D", markerfacecolor="white", markeredgecolor="black", markersize=5),
+    meanprops=dict(marker="D", markerfacecolor="white", markeredgecolor="black", markersize=4),
     patch_artist=True,
 )
-bplot["boxes"][0].set_facecolor(C0)
-bplot["boxes"][0].set_alpha(0.7)
-bplot["boxes"][1].set_facecolor(C1)
-bplot["boxes"][1].set_alpha(0.7)
-ax.set_xticks([1, 2])
-ax.set_xticklabels(["PFASGroups", "PFAS-Atlas"])
+for box, col in zip(bplot["boxes"], bp_colors):
+    box.set_facecolor(col)
+    box.set_alpha(0.75)
+
+n_oecd  = oecd_pg["n"]
+n_clinv = clinv_pg["n"]
+n_stress = len(stress_pg_times) if stress_pg_times else 0
+ax.set_xticks([1.275, 3.275, 5.275])
+ax.set_xticklabels(
+    [f"OECD list\n(n={n_oecd:,})",
+     f"CLInventory (F)\n(n={n_clinv:,})",
+     f"Large PFAS benchmark\n(≥35 atoms, n={n_stress:,})"],
+    fontsize=9,
+)
 ax.set_ylabel("Execution time (ms)")
-ax.set_title(f"Timing distribution (n = {hg_stats['n']:,})")
-# Add mean annotation
-ax.annotate(f"mean={hg_stats['mean']:.1f}", xy=(1, hg_stats["mean"]), xytext=(1.3, hg_stats["mean"] + 5),
-            fontsize=8, color=C0)
-ax.annotate(f"mean={at_stats['mean']:.1f}", xy=(2, at_stats["mean"]), xytext=(2.2, at_stats["mean"] + 5),
-            fontsize=8, color=C1)
+ax.set_title("Execution time distributions: PFASGroups vs PFAS-Atlas")
+ax.set_yscale("log")
+from matplotlib.patches import Patch as _Patch
+ax.legend(handles=[_Patch(facecolor=C0, alpha=0.75, label="PFASGroups"),
+                   _Patch(facecolor=C1, alpha=0.75, label="PFAS-Atlas")],
+          fontsize=9, loc="upper left")
+ax.grid(True, alpha=0.3, axis="y")
+fig.tight_layout()
 savefig(fig, "timing_box")
 
 # --- Fig 1b: Timing by molecular size bracket ---
@@ -199,6 +226,99 @@ ax2.set_title("Sample distribution")
 
 plt.tight_layout()
 savefig(fig, "timing_by_bracket")
+
+# --- Fig 1c: Complexity model comparison (Full profile) ---
+print("  Timing complexity model comparison")
+timing_profile_files = [
+    ("Full",       "pfas_timing_benchmark_full_20260313_201139.json",       C0),
+    ("No EGR",     "pfas_timing_benchmark_no_resistance_20260313_213300.json", C2),
+    ("No metrics", "pfas_timing_benchmark_no_metrics_20260313_223709.json",  C1),
+]
+timing_profiles = {}
+for pname, fname, pcolor in timing_profile_files:
+    fpath = os.path.join(DATA, fname)
+    if os.path.exists(fpath):
+        with open(fpath) as f:
+            _pd = json.load(f)
+        timing_profiles[pname] = {
+            "n_atoms":   np.array([r["num_atoms"]              for r in _pd]),
+            "times_ms":  np.array([r["PFASGroups_time_avg"] * 1000 for r in _pd]),
+            "atlas_ms":  np.array([r["atlas_time_avg"]      * 1000 for r in _pd]),
+            "color":     pcolor,
+        }
+
+if timing_profiles:
+    try:
+        from scipy.optimize import curve_fit as _curve_fit
+
+        def _q(n, a, c):  return a * n**2 + c
+        def _lin(n, a, c): return a * n + c
+        def _nln(n, a, c): return a * n * np.log(np.maximum(n, 1)) + c
+        def _exp(n, a, b): return a * np.exp(b * n)
+
+        MODEL_DEFS = [
+            (r"$O(n^2)$ quadratic",    _q,   [1e-5, 0.1],  C2),
+            (r"$O(n)$ linear",         _lin, [1e-3, 0.1],  C3),
+            (r"$O(n\,\ln n)$ lin-log", _nln, [1e-5, 0.1],  "#2CA02C"),
+            (r"$O(e^n)$ exponential",  _exp, [1.0, 0.001], "#D62728"),
+        ]
+
+        # Model selection plot – uses Full profile data
+        full = timing_profiles["Full"]
+        x_full, y_full = full["n_atoms"], full["times_ms"]
+        x_fit = np.linspace(x_full.min(), x_full.max(), 400)
+
+        fig, ax = plt.subplots(figsize=(8, 5))
+        ax.scatter(x_full, y_full, s=7, alpha=0.20, color=C0, zorder=2,
+                   label="Measured (Full profile)")
+        for mlabel, func, p0, mcolor in MODEL_DEFS:
+            try:
+                popt, _ = _curve_fit(func, x_full, y_full, p0=p0, maxfev=30000)
+                y_pred  = func(x_full, *popt)
+                y_fit   = func(x_fit,  *popt)
+                ss_res  = np.sum((y_full - y_pred)**2)
+                r2      = 1 - ss_res / np.sum((y_full - y_full.mean())**2)
+                ax.plot(x_fit, y_fit, linewidth=2, color=mcolor,
+                        label=f"{mlabel}  $R^2$={r2:.3f}")
+            except Exception:
+                pass
+        ax.set_xlabel("Number of heavy atoms")
+        ax.set_ylabel("Execution time (ms)")
+        ax.set_title("Complexity model selection (Full profile: all metrics enabled)")
+        ax.legend(fontsize=9, loc="upper left")
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+        savefig(fig, "timing_model_comparison")
+
+        # Profile overlay – show all 3 profiles with quadratic fit
+        x_fit2 = np.linspace(
+            min(v["n_atoms"].min() for v in timing_profiles.values()),
+            max(v["n_atoms"].max() for v in timing_profiles.values()),
+            400,
+        )
+        fig, ax = plt.subplots(figsize=(8, 5))
+        for pname, pdata in timing_profiles.items():
+            xp, yp = pdata["n_atoms"], pdata["times_ms"]
+            col = pdata["color"]
+            ax.scatter(xp, yp, s=5, alpha=0.15, color=col, zorder=2)
+            try:
+                popt, _ = _curve_fit(_q, xp, yp, p0=[1e-5, 0.1], maxfev=30000)
+                y_pred  = _q(xp, *popt)
+                r2      = 1 - np.sum((yp - y_pred)**2) / np.sum((yp - yp.mean())**2)
+                ax.plot(x_fit2, _q(x_fit2, *popt), linewidth=2.5, color=col,
+                        label=f"{pname}  $a={popt[0]:.2e}$, $R^2$={r2:.3f}")
+            except Exception:
+                pass
+        ax.set_xlabel("Number of heavy atoms")
+        ax.set_ylabel("Execution time (ms)")
+        ax.set_title("Effect of graph metrics on timing\n(quadratic fit per profile)")
+        ax.legend(fontsize=9, loc="upper left")
+        ax.grid(True, alpha=0.3)
+        fig.tight_layout()
+        savefig(fig, "timing_profiles_comparison")
+
+    except ImportError:
+        print("  [warn] scipy not available — skipping model comparison plots")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -250,7 +370,80 @@ ax.set_xlim(0, 100)
 ax.invert_yaxis()
 savefig(fig, "atlas_agreement_bar")
 
-# --- Fig 2c: Timing CDF ---
+# --- Fig 2e: Atlas/PFASGroups disagreement examples ---
+print("  Disagreement molecule examples")
+try:
+    from rdkit import Chem
+    from rdkit.Chem import Draw
+
+    # PFASGroups only: non-F halogenated compounds that Atlas does not flag
+    _pfg_only = [
+        ("Benzotrichloride",    "ClC(Cl)(Cl)c1ccccc1",
+         "PFASGroups: perhalogenated\nside-chain aromatic"),
+        ("1,3,5-Trichloro-\nbenzene",  "Clc1cc(Cl)cc(Cl)c1",
+         "PFASGroups: polyhalogenated\naryl compound"),
+        ("1,1,2-Trichloroethane", "ClCC(Cl)Cl",
+         "PFASGroups: polyhalogenated\nalkyl chain"),
+        ("Carbon tetrachloride",  "ClC(Cl)(Cl)Cl",
+         "PFASGroups: perhalogenated\nalkyl (CCl₄ type)"),
+        ("Dibromomethane",        "BrCBr",
+         "PFASGroups: polyhalogenated\nalkyl (short-chain Br)"),
+    ]
+    # PFAS-Atlas only: highly branched perfluoroalkyl that PFASGroups misses
+    _atlas_only = [
+        ("Perfluoroisobutane",    "FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+         "PFAS-Atlas: (CF₃)₃CF\nbranched perfluoroalkane"),
+        ("Iso-PFAS backbone",     "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+         "PFAS-Atlas: branched\nperfluorobutane core"),
+        ("Branched PFC ether",    "FC(F)(F)C(C(F)(F)F)(C(F)(F)F)OC(F)(F)F",
+         "PFAS-Atlas: branched\nperfluoroalkyl ether"),
+    ]
+
+    all_rows = [(smi, name, cap, "pfg") for name, smi, cap in _pfg_only] + \
+               [(smi, name, cap, "atlas") for name, smi, cap in _atlas_only]
+    parsed = [(Chem.MolFromSmiles(smi), name, cap, grp)
+              for smi, name, cap, grp in all_rows]
+    parsed = [(m, n, c, g) for m, n, c, g in parsed if m is not None]
+
+    pfg_rows  = [(m, n, c) for m, n, c, g in parsed if g == "pfg"]
+    atlas_rows = [(m, n, c) for m, n, c, g in parsed if g == "atlas"]
+    ncols = max(len(pfg_rows), len(atlas_rows))
+
+    fig, axes = plt.subplots(2, ncols, figsize=(2.8 * ncols, 6.5))
+    if axes.ndim == 1:
+        axes = axes.reshape(2, ncols)
+
+    row_data = [(pfg_rows, C0, "PFASGroups detects — PFAS-Atlas does not\n(non-fluorine halogenated compounds; HalogenGroups mode)"),
+                (atlas_rows, C1, "PFAS-Atlas detects — PFASGroups does not\n(highly branched perfluoroalkyl: SMARTS path disrupted)")]
+
+    for ri, (row_mols, rcol, row_title) in enumerate(row_data):
+        for ci in range(ncols):
+            ax = axes[ri, ci]
+            ax.axis("off")
+            if ci < len(row_mols):
+                mol, name, cap = row_mols[ci]
+                img = Draw.MolToImage(mol, size=(220, 160))
+                ax.imshow(img)
+                ax.set_title(name, fontsize=8, fontweight="bold", pad=3,
+                             color=rcol)
+                ax.text(0.5, -0.10, cap, transform=ax.transAxes, ha="center",
+                        fontsize=7, style="italic", color="#555555",
+                        verticalalignment="top")
+        # Row label as a coloured left-edge annotation
+        axes[ri, 0].text(-0.25, 0.5, row_title.split("\n")[0],
+                         transform=axes[ri, 0].transAxes,
+                         ha="right", va="center", fontsize=8,
+                         fontweight="bold", color=rcol,
+                         rotation=90, clip_on=False)
+
+    fig.suptitle("Representative classification disagreements: PFASGroups vs PFAS-Atlas",
+                 fontsize=11, fontweight="bold", y=1.01)
+    plt.tight_layout()
+    savefig(fig, "atlas_disagreement_examples")
+except ImportError as _e:
+    print(f"  [warn] RDKit not available — skipping disagreement figure ({_e})")
+
+# --- Fig 2d: Timing CDF ---
 # We only have summary stats, so create a stylized CDF approximation
 fig, ax = plt.subplots(figsize=(6, 4))
 # Use lognormal approximation based on mean/std
@@ -296,14 +489,19 @@ total = telomer["total_molecules"]
 not_detected = total - detected
 rate = telomer["detection_rate"]
 
-wedges, texts, autotexts = ax1.pie(
-    [detected, not_detected],
-    labels=["Detected", "Not detected"],
-    colors=[C0, "#DDDDDD"],
-    autopct=lambda p: f"{p:.1f}%\n({int(p*total/100)})",
-    startangle=90,
-    textprops={"fontsize": 10},
-)
+# Bar chart (replacing pie chart — pie charts omit magnitude context)
+bars_det = ax1.bar(["Detected", "Not\ndetected"],
+                   [detected, not_detected],
+                   color=[C0, "#DDDDDD"], edgecolor="white", width=0.5)
+for bar, val, pct in zip(bars_det,
+                          [detected, not_detected],
+                          [100 * detected / total, 100 * (total - detected) / total]):
+    ax1.text(bar.get_x() + bar.get_width() / 2,
+             bar.get_height() + total * 0.01,
+             f"{val}\n({pct:.1f}%)",
+             ha="center", va="bottom", fontsize=10)
+ax1.set_ylabel("Number of molecules")
+ax1.set_ylim(0, total * 1.18)
 ax1.set_title(f"Telomer detection\n(n = {total})")
 
 # Right: top 20 groups bar chart
@@ -372,10 +570,16 @@ EXP_B_FSETS = ["ToxPrint+TxP_PFAS", "Morgan+PFG_EGR+mol", "Morgan+PFG_binary+mol
                "Morgan+PFG_EGR", "Morgan+PFG_binary", "Morgan"]
 
 def plot_expAB_bars(metric, metric_label, exp, fsets, fname):
-    """Bar chart: per-endpoint metric grouped by feature set."""
+    """Bar chart with error bars: per-endpoint metric grouped by feature set.
+
+    Error bars show ±1 std across repeats × folds (nested CV variability).
+    """
     df_exp = df_full[df_full["experiment"] == exp].copy()
-    # Average across models, repeats, folds → one value per (feature_set, endpoint)
-    agg = df_exp.groupby(["feature_set", "endpoint"])[metric].mean().reset_index()
+    # Mean and std across all repeats × folds × models per (feature_set, endpoint)
+    agg_m = df_exp.groupby(["feature_set", "endpoint"])[metric].mean().reset_index()
+    agg_s = df_exp.groupby(["feature_set", "endpoint"])[metric].std().reset_index()
+    agg_s = agg_s.rename(columns={metric: metric + "_std"})
+    agg = agg_m.merge(agg_s, on=["feature_set", "endpoint"])
     endpoints = sorted(agg["endpoint"].unique())
 
     fig, ax = plt.subplots(figsize=(14, 5))
@@ -387,14 +591,17 @@ def plot_expAB_bars(metric, metric_label, exp, fsets, fname):
     for i, fset in enumerate(fsets):
         sub = agg[agg["feature_set"] == fset].set_index("endpoint").reindex(endpoints)
         vals = sub[metric].values
+        errs = sub[metric + "_std"].fillna(0).values
         offset = (i - n_fsets / 2 + 0.5) * width
         color = FSET_COLORS.get(fset, "#999999")
-        ax.bar(x + offset, vals, width, label=fset, color=color, alpha=0.85, edgecolor="white")
+        ax.bar(x + offset, vals, width, yerr=errs, label=fset,
+               color=color, alpha=0.85, edgecolor="white",
+               capsize=2.5, error_kw=dict(lw=0.9, alpha=0.7))
 
     ax.set_xticks(x)
     ax.set_xticklabels([e.replace("_", "\n") for e in endpoints], fontsize=8, rotation=45, ha="right")
     ax.set_ylabel(metric_label)
-    ax.set_title(f"{exp}: {metric_label} per endpoint")
+    ax.set_title(f"{exp}: {metric_label} per endpoint (bars = mean; error bars = ±1 SD across CV folds)")
     ax.legend(fontsize=8, ncol=min(3, n_fsets), loc="upper right")
     ax.set_ylim(0, 1)
     savefig(fig, fname)

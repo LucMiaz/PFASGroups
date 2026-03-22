@@ -419,6 +419,7 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+- **Version 3.2.1**: Added n-spacer metric for telomers and ring size for aryl and cyclic groups. These can be used in the embeddings.
 
 - **Version 3.2.0**: Use of BDE for computing graph resistance.
 

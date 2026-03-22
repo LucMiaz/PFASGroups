@@ -763,6 +763,35 @@ class ComponentsSolver:
         # Excluded: O, F, and other heteroatoms that may appear in telomer linker paths.
         component_fraction = component_carbons / self.total_carbons if self.total_carbons > 0 else 0.0
 
+        # --- n_spacer (telomer CH₂ linker chain length) -------------------------
+        # Only meaningful for groups that have a linker_smarts (telomers).
+        # Formula: the augmented component includes the orig pfluorinated component
+        # PLUS the CH₂ linker atoms PLUS the SMARTS-match atom (the functional group
+        # C adjacent to the linker).  So n_spacer = |augmented - orig_comp| + 1.
+        # For n=1: the SMARTS-match atom IS already in orig_comp, so ΔΔ=0 → spacer=1.
+        n_spacer = 0
+        if pfas_group is not None and getattr(pfas_group, 'linker_smarts', None) is not None and comp_id is not None:
+            max_dist_for_spacer = getattr(pfas_group, 'max_dist_from_comp', 0)
+            orig_idx = self.component_to_original_index.get(
+                (smarts_type, max_dist_for_spacer, comp_id), comp_id
+            )
+            if smarts_type in self.components and orig_idx < len(self.components[smarts_type]):
+                orig_comp_set = set(self.components[smarts_type][orig_idx])
+                n_spacer = len(set(component) - orig_comp_set) + 1
+
+        # --- ring_size (smallest ring overlapping with component) ---------------
+        ring_size = 0
+        component_ring_atoms = [
+            idx for idx in component if self.mol.GetAtomWithIdx(idx).IsInRing()
+        ]
+        if component_ring_atoms:
+            ring_info = self.mol.GetRingInfo()
+            comp_set = set(component)
+            for ring in sorted(ring_info.AtomRings(), key=len):
+                if comp_set & set(ring):
+                    ring_size = len(ring)
+                    break
+
         result = {
             'component': sorted(list(component)),
             'size': len(component),
@@ -770,6 +799,9 @@ class ComponentsSolver:
             'smarts_matches': sorted(list(smarts_matches)) if smarts_matches is not None else None,  # Store for union calculation
             'smarts_extra_atoms': smarts_extra_atoms,  # Extra carbons from functional group
             'SMARTS': smarts_type,
+            # Telomer spacer and cyclic ring metrics
+            'n_spacer': n_spacer,
+            'ring_size': ring_size,
             # Basic metrics
             'branching': basic_metrics['branching'],
             'branching_ratio_to_molecule': basic_metrics['branching'] / self.total_branching if self.total_branching > 0 else 0.0,

@@ -59,6 +59,8 @@ _GRAPH_METRICS = {
     'size',
     'min_resistance_dist_to_center', 'max_resistance_dist_to_periphery',
     'min_resistance_dist_to_barycenter',
+    'n_spacer',    # telomer CH₂ linker chain length (0 for non-telomers)
+    'ring_size',   # smallest ring overlapping the component (0 for acyclic groups)
 }
 
 # Unified set of all valid component_metrics entries.

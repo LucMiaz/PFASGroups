@@ -9011,5 +9011,156 @@
         "constraints": {},
         "compute": false,
         "re_search": "telomer"
+    },
+    {
+        "id": 118,
+        "name": "sulfonyl halide",
+        "alias": "SO2X",
+        "componentSmarts": null,
+        "max_dist_from_comp": 0,
+        "linker_smarts": null,
+        "constraints": {
+            "gte": {
+                "S": 1
+            }
+        },
+        "smarts": {
+            "[#6$([#6][#16](=O)(=O)[F,Cl,Br,I])]": 1
+        },
+        "test": {
+            "category": "generic",
+            "generate": {
+                "smiles": "S(F)(=O)=O",
+                "mode": "attach",
+                "is_telomer": false
+            },
+            "F": {
+                "examples": [
+                    "FC(F)(F)S(F)(=O)=O",
+                    "FC(F)(F)C(F)(F)S(F)(=O)=O",
+                    "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)S(F)(=O)=O",
+                    "FC(F)(F)S(Cl)(=O)=O",
+                    "FC(F)(F)C(F)(F)S(Br)(=O)=O"
+                ],
+                "counter-examples": [
+                    "FC(F)(F)S(=O)(=O)O",
+                    "FC(F)(F)SF",
+                    "CCCCCS(F)(=O)=O",
+                    "CCCCCC"
+                ]
+            },
+            "Cl": {
+                "examples": [
+                    "ClC(Cl)(Cl)S(Cl)(=O)=O",
+                    "ClC(Cl)(Cl)C(Cl)(Cl)S(Cl)(=O)=O",
+                    "ClC(Cl)(Cl)S(F)(=O)=O"
+                ],
+                "counter-examples": [
+                    "ClC(Cl)(Cl)S(=O)(=O)O",
+                    "ClC(Cl)(Cl)SCl",
+                    "CCCCCS(Cl)(=O)=O"
+                ]
+            },
+            "Br": {
+                "examples": [
+                    "BrC(Br)(Br)S(Br)(=O)=O",
+                    "BrC(Br)(Br)C(Br)(Br)S(Br)(=O)=O",
+                    "BrC(Br)(Br)S(F)(=O)=O"
+                ],
+                "counter-examples": [
+                    "BrC(Br)(Br)S(=O)(=O)O",
+                    "BrC(Br)(Br)SBr",
+                    "CCCCCS(Br)(=O)=O"
+                ]
+            },
+            "I": {
+                "examples": [
+                    "IC(I)(I)S(I)(=O)=O",
+                    "IC(I)(I)C(I)(I)S(I)(=O)=O",
+                    "IC(I)(I)S(F)(=O)=O"
+                ],
+                "counter-examples": [
+                    "IC(I)(I)S(=O)(=O)O",
+                    "IC(I)(I)SI",
+                    "CCCCCS(I)(=O)=O"
+                ]
+            }
+        }
+    },
+    {
+        "id": 119,
+        "name": "sulfenyl halide",
+        "alias": "SX",
+        "componentSmarts": null,
+        "max_dist_from_comp": 0,
+        "linker_smarts": null,
+        "constraints": {
+            "gte": {
+                "S": 1
+            }
+        },
+        "smarts": {
+            "[#6$([#6][#16X2][F,Cl,Br,I])]": 1
+        },
+        "test": {
+            "category": "generic",
+            "generate": {
+                "smiles": "SF",
+                "mode": "attach",
+                "is_telomer": false
+            },
+            "F": {
+                "examples": [
+                    "FC(F)(F)SF",
+                    "FC(F)(F)C(F)(F)SF",
+                    "FC(F)(F)C(F)(F)C(F)(F)SF",
+                    "FC(F)(F)SCl",
+                    "FC(F)(F)SBr"
+                ],
+                "counter-examples": [
+                    "FC(F)(F)S(F)(=O)=O",
+                    "FC(F)(F)S(=O)(=O)O",
+                    "FC(F)(F)S(=O)O",
+                    "CCCCCCSF",
+                    "CCCCCC"
+                ]
+            },
+            "Cl": {
+                "examples": [
+                    "ClC(Cl)(Cl)SCl",
+                    "ClC(Cl)(Cl)C(Cl)(Cl)SCl",
+                    "ClC(Cl)(Cl)SF"
+                ],
+                "counter-examples": [
+                    "ClC(Cl)(Cl)S(Cl)(=O)=O",
+                    "ClC(Cl)(Cl)S(=O)(=O)O",
+                    "CCC(Cl)(Cl)SCl"
+                ]
+            },
+            "Br": {
+                "examples": [
+                    "BrC(Br)(Br)SBr",
+                    "BrC(Br)(Br)C(Br)(Br)SBr",
+                    "BrC(Br)(Br)SF"
+                ],
+                "counter-examples": [
+                    "BrC(Br)(Br)S(Br)(=O)=O",
+                    "BrC(Br)(Br)S(=O)(=O)O",
+                    "CCC(Br)(Br)SBr"
+                ]
+            },
+            "I": {
+                "examples": [
+                    "IC(I)(I)SI",
+                    "IC(I)(I)C(I)(I)SI",
+                    "IC(I)(I)SF"
+                ],
+                "counter-examples": [
+                    "IC(I)(I)S(I)(=O)=O",
+                    "IC(I)(I)S(=O)(=O)O",
+                    "CCC(I)(I)SI"
+                ]
+            }
+        }
     }
 ]
