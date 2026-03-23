@@ -551,34 +551,37 @@ df_summ = pd.read_csv(summary_csv)
 
 # Colour mapping for feature sets
 FSET_COLORS = {
-    "TxP_PFAS":              TXP_PFAS_COLOR,
-    "PFG_binary":            PFG_BINARY,
-    "PFG_binary+mol":        PFG_BINARY_MOL,
-    "PFG_EGR":               PFG_EGR,
-    "PFG_EGR+mol":           PFG_EGR_MOL,
-    "ToxPrint+TxP_PFAS":     TXP_PFAS_COLOR,
-    "Morgan+PFG_binary":     PFG_BINARY,
-    "Morgan+PFG_binary+mol": PFG_BINARY_MOL,
-    "Morgan+PFG_EGR":        PFG_EGR,
-    "Morgan+PFG_EGR+mol":    PFG_EGR_MOL,
-    "Morgan":                MORGAN_COLOR,
+    "TxP_PFAS":                  TXP_PFAS_COLOR,
+    "PFG_binary":                PFG_BINARY,
+    "PFG_binary+mol":            PFG_BINARY_MOL,
+    "PFG_EGR":                   PFG_EGR,
+    "PFG_EGR+mol":               PFG_EGR_MOL,
+    "ToxPrint+TxP_PFAS":         TXP_PFAS_COLOR,
+    "ToxPrint+PFG_EGR+mol":      PFG_EGR_MOL,
+    "Morgan+PFG_binary":         PFG_BINARY,
+    "Morgan+PFG_binary+mol":     PFG_BINARY_MOL,
+    "Morgan+PFG_EGR":            PFG_EGR,
+    "Morgan+PFG_EGR+mol":        PFG_EGR_MOL,
+    "Morgan":                    MORGAN_COLOR,
 }
+
+# Focus on Gradient Boosting to compare fingerprints without model confound
+FOCUS_MODEL = "GradientBoosting"
 
 # Feature set ordering
 EXP_A_FSETS = ["PFG_EGR+mol", "PFG_binary+mol", "TxP_PFAS", "PFG_EGR", "PFG_binary"]
-EXP_B_FSETS = ["ToxPrint+TxP_PFAS", "Morgan+PFG_EGR+mol", "Morgan+PFG_binary+mol",
+EXP_B_FSETS = ["ToxPrint+TxP_PFAS", "ToxPrint+PFG_EGR+mol",
+               "Morgan+PFG_EGR+mol", "Morgan+PFG_binary+mol",
                "Morgan+PFG_EGR", "Morgan+PFG_binary", "Morgan"]
 
-def plot_expAB_bars(metric, metric_label, exp, fsets, fname):
-    """Bar chart with error bars: per-endpoint metric grouped by feature set.
 
-    Error bars show ±1 std across repeats × folds (nested CV variability).
-    """
-    df_exp = df_full[df_full["experiment"] == exp].copy()
-    # Mean and std across all repeats × folds × models per (feature_set, endpoint)
-    agg_m = df_exp.groupby(["feature_set", "endpoint"])[metric].mean().reset_index()
-    agg_s = df_exp.groupby(["feature_set", "endpoint"])[metric].std().reset_index()
-    agg_s = agg_s.rename(columns={metric: metric + "_std"})
+def plot_gb_bars(exp, fsets, fname):
+    """Bar chart (GB only): per-endpoint ROC-AUC grouped by feature set."""
+    df_exp = df_full[(df_full["experiment"] == exp) &
+                     (df_full["model"] == FOCUS_MODEL)].copy()
+    agg_m = df_exp.groupby(["feature_set", "endpoint"])["roc_auc"].mean().reset_index()
+    agg_s = df_exp.groupby(["feature_set", "endpoint"])["roc_auc"].std().reset_index()
+    agg_s = agg_s.rename(columns={"roc_auc": "roc_auc_std"})
     agg = agg_m.merge(agg_s, on=["feature_set", "endpoint"])
     endpoints = sorted(agg["endpoint"].unique())
 
@@ -590,8 +593,8 @@ def plot_expAB_bars(metric, metric_label, exp, fsets, fname):
 
     for i, fset in enumerate(fsets):
         sub = agg[agg["feature_set"] == fset].set_index("endpoint").reindex(endpoints)
-        vals = sub[metric].values
-        errs = sub[metric + "_std"].fillna(0).values
+        vals = sub["roc_auc"].values
+        errs = sub["roc_auc_std"].fillna(0).values
         offset = (i - n_fsets / 2 + 0.5) * width
         color = FSET_COLORS.get(fset, "#999999")
         ax.bar(x + offset, vals, width, yerr=errs, label=fset,
@@ -599,136 +602,75 @@ def plot_expAB_bars(metric, metric_label, exp, fsets, fname):
                capsize=2.5, error_kw=dict(lw=0.9, alpha=0.7))
 
     ax.set_xticks(x)
-    ax.set_xticklabels([e.replace("_", "\n") for e in endpoints], fontsize=8, rotation=45, ha="right")
-    ax.set_ylabel(metric_label)
-    ax.set_title(f"{exp}: {metric_label} per endpoint (bars = mean; error bars = ±1 SD across CV folds)")
+    ax.set_xticklabels([e.replace("_", "\n") for e in endpoints], fontsize=8,
+                       rotation=45, ha="right")
+    ax.set_ylabel("ROC-AUC")
+    ax.set_title(f"{exp}: ROC-AUC per endpoint — Gradient Boosting"
+                 f"\n(bars = mean over CV folds; error bars = ±1 SD)")
     ax.legend(fontsize=8, ncol=min(3, n_fsets), loc="upper right")
     ax.set_ylim(0, 1)
     savefig(fig, fname)
 
-# Exp A bars
-plot_expAB_bars("roc_auc", "ROC-AUC", "Exp A", EXP_A_FSETS, "toxcast_expA_auc")
-plot_expAB_bars("avg_prec", "Average Precision", "Exp A", EXP_A_FSETS, "toxcast_expA_ap")
-# Exp B bars
-plot_expAB_bars("roc_auc", "ROC-AUC", "Exp B", EXP_B_FSETS, "toxcast_expB_auc")
-plot_expAB_bars("avg_prec", "Average Precision", "Exp B", EXP_B_FSETS, "toxcast_expB_ap")
 
-# --- Fig 4c: Heatmap (both experiments combined) ---
-for metric, metric_label in [("roc_auc", "ROC-AUC"), ("avg_prec", "Average Precision")]:
-    # Aggregate: mean across models, repeats, folds
-    agg = df_full.groupby(["experiment", "feature_set", "endpoint"])[metric].mean().reset_index()
-    # Create label col
-    agg["label"] = agg["experiment"] + " | " + agg["feature_set"]
-    # Pivot
-    piv = agg.pivot_table(index="label", columns="endpoint", values=metric)
-    # Sort rows
-    order_a = [f"Exp A | {fs}" for fs in EXP_A_FSETS]
-    order_b = [f"Exp B | {fs}" for fs in EXP_B_FSETS]
-    row_order = [r for r in order_a + order_b if r in piv.index]
-    piv = piv.reindex(row_order)
+def scatter_gb(df_exp, fset_x, fset_y, xlabel, ylabel, title, fname,
+               color_x=TXP_PFAS_COLOR, color_y=PFG_EGR_MOL):
+    """Scatter fset_y vs fset_x using GB only. One point per endpoint."""
+    sub = df_exp[df_exp["model"] == FOCUS_MODEL]
+    agg = sub.groupby(["feature_set", "endpoint"])["roc_auc"].mean().reset_index()
+    xvals = agg[agg["feature_set"] == fset_x].set_index("endpoint")["roc_auc"]
+    yvals = agg[agg["feature_set"] == fset_y].set_index("endpoint")["roc_auc"]
+    eps = sorted(set(xvals.index) & set(yvals.index))
+    x = [xvals[e] for e in eps]
+    y = [yvals[e] for e in eps]
 
-    fig, ax = plt.subplots(figsize=(14, 7))
-    sns.heatmap(piv, annot=True, fmt=".2f", cmap="YlOrRd", ax=ax,
-                linewidths=0.5, linecolor="white", cbar_kws={"label": metric_label},
-                annot_kws={"fontsize": 7})
-    ax.set_title(f"{metric_label} per endpoint and feature set")
-    ax.set_ylabel("")
-    ax.set_xlabel("")
-    plt.xticks(rotation=45, ha="right", fontsize=8)
-    plt.yticks(fontsize=8)
-    savefig(fig, f"toxcast_heatmap_{metric.replace('avg_prec', 'ap')}")
-
-# --- Fig 4d: Scatter Exp A — PFG variants vs TxP_PFAS ---
-print("  Scatter plots: PFG vs TxP_PFAS")
-agg_a = df_full[df_full["experiment"] == "Exp A"].groupby(
-    ["feature_set", "endpoint"])["roc_auc"].mean().reset_index()
-
-for pfg_fset, pfg_label, pfg_color in [
-    ("PFG_binary", "PFG_binary", PFG_BINARY),
-    ("PFG_EGR", "PFG_EGR", PFG_EGR),
-    ("PFG_EGR+mol", "PFG_EGR+mol", PFG_EGR_MOL),
-]:
-    txp_vals = agg_a[agg_a["feature_set"] == "TxP_PFAS"].set_index("endpoint")["roc_auc"]
-    pfg_vals = agg_a[agg_a["feature_set"] == pfg_fset].set_index("endpoint")["roc_auc"]
-    endpoints = sorted(set(txp_vals.index) & set(pfg_vals.index))
-    x = [txp_vals[e] for e in endpoints]
-    y = [pfg_vals[e] for e in endpoints]
+    above = sum(1 for xi, yi in zip(x, y) if yi > xi)
+    print(f"    [GB] {fset_y} wins {above}/{len(eps)}")
 
     fig, ax = plt.subplots(figsize=(5.5, 5))
-    ax.scatter(x, y, c=pfg_color, s=50, alpha=0.8, edgecolors="white", linewidth=0.5, zorder=3)
-    lims = [min(min(x), min(y)) - 0.02, max(max(x), max(y)) + 0.02]
-    ax.plot(lims, lims, "--", color="gray", alpha=0.5, zorder=1)
-    ax.set_xlabel("TxP_PFAS ROC-AUC")
-    ax.set_ylabel(f"{pfg_label} ROC-AUC")
-    ax.set_title(f"Exp A: {pfg_label} vs TxP_PFAS")
-    ax.set_xlim(lims)
-    ax.set_ylim(lims)
-    # Count above/below
-    above = sum(1 for xi, yi in zip(x, y) if yi > xi)
-    below = sum(1 for xi, yi in zip(x, y) if yi < xi)
-    ax.text(0.05, 0.95, f"{pfg_label} wins: {above}\nTxP_PFAS wins: {below}",
-            transform=ax.transAxes, va="top", fontsize=9,
-            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.8))
-    savefig(fig, f"toxcast_scatter_{pfg_fset.replace('+', '_plus_')}_vs_txp")
+    ax.scatter(x, y, c=color_y, marker="o", s=60, alpha=0.85,
+               edgecolors="white", linewidth=0.4, zorder=3)
+    for xi, yi, ep in zip(x, y, eps):
+        ax.annotate(ep, (xi, yi), fontsize=5.5,
+                    textcoords="offset points", xytext=(3, 2), color="grey")
 
-# --- Fig 4e: Scatter Exp B — Morgan+PFG vs ToxPrint+TxP ---
-print("  Scatter plots: Morgan+PFG vs ToxPrint+TxP")
-agg_b = df_full[df_full["experiment"] == "Exp B"].groupby(
-    ["feature_set", "endpoint"])["roc_auc"].mean().reset_index()
-toxprint_vals = agg_b[agg_b["feature_set"] == "ToxPrint+TxP_PFAS"].set_index("endpoint")["roc_auc"]
+    lo = min(x + y) - 0.02
+    hi = max(x + y) + 0.02
+    ax.plot([lo, hi], [lo, hi], "--", color="gray", alpha=0.5, linewidth=0.9, zorder=1)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title, fontsize=10)
+    ax.set_xlim(lo, hi)
+    ax.set_ylim(lo, hi)
+    savefig(fig, fname)
 
-for pfg_fset, pfg_color in [("Morgan+PFG_EGR+mol", PFG_EGR_MOL), ("Morgan+PFG_binary+mol", PFG_BINARY_MOL)]:
-    pfg_vals = agg_b[agg_b["feature_set"] == pfg_fset].set_index("endpoint")["roc_auc"]
-    endpoints = sorted(set(toxprint_vals.index) & set(pfg_vals.index))
-    x = [toxprint_vals[e] for e in endpoints]
-    y = [pfg_vals[e] for e in endpoints]
 
-    fig, ax = plt.subplots(figsize=(5.5, 5))
-    ax.scatter(x, y, c=pfg_color, s=50, alpha=0.8, edgecolors="white", linewidth=0.5, zorder=3)
-    lims = [min(min(x), min(y)) - 0.02, max(max(x), max(y)) + 0.02]
-    ax.plot(lims, lims, "--", color="gray", alpha=0.5, zorder=1)
-    ax.set_xlabel("ToxPrint+TxP_PFAS ROC-AUC")
-    ax.set_ylabel(f"{pfg_fset} ROC-AUC")
-    ax.set_title(f"Exp B: {pfg_fset} vs ToxPrint+TxP_PFAS")
-    ax.set_xlim(lims)
-    ax.set_ylim(lims)
-    above = sum(1 for xi, yi in zip(x, y) if yi > xi)
-    below = sum(1 for xi, yi in zip(x, y) if yi < xi)
-    ax.text(0.05, 0.95, f"Morgan+PFG wins: {above}\nToxPrint+TxP wins: {below}",
-            transform=ax.transAxes, va="top", fontsize=9,
-            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.8))
-    name = pfg_fset.replace("+", "_plus_")
-    savefig(fig, f"toxcast_scatter_{name}_vs_toxprint")
+# Exp A: bar + scatter
+print("  Exp A bar (GB)")
+plot_gb_bars("Exp A", EXP_A_FSETS, "toxcast_expA_bar")
 
-# --- Fig 4f: Summary bar chart (macro-averaged AUC by model) ---
-print("  Summary bars")
-fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-for idx, (exp, fsets) in enumerate([("Exp A", EXP_A_FSETS), ("Exp B", EXP_B_FSETS)]):
-    ax = axes[idx]
-    sub = df_summ[df_summ["experiment"] == exp]
-    models = sorted(sub["model"].unique())
-    n_models = len(models)
-    width = 0.35
-    x = np.arange(len(fsets))
+print("  Exp A scatter: PFG_EGR+mol vs TxP_PFAS (GB)")
+df_expA = df_full[df_full["experiment"] == "Exp A"]
+scatter_gb(df_expA,
+           fset_x="TxP_PFAS", fset_y="PFG_EGR+mol",
+           xlabel="TxP\_PFAS ROC-AUC",
+           ylabel="PFG\_EGR+mol ROC-AUC",
+           title="Exp A: PFG\_EGR+mol vs TxP\_PFAS (Gradient Boosting)\none point per endpoint",
+           fname="toxcast_expA_scatter",
+           color_y=PFG_EGR_MOL)
 
-    for mi, model in enumerate(models):
-        msub = sub[sub["model"] == model].set_index("feature_set").reindex(fsets)
-        offset = (mi - n_models / 2 + 0.5) * width
-        vals = msub["roc_auc_mean"].values
-        errs = msub["roc_auc_std"].values
-        ax.bar(x + offset, vals, width, yerr=errs, label=model, alpha=0.85,
-               color=[FSET_COLORS.get(fs, "#999") for fs in fsets],
-               edgecolor="white", capsize=2)
+# Exp B: bar + scatter
+print("  Exp B bar (GB)")
+plot_gb_bars("Exp B", EXP_B_FSETS, "toxcast_expB_bar")
 
-    ax.set_xticks(x)
-    ax.set_xticklabels([fs.replace("+", "+\n") for fs in fsets], fontsize=8, rotation=45, ha="right")
-    ax.set_ylabel("ROC-AUC (macro-averaged)")
-    ax.set_title(f"{exp}")
-    ax.legend(fontsize=8)
-    ax.set_ylim(0.5, 0.9)
-
-plt.tight_layout()
-savefig(fig, "toxcast_summary")
+print("  Exp B scatter: Morgan+PFG_EGR+mol vs ToxPrint+TxP_PFAS (GB)")
+df_expB = df_full[df_full["experiment"] == "Exp B"]
+scatter_gb(df_expB,
+           fset_x="ToxPrint+TxP_PFAS", fset_y="Morgan+PFG_EGR+mol",
+           xlabel="ToxPrint+TxP\_PFAS ROC-AUC",
+           ylabel="Morgan+PFG\_EGR+mol ROC-AUC",
+           title="Exp B: Morgan+PFG\_EGR+mol vs ToxPrint+TxP\_PFAS (Gradient Boosting)\none point per endpoint",
+           fname="toxcast_expB_scatter",
+           color_y=PFG_EGR_MOL)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

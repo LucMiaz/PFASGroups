@@ -1,0 +1,15 @@
+============================================================
+update_toxcast_si.py
+============================================================
+[1] Reading toxcast_comparison_summary.csv and toxcast_comparison_results.csv
+    summary: 44 rows; results: 6300 rows
+Traceback (most recent call last):
+  File "/home/luc/git/PFASGroups/benchmark/scripts/update_toxcast_si.py", line 409, in <module>
+    main()
+  File "/home/luc/git/PFASGroups/benchmark/scripts/update_toxcast_si.py", line 384, in main
+    narr_a   = build_expA_narrative(summ)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luc/git/PFASGroups/benchmark/scripts/update_toxcast_si.py", line 193, in build_expA_narrative
+    best_pfg_auc  = max(pfg_mol_egr["roc_auc_mean"], pfg_mol_bin["roc_auc_mean"])
+                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: string indices must be integers, not 'str'
