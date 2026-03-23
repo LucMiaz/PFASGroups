@@ -126,9 +126,20 @@ PFG_CONFIGS = {
                             molecule_metrics=MOL_METRICS),
     "EGR+ring+mol":    dict(component_metrics=["effective_graph_resistance", "ring_size"],
                             molecule_metrics=MOL_METRICS),
+    # Groups 51 (perhalogenated alkyl) + 52 (polyhalogenated alkyl): total component size
+    "g51g52_total":     dict(component_metrics=["total_component"], selected_group_ids=[51, 52]),
+    # Total component size (all 117 PFASGroups)
+    "total_component":            dict(component_metrics=["total_component"]),
+    "total_component+mol":        dict(component_metrics=["total_component"],
+                                       molecule_metrics=MOL_METRICS),
+    # Minimum Euclidean distance to group centroid in EGR space
+    "min_dist_to_barycenter":     dict(component_metrics=["min_dist_to_barycenter"]),
+    "min_dist_to_barycenter+mol": dict(component_metrics=["min_dist_to_barycenter"],
+                                       molecule_metrics=MOL_METRICS),
 }
 
-# All-halogen (F+Cl+Br+I) configs: 4×n_groups columns instead of n_groups
+# All-halogen (F+Cl+Br+I) configs: one EGR value per group × 4 halogens → ~468 cols
+# (+10 mol metrics when requested).  Built by build_pfg_matrices_4x().
 PFG_CONFIGS_4X = {
     "EGR_4X":     dict(component_metrics=["effective_graph_resistance"]),
     "EGR_4X+mol": dict(component_metrics=["effective_graph_resistance"],
@@ -332,6 +343,143 @@ def build_pfg_matrices(
     for name, kwargs in configs.items():
         print(f"  Computing PFG {name} embedding …")
         arr_result = np.asarray(result.to_array(**kwargs, progress=True, pfas_groups=_pfas_groups))
+        arr = np.zeros((n, arr_result.shape[1]), dtype=np.float64)
+        arr[valid_mask] = arr_result[valid_indices]
+        matrices[name] = arr
+        nonzero = int((np.abs(arr).sum(axis=1) > 0).sum())
+        print(f"    shape={arr.shape}  nonzero rows={nonzero}")
+
+    # ── Save caches ──────────────────────────────────────────────────
+    if cache_dir:
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        for name, arr in matrices.items():
+            np.save(cache_dir / f"pfg_{name}_cache.npy", arr)
+        cache_meta.write_text(cache_hash)  # type: ignore[union-attr]
+        print(f"  [cache saved] {len(matrices)} matrices")
+
+    return matrices
+
+
+def build_pfg_matrices_4x(
+    smiles_list: list[str],
+    configs: dict[str, dict] | None = None,
+    cache_dir: Path | None = DATA_DIR,
+) -> dict[str, np.ndarray]:
+    """
+    Like build_pfg_matrices but produces per-halogen **stacked** embeddings.
+
+    For each config the component metric is computed independently for each of
+    the four halogens [F, Cl, Br, I] (117 groups each) and the results are
+    hstacked → 468 component columns.  Molecule-wide metrics (halogen-agnostic)
+    are appended once at the end when ``molecule_metrics`` is requested.
+
+    Returns dict mapping config name → (n, 468) or (n, 478) float64 array.
+    """
+    import hashlib
+    import sys as _sys
+
+    if configs is None:
+        configs = PFG_CONFIGS_4X
+
+    _sys.path.insert(0, str(SCRIPT_DIR.resolve().parents[1]))
+    from PFASGroups import parse_smiles as _parse  # noqa: PLC0415
+    from PFASGroups.getter import get_compiled_HalogenGroups as _get_groups_fn
+
+    HALOGENS = ["F", "Cl", "Br", "I"]
+    n = len(smiles_list)
+
+    # ── Check per-config caches ──────────────────────────────────────
+    cache_hash = hashlib.sha256("\n".join(smiles_list).encode()).hexdigest()[:16]
+    cache_meta = cache_dir / "pfg_cache_meta.txt" if cache_dir else None
+
+    if cache_dir and cache_meta:
+        cached_hash = cache_meta.read_text().strip() if cache_meta.exists() else ""
+        if cached_hash == cache_hash:
+            all_ok = True
+            matrices: dict[str, np.ndarray] = {}
+            for name in configs:
+                p = cache_dir / f"pfg_{name}_cache.npy"
+                if p.exists():
+                    arr = np.load(p)
+                    if arr.shape[0] == n:
+                        matrices[name] = arr
+                        continue
+                all_ok = False
+                break
+            if all_ok and len(matrices) == len(configs):
+                for name, arr in matrices.items():
+                    print(f"  [cache hit] PFG {name}: shape={arr.shape}")
+                return matrices
+        print("  [cache miss/stale] Recomputing 4X PFASGroups embeddings …")
+
+    # ── Deduplicate by InChIKey ──────────────────────────────────────
+    print(f"  Computing InChIKeys for {n} SMILES …")
+    inchikeys: list[str | None] = []
+    for smi in smiles_list:
+        mol = Chem.MolFromSmiles(smi)
+        inchikeys.append(Chem.inchi.MolToInchiKey(mol) if mol else None)
+
+    unique_order: dict[str, int] = {}
+    unique_smiles: list[str] = []
+    for smi, ik in zip(smiles_list, inchikeys):
+        if ik and ik not in unique_order:
+            unique_order[ik] = len(unique_smiles)
+            unique_smiles.append(smi)
+
+    n_unique = len(unique_smiles)
+    n_invalid = sum(1 for ik in inchikeys if ik is None)
+    print(f"  Unique: {n_unique}  |  duplicates: {n - n_unique - n_invalid}  |  invalid: {n_invalid}")
+
+    # ── Parse with all halogens once ─────────────────────────────────
+    print(f"  Parsing {n_unique} unique SMILES with all halogens (F, Cl, Br, I) …")
+    result = _parse(unique_smiles, halogens=None, progress=True)
+
+    # Pre-compile per-halogen group lists (117 groups each)
+    hal_groups = {hal: _get_groups_fn(halogens=hal) for hal in HALOGENS}
+
+    # Build inchikey → result-row-index mapping
+    result_ik_map: dict[str, int] = {}
+    for idx, emb in enumerate(result):
+        ik = emb.get("inchikey", "")
+        if ik:
+            result_ik_map[ik] = idx
+    print(f"  Parsed result: {len(result)} entries, {len(result_ik_map)} with valid InChIKey")
+
+    input_to_result = np.full(n, -1, dtype=int)
+    for i, ik in enumerate(inchikeys):
+        if ik and ik in result_ik_map:
+            input_to_result[i] = result_ik_map[ik]
+    valid_mask = input_to_result >= 0
+    valid_indices = input_to_result[valid_mask]
+
+    # ── Build stacked matrices for each config ────────────────────────
+    matrices = {}
+    for name, kwargs in configs.items():
+        print(f"  Computing PFG {name} 4X stacked embedding …")
+        comp_metrics = kwargs.get("component_metrics", [])
+        mol_metrics  = kwargs.get("molecule_metrics", None)
+        comp_only    = dict(component_metrics=comp_metrics)
+
+        # One to_array call per halogen → hstack → 117 × 4 = 468 component cols
+        hal_arrays = [
+            np.asarray(result.to_array(**comp_only, progress=False, pfas_groups=hal_groups[hal]))
+            for hal in HALOGENS
+        ]
+        arr_result = np.hstack(hal_arrays)  # (n_unique, 468)
+
+        if mol_metrics:
+            # Molecule-wide metrics are halogen-agnostic: compute once with F groups
+            # and extract the trailing mol columns (after the 117 component cols)
+            full_f = np.asarray(result.to_array(
+                component_metrics=comp_metrics,
+                molecule_metrics=mol_metrics,
+                progress=False,
+                pfas_groups=hal_groups["F"],
+            ))
+            n_comp_cols = hal_arrays[0].shape[1]  # 117 for single metric
+            arr_mol = full_f[:, n_comp_cols:]      # last 10 cols
+            arr_result = np.hstack([arr_result, arr_mol])  # (n_unique, 478)
+
         arr = np.zeros((n, arr_result.shape[1]), dtype=np.float64)
         arr[valid_mask] = arr_result[valid_indices]
         matrices[name] = arr
@@ -961,8 +1109,8 @@ def main() -> None:
     # pfg keys: 'binary' (n,~115), 'binary+mol' (n,~125), 'EGR' (n,~115), 'EGR+mol' (n,~125)
 
     print("\nComputing / loading all-halogen (F+Cl+Br+I) PFASGroups embeddings …")
-    pfg_4x = build_pfg_matrices(smiles_all, configs=PFG_CONFIGS_4X, halogens=None)
-    # pfg_4x keys: 'EGR_4X' (n, ~460), 'EGR_4X+mol' (n, ~470)
+    pfg_4x = build_pfg_matrices_4x(smiles_all)
+    # pfg_4x keys: 'EGR_4X' (n, 468), 'EGR_4X+mol' (n, 478)  [117 groups × 4 halogens (+10 mol)]
 
     print("\nGenerating Morgan fingerprints …")
     X_morgan_all = build_morgan(smiles_all)                  # (9014, 512)
