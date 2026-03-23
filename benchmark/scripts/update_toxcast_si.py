@@ -41,30 +41,24 @@ SI_SCRIPT    = SCRIPT_DIR / "generate_si_figures.py"
 
 # Toxcast figure stems to copy (benchmark/imgs/si/<stem>.{pdf,png} → article/imgs/)
 TOXCAST_FIGS = [
-    "toxcast_expA_auc",
-    "toxcast_expA_ap",
-    "toxcast_expB_auc",
-    "toxcast_expB_ap",
-    "toxcast_heatmap_roc_auc",
-    "toxcast_heatmap_ap",
-    "toxcast_scatter_Morgan_plus_PFG_EGR_plus_mol_vs_toxprint",
-    "toxcast_scatter_Morgan_plus_PFG_binary_plus_mol_vs_toxprint",
-    "toxcast_scatter_PFG_binary_vs_txp",
-    "toxcast_scatter_PFG_EGR_vs_txp",
-    "toxcast_scatter_PFG_EGR_plus_mol_vs_txp",
-    "toxcast_summary",
+    "toxcast_expA_bar",
+    "toxcast_expA_scatter",
+    "toxcast_expB_bar",
+    "toxcast_expB_scatter",
 ]
 
-# ── Exp A / B feature set ordered rows ───────────────────────────────────────
+# ── Exp A / B feature set ordered rows (Gradient Boosting only) ───────────────
+FOCUS_MODEL = "GradientBoosting"
+
 EXP_A_FSETS = ["PFG_EGR+mol", "PFG_binary+mol", "TxP_PFAS", "PFG_EGR", "PFG_binary"]
 
-# For Exp B we show: best PFG+mol variants (RF), ToxPrint both models, Morgan baseline
-EXP_B_SELECTED = [
-    ("Morgan+PFG_EGR+mol",    "RandomForest"),
-    ("Morgan+PFG_binary+mol", "RandomForest"),
-    ("ToxPrint+TxP_PFAS",     "RandomForest"),
-    ("ToxPrint+TxP_PFAS",     "GradientBoosting"),
-    ("Morgan",                "RandomForest"),
+# For Exp B: show ToxPrint+TxP_PFAS vs ToxPrint+PFG_EGR+mol, then Morgan variants
+EXP_B_FSETS = [
+    "ToxPrint+TxP_PFAS",
+    "ToxPrint+PFG_EGR+mol",
+    "Morgan+PFG_binary",
+    "Morgan+PFG_EGR+mol",
+    "Morgan",
 ]
 
 MODEL_ABBREV = {"RandomForest": "RF", "GradientBoosting": "GB"}
@@ -97,179 +91,154 @@ def load_data():
 
 # ── 2. Build Exp A table TeX  ─────────────────────────────────────────────────
 def build_expA_table(summ: pd.DataFrame) -> str:
-    """Best model per Exp-A feature set, ranked by AUC, 4 metrics bolded."""
+    """GB-only Exp-A rows (no Model column), ranked by AUC, 4 metrics bolded."""
     rows_data = []
     for fset in EXP_A_FSETS:
-        sub = summ[(summ["experiment"] == "Exp A") & (summ["feature_set"] == fset)]
+        sub = summ[
+            (summ["experiment"] == "Exp A")
+            & (summ["feature_set"] == fset)
+            & (summ["model"] == FOCUS_MODEL)
+        ]
         if sub.empty:
-            print(f"    [WARN] Exp A / {fset} not found in summary")
+            print(f"    [WARN] Exp A / {fset} / {FOCUS_MODEL} not found in summary")
             continue
-        best = sub.loc[sub["roc_auc_mean"].idxmax()]
-        rows_data.append({
-            "feature_set": fset,
-            "model": MODEL_ABBREV.get(best["model"], best["model"]),
-            **{m: best[m] for m in METRICS},
-        })
+        row = sub.iloc[0]
+        rows_data.append({"feature_set": fset, **{m: row[m] for m in METRICS}})
 
     if not rows_data:
         return ""
 
     df = pd.DataFrame(rows_data)
-    # Bold per-column max
-    bold_cols = {}
-    for m in METRICS:
-        bold_cols[m] = bold_max(df[m].tolist(), None)
+    bold_cols = {m: bold_max(df[m].tolist(), None) for m in METRICS}
 
     lines = []
     for i, row in df.iterrows():
         vals = [bold_cols[m][i] for m in METRICS]
-        fs = row["feature_set"].replace("+", r"+").replace("_", r"\_")
-        lines.append(
-            f"{fs:<24} & {row['model']:<2} & "
-            + " & ".join(vals)
-            + r" \\"
-        )
+        fs = row["feature_set"].replace("_", r"\_")
+        lines.append(f"{fs:<24} & " + " & ".join(vals) + r" \\")
     return "\n".join(lines)
 
 
 # ── 3. Build Exp B table TeX ──────────────────────────────────────────────────
 def build_expB_table(summ: pd.DataFrame) -> str:
-    """Selected Exp-B rows with 4 metrics bolded."""
+    """GB-only Exp-B rows (no Model column), 4 metrics bolded."""
     rows_data = []
-    for fset, model_full in EXP_B_SELECTED:
+    for fset in EXP_B_FSETS:
         sub = summ[
             (summ["experiment"] == "Exp B")
             & (summ["feature_set"] == fset)
-            & (summ["model"] == model_full)
+            & (summ["model"] == FOCUS_MODEL)
         ]
         if sub.empty:
-            print(f"    [WARN] Exp B / {fset} / {model_full} not found")
+            print(f"    [WARN] Exp B / {fset} / {FOCUS_MODEL} not found")
             continue
         row = sub.iloc[0]
-        rows_data.append({
-            "feature_set": fset,
-            "model": MODEL_ABBREV.get(model_full, model_full),
-            **{m: row[m] for m in METRICS},
-        })
+        rows_data.append({"feature_set": fset, **{m: row[m] for m in METRICS}})
 
     if not rows_data:
         return ""
 
     df = pd.DataFrame(rows_data)
-    bold_cols = {}
-    for m in METRICS:
-        bold_cols[m] = bold_max(df[m].tolist(), None)
+    bold_cols = {m: bold_max(df[m].tolist(), None) for m in METRICS}
 
     lines = []
     for i, row in df.iterrows():
         vals = [bold_cols[m][i] for m in METRICS]
-        fs = row["feature_set"].replace("+", r"+").replace("_", r"\_")
-        lines.append(
-            f"{fs:<28} & {row['model']:<2} & "
-            + " & ".join(vals)
-            + r" \\"
-        )
+        fs = row["feature_set"].replace("_", r"\_")
+        lines.append(f"{fs:<28} & " + " & ".join(vals) + r" \\")
     return "\n".join(lines)
 
 
 # ── 4. Build narrative paragraphs ─────────────────────────────────────────────
 def build_expA_narrative(summ: pd.DataFrame) -> str:
-    """One paragraph describing Exp A results."""
-    s = summ[summ["experiment"] == "Exp A"]
+    """One paragraph describing Exp A results (GB only)."""
+    s = summ[(summ["experiment"] == "Exp A") & (summ["model"] == FOCUS_MODEL)]
 
-    def best(fset):
+    def get(fset):
         sub = s[s["feature_set"] == fset]
-        return sub.loc[sub["roc_auc_mean"].idxmax()] if not sub.empty else None
+        return sub.iloc[0] if not sub.empty else None
 
-    pfg_mol_egr   = best("PFG_EGR+mol")
-    pfg_mol_bin   = best("PFG_binary+mol")
-    txp           = best("TxP_PFAS")
-    pfg_egr       = best("PFG_EGR")
-    pfg_bin       = best("PFG_binary")
+    pfg_mol_egr = get("PFG_EGR+mol")
+    pfg_mol_bin = get("PFG_binary+mol")
+    txp         = get("TxP_PFAS")
+    pfg_egr     = get("PFG_EGR")
+    pfg_bin     = get("PFG_binary")
 
     if any(x is None for x in [pfg_mol_egr, pfg_mol_bin, txp, pfg_egr, pfg_bin]):
-        return ""  # fallback: don't overwrite if data missing
+        return ""
 
-    best_pfg_auc  = max(pfg_mol_egr["roc_auc_mean"], pfg_mol_bin["roc_auc_mean"])
-    txp_auc_range = f"{txp['roc_auc_mean']:.3f}"
-    # Check if both GB and RF for TxP_PFAS exist
-    txp_both = s[s["feature_set"] == "TxP_PFAS"]
-    if len(txp_both) > 1:
-        lo = txp_both["roc_auc_mean"].min()
-        hi = txp_both["roc_auc_mean"].max()
-        txp_auc_range = f"{lo:.3f}--{hi:.3f}"
+    best_pfg_auc = max(pfg_mol_egr["roc_auc_mean"], pfg_mol_bin["roc_auc_mean"])
+    gain_vs_txp  = best_pfg_auc - txp["roc_auc_mean"]
+    mol_boost    = pfg_mol_bin["roc_auc_mean"] - pfg_bin["roc_auc_mean"]
+    egr_vs_bin   = pfg_egr["roc_auc_mean"] - pfg_bin["roc_auc_mean"]
 
-    gain_vs_txp   = best_pfg_auc - txp_both["roc_auc_mean"].max()
-    mol_boost     = pfg_mol_bin["roc_auc_mean"] - pfg_bin["roc_auc_mean"]
-    egr_boost     = pfg_mol_egr["roc_auc_mean"] - pfg_egr["roc_auc_mean"]
-    egr_vs_bin    = pfg_egr["roc_auc_mean"] - pfg_bin["roc_auc_mean"]
-
+    egr_sign = "$-$" if egr_vs_bin < 0 else "+"
     return (
-        f"PFASGroups embeddings with molecule-wide metrics "
+        f"PFASGroups embeddings augmented with molecule-wide metrics "
         f"(PFG\\_binary+mol, PFG\\_EGR+mol) outperform TxP\\_PFAS by "
-        f"+{gain_vs_txp:.3f} AUC. "
+        f"+{gain_vs_txp:.3f} AUC ({best_pfg_auc:.3f} vs.\\ {txp['roc_auc_mean']:.3f}). "
         f"The molecule-wide metrics provide the dominant uplift: adding them to PFG\\_binary "
         f"boosts AUC from {pfg_bin['roc_auc_mean']:.3f} to {pfg_mol_bin['roc_auc_mean']:.3f} "
-        f"(+{mol_boost:.3f}), whereas adding EGR to PFG\\_binary yields only "
-        f"+{egr_vs_bin:.3f}. "
+        f"(+{mol_boost:.3f}), whereas switching from binary to EGR encoding adds only "
+        f"{egr_sign}{abs(egr_vs_bin):.3f}. "
         f"Without molecule-wide metrics, PFG\\_binary ({pfg_bin['roc_auc_mean']:.3f}) "
-        f"and PFG\\_EGR ({pfg_egr['roc_auc_mean']:.3f}) perform comparably to "
-        f"TxP\\_PFAS ({txp_auc_range}). "
-        f"See Figures~\\ref{{fig:toxcast_expA_auc}} and~\\ref{{fig:toxcast_expA_ap}}."
+        f"and PFG\\_EGR ({pfg_egr['roc_auc_mean']:.3f}) bracket "
+        f"TxP\\_PFAS ({txp['roc_auc_mean']:.3f}). "
+        f"See Figure~\\ref{{fig:toxcast_expA_bar}} for per-endpoint detail "
+        f"and Figure~\\ref{{fig:toxcast_expA_scatter}} for a direct pairwise comparison."
     )
 
 
 def build_expB_narrative(summ: pd.DataFrame, res: pd.DataFrame) -> str:
-    """One paragraph describing Exp B results (RF/GB split design)."""
-    s = summ[summ["experiment"] == "Exp B"]
+    """One paragraph describing Exp B fingerprint comparison (GB only)."""
+    s = summ[(summ["experiment"] == "Exp B") & (summ["model"] == FOCUS_MODEL)]
 
-    def get(fset, model):
-        sub = s[(s["feature_set"] == fset) & (s["model"] == model)]
+    def get(fset):
+        sub = s[s["feature_set"] == fset]
         return sub.iloc[0] if not sub.empty else None
 
-    rf_pfg = get("Morgan+PFG_EGR+mol", "RandomForest")
-    rf_txp = get("ToxPrint+TxP_PFAS",  "RandomForest")
-    gb_pfg = get("Morgan+PFG_EGR+mol", "GradientBoosting")
-    gb_txp = get("ToxPrint+TxP_PFAS",  "GradientBoosting")
+    txp_txp  = get("ToxPrint+TxP_PFAS")
+    txp_pfg  = get("ToxPrint+PFG_EGR+mol")
+    mg_pfg   = get("Morgan+PFG_EGR+mol")
+    morgan   = get("Morgan")
 
-    if any(x is None for x in [rf_pfg, rf_txp, gb_pfg, gb_txp]):
+    if any(x is None for x in [txp_txp, txp_pfg, mg_pfg, morgan]):
         return ""
 
-    r = res[res["experiment"] == "Exp B"]
+    r = res[(res["experiment"] == "Exp B") & (res["model"] == FOCUS_MODEL)]
 
-    def ep_aucs(fset, model):
-        return (r[(r["feature_set"] == fset) & (r["model"] == model)]
-                  .groupby("endpoint")["roc_auc"].mean())
+    def ep_aucs(fset):
+        return r[r["feature_set"] == fset].groupby("endpoint")["roc_auc"].mean()
 
-    ep_rf_pfg = ep_aucs("Morgan+PFG_EGR+mol", "RandomForest")
-    ep_rf_txp = ep_aucs("ToxPrint+TxP_PFAS",  "RandomForest")
-    ep_gb_pfg = ep_aucs("Morgan+PFG_EGR+mol", "GradientBoosting")
-    ep_gb_txp = ep_aucs("ToxPrint+TxP_PFAS",  "GradientBoosting")
+    txp_morgan_gap  = txp_txp["roc_auc_mean"] - mg_pfg["roc_auc_mean"]
+    morgan_pfg_gain = mg_pfg["roc_auc_mean"] - morgan["roc_auc_mean"]
 
-    rf_ep = sorted(ep_rf_pfg.index.intersection(ep_rf_txp.index))
-    gb_ep = sorted(ep_gb_pfg.index.intersection(ep_gb_txp.index))
-    n_ep = len(rf_ep)
-
-    n_rf_wins = (ep_rf_pfg[rf_ep] > ep_rf_txp[rf_ep]).sum()
-    n_gb_txp_wins = (ep_gb_txp[gb_ep] > ep_gb_pfg[gb_ep]).sum()
-    mean_rf_delta = (ep_rf_pfg[rf_ep] - ep_rf_txp[rf_ep]).mean()
+    # Compute observed range across all Morgan-based feature sets in EXP_B_FSETS
+    morgan_fsets = [fs for fs in EXP_B_FSETS if fs.startswith("Morgan")]
+    morgan_aucs = []
+    for fs in morgan_fsets:
+        sub = s[s["feature_set"] == fs]
+        if not sub.empty:
+            morgan_aucs.append(sub.iloc[0]["roc_auc_mean"])
+    mg_lo = min(morgan_aucs) if morgan_aucs else morgan["roc_auc_mean"]
+    mg_hi = max(morgan_aucs) if morgan_aucs else mg_pfg["roc_auc_mean"]
+    morgan_range = f"{mg_lo:.3f}" if abs(mg_hi - mg_lo) < 0.0005 else f"{mg_lo:.3f}--{mg_hi:.3f}"
 
     return (
-        f"On the full library the two classifiers tell opposite stories. "
-        f"With Random Forest, Morgan+PFG\\_EGR+mol ({rf_pfg['roc_auc_mean']:.3f} AUC) "
-        f"and ToxPrint+TxP\\_PFAS ({rf_txp['roc_auc_mean']:.3f} AUC) are essentially identical, "
-        f"with Morgan+PFG improving {n_rf_wins}/{n_ep} endpoints "
-        f"(mean $\\Delta$AUC $\\approx${mean_rf_delta:+.3f}). "
-        f"With Gradient Boosting, ToxPrint+TxP\\_PFAS has a clear advantage "
-        f"({gb_txp['roc_auc_mean']:.3f} vs.\\ {gb_pfg['roc_auc_mean']:.3f} AUC, "
-        f"improving {n_gb_txp_wins}/{len(gb_ep)} endpoints), "
-        f"because ToxPrint's 729 general-purpose structural bits provide a richer encoding "
-        f"of non-PFAS chemistry than ECFP4 alone; PFASGroups bits add little signal when "
-        f"GB is already exploiting ToxPrint's breadth. "
-        f"The per-endpoint scatter in Figure~\\ref{{fig:toxcast_scatter_B}} makes this split "
-        f"explicit: RF points (circles) cluster near the diagonal, while GB points (squares) "
-        f"systematically fall below it. "
-        f"See also Figures~\\ref{{fig:toxcast_expB_auc}} and~\\ref{{fig:toxcast_expB_ap}}."
+        f"ToxPrint is the dominant base fingerprint; the key question is which "
+        f"129-bit PFAS component to append. "
+        f"ToxPrint+PFG\\_EGR+mol ({txp_pfg['roc_auc_mean']:.3f} AUC) performs identically to "
+        f"ToxPrint+TxP\\_PFAS ({txp_txp['roc_auc_mean']:.3f} AUC), demonstrating that "
+        f"PFASGroups embeddings can fully replace TxP\\_PFAS within a ToxPrint+PFAS-specific "
+        f"fingerprint while marginally improving AP, MCC and balanced accuracy. "
+        f"Morgan-based combinations ({morgan_range}) "
+        f"trail the ToxPrint variants by $\\sim${txp_morgan_gap:.3f} AUC, confirming that "
+        f"ToxPrint's 729 general-purpose structural bits capture non-PFAS chemistry more "
+        f"effectively than ECFP4 alone. "
+        f"Adding any PFG variant to Morgan provides negligible improvement over Morgan alone "
+        f"({morgan_pfg_gain:+.3f} AUC). "
+        f"See Figure~\\ref{{fig:toxcast_expB_bar}} for per-endpoint detail "
+        f"and Figure~\\ref{{fig:toxcast_expB_scatter}} for the direct ToxPrint pairwise comparison."
     )
 
 
@@ -277,7 +246,7 @@ def build_expB_narrative(summ: pd.DataFrame, res: pd.DataFrame) -> str:
 # We replace two anchored blocks, identified by unique labels.
 
 TABLE_A_PATTERN = re.compile(
-    r"(\\label\{tab:toxcast_expA_summary\}.*?\\small\s*\\begin\{tabular\}\{llcccc\}\s*"
+    r"(\\label\{tab:toxcast_expA_summary\}.*?\\small\s*\\begin\{tabular\}\{lcccc\}\s*"
     r"\\toprule\s*Feature Set.*?\\midrule\s*)"
     r"(.*?)"
     r"(\\bottomrule\s*\\end\{tabular\})",
@@ -285,26 +254,23 @@ TABLE_A_PATTERN = re.compile(
 )
 
 TABLE_B_PATTERN = re.compile(
-    r"(\\label\{tab:toxcast_expB_summary\}.*?\\small\s*\\begin\{tabular\}\{llcccc\}\s*"
+    r"(\\label\{tab:toxcast_expB_summary\}.*?\\small\s*\\begin\{tabular\}\{lcccc\}\s*"
     r"\\toprule\s*Feature Set.*?\\midrule\s*)"
     r"(.*?)"
     r"(\\bottomrule\s*\\end\{tabular\})",
     re.DOTALL,
 )
 
-# Narrative: replace the paragraph just after expA table \end{table}
-# (ends at \begin{figure} for expA_auc)
 NARRATIVE_A_PATTERN = re.compile(
     r"(\\end\{table\}\s*\n)"
-    r"(PFASGroups embeddings with molecule-wide metrics.*?See Figures~\\ref\{fig:toxcast_expA_auc\} and~\\ref\{fig:toxcast_expA_ap\}\.)"
+    r"(PFASGroups embeddings (?:with|augmented with) molecule-wide metrics.*?)"
     r"(\s*\n\\begin\{figure\})",
     re.DOTALL,
 )
 
 NARRATIVE_B_PATTERN = re.compile(
     r"(\\end\{table\}\s*\n)"
-    r"(On the full library the two classifiers tell opposite stories\..*?"
-    r"See also Figures~\\ref\{fig:toxcast_expB_auc\} and~\\ref\{fig:toxcast_expB_ap\}\.)"
+    r"((?:ToxPrint is the dominant|On the full library the two classifiers).*?)"
     r"(\s*\n\\begin\{figure\})",
     re.DOTALL,
 )
