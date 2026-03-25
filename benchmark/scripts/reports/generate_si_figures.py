@@ -107,7 +107,7 @@ print(f"   HG mean: {ts['HalogenGroup_avg_time']:.1f} ms, Atlas mean: {ts['atlas
 # Use the OECD clinventory timing file which is large (~50MB) — skip raw data,
 # use bracket summaries instead.
 
-clinv_file = os.path.join(DATA, "clinventory_comparison_f_only_20260325_135811.json")
+clinv_file   = os.path.join(DATA, "clinventory_comparison_f_only_20260325_181212.json")
 with open(clinv_file) as f:
     clinv = json.load(f)
 
@@ -117,7 +117,7 @@ at_stats = clinv["timing_overall"]["atlas"]
 
 # --- Fig 1a: Multi-dataset timing box plot (OECD + CLInventory + large-molecule stress) ---
 # Data rebuilt with PFASGroups(halogens='F') on all three datasets (2026-03-25)
-oecd_timing_file = os.path.join(DATA, "oecd_clinventory_timing_f_only_20260325_135811.json")
+oecd_timing_file = os.path.join(DATA, "oecd_clinventory_timing_f_only_20260325_181212.json")
 with open(oecd_timing_file) as f:
     oecd_clinv_data = json.load(f)
 
