@@ -14,7 +14,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONDA_ENV="${CONDA_ENV:-chem}"
 LOCK_FILE="$SCRIPT_DIR/watch_toxcast.lock"
-UPDATE_SCRIPT="$SCRIPT_DIR/scripts/update_toxcast_si.py"
+UPDATE_SCRIPT="$SCRIPT_DIR/scripts/reports/update_toxcast_si.py"
 RESULTS_CSV="$SCRIPT_DIR/data/toxcast_comparison_results.csv"
 SUMMARY_CSV="$SCRIPT_DIR/data/toxcast_comparison_summary.csv"
 LOG_FILE="$SCRIPT_DIR/watch_toxcast.log"

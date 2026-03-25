@@ -95,19 +95,19 @@ elif [ -f "$PARQUET" ]; then
     echo "Dataset already exists: $PARQUET"
     read -r -p "Rebuild it? [y/N] " answer
     if [[ "$answer" =~ ^[Yy] ]]; then
-        run_step "Building ToxCast dataset" "$SCRIPT_DIR/scripts/build_toxcast_dataset.py"
+        run_step "Building ToxCast dataset" "$SCRIPT_DIR/scripts/data/build_toxcast_dataset.py"
     else
         echo "=== Using existing dataset ==="
     fi
 else
-    run_step "Building ToxCast dataset" "$SCRIPT_DIR/scripts/build_toxcast_dataset.py"
+    run_step "Building ToxCast dataset" "$SCRIPT_DIR/scripts/data/build_toxcast_dataset.py"
 fi
 
 # ---------------------------------------------------------------------------
 # Step 2 – fingerprint comparison
 # ---------------------------------------------------------------------------
 run_step "Running fingerprint comparison (nested CV)" \
-         "$SCRIPT_DIR/scripts/compare_fingerprints_toxcast.py"
+         "$SCRIPT_DIR/scripts/analysis/compare_fingerprints_toxcast.py"
 
 # ---------------------------------------------------------------------------
 # Step 3 – summary

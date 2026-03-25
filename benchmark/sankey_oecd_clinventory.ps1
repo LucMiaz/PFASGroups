@@ -15,8 +15,8 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-$AtlasScript     = 'scripts/sankey_pfasgroups_atlas.py'
-$HierarchyScript = 'scripts/group_hierarchy_sankey.py'
+$AtlasScript     = 'scripts/plots/sankey_pfasgroups_atlas.py'
+$HierarchyScript = 'scripts/plots/group_hierarchy_sankey.py'
 
 # Overlap CSV paths (adjust list surnames in export command if needed):
 $FluoroDBOverlap     = 'data/pfasgroup_overlap.csv'

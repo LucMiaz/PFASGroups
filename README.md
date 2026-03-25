@@ -18,8 +18,8 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 - **Linker Validation**: CH₂-specific validation for 40 fluorotelomer groups to distinguish from direct-attachment analogues. Telomer groups use `linker_smarts` to allow functional groups separated from perfluoro chains by non-fluorinated linkers
 - **Aggregate Groups**: Pattern-matching groups that collect related PFAS groups via regex (e.g., Group 113 matches all "telomer" groups)
 - **Component Length Analysis**: Quantification of per- and polyfluorinated alkyl components with CF₂ unit counting
-- **Graph Metrics**: Comprehensive structural characterization (branching, eccentricity, diameter, resistance, centrality)
-- **Customizable Definitions**: Easy extension to additional PFAS groups and halogenated chemical classes via JSON configuration
+- **Graph Metrics**: Comprehensive structural characterization (branching, eccentricity, diameter, resistance, centrality, telomer spacer length, ring size)
+- **Customizable Definitions**: Easy extension to additional PFAS groups and halogenated chemical classes via JSON configuration. Component type definitions in `data/component_smarts_halogens.json` support optional per-type `constraints` (e.g. `{"gte": {"F": 2}}`) that are evaluated against the component's full atom count (backbone carbons plus attached halogens) to enforce minimum halogen counts or element exclusions — without repeating the check in every group definition
 
 ### Additional Tools
 - **Homologue Series Generation**: Iterative component shortening to explore theoretical chemical space
@@ -483,6 +483,9 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+
+- **Version 3.2.2**: Fixed polyhalogenated alkyl components matching less than 2 halogens. Added option to pass 'halogens' to formula constraints. Added options to include component-wide formula constraints (on dist-1 neighbours from matched C-only components).
+
 - **Version 3.2.1**: Added n-spacer metric for telomers and ring size for aryl and cyclic groups. These can be used in the embeddings.
 
 - **Version 3.2.0**: Use of BDE for computing graph resistance.
@@ -573,6 +576,8 @@ Major enhancement adding comprehensive NetworkX graph theory metrics for detaile
 - `branching` (0-1): Measures linearity (1.0 = linear, 0.0 = highly branched) - renamed from "eccentricity"
 - `mean_eccentricity`, `median_eccentricity`: Graph-theoretic eccentricity statistics for component nodes
 - `smarts_centrality` (0-1): Functional group position (1.0 = central, 0.0 = peripheral)
+- `n_spacer` (int ≥ 0): Fluorotelomer CH₂ spacer length — the "m" in "m:n" telomer notation; 0 for all non-telomeric groups
+- `ring_size` (int ≥ 0): Smallest ring overlapping the matched component; 0 for acyclic chains, 5 for azoles/furans, 6 for benzene/cyclohexane derivatives
 - `component_fraction` (0-1): Fraction of total molecule atoms in this component (includes all attached atoms)
 - `total_components_fraction` (0-1): Fraction of molecule covered by union of all components
 - `diameter`: Maximum distance between any two atoms in component

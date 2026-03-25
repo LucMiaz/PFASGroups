@@ -79,18 +79,18 @@ if ($SkipBuild) {
     Write-Host "Dataset already exists at $ParquetPath" -ForegroundColor DarkGray
     $answer = Read-Host "Rebuild it? [y/N]"
     if ($answer -match '^[Yy]') {
-        Invoke-CondaPython (Join-Path $ScriptDir "scripts\build_toxcast_dataset.py") "Building ToxCast dataset"
+        Invoke-CondaPython (Join-Path $ScriptDir "scripts\data\build_toxcast_dataset.py") "Building ToxCast dataset"
     } else {
         Write-Step "Using existing dataset"
     }
 } else {
-    Invoke-CondaPython (Join-Path $ScriptDir "scripts\build_toxcast_dataset.py") "Building ToxCast dataset"
+    Invoke-CondaPython (Join-Path $ScriptDir "scripts\data\build_toxcast_dataset.py") "Building ToxCast dataset"
 }
 
 # ---------------------------------------------------------------------------
 # Step 2 – fingerprint comparison
 # ---------------------------------------------------------------------------
-Invoke-CondaPython (Join-Path $ScriptDir "scripts\compare_fingerprints_toxcast.py") "Running fingerprint comparison (nested CV)"
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\analysis\compare_fingerprints_toxcast.py") "Running fingerprint comparison (nested CV)"
 
 # ---------------------------------------------------------------------------
 # Step 3 – summary
@@ -103,6 +103,37 @@ if (Test-Path $DataDir) {
 } else {
     Write-Host "[WARN] data directory not found: $DataDir" -ForegroundColor Yellow
 }
+# ---------------------------------------------------------------------------
+# Step 4 – performance plots
+# ---------------------------------------------------------------------------
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\plot_performance_by_endpoint.py") "Generating performance plots"
+
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\plot_expa_accuracy_precision.py") "Generating accuracy and precision plots"
+
+# ---------------------------------------------------------------------------
+# Step 5 – Unsupervised analysis reports
+# ---------------------------------------------------------------------------
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py") "Generating UMAP plots  --top 20"
+
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py --method umap --fp full --top 20") "Generating UMAP plots for fp EGR+cycle+nspacer+branch+mol"
+
+
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py --method tsne --fp umap --top 20") "Generating UMAP plots for fp total_component+spacer+ring+mol"
+
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py --method tsne --fp binary --top 20") "Generating t-SNE plots"
+
+
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py --method tsne --fp full --top 20") "Generating t-SNE plots for fp EGR+cycle+nspacer+branch+mol"
+
+
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py --method tsne --fp total --top 20") "Generating t-SNE plots for fp total_component+spacer+ring+mol"
+
+
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py --method mds --fp binary --top 20") "Generating MDS plots"
+
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py --method mds --fp full --top 20") "Generating MDS plots for fp EGR+cycle+nspacer+branch+mol"
+
+Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py --method mds --fp total --top 20") "Generating MDS plots for fp total_component+spacer+ring+mol"
 
 Write-Host ""
 Write-Host "Workflow complete." -ForegroundColor Green

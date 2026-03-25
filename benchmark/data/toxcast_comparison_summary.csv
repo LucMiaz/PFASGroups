@@ -9,6 +9,8 @@ Exp A,PFG_EGR+ring+mol,GradientBoosting,0.6971,0.0795,0.4578,0.2066,0.262,0.6505
 Exp A,PFG_EGR+ring+mol,RandomForest,0.662,0.0851,0.428,0.2083,0.2204,0.6118
 Exp A,PFG_EGR+spacer+mol,GradientBoosting,0.6975,0.0788,0.4573,0.2065,0.2627,0.651
 Exp A,PFG_EGR+spacer+mol,RandomForest,0.662,0.0856,0.4269,0.21,0.2222,0.6131
+Exp A,PFG_EGR+spacer+ring+mol,GradientBoosting,0.6971,0.0795,0.4578,0.2066,0.262,0.6505
+Exp A,PFG_EGR+spacer+ring+mol,RandomForest,0.6622,0.0858,0.4278,0.209,0.2189,0.611
 Exp A,PFG_EGR_4X,GradientBoosting,0.5442,0.0555,0.3001,0.1584,0.0613,0.5374
 Exp A,PFG_EGR_4X,RandomForest,0.5481,0.0609,0.3131,0.1576,0.0628,0.538
 Exp A,PFG_EGR_4X+mol,GradientBoosting,0.6963,0.0785,0.4555,0.2098,0.2713,0.6527
@@ -49,6 +51,8 @@ Exp B,Morgan+PFG_binary+mol,GradientBoosting,0.7851,0.0441,0.5168,0.1557,0.3601,
 Exp B,Morgan+PFG_binary+mol,RandomForest,0.815,0.0496,0.5564,0.1379,0.378,0.6374
 Exp B,ToxPrint+PFG_EGR+mol,GradientBoosting,0.7986,0.044,0.5258,0.1569,0.3716,0.7288
 Exp B,ToxPrint+PFG_EGR+mol,RandomForest,0.8131,0.0511,0.5468,0.139,0.3891,0.6646
+Exp B,ToxPrint+PFG_EGR+spacer+ring+mol,GradientBoosting,0.7985,0.0441,0.5257,0.157,0.3718,0.729
+Exp B,ToxPrint+PFG_EGR+spacer+ring+mol,RandomForest,0.8131,0.0503,0.5464,0.1397,0.3881,0.6636
 Exp B,ToxPrint+PFG_EGR_4X+mol,GradientBoosting,0.8005,0.044,0.5272,0.1565,0.3765,0.7303
 Exp B,ToxPrint+PFG_EGR_4X+mol,RandomForest,0.8137,0.0499,0.5453,0.1403,0.3905,0.6672
 Exp B,ToxPrint+TxP_PFAS,GradientBoosting,0.7987,0.0447,0.5243,0.1578,0.3705,0.7283

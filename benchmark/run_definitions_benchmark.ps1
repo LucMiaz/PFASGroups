@@ -12,8 +12,8 @@ Write-Host "  3. Create HTML report with all results" -ForegroundColor White
 Write-Host "  4. Open report in browser" -ForegroundColor White
 
 # Check if we're in the right directory
-if (-not (Test-Path "benchmark_pfas_definitions.py")) {
-    Write-Host "`n❌ Error: benchmark_pfas_definitions.py not found" -ForegroundColor Red
+if (-not (Test-Path "scripts\classify\benchmark_pfas_definitions.py")) {
+    Write-Host "`n❌ Error: scripts\classify\benchmark_pfas_definitions.py not found" -ForegroundColor Red
     Write-Host "Please run this script from the benchmark directory:" -ForegroundColor Yellow
     Write-Host "  cd c:\Users\luc\git\PFASGroups\benchmark" -ForegroundColor White
     exit 1
@@ -82,7 +82,7 @@ Write-Host "`nEstimated time: 10-15 minutes`n" -ForegroundColor Yellow
 
 $benchmark_start = Get-Date
 
-python benchmark_pfas_definitions.py
+python scripts\classify\benchmark_pfas_definitions.py
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "`n❌ Benchmark failed with error code $LASTEXITCODE" -ForegroundColor Red
@@ -120,7 +120,7 @@ Write-Host "`nEstimated time: 2-3 minutes`n" -ForegroundColor Yellow
 
 $analysis_start = Get-Date
 
-python analyze_definitions_benchmark.py $latest_benchmark.FullName
+python scripts\analysis\analyze_definitions_benchmark.py $latest_benchmark.FullName
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "`n❌ Analysis failed with error code $LASTEXITCODE" -ForegroundColor Red

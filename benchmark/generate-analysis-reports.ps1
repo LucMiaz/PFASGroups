@@ -6,7 +6,7 @@ Write-Host ("=" * 50) -ForegroundColor Cyan
 Write-Host ""
 
 # Check if we're in the right directory
-if (-not (Test-Path "analyze_timing.py")) {
+if (-not (Test-Path "scripts\analysis\analyze_timing.py")) {
     Write-Host "❌ Error: Analysis scripts not found!" -ForegroundColor Red
     Write-Host "   Please run this script from the benchmark directory" -ForegroundColor Red
     exit 1
@@ -31,7 +31,7 @@ New-Item -ItemType Directory -Force -Path review-app\analysis_reports\figures | 
 # Run timing analysis
 if ($timingFile) {
     Write-Host "⏱️  Generating timing analysis..." -ForegroundColor Yellow
-    python analyze_timing.py $timingFile.FullName
+    python scripts\analysis\analyze_timing.py $timingFile.FullName
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Timing analysis completed" -ForegroundColor Green
     } else {
@@ -43,7 +43,7 @@ if ($timingFile) {
 # Run complex analysis
 if ($complexFile) {
     Write-Host "🧬 Generating complex branched analysis..." -ForegroundColor Yellow
-    python analyze_complex.py $complexFile.FullName
+    python scripts\analysis\analyze_complex.py $complexFile.FullName
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Complex analysis completed" -ForegroundColor Green
     } else {
@@ -55,7 +55,7 @@ if ($complexFile) {
 # Run enhanced analysis
 if ($enhancedFile -and $oecdFile) {
     Write-Host "🔬 Generating enhanced + OECD analysis..." -ForegroundColor Yellow
-    python enhanced_analysis.py $enhancedFile.FullName $oecdFile.FullName
+    python scripts\analysis\enhanced_analysis.py $enhancedFile.FullName $oecdFile.FullName
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Enhanced analysis completed" -ForegroundColor Green
     } else {

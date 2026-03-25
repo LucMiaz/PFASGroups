@@ -7,8 +7,8 @@ Write-Host ("=" * 50) -ForegroundColor Cyan
 Write-Host ""
 
 # Check if we're in the right directory
-if (-not (Test-Path "scripts/enhanced_pfas_benchmark.py")) {
-    Write-Host "❌ Error: scripts/enhanced_pfas_benchmark.py not found!" -ForegroundColor Red
+if (-not (Test-Path "scripts/classify/enhanced_pfas_benchmark.py")) {
+    Write-Host "❌ Error: scripts/classify/enhanced_pfas_benchmark.py not found!" -ForegroundColor Red
     Write-Host "   Please run this script from the benchmark directory" -ForegroundColor Red
     exit 1
 }
@@ -24,7 +24,7 @@ function Run-Benchmark {
     param($number, $name)
     Write-Host "$number Running $name..." -ForegroundColor Yellow
     $input = "$($number.Substring(0,1))"
-    $input | python scripts/enhanced_pfas_benchmark.py
+    $input | python scripts/classify/enhanced_pfas_benchmark.py
     if ($LASTEXITCODE -ne 0) {
         Write-Host "❌ $name failed" -ForegroundColor Red
         exit 1
@@ -42,7 +42,7 @@ Run-Benchmark "5️⃣" "Complex Branched Structures Benchmark"
 
 # Highly Branched Compounds Test
 Write-Host "6️⃣ Running Highly Branched Compounds Test..." -ForegroundColor Yellow
-python scripts/test_highly_branched.py
+python scripts/classify/test_highly_branched.py
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Highly Branched Compounds Test failed" -ForegroundColor Red
     exit 1
@@ -52,7 +52,7 @@ Write-Host ""
 
 # Telomer Validation
 Write-Host "7️⃣ Running Telomer Detection Validation..." -ForegroundColor Yellow
-python scripts/validate_telomers.py
+python scripts/classify/validate_telomers.py
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Telomer Validation failed" -ForegroundColor Red
     exit 1
@@ -62,7 +62,7 @@ Write-Host ""
 
 # PFAS Definitions Benchmark
 Write-Host "8️⃣ Running PFAS Definitions Benchmark..." -ForegroundColor Yellow
-python scripts/benchmark_pfas_definitions.py
+python scripts/classify/benchmark_pfas_definitions.py
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ PFAS Definitions Benchmark failed" -ForegroundColor Red
     exit 1
@@ -72,23 +72,23 @@ Write-Host ""
 
 # Generate Unified Report
 Write-Host "📊 Generating Unified HTML Report..." -ForegroundColor Yellow
-python scripts/generate_unified_report.py
+python scripts/reports/generate_unified_report.py
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Unified Report generation failed" -ForegroundColor Red
     exit 1
 }
-Write-Host "✅ Unified Report generated" -ForegroundColor Green
+Write-Host "Unified Report generated" -ForegroundColor Green
 Write-Host ""
 
 # Run analysis scripts BEFORE organizing files
-Write-Host "📊 Running Analysis Scripts..." -ForegroundColor Cyan
+Write-Host "Running Analysis Scripts..." -ForegroundColor Cyan
 Write-Host ""
 
 # Timing Analysis
-Write-Host "⏱️  Analyzing timing performance..." -ForegroundColor Yellow
+Write-Host "⏱️Analyzing timing performance..." -ForegroundColor Yellow
 $timingFile = Get-ChildItem "data\pfas_timing_benchmark_*.json" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if ($timingFile) {
-    python scripts\analyze_timing.py $timingFile.FullName
+    python scripts\analysis\analyze_timing.py $timingFile.FullName
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Timing analysis completed" -ForegroundColor Green
     } else {
@@ -100,9 +100,9 @@ if ($timingFile) {
 Write-Host ""
 
 # Timing Models Analysis
-Write-Host "📈 Analyzing timing models (exponential fit)..." -ForegroundColor Yellow
+Write-Host "Analyzing timing models (exponential fit)..." -ForegroundColor Yellow
 if ($timingFile) {
-    python scripts\analyze_timing_models.py
+    python scripts\analysis\analyze_timing_models.py
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Timing models analysis completed" -ForegroundColor Green
     } else {
@@ -114,10 +114,10 @@ if ($timingFile) {
 Write-Host ""
 
 # Definitions Benchmark Analysis
-Write-Host "📋 Analyzing PFAS definitions benchmark..." -ForegroundColor Yellow
+Write-Host "Analyzing PFAS definitions benchmark..." -ForegroundColor Yellow
 $definitionFile = Get-ChildItem "data\pfas_definitions_benchmark_*.json" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if ($definitionFile) {
-    python scripts\analyze_definitions_benchmark.py $definitionFile.FullName
+    python scripts\analysis\analyze_definitions_benchmark.py $definitionFile.FullName
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Definitions analysis completed" -ForegroundColor Green
     } else {
@@ -132,7 +132,7 @@ Write-Host ""
 Write-Host "🧬 Analyzing complex branched structures..." -ForegroundColor Yellow
 $complexFile = Get-ChildItem "data\pfas_complex_branched_benchmark_*.json" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if ($complexFile) {
-    python scripts\analyze_complex.py $complexFile.FullName
+    python scripts\analysis\analyze_complex.py $complexFile.FullName
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Complex branched analysis completed" -ForegroundColor Green
     } else {
@@ -144,11 +144,11 @@ if ($complexFile) {
 Write-Host ""
 
 # Enhanced Analysis
-Write-Host "🔬 Analyzing enhanced functional groups and OECD..." -ForegroundColor Yellow
+Write-Host "Analyzing enhanced functional groups and OECD..." -ForegroundColor Yellow
 $enhancedFile = Get-ChildItem "data\pfas_enhanced_benchmark_*.json" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 $oecdFile = Get-ChildItem "data\pfas_oecd_benchmark_*.json" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if ($enhancedFile -and $oecdFile) {
-    python scripts\enhanced_analysis.py $enhancedFile.FullName $oecdFile.FullName
+    python scripts\analysis\enhanced_analysis.py $enhancedFile.FullName $oecdFile.FullName
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Enhanced analysis completed" -ForegroundColor Green
     } else {
@@ -175,7 +175,7 @@ Move-Item *_analysis.json data\ -Force -ErrorAction SilentlyContinue
 Move-Item *_results.json data\ -Force -ErrorAction SilentlyContinue
 Move-Item *_benchmark_*.json data\ -Force -ErrorAction SilentlyContinue
 Write-Host ""
-Write-Host "🎉 ALL BENCHMARKS COMPLETED SUCCESSFULLY!" -ForegroundColor Green
+Write-Host "ALL BENCHMARKS COMPLETED SUCCESSFULLY!" -ForegroundColor Green
 Write-Host ""
 Write-Host "📋 Results Summary:" -ForegroundColor Cyan
 Write-Host "   • Functional Groups: Tests basic PFAS group detection"
@@ -190,9 +190,9 @@ Write-Host "   • Comprehensive Statistics: LaTeX tables and benchmark summary 
 Write-Host ""
 
 # Telomer Validation Report
-Write-Host "🧪 Generating telomer validation report..." -ForegroundColor Yellow
+Write-Host "Generating telomer validation report..." -ForegroundColor Yellow
 if (Test-Path "data\telomer_validation_results.json") {
-    python scripts\generate_telomer_report.py
+    python scripts\reports\generate_telomer_report.py
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Telomer validation report completed" -ForegroundColor Green
     } else {
@@ -204,8 +204,8 @@ if (Test-Path "data\telomer_validation_results.json") {
 Write-Host ""
 
 # Comprehensive Benchmark Analysis
-Write-Host "📊 Generating comprehensive benchmark statistics..." -ForegroundColor Yellow
-python scripts\analyze_benchmarks_simple.py
+Write-Host "Generating comprehensive benchmark statistics..." -ForegroundColor Yellow
+python scripts\analysis\analyze_benchmarks_simple.py
 if ($LASTEXITCODE -eq 0) {
     Write-Host "✅ Comprehensive benchmark analysis completed" -ForegroundColor Green
 } else {
@@ -214,9 +214,9 @@ if ($LASTEXITCODE -eq 0) {
 Write-Host ""
 
 # LaTeX Tables Generation for Article
-Write-Host "📝 Generating LaTeX tables for article..." -ForegroundColor Yellow
-if (Test-Path "scripts\generate_latex_tables.py") {
-    python scripts\generate_latex_tables.py
+Write-Host "Generating LaTeX tables for article..." -ForegroundColor Yellow
+if (Test-Path "scripts\reports\generate_latex_tables.py") {
+    python scripts\reports\generate_latex_tables.py
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ LaTeX tables generated successfully" -ForegroundColor Green
         Write-Host "   • Main content: reports\pfasgroups_latex_results.tex" -ForegroundColor Gray
@@ -231,8 +231,8 @@ Write-Host ""
 
 # Add Test Metadata
 Write-Host "🏷️  Adding test metadata to PFAS groups and definitions..." -ForegroundColor Yellow
-if (Test-Path "scripts\add_test_metadata.py") {
-    python scripts\add_test_metadata.py
+if (Test-Path "scripts\data\add_test_metadata.py") {
+    python scripts\data\add_test_metadata.py
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Test metadata added successfully" -ForegroundColor Green
     } else {
@@ -245,8 +245,8 @@ Write-Host ""
 
 # Generate Telomer Validation LaTeX
 Write-Host "📝 Generating telomer validation LaTeX content..." -ForegroundColor Yellow
-if (Test-Path "scripts\generate_telomer_latex.py") {
-    python scripts\generate_telomer_latex.py
+if (Test-Path "scripts\reports\generate_telomer_latex.py") {
+    python scripts\reports\generate_telomer_latex.py
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Telomer LaTeX generated successfully" -ForegroundColor Green
         Write-Host "   • Content: reports\pfasgroups_telomer_validation.tex" -ForegroundColor Gray
@@ -271,24 +271,24 @@ Push-Location review-app
 
 # Check if database exists and backup if needed
 if (Test-Path "database\pfas_benchmark.db") {
-    Write-Host "📦 Backing up existing database..." -ForegroundColor Yellow
+    Write-Host "Backing up existing database..." -ForegroundColor Yellow
     $backupName = "database\pfas_benchmark.db.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
     Copy-Item "database\pfas_benchmark.db" $backupName
     Write-Host "✅ Backup created: $backupName" -ForegroundColor Green
     
     # Clear existing data
-    Write-Host "🗑️  Clearing old data from database..." -ForegroundColor Yellow
+    Write-Host "🗑️Clearing old data from database..." -ForegroundColor Yellow
     node -e "const db = require('./database/database'); const d = new db(); d.waitForReady().then(() => { return Promise.all([d.run('DELETE FROM manual_reviews'), d.run('DELETE FROM pfasgroups_results'), d.run('DELETE FROM pfasgroups_results_bycomponent'), d.run('DELETE FROM atlas_results'), d.run('DELETE FROM molecules')]); }).then(() => { console.log('✅ Database cleared'); process.exit(0); });"
 }
 
 # Import benchmark data
-Write-Host "📥 Importing benchmark data..." -ForegroundColor Yellow
+Write-Host "Importing benchmark data..." -ForegroundColor Yellow
 node scripts\import-benchmark-data.js
 if ($LASTEXITCODE -eq 0) {
     Write-Host "✅ Data imported successfully" -ForegroundColor Green
     
     # Calculate molecular formulas
-    Write-Host "🧪 Calculating molecular formulas..." -ForegroundColor Yellow
+    Write-Host "Calculating molecular formulas..." -ForegroundColor Yellow
     python scripts\calculate-formulas.py
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Molecular formulas calculated" -ForegroundColor Green
@@ -304,21 +304,21 @@ if ($LASTEXITCODE -eq 0) {
 Pop-Location
 Write-Host ""
 
-Write-Host "📊 Database Update Complete!" -ForegroundColor Green
+Write-Host "Database Update Complete!" -ForegroundColor Green
 Write-Host "   • Database: review-app\database\pfas_benchmark.db"
 Write-Host "   • Analysis reports: reports"
 Write-Host ""
 
 $reportFile = Get-ChildItem "html\unified_pfas_benchmark_report_*.html" -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 }
-Write-Host "🌐 Open the HTML file in your browser to view detailed results"
+Write-Host "Open the HTML file in your browser to view detailed results"
 Write-Host "📁 Files organized in: data\ (JSON), html\ (reports), imgs\ (plots)"
 Write-Host ""
-Write-Host "🔬 Review App:" -ForegroundColor Cyan
+Write-Host "Review App:" -ForegroundColor Cyan
 Write-Host "   • Navigate to: cd review-app" -ForegroundColor Gray
 Write-Host "   • Start server: node server.js" -ForegroundColor Gray
 Write-Host "   • Open browser: http://localhost:5000" -ForegroundColor Gray
 Write-Host "   • View Analysis Reports tab for timing, complex, and enhanced analysis" -ForegroundColor Gray
 Write-Host ""
-Write-Host "✨ Benchmark Suite Complete!" -ForegroundColor Green
+Write-Host "Benchmark Suite Complete!" -ForegroundColor Green
 

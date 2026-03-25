@@ -50,7 +50,7 @@ function Run-Script {
 # ---------------------------------------------------------------------------
 # Guard: must be run from benchmark/
 # ---------------------------------------------------------------------------
-if (-not (Test-Path "scripts\analyze_timing.py")) {
+if (-not (Test-Path "scripts\analysis\analyze_timing.py")) {
     Write-Host "ERROR: Run this script from the benchmark/ directory." -ForegroundColor Red
     exit 1
 }

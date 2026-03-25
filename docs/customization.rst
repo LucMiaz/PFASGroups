@@ -144,3 +144,37 @@ Custom SMARTS tips
 * Recursive SMARTS are supported.
 * Test your SMARTS with ``rdkit.Chem.rdchem.Mol.GetSubstructMatches`` before
   adding them to the library.
+
+Component-type constraints
+---------------------------
+
+Each entry in ``data/component_smarts_halogens.json`` may carry an optional
+``constraints`` key that is evaluated at match time against the *full* atom
+count of the component (backbone carbons **plus** directly attached halogens).
+
+Supported constraint keys:
+
+``gte`` (dict)
+   Minimum element count.  The component must contain at least *n* atoms of the
+   given element.  Example: ``{"F": 2}`` requires at least two fluorine atoms.
+
+``exclude`` (list)
+   Forbidden elements.  The component must contain none of the listed elements.
+   Example: ``["Cl"]`` rejects any component that carries a chlorine atom.
+
+Example JSON entry::
+
+   "Polyfluoroalkyl": {
+       "smarts": "...",
+       "constraints": {"gte": {"F": 2}}
+   }
+
+These constraints are attached to the component type itself, so they apply
+uniformly to every group that requires that component type — without needing to
+repeat the check in each group definition in ``Halogen_groups_smarts.json``.
+
+The built-in poly-halogenated alkyl component types (*Polyfluoroalkyl*,
+*Polychloroalkyl*, *Polybromoalkyl*, *Polyiodoalkyl*) each carry
+``{"gte": {"X": 2}}`` (where *X* is the respective halogen) to ensure that
+a component labelled *poly*halogenated bears at least two halogen substituents,
+distinguishing it from mono-halogenated components.

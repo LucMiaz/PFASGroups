@@ -83,8 +83,8 @@ fi
 echo "✅ Environment: $CONDA_DEFAULT_ENV"
 
 # ─── Directory check ──────────────────────────────────────────────────────────
-if [ ! -f "scripts/classify_halogengroups_clinventory.py" ]; then
-    echo "❌ Error: scripts/classify_halogengroups_clinventory.py not found!"
+if [ ! -f "scripts/classify/classify_halogengroups_clinventory.py" ]; then
+    echo "❌ Error: scripts/classify/classify_halogengroups_clinventory.py not found!"
     echo "   Please run this script from the benchmark/ directory."
     exit 1
 fi
@@ -110,7 +110,7 @@ LIMIT_FLAG=""
 if [ "$SKIP_CLASSIFY" = false ] && [ "$SKIP_HG" = false ]; then
     echo ""
     echo "1️⃣  Running HalogenGroups classification …"
-    python scripts/classify_halogengroups_clinventory.py \
+    python scripts/classify/classify_halogengroups_clinventory.py \
         --db-password "$DB_PASSWORD" \
         $LIMIT_FLAG $ALL_MOL_FLAG
     if [ $? -ne 0 ]; then
@@ -126,7 +126,7 @@ fi
 if [ "$SKIP_CLASSIFY" = false ] && [ "$SKIP_ATLAS" = false ]; then
     echo ""
     echo "2️⃣  Running PFAS-Atlas classification …"
-    python scripts/classify_pfasatlas_clinventory.py \
+    python scripts/classify/classify_pfasatlas_clinventory.py \
         --db-password "$DB_PASSWORD" \
         $LIMIT_FLAG
     if [ $? -ne 0 ]; then
@@ -142,7 +142,7 @@ fi
 if [ "$SKIP_CLASSIFY" = false ] && [ "$SKIP_PFASGROUPS" = false ]; then
     echo ""
     echo "2½️ Running PFASGroups (F-only) classification …"
-    python scripts/classify_pfasgroups_clinventory.py \
+    python scripts/classify/classify_pfasgroups_clinventory.py \
         --db-password "$DB_PASSWORD" \
         $LIMIT_FLAG
     if [ $? -ne 0 ]; then
@@ -178,7 +178,7 @@ if [ -n "$PFG_FILE" ]; then
     PFG_FLAG="--pfasgroups-file $PFG_FILE"
 fi
 
-python scripts/compare_clinventory_classifiers.py \
+python scripts/analysis/compare_clinventory_classifiers.py \
     --hg-file  "$HG_FILE" \
     --atlas-file "$ATLAS_FILE" \
     ${PFG_FLAG}
@@ -198,7 +198,7 @@ if [ -z "$CMP_FILE" ]; then
     exit 1
 fi
 
-python scripts/generate_clinventory_latex.py \
+python scripts/reports/generate_clinventory_latex.py \
     --hg-file    "$HG_FILE" \
     --atlas-file "$ATLAS_FILE" \
     --cmp-file   "$CMP_FILE" \

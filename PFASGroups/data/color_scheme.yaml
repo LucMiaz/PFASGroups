@@ -3,3 +3,24 @@ colorscheme:
   - "#306DBA"
   - "#9D206C"
   - "#51127C"
+tints:
+  orange-red:
+   - "#E15D0B"
+   - "#E67834"
+   - "#EB935C"
+   - "#F0AE85"
+  blue:
+   - "#306DBA"
+   - "#5385C6"
+   - "#759ED1"
+   - "#97B6DD"
+  magenta:
+   - "#9D206C"
+   - "#AD4585"
+   - "#BE6A9D"
+   - "#CE8FB5"
+  dark-purple:
+   - "#51127C"
+   - "#6E3A92"
+   - "#8B61A8"
+   - "#A888BD"

@@ -10,8 +10,8 @@
 #   python manage.py export_pfasgroup_overlap --list OECD         --output <benchmark>/data/oecd_overlap.csv
 set -uo pipefail
 
-ATLAS_SCRIPT="scripts/sankey_pfasgroups_atlas.py"
-HIERARCHY_SCRIPT="scripts/group_hierarchy_sankey.py"
+ATLAS_SCRIPT="scripts/plots/sankey_pfasgroups_atlas.py"
+HIERARCHY_SCRIPT="scripts/plots/group_hierarchy_sankey.py"
 
 # Adjust if your database list surnames differ:
 FLUORODB_OVERLAP="data/pfasgroup_overlap.csv"

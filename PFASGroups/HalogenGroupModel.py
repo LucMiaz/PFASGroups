@@ -77,6 +77,8 @@ class HalogenGroup():
         self.componentSaturation = kwargs.get('componentSaturation',None)
         self.componentHalogens = kwargs.get('componentHalogens', kwargs.get('componentHalogen', None))
         self.componentForm = kwargs.get("componentForm", None)
+        self._comp_type_to_halogen = {}      # populated by set_component_smarts
+        self._comp_type_to_constraints = {}  # populated by set_component_smarts
         self.set_component_smarts(kwargs.get('componentSmartss', {}))
         self.excludeHalogens = kwargs.get('excludeHalogens', None)
         self.max_dist_from_comp = kwargs.get('max_dist_from_comp', 0)
@@ -121,6 +123,17 @@ class HalogenGroup():
         """
         if not componentSmartss:
             return
+        # Build comp_type → halogen and comp_type → constraints mappings
+        self._comp_type_to_halogen = {
+            k: v['halogen']
+            for k, v in componentSmartss.items()
+            if isinstance(v, dict) and 'halogen' in v
+        }
+        self._comp_type_to_constraints = {
+            k: v['constraints']
+            for k, v in componentSmartss.items()
+            if isinstance(v, dict) and v.get('constraints')
+        }
         # if componentSmarts is None, or is not in (entirely) in the available componentSmartss
         if self.componentSmarts is None or (isinstance(self.componentSmarts,list) and not set(self.componentSmarts).issubset(componentSmartss.keys()) or (isinstance(self.componentSmarts, str) and not self.componentSmarts in componentSmartss.keys())):
             new_CS = []
@@ -200,6 +213,36 @@ class HalogenGroup():
 
     def __str__(self):
         return self.name
+
+    @staticmethod
+    def _check_component_constraints(comp_formula, constraints):
+        """Check a component's element formula against component-level constraints.
+
+        Parameters
+        ----------
+        comp_formula : dict
+            ``{element_symbol: count}`` for all atoms in the full component
+            (backbone + attached H/halogens).
+        constraints : dict
+            Component constraints with optional keys:
+
+            * ``'gte'`` – ``{element: min_count}``; component must have at least
+              *min_count* atoms of *element*.
+            * ``'exclude'`` – list of element symbols that must be absent from
+              the component.
+
+        Returns
+        -------
+        bool
+        """
+        for elem, n in constraints.get('gte', {}).items():
+            if comp_formula.get(elem, 0) < n:
+                return False
+        for elem in constraints.get('exclude', []):
+            if comp_formula.get(elem, 0) > 0:
+                return False
+        return True
+
     def constraint_gte(self, formula_dict):
         """Check 'greater than or equal' constraints on element counts.
 
@@ -601,6 +644,19 @@ class HalogenGroup():
                         key = frozenset(comp)
                         if key in seen_atom_sets:
                             continue
+                        # Per-component formula constraint check defined in
+                        # component_smarts_halogens.json (e.g. 'gte': {'F': 2}).
+                        # Done before adding to seen_atom_sets so the same atom-set
+                        # can still be accepted via a different comp_type.
+                        comp_constraints = self._comp_type_to_constraints.get(comp_type, {})
+                        if comp_constraints:
+                            full_comp = component_solver.get_full_component_atoms(comp)
+                            comp_formula = {}
+                            for idx in full_comp:
+                                sym = mol.GetAtomWithIdx(idx).GetSymbol()
+                                comp_formula[sym] = comp_formula.get(sym, 0) + 1
+                            if not self._check_component_constraints(comp_formula, comp_constraints):
+                                continue
                         seen_atom_sets.add(key)
                         matched_components.append(
                             component_solver.get_matched_component_dict(comp, None, comp_type, self)

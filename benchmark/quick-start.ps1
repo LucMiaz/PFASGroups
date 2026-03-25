@@ -26,7 +26,7 @@ if ($dataFiles.Count -eq 0) {
     Write-Host "⚠️  No benchmark data files found!" -ForegroundColor Yellow
     Write-Host ""
     Write-Host "Would you like to generate benchmark data now? (Recommended)" -ForegroundColor Cyan
-    Write-Host "  This will run: python scripts/enhanced_pfas_benchmark.py" -ForegroundColor White
+    Write-Host "  This will run: python scripts/classify/enhanced_pfas_benchmark.py" -ForegroundColor White
     Write-Host "  Estimated time: 5-15 minutes" -ForegroundColor White
     Write-Host ""
     $response = Read-Host "Generate data now? (Y/n)"
@@ -35,7 +35,7 @@ if ($dataFiles.Count -eq 0) {
         Write-Host ""
         Write-Host "⚠️  Continuing without data - the review app will be empty." -ForegroundColor Yellow
         Write-Host "   To generate data later, run:" -ForegroundColor White
-        Write-Host "   python scripts/enhanced_pfas_benchmark.py" -ForegroundColor Gray
+        Write-Host "   python scripts/classify/enhanced_pfas_benchmark.py" -ForegroundColor Gray
         Write-Host ""
     } else {
         Write-Host ""
@@ -44,19 +44,19 @@ if ($dataFiles.Count -eq 0) {
         Write-Host ""
         
         # Activate conda environment and run benchmark
-        $pythonCmd = "python scripts/enhanced_pfas_benchmark.py"
+        $pythonCmd = "python scripts/classify/enhanced_pfas_benchmark.py"
         
         # Check if conda is available
         $condaAvailable = Get-Command conda -ErrorAction SilentlyContinue
         if ($condaAvailable) {
             Write-Host "Using conda environment 'chem'..." -ForegroundColor Cyan
-            & conda run -n chem python scripts/enhanced_pfas_benchmark.py
+            & conda run -n chem python scripts/classify/enhanced_pfas_benchmark.py
             Write-Host ""
             Write-Host "📊 Generating telomer validation data..." -ForegroundColor Green
             & conda run -n chem python validate_telomers.py
         } else {
             Write-Host "Running with default Python..." -ForegroundColor Cyan
-            & python scripts/enhanced_pfas_benchmark.py
+            & python scripts/classify/enhanced_pfas_benchmark.py
             Write-Host ""
             Write-Host "📊 Generating telomer validation data..." -ForegroundColor Green
             & python validate_telomers.py

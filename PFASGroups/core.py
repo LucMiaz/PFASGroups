@@ -333,7 +333,13 @@ def preprocess_componentsSmarts(components):
                 smol.UpdatePropertyCache()
                 Chem.GetSymmSSSR(smol)
                 smol.GetRingInfo().NumRings()
-                _paths[n] = {"component": smol, "halogen": halogen, "form": form, "saturation": saturation}
+                _paths[n] = {
+                    "component": smol,
+                    "halogen": halogen,
+                    "form": form,
+                    "saturation": saturation,
+                    "constraints": names.get("constraints", {}),
+                }
     return _paths
 
 # --- Add SMARTS paths to function ---
