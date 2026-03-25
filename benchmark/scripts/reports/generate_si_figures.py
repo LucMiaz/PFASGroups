@@ -107,7 +107,7 @@ print(f"   HG mean: {ts['HalogenGroup_avg_time']:.1f} ms, Atlas mean: {ts['atlas
 # Use the OECD clinventory timing file which is large (~50MB) — skip raw data,
 # use bracket summaries instead.
 
-clinv_file = os.path.join(DATA, "clinventory_comparison_20260315T065332.json")
+clinv_file   = os.path.join(DATA, "clinventory_comparison_f_only_20260325_181212.json")
 with open(clinv_file) as f:
     clinv = json.load(f)
 
@@ -116,23 +116,18 @@ hg_stats = clinv["timing_overall"]["hg"]
 at_stats = clinv["timing_overall"]["atlas"]
 
 # --- Fig 1a: Multi-dataset timing box plot (OECD + CLInventory + large-molecule stress) ---
-oecd_timing_file = os.path.join(DATA, "oecd_clinventory_timing_20260315_062059.json")
+# Data rebuilt with PFASGroups(halogens='F') on all three datasets (2026-03-25)
+oecd_timing_file = os.path.join(DATA, "oecd_clinventory_timing_f_only_20260325_181212.json")
 with open(oecd_timing_file) as f:
     oecd_clinv_data = json.load(f)
 
-oecd_pg  = oecd_clinv_data["datasets"]["OECD"]["pg_timing"]
-oecd_at  = oecd_clinv_data["datasets"]["OECD"]["atlas_timing"]
-clinv_pg = oecd_clinv_data["datasets"]["clinventory (F)"]["pg_timing"]
-clinv_at = oecd_clinv_data["datasets"]["clinventory (F)"]["atlas_timing"]
-
-# Stress dataset: per-molecule timing for molecules with ≥35 heavy atoms
-stress_pg_times, stress_at_times = [], []
-stress_fullfile = os.path.join(DATA, "pfas_timing_benchmark_full_20260313_201139.json")
-if os.path.exists(stress_fullfile):
-    with open(stress_fullfile) as f:
-        stress_raw = json.load(f)
-    stress_pg_times = [r["PFASGroups_time_avg"] * 1000 for r in stress_raw if r["num_atoms"] >= 35]
-    stress_at_times = [r["atlas_time_avg"] * 1000 for r in stress_raw if r["num_atoms"] >= 35]
+oecd_pg     = oecd_clinv_data["datasets"]["OECD"]["pg_timing"]
+oecd_at     = oecd_clinv_data["datasets"]["OECD"]["atlas_timing"]
+clinv_pg    = oecd_clinv_data["datasets"]["clinventory (F)"]["pg_timing"]
+clinv_at    = oecd_clinv_data["datasets"]["clinventory (F)"]["atlas_timing"]
+stress_data = oecd_clinv_data["datasets"]["stress (\u226535 atoms)"]
+stress_pg   = stress_data["pg_timing"]
+stress_at   = stress_data["atlas_timing"]
 
 def _json_bxp(t):
     """Box-plot stats from a JSON summary dict that already contains p25/p75/p95.
@@ -168,8 +163,8 @@ bp_oecd_pg   = _json_bxp(oecd_pg)
 bp_oecd_at   = _json_bxp(oecd_at)
 bp_clinv_pg  = _json_bxp(clinv_pg)
 bp_clinv_at  = _json_bxp(clinv_at)
-bp_stress_pg = _exact_bxp(stress_pg_times) if stress_pg_times else _exact_bxp([80, 120, 200, 350, 600, 1000])
-bp_stress_at = _exact_bxp(stress_at_times) if stress_at_times else _exact_bxp([1, 10, 50, 100, 150, 200])
+bp_stress_pg = _json_bxp(stress_pg) if stress_pg.get("n", 0) > 0 else _exact_bxp([80, 120, 200, 350, 600, 1000])
+bp_stress_at = _json_bxp(stress_at) if stress_at.get("n", 0) > 0 else _exact_bxp([1, 10, 50, 100, 150, 200])
 
 fig, ax = plt.subplots(figsize=(9, 5))
 positions  = [1, 1.55, 3, 3.55, 5, 5.55]
@@ -186,9 +181,9 @@ for box, col in zip(bplot["boxes"], bp_colors):
     box.set_facecolor(col)
     box.set_alpha(0.75)
 
-n_oecd  = oecd_pg["n"]
-n_clinv = clinv_pg["n"]
-n_stress = len(stress_pg_times) if stress_pg_times else 0
+n_oecd   = oecd_pg["n"]
+n_clinv  = clinv_pg["n"]
+n_stress = stress_data["n_valid"]
 ax.set_xticks([1.275, 3.275, 5.275])
 ax.set_xticklabels(
     [f"OECD list\n(n={n_oecd:,})",
@@ -382,28 +377,29 @@ ax.set_xlim(0, 100)
 ax.invert_yaxis()
 savefig(fig, "atlas_agreement_bar")
 
-# --- Fig 2e: Atlas/PFASGroups disagreement examples ---
+# --- Fig 2e: Atlas/PFASGroups disagreement examples (pure vector SVG) ---
 print("  Disagreement molecule examples")
 try:
+    import re as _re
+    import subprocess as _sp
     from rdkit import Chem
-    from rdkit.Chem import Draw
+    from rdkit.Chem.Draw import rdMolDraw2D
 
-    # PFASGroups only: fluorinated compounds that Atlas does not flag.
-    # 6,469 pfg-only molecules = 4,093 F-only + 2,376 F+Cl/Br.
-    # PFASGroups' broad polyhalogenated groups accept minimally fluorinated
-    # structures (even mono-F) that do not meet PFAS-Atlas's polyfluoroalkyl
-    # threshold.
+    # PFASGroups only (F-only mode): 6,216 molecules — fluorinated compounds
+    # that Atlas does not flag. PFASGroups' broad polyhalogenated groups accept
+    # minimally fluorinated structures (even mono-F) that do not meet
+    # PFAS-Atlas's polyfluoroalkyl threshold.
     _pfg_only = [
         ("2'-Fluoroacetanilide",   "CC(=O)Nc1ccccc1F",
          "PFASGroups: polyhalogenated\naryl (mono-F on ring)"),
-        ("3-Fluoropropanoic acid", "O=C(O)CCF",
-         "PFASGroups: polyfluoroalkyl\ncarboxylic acid (1\u00d7 F)"),
-        ("5-Bromo-2-(difluoro-\nmethoxy)benzaldehyde", "O=Cc1cc(OC(F)F)ccc1Br",
-         "PFASGroups: ether,\npolyhalogenated alkyl (F+Br)"),
+        ("4,4-Difluorocyclohexanol", "OC1CCC(F)(F)CC1",
+         "PFASGroups: polyhalogenated\ncyclic (gem-di-F on ring)"),
+        ("2-(Difluoromethoxy)\nbenzaldehyde", "O=Cc1ccccc1OC(F)F",
+         "PFASGroups: ether,\nCHF\u2082 alkyl group"),
         ("4-Fluoropiperidine",     "FC1CCNCC1",
          "PFASGroups: polyhalogenated\ncyclic compound"),
-        ("2-Fluoro-5-iodo-\nbromobenzene", "Fc1ccc(I)cc1Br",
-         "PFASGroups: polyhalogenated\naryl (F+Br+I)"),
+        ("5-Fluoro-2-methyl-\npyrimidine-4-carboxylic acid", "Cc1cc(C(=O)O)cnc1F",
+         "PFASGroups: polyhalogenated\naryl (F on heteroaromatic ring)"),
     ]
     # PFAS-Atlas only: sp2 vinylic/allylic fluorides ("Other PFASs" in Atlas)
     # that PFASGroups misses because it targets sp3 polyfluoroalkyl chains.
@@ -416,49 +412,87 @@ try:
          "PFAS-Atlas: long-chain\nvinylidene fluoride"),
     ]
 
-    all_rows = [(smi, name, cap, "pfg") for name, smi, cap in _pfg_only] + \
-               [(smi, name, cap, "atlas") for name, smi, cap in _atlas_only]
-    parsed = [(Chem.MolFromSmiles(smi), name, cap, grp)
-              for smi, name, cap, grp in all_rows]
-    parsed = [(m, n, c, g) for m, n, c, g in parsed if m is not None]
+    def _mol_to_svg_inner(mol, w, h):
+        """Render mol with rdMolDraw2D and return inner SVG (no wrapper tag)."""
+        drawer = rdMolDraw2D.MolDraw2DSVG(w, h)
+        rdMolDraw2D.PrepareAndDrawMolecule(drawer, mol)
+        drawer.FinishDrawing()
+        svg = drawer.GetDrawingText()
+        inner = _re.sub(r'^.*?<svg[^>]*>\s*', '', svg, flags=_re.DOTALL)
+        inner = inner.rsplit('</svg>', 1)[0]
+        return inner.strip()
 
-    pfg_rows  = [(m, n, c) for m, n, c, g in parsed if g == "pfg"]
-    atlas_rows = [(m, n, c) for m, n, c, g in parsed if g == "atlas"]
-    ncols = max(len(pfg_rows), len(atlas_rows))
+    MOL_W, MOL_H   = 200, 150
+    NAME_H, CAP_H  = 30, 28
+    CELL_W         = 220
+    CELL_H         = MOL_H + NAME_H + CAP_H
+    ROW_LABEL_W    = 22
+    TITLE_H        = 38
+    NCOLS          = max(len(_pfg_only), len(_atlas_only))
+    total_w        = ROW_LABEL_W + NCOLS * CELL_W + 10
+    total_h        = TITLE_H + 2 * CELL_H + 20
 
-    fig, axes = plt.subplots(2, ncols, figsize=(2.8 * ncols, 6.5))
-    if axes.ndim == 1:
-        axes = axes.reshape(2, ncols)
+    parts = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{total_w}" height="{total_h}"'
+        f' viewBox="0 0 {total_w} {total_h}"'
+        f' font-family="Ubuntu, DejaVu Sans, Arial, sans-serif">',
+        f'<rect width="{total_w}" height="{total_h}" fill="white"/>',
+        f'<text x="{total_w // 2}" y="26" text-anchor="middle"'
+        f' font-size="13" font-weight="bold" fill="#222222">'
+        f'Representative classification disagreements: PFASGroups vs PFAS-Atlas</text>',
+    ]
 
-    row_data = [(pfg_rows, C0, "PFASGroups detects \u2014 PFAS-Atlas does not\n(minimally fluorinated; broad polyhalogenated groups)"),
-                (atlas_rows, C1, "PFAS-Atlas detects — PFASGroups does not\n(sp\u00b2 vinylic/allylic fluorides; outside polyfluoroalkyl scope)")]
+    _row_cfgs = [
+        (_pfg_only,   C0, "PFASGroups detects \u2014 PFAS-Atlas does not"),
+        (_atlas_only, C1, "PFAS-Atlas detects \u2014 PFASGroups does not"),
+    ]
+    for ri, (row_mols, rcol, row_title) in enumerate(_row_cfgs):
+        row_y = TITLE_H + ri * CELL_H
+        lx, ly = 11, row_y + CELL_H // 2
+        parts.append(
+            f'<text x="{lx}" y="{ly}" text-anchor="middle"'
+            f' font-size="8.5" font-weight="bold" fill="{rcol}"'
+            f' transform="rotate(-90 {lx} {ly})">{row_title}</text>'
+        )
+        for ci, (name, smi, cap) in enumerate(row_mols):
+            mol = Chem.MolFromSmiles(smi)
+            if mol is None:
+                continue
+            cell_x = ROW_LABEL_W + ci * CELL_W
+            mol_x  = cell_x + (CELL_W - MOL_W) // 2
+            mol_y  = row_y
+            inner  = _mol_to_svg_inner(mol, MOL_W, MOL_H)
+            parts.append(f'<g transform="translate({mol_x},{mol_y})">{inner}</g>')
+            tcx = cell_x + CELL_W // 2
+            for li, npart in enumerate(name.split("\n")):
+                parts.append(
+                    f'<text x="{tcx}" y="{mol_y + MOL_H + 14 + li * 13}"'
+                    f' text-anchor="middle" font-size="9.5" font-weight="bold"'
+                    f' fill="{rcol}">{npart}</text>'
+                )
+            for li, cpart in enumerate(cap.split("\n")):
+                parts.append(
+                    f'<text x="{tcx}" y="{mol_y + MOL_H + NAME_H + 13 + li * 12}"'
+                    f' text-anchor="middle" font-size="8" font-style="italic"'
+                    f' fill="#555555">{cpart}</text>'
+                )
+    parts.append('</svg>')
 
-    for ri, (row_mols, rcol, row_title) in enumerate(row_data):
-        for ci in range(ncols):
-            ax = axes[ri, ci]
-            ax.axis("off")
-            if ci < len(row_mols):
-                mol, name, cap = row_mols[ci]
-                img = Draw.MolToImage(mol, size=(220, 160))
-                ax.imshow(img)
-                ax.set_title(name, fontsize=8, fontweight="bold", pad=3,
-                             color=rcol)
-                ax.text(0.5, -0.10, cap, transform=ax.transAxes, ha="center",
-                        fontsize=7, style="italic", color="#555555",
-                        verticalalignment="top")
-        # Row label as a coloured left-edge annotation
-        axes[ri, 0].text(-0.25, 0.5, row_title.split("\n")[0],
-                         transform=axes[ri, 0].transAxes,
-                         ha="right", va="center", fontsize=8,
-                         fontweight="bold", color=rcol,
-                         rotation=90, clip_on=False)
+    svg_path = os.path.join(OUTDIR, "atlas_disagreement_examples.svg")
+    with open(svg_path, "w", encoding="utf-8") as _f:
+        _f.write("\n".join(parts))
+    print(f"  saved atlas_disagreement_examples.svg")
 
-    fig.suptitle("Representative classification disagreements: PFASGroups vs PFAS-Atlas",
-                 fontsize=11, fontweight="bold", y=1.01)
-    plt.tight_layout()
-    savefig(fig, "atlas_disagreement_examples")
-except ImportError as _e:
-    print(f"  [warn] RDKit not available — skipping disagreement figure ({_e})")
+    for _ext, _extra in [("pdf", []), ("png", ["--export-dpi", "150"])]:
+        _out = os.path.join(OUTDIR, f"atlas_disagreement_examples.{_ext}")
+        _sp.run(["inkscape", "--export-filename", _out] + _extra + [svg_path],
+                capture_output=True, check=False)
+        print(f"  saved atlas_disagreement_examples.{_ext} (inkscape)")
+
+except Exception as _e:
+    import traceback; traceback.print_exc()
+    print(f"  [warn] disagreement figure failed: {_e}")
 
 # --- Fig 2d: Timing CDF ---
 # We only have summary stats, so create a stylized CDF approximation
