@@ -71,12 +71,25 @@ from sklearn.model_selection import (
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
+import argparse as _argparse
+_db_parser = _argparse.ArgumentParser(add_help=False)
+_db_parser.add_argument("--db", "-d", default=None)
+_db_parser.add_argument("--both", action="store_true", default=None,
+                        help="Run both Exp A and Exp B without prompting.")
+_db_parser.add_argument("--exp-a-only", action="store_true", default=False,
+                        help="Run Exp A only without prompting.")
+_db_known, _ = _db_parser.parse_known_args()
+if _db_known.db:
+    DB = _db_known.db
+else:
+    DB = input('Input name of database (default: "invitrodb_v4_3"):') or "invitrodb_v4_3"
 SCRIPT_DIR   = Path(__file__).resolve().parent
 DATA_DIR     = SCRIPT_DIR.parents[1] / "data"
 TEST_DATA    = SCRIPT_DIR.parents[1] / "test_data"
 TXPP_TSV     = TEST_DATA / "TxP_PFAS_v1.tsv"
 TOXPRINT_TSV = TEST_DATA / "toxprint_V2.tsv"
-DATASET_PKL  = DATA_DIR / "toxcast_dataset.parquet"
+TXPP_SMI     = TEST_DATA / "toxcast_smiles.smi"   # ordered SMILES matching TSV rows (v4.2, 9014 chems)
+DATASET_PKL  = DATA_DIR / f"{DB}_dataset.parquet"
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -237,15 +250,60 @@ def make_model_grids(random_state: int = RANDOM_STATE) -> dict[str, GridSearchCV
 # Feature builders
 # ---------------------------------------------------------------------------
 
-def load_tsv_fingerprints(path: Path) -> np.ndarray:
+def load_tsv_fingerprints(
+    path: Path,
+    ref_smiles: list[str] | None = None,
+    tsv_smiles_path: Path | None = None,
+) -> np.ndarray:
     """
-    Load a pre-computed fingerprint TSV (rows = Structure #1…#9014, first col
-    is the row-index label).  Returns (9014, n_bits) uint8 array in row order.
+    Load a pre-computed fingerprint TSV (rows = Structure #1…#N, first col is
+    the row-index label).
+
+    If *ref_smiles* and *tsv_smiles_path* are provided, the raw TSV array is
+    re-indexed so that each row corresponds to the matching entry in
+    *ref_smiles* (InChIKey-based lookup).  Chemicals present in *ref_smiles*
+    but absent from the TSV receive an all-zero row, enabling use with
+    datasets larger than the original v4.2 library (9014 chemicals).
     """
     df = pd.read_csv(path, sep="\t", index_col=0)
-    X  = df.values.astype(np.uint8)
-    print(f"  Loaded {path.name}: shape={X.shape}  nonzero rows={int((X.sum(1)>0).sum())}")
-    return X
+    X_raw = df.values.astype(np.uint8)
+    print(f"  Loaded {path.name}: shape={X_raw.shape}  nonzero rows={int((X_raw.sum(1)>0).sum())}")
+
+    if ref_smiles is None or tsv_smiles_path is None:
+        return X_raw
+
+    # ── Build InChIKey → TSV-row index map from the ordered SMILES file ──
+    tsv_smiles = [ln.strip() for ln in tsv_smiles_path.read_text().splitlines() if ln.strip()]
+    if len(tsv_smiles) != X_raw.shape[0]:
+        raise ValueError(
+            f"{tsv_smiles_path.name} has {len(tsv_smiles)} entries but "
+            f"{path.name} has {X_raw.shape[0]} rows — cannot align"
+        )
+
+    def _ik(smi: str) -> str | None:
+        mol = Chem.MolFromSmiles(smi)
+        return Chem.inchi.MolToInchiKey(mol) if mol else None
+
+    tsv_key_to_idx: dict[str, int] = {}
+    for i, smi in enumerate(tsv_smiles):
+        key = _ik(smi)
+        if key is not None:
+            tsv_key_to_idx[key] = i
+
+    # ── Re-index to ref_smiles ────────────────────────────────────────────
+    X_aligned = np.zeros((len(ref_smiles), X_raw.shape[1]), dtype=np.uint8)
+    matched = 0
+    for j, smi in enumerate(ref_smiles):
+        idx = tsv_key_to_idx.get(_ik(smi))
+        if idx is not None:
+            X_aligned[j] = X_raw[idx]
+            matched += 1
+    missing = len(ref_smiles) - matched
+    print(
+        f"  Aligned to {len(ref_smiles)} ref chemicals: "
+        f"{matched} matched, {missing} filled with zeros"
+    )
+    return X_aligned
 
 
 def build_pfg_matrices(
@@ -647,7 +705,7 @@ def grouped_bar_by_fset(
     ax.set_ylabel(metric_label)
     ax.set_ylim(max(0, baseline - 0.05), 1.02)
     ax.set_title(
-        f"ToxCast – {metric_label}  [{experiment}]"
+        f"{DB} – {metric_label}  [{experiment}]"
         f"\n(mean ± SD across folds × models, nested CV)"
     )
     ax.legend(fontsize=9)
@@ -1082,7 +1140,7 @@ def print_and_save_tables(results: pd.DataFrame, out_dir: Path) -> None:
 
     # Save summary CSV
     summary_df = pd.DataFrame(summary_rows)
-    csv_path = out_dir / "toxcast_comparison_summary.csv"
+    csv_path = out_dir / f"{DB}_comparison_summary.csv"
     summary_df.to_csv(csv_path, index=False)
     print(f"\n[saved] {csv_path.name}")
 
@@ -1093,18 +1151,24 @@ def print_and_save_tables(results: pd.DataFrame, out_dir: Path) -> None:
 
 def main() -> None:
     # ------------------------------------------------------------------ load
+    if _db_known.both is not None or _db_known.exp_a_only:
+        doExpB = bool(_db_known.both) and not _db_known.exp_a_only
+    else:
+        _ans = input('Perform both experiments (Exp A: CF-containing chemicals; Exp B: full library) and generate all plots & tables? (press Enter to continue)')
+        doExpB = _ans.strip().lower() in ["y", "yes", ""]
+    
     print("Loading dataset …")
     tox = pd.read_parquet(DATASET_PKL)
 
     pfg_bin_cols = [c for c in tox.columns if c not in META_COLS + LABEL_COLS]
-    print(f"  ToxCast:  {len(tox):,} chemicals  |  {len(pfg_bin_cols)} PFASGroups binary columns")
+    print(f"  {DB}:  {len(tox):,} chemicals  |  {len(pfg_bin_cols)} PFASGroups binary columns")
 
     smiles_all = tox["smiles"].tolist()
 
     # ── Pre-compute fingerprint matrices ────────────────────────────────
     print("\nLoading pre-computed TSV fingerprints …")
-    X_txpp_all     = load_tsv_fingerprints(TXPP_TSV)        # (9014, 129)
-    X_toxprint_all = load_tsv_fingerprints(TOXPRINT_TSV)    # (9014, 729)
+    X_txpp_all     = load_tsv_fingerprints(TXPP_TSV,     smiles_all, TXPP_SMI)  # (n, 129)
+    X_toxprint_all = load_tsv_fingerprints(TOXPRINT_TSV, smiles_all, TXPP_SMI)  # (n, 729)
 
     print("\nComputing / loading PFASGroups embeddings …")
     pfg = build_pfg_matrices(smiles_all)
@@ -1115,7 +1179,7 @@ def main() -> None:
     # pfg_4x keys: 'EGR_4X' (n, 468), 'EGR_4X+mol' (n, 478)  [117 groups × 4 halogens (+10 mol)]
 
     print("\nGenerating Morgan fingerprints …")
-    X_morgan_all = build_morgan(smiles_all)                  # (9014, 512)
+    X_morgan_all = build_morgan(smiles_all)                  # (n, 512)
 
     X_toxprint_txpp_all  = np.hstack([X_toxprint_all, X_txpp_all]).astype(np.float32)     # ToxPrint+TxP_PFAS
     X_toxprint_pfgegr_all   = np.hstack([X_toxprint_all,
@@ -1127,7 +1191,7 @@ def main() -> None:
     # EXPERIMENT A  ─  CF-containing chemicals (non-zero TxP_PFAS rows)
     # ─────────────────────────────────────────────────────────────────────
     print("\n─── Experiment A: CF-containing chemicals ───")
-    cf_mask = (X_txpp_all.sum(axis=1) > 0)   # ~808 rows
+    cf_mask = (X_txpp_all.sum(axis=1) > 0)   # CF-containing (non-zero TxP_PFAS row)
     print(f"  CF-containing (TxP_PFAS non-zero): {int(cf_mask.sum())} / {len(cf_mask)}")
 
     X_txpp_cf      = X_txpp_all[cf_mask].astype(np.float32)
@@ -1173,49 +1237,50 @@ def main() -> None:
     # ─────────────────────────────────────────────────────────────────────
     # EXPERIMENT B  ─  Full ToxCast library
     # ─────────────────────────────────────────────────────────────────────
-    print("\n─── Experiment B: Full ToxCast library ───")
-    cv_full = StratifiedKFold(n_splits=OUTER_SPLITS, shuffle=True, random_state=RANDOM_STATE)
+    if doExpB:
+        print("\n─── Experiment B: Full ToxCast library ───")
+        cv_full = StratifiedKFold(n_splits=OUTER_SPLITS, shuffle=True, random_state=RANDOM_STATE)
 
-    # Build Exp B feature-set list
-    X_morgan_f32 = X_morgan_all.astype(np.float32)
-    fsets_b: list[tuple[str, np.ndarray]] = [
-        ("ToxPrint+TxP_PFAS",        X_toxprint_txpp_all),
-        ("Morgan+PFG_binary",         np.hstack([X_morgan_f32, pfg["binary"].astype(np.float32)])),
-        ("Morgan+PFG_binary+mol",     np.hstack([X_morgan_f32, pfg["binary+mol"].astype(np.float32)])),
-        ("Morgan+PFG_EGR",            np.hstack([X_morgan_f32, pfg["EGR"].astype(np.float32)])),
-        ("Morgan+PFG_EGR+mol",        np.hstack([X_morgan_f32, pfg["EGR+mol"].astype(np.float32)])),
-        ("Morgan+PFG_EGR+branch+mol", np.hstack([X_morgan_f32, pfg["EGR+branch+mol"].astype(np.float32)])),
-        ("Morgan+PFG_EGR+spacer+mol", np.hstack([X_morgan_f32, pfg["EGR+spacer+mol"].astype(np.float32)])),
-        ("Morgan+PFG_EGR+ring+mol",   np.hstack([X_morgan_f32, pfg["EGR+ring+mol"].astype(np.float32)])),
-        ("Morgan+PFG_EGR_4X+mol",     np.hstack([X_morgan_f32, pfg_4x["EGR_4X+mol"].astype(np.float32)])),
-        ("ToxPrint+PFG_EGR+mol",      X_toxprint_pfgegr_all),
-        ("ToxPrint+PFG_EGR_4X+mol",   X_toxprint_pfgegr4x_all),
-        ("ToxPrint+PFG_EGR+spacer+ring+mol",
-                                      np.hstack([X_toxprint_all, pfg["EGR+spacer+ring+mol"].astype(np.float32)])),
-        ("Morgan",                    X_morgan_f32),
-    ]
+        # Build Exp B feature-set list
+        X_morgan_f32 = X_morgan_all.astype(np.float32)
+        fsets_b: list[tuple[str, np.ndarray]] = [
+            ("ToxPrint+TxP_PFAS",        X_toxprint_txpp_all),
+            ("Morgan+PFG_binary",         np.hstack([X_morgan_f32, pfg["binary"].astype(np.float32)])),
+            ("Morgan+PFG_binary+mol",     np.hstack([X_morgan_f32, pfg["binary+mol"].astype(np.float32)])),
+            ("Morgan+PFG_EGR",            np.hstack([X_morgan_f32, pfg["EGR"].astype(np.float32)])),
+            ("Morgan+PFG_EGR+mol",        np.hstack([X_morgan_f32, pfg["EGR+mol"].astype(np.float32)])),
+            ("Morgan+PFG_EGR+branch+mol", np.hstack([X_morgan_f32, pfg["EGR+branch+mol"].astype(np.float32)])),
+            ("Morgan+PFG_EGR+spacer+mol", np.hstack([X_morgan_f32, pfg["EGR+spacer+mol"].astype(np.float32)])),
+            ("Morgan+PFG_EGR+ring+mol",   np.hstack([X_morgan_f32, pfg["EGR+ring+mol"].astype(np.float32)])),
+            ("Morgan+PFG_EGR_4X+mol",     np.hstack([X_morgan_f32, pfg_4x["EGR_4X+mol"].astype(np.float32)])),
+            ("ToxPrint+PFG_EGR+mol",      X_toxprint_pfgegr_all),
+            ("ToxPrint+PFG_EGR_4X+mol",   X_toxprint_pfgegr4x_all),
+            ("ToxPrint+PFG_EGR+spacer+ring+mol",
+                                        np.hstack([X_toxprint_all, pfg["EGR+spacer+ring+mol"].astype(np.float32)])),
+            ("Morgan",                    X_morgan_f32),
+        ]
 
-    for ep in LABEL_COLS:
-        if ep not in tox.columns:
-            continue
-        mask  = tox[ep].notna()
-        y     = tox.loc[mask, ep].values.astype(int)
-        n_pos = int(y.sum())
-        n_neg = len(y) - n_pos
-        if n_pos < MIN_POS_FULL or n_neg < MIN_POS_FULL:
-            print(f"  [skip B] {ep:<30} n={len(y)} pos={n_pos} neg={n_neg}")
-            continue
-        print(f"  [B] {ep:<30} n={len(y):5d}  pos={n_pos:5d}  ({100*n_pos/len(y):.0f}%)")
-        idx = mask.values
+        for ep in LABEL_COLS:
+            if ep not in tox.columns:
+                continue
+            mask  = tox[ep].notna()
+            y     = tox.loc[mask, ep].values.astype(int)
+            n_pos = int(y.sum())
+            n_neg = len(y) - n_pos
+            if n_pos < MIN_POS_FULL or n_neg < MIN_POS_FULL:
+                print(f"  [skip B] {ep:<30} n={len(y)} pos={n_pos} neg={n_neg}")
+                continue
+            print(f"  [B] {ep:<30} n={len(y):5d}  pos={n_pos:5d}  ({100*n_pos/len(y):.0f}%)")
+            idx = mask.values
 
-        for fset, X_full in fsets_b:
-            all_rows.extend(nested_cv_metrics(X_full[idx], y, cv_full, ep, fset, "Exp B"))
+            for fset, X_full in fsets_b:
+                all_rows.extend(nested_cv_metrics(X_full[idx], y, cv_full, ep, fset, "Exp B"))
 
     # ─────────────────────────────────────────────────────────────────────
     # Save raw results
     # ─────────────────────────────────────────────────────────────────────
     results = pd.DataFrame(all_rows)
-    out_csv = DATA_DIR / "toxcast_comparison_results.csv"
+    out_csv = DATA_DIR / f"{DB}_comparison_results.csv"
     results.to_csv(out_csv, index=False)
     print(f"\n[saved] {out_csv.name}")
 
@@ -1249,54 +1314,54 @@ def main() -> None:
     for pfg_name in ["PFG_binary", "PFG_EGR", "PFG_EGR+mol"]:
         safe = pfg_name.replace("+", "_plus_")
         scatter_two_fsets(results, "Exp A", "TxP_PFAS", pfg_name, "roc_auc", "ROC-AUC",
-                          DATA_DIR / f"toxcast_comparison_{safe}_vs_txp_auc.png")
+                          DATA_DIR / f"{DB}_comparison_{safe}_vs_txp_auc.png")
         scatter_two_fsets(results, "Exp A", "TxP_PFAS", pfg_name, "avg_prec", "Average Precision",
-                          DATA_DIR / f"toxcast_comparison_{safe}_vs_txp_ap.png")
+                          DATA_DIR / f"{DB}_comparison_{safe}_vs_txp_ap.png")
 
     # 4. Delta bar plots — PFG embedding richness comparison (Exp A)
     delta_bar_plot(results, "Exp A", "PFG_binary", "PFG_EGR",
                    "roc_auc", "ROC-AUC",
-                   DATA_DIR / "toxcast_comparison_delta_EGR_vs_binary_A.png")
+                   DATA_DIR / f"{DB}_comparison_delta_EGR_vs_binary_A.png")
     delta_bar_plot(results, "Exp A", "PFG_EGR", "PFG_EGR+mol",
                    "roc_auc", "ROC-AUC",
-                   DATA_DIR / "toxcast_comparison_delta_mol_boost_A.png")
+                   DATA_DIR / f"{DB}_comparison_delta_mol_boost_A.png")
 
     # 5. Morgan+PFG vs Morgan delta (Exp B)
     delta_bar_plot(results, "Exp B", "Morgan", "Morgan+PFG_binary",
                    "roc_auc", "ROC-AUC",
-                   DATA_DIR / "toxcast_comparison_delta_morgan_pfg_binary_B.png")
+                   DATA_DIR / f"{DB}_comparison_delta_morgan_pfg_binary_B.png")
     delta_bar_plot(results, "Exp B", "Morgan", "Morgan+PFG_EGR+mol",
                    "roc_auc", "ROC-AUC",
-                   DATA_DIR / "toxcast_comparison_delta_morgan_pfg_EGR_B.png")
+                   DATA_DIR / f"{DB}_comparison_delta_morgan_pfg_EGR_B.png")
 
     # 6. Morgan+PFG vs ToxPrint+TxP_PFAS scatter (Exp B)
     scatter_two_fsets(results, "Exp B", "ToxPrint+TxP_PFAS", "Morgan+PFG_EGR+mol",
                       "roc_auc", "ROC-AUC",
-                      DATA_DIR / "toxcast_comparison_morgan_pfg_vs_toxprint_auc.png")
+                      DATA_DIR / f"{DB}_comparison_morgan_pfg_vs_toxprint_auc.png")
     scatter_two_fsets(results, "Exp B", "ToxPrint+TxP_PFAS", "Morgan+PFG_EGR+mol",
                       "avg_prec", "Average Precision",
-                      DATA_DIR / "toxcast_comparison_morgan_pfg_vs_toxprint_ap.png")
+                      DATA_DIR / f"{DB}_comparison_morgan_pfg_vs_toxprint_ap.png")
 
     # 7. Radar charts — per-endpoint comparison
     radar_fset_comparison(
         results, "Exp A",
         list(FSET_COLORS_A.keys()),
         FSET_COLORS_A, "roc_auc", "ROC-AUC",
-        DATA_DIR / "toxcast_comparison_radar_A_auc.png",
+        DATA_DIR / f"{DB}_comparison_radar_A_auc.png",
     )
     radar_fset_comparison(
         results, "Exp B",
         list(FSET_COLORS_B.keys()),
         FSET_COLORS_B, "roc_auc", "ROC-AUC",
-        DATA_DIR / "toxcast_comparison_radar_B_auc.png",
+        DATA_DIR / f"{DB}_comparison_radar_B_auc.png",
     )
 
     # 8. Combined 2×2 overview
     summary_2x2(results, FSET_COLORS_A, FSET_COLORS_B,
-                DATA_DIR / "toxcast_comparison_summary.png")
+                DATA_DIR / f"{DB}_comparison_summary.png")
 
     print("\nDone. Outputs:")
-    for f in sorted(DATA_DIR.glob("toxcast_comparison_*")):
+    for f in sorted(DATA_DIR.glob(f"{DB}_comparison_*")):
         print(f"  {f.name}")
 
 

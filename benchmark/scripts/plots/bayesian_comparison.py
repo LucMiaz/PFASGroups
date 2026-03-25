@@ -95,7 +95,8 @@ _SIG_COLORS = {
 
 
 def _draw_posterior_figure(best_diffs: dict, ep_order: list,
-                           best_rows: "pd.DataFrame" = None) -> None:
+                           best_rows: "pd.DataFrame" = None,
+                           suffix: str = "") -> None:
     """
     For each (endpoint, metric) pair, plot the posterior KDE of mean differences
     (best PFASGroups − TxP_PFAS) with ROPE regions shaded.
@@ -192,7 +193,7 @@ def _draw_posterior_figure(best_diffs: dict, ep_order: list,
             ax.spines[["top", "right", "left"]].set_visible(False)
 
     for ext in ("png", "pdf"):
-        out = IMGS_DIR / f"bayesian_posteriors.{ext}"
+        out = IMGS_DIR / f"bayesian_posteriors{suffix}.{ext}"
         fig.savefig(out, dpi=150, bbox_inches="tight")
         print(f"[saved] {out.relative_to(IMGS_DIR.parent)}")
     plt.close(fig)
@@ -202,8 +203,10 @@ def _draw_posterior_figure(best_diffs: dict, ep_order: list,
 # Main
 # ---------------------------------------------------------------------------
 
-def main() -> None:
-    raw = pd.read_csv(DATA_DIR / "toxcast_comparison_results.csv")
+def main(dataset: str = "toxcast") -> None:
+    suffix = f"_{dataset}" if dataset != "toxcast" else ""
+
+    raw = pd.read_csv(DATA_DIR / f"{dataset}_comparison_results.csv")
     df  = raw[(raw["experiment"] == "Exp A") &
               (raw["model"] == "GradientBoosting")].copy()
 
@@ -251,7 +254,7 @@ def main() -> None:
                 })
 
     result_df = pd.DataFrame(rows)
-    out_csv = DATA_DIR / "bayesian_comparison.csv"
+    out_csv = DATA_DIR / f"bayesian_comparison{suffix}.csv"
     result_df.to_csv(out_csv, index=False)
     print(f"[saved] {out_csv.relative_to(DATA_DIR.parent)}")
 
@@ -362,7 +365,7 @@ def main() -> None:
     )
 
     for ext in ("png", "pdf"):
-        out = IMGS_DIR / f"bayesian_comparison.{ext}"
+        out = IMGS_DIR / f"bayesian_comparison{suffix}.{ext}"
         fig.savefig(out, dpi=150, bbox_inches="tight")
         print(f"[saved] {out.relative_to(IMGS_DIR.parent)}")
     plt.close(fig)
@@ -370,7 +373,7 @@ def main() -> None:
     # ------------------------------------------------------------------
     # Figure 2: Posterior distributions with ROPE
     # ------------------------------------------------------------------
-    _draw_posterior_figure(best_diffs, ep_order, best_rows=best_rows)
+    _draw_posterior_figure(best_diffs, ep_order, best_rows=best_rows, suffix=suffix)
 
     # ------------------------------------------------------------------
     # Print LaTeX table for best PFG per endpoint x metric
@@ -410,4 +413,13 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    _parser = argparse.ArgumentParser(
+        description="Bayesian correlated t-test comparison of PFASGroups vs TxP_PFAS."
+    )
+    _parser.add_argument(
+        "--dataset", "-d", default="toxcast",
+        help="Dataset prefix used in input CSV and output filenames (default: 'toxcast').",
+    )
+    _args = _parser.parse_args()
+    main(_args.dataset)

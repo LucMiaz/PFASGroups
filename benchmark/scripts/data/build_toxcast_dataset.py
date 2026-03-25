@@ -63,9 +63,9 @@ ENDPOINTS = {
 HITC_THRESHOLD = 0.9  # ToxCast convention: hitc ≥ 0.9 → active
 
 
-def get_engine(user: str, password: str) -> object:
+def get_engine(user: str, password: str, db: str) -> object:
     return create_engine(
-        f"mariadb+mariadbconnector://{user}:{password}@127.0.0.1/toxcast",
+        f"mariadb+mariadbconnector://{user}:{password}@127.0.0.1/{db}",
         pool_pre_ping=True,
     )
 
@@ -118,7 +118,7 @@ def build_fingerprint_matrix(
         saturation=None,
     )
     n_groups    = len(_probe)
-    group_names = _info["group_names"]
+    group_names = _info
 
     X      = np.zeros((len(smiles_list), n_groups), dtype=np.uint8)
     errors = 0
@@ -195,8 +195,8 @@ def build_label_matrix(engine, chids: list[int]) -> pd.DataFrame:
 # Step 4 – assemble & save
 # ---------------------------------------------------------------------------
 
-def build_and_save(user: str, password: str) -> None:
-    engine = get_engine(user, password)
+def build_and_save(user: str, password: str, db: str) -> None:
+    engine = get_engine(user, password, db)
 
     # 1 – chemicals
     chem_df = load_chemicals(engine)
@@ -236,13 +236,13 @@ def build_and_save(user: str, password: str) -> None:
         f"overall hit-rate={100*active/max(tested,1):.1f}%"
     )
 
-    dataset_path = DATA_DIR / "toxcast_dataset.parquet"
+    dataset_path = DATA_DIR / f"{_db}_dataset.parquet"
     merged.to_parquet(dataset_path, index=False)
     print(f"[saved] full dataset → {dataset_path}")
 
     # Compact CSV summary (metadata + labels only, no fingerprint columns)
     summary = merged[["chid", "casn", "chnm", "dsstox_substance_id", "smiles"] + label_cols]
-    summary_path = DATA_DIR / "toxcast_labels_summary.csv"
+    summary_path = DATA_DIR / f"{_db}_labels_summary.csv"
     summary.to_csv(summary_path, index=False)
     print(f"[saved] label summary → {summary_path}")
 
@@ -255,6 +255,14 @@ def build_and_save(user: str, password: str) -> None:
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    _user     = input("DB username: ")
-    _password = getpass(f"DB password for {_user}: ")
-    build_and_save(_user, _password)
+    import argparse
+    _parser = argparse.ArgumentParser(description="Build ML-ready ToxCast dataset from MariaDB.")
+    _parser.add_argument("--user",     "-u", default=None)
+    _parser.add_argument("--password", "-p", default=None)
+    _parser.add_argument("--db",       "-d", default=None,
+                         help="Database name (default: invitrodb_v4_3).")
+    _args     = _parser.parse_args()
+    _user     = _args.user     or input("DB username: ")
+    _password = _args.password or getpass(f"DB password for {_user}: ")
+    _db       = _args.db       or input("Database name (default invitrodb_v4_3): ") or "invitrodb_v4_3"
+    build_and_save(_user, _password, _db)

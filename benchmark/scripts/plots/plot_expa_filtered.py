@@ -259,13 +259,42 @@ def _draw_barplot_figure(per_ep_model: pd.DataFrame, fs_filtered: list,
     return fig
 
 
-def main() -> None:
+def main(dataset: str = "toxcast") -> None:
+    suffix = f"_{dataset}" if dataset != "toxcast" else ""
+
+    # ------------------------------------------------------------------ #
+    # Load comparison results                                              #
+    # ------------------------------------------------------------------ #
+    raw = pd.read_csv(DATA_DIR / f"{dataset}_comparison_results.csv")
+    df  = raw[raw["experiment"] == "Exp A"].copy()
+
     # ------------------------------------------------------------------ #
     # Step 1: identify predictable endpoints                               #
+    # Derive ep_max directly from comparison results (avg over folds &     #
+    # models, then max over feature sets).                                 #
     # ------------------------------------------------------------------ #
-    per_ep = pd.read_csv(DATA_DIR / "expa_per_endpoint_summary.csv")
-    both   = per_ep[per_ep["model"] == "both"].copy()
-    ep_max = both.groupby("endpoint")[f"{PRIMARY}_mean"].max()
+    per_ep_summary = DATA_DIR / f"{dataset}_per_endpoint_summary.csv"
+    if not per_ep_summary.exists():
+        per_ep_summary = DATA_DIR / "expa_per_endpoint_summary.csv"
+        if per_ep_summary.exists():
+            print(f"  [info] Using fallback per-endpoint summary: {per_ep_summary.name}")
+
+    if per_ep_summary.exists():
+        per_ep = pd.read_csv(per_ep_summary)
+        both   = per_ep[per_ep["model"] == "both"].copy()
+        ep_max = both.groupby("endpoint")[f"{PRIMARY}_mean"].max()
+    else:
+        # Derive ep_max inline from comparison results
+        ep_max = (
+            df.groupby(["endpoint", "feature_set", "model"])[PRIMARY]
+            .mean()
+            .groupby(["endpoint", "feature_set"])
+            .mean()
+            .reset_index()
+            .groupby("endpoint")[PRIMARY]
+            .max()
+        )
+
     good_eps = sorted(ep_max.sort_values(ascending=False).head(N_PLOTS).index.tolist())
 
     print(f"Top {N_PLOTS} endpoints by best ROC-AUC:")
@@ -276,8 +305,6 @@ def main() -> None:
     # ------------------------------------------------------------------ #
     # Step 2: top-2 feature sets per predictable endpoint                  #
     # ------------------------------------------------------------------ #
-    raw = pd.read_csv(DATA_DIR / "toxcast_comparison_results.csv")
-    df  = raw[raw["experiment"] == "Exp A"].copy()
 
     agg = (
         df.groupby(["endpoint", "feature_set", "model"])[METRICS]
@@ -319,11 +346,11 @@ def main() -> None:
                  + [f"{m}_{s}" for m in METRICS for s in ["mean", "std"]])
     report_df = report_df[col_order].sort_values(["endpoint", "rank", "model"])
 
-    out_csv = DATA_DIR / "expa_top_per_endpoint.csv"
+    out_csv = DATA_DIR / f"expa_top_per_endpoint{suffix}.csv"
     report_df.to_csv(out_csv, index=False, float_format="%.6f")
     print(f"\n[saved] {out_csv.relative_to(DATA_DIR.parent)}")
 
-    out_md = DATA_DIR / "expa_top_per_endpoint.md"
+    out_md = DATA_DIR / f"expa_top_per_endpoint{suffix}.md"
     out_md.write_text(_md_top2(report_df[report_df["model"] == "both"]), encoding="utf-8")
     print(f"[saved] {out_md.relative_to(DATA_DIR.parent)}")
 
@@ -363,7 +390,7 @@ def main() -> None:
         fig = _draw_barplot_figure(per_ep_model, fs_filtered, good_eps, model,
                                    ep_pos_rate=ep_pos_rate)
 
-        stem = f"expa_barplot_{model}"
+        stem = f"expa_barplot_{model}{suffix}"
         for ext in ("png", "pdf"):
             out = IMGS_DIR / f"{stem}.{ext}"
             fig.savefig(out, dpi=150, bbox_inches="tight")
@@ -374,5 +401,14 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    _parser = argparse.ArgumentParser(
+        description="Experiment A filtered bar-plot figures."
+    )
+    _parser.add_argument(
+        "--dataset", "-d", default="toxcast",
+        help="Dataset prefix used in input CSV and output filenames (default: 'toxcast').",
+    )
+    _args = _parser.parse_args()
+    main(_args.dataset)
 

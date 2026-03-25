@@ -51,11 +51,11 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 DATA_DIR   = SCRIPT_DIR.parents[1] / "data"
 MODEL_DIR  = DATA_DIR / "models"
 MODEL_DIR.mkdir(exist_ok=True)
-
+DB = 'invitrodb_v4_3'  # used in output filenames; can be overridden by user input at runtime
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-DATASET_PATH   = DATA_DIR / "toxcast_dataset.parquet"
+DATASET_PATH   = DATA_DIR / f"{DB}_dataset.parquet"
 MIN_POSITIVES  = 20      # skip endpoint if fewer than this many positives
 N_FOLDS        = 5
 RANDOM_STATE   = 42
@@ -203,7 +203,7 @@ def plot_heatmap(
         fmt=annot_fmt,
         linewidths=0.5,
         mask=mask,
-        cbar_kws={"label": title.split("–")[-1].strip()},
+        cbar_kws={"label": title.split("-")[-1].strip()},
     )
     ax.set_title(title, fontsize=12, pad=10)
     ax.set_xlabel("")
@@ -262,7 +262,7 @@ def main() -> None:
     # Save CV results
     # ------------------------------------------------------------------
     results_df = pd.DataFrame(all_metrics)
-    results_path = DATA_DIR / "toxcast_cv_results.csv"
+    results_path = DATA_DIR / f"{DB}_cv_results.csv"
     results_df.to_csv(results_path, index=False)
     print(f"\n[saved] CV results → {results_path}")
 
@@ -285,12 +285,12 @@ def main() -> None:
     # ------------------------------------------------------------------
     # Heatmaps
     # ------------------------------------------------------------------
-    plot_heatmap(pivot_auc, "ToxCast / PFASGroups – ROC-AUC (5-fold CV)",
-                 DATA_DIR / "toxcast_auc_heatmap.png", vmin=0.5, vmax=1.0)
-    plot_heatmap(pivot_ap,  "ToxCast / PFASGroups – Average Precision (5-fold CV)",
-                 DATA_DIR / "toxcast_auprc_heatmap.png", vmin=0.0, vmax=1.0)
-    plot_heatmap(pivot_mcc, "ToxCast / PFASGroups – MCC (5-fold CV)",
-                 DATA_DIR / "toxcast_mcc_heatmap.png", vmin=-0.2, vmax=0.8, cmap="RdYlGn")
+    plot_heatmap(pivot_auc, f"{DB} / PFASGroups – ROC-AUC (5-fold CV)",
+                 DATA_DIR / f"{DB}_auc_heatmap.png", vmin=0.5, vmax=1.0)
+    plot_heatmap(pivot_ap,  f"{DB} / PFASGroups – Average Precision (5-fold CV)",
+                 DATA_DIR / f"{DB}_auprc_heatmap.png", vmin=0.0, vmax=1.0)
+    plot_heatmap(pivot_mcc, f"{DB} / PFASGroups – MCC (5-fold CV)",
+                 DATA_DIR / f"{DB}_mcc_heatmap.png", vmin=-0.2, vmax=0.8, cmap="RdYlGn")
 
     # ------------------------------------------------------------------
     # Feature importance (aggregate RF importances across endpoints)
@@ -299,7 +299,7 @@ def main() -> None:
         imp_df = pd.DataFrame(all_importance, index=fp_cols)
         imp_df["mean"] = imp_df.mean(axis=1)
         imp_df = imp_df.sort_values("mean", ascending=False)
-        imp_path = DATA_DIR / "toxcast_feature_importance.csv"
+        imp_path = DATA_DIR / f"{DB}_feature_importance.csv"
         imp_df.to_csv(imp_path)
         print(f"[saved] feature importances → {imp_path}")
 
@@ -311,9 +311,9 @@ def main() -> None:
         ax.set_ylabel("Mean importance")
         ax.tick_params(axis="x", labelsize=8)
         plt.tight_layout()
-        fig.savefig(DATA_DIR / "toxcast_top_features.png", dpi=150)
+        fig.savefig(DATA_DIR / f"{DB}_top_features.png", dpi=150)
         plt.close(fig)
-        print(f"[plot] saved → {DATA_DIR / 'toxcast_top_features.png'}")
+        print(f"[plot] saved → {DATA_DIR / f'{DB}_top_features.png'}")
 
     # ------------------------------------------------------------------
     # Save trained models
@@ -328,11 +328,11 @@ def main() -> None:
     print("\nDone.")
     print("  Outputs:")
     print(f"    {results_path}")
-    print(f"    {DATA_DIR / 'toxcast_auc_heatmap.png'}")
-    print(f"    {DATA_DIR / 'toxcast_auprc_heatmap.png'}")
-    print(f"    {DATA_DIR / 'toxcast_mcc_heatmap.png'}")
-    print(f"    {DATA_DIR / 'toxcast_feature_importance.csv'}")
-    print(f"    {DATA_DIR / 'toxcast_top_features.png'}")
+    print(f"    {DATA_DIR / f'{DB}_auc_heatmap.png'}")
+    print(f"    {DATA_DIR / f'{DB}_auprc_heatmap.png'}")
+    print(f"    {DATA_DIR / f'{DB}_mcc_heatmap.png'}")
+    print(f"    {DATA_DIR / f'{DB}_feature_importance.csv'}")
+    print(f"    {DATA_DIR / f'{DB}_top_features.png'}")
 
 
 if __name__ == "__main__":
