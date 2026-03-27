@@ -53,7 +53,8 @@ function Write-Step([string]$msg) {
 function Invoke-CondaPython([string]$script, [string[]]$PyArgs, [string]$label) {
     Write-Step $label
     $t0 = Get-Date
-    conda run -n $Env python $script @PyArgs
+    # -u: force unbuffered stdout/stderr so print() output appears immediately
+    conda run -n $Env python -u $script @PyArgs
     if ($LASTEXITCODE -ne 0) {
         Write-Host "[ERROR] '$script' exited with code $LASTEXITCODE" -ForegroundColor Red
         exit $LASTEXITCODE

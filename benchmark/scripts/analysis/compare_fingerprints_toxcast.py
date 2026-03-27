@@ -41,6 +41,7 @@ from __future__ import annotations
 import os
 os.environ["PYTHONWARNINGS"] = "ignore"
 
+import time
 import warnings
 warnings.filterwarnings("ignore")
 from pathlib import Path
@@ -203,7 +204,7 @@ def _rf_grid(random_state: int) -> GridSearchCV:
     base = RandomForestClassifier(
         class_weight="balanced",
         random_state=random_state,
-        n_jobs=-1,
+        n_jobs=1,          # GridSearchCV(n_jobs=-1) already parallelises grid combos
     )
     param_grid = {
         "n_estimators": [200, 400],
@@ -1149,6 +1150,14 @@ def print_and_save_tables(results: pd.DataFrame, out_dir: Path) -> None:
 # Main
 # ---------------------------------------------------------------------------
 
+def _checkpoint(rows: list[dict], path: Path) -> None:
+    """Append a batch of result rows to the CSV checkpoint (thread-safe at process level)."""
+    if not rows:
+        return
+    df = pd.DataFrame(rows)
+    df.to_csv(path, mode="a", header=not path.exists(), index=False)
+
+
 def main() -> None:
     # ------------------------------------------------------------------ load
     if _db_known.both is not None or _db_known.exp_a_only:
@@ -1218,6 +1227,8 @@ def main() -> None:
     ]
 
     all_rows: list[dict] = []
+    out_csv = DATA_DIR / f"{DB}_comparison_results.csv"
+    out_csv.unlink(missing_ok=True)   # clear any stale checkpoint from a previous run
     for ep in LABEL_COLS:
         if ep not in tox_cf.columns:
             continue
@@ -1228,11 +1239,16 @@ def main() -> None:
         if n_pos < MIN_POS_PFAS or n_neg < MIN_POS_PFAS:
             print(f"  [skip A] {ep:<30} n={len(y)} pos={n_pos} neg={n_neg}")
             continue
-        print(f"  [A] {ep:<30} n={len(y):3d}  pos={n_pos:3d}  ({100*n_pos/len(y):.0f}%)")
+        print(f"  [A] {ep:<30} n={len(y):3d}  pos={n_pos:3d}  ({100*n_pos/len(y):.0f}%)", flush=True)
         idx = mask.values
 
-        for fset, X_full in fsets_a:
-            all_rows.extend(nested_cv_metrics(X_full[idx], y, cv_small, ep, fset, "Exp A"))
+        for fi, (fset, X_full) in enumerate(fsets_a):
+            t_fs = time.time()
+            print(f"    [{fi+1}/{len(fsets_a)}] {fset} …", end=" ", flush=True)
+            ep_rows = nested_cv_metrics(X_full[idx], y, cv_small, ep, fset, "Exp A")
+            all_rows.extend(ep_rows)
+            _checkpoint(ep_rows, out_csv)
+            print(f"done ({time.time()-t_fs:.0f}s)", flush=True)
 
     # ─────────────────────────────────────────────────────────────────────
     # EXPERIMENT B  ─  Full ToxCast library
@@ -1270,19 +1286,23 @@ def main() -> None:
             if n_pos < MIN_POS_FULL or n_neg < MIN_POS_FULL:
                 print(f"  [skip B] {ep:<30} n={len(y)} pos={n_pos} neg={n_neg}")
                 continue
-            print(f"  [B] {ep:<30} n={len(y):5d}  pos={n_pos:5d}  ({100*n_pos/len(y):.0f}%)")
+            print(f"  [B] {ep:<30} n={len(y):5d}  pos={n_pos:5d}  ({100*n_pos/len(y):.0f}%)", flush=True)
             idx = mask.values
 
-            for fset, X_full in fsets_b:
-                all_rows.extend(nested_cv_metrics(X_full[idx], y, cv_full, ep, fset, "Exp B"))
+            for fi, (fset, X_full) in enumerate(fsets_b):
+                t_fs = time.time()
+                print(f"    [{fi+1}/{len(fsets_b)}] {fset} …", end=" ", flush=True)
+                ep_rows = nested_cv_metrics(X_full[idx], y, cv_full, ep, fset, "Exp B")
+                all_rows.extend(ep_rows)
+                _checkpoint(ep_rows, out_csv)
+                print(f"done ({time.time()-t_fs:.0f}s)", flush=True)
 
     # ─────────────────────────────────────────────────────────────────────
-    # Save raw results
+    # Save raw results (checkpoint already written incrementally)
     # ─────────────────────────────────────────────────────────────────────
     results = pd.DataFrame(all_rows)
-    out_csv = DATA_DIR / f"{DB}_comparison_results.csv"
     results.to_csv(out_csv, index=False)
-    print(f"\n[saved] {out_csv.name}")
+    print(f"\n[saved] {out_csv.name}", flush=True)
 
     # ─────────────────────────────────────────────────────────────────────
     # Tables & analysis
