@@ -43,6 +43,11 @@ from matplotlib.patches import Patch
 # Use the original Benavoli et al. implementation bundled in this directory
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "lib"))
 from bayesiantests import correlated_ttest, correlated_ttest_MC  # noqa: E402
+try:
+    from bayesiantests import hierarchical_MC_endpoints as _hierarchical_MC_endpoints
+    _HIERARCHICAL_OK = True
+except ImportError:
+    _HIERARCHICAL_OK = False
 from scipy.stats import gaussian_kde
 
 # ---------------------------------------------------------------------------
@@ -194,6 +199,181 @@ def _draw_posterior_figure(best_diffs: dict, ep_order: list,
 
     for ext in ("png", "pdf"):
         out = IMGS_DIR / f"bayesian_posteriors{suffix}.{ext}"
+        fig.savefig(out, dpi=150, bbox_inches="tight")
+        print(f"[saved] {out.relative_to(IMGS_DIR.parent)}")
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------------
+# Hierarchical posterior figure
+# ---------------------------------------------------------------------------
+
+def _draw_hierarchical_posterior_figure(diffs_store: dict, ep_order: list,
+                                        best_rows: "pd.DataFrame" = None,
+                                        suffix: str = "") -> None:
+    """
+    Like _draw_posterior_figure, but uses the hierarchical Bayesian model
+    (Benavoli et al. 2017) run jointly over all endpoints per metric.
+    Each endpoint's posterior is shrunk toward the global hyperprior mean,
+    which better accounts for overlapping training sets across CV folds.
+    An extra bottom row shows the global hyperprior mean (delta0) distribution.
+
+    Requires pystan v2.  Skipped gracefully if pystan is unavailable.
+    """
+    if not _HIERARCHICAL_OK:
+        print("[skip] hierarchical figure: pystan / hierarchical_MC_endpoints not available")
+        return
+
+    n_eps = len(ep_order)
+    n_met = len(METRICS)
+    rho = 1.0 / 3  # 3-fold CV   ->  fold correlation = 1 / nfolds
+
+    # n_eps rows for endpoints + 1 row for the global hyperprior mean
+    fig, axes = plt.subplots(
+        n_eps + 1, n_met,
+        figsize=(n_met * 3.2, (n_eps + 1) * 1.35),
+        constrained_layout=True,
+    )
+
+    fig.suptitle(
+        r"Hierarchical Bayesian posterior: best PFASGroups $-$ TxP\_PFAS" + "\n"
+        r"Orange lines: ROPE ($\pm$0.01).  "
+        "Bottom row = global hyperprior mean $\\delta_0$ (shrinkage regularisation).",
+        fontsize=14, fontweight="bold",
+    )
+
+    for col, metric in enumerate(METRICS):
+        axes[0, col].set_title(METRIC_LABELS[metric], fontsize=14, fontweight="bold")
+
+    for col, metric in enumerate(METRICS):
+        # Build diff matrix: one row per endpoint (best feature set for that endpoint)
+        diff_rows, ep_rows = [], []
+        for ep in ep_order:
+            best_fs = None
+            if best_rows is not None:
+                sub = best_rows[
+                    (best_rows["endpoint"] == ep) & (best_rows["metric"] == metric)
+                ]
+                if not sub.empty:
+                    best_fs = sub.iloc[0]["feature_set"]
+            if best_fs is None:
+                for key in diffs_store:
+                    if key[0] == ep and key[1] == metric:
+                        best_fs = key[2]
+                        break
+            if best_fs is None:
+                continue
+            key = (ep, metric, best_fs)
+            if key in diffs_store:
+                diff_rows.append(diffs_store[key])
+                ep_rows.append(ep)
+
+        if not diff_rows:
+            for row in range(n_eps + 1):
+                axes[row, col].axis("off")
+            continue
+
+        n_folds = min(len(d) for d in diff_rows)
+        diff_matrix = np.array([d[:n_folds] for d in diff_rows], dtype=float)  # (q, n_folds)
+
+        try:
+            result = _hierarchical_MC_endpoints(diff_matrix, ROPE, rho)
+        except Exception as exc:
+            print(f"[hierarchical] {metric}: {exc}")
+            for row in range(n_eps + 1):
+                axes[row, col].axis("off")
+            continue
+
+        delta_ep = result["delta"]   # shape (n_mcmc, q)
+        delta0   = result["delta0"]  # shape (n_mcmc,)
+
+        # ── Per-endpoint rows ──────────────────────────────────────────
+        for row, ep in enumerate(ep_order):
+            ax = axes[row, col]
+            if ep not in ep_rows:
+                ax.axis("off")
+                continue
+            ep_idx = ep_rows.index(ep)
+            samples = delta_ep[:, ep_idx]
+
+            p1, p99 = np.percentile(samples, [0.5, 99.5])
+            xs = np.linspace(min(p1, -5 * ROPE), max(p99, 5 * ROPE), 400)
+            ys = gaussian_kde(samples)(xs)
+
+            ax.fill_between(xs, ys, where=(xs < -ROPE),
+                            color="#E07070", alpha=1, linewidth=0)
+            ax.fill_between(xs, ys, where=((xs >= -ROPE) & (xs <= ROPE)),
+                            color="#C0C0C0", alpha=1, linewidth=0)
+            ax.fill_between(xs, ys, where=(xs > ROPE),
+                            color=METRIC_COLORS[metric], alpha=1, linewidth=0)
+            ax.plot(xs, ys, color="#222", linewidth=0.9)
+            ax.axvline(-ROPE, color="orange", linewidth=0.8)
+            ax.axvline( ROPE, color="orange", linewidth=0.8)
+            ax.axvline(0,     color="#888",   linewidth=0.5, linestyle="--")
+
+            if row % 2 == 0:
+                ax.axhspan(0, max(ys) + 0.5, color="#f0f0f0", zorder=0, linewidth=0)
+
+            mean_d   = float(np.mean(samples))
+            p_better = float(np.mean(samples > ROPE))
+            if p_better >= 0.999:
+                stars, sig_color = "***", _SIG_COLORS["***"]
+            elif p_better >= 0.99:
+                stars, sig_color = "**",  _SIG_COLORS["**"]
+            elif p_better >= 0.95:
+                stars, sig_color = "*",   _SIG_COLORS["*"]
+            else:
+                stars, sig_color = "",    "#444"
+            sign  = "+" if mean_d >= 0 else ""
+            label = f"{sign}{mean_d:.3f}{stars}\n ({p_better:.0%})"
+            fw    = "bold" if stars else "normal"
+            ax.text(0.98, 0.97, label, ha="right", va="top", fontsize=12,
+                    fontweight=fw, color=sig_color, transform=ax.transAxes)
+            ax.axvline(mean_d, color=sig_color, linewidth=0.8, linestyle="-",
+                       alpha=1, zorder=4)
+
+            ax.set_yticks([])
+            ax.tick_params(axis="x", labelsize=12)
+            ax.spines[["top", "right", "left"]].set_visible(False)
+
+        # ── Global delta0 row ──────────────────────────────────────────
+        ax_g = axes[n_eps, col]
+        p1, p99 = np.percentile(delta0, [0.5, 99.5])
+        xs = np.linspace(min(p1, -5 * ROPE), max(p99, 5 * ROPE), 400)
+        ys = gaussian_kde(delta0)(xs)
+        ax_g.fill_between(xs, ys, where=(xs < -ROPE),
+                          color="#E07070", alpha=1, linewidth=0)
+        ax_g.fill_between(xs, ys, where=((xs >= -ROPE) & (xs <= ROPE)),
+                          color="#C0C0C0", alpha=1, linewidth=0)
+        ax_g.fill_between(xs, ys, where=(xs > ROPE),
+                          color=METRIC_COLORS[metric], alpha=1, linewidth=0)
+        ax_g.plot(xs, ys, color="#222", linewidth=0.9)
+        ax_g.axvline(-ROPE, color="orange", linewidth=0.8)
+        ax_g.axvline( ROPE, color="orange", linewidth=0.8)
+        ax_g.axvline(0,     color="#888",   linewidth=0.5, linestyle="--")
+        mean_d   = float(np.mean(delta0))
+        p_better = float(np.mean(delta0 > ROPE))
+        sign     = "+" if mean_d >= 0 else ""
+        ax_g.text(0.98, 0.97, f"{sign}{mean_d:.3f}\n ({p_better:.0%})",
+                  ha="right", va="top", fontsize=12, color="#333",
+                  transform=ax_g.transAxes)
+        ax_g.axvline(mean_d, color="#333", linewidth=0.8, linestyle="-",
+                     alpha=1, zorder=4)
+        ax_g.axhspan(0, max(ys) + 0.5, color="#FFFACD", zorder=0, linewidth=0)
+        ax_g.set_yticks([])
+        ax_g.tick_params(axis="x", labelsize=12)
+        ax_g.spines[["top", "right", "left"]].set_visible(False)
+
+    # Row labels
+    for row, ep in enumerate(ep_order):
+        axes[row, 0].set_ylabel(
+            ep.replace("_", " "), fontsize=12, rotation=0, ha="right", labelpad=4)
+    axes[n_eps, 0].set_ylabel(
+        r"Global $\delta_0$", fontsize=12, rotation=0, ha="right", labelpad=4,
+        fontweight="bold")
+
+    for ext in ("png", "pdf"):
+        out = IMGS_DIR / f"bayesian_posteriors_hierarchical{suffix}.{ext}"
         fig.savefig(out, dpi=150, bbox_inches="tight")
         print(f"[saved] {out.relative_to(IMGS_DIR.parent)}")
     plt.close(fig)
@@ -374,6 +554,12 @@ def main(dataset: str = "toxcast") -> None:
     # Figure 2: Posterior distributions with ROPE
     # ------------------------------------------------------------------
     _draw_posterior_figure(best_diffs, ep_order, best_rows=best_rows, suffix=suffix)
+
+    # ------------------------------------------------------------------
+    # Figure 3: Hierarchical Bayesian posterior distributions
+    # ------------------------------------------------------------------
+    _draw_hierarchical_posterior_figure(diffs_store, ep_order,
+                                        best_rows=best_rows, suffix=suffix)
 
     # ------------------------------------------------------------------
     # Print LaTeX table for best PFG per endpoint x metric

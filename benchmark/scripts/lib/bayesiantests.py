@@ -427,6 +427,151 @@ def hierarchical_MC(diff, rope, rho,   upperAlpha=2, lowerAlpha =1, lowerBeta = 
      
     return samples
 
+
+def hierarchical_MC_endpoints(diff, rope, rho, upperAlpha=2, lowerAlpha=1,
+                               lowerBeta=0.01, upperBeta=0.1, std_upper_bound=1000):
+    """
+    Extended version of hierarchical_MC that returns per-dataset (per-endpoint)
+    MCMC posterior samples for delta_i in addition to the global hyperprior mean.
+
+    This enables per-endpoint posterior KDE plots where endpoints share
+    information through a common hyperprior, yielding shrinkage-regularised
+    per-endpoint estimates that account for fold overlap across datasets.
+
+    Args:
+        diff (2D ndarray): shape (q, Nsamples) — q datasets × Nsamples CV folds.
+        rope (float): ROPE half-width (same units as diff).
+        rho (float): fold correlation coefficient (= 1/nfolds for k-fold CV).
+        upperAlpha, lowerAlpha, upperBeta, lowerBeta: Gamma prior bounds on DoF.
+        std_upper_bound: multiplier for the upper bound on sigma priors.
+
+    Returns:
+        dict with keys:
+          'delta0' : ndarray (n_mcmc,)    — hyperprior mean, back-transformed scale
+          'delta'  : ndarray (n_mcmc, q)  — per-dataset posterior means, back-transformed
+          'std0'   : ndarray (n_mcmc,)    — hyperprior std, back-transformed
+          'nu'     : ndarray (n_mcmc,)    — Student-t degrees of freedom
+          'stdX'   : float                — scale factor used to normalise diff
+          'rope'   : float                — ROPE in original scale
+    """
+    import scipy.stats as stats
+    import pystan
+
+    stdX = float(np.mean(np.std(diff, 1)))
+    if stdX == 0:
+        stdX = 1.0
+    x = diff / stdX
+    rope_scaled = rope / stdX
+
+    for i in range(len(x)):
+        if np.std(x[i, :]) == 0:
+            x[i, :] += np.random.normal(
+                0, min(1e-9, abs(float(np.mean(x[i, :]))) / 1e8 + 1e-10))
+
+    hierarchical_code = """
+    data {
+      real deltaLow;
+      real deltaHi;
+      real std0Low;
+      real std0Hi;
+      real stdLow;
+      real stdHi;
+      int<lower=2> Nsamples;
+      int<lower=1> q;
+      matrix[q,Nsamples] x;
+      real rho;
+      real upperAlpha;
+      real lowerAlpha;
+      real upperBeta;
+      real lowerBeta;
+    }
+    transformed data {
+      vector[Nsamples] H;
+      vector[Nsamples] zeroMeanVec;
+      matrix[Nsamples,Nsamples] invM;
+      real detM;
+      detM <- (1+(Nsamples-1)*rho)*(1-rho)^(Nsamples-1);
+      for (j in 1:Nsamples){
+        zeroMeanVec[j]<-0;
+        H[j]<-1;
+        for (i in 1:Nsamples){
+          if (j==i)
+            invM[j,i]<- (1 + (Nsamples-2)*rho)*pow((1-rho),Nsamples-2);
+          else
+            invM[j,i]<- -rho * pow((1-rho),Nsamples-2);
+        }
+      }
+      invM <-invM/detM;
+    }
+    parameters {
+      real<lower=deltaLow,upper=deltaHi> delta0;
+      real<lower=std0Low,upper=std0Hi> std0;
+      vector[q] delta;
+      vector<lower=stdLow,upper=stdHi>[q] sigma;
+      real<lower=0> nuMinusOne;
+      real<lower=lowerAlpha,upper=upperAlpha> gammaAlpha;
+      real<lower=lowerBeta, upper=upperBeta> gammaBeta;
+    }
+    transformed parameters {
+      real<lower=1> nu;
+      matrix[q,Nsamples] diff;
+      vector[q] diagQuad;
+      vector[q] oneOverSigma2;
+      vector[q] logDetSigma;
+      vector[q] logLik;
+      nu <- nuMinusOne + 1;
+      oneOverSigma2 <- rep_vector(1, q) ./ sigma;
+      oneOverSigma2 <- oneOverSigma2 ./ sigma;
+      diff <- x - rep_matrix(delta,Nsamples);
+      diagQuad <- diagonal (quad_form (invM,diff'));
+      logDetSigma <- 2*Nsamples*log(sigma) + log(detM);
+      logLik <- -0.5 * logDetSigma - 0.5*Nsamples*log(6.283);
+      logLik <- logLik - 0.5 * oneOverSigma2 .* diagQuad;
+    }
+    model {
+      nuMinusOne ~ gamma ( gammaAlpha, gammaBeta);
+      delta ~ student_t(nu, delta0, std0);
+      increment_log_prob(sum(logLik));
+    }
+    """
+
+    datatable = x
+    std_within = float(np.mean(np.std(datatable, 1)))
+    Nsamples = int(datatable.shape[1])
+    q = int(datatable.shape[0])
+    std_among = float(np.std(np.mean(datatable, 1))) if q > 1 else std_within
+    std0Hi = max(std_among, std_within * 0.1) * std_upper_bound
+
+    data_dict = {
+        'x':          datatable.tolist(),
+        'deltaLow':   float(-np.max(np.abs(datatable))),
+        'deltaHi':    float(np.max(np.abs(datatable))),
+        'stdLow':     0.0,
+        'stdHi':      float(std_within * std_upper_bound),
+        'std0Low':    0.0,
+        'std0Hi':     float(std0Hi),
+        'Nsamples':   Nsamples,
+        'q':          q,
+        'rho':        float(rho),
+        'upperAlpha': float(upperAlpha),
+        'lowerAlpha': float(lowerAlpha),
+        'upperBeta':  float(upperBeta),
+        'lowerBeta':  float(lowerBeta),
+    }
+
+    fit = pystan.stan(model_code=hierarchical_code, data=data_dict, iter=1000, chains=4)
+    la = fit.extract(permuted=True)
+
+    return {
+        'delta0': la['delta0'] * stdX,
+        'delta':  la['delta']  * stdX,   # shape (n_mcmc, q)
+        'std0':   la['std0']   * stdX,
+        'nu':     la['nu'],
+        'stdX':   stdX,
+        'rope':   rope,
+    }
+
+
 def plot_posterior(samples, names=('C1', 'C2')):
     """
     Args:
