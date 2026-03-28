@@ -84,7 +84,7 @@ BASELINE = "TxP_PFAS"
 # ---------------------------------------------------------------------------
 _ubuntu_ok = any("Ubuntu" in f.name for f in fm.fontManager.ttflist)
 _FONT = "Ubuntu" if _ubuntu_ok else "sans-serif"
-plt.rcParams.update({"font.family": _FONT, "font.size": 9})
+plt.rcParams.update({"font.family": _FONT, "font.size": 9, "pdf.fonttype": 42})
 
 
 # ---------------------------------------------------------------------------
@@ -238,32 +238,42 @@ def _draw_hierarchical_posterior_figure(diffs_store: dict, ep_order: list,
     fig.suptitle(
         r"Hierarchical Bayesian posterior: best PFASGroups $-$ TxP\_PFAS" + "\n"
         r"Orange lines: ROPE ($\pm$0.01).  "
-        "Bottom row = global hyperprior mean $\\delta_0$ (shrinkage regularisation).",
+        "Bottom row = global hyperprior mean $\\delta_0$ (shrinkage regularisation).\n"
+        r"Each column uses a single feature set pooled across all endpoints.",
         fontsize=14, fontweight="bold",
     )
 
     for col, metric in enumerate(METRICS):
-        axes[0, col].set_title(METRIC_LABELS[metric], fontsize=14, fontweight="bold")
+        # Use the SAME feature set for all endpoints so the hierarchical model
+        # pools exchangeable comparisons.  Pick the feature set with the highest
+        # average mean_diff across all endpoints for this metric.
+        global_fs = None
+        if best_rows is not None:
+            fs_means = (
+                best_rows[best_rows["metric"] == metric]
+                .groupby("feature_set")["mean_diff"].mean()
+            )
+            if not fs_means.empty:
+                global_fs = fs_means.idxmax()
+        if global_fs is None:
+            # fallback: any available feature set
+            for key in diffs_store:
+                if key[1] == metric:
+                    global_fs = key[2]
+                    break
 
-    for col, metric in enumerate(METRICS):
-        # Build diff matrix: one row per endpoint (best feature set for that endpoint)
+        # Update column title to show which feature set is being pooled
+        fs_label = global_fs.replace("_", r"\_") if global_fs else "?"
+        axes[0, col].set_title(
+            METRIC_LABELS[metric] + f"\n({fs_label})",
+            fontsize=11, fontweight="bold",
+        )
+
         diff_rows, ep_rows = [], []
         for ep in ep_order:
-            best_fs = None
-            if best_rows is not None:
-                sub = best_rows[
-                    (best_rows["endpoint"] == ep) & (best_rows["metric"] == metric)
-                ]
-                if not sub.empty:
-                    best_fs = sub.iloc[0]["feature_set"]
-            if best_fs is None:
-                for key in diffs_store:
-                    if key[0] == ep and key[1] == metric:
-                        best_fs = key[2]
-                        break
-            if best_fs is None:
+            if global_fs is None:
                 continue
-            key = (ep, metric, best_fs)
+            key = (ep, metric, global_fs)
             if key in diffs_store:
                 diff_rows.append(diffs_store[key])
                 ep_rows.append(ep)
