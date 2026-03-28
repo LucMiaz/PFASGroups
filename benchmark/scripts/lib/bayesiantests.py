@@ -453,21 +453,28 @@ def hierarchical_MC_endpoints(diff, rope, rho, upperAlpha=2, lowerAlpha=1,
           'nu'     : ndarray (n_mcmc,)    — Student-t degrees of freedom
           'stdX'   : float                — scale factor used to normalise diff
           'rope'   : float                — ROPE in original scale
+
+    Note: the compiled Stan model is cached in the system temp directory so that
+    recompilation is skipped on subsequent calls (first call ~1–2 min; subsequent
+    calls ~seconds).
     """
-    import scipy.stats as stats
+    import hashlib
+    import os
+    import pickle
+    import tempfile
     import pystan
 
     stdX = float(np.mean(np.std(diff, 1)))
     if stdX == 0:
         stdX = 1.0
     x = diff / stdX
-    rope_scaled = rope / stdX
 
     for i in range(len(x)):
         if np.std(x[i, :]) == 0:
             x[i, :] += np.random.normal(
                 0, min(1e-9, abs(float(np.mean(x[i, :]))) / 1e8 + 1e-10))
 
+    # Modern Stan syntax (= instead of <-, target += instead of increment_log_prob)
     hierarchical_code = """
     data {
       real deltaLow;
@@ -490,18 +497,18 @@ def hierarchical_MC_endpoints(diff, rope, rho, upperAlpha=2, lowerAlpha=1,
       vector[Nsamples] zeroMeanVec;
       matrix[Nsamples,Nsamples] invM;
       real detM;
-      detM <- (1+(Nsamples-1)*rho)*(1-rho)^(Nsamples-1);
+      detM = (1+(Nsamples-1)*rho)*(1-rho)^(Nsamples-1);
       for (j in 1:Nsamples){
-        zeroMeanVec[j]<-0;
-        H[j]<-1;
+        zeroMeanVec[j] = 0;
+        H[j] = 1;
         for (i in 1:Nsamples){
           if (j==i)
-            invM[j,i]<- (1 + (Nsamples-2)*rho)*pow((1-rho),Nsamples-2);
+            invM[j,i] = (1 + (Nsamples-2)*rho)*pow((1-rho),Nsamples-2);
           else
-            invM[j,i]<- -rho * pow((1-rho),Nsamples-2);
+            invM[j,i] = -rho * pow((1-rho),Nsamples-2);
         }
       }
-      invM <-invM/detM;
+      invM = invM/detM;
     }
     parameters {
       real<lower=deltaLow,upper=deltaHi> delta0;
@@ -514,24 +521,24 @@ def hierarchical_MC_endpoints(diff, rope, rho, upperAlpha=2, lowerAlpha=1,
     }
     transformed parameters {
       real<lower=1> nu;
-      matrix[q,Nsamples] diff;
+      matrix[q,Nsamples] xdiff;
       vector[q] diagQuad;
       vector[q] oneOverSigma2;
       vector[q] logDetSigma;
       vector[q] logLik;
-      nu <- nuMinusOne + 1;
-      oneOverSigma2 <- rep_vector(1, q) ./ sigma;
-      oneOverSigma2 <- oneOverSigma2 ./ sigma;
-      diff <- x - rep_matrix(delta,Nsamples);
-      diagQuad <- diagonal (quad_form (invM,diff'));
-      logDetSigma <- 2*Nsamples*log(sigma) + log(detM);
-      logLik <- -0.5 * logDetSigma - 0.5*Nsamples*log(6.283);
-      logLik <- logLik - 0.5 * oneOverSigma2 .* diagQuad;
+      nu = nuMinusOne + 1;
+      oneOverSigma2 = rep_vector(1, q) ./ sigma;
+      oneOverSigma2 = oneOverSigma2 ./ sigma;
+      xdiff = x - rep_matrix(delta, Nsamples);
+      diagQuad = diagonal(quad_form(invM, xdiff'));
+      logDetSigma = 2*Nsamples*log(sigma) + log(detM);
+      logLik = -0.5 * logDetSigma - 0.5*Nsamples*log(6.283185307);
+      logLik = logLik - 0.5 * oneOverSigma2 .* diagQuad;
     }
     model {
-      nuMinusOne ~ gamma ( gammaAlpha, gammaBeta);
+      nuMinusOne ~ gamma(gammaAlpha, gammaBeta);
       delta ~ student_t(nu, delta0, std0);
-      increment_log_prob(sum(logLik));
+      target += sum(logLik);
     }
     """
 
@@ -559,7 +566,19 @@ def hierarchical_MC_endpoints(diff, rope, rho, upperAlpha=2, lowerAlpha=1,
         'lowerBeta':  float(lowerBeta),
     }
 
-    fit = pystan.stan(model_code=hierarchical_code, data=data_dict, iter=1000, chains=4)
+    # Cache the compiled StanModel to avoid recompiling on every run.
+    code_hash = hashlib.md5(hierarchical_code.encode()).hexdigest()[:12]
+    cache_path = os.path.join(tempfile.gettempdir(),
+                              f"pystan2_hier_ep_{code_hash}.pkl")
+    if os.path.exists(cache_path):
+        with open(cache_path, 'rb') as _f:
+            sm = pickle.load(_f)
+    else:
+        sm = pystan.StanModel(model_code=hierarchical_code)
+        with open(cache_path, 'wb') as _f:
+            pickle.dump(sm, _f)
+
+    fit = sm.sampling(data=data_dict, iter=1000, chains=4)
     la = fit.extract(permuted=True)
 
     return {

@@ -541,7 +541,6 @@ def main(dataset: str = "toxcast") -> None:
         r"$*** \, P\!\geq\!0.999$.",
         ha="center", va="top", fontsize=12, style="normal", color="#000000",
         transform=fig.transFigure,
-        wrap=True,
     )
 
     for ext in ("png", "pdf"):
@@ -590,7 +589,8 @@ def main(dataset: str = "toxcast") -> None:
                 best_fsets.append(fs)
                 s  = f"{p:.2f}"
                 vals.append(r"\textbf{" + s + r"}" if p >= 0.95 else s)
-        print(f"  {ep.replace('_', r'\_')} & " + " & ".join(vals) + r" \\")
+        ep_label = ep.replace('_', r'\_')
+        print(f"  {ep_label} & " + " & ".join(vals) + r" \\")
     print(r"\bottomrule")
     print(r"\end{tabular}")
     print(r"\end{table}")
