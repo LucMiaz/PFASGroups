@@ -604,8 +604,8 @@ if __name__ == "__main__":
         description="Bayesian correlated t-test comparison of PFASGroups vs TxP_PFAS."
     )
     _parser.add_argument(
-        "--dataset", "-d", default="toxcast",
-        help="Dataset prefix used in input CSV and output filenames (default: 'toxcast').",
+        "--dataset", "-d", default="invitrodb_v4_3",
+        help="Dataset prefix used in input CSV and output filenames (default: 'invitrodb_v4_3').",
     )
     _args = _parser.parse_args()
     main(_args.dataset)
