@@ -1497,11 +1497,11 @@ class EnhancedPFASBenchmark:
             molecules_per_test: Number of molecules to test per complexity category
         """
         
-        print("\n🚀 COMPLEX BRANCHED PFAS BENCHMARK")
+        print("\nCOMPLEX BRANCHED PFAS BENCHMARK")
         print("=" * 55)
-        print(f"🧪 Testing detection of complex branched PFAS molecules")
-        print(f"📊 Testing {molecules_per_test} molecules per complexity category")
-        print("🎯 Expected: Both systems should correctly identify these as PFAS")
+        print(f"Testing detection of complex branched PFAS molecules")
+        print(f"Testing {molecules_per_test} molecules per complexity category")
+        print("Expected: Both systems should correctly identify these as PFAS")
         
         # Define complex branched PFAS molecules with different functional groups and complexity levels
         test_molecules = {
@@ -1548,7 +1548,7 @@ class EnhancedPFASBenchmark:
         successful_detections = {'PFASGroups': 0, 'atlas': 0}
         
         for test_name, mol_info in test_molecules.items():
-            print(f"\n🔬 Testing {test_name}: {mol_info['description']}")
+            print(f"\nTesting {test_name}: {mol_info['description']}")
             print(f"   SMILES: {mol_info['smiles']}")
             print(f"   Complexity: {mol_info['complexity']}")
             print(f"   Expected PFASGroups: {mol_info['expected_PFASGroups']}")
@@ -1635,10 +1635,10 @@ class EnhancedPFASBenchmark:
             PFASGroups_accuracy_rate = (test_results['PFASGroups_correct_detections'] / max(test_results['molecules_tested'], 1)) * 100
             atlas_detection_rate = (test_results['atlas_detections'] / max(test_results['molecules_tested'], 1)) * 100
             
-            print(f"   ✅ Tested {test_results['molecules_tested']} iterations")
-            print(f"   📊 PFASGroups detection: {test_results['PFASGroups_detections']}/{test_results['molecules_tested']} ({PFASGroups_detection_rate:.1f}%)")
-            print(f"   🎯 PFASGroups correct groups: {test_results['PFASGroups_correct_detections']}/{test_results['molecules_tested']} ({PFASGroups_accuracy_rate:.1f}%)")
-            print(f"   📊 Atlas detection: {test_results['atlas_detections']}/{test_results['molecules_tested']} ({atlas_detection_rate:.1f}%)")
+            print(f"   Tested {test_results['molecules_tested']} iterations")
+            print(f"   PFASGroups detection: {test_results['PFASGroups_detections']}/{test_results['molecules_tested']} ({PFASGroups_detection_rate:.1f}%)")
+            print(f"   PFASGroups correct groups: {test_results['PFASGroups_correct_detections']}/{test_results['molecules_tested']} ({PFASGroups_accuracy_rate:.1f}%)")
+            print(f"   Atlas detection: {test_results['atlas_detections']}/{test_results['molecules_tested']} ({atlas_detection_rate:.1f}%)")
             
             all_results.append(test_results)
         
@@ -1653,26 +1653,26 @@ class EnhancedPFASBenchmark:
         overall_PFASGroups_rate = (successful_detections['PFASGroups'] / max(total_tests, 1)) * 100
         overall_atlas_rate = (successful_detections['atlas'] / max(total_tests, 1)) * 100
         
-        print(f"\n💾 Complex Branched Benchmark Complete!")
-        print(f"📊 Total tests: {total_tests} ({len(test_molecules)} molecule types × {molecules_per_test} iterations)")
-        print(f"🎯 Expected result: High detection rates for complex PFAS structures")
-        print(f"📈 PFASGroups overall detection rate: {overall_PFASGroups_rate:.1f}% ({successful_detections['PFASGroups']}/{total_tests})")
-        print(f"📈 PFAS-Atlas overall detection rate: {overall_atlas_rate:.1f}% ({successful_detections['atlas']}/{total_tests})")
-        print(f"💾 Results saved: {output_file}")
+        print(f"\nComplex Branched Benchmark Complete!")
+        print(f"Total tests: {total_tests} ({len(test_molecules)} molecule types × {molecules_per_test} iterations)")
+        print(f"Expected result: High detection rates for complex PFAS structures")
+        print(f"PFASGroups overall detection rate: {overall_PFASGroups_rate:.1f}% ({successful_detections['PFASGroups']}/{total_tests})")
+        print(f"PFAS-Atlas overall detection rate: {overall_atlas_rate:.1f}% ({successful_detections['atlas']}/{total_tests})")
+        print(f"Results saved: {output_file}")
         
         if overall_PFASGroups_rate >= 90 and overall_atlas_rate >= 90:
-            print(f"🎉 EXCELLENT: Both systems show excellent detection of complex PFAS structures!")
+            print(f"EXCELLENT: Both systems show excellent detection of complex PFAS structures!")
         elif overall_PFASGroups_rate >= 75 and overall_atlas_rate >= 75:
-            print(f"✅ GOOD: Both systems show good detection rates for complex structures")
+            print(f"GOOD: Both systems show good detection rates for complex structures")
         else:
-            print(f"⚠️  CONCERNING: Lower than expected detection rates for complex PFAS structures")
+            print(f"CONCERNING: Lower than expected detection rates for complex PFAS structures")
         
         return all_results, output_file
     
     def run_oecd_benchmark(self, max_molecules=None):
         """Run benchmark on OECD data using groups 1-28"""
         
-        print("\n🚀 OECD PFAS BENCHMARK (Groups 1-28)")
+        print("\nOECD PFAS BENCHMARK (Groups 1-28)")
         print("=" * 45)
         
         # Load OECD data
@@ -1685,7 +1685,7 @@ class EnhancedPFASBenchmark:
             oecd_data = pd.read_csv(oecd_file)
             if max_molecules:
                 oecd_data = oecd_data.head(max_molecules)
-            print(f"📊 Loaded {len(oecd_data)} OECD molecules")
+            print(f"Loaded {len(oecd_data)} OECD molecules")
         except Exception as e:
             print(f"❌ Error loading OECD data: {e}")
             print(f"   Expected path: {oecd_file}")
@@ -1695,7 +1695,7 @@ class EnhancedPFASBenchmark:
         all_results = []
         
         # Process OECD molecules
-        print(f"🧪 Testing {len(oecd_data)} OECD molecules with PFASGroups (groups 1-28)")
+        print(f"Testing {len(oecd_data)} OECD molecules with PFASGroups (groups 1-28)")
         
         for idx, row in oecd_data.iterrows():
             smiles = row['SMILES']
@@ -1737,9 +1737,9 @@ class EnhancedPFASBenchmark:
         with open(output_file, 'w') as f:
             json.dump(all_results, f, indent=2, default=str)
         
-        print(f"\n💾 OECD Benchmark Complete!")
-        print(f"📊 Total molecules tested: {len(all_results)}")
-        print(f"💾 Results saved: {output_file}")
+        print(f"\nOECD Benchmark Complete!")
+        print(f"Total molecules tested: {len(all_results)}")
+        print(f"Results saved: {output_file}")
         
         return all_results, output_file
 @rdkit_disable_log()
@@ -1845,7 +1845,7 @@ def main():
     else:
         complex_results, complex_file = None, None
     
-    print(f"\n🎯 Benchmark Complete! Next steps:")
+    print(f"\nBenchmark Complete! Next steps:")
     if enhanced_file and oecd_file:
         print(f"   Enhanced analysis: python enhanced_analysis.py {enhanced_file} {oecd_file}")
     if timing_file:

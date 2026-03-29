@@ -1926,14 +1926,14 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
             </tbody>
         </table>
         
-        <h2>⚠️ HalogenGroup Detection Failures Analysis</h2>
+        <h2>HalogenGroup Detection Failures Analysis</h2>
         <div class="visualization-container">
             <div class="chart-description">
                 Detailed analysis of molecules not correctly identified by the HalogenGroup module.
                 Includes both complete detection failures and incorrect group assignments.
             </div>
             
-            <h3>📈 Failure Summary Statistics</h3>
+            <h3>Failure Summary Statistics</h3>
             <div class="summary-grid">
                 <div class="summary-card">
                     <div class="summary-number">{failure_report['summary']['total_failures']}</div>
@@ -1957,7 +1957,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
     if failure_report['by_group']:
         html_content += f"""
             
-            <h3>📝 Detailed Failure Analysis by Functional Group</h3>
+            <h3>Detailed Failure Analysis by Functional Group</h3>
             <table class="comparison-table">
                 <thead>
                     <tr>
@@ -1993,7 +1993,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
     if failure_report['failure_molecules']:
         html_content += f"""
             
-            <h3>🧪 Individual Failed Molecules (First 50)</h3>
+            <h3>Individual Failed Molecules (First 50)</h3>
             <div style="max-height: 400px; overflow-y: scroll; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #f9f9f9;">
                 <table class="comparison-table">
                     <thead>
@@ -2035,7 +2035,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
     html_content += """
         </div>
         
-        <h2>🏷️ PFAS-Atlas Classification Analysis</h2>
+        <h2>PFAS-Atlas Classification Analysis</h2>
         <div class="visualization-container">
             <div class="chart-description">
                 Analysis of PFAS-Atlas classification results showing the distribution of molecules across 
@@ -2066,7 +2066,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
             </div>
             
             <div style="background: #fffacd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffa500;">
-                <strong>⚠️ Important Note:</strong> PFAS-Atlas classifications represent their native output classes 
+                <strong>Important Note:</strong> PFAS-Atlas classifications represent their native output classes 
                 and are not directly comparable to HalogenGroup functional group IDs. The systems use different 
                 classification frameworks and evaluation criteria.
             </div>
@@ -2075,14 +2075,14 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
         <div class="key-findings">
             <h3>🔍 Enhanced Key Findings</h3>
             <div style="text-align: left; max-width: 900px; margin: 20px auto;">
-                <h4>🎯 System Performance Comparison:</h4>
+                <h4>System Performance Comparison:</h4>
                 <ul>
                     <li><strong>HalogenGroup dominates single-group detection:</strongHalogenGroupnGroups_single_rate:.1f}% vs Atlas {atlas_single_rate:.1HalogenGroupogenGroups_single_rate - atlas_single_rate:+.1f}% advantage)</li>
                     <li><strong>Multi-group challenge:</strong> HalogenGroupoupHalogenGroupnGroups_multi_rate:.1f}% vs Atlas {atlas_multi_rate:.1f}% detection rates</li>
                     <li><strong>Consistency advantage:</strong> HalogenGroup shows more reliable performance across functional groups</li>
                 </ul>
                 
-                <h4>🔬 Multi-Group Insights:</h4>
+                <h4>Multi-Group Insights:</h4>
                 <ul>
                     <li><strong>Functional group privilege:</strong> Some groups are preferentially detected in complex molecules</li>
                     <li><strong>Detection hierarchy:</strong> Clear patterns emerge in which groups dominate multi-functional detection</li>
@@ -2105,7 +2105,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
             </div>
         </div>
 
-        <h2>📊 Exported Visualizations</h2>
+        <h2>Exported Visualizations</h2>
         <div class="visualization-container">
             <p>All visualizations have been exported in multiple formats for use in presentations and publications:</p>
             <ul>
@@ -2157,7 +2157,7 @@ def create_enhanced_html_report(single_analysis, multi_analysis, timestamp, resu
 def main():
     """Main enhanced analysis function"""
     
-    print("🚀 ENHANCED PFAS BENCHMARK ANALYSIS")
+    print("ENHANCED PFAS BENCHMARK ANALYSIS")
     print("=" * 50)
     
     # Find the most recent enhanced benchmark file
@@ -2168,27 +2168,27 @@ def main():
         return
 
     latest_file = max(benchmark_files)
-    print(f"📊 Using enhanced benchmark file: {latest_file}")
+    print(f"Using enhanced benchmark file: {latest_file}")
     
     # Load and analyze results
     results = load_benchmark_results(latest_file)
     
     # Comprehensive analysis
-    print("📋 Analyzing system performance comparison...")
+    print("Analyzing system performance comparison...")
     single_analysis, multi_analysis = analyze_system_comparison(results)
     
     # Create timestamp for file naming
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
     # Generate all visualizations and analysis
-    print("📊 Creating enhanced visualizations...")
+    print("Creating enhanced visualizations...")
     print("   • Performance comparison heatmap")
     print("   • Multi-group privilege analysis") 
     print("   • Enhanced system comparison Sankey")
     print("   • Functional group hierarchy analysis")
     
     # Create comprehensive HTML report
-    print("🌐 Creating enhanced HTML analysis report...")
+    print("Creating enhanced HTML analysis report...")
     html_content = create_enhanced_html_report(single_analysis, multi_analysis, timestamp, results)
     
     html_filename = f"enhanced_pfas_analysis_{timestamp}.html"
@@ -2207,18 +2207,18 @@ def main():
     
     print(f"\n✅ Enhanced Analysis Complete!")
     print("=" * 50)
-    print(f"📊 Dataset Summary:")
+    print(f"Dataset Summary:")
     print(f"   • Total molecules tested: {total_single + total_multi}")
     print(f"   • Single-group molecules: {total_single} (15 per group)")
     print(f"   • Multi-group molecules: {total_multi} (pairs + triplets)")
     print(f"   • Functional groups: {len(single_analysis)}")
     
-    print(f"\n🎯 Performance Summary:")
+    print(f"\n Performance Summary:")
     print(f"   • HalogenGroup single-group: {pfas_single_rate:.1f}%")
     print(f"   • PFAS-Atlas single-group: {atlas_single_rate:.1f}%") 
     print(f"   • Performance gap: {pfas_single_rate - atlas_single_rate:+.1f}%")
     
-    print(f"\n📁 Generated Files:")
+    print(f"\n Generated Files:")
     print(f"   • {html_filename} (comprehensive analysis)")
     print(f"   • imgs/comparison_heatmap_{timestamp}.png/.svg")
     print(f"   • imgs/multigroup_privilege_heatmap_{timestamp}.png/.svg") 
@@ -2230,7 +2230,7 @@ def main():
 def analyze_combined_results():
     """Analyze both enhanced and OECD benchmark results"""
     
-    print("🚀 COMBINED PFAS BENCHMARK ANALYSIS")
+    print("COMBINED PFAS BENCHMARK ANALYSIS")
     print("=" * 50)
     
     # Find benchmark files
@@ -2243,7 +2243,7 @@ def analyze_combined_results():
         return
     
     latest_enhanced = max(enhanced_files)
-    print(f"📊 Using enhanced benchmark file: {latest_enhanced}")
+    print(f"Using enhanced benchmark file: {latest_enhanced}")
     
     # OECD benchmark
     oecd_files = glob.glob('data/pfas_oecd_benchmark_*.json')
@@ -2252,25 +2252,25 @@ def analyze_combined_results():
         return
     
     latest_oecd = max(oecd_files)
-    print(f"📊 Using OECD benchmark file: {latest_oecd}")
+    print(f"Using OECD benchmark file: {latest_oecd}")
     
     # Load results
     enhanced_results = load_benchmark_results(latest_enhanced)
     oecd_results = load_benchmark_results(latest_oecd)
     
     # Analyze enhanced results
-    print("📋 Analyzing enhanced benchmark...")
+    print("Analyzing enhanced benchmark...")
     single_analysis, multi_analysis = analyze_system_comparison(enhanced_results)
     
     # Analyze OECD results
-    print("📋 Analyzing OECD benchmark...")
+    print("Analyzing OECD benchmark...")
     oecd_analysis = analyze_oecd_benchmark(oecd_results)
     
     # Create timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
     # Generate comprehensive reports
-    print("📊 Creating comprehensive HTML reports...")
+    print("Creating comprehensive HTML reports...")
     
     # Enhanced analysis report
     html_enhanced = create_enhanced_html_report(single_analysis, multi_analysis, timestamp, enhanced_results)
@@ -2287,13 +2287,13 @@ def analyze_combined_results():
     create_enhanced_sankey_comparison(single_analysis,multi_analysis, enhanced_results)
 
     print("\n✅ COMBINED ANALYSIS COMPLETE!")
-    print("📄 Generated reports:")
+    print("Generated reports:")
     print(f"   • {enhanced_filename} (enhanced benchmark)")
     print(f"   • oecd_pfas_analysis_{timestamp}.html (OECD validation)")
     print(f"   • combined_pfas_analysis_{timestamp}.html (comparative analysis with Sankey diagrams)")
     
     # Summary statistics
-    print("\n📊 Summary Statistics:")
+    print("\nSummary Statistics:")
     enhanced_total = len(enhanced_results)
     oecd_total = oecd_analysis['total_molecules']
     
