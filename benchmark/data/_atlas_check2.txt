@@ -1,0 +1,31 @@
+=== highly_branched_carboxylic_acid
+  atlas_detected: 50/50 True, 0 None
+  atlas_first_class sample: ['Polyfluoroalkyl acids', 'Polyfluoroalkyl acids', 'Polyfluoroalkyl acids']
+  exec_time: min=0.04666 max=0.05480
+
+=== branched_sulfonic_acid
+  atlas_detected: 50/50 True, 0 None
+  atlas_first_class sample: ['PFAAs', 'PFAAs', 'PFAAs']
+  exec_time: min=0.03468 max=0.04035
+
+=== branched_ether_chain
+  atlas_detected: 50/50 True, 0 None
+  atlas_first_class sample: ['PFAA precursors', 'PFAA precursors', 'PFAA precursors']
+  exec_time: min=0.04554 max=0.06049
+
+=== multi_functional_branched
+  atlas_detected: 50/50 True, 0 None
+  atlas_first_class sample: ['PFAAs', 'PFAAs', 'PFAAs']
+  exec_time: min=0.04282 max=0.05138
+
+=== cyclic_branched
+  atlas_detected: 50/50 True, 0 None
+  atlas_first_class sample: ['Polyfluoroalkyl acids, cyclic', 'Polyfluoroalkyl acids, cyclic', 'Polyfluoroalkyl acids, cyclic']
+  exec_time: min=0.05006 max=0.07239
+
+=== aromatic_branched
+  atlas_detected: 50/50 True, 0 None
+  atlas_first_class sample: ['Other PFASs', 'Other PFASs', 'Other PFASs']
+  exec_time: min=0.00020 max=0.00026
+
+

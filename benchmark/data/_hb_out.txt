@@ -1,0 +1,2908 @@
+⚠️  PFAS-Atlas not available - will only test PFASGroups
+🧪 PFAS Highly Branched Compounds Benchmark
+================================================================================
+Testing 26 functional groups
+Component sizes: 1-5 CF2 units
+Distances: 0-2 bonds from component start
+Testing PFASGroups only (PFAS-Atlas not available)
+================================================================================
+
+
+📊 Testing component size 1
+--------------------------------------------------------------------------------
+
+Test 1:
+  Group 29: alcohol
+  Component Size: 1, Distance: 0
+  SMILES: OC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 2:
+  Group 29: alcohol
+  Component Size: 1, Distance: 1
+  SMILES: OCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 3:
+  Group 29: alcohol
+  Component Size: 1, Distance: 2
+  SMILES: OCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 29 not found (detected: 15:OECD telomer alcohols, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 86:telomer alcohol, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 4:
+  Group 30: ketone
+  Component Size: 1, Distance: 0
+  SMILES: FC(F)(F)C(=O)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 5:
+  Group 30: ketone
+  Component Size: 1, Distance: 1
+  SMILES: FC(F)(F)C(=O)CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 6:
+  Group 30: ketone
+  Component Size: 1, Distance: 2
+  SMILES: FC(F)(F)C(=O)CCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 7:
+  Group 31: aldehyde
+  Component Size: 1, Distance: 0
+  SMILES: O=CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 8:
+  Group 31: aldehyde
+  Component Size: 1, Distance: 1
+  SMILES: O=CCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 9:
+  Group 31: aldehyde
+  Component Size: 1, Distance: 2
+  SMILES: O=CCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 31 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 77:telomer aldehyde, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 10:
+  Group 32: ether
+  Component Size: 1, Distance: 0
+  SMILES: COC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 11:
+  Group 32: ether
+  Component Size: 1, Distance: 1
+  SMILES: COCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 12:
+  Group 32: ether
+  Component Size: 1, Distance: 2
+  SMILES: COCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 32 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 13:
+  Group 33: ester
+  Component Size: 1, Distance: 0
+  SMILES: FC(F)(F)OC(=O)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 14:
+  Group 33: ester
+  Component Size: 1, Distance: 1
+  SMILES: FC(F)(F)OC(=O)CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 15:
+  Group 33: ester
+  Component Size: 1, Distance: 2
+  SMILES: FC(F)(F)OC(=O)CCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 16:
+  Group 34: carboxylic acid
+  Component Size: 1, Distance: 0
+  SMILES: OC(=O)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 17:
+  Group 34: carboxylic acid
+  Component Size: 1, Distance: 1
+  SMILES: OC(=O)CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 18:
+  Group 34: carboxylic acid
+  Component Size: 1, Distance: 2
+  SMILES: OC(=O)CCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 34 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 78:telomer carboxylic acids, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 19:
+  Group 35: amide
+  Component Size: 1, Distance: 0
+  SMILES: NC(=O)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 20:
+  Group 35: amide
+  Component Size: 1, Distance: 1
+  SMILES: NC(=O)CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 21:
+  Group 35: amide
+  Component Size: 1, Distance: 2
+  SMILES: NC(=O)CCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 35 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 22:
+  Group 36: acyl halide
+  Component Size: 1, Distance: 0
+  SMILES: ClC(=O)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 23:
+  Group 36: acyl halide
+  Component Size: 1, Distance: 1
+  SMILES: ClC(=O)CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 24:
+  Group 36: acyl halide
+  Component Size: 1, Distance: 2
+  SMILES: ClC(=O)CCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 36 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 25:
+  Group 37: sulfonic acid
+  Component Size: 1, Distance: 0
+  SMILES: OS(=O)(=O)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 26:
+  Group 37: sulfonic acid
+  Component Size: 1, Distance: 1
+  SMILES: OS(=O)(=O)CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 27:
+  Group 37: sulfonic acid
+  Component Size: 1, Distance: 2
+  SMILES: OS(=O)(=O)CCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 37 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 80:telomer sulfonic acid, 95:telomer sulfinic acid, 96:telomer sulfenic acid)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 28:
+  Group 38: sulfenic acid
+  Component Size: 1, Distance: 0
+  SMILES: OSC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 29:
+  Group 38: sulfenic acid
+  Component Size: 1, Distance: 1
+  SMILES: OSCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 30:
+  Group 38: sulfenic acid
+  Component Size: 1, Distance: 2
+  SMILES: OSCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 38 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 96:telomer sulfenic acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 31:
+  Group 39: sulfinic acid
+  Component Size: 1, Distance: 0
+  SMILES: OS(=O)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 32:
+  Group 39: sulfinic acid
+  Component Size: 1, Distance: 1
+  SMILES: OS(=O)CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 33:
+  Group 39: sulfinic acid
+  Component Size: 1, Distance: 2
+  SMILES: OS(=O)CCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 39 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 95:telomer sulfinic acid, 96:telomer sulfenic acid, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 34:
+  Group 40: sulfuric acid
+  Component Size: 1, Distance: 0
+  SMILES: OS(=O)(=O)OC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 35:
+  Group 40: sulfuric acid
+  Component Size: 1, Distance: 1
+  SMILES: OS(=O)(=O)OCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 36:
+  Group 40: sulfuric acid
+  Component Size: 1, Distance: 2
+  SMILES: OS(=O)(=O)OCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 40 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 97:telomer sulfuric acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 37:
+  Group 41: phosphonic acid
+  Component Size: 1, Distance: 0
+  SMILES: P(=O)(O)OC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 38:
+  Group 41: phosphonic acid
+  Component Size: 1, Distance: 1
+  SMILES: P(=O)(O)OCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 39:
+  Group 41: phosphonic acid
+  Component Size: 1, Distance: 2
+  SMILES: P(=O)(O)OCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 40:
+  Group 42: phosphinic acid
+  Component Size: 1, Distance: 0
+  SMILES: P(=O)(O)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 41:
+  Group 42: phosphinic acid
+  Component Size: 1, Distance: 1
+  SMILES: P(=O)(O)CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 42:
+  Group 42: phosphinic acid
+  Component Size: 1, Distance: 2
+  SMILES: P(=O)(O)CCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 42 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 43:
+  Group 43: chloride
+  Component Size: 1, Distance: 0
+  SMILES: ClC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 44:
+  Group 43: chloride
+  Component Size: 1, Distance: 1
+  SMILES: ClCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 45:
+  Group 43: chloride
+  Component Size: 1, Distance: 2
+  SMILES: ClCCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 46:
+  Group 44: bromide
+  Component Size: 1, Distance: 0
+  SMILES: BrC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 47:
+  Group 44: bromide
+  Component Size: 1, Distance: 1
+  SMILES: BrCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 48:
+  Group 44: bromide
+  Component Size: 1, Distance: 2
+  SMILES: BrCCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 49:
+  Group 45: iodide
+  Component Size: 1, Distance: 0
+  SMILES: IC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 50:
+  Group 45: iodide
+  Component Size: 1, Distance: 1
+  SMILES: ICC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 51:
+  Group 45: iodide
+  Component Size: 1, Distance: 2
+  SMILES: ICCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 52:
+  Group 46: sulfonamide
+  Component Size: 1, Distance: 0
+  SMILES: CS(=O)(=O)NC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 53:
+  Group 46: sulfonamide
+  Component Size: 1, Distance: 1
+  SMILES: CS(=O)(=O)NCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 54:
+  Group 46: sulfonamide
+  Component Size: 1, Distance: 2
+  SMILES: CS(=O)(=O)NCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 46 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 88:telomer sulfonamide, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 55:
+  Group 47: heterocyclic azole
+  Component Size: 1, Distance: 0
+  SMILES: C1NCNC1C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 56:
+  Group 47: heterocyclic azole
+  Component Size: 1, Distance: 1
+  SMILES: C1NCNC1CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 57:
+  Group 47: heterocyclic azole
+  Component Size: 1, Distance: 2
+  SMILES: C1NCNC1CCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 47 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 58:
+  Group 48: heterocyclic azine
+  Component Size: 1, Distance: 0
+  SMILES: c1cccnc1C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 59:
+  Group 48: heterocyclic azine
+  Component Size: 1, Distance: 1
+  SMILES: c1cccnc1CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 60:
+  Group 48: heterocyclic azine
+  Component Size: 1, Distance: 2
+  SMILES: c1cccnc1CCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 61:
+  Group 50: amine
+  Component Size: 1, Distance: 0
+  SMILES: NC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 62:
+  Group 50: amine
+  Component Size: 1, Distance: 1
+  SMILES: NCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 63:
+  Group 50: amine
+  Component Size: 1, Distance: 2
+  SMILES: NCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 50 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 64:
+  Group 53: alkene
+  Component Size: 1, Distance: 0
+  SMILES: C=CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 65:
+  Group 53: alkene
+  Component Size: 1, Distance: 1
+  SMILES: C=CCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 66:
+  Group 53: alkene
+  Component Size: 1, Distance: 2
+  SMILES: C=CCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 53 not found (detected: 19:OECD hydrofluoroolefins, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 93:telomer alkene, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 67:
+  Group 54: alkyne
+  Component Size: 1, Distance: 0
+  SMILES: C#CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 68:
+  Group 54: alkyne
+  Component Size: 1, Distance: 1
+  SMILES: C#CCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 69:
+  Group 54: alkyne
+  Component Size: 1, Distance: 2
+  SMILES: C#CCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 54 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 70:
+  Group 55: side-chain aromatics
+  Component Size: 1, Distance: 0
+  SMILES: c1ccccc1C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 71:
+  Group 55: side-chain aromatics
+  Component Size: 1, Distance: 1
+  SMILES: c1ccccc1CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 72:
+  Group 55: side-chain aromatics
+  Component Size: 1, Distance: 2
+  SMILES: c1ccccc1CCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 55 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 73:
+  Group 60: peroxydes
+  Component Size: 1, Distance: 0
+  SMILES: OOC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 74:
+  Group 60: peroxydes
+  Component Size: 1, Distance: 1
+  SMILES: OOCC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 75:
+  Group 60: peroxydes
+  Component Size: 1, Distance: 2
+  SMILES: OOCCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 60 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 76:
+  Group 61: benzoyl peroxydes
+  Component Size: 1, Distance: 0
+  SMILES: c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 77:
+  Group 61: benzoyl peroxydes
+  Component Size: 1, Distance: 1
+  SMILES: c1ccccc1C(=O)OOC(=O)CC(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 78:
+  Group 61: benzoyl peroxydes
+  Component Size: 1, Distance: 2
+  SMILES: c1ccccc1C(=O)OOC(=O)CCC(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 61 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+📊 Testing component size 2
+--------------------------------------------------------------------------------
+
+Test 79:
+  Group 29: alcohol
+  Component Size: 2, Distance: 0
+  SMILES: OC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 80:
+  Group 29: alcohol
+  Component Size: 2, Distance: 1
+  SMILES: OCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 81:
+  Group 29: alcohol
+  Component Size: 2, Distance: 2
+  SMILES: OCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 29 not found (detected: 15:OECD telomer alcohols, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 86:telomer alcohol, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 82:
+  Group 30: ketone
+  Component Size: 2, Distance: 0
+  SMILES: FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 83:
+  Group 30: ketone
+  Component Size: 2, Distance: 1
+  SMILES: FC(F)(F)C(=O)CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 84:
+  Group 30: ketone
+  Component Size: 2, Distance: 2
+  SMILES: FC(F)(F)C(=O)CCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 85:
+  Group 31: aldehyde
+  Component Size: 2, Distance: 0
+  SMILES: O=CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 86:
+  Group 31: aldehyde
+  Component Size: 2, Distance: 1
+  SMILES: O=CCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 87:
+  Group 31: aldehyde
+  Component Size: 2, Distance: 2
+  SMILES: O=CCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 31 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 77:telomer aldehyde, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 88:
+  Group 32: ether
+  Component Size: 2, Distance: 0
+  SMILES: COC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 89:
+  Group 32: ether
+  Component Size: 2, Distance: 1
+  SMILES: COCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 90:
+  Group 32: ether
+  Component Size: 2, Distance: 2
+  SMILES: COCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 32 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 91:
+  Group 33: ester
+  Component Size: 2, Distance: 0
+  SMILES: FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 92:
+  Group 33: ester
+  Component Size: 2, Distance: 1
+  SMILES: FC(F)(F)OC(=O)CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 93:
+  Group 33: ester
+  Component Size: 2, Distance: 2
+  SMILES: FC(F)(F)OC(=O)CCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 94:
+  Group 34: carboxylic acid
+  Component Size: 2, Distance: 0
+  SMILES: OC(=O)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 95:
+  Group 34: carboxylic acid
+  Component Size: 2, Distance: 1
+  SMILES: OC(=O)CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 96:
+  Group 34: carboxylic acid
+  Component Size: 2, Distance: 2
+  SMILES: OC(=O)CCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 34 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 78:telomer carboxylic acids, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 97:
+  Group 35: amide
+  Component Size: 2, Distance: 0
+  SMILES: NC(=O)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 98:
+  Group 35: amide
+  Component Size: 2, Distance: 1
+  SMILES: NC(=O)CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 99:
+  Group 35: amide
+  Component Size: 2, Distance: 2
+  SMILES: NC(=O)CCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 35 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 100:
+  Group 36: acyl halide
+  Component Size: 2, Distance: 0
+  SMILES: ClC(=O)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 101:
+  Group 36: acyl halide
+  Component Size: 2, Distance: 1
+  SMILES: ClC(=O)CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 102:
+  Group 36: acyl halide
+  Component Size: 2, Distance: 2
+  SMILES: ClC(=O)CCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 36 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 103:
+  Group 37: sulfonic acid
+  Component Size: 2, Distance: 0
+  SMILES: OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 104:
+  Group 37: sulfonic acid
+  Component Size: 2, Distance: 1
+  SMILES: OS(=O)(=O)CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 105:
+  Group 37: sulfonic acid
+  Component Size: 2, Distance: 2
+  SMILES: OS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 37 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 80:telomer sulfonic acid, 95:telomer sulfinic acid, 96:telomer sulfenic acid)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 106:
+  Group 38: sulfenic acid
+  Component Size: 2, Distance: 0
+  SMILES: OSC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 107:
+  Group 38: sulfenic acid
+  Component Size: 2, Distance: 1
+  SMILES: OSCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 108:
+  Group 38: sulfenic acid
+  Component Size: 2, Distance: 2
+  SMILES: OSCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 38 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 96:telomer sulfenic acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 109:
+  Group 39: sulfinic acid
+  Component Size: 2, Distance: 0
+  SMILES: OS(=O)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 110:
+  Group 39: sulfinic acid
+  Component Size: 2, Distance: 1
+  SMILES: OS(=O)CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 111:
+  Group 39: sulfinic acid
+  Component Size: 2, Distance: 2
+  SMILES: OS(=O)CCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 39 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 95:telomer sulfinic acid, 96:telomer sulfenic acid, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 112:
+  Group 40: sulfuric acid
+  Component Size: 2, Distance: 0
+  SMILES: OS(=O)(=O)OC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 113:
+  Group 40: sulfuric acid
+  Component Size: 2, Distance: 1
+  SMILES: OS(=O)(=O)OCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 114:
+  Group 40: sulfuric acid
+  Component Size: 2, Distance: 2
+  SMILES: OS(=O)(=O)OCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 40 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 97:telomer sulfuric acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 115:
+  Group 41: phosphonic acid
+  Component Size: 2, Distance: 0
+  SMILES: P(=O)(O)OC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 116:
+  Group 41: phosphonic acid
+  Component Size: 2, Distance: 1
+  SMILES: P(=O)(O)OCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 117:
+  Group 41: phosphonic acid
+  Component Size: 2, Distance: 2
+  SMILES: P(=O)(O)OCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 118:
+  Group 42: phosphinic acid
+  Component Size: 2, Distance: 0
+  SMILES: P(=O)(O)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 119:
+  Group 42: phosphinic acid
+  Component Size: 2, Distance: 1
+  SMILES: P(=O)(O)CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 120:
+  Group 42: phosphinic acid
+  Component Size: 2, Distance: 2
+  SMILES: P(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 42 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 121:
+  Group 43: chloride
+  Component Size: 2, Distance: 0
+  SMILES: ClC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 122:
+  Group 43: chloride
+  Component Size: 2, Distance: 1
+  SMILES: ClCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 123:
+  Group 43: chloride
+  Component Size: 2, Distance: 2
+  SMILES: ClCCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 124:
+  Group 44: bromide
+  Component Size: 2, Distance: 0
+  SMILES: BrC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 125:
+  Group 44: bromide
+  Component Size: 2, Distance: 1
+  SMILES: BrCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 126:
+  Group 44: bromide
+  Component Size: 2, Distance: 2
+  SMILES: BrCCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 127:
+  Group 45: iodide
+  Component Size: 2, Distance: 0
+  SMILES: IC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 128:
+  Group 45: iodide
+  Component Size: 2, Distance: 1
+  SMILES: ICC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 129:
+  Group 45: iodide
+  Component Size: 2, Distance: 2
+  SMILES: ICCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 130:
+  Group 46: sulfonamide
+  Component Size: 2, Distance: 0
+  SMILES: CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 131:
+  Group 46: sulfonamide
+  Component Size: 2, Distance: 1
+  SMILES: CS(=O)(=O)NCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 132:
+  Group 46: sulfonamide
+  Component Size: 2, Distance: 2
+  SMILES: CS(=O)(=O)NCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 46 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 88:telomer sulfonamide, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 133:
+  Group 47: heterocyclic azole
+  Component Size: 2, Distance: 0
+  SMILES: C1NCNC1C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 134:
+  Group 47: heterocyclic azole
+  Component Size: 2, Distance: 1
+  SMILES: C1NCNC1CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 135:
+  Group 47: heterocyclic azole
+  Component Size: 2, Distance: 2
+  SMILES: C1NCNC1CCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 47 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 136:
+  Group 48: heterocyclic azine
+  Component Size: 2, Distance: 0
+  SMILES: c1cccnc1C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 137:
+  Group 48: heterocyclic azine
+  Component Size: 2, Distance: 1
+  SMILES: c1cccnc1CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 138:
+  Group 48: heterocyclic azine
+  Component Size: 2, Distance: 2
+  SMILES: c1cccnc1CCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 139:
+  Group 50: amine
+  Component Size: 2, Distance: 0
+  SMILES: NC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 140:
+  Group 50: amine
+  Component Size: 2, Distance: 1
+  SMILES: NCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 141:
+  Group 50: amine
+  Component Size: 2, Distance: 2
+  SMILES: NCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 50 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 142:
+  Group 53: alkene
+  Component Size: 2, Distance: 0
+  SMILES: C=CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 143:
+  Group 53: alkene
+  Component Size: 2, Distance: 1
+  SMILES: C=CCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 144:
+  Group 53: alkene
+  Component Size: 2, Distance: 2
+  SMILES: C=CCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 53 not found (detected: 19:OECD hydrofluoroolefins, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 93:telomer alkene, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 145:
+  Group 54: alkyne
+  Component Size: 2, Distance: 0
+  SMILES: C#CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 146:
+  Group 54: alkyne
+  Component Size: 2, Distance: 1
+  SMILES: C#CCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 147:
+  Group 54: alkyne
+  Component Size: 2, Distance: 2
+  SMILES: C#CCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 54 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 148:
+  Group 55: side-chain aromatics
+  Component Size: 2, Distance: 0
+  SMILES: c1ccccc1C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 149:
+  Group 55: side-chain aromatics
+  Component Size: 2, Distance: 1
+  SMILES: c1ccccc1CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 150:
+  Group 55: side-chain aromatics
+  Component Size: 2, Distance: 2
+  SMILES: c1ccccc1CCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 55 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 151:
+  Group 60: peroxydes
+  Component Size: 2, Distance: 0
+  SMILES: OOC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 152:
+  Group 60: peroxydes
+  Component Size: 2, Distance: 1
+  SMILES: OOCC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 153:
+  Group 60: peroxydes
+  Component Size: 2, Distance: 2
+  SMILES: OOCCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 60 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 154:
+  Group 61: benzoyl peroxydes
+  Component Size: 2, Distance: 0
+  SMILES: c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 155:
+  Group 61: benzoyl peroxydes
+  Component Size: 2, Distance: 1
+  SMILES: c1ccccc1C(=O)OOC(=O)CC(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 156:
+  Group 61: benzoyl peroxydes
+  Component Size: 2, Distance: 2
+  SMILES: c1ccccc1C(=O)OOC(=O)CCC(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 61 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+📊 Testing component size 3
+--------------------------------------------------------------------------------
+
+Test 157:
+  Group 29: alcohol
+  Component Size: 3, Distance: 0
+  SMILES: OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 158:
+  Group 29: alcohol
+  Component Size: 3, Distance: 1
+  SMILES: OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 159:
+  Group 29: alcohol
+  Component Size: 3, Distance: 2
+  SMILES: OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 29 not found (detected: 15:OECD telomer alcohols, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 86:telomer alcohol, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 160:
+  Group 30: ketone
+  Component Size: 3, Distance: 0
+  SMILES: FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 161:
+  Group 30: ketone
+  Component Size: 3, Distance: 1
+  SMILES: FC(F)(F)C(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 162:
+  Group 30: ketone
+  Component Size: 3, Distance: 2
+  SMILES: FC(F)(F)C(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 163:
+  Group 31: aldehyde
+  Component Size: 3, Distance: 0
+  SMILES: O=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 164:
+  Group 31: aldehyde
+  Component Size: 3, Distance: 1
+  SMILES: O=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 165:
+  Group 31: aldehyde
+  Component Size: 3, Distance: 2
+  SMILES: O=CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 31 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 77:telomer aldehyde, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 166:
+  Group 32: ether
+  Component Size: 3, Distance: 0
+  SMILES: COC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 167:
+  Group 32: ether
+  Component Size: 3, Distance: 1
+  SMILES: COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 168:
+  Group 32: ether
+  Component Size: 3, Distance: 2
+  SMILES: COCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 32 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 169:
+  Group 33: ester
+  Component Size: 3, Distance: 0
+  SMILES: FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 170:
+  Group 33: ester
+  Component Size: 3, Distance: 1
+  SMILES: FC(F)(F)OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 171:
+  Group 33: ester
+  Component Size: 3, Distance: 2
+  SMILES: FC(F)(F)OC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 172:
+  Group 34: carboxylic acid
+  Component Size: 3, Distance: 0
+  SMILES: OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 173:
+  Group 34: carboxylic acid
+  Component Size: 3, Distance: 1
+  SMILES: OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 174:
+  Group 34: carboxylic acid
+  Component Size: 3, Distance: 2
+  SMILES: OC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 34 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 78:telomer carboxylic acids, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 175:
+  Group 35: amide
+  Component Size: 3, Distance: 0
+  SMILES: NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 176:
+  Group 35: amide
+  Component Size: 3, Distance: 1
+  SMILES: NC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 177:
+  Group 35: amide
+  Component Size: 3, Distance: 2
+  SMILES: NC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 35 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 178:
+  Group 36: acyl halide
+  Component Size: 3, Distance: 0
+  SMILES: ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 179:
+  Group 36: acyl halide
+  Component Size: 3, Distance: 1
+  SMILES: ClC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 180:
+  Group 36: acyl halide
+  Component Size: 3, Distance: 2
+  SMILES: ClC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 36 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 181:
+  Group 37: sulfonic acid
+  Component Size: 3, Distance: 0
+  SMILES: OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 182:
+  Group 37: sulfonic acid
+  Component Size: 3, Distance: 1
+  SMILES: OS(=O)(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 183:
+  Group 37: sulfonic acid
+  Component Size: 3, Distance: 2
+  SMILES: OS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 37 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 80:telomer sulfonic acid, 95:telomer sulfinic acid, 96:telomer sulfenic acid)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 184:
+  Group 38: sulfenic acid
+  Component Size: 3, Distance: 0
+  SMILES: OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 185:
+  Group 38: sulfenic acid
+  Component Size: 3, Distance: 1
+  SMILES: OSCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 186:
+  Group 38: sulfenic acid
+  Component Size: 3, Distance: 2
+  SMILES: OSCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 38 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 96:telomer sulfenic acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 187:
+  Group 39: sulfinic acid
+  Component Size: 3, Distance: 0
+  SMILES: OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 188:
+  Group 39: sulfinic acid
+  Component Size: 3, Distance: 1
+  SMILES: OS(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 189:
+  Group 39: sulfinic acid
+  Component Size: 3, Distance: 2
+  SMILES: OS(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 39 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 95:telomer sulfinic acid, 96:telomer sulfenic acid, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 190:
+  Group 40: sulfuric acid
+  Component Size: 3, Distance: 0
+  SMILES: OS(=O)(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 191:
+  Group 40: sulfuric acid
+  Component Size: 3, Distance: 1
+  SMILES: OS(=O)(=O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 192:
+  Group 40: sulfuric acid
+  Component Size: 3, Distance: 2
+  SMILES: OS(=O)(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 40 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 97:telomer sulfuric acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 193:
+  Group 41: phosphonic acid
+  Component Size: 3, Distance: 0
+  SMILES: P(=O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 194:
+  Group 41: phosphonic acid
+  Component Size: 3, Distance: 1
+  SMILES: P(=O)(O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 195:
+  Group 41: phosphonic acid
+  Component Size: 3, Distance: 2
+  SMILES: P(=O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 196:
+  Group 42: phosphinic acid
+  Component Size: 3, Distance: 0
+  SMILES: P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 197:
+  Group 42: phosphinic acid
+  Component Size: 3, Distance: 1
+  SMILES: P(=O)(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 198:
+  Group 42: phosphinic acid
+  Component Size: 3, Distance: 2
+  SMILES: P(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 42 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 199:
+  Group 43: chloride
+  Component Size: 3, Distance: 0
+  SMILES: ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 200:
+  Group 43: chloride
+  Component Size: 3, Distance: 1
+  SMILES: ClCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 201:
+  Group 43: chloride
+  Component Size: 3, Distance: 2
+  SMILES: ClCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 202:
+  Group 44: bromide
+  Component Size: 3, Distance: 0
+  SMILES: BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 203:
+  Group 44: bromide
+  Component Size: 3, Distance: 1
+  SMILES: BrCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 204:
+  Group 44: bromide
+  Component Size: 3, Distance: 2
+  SMILES: BrCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 205:
+  Group 45: iodide
+  Component Size: 3, Distance: 0
+  SMILES: IC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 206:
+  Group 45: iodide
+  Component Size: 3, Distance: 1
+  SMILES: ICC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 207:
+  Group 45: iodide
+  Component Size: 3, Distance: 2
+  SMILES: ICCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 208:
+  Group 46: sulfonamide
+  Component Size: 3, Distance: 0
+  SMILES: CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 209:
+  Group 46: sulfonamide
+  Component Size: 3, Distance: 1
+  SMILES: CS(=O)(=O)NCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 210:
+  Group 46: sulfonamide
+  Component Size: 3, Distance: 2
+  SMILES: CS(=O)(=O)NCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 46 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 88:telomer sulfonamide, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 211:
+  Group 47: heterocyclic azole
+  Component Size: 3, Distance: 0
+  SMILES: C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 212:
+  Group 47: heterocyclic azole
+  Component Size: 3, Distance: 1
+  SMILES: C1NCNC1CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 213:
+  Group 47: heterocyclic azole
+  Component Size: 3, Distance: 2
+  SMILES: C1NCNC1CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 47 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 214:
+  Group 48: heterocyclic azine
+  Component Size: 3, Distance: 0
+  SMILES: c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 215:
+  Group 48: heterocyclic azine
+  Component Size: 3, Distance: 1
+  SMILES: c1cccnc1CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 216:
+  Group 48: heterocyclic azine
+  Component Size: 3, Distance: 2
+  SMILES: c1cccnc1CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 217:
+  Group 50: amine
+  Component Size: 3, Distance: 0
+  SMILES: NC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 218:
+  Group 50: amine
+  Component Size: 3, Distance: 1
+  SMILES: NCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 219:
+  Group 50: amine
+  Component Size: 3, Distance: 2
+  SMILES: NCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 50 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 220:
+  Group 53: alkene
+  Component Size: 3, Distance: 0
+  SMILES: C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 221:
+  Group 53: alkene
+  Component Size: 3, Distance: 1
+  SMILES: C=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 222:
+  Group 53: alkene
+  Component Size: 3, Distance: 2
+  SMILES: C=CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 53 not found (detected: 19:OECD hydrofluoroolefins, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 93:telomer alkene, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 223:
+  Group 54: alkyne
+  Component Size: 3, Distance: 0
+  SMILES: C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 224:
+  Group 54: alkyne
+  Component Size: 3, Distance: 1
+  SMILES: C#CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 225:
+  Group 54: alkyne
+  Component Size: 3, Distance: 2
+  SMILES: C#CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 54 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 226:
+  Group 55: side-chain aromatics
+  Component Size: 3, Distance: 0
+  SMILES: c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 227:
+  Group 55: side-chain aromatics
+  Component Size: 3, Distance: 1
+  SMILES: c1ccccc1CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 228:
+  Group 55: side-chain aromatics
+  Component Size: 3, Distance: 2
+  SMILES: c1ccccc1CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 55 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 229:
+  Group 60: peroxydes
+  Component Size: 3, Distance: 0
+  SMILES: OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 230:
+  Group 60: peroxydes
+  Component Size: 3, Distance: 1
+  SMILES: OOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 231:
+  Group 60: peroxydes
+  Component Size: 3, Distance: 2
+  SMILES: OOCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 60 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 232:
+  Group 61: benzoyl peroxydes
+  Component Size: 3, Distance: 0
+  SMILES: c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 233:
+  Group 61: benzoyl peroxydes
+  Component Size: 3, Distance: 1
+  SMILES: c1ccccc1C(=O)OOC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 234:
+  Group 61: benzoyl peroxydes
+  Component Size: 3, Distance: 2
+  SMILES: c1ccccc1C(=O)OOC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 61 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+📊 Testing component size 4
+--------------------------------------------------------------------------------
+
+Test 235:
+  Group 29: alcohol
+  Component Size: 4, Distance: 0
+  SMILES: OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 236:
+  Group 29: alcohol
+  Component Size: 4, Distance: 1
+  SMILES: OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 237:
+  Group 29: alcohol
+  Component Size: 4, Distance: 2
+  SMILES: OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 29 not found (detected: 15:OECD telomer alcohols, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 86:telomer alcohol, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 238:
+  Group 30: ketone
+  Component Size: 4, Distance: 0
+  SMILES: FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 239:
+  Group 30: ketone
+  Component Size: 4, Distance: 1
+  SMILES: FC(F)(F)C(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 240:
+  Group 30: ketone
+  Component Size: 4, Distance: 2
+  SMILES: FC(F)(F)C(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 241:
+  Group 31: aldehyde
+  Component Size: 4, Distance: 0
+  SMILES: O=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 242:
+  Group 31: aldehyde
+  Component Size: 4, Distance: 1
+  SMILES: O=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 243:
+  Group 31: aldehyde
+  Component Size: 4, Distance: 2
+  SMILES: O=CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 31 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 77:telomer aldehyde, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 244:
+  Group 32: ether
+  Component Size: 4, Distance: 0
+  SMILES: COC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 245:
+  Group 32: ether
+  Component Size: 4, Distance: 1
+  SMILES: COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 246:
+  Group 32: ether
+  Component Size: 4, Distance: 2
+  SMILES: COCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 32 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 247:
+  Group 33: ester
+  Component Size: 4, Distance: 0
+  SMILES: FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 248:
+  Group 33: ester
+  Component Size: 4, Distance: 1
+  SMILES: FC(F)(F)OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 249:
+  Group 33: ester
+  Component Size: 4, Distance: 2
+  SMILES: FC(F)(F)OC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 250:
+  Group 34: carboxylic acid
+  Component Size: 4, Distance: 0
+  SMILES: OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 251:
+  Group 34: carboxylic acid
+  Component Size: 4, Distance: 1
+  SMILES: OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 252:
+  Group 34: carboxylic acid
+  Component Size: 4, Distance: 2
+  SMILES: OC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 34 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 78:telomer carboxylic acids, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 253:
+  Group 35: amide
+  Component Size: 4, Distance: 0
+  SMILES: NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 254:
+  Group 35: amide
+  Component Size: 4, Distance: 1
+  SMILES: NC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 255:
+  Group 35: amide
+  Component Size: 4, Distance: 2
+  SMILES: NC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 35 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 256:
+  Group 36: acyl halide
+  Component Size: 4, Distance: 0
+  SMILES: ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 257:
+  Group 36: acyl halide
+  Component Size: 4, Distance: 1
+  SMILES: ClC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 258:
+  Group 36: acyl halide
+  Component Size: 4, Distance: 2
+  SMILES: ClC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 36 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 259:
+  Group 37: sulfonic acid
+  Component Size: 4, Distance: 0
+  SMILES: OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 260:
+  Group 37: sulfonic acid
+  Component Size: 4, Distance: 1
+  SMILES: OS(=O)(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 261:
+  Group 37: sulfonic acid
+  Component Size: 4, Distance: 2
+  SMILES: OS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 37 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 80:telomer sulfonic acid, 95:telomer sulfinic acid, 96:telomer sulfenic acid)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 262:
+  Group 38: sulfenic acid
+  Component Size: 4, Distance: 0
+  SMILES: OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 263:
+  Group 38: sulfenic acid
+  Component Size: 4, Distance: 1
+  SMILES: OSCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 264:
+  Group 38: sulfenic acid
+  Component Size: 4, Distance: 2
+  SMILES: OSCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 38 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 96:telomer sulfenic acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 265:
+  Group 39: sulfinic acid
+  Component Size: 4, Distance: 0
+  SMILES: OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 266:
+  Group 39: sulfinic acid
+  Component Size: 4, Distance: 1
+  SMILES: OS(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 267:
+  Group 39: sulfinic acid
+  Component Size: 4, Distance: 2
+  SMILES: OS(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 39 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 95:telomer sulfinic acid, 96:telomer sulfenic acid, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 268:
+  Group 40: sulfuric acid
+  Component Size: 4, Distance: 0
+  SMILES: OS(=O)(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 269:
+  Group 40: sulfuric acid
+  Component Size: 4, Distance: 1
+  SMILES: OS(=O)(=O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 270:
+  Group 40: sulfuric acid
+  Component Size: 4, Distance: 2
+  SMILES: OS(=O)(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 40 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 97:telomer sulfuric acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 271:
+  Group 41: phosphonic acid
+  Component Size: 4, Distance: 0
+  SMILES: P(=O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 272:
+  Group 41: phosphonic acid
+  Component Size: 4, Distance: 1
+  SMILES: P(=O)(O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 273:
+  Group 41: phosphonic acid
+  Component Size: 4, Distance: 2
+  SMILES: P(=O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 274:
+  Group 42: phosphinic acid
+  Component Size: 4, Distance: 0
+  SMILES: P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 275:
+  Group 42: phosphinic acid
+  Component Size: 4, Distance: 1
+  SMILES: P(=O)(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 276:
+  Group 42: phosphinic acid
+  Component Size: 4, Distance: 2
+  SMILES: P(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 42 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 277:
+  Group 43: chloride
+  Component Size: 4, Distance: 0
+  SMILES: ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 278:
+  Group 43: chloride
+  Component Size: 4, Distance: 1
+  SMILES: ClCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 279:
+  Group 43: chloride
+  Component Size: 4, Distance: 2
+  SMILES: ClCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 280:
+  Group 44: bromide
+  Component Size: 4, Distance: 0
+  SMILES: BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 281:
+  Group 44: bromide
+  Component Size: 4, Distance: 1
+  SMILES: BrCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 282:
+  Group 44: bromide
+  Component Size: 4, Distance: 2
+  SMILES: BrCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 283:
+  Group 45: iodide
+  Component Size: 4, Distance: 0
+  SMILES: IC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 284:
+  Group 45: iodide
+  Component Size: 4, Distance: 1
+  SMILES: ICC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 285:
+  Group 45: iodide
+  Component Size: 4, Distance: 2
+  SMILES: ICCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 286:
+  Group 46: sulfonamide
+  Component Size: 4, Distance: 0
+  SMILES: CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 287:
+  Group 46: sulfonamide
+  Component Size: 4, Distance: 1
+  SMILES: CS(=O)(=O)NCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 288:
+  Group 46: sulfonamide
+  Component Size: 4, Distance: 2
+  SMILES: CS(=O)(=O)NCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 46 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 88:telomer sulfonamide, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 289:
+  Group 47: heterocyclic azole
+  Component Size: 4, Distance: 0
+  SMILES: C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 290:
+  Group 47: heterocyclic azole
+  Component Size: 4, Distance: 1
+  SMILES: C1NCNC1CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 291:
+  Group 47: heterocyclic azole
+  Component Size: 4, Distance: 2
+  SMILES: C1NCNC1CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 47 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 292:
+  Group 48: heterocyclic azine
+  Component Size: 4, Distance: 0
+  SMILES: c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 293:
+  Group 48: heterocyclic azine
+  Component Size: 4, Distance: 1
+  SMILES: c1cccnc1CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 294:
+  Group 48: heterocyclic azine
+  Component Size: 4, Distance: 2
+  SMILES: c1cccnc1CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 295:
+  Group 50: amine
+  Component Size: 4, Distance: 0
+  SMILES: NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 296:
+  Group 50: amine
+  Component Size: 4, Distance: 1
+  SMILES: NCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 297:
+  Group 50: amine
+  Component Size: 4, Distance: 2
+  SMILES: NCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 50 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 298:
+  Group 53: alkene
+  Component Size: 4, Distance: 0
+  SMILES: C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 299:
+  Group 53: alkene
+  Component Size: 4, Distance: 1
+  SMILES: C=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 300:
+  Group 53: alkene
+  Component Size: 4, Distance: 2
+  SMILES: C=CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 53 not found (detected: 19:OECD hydrofluoroolefins, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 93:telomer alkene, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 301:
+  Group 54: alkyne
+  Component Size: 4, Distance: 0
+  SMILES: C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 302:
+  Group 54: alkyne
+  Component Size: 4, Distance: 1
+  SMILES: C#CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 303:
+  Group 54: alkyne
+  Component Size: 4, Distance: 2
+  SMILES: C#CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 54 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 304:
+  Group 55: side-chain aromatics
+  Component Size: 4, Distance: 0
+  SMILES: c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 305:
+  Group 55: side-chain aromatics
+  Component Size: 4, Distance: 1
+  SMILES: c1ccccc1CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 306:
+  Group 55: side-chain aromatics
+  Component Size: 4, Distance: 2
+  SMILES: c1ccccc1CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 55 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 307:
+  Group 60: peroxydes
+  Component Size: 4, Distance: 0
+  SMILES: OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 308:
+  Group 60: peroxydes
+  Component Size: 4, Distance: 1
+  SMILES: OOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 309:
+  Group 60: peroxydes
+  Component Size: 4, Distance: 2
+  SMILES: OOCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 60 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 310:
+  Group 61: benzoyl peroxydes
+  Component Size: 4, Distance: 0
+  SMILES: c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 311:
+  Group 61: benzoyl peroxydes
+  Component Size: 4, Distance: 1
+  SMILES: c1ccccc1C(=O)OOC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 312:
+  Group 61: benzoyl peroxydes
+  Component Size: 4, Distance: 2
+  SMILES: c1ccccc1C(=O)OOC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 61 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+📊 Testing component size 5
+--------------------------------------------------------------------------------
+
+Test 313:
+  Group 29: alcohol
+  Component Size: 5, Distance: 0
+  SMILES: OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 314:
+  Group 29: alcohol
+  Component Size: 5, Distance: 1
+  SMILES: OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 29 (alcohol) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 315:
+  Group 29: alcohol
+  Component Size: 5, Distance: 2
+  SMILES: OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 29 not found (detected: 15:OECD telomer alcohols, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 86:telomer alcohol, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 316:
+  Group 30: ketone
+  Component Size: 5, Distance: 0
+  SMILES: FC(F)(F)C(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 317:
+  Group 30: ketone
+  Component Size: 5, Distance: 1
+  SMILES: FC(F)(F)C(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 318:
+  Group 30: ketone
+  Component Size: 5, Distance: 2
+  SMILES: FC(F)(F)C(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 30 (ketone) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 319:
+  Group 31: aldehyde
+  Component Size: 5, Distance: 0
+  SMILES: O=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 320:
+  Group 31: aldehyde
+  Component Size: 5, Distance: 1
+  SMILES: O=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 31 (aldehyde) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 321:
+  Group 31: aldehyde
+  Component Size: 5, Distance: 2
+  SMILES: O=CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 31 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 77:telomer aldehyde, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 322:
+  Group 32: ether
+  Component Size: 5, Distance: 0
+  SMILES: COC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 323:
+  Group 32: ether
+  Component Size: 5, Distance: 1
+  SMILES: COCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 32 (ether) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 324:
+  Group 32: ether
+  Component Size: 5, Distance: 2
+  SMILES: COCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 32 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 325:
+  Group 33: ester
+  Component Size: 5, Distance: 0
+  SMILES: FC(F)(F)OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 326:
+  Group 33: ester
+  Component Size: 5, Distance: 1
+  SMILES: FC(F)(F)OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 327:
+  Group 33: ester
+  Component Size: 5, Distance: 2
+  SMILES: FC(F)(F)OC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 33 (ester) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 328:
+  Group 34: carboxylic acid
+  Component Size: 5, Distance: 0
+  SMILES: OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 329:
+  Group 34: carboxylic acid
+  Component Size: 5, Distance: 1
+  SMILES: OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 34 (carboxylic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 330:
+  Group 34: carboxylic acid
+  Component Size: 5, Distance: 2
+  SMILES: OC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 34 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 78:telomer carboxylic acids, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 331:
+  Group 35: amide
+  Component Size: 5, Distance: 0
+  SMILES: NC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 332:
+  Group 35: amide
+  Component Size: 5, Distance: 1
+  SMILES: NC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 35 (amide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 333:
+  Group 35: amide
+  Component Size: 5, Distance: 2
+  SMILES: NC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 35 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 334:
+  Group 36: acyl halide
+  Component Size: 5, Distance: 0
+  SMILES: ClC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 335:
+  Group 36: acyl halide
+  Component Size: 5, Distance: 1
+  SMILES: ClC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 36 (acyl halide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 336:
+  Group 36: acyl halide
+  Component Size: 5, Distance: 2
+  SMILES: ClC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 36 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 337:
+  Group 37: sulfonic acid
+  Component Size: 5, Distance: 0
+  SMILES: OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 338:
+  Group 37: sulfonic acid
+  Component Size: 5, Distance: 1
+  SMILES: OS(=O)(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 37 (sulfonic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 339:
+  Group 37: sulfonic acid
+  Component Size: 5, Distance: 2
+  SMILES: OS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 37 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 80:telomer sulfonic acid, 95:telomer sulfinic acid, 96:telomer sulfenic acid)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 340:
+  Group 38: sulfenic acid
+  Component Size: 5, Distance: 0
+  SMILES: OSC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 341:
+  Group 38: sulfenic acid
+  Component Size: 5, Distance: 1
+  SMILES: OSCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 38 (sulfenic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 342:
+  Group 38: sulfenic acid
+  Component Size: 5, Distance: 2
+  SMILES: OSCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 38 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 96:telomer sulfenic acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 343:
+  Group 39: sulfinic acid
+  Component Size: 5, Distance: 0
+  SMILES: OS(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 344:
+  Group 39: sulfinic acid
+  Component Size: 5, Distance: 1
+  SMILES: OS(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 39 (sulfinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 345:
+  Group 39: sulfinic acid
+  Component Size: 5, Distance: 2
+  SMILES: OS(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 39 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 95:telomer sulfinic acid, 96:telomer sulfenic acid, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 346:
+  Group 40: sulfuric acid
+  Component Size: 5, Distance: 0
+  SMILES: OS(=O)(=O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 347:
+  Group 40: sulfuric acid
+  Component Size: 5, Distance: 1
+  SMILES: OS(=O)(=O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 40 (sulfuric acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 348:
+  Group 40: sulfuric acid
+  Component Size: 5, Distance: 2
+  SMILES: OS(=O)(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 40 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 97:telomer sulfuric acid, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 349:
+  Group 41: phosphonic acid
+  Component Size: 5, Distance: 0
+  SMILES: P(=O)(O)OC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 350:
+  Group 41: phosphonic acid
+  Component Size: 5, Distance: 1
+  SMILES: P(=O)(O)OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 1:?, 2:?, 3:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 351:
+  Group 41: phosphonic acid
+  Component Size: 5, Distance: 2
+  SMILES: P(=O)(O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 41 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 352:
+  Group 42: phosphinic acid
+  Component Size: 5, Distance: 0
+  SMILES: P(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 353:
+  Group 42: phosphinic acid
+  Component Size: 5, Distance: 1
+  SMILES: P(=O)(O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 42 (phosphinic acid) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 354:
+  Group 42: phosphinic acid
+  Component Size: 5, Distance: 2
+  SMILES: P(=O)(O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 42 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 355:
+  Group 43: chloride
+  Component Size: 5, Distance: 0
+  SMILES: ClC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 356:
+  Group 43: chloride
+  Component Size: 5, Distance: 1
+  SMILES: ClCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 357:
+  Group 43: chloride
+  Component Size: 5, Distance: 2
+  SMILES: ClCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 43 (chloride) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 358:
+  Group 44: bromide
+  Component Size: 5, Distance: 0
+  SMILES: BrC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 359:
+  Group 44: bromide
+  Component Size: 5, Distance: 1
+  SMILES: BrCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 360:
+  Group 44: bromide
+  Component Size: 5, Distance: 2
+  SMILES: BrCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 44 (bromide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 361:
+  Group 45: iodide
+  Component Size: 5, Distance: 0
+  SMILES: IC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 362:
+  Group 45: iodide
+  Component Size: 5, Distance: 1
+  SMILES: ICC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 363:
+  Group 45: iodide
+  Component Size: 5, Distance: 2
+  SMILES: ICCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 45 (iodide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 364:
+  Group 46: sulfonamide
+  Component Size: 5, Distance: 0
+  SMILES: CS(=O)(=O)NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 365:
+  Group 46: sulfonamide
+  Component Size: 5, Distance: 1
+  SMILES: CS(=O)(=O)NCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 46 (sulfonamide) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 366:
+  Group 46: sulfonamide
+  Component Size: 5, Distance: 2
+  SMILES: CS(=O)(=O)NCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 46 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 88:telomer sulfonamide, 98:telomer methyl, 116:telomers)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 367:
+  Group 47: heterocyclic azole
+  Component Size: 5, Distance: 0
+  SMILES: C1NCNC1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 368:
+  Group 47: heterocyclic azole
+  Component Size: 5, Distance: 1
+  SMILES: C1NCNC1CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 47 (heterocyclic azole) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 369:
+  Group 47: heterocyclic azole
+  Component Size: 5, Distance: 2
+  SMILES: C1NCNC1CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 47 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 370:
+  Group 48: heterocyclic azine
+  Component Size: 5, Distance: 0
+  SMILES: c1cccnc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 371:
+  Group 48: heterocyclic azine
+  Component Size: 5, Distance: 1
+  SMILES: c1cccnc1CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 372:
+  Group 48: heterocyclic azine
+  Component Size: 5, Distance: 2
+  SMILES: c1cccnc1CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 48 (heterocyclic azine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 373:
+  Group 50: amine
+  Component Size: 5, Distance: 0
+  SMILES: NC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 374:
+  Group 50: amine
+  Component Size: 5, Distance: 1
+  SMILES: NCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 50 (amine) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 375:
+  Group 50: amine
+  Component Size: 5, Distance: 2
+  SMILES: NCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 50 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 376:
+  Group 53: alkene
+  Component Size: 5, Distance: 0
+  SMILES: C=CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 377:
+  Group 53: alkene
+  Component Size: 5, Distance: 1
+  SMILES: C=CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 53 (alkene) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 378:
+  Group 53: alkene
+  Component Size: 5, Distance: 2
+  SMILES: C=CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 53 not found (detected: 19:OECD hydrofluoroolefins, 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 93:telomer alkene, 98:telomer methyl)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 379:
+  Group 54: alkyne
+  Component Size: 5, Distance: 0
+  SMILES: C#CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 380:
+  Group 54: alkyne
+  Component Size: 5, Distance: 1
+  SMILES: C#CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 54 (alkyne) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 381:
+  Group 54: alkyne
+  Component Size: 5, Distance: 2
+  SMILES: C#CCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 54 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 382:
+  Group 55: side-chain aromatics
+  Component Size: 5, Distance: 0
+  SMILES: c1ccccc1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 383:
+  Group 55: side-chain aromatics
+  Component Size: 5, Distance: 1
+  SMILES: c1ccccc1CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 55 (side-chain aromatics) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 384:
+  Group 55: side-chain aromatics
+  Component Size: 5, Distance: 2
+  SMILES: c1ccccc1CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 55 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 385:
+  Group 60: peroxydes
+  Component Size: 5, Distance: 0
+  SMILES: OOC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 386:
+  Group 60: peroxydes
+  Component Size: 5, Distance: 1
+  SMILES: OOCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 60 (peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 387:
+  Group 60: peroxydes
+  Component Size: 5, Distance: 2
+  SMILES: OOCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 60 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 388:
+  Group 61: benzoyl peroxydes
+  Component Size: 5, Distance: 0
+  SMILES: c1ccccc1C(=O)OOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 389:
+  Group 61: benzoyl peroxydes
+  Component Size: 5, Distance: 1
+  SMILES: c1ccccc1C(=O)OOC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ✅ PFASGroups PASS - Group 61 (benzoyl peroxydes) detected
+     Perfluoroalkyl component: ✓ (size: None)
+
+Test 390:
+  Group 61: benzoyl peroxydes
+  Component Size: 5, Distance: 2
+  SMILES: c1ccccc1C(=O)OOC(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F
+  ❌ PFASGroups FAIL - Group 61 not found (detected: 51:perhalogenated alkyl, 52:polyhalogenated alkyl, 98:telomer methyl, 116:telomers, 1:?)
+     Perfluoroalkyl component: ✓ (size: None)
+
+================================================================================
+📈 TEST SUMMARY
+================================================================================
+Total tests: 390
+
+PFASGroups Results:
+  Passed: 280 (71.8%)
+  Failed: 110 (28.2%)
+
+❌ PFASGroups Failures by Functional Group:
+--------------------------------------------------------------------------------
+  Group 29 (alcohol): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 31 (aldehyde): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 32 (ether): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 34 (carboxylic acid): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 35 (amide): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 36 (acyl halide): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 37 (sulfonic acid): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 38 (sulfenic acid): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 39 (sulfinic acid): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 40 (sulfuric acid): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 41 (phosphonic acid): 15 failures
+    At distances: 0, 1, 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 42 (phosphinic acid): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 46 (sulfonamide): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 47 (heterocyclic azole): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 50 (amine): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 53 (alkene): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 54 (alkyne): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 55 (side-chain aromatics): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 60 (peroxydes): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+  Group 61 (benzoyl peroxydes): 5 failures
+    At distances: 2
+    With component sizes: 1, 2, 3, 4, 5
+
+📊 PFASGroups Success Rate by Distance:
+--------------------------------------------------------------------------------
+  Distance 0: 125/130 (96.2%)
+  Distance 1: 125/130 (96.2%)
+  Distance 2: 30/130 (23.1%)
+
+📊 PFASGroups Success Rate by Component Size:
+--------------------------------------------------------------------------------
+  Size 1: 56/78 (71.8%)
+  Size 2: 56/78 (71.8%)
+  Size 3: 56/78 (71.8%)
+  Size 4: 56/78 (71.8%)
+  Size 5: 56/78 (71.8%)
+
+================================================================================
+✨ Test suite complete!
+
+📁 Results saved to: data/pfas_highly_branched_benchmark_20260329_162055.json
+
+[16:20:48] WARNING: Omitted undefined stereo
+
+[16:20:48] WARNING: Omitted undefined stereo
+
+[16:20:48] WARNING: Omitted undefined stereo
+
+[16:20:48] WARNING: Omitted undefined stereo
+
+[16:20:48] WARNING: Omitted undefined stereo
+
+[16:20:48] WARNING: Omitted undefined stereo
+
+[16:20:49] WARNING: Omitted undefined stereo
+
+[16:20:49] WARNING: Omitted undefined stereo
+
+[16:20:49] WARNING: Omitted undefined stereo
+
+[16:20:49] WARNING: Omitted undefined stereo
+
+[16:20:49] WARNING: Omitted undefined stereo
+
+[16:20:49] WARNING: Omitted undefined stereo
+
+[16:20:51] WARNING: Omitted undefined stereo
+
+[16:20:51] WARNING: Omitted undefined stereo
+
+[16:20:51] WARNING: Omitted undefined stereo
+
+[16:20:51] WARNING: Omitted undefined stereo
+
+[16:20:51] WARNING: Omitted undefined stereo
+
+[16:20:51] WARNING: Omitted undefined stereo
+
+[16:20:52] WARNING: Omitted undefined stereo
+
+[16:20:52] WARNING: Omitted undefined stereo
+
+[16:20:52] WARNING: Omitted undefined stereo
+
+[16:20:52] WARNING: Omitted undefined stereo
+
+[16:20:53] WARNING: Omitted undefined stereo
+
+[16:20:53] WARNING: Omitted undefined stereo
+
+[16:20:55] WARNING: Omitted undefined stereo
+
+[16:20:55] WARNING: Omitted undefined stereo
+
+[16:20:55] WARNING: Omitted undefined stereo
+
+[16:20:55] WARNING: Omitted undefined stereo
+
+[16:20:55] WARNING: Omitted undefined stereo
+
+[16:20:55] WARNING: Omitted undefined stereo
+
+
+

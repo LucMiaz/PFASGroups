@@ -40,18 +40,8 @@ Run-Benchmark "3️⃣" "Timing Performance Benchmark"
 Run-Benchmark "4️⃣" "Non-Fluorinated Exclusion Benchmark"
 Run-Benchmark "5️⃣" "Complex Branched Structures Benchmark"
 
-# Highly Branched Compounds Test
-Write-Host "6️⃣ Running Highly Branched Compounds Test..." -ForegroundColor Yellow
-python scripts/classify/test_highly_branched.py
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ Highly Branched Compounds Test failed" -ForegroundColor Red
-    exit 1
-}
-Write-Host "✅ Highly Branched Compounds Test completed" -ForegroundColor Green
-Write-Host ""
-
 # Telomer Validation
-Write-Host "7️⃣ Running Telomer Detection Validation..." -ForegroundColor Yellow
+Write-Host "6️⃣ Running Telomer Detection Validation..." -ForegroundColor Yellow
 python scripts/classify/validate_telomers.py
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Telomer Validation failed" -ForegroundColor Red

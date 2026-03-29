@@ -1,0 +1,37 @@
+=== Test: highly_branched_carboxylic_acid
+  mol keys: ['iteration', 'smiles', 'molecular_weight', 'num_atoms', 'num_heavy_atoms', 'num_fluorines', 'PFASGroups_detected', 'PFASGroups_groups', 'PFASGroups_expected_groups', 'PFASGroups_correct', 'atlas_detected', 'atlas_first_class', 'atlas_second_class', 'PFASGroups_execution_time', 'atlas_execution_time']
+  atlas_exec_time range: 0.04666169499978423 - 0.0547984090007958
+  atlas_predictions[0]: None
+  all atlas non-null: False
+
+=== Test: branched_sulfonic_acid
+  mol keys: ['iteration', 'smiles', 'molecular_weight', 'num_atoms', 'num_heavy_atoms', 'num_fluorines', 'PFASGroups_detected', 'PFASGroups_groups', 'PFASGroups_expected_groups', 'PFASGroups_correct', 'atlas_detected', 'atlas_first_class', 'atlas_second_class', 'PFASGroups_execution_time', 'atlas_execution_time']
+  atlas_exec_time range: 0.034679937998589594 - 0.040347776004637126
+  atlas_predictions[0]: None
+  all atlas non-null: False
+
+=== Test: branched_ether_chain
+  mol keys: ['iteration', 'smiles', 'molecular_weight', 'num_atoms', 'num_heavy_atoms', 'num_fluorines', 'PFASGroups_detected', 'PFASGroups_groups', 'PFASGroups_expected_groups', 'PFASGroups_correct', 'atlas_detected', 'atlas_first_class', 'atlas_second_class', 'PFASGroups_execution_time', 'atlas_execution_time']
+  atlas_exec_time range: 0.04554263600584818 - 0.06048815899703186
+  atlas_predictions[0]: None
+  all atlas non-null: False
+
+=== Test: multi_functional_branched
+  mol keys: ['iteration', 'smiles', 'molecular_weight', 'num_atoms', 'num_heavy_atoms', 'num_fluorines', 'PFASGroups_detected', 'PFASGroups_groups', 'PFASGroups_expected_groups', 'PFASGroups_correct', 'atlas_detected', 'atlas_first_class', 'atlas_second_class', 'PFASGroups_execution_time', 'atlas_execution_time']
+  atlas_exec_time range: 0.042817477995413356 - 0.05137640400062082
+  atlas_predictions[0]: None
+  all atlas non-null: False
+
+=== Test: cyclic_branched
+  mol keys: ['iteration', 'smiles', 'molecular_weight', 'num_atoms', 'num_heavy_atoms', 'num_fluorines', 'PFASGroups_detected', 'PFASGroups_groups', 'PFASGroups_expected_groups', 'PFASGroups_correct', 'atlas_detected', 'atlas_first_class', 'atlas_second_class', 'PFASGroups_execution_time', 'atlas_execution_time']
+  atlas_exec_time range: 0.0500614240008872 - 0.07239188899984583
+  atlas_predictions[0]: None
+  all atlas non-null: False
+
+=== Test: aromatic_branched
+  mol keys: ['iteration', 'smiles', 'molecular_weight', 'num_atoms', 'num_heavy_atoms', 'num_fluorines', 'PFASGroups_detected', 'PFASGroups_groups', 'PFASGroups_expected_groups', 'PFASGroups_correct', 'atlas_detected', 'atlas_first_class', 'atlas_second_class', 'PFASGroups_execution_time', 'atlas_execution_time']
+  atlas_exec_time range: 0.00019670700567075983 - 0.0002630669987411238
+  atlas_predictions[0]: None
+  all atlas non-null: False
+
+

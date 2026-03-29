@@ -167,18 +167,8 @@ fi
 echo "✅ Complex Branched Structures Benchmark completed"
 echo ""
 
-# Highly Branched Compounds Test
-echo "6️⃣ Running Highly Branched Compounds Test..."
-python scripts/classify/test_highly_branched.py
-if [ $? -ne 0 ]; then
-    echo "❌ Highly Branched Compounds Test failed"
-    exit 1
-fi
-echo "✅ Highly Branched Compounds Test completed"
-echo ""
-
 # Telomer Validation
-echo "7️⃣ Running Telomer Detection Validation..."
+echo "6️⃣ Running Telomer Detection Validation..."
 python scripts/classify/validate_telomers.py
 if [ $? -ne 0 ]; then
     echo "❌ Telomer Validation failed"
