@@ -9,11 +9,12 @@ import os, sys
 
 FILE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCRIPT_DIR = os.path.dirname(FILE_DIR)
+REPO_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 DATA_DIR = os.path.join(SCRIPT_DIR, 'data')
 
 
 # Try to import PFAS-Atlas
-atlas_dir = os.path.join(os.path.dirname(repo_root), 'PFAS-atlas')
+atlas_dir = os.path.join(REPO_DIR, 'PFAS-atlas')
 try:
     sys.path.append(atlas_dir)  
     from classification_helper.classify_pfas import classify_pfas_molecule
