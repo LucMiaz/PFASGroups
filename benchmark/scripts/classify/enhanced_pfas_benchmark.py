@@ -537,6 +537,15 @@ class EnhancedPFASBenchmark:
                     for match in results['matches']:
                         if match.get('type') == 'HalogenGroup':
                             group_ids.append(match['id'])
+                            # Forward all summary metrics from parse_mol
+                            _SUMMARY_KEYS = (
+                                'mean_branching', 'total_branching', 'sum_component_branching_ratio',
+                                'mean_smarts_centrality', 'mean_component_fraction', 'total_components_fraction',
+                                'mean_eccentricity', 'median_eccentricity',
+                                'mean_diameter', 'mean_radius',
+                                'mean_effective_graph_resistance', 'mean_effective_graph_resistance_BDE',
+                                'mean_dist_to_barycentre', 'mean_dist_to_centre', 'mean_dist_to_periphery',
+                            )
                             all_matches.append({
                                 'type': 'group',
                                 'id': match['id'],
@@ -546,10 +555,7 @@ class EnhancedPFASBenchmark:
                                 'components_sizes': match.get('components_sizes', []),
                                 'num_components': match.get('num_components', 0),
                                 'components_types': match.get('components_types', []),
-                                # Summary metrics
-                                'mean_eccentricity': match.get('mean_eccentricity', 0.0),
-                                'mean_diameter': match.get('mean_diameter', float('nan')),
-                                'mean_radius': match.get('mean_radius', float('nan'))
+                                **{k: match.get(k) for k in _SUMMARY_KEYS},
                             })
                         elif match.get('type') == 'PFASdefinition':
                             definition_ids.append(match['id'])
@@ -679,6 +685,10 @@ class EnhancedPFASBenchmark:
             [29, 31, 43],  # alcohol + ether + sulfonamide
         ]
         
+        # Filter combos to only include groups that exist in functional_smarts
+        multi_group_pairs = [c for c in multi_group_pairs if all(g in self.functional_smarts for g in c)]
+        multi_group_triplets = [c for c in multi_group_triplets if all(g in self.functional_smarts for g in c)]
+
         # Test pairs
         print("🔬 Testing 5 functional group pairs (40 molecules each):")
         for combo in multi_group_pairs:
@@ -710,7 +720,7 @@ class EnhancedPFASBenchmark:
             print(f"     ✅ Generated {success_count}/{total_molecules} molecules ({success_rate:.1f}% success) for groups {combo[0]}-{combo[1]}")
         
         # Test triplets
-        print("\n🔬 Testing 5 functional group triplets (10 molecules each):")
+        print("\nTesting 5 functional group triplets (10 molecules each):")
         for combo in multi_group_triplets:
             combo_str = ' + '.join([self.functional_smarts[g]['name'] for g in combo])
             print(f"   • Groups {'-'.join(map(str, combo))}: {combo_str}")

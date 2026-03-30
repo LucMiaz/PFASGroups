@@ -1,0 +1,4349 @@
+[
+  {
+    "smiles": "N#CSC(F)=C(F)C(C(=C=C=C=C(C(F)=C=C=C=C(F)C(F)(F)F)C(=C(F)C(F)(F)F)C(F)(C(F)=C(F)F)C(F)(F)C(=C=C=C(C(=C(F)F)C(F)=C(F)F)C(F)(F)F)C(C(=C=C=C(F)C(F)(F)F)C(=C=C(F)F)C(F)(F)C(F)(F)F)=C(C(F)(F)F)C(F)(F)C(F)=C=C(F)F)C(F)(F)F)=C(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 66,
+    "target_group_name": "thiocyanic acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(C=C=C(C(F)(F)F)C(F)(F)F)NC=C=C(C(F)=C(F)F)C(C(C(=C(F)F)C(F)(F)F)=C(C(F)(F)F)C(F)(F)C(F)(F)F)(C(=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(C(=C(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 69,
+    "target_group_name": "amide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(F)C(F)=C=C(F)C(F)(C(=C(F)C(F)(F)F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(F)C#CF)C(C#CF)(C(F)(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(C(C(=C=C(F)C(F)=C(F)F)C(=C(F)F)C(F)=C(C(F)(F)F)C(F)(F)F)=C(C(C#CC(C#CF)(C(=C(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)F)=C(F)F)C(=C(C(F)=C=C(F)F)C(=C(C(F)=C=C(F)F)C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)F)(C(C#CC#CC#CC(=C(F)C(F)(F)F)C(F)(F)F)(C(=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 62,
+    "target_group_name": "sulfonyl halide",
+    "detected_groups": [
+      33,
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C(F)C(=C(OOC(=C=C(C(C(=C=C=C=C(C(=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(=C(C(=C(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)(C(C(=C=C(F)C(F)(F)F)C(F)(F)F)=C(C(F)(F)C(F)=C(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(C(=C=C=C(F)F)C(F)(F)F)=C(F)C(F)(F)F)(C(=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(=C(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(F)(C(F)(F)C(C(C(=C(F)F)C(F)(F)F)=C(F)C(F)(F)C(F)(F)F)=C(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(=C(F)C(F)(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)F)C(=C=C=C(F)C(=C=C=C(F)F)C(F)(F)C(F)(F)F)C(=C(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)=C=C(F)F)C(C(=C(F)F)C(F)=C(F)F)=C(C(C(C(F)=C(F)F)=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)=C(F)C(F)(F)F)C(F)(F)F)C(=C(C(C(=C=C(F)F)C(F)(F)F)=C(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 53,
+    "target_group_name": "peroxydes",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(c1c(C(F)(F)F)c(C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)c(C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)c(C(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)c1C(F)(C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "Fc1c(-c2ccccn2)c(C(F)(F)C(F)(F)F)c(C(F)(F)C(F)(F)C(F)(F)F)c(C(F)(F)C(F)(F)C(F)(F)F)c1C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 71,
+    "target_group_name": "heterocyclic azine",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      37,
+      38,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(C(F)(F)c1c(C(=C(F)F)C(F)(F)F)c(C(F)(F)C(=C(F)C(F)(F)F)C(F)(F)F)c(C(F)(F)F)c(C(F)(C(F)=C(F)F)C(F)(C(F)=C(F)F)C(F)(F)F)c1-c1ncc[nH]1)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 72,
+    "target_group_name": "heterocyclic azole",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(F)C(=C=C(C(F)=C=C=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)c1ccccc1)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 54,
+    "target_group_name": "side-chain aromatics",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S1(=O)NC(C(F)(F)F)=C(F)C(C(F)(F)F)=C(F)C(C(F)(F)C(F)(F)F)=C1F",
+    "chain_length": 5,
+    "target_group_id": 59,
+    "target_group_name": "sulfonamide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)c1c(C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)c(C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)c(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)c(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c1C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(F)C(=C(C(=C=C(C(F)=C(F)F)C(F)(F)F)C(=C=C(F)F)C(F)(F)F)C(=C(C(=C=C(F)F)C(=C=C=C(F)C(F)(F)C(F)(F)F)C(=C=C(F)F)C(F)(F)F)C(=C=C(F)F)C(C(F)=C(F)C(F)(F)F)=C(C(=C=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(=C(F)F)C(=C(F)C(=C(F)F)C(F)(F)F)C(F)(F)F)C(=C(C(=C=C=C(C(=C(F)C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)=C(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(=C=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(=C=C(F)F)C(=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)=C(F)C(C(=C=C([SiH3])C(F)=C(F)C(F)(F)F)C(=C=C(F)F)C(F)=C(F)F)(C(=C=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)=C(F)F)C(C(=C=C(F)C(F)(F)F)C(F)(F)F)(C(=C=C(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(=C=C(C(F)=C(F)F)C(F)=C(F)F)C(C(=C=C(F)C(F)(F)F)C(F)(F)F)(C(F)=C(F)F)C(F)=C(F)C(F)(F)F)(C(C(F)=C(F)F)=C(C(F)=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)=C(F)F",
+    "chain_length": 160,
+    "target_group_id": 76,
+    "target_group_name": "silane",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC1=C(C(F)(F)F)C(F)=C(C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)=C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)N1",
+    "chain_length": 10,
+    "target_group_id": 70,
+    "target_group_name": "amine",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C1=C(C(F)(F)C(F)(F)F)OC(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)=C(C(F)(F)F)C(C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)=C1C(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 47,
+    "target_group_name": "ether",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)c1c(C(C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)c(C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)c(C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)c(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)c1C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(O)c1c(F)c(F)c(F)c(F)c1C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 57,
+    "target_group_name": "sulfinic acid",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      37,
+      38,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(C(F)(F)F)(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(=C=C=C=C=C(C(=C=C=C(F)F)C(=C(C(=C(F)F)C(F)(C(=C(F)F)C(F)(F)F)C(F)(F)C(F)=C(F)F)C(F)(F)F)C(F)(F)F)C(=C=C=C=C(F)F)C(F)(C(C(F)=C=C=C(F)F)(C(=C=C=C(F)F)C(=C(F)F)C(F)(F)F)C(=C=C(F)C(F)=C(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(=C=C=C(F)C(=C(F)F)C(F)(F)F)C(F)=C(F)C(F)(F)F)C(C(=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(F)F)C(C(=C(F)F)C(F)=C(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(O)OC(F)=C=C(F)C(=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 64,
+    "target_group_name": "sulfuric acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)c1c(C(F)(F)C(F)(F)F)c(C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)c(C(C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)c(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)c1C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)C(F)=C(C(F)(C(=C=C(C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(=C(F)C(F)(F)C(F)=C(F)F)C(F)(F)F)(C(C(=C(F)F)C(=C(F)C(=C(F)F)C(F)(F)F)C(=C(F)F)C(=C(F)F)C(F)(F)F)(C(C(C(F)=C(F)F)=C(C(=C(F)F)C(C(F)=C(F)F)=C(C(F)(F)F)C(F)(F)F)C(C(=C=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)(C(F)=C(F)F)C(C(=C(F)C(F)(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)F)=C(C(F)(F)F)C(C(=C=C(F)C(F)(F)F)C(F)=C(F)F)(C(F)=C(C(F)(F)F)C(F)(F)F)C(C(F)=C(F)F)=C(F)C(F)=C(F)F)C(F)(F)C(=C(F)F)C(F)(F)F)C(C(F)=C(F)F)(C(F)=C(F)F)C(C(C(F)=C=C(F)F)=C(F)F)(C(C(F)=C=C(F)F)(C(=C=C(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)=C=C=C(F)F)C(=C=C(C(F)=C(F)F)C(F)=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)=C(F)F)C(=C=C(F)F)C(C(F)=C(F)F)(C(F)=C(F)F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 68,
+    "target_group_name": "phosphonic acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "C=CC(=O)OCC(C(F)(F)F)(C(F)(c1c(C(F)(C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)c(F)c(C(F)(F)F)c(C(F)(F)C(F)(F)C(F)(F)F)c1C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 29,
+    "target_group_name": "acrylate",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      37,
+      38,
+      54,
+      77,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC#CC#CC(C#CC(F)(F)C(F)(F)F)(C(F)(F)F)C(C#CC#CC(F)(F)F)(C#CC(F)(F)C(F)(F)C(F)(F)F)C(C#CC#CC#CC(C#CC(F)(F)F)(C(C#CC(F)(F)F)(C#CC(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C#CF)C(F)(C(F)(F)C#CC(F)(F)F)C(F)(C#CF)C(F)(F)F)(C#CC#CC(F)(F)C(F)(F)F)C(C(C#CC(F)(F)F)(C#CC(F)(F)C(F)(F)F)NC#CC(F)(F)F)(C(C#CF)(C#CC#CF)C(F)(F)F)C(C#CC(F)(F)F)(C(F)(F)F)C(F)(C#CC(F)(F)F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 70,
+    "target_group_name": "amine",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(O)C(F)=C(C(F)=C=C(C(=C(F)F)C(C(=C=C(C(=C(F)F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(=C(C(=C=C(C(F)=C(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(C(C(=C=C(F)F)C(=C=C(C(=C=C(F)F)C(F)(F)F)C(F)(F)C(C(F)=C(F)F)=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)=C(F)F)=C(F)C(=C=C=C(F)C(F)(F)F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(C(=C=C(F)C(F)(F)F)C(=C=C(F)F)C(C(=C=C(C(=C(F)F)C(F)(F)F)C(F)(F)C(F)=C(F)F)C(F)(F)C(F)(F)F)=C(F)F)=C(C(=C=C=C(F)F)C(F)(F)C(F)=C=C(F)F)C(C(F)=C(C(F)=C(F)F)C(=C(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)=C(F)C(F)(F)F)(C(F)(F)C(=C=C(F)F)C(F)(F)F)C(C(=C=C(C(=C=C(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(=C=C(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)=C(F)F)C(F)=C(C(F)(F)F)C(F)(F)C(F)(F)F)(C(=C=C=C(C(F)(F)F)C(F)(F)F)C(C(C(=C=C=C(F)F)C(F)(F)C(F)=C(F)F)=C(F)C(=C=C(F)F)C(F)(C(F)=C(F)F)C(F)(F)C(F)(F)F)=C(C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)C(F)=C(F)F)C(F)(F)C(=C=C(C(=C=C(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(=C=C(F)F)C(F)(F)C(F)(F)F)(C(=C=C(F)F)C(F)(F)F)C(=C(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)=C(F)F",
+    "chain_length": 200,
+    "target_group_id": 61,
+    "target_group_name": "sulfonic acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C=C(C(F)(F)C(F)(F)C(C(=C=C(F)F)C(F)(F)F)=C(F)F)C(C(=C=C=C(C(F)(F)F)C(F)(F)F)C(=C=C=C(F)F)C(=C=C(F)F)C(F)(F)F)(C(=C=C(C(C(=C=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)=C(C(C(F)=C(F)F)=C(C(F)=C=C(F)F)C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(C(=C=C=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)=C(C(=C(F)F)C(F)(C(F)=C(F)F)C(F)(F)F)C(F)(F)C(=C(F)F)C(F)=C(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(=C=C=C=C=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(=C=C=C=C(F)F)C(C(C(=C(C(F)=C(F)F)C(F)=C(F)F)C(F)(F)F)=C(F)[Si](Cl)(Cl)Cl)(C(F)(F)F)C(F)(F)F)(C(=C=C=C(F)F)C(F)=C(F)F)C(F)(C(F)(F)F)C(F)(C(F)=C(F)F)C(F)(F)F)C(C(F)=C(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 75,
+    "target_group_name": "trichlorosilane",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(c1c(C(F)(C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)c(C(F)(C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)c(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)c1C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC#CC#CC(=C(C#CC(=C=C=C=C(C#CC(F)=C=C=C(C(F)=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(C(=C=C=C(C#CC(F)(F)F)C(=C(F)C(F)(F)F)C(F)(F)C(F)(F)F)C#CC#CC(F)=C=C=C(F)C(F)(F)F)(C(=C=C=C(C(F)=C=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)C(F)=C(F)F)C#CC(=C(F)F)C(F)(F)F)C(=C(C#CC#CC(F)(C#CC(F)(F)F)C(F)(F)F)C(F)=C(F)c1ccccc1)C(C(=C=C(C#CF)C(F)=C(F)F)C(=C=C=C(F)F)C(F)(F)F)=C(C#CC(=C(C(F)=C=C(F)F)C(F)=C(F)F)C(F)(F)F)C(F)=C(F)F)C(=C=C(F)F)C(F)(F)F)C(=C(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 54,
+    "target_group_name": "side-chain aromatics",
+    "detected_groups": [
+      33,
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC#CC#CC#CC#CC(C#CC(F)(F)F)(C#CC(F)(F)C#CF)C(C#CC#CF)(C(F)(F)F)C(C#CF)(C(F)(F)C#CC#CI)C(F)(F)C#CC(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 50,
+    "target_group_name": "iodide",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(C#CC(F)(C(F)(F)F)C(C#CC#CC(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C#CC(F)(F)F)(C(C#CC#CF)(C#CC(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C#CF)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C#CC#CC(C#CF)(C#CF)C(C#CF)(C(F)(C#CF)C#CC(F)(F)F)C(F)(F)C(F)(F)F)(C#CC(C#CC#CC(F)(F)F)(C#CC#CC(C#CF)(C(F)(F)F)C(C#CF)(C#CC(C#CC#CF)(C(F)(F)F)C(F)(F)F)C(F)(F)F)C(C#CC(F)(F)F)(C#CC(F)(F)F)C(C#CC(F)(F)F)(C#CC(F)(C#CC(F)(F)F)C(F)(F)C#CF)C(F)(C#CF)C(F)(C#CF)C(F)(F)F)C#CC(C#CC(F)(C(F)(F)F)C(C#CF)(C#CC(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(F)F)C(C#CF)(C#CC#CC(F)(F)F)C#CC(F)(F)F)C(C#CC(F)(F)C#CC(F)(F)C(F)(F)F)(C#CC(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C#CF)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C#CF)C(C#CC(F)(F)F)(C(F)(F)F)C(F)(C#CC(F)(F)F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 51,
+    "target_group_name": "ketone",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "Fc1c(C(F)(F)F)c(C(F)(F)F)c(C(F)(F)F)c(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)c1C(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      37,
+      38,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C1OC(O)C(O)C(OC#CC#CC(F)(F)F)C1O",
+    "chain_length": 5,
+    "target_group_id": 49,
+    "target_group_name": "glucuronate",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC1=C(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)=C(C(F)(F)C(F)(F)C(F)(F)F)NC(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)=C1C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 70,
+    "target_group_name": "amine",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "N#CSC(F)=C(F)C(C(F)=C(C(=C(F)F)C(F)(F)F)C(=C(F)C#CF)C(F)(F)F)=C(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 66,
+    "target_group_name": "thiocyanic acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(CC#CC#CC(F)(F)F)OOC(=O)CC#CC#CC(C#CF)(C(C#CC#CC#CC#CC#CC(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C#CC(C#CC(F)(F)C(F)(F)F)(C(F)(F)F)C(C#CF)(C#CC#CC(F)(F)F)C#CC#CC(F)(F)F)C#CC(C#CC(F)(F)C(C#CF)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 40,
+    "target_group_name": "benzoyl peroxydes",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[PH](O)C(=C(F)F)C(F)(F)C(=C=C(F)C(F)(F)C(F)(F)F)C(F)=C(F)F",
+    "chain_length": 10,
+    "target_group_id": 67,
+    "target_group_name": "phosphinic acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C1NC(C#CF)=C(C#CF)C(C(C#CC#CC(F)(F)F)(C(F)(F)C(F)(F)F)C(C#CF)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)=C(C#CC#CC(F)(F)F)C(C#CC(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)=C1C#CC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 69,
+    "target_group_name": "amide",
+    "detected_groups": [
+      33,
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(F)C(C(=C=C(F)F)C(F)(F)F)=C(C(=C=C(C(=C(F)F)C(=C(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(C(=C(F)F)C(=C(F)F)C(F)(F)F)(C(=C(C(=C(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(=C=C(F)F)C(F)=C(F)F)(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(F)(C(=C=C(F)F)C(F)(F)C(=C=C(F)F)C(F)(F)F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)=C(F)F)C(F)(F)F)C(F)=C(C(F)(F)F)C(F)(F)F)C(C(F)=C(F)C(F)(F)F)=C(C(=C(F)F)C(F)(F)F)[Si](Cl)(Cl)Cl",
+    "chain_length": 80,
+    "target_group_id": 75,
+    "target_group_name": "trichlorosilane",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "C=CC(=O)OCC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 29,
+    "target_group_name": "acrylate",
+    "detected_groups": [
+      34,
+      35,
+      77,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C=C=C(C(=C=C=C=C(F)C(=C=C(F)F)C(F)(F)F)C(=C=C=C=C=C=C(C(F)(F)F)C(F)(F)F)C(=C(F)c1ccccc1)C(F)(F)F)C(F)(F)C(=C=C=C(F)C(F)(F)F)C(F)=C(F)F",
+    "chain_length": 35,
+    "target_group_id": 54,
+    "target_group_name": "side-chain aromatics",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "Fc1c(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)c(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c1C(C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      37,
+      38,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(O)C(F)=C(F)C(F)(C(F)(F)C(C(=C=C=C(C(F)=C(F)F)C(F)(F)F)C(=C(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(C(=C=C=C(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 61,
+    "target_group_name": "sulfonic acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCS(=O)(=O)c1c(C(F)(F)F)c(C(=C=C=C=C=C(F)F)C(=C(F)F)C(F)(F)F)c(C(=C(F)F)C(F)(F)F)c(C(F)=C(F)C(F)(F)F)c1C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 63,
+    "target_group_name": "sulfonyl propanoic acid",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(Cl)C(F)=C=C=C(C(F)(F)F)C(C(=C=C(C(F)(F)F)C(F)(F)C(F)(F)C(=C=C=C(F)F)C(=C(C(=C(F)C(F)=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)=C(F)F)C(=C=C=C=C=C(F)F)C(C(=C=C=C=C(F)C(F)(F)C(F)(F)F)C(F)(F)F)(C(=C(C(F)(F)F)C(F)(F)F)C(C(F)=C=C(F)F)(C(F)=C(F)F)C(F)(F)C(F)(F)F)C(=C(C(C(F)=C=C=C(F)F)=C(C(=C=C(F)C(F)(F)F)C(=C(C(F)=C(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)=C(F)F)C(C(=C=C(F)F)C(=C=C(F)C(F)(F)C(F)(F)F)C(F)(F)F)=C(C(C(=C=C=C=C(F)C(=C(F)F)C(F)=C(F)F)C(F)(F)F)=C(C(=C=C(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(C(=C=C(F)F)C(F)(F)F)(C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)C(C(C(=C=C(F)F)C(F)(F)F)=C(F)F)(C(=C(F)F)C(F)(F)F)C(F)(F)F)(C(=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 30,
+    "target_group_name": "acyl halide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C(F)=C(F)C(F)=C=C(F)F",
+    "chain_length": 5,
+    "target_group_id": 42,
+    "target_group_name": "carboxylic acid",
+    "detected_groups": [],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(O)C(F)=C(F)C(=C(C(=C=C(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 61,
+    "target_group_name": "sulfonic acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C[NH2+]CC(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 74,
+    "target_group_name": "glycine",
+    "detected_groups": [
+      34,
+      35,
+      115,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(O)OC(F)=C(C(=C(C(=C=C(F)F)C(F)=C(F)F)c1c(C(=C(C(C(=C=C(F)F)C(F)(F)F)=C(C(F)(F)C(=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(=C=C(F)F)C(=C=C=C=C(F)F)C(F)(F)F)(C(F)(F)C(=C=C(F)F)C(=C(F)C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)=C(F)F)C(F)(F)F)c(C(F)=C=C(C(F)=C(F)F)C(F)(F)F)c(C(F)=C(F)C(F)(F)F)c(C(=C(C(F)(F)F)C(C(F)=C(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F)c1C(C(C(=C=C(F)F)C(F)(F)C(F)(C(=C=C(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)F)=C(F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 64,
+    "target_group_name": "sulfuric acid",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C[NH2+]CC(F)=C(F)C(F)(F)C(=C(c1c(C(F)(C(=C(F)C(F)(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)F)c(C(C(=C=C=C(F)C(F)(F)F)C(F)=C(F)F)=C(C(F)(F)F)C(F)(F)F)c(C(F)=C(F)F)c(C(C(F)=C(C(=C(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)=C(F)C(F)(F)F)c1C(C(F)=C(F)F)(C(F)(F)C(F)=C(F)F)C(F)(C(=C=C(F)F)C(C(F)=C(F)F)=C(F)C(F)(F)F)C(=C=C(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 74,
+    "target_group_name": "glycine",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(O)OC(F)=C=C(C(F)(F)F)C(C(=C(F)F)C(=C(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(=C(F)C(F)(F)C(F)=C(F)F)C(C(C(=C=C(F)F)C(F)(F)F)=C(F)F)(C(F)(F)F)C(C(=C(F)F)C(F)(F)F)(C(F)(F)C(F)=C(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 64,
+    "target_group_name": "sulfuric acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=CC(=C=C(F)F)C(F)(F)C(C#Cc1c(C#CC(F)=C(F)F)c(C(C#CF)=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)c(C#CC(F)=C(C(F)(F)F)C(F)(F)F)c(C(F)(F)C#CC#CC(F)(F)F)c1C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)=C(F)C#CC(F)(C#CF)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 32,
+    "target_group_name": "aldehyde",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      36,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C=C(C(=C=C(C(=C=C=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(=C(F)F)C(C(=C=C=C(F)F)C(F)(F)C(F)(F)C(F)(F)F)=C(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)=C(F)F)=C(C(F)(F)F)C(C(C(F)=C(F)F)=C(C(=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(=C=C=C(C(=C(C(=C(C(F)=C(F)F)C(F)=C(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(F)C(F)(F)F)C(C(=C=C(F)F)C(F)=C=C(F)F)(C(F)(F)F)C(F)(C(=C(F)F)C(F)=C(F)F)C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(=C=C=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 39,
+    "target_group_name": "benzodioxole",
+    "detected_groups": [
+      33,
+      34,
+      35,
+      44,
+      45
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C(F)=C(F)C(C#CC(=C=C=C=C(C#CC(F)(F)C(=C(F)F)C(F)(F)F)C(F)(F)F)C(=C=C(F)F)C(F)(F)C(=C(F)F)C(F)(F)F)=C(F)F",
+    "chain_length": 25,
+    "target_group_id": 42,
+    "target_group_name": "carboxylic acid",
+    "detected_groups": [
+      33,
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "C=CC(=O)OCC(F)=C=C(C(F)=C=C=C=C=C(F)F)C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 29,
+    "target_group_name": "acrylate",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C[NH2+]CC#CC(F)(F)C(C#CC#CC#Cc1c(C(C#CC(F)(F)F)(C#CC(F)(F)C(F)(F)F)C(F)(C#CC#CF)C#CC#CC(F)(F)F)c(C(F)(F)C#CC(F)(F)F)c(C#CC(C#CF)(C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C#CF)C(F)(C(F)(F)F)C(F)(F)F)C(C#CC(F)(F)C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C#CC#CF)(C(F)(F)F)C(F)(F)F)c(C#CC#CC(C#CF)(C#CC(F)(F)F)C(F)(F)F)c1C(C(F)(C(F)(F)F)C(F)(F)F)(C(C#CC(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(C#CF)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C#CC#CC(F)(F)F)C(C#CF)(C(F)(F)F)C(F)(F)C#CF)C(F)(C(F)(F)C#CF)C(F)(F)C(F)(F)F)(C#CC(F)(F)F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 74,
+    "target_group_name": "glycine",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      36,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(NC(=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(c1c(C(=C=C=C(C(C(F)=C(C(F)=C(F)F)C(F)(F)F)=C(F)C(F)(F)F)C(F)(F)F)C(C(C(=C=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(C(=C(F)C(F)(F)F)C(F)(F)F)(C(=C(C(=C=C(F)F)C(=C(F)F)C(F)=C(F)F)C(F)=C(F)F)C(C(F)=C=C(C(F)=C(F)F)C(F)(F)F)(C(C(F)=C(F)F)=C(F)C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)(C(=C(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)c(C(=C(F)F)C(F)(F)F)c(C(=C=C=C=C=C(F)C(F)(F)F)C(=C=C=C(C(=C=C(F)F)C(F)(F)C(F)(F)F)C(=C(F)F)C(F)(F)F)C(C(C(C(F)=C=C(F)F)=C(F)F)=C(C(F)=C(F)F)C(F)(F)F)=C(C(F)=C(F)F)C(F)(F)F)c(C(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(=C=C=C=C(F)F)C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)c1C(=C=C(C(=C=C=C(F)F)C(F)(F)F)C(C(F)=C(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(C(=C=C(F)F)C(F)(F)C(F)(F)F)=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)=C(C(C(=C=C(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)=C(C(=C=C(F)F)C(=C(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(=C(C(=C(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)=C(C(F)(F)F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 59,
+    "target_group_name": "sulfonamide",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(CC(F)=C(F)C(C(=C=C(C(=C=C(C(=C=C(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(=C(F)C(F)(F)F)C(C(=C(F)F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(=C=C=C(F)F)C(F)=C(F)C(F)=C(F)C(F)(F)F)=C(C(=C=C(F)F)C(F)(F)F)C(F)(F)F)C(C(=C=C=C(F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(=C=C(F)F)C(F)(F)C(F)=C(F)F)C(C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(=C(F)F)C(C(=C=C(F)F)C(=C(F)F)C(F)(F)F)(C(=C(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(=C(F)C(F)=C=C(F)C(=C(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(C(F)=C(F)F)=C(C(F)(F)F)C(F)(F)F)=C(F)C(F)(F)C(F)(F)F)NCCO",
+    "chain_length": 120,
+    "target_group_id": 60,
+    "target_group_name": "sulfonamidoethanol",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(CC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(c1c(C(F)(F)C(F)(F)C(F)(F)F)c(C(F)(F)C(F)(F)F)c(C(F)(F)C(F)(F)F)c(C(F)(F)C(F)(F)F)c1C(F)(C(F)(F)F)C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)NCCO",
+    "chain_length": 25,
+    "target_group_id": 60,
+    "target_group_name": "sulfonamidoethanol",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      54,
+      100,
+      101,
+      102,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(C(F)(F)F)(C(F)(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC1=C(F)C(F)=C(C(F)=C(F)C(F)(F)F)C(F)=C(C(F)(F)F)N1",
+    "chain_length": 5,
+    "target_group_id": 70,
+    "target_group_name": "amine",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(CC#CC#CC#CC(F)(F)F)OOC(=O)CC(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 40,
+    "target_group_name": "benzoyl peroxydes",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC#CC#CC#COOC#CC(C#CC#CC#CC#CC(C#CC(C#CF)(C#CC(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C#CF)(C#CC#CF)C#CC(F)(F)F)(C(C#CC#CC#CC(F)(F)F)(C#CC(F)(F)F)C#CC(C#CF)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C#CC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C#CC#CC(C#CC(F)(F)C(F)(F)F)(C(F)(F)C#CF)C(F)(C#CC(F)(F)F)C(F)(F)F)(C#CC(F)(F)C(F)(F)F)C(F)(C#CC(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(C#CC(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C#CC(F)(F)F)C(C#CC(F)(F)F)(C#CC(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 53,
+    "target_group_name": "peroxydes",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C1OC(O)C(O)C(OC(F)=C(F)C(F)=C(C(=C=C=C(C(F)=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)=C(F)F)C1O",
+    "chain_length": 15,
+    "target_group_id": 49,
+    "target_group_name": "glucuronate",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(CC(C#CF)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(C#CF)(C#CC#CC#CF)C(F)(C(F)(F)F)C(F)(F)F)NCCO",
+    "chain_length": 20,
+    "target_group_id": 60,
+    "target_group_name": "sulfonamidoethanol",
+    "detected_groups": [
+      34,
+      35,
+      36,
+      100,
+      101,
+      102,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(F)C(F)(c1c(F)c(F)c(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)c(C(C(F)(F)F)(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)c1C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      37,
+      38,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C=C(C(=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(=C=C=C(C(C(=C=C(C(=C=C=C=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)C(F)(F)F)C(=C=C(C(C(=C=C(F)F)C(F)=C(F)F)=C(F)F)C(=C(F)C(F)(F)F)C(F)(F)F)C(C(F)=C(F)F)(C(=C(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(=C=C(C(F)=C=C(F)F)C(F)=C(F)F)C(F)(F)F)(C(=C=C(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(=C=C(F)F)C(F)(F)C(F)(F)F)C(C(C(F)=C(F)F)=C(F)C(F)(F)F)(C(F)(F)F)C(C(F)=C(F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(=C(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(=C(F)Cl)C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 43,
+    "target_group_name": "chloride",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "C=C(C)C(=O)OCC(F)=C=C=C(C(C(F)=C=C(F)F)(C(F)=C(F)C(F)(F)F)C(F)(F)F)C(C(=C=C=C(F)F)C(=C=C(F)C(=C(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)F)(C(F)(C(F)=C=C(F)F)C(F)(F)F)C(C(=C=C=C=C(F)F)C(F)(F)F)(C(F)(F)F)C(C(=C(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 52,
+    "target_group_name": "methacrylate",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(C(=C(F)F)C(F)(F)F)C(=C(C(F)=C(F)F)C(F)(F)F)C(F)(F)C(=C=C=C=C=C(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(=C=C=C(C(F)(F)F)[Si](Cl)(Cl)Cl)C(F)(F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 75,
+    "target_group_name": "trichlorosilane",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(C=C(F)C(F)(F)F)C(C(=C=C(F)C(F)(F)C(F)(F)F)C(=C(F)F)C(C(F)=C(F)C(F)(C(F)(F)F)C(F)(F)F)=C(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(=C(C(=C(F)F)C(=C(F)F)C(=C(F)F)C(F)=C(F)F)C(F)(C(F)=C(C(=C(F)F)C(F)(F)C(=C=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(C(=C(F)F)C(=C(F)F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(=C(F)F)C(F)(F)F)C(C(=C(C(F)=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)(C(C(=C=C(F)F)C(F)(F)F)(C(C(=C(F)F)C(F)(F)F)=C(C(F)(F)F)C(F)(C(F)=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 51,
+    "target_group_name": "ketone",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C1NC(F)=C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)=C(F)C(F)=C1F",
+    "chain_length": 5,
+    "target_group_id": 69,
+    "target_group_name": "amide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(CF)OCCc1c(C#CC(F)(F)F)c(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)c(C(F)(F)F)c(C(F)(F)F)c1C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      36,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C=C(C(=C=C=C=C(C(F)=C(F)F)C(F)(F)C(F)=C(F)I)C(=C(F)F)C(F)(F)F)C(F)=C(F)F",
+    "chain_length": 20,
+    "target_group_id": 50,
+    "target_group_name": "iodide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)[SiH3])C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 76,
+    "target_group_name": "silane",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(C(F)=C(C(=C(C(=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(C(=C=C(F)F)C(C(F)=C(C(F)(F)F)C(F)(F)F)=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(C(F)=C(F)C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)=C(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC#CC(F)(C#CF)C(C#CC(F)(F)F)(C#CC(F)(F)C(F)(F)F)C(F)(C#CC(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(O)C#CC#CC(C#CC(C#CF)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C#CC(C#CF)(C(F)(F)F)C(F)(F)F)(C#CC(C(F)(F)F)(C(F)(F)C#CF)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C#CC(F)(F)F)C(F)(C#CF)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C#CF)(C#CC(F)(F)F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 61,
+    "target_group_name": "sulfonic acid",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "C=CC(=O)OCC(C(F)(F)F)(C(F)(C#CF)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C#CC#CF)(C(C#CC#CC(F)(F)F)(C(F)(F)F)C(C#CC(C#CF)(C(F)(F)C#CC(F)(F)F)C(F)(F)C(F)(F)F)(C#CC(C(F)(F)C#CF)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C#CF)C(F)(F)C#CC(F)(F)F)C(C#CC#CC(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 29,
+    "target_group_name": "acrylate",
+    "detected_groups": [
+      34,
+      35,
+      36,
+      77,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(SC(=O)C(O)C(=O)O)C(F)=C(F)C(C(C(=C=C(F)F)C(C(=C(F)F)C(C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)=C(C(=C(F)F)C(F)(F)C(F)(F)F)C(C(F)=C(F)F)(C(C(=C=C(C(F)(F)C(=C(C(F)=C(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(=C=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)(C(=C=C=C=C=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(=C(C(F)=C(C(F)(F)F)C(F)(F)F)C(C(=C=C(F)F)C(=C(F)F)C(F)(F)F)=C(C(=C(F)F)C(C(F)=C(F)C(F)(F)F)=C(F)C(F)(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(=C=C=C(F)F)C(C(=C=C=C(F)F)C(C(F)=C(F)C(F)(F)F)=C(C(=C=C(F)C(F)(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)F)(C(=C(F)F)C(F)(F)F)C(=C(C(=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(=C=C(F)F)C(F)=C=C(F)F)(C(C(F)=C(F)F)=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(=C=C=C=C(F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)C(F)=C(F)F)(C(=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)=C(F)F)(C(F)(F)F)C(F)(F)C(=C(F)F)C(F)(F)F)=C(F)C(F)(F)F)=C(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 65,
+    "target_group_name": "thia keto propanoic acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(O)c1c(C(F)(F)F)c(C#CF)c(C(F)(F)F)c(C(F)(F)F)c1C(F)(C#CF)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 57,
+    "target_group_name": "sulfinic acid",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      36,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(F)C(F)(F)C(C(C(=C=C=C=C=C(F)C(F)(F)F)C(=CNC(C(=C(F)F)C(F)(F)F)C(=C(F)C(F)(F)F)C(F)(F)F)C(=C=C=C=C(C(F)(F)F)C(F)(F)F)C(=C(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)=C(F)C(F)=C(F)F)(C(F)(F)F)C(F)(C(F)=C(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 70,
+    "target_group_name": "amine",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(C=C(C(F)=C(F)F)C(F)(F)F)OOC(=O)C(C(F)=C(F)F)C(C(F)=C(F)F)(C(F)=C(F)F)C(C(C(=C=C(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)=C(F)F)C(=C(C(F)=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)=C(C(=C=C(F)C(F)(F)F)C(=C=C(F)F)C(F)=C(F)F)C(=C(F)F)C(C(=C=C(F)C(F)(F)F)C(=C(F)F)C(F)(F)F)(C(F)=C(F)C(F)(F)F)C(C(=C=C(F)F)C(F)(F)F)(C(=C=C(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)=C(C(=C=C(F)C(F)(F)F)C(=C(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)C(F)=C(F)F",
+    "chain_length": 80,
+    "target_group_id": 40,
+    "target_group_name": "benzoyl peroxydes",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCC(C(F)(F)F)(C(F)(C(F)(F)F)C(C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(F)C(C(=C=C=C(C(=C(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(F)C(F)(F)C(=C(F)F)C(F)(F)F)C(F)(C(F)=C=C(F)F)C(C(F)=C(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)=C=C(F)C(F)(F)F)C(F)(F)F)=C(C(=C(F)C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C(F)C(=C(OC(F)=C(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 47,
+    "target_group_name": "ether",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCc1c(C(=C(C(=C(C(F)=C(F)F)C(F)(F)F)C(F)(F)F)C(=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)c(C(C(=C=C=C(F)F)C(F)(F)F)=C(C(=C(C(=C(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)c(C(F)(C(F)=C(C(F)(F)F)C(F)(F)F)C(C(=C(F)C(F)(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)c(C(F)(F)F)c1C(=C(F)F)C(F)(F)C(F)(F)C(F)=C(F)C(F)(F)F)C(=C=C(C(=C(F)C(F)=C(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)=C(F)F",
+    "chain_length": 70,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(F)C(F)=C=C=C(C(=C=C=C(C(C(F)=C(F)C(F)(F)F)=C(C(=C(F)F)C(=C(F)I)C(F)(F)F)C(=C(F)F)C(F)(F)C(F)=C=C(F)F)C(=C(F)F)C(F)(F)F)C(=C=C(C(F)(F)F)C(F)(F)C(=C(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(=C=C(C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)C(F)=C(F)F",
+    "chain_length": 50,
+    "target_group_id": 50,
+    "target_group_name": "iodide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(C#CF)OCC(C(F)(F)F)(C(F)(F)F)C(C#CF)(C#CC(C#CC#CC#CC(F)(F)C(C#CF)(C#CF)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C#CF)(C#CC(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(C=C(F)F)NC=C=C=C=C(C(=C(C(F)=C(F)F)C(F)(F)F)C(F)(F)C(=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)=C(F)F",
+    "chain_length": 20,
+    "target_group_id": 59,
+    "target_group_name": "sulfonamide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "C=CC(=O)OCC(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 29,
+    "target_group_name": "acrylate",
+    "detected_groups": [
+      34,
+      35,
+      77,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C=C=C(C(F)(F)C(C(=C(F)F)C(=C(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(=CC#CC=C(F)C(F)(F)F)C(=C(C(C(F)=C=C(F)F)=C(C(=C=C(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)=C=C(F)F)C(C(=C=C(C(F)=C(C(F)(F)F)C(C(=C(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)=C(F)F)C(=C(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)(C(F)=C(F)F)C(C(=C=C(F)F)C(=C=C(F)C(F)(F)F)C(F)(F)F)=C(F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)=C(C(F)(F)F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 36,
+    "target_group_name": "alkyne",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC1=C(C(F)(F)F)C(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)=C(C(F)(C(F)(F)F)C(F)(F)F)C#CC(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)=C1C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 36,
+    "target_group_name": "alkyne",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S1(=O)NC(C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)=C(C(F)(F)C(C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)=C(C(F)(F)F)C(C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)=C1C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 59,
+    "target_group_name": "sulfonamide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C(F)C(=C(F)F)C(F)(F)C(C(=C(F)C(=C(F)F)C(C(F)=C(F)c1ccccc1)(C(C(F)=C(F)F)=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 54,
+    "target_group_name": "side-chain aromatics",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C(C(=C=C(F)C(F)(F)F)C(C(F)=C(F)F)(C(=C(C(F)=C(F)F)C(F)=C(F)c1ccc2c(c1)OC(F)(F)O2)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 39,
+    "target_group_name": "benzodioxole",
+    "detected_groups": [
+      33,
+      34,
+      35,
+      44,
+      45
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C=C(C(=C=C(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F)C(=C(C(=C(F)C(F)(F)F)C(F)(F)F)C(=C(C(=C(F)F)C(F)(F)F)C(=C(C(=C(F)F)C(F)=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(=C=C=C(C(=C=C=C(F)F)C(=CNC=C(F)F)C(F)=C(F)F)C(=C(C(=C=C=C(F)F)C(=C=C(F)F)C(F)(F)F)C(F)=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)=C=C(F)F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 70,
+    "target_group_name": "amine",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(CC(C#CF)(C(F)(F)F)C(F)(F)C(F)(F)F)CC(C#CC#CC(C#CC(F)(F)C(F)(F)F)(C(C#CC(F)(F)C(F)(F)F)(C#CC(F)(F)C(F)(C#CC(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C#CC#CC#CC(F)(C(F)(F)C(F)(F)F)C(C#CF)(C(F)(F)C(F)(F)C#CF)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)(C#CC(C#CF)(C#CC(C#CF)(C#CF)C(F)(F)F)C#CC(F)(C(F)(F)F)C(F)(F)F)C(C#CF)(C(F)(C#CF)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(C#CF)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C#CF)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 51,
+    "target_group_name": "ketone",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C(C(F)(F)F)C(F)(F)C(=C(F)F)C(C(F)=C(F)F)(c1c(C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)c(C(=C=C(C(F)(F)F)C(F)(F)F)C(F)(C(F)=C(F)F)C(F)(F)F)c(I)c(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)c1C(=C(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 50,
+    "target_group_name": "iodide",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(F)C(=C=C=C=C=C(C(=C=C(C(=C=C(F)F)C(F)(F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(C(F)=C(F)F)C(F)(F)F)C(F)(F)F)C(C(=C=C=C(C(=C(F)F)C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(F)=C=C=C(C(=C=C(F)F)C(F)(F)F)C(F)(F)F)(C(=C(C(C(F)=C(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)=C=C(F)F)(C(F)(F)C(F)=C(F)F)C(F)(F)C(F)(F)F)=C(F)C(F)(F)F)C(C(F)=C(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)=C(F)F)C(C(F)=C(F)F)(C(C(=C=C(F)C(F)(F)C(F)(F)F)C(=C(F)F)C(F)(F)F)(C(C(F)=C(F)F)=C(C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)F)C(F)(C(=C=C(F)F)C(F)(F)F)C(F)(F)F)C(C(=C=C(F)F)C#CC(C(F)=C=C(F)F)=C(F)F)(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)C(=C(F)F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 36,
+    "target_group_name": "alkyne",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C(F)C(=C(F)[SiH3])C(C(F)=C(F)F)=C(C(F)=C(F)F)C(C(F)=C(F)F)=C(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 76,
+    "target_group_name": "silane",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC#CC#CC#CC#CC#CC(C#CC(C#CF)(C(F)(C#CF)C#CF)C(C#CC(F)(F)F)(C#CC(C#CF)(C#CC(F)(F)F)C(F)(C#CF)C(F)(F)F)C(C#CF)(C#CC#CF)C(F)(F)C(C#CC(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)(C#CC(C#CC#CF)(C(C#CC#CC(F)(F)F)(C(F)(F)C#CC(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C#CF)(C(F)(C#CF)C(F)(F)F)C(C#CF)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(C#CF)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C#CC(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C#CC#CF)(C(C#CC#CF)(C#CC#CC#CC#CC(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C#CC(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C#CF)(C#CC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 109,
+    "target_group_name": "telomer diphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=CC(F)=C(F)C(=C(F)F)C(C(F)(C(F)=C(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(=C=C(F)C(F)(F)F)C(=C=C(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 32,
+    "target_group_name": "aldehyde",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=S(=O)(CC(F)=C(F)C(F)(F)C(=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)NCCO",
+    "chain_length": 10,
+    "target_group_id": 60,
+    "target_group_name": "sulfonamidoethanol",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C1NC(F)=C(C(F)(F)F)C(F)=C(F)C(C(F)(F)F)=C1C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 69,
+    "target_group_name": "amide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(F)C(C(F)(F)F)(C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)[SiH3])C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 76,
+    "target_group_name": "silane",
+    "detected_groups": [
+      34,
+      35,
+      117,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "OC(F)=C(F)C(C(F)=C(F)F)=C(C(=C=C(F)F)C(=C=C(C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 31,
+    "target_group_name": "alcohol",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C1OC(O)C(O)C(OC(F)=C=C=C(F)C(F)(F)F)C1O",
+    "chain_length": 5,
+    "target_group_id": 49,
+    "target_group_name": "glucuronate",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C=C(C(=C=C(C(F)(F)F)C(F)(F)C(=C(F)F)C(F)(F)F)C(=C=C(F)C(F)(F)F)C(C(=C(F)C(F)(F)C(F)(F)F)C(C(=C=C=C(F)F)C(F)=C(F)F)(C(=C=C(F)F)C(F)(F)F)C(C(=C=C(F)F)C(=C(F)F)C(F)(F)F)=C(C(=C=C=C=C(F)C(F)(F)F)C(C(F)=C(F)F)=C(F)C(F)(F)F)C(C(=C=C(F)F)C(F)=C(F)F)=C(F)F)(C(=C(C(=C(F)F)C(F)(F)F)C(F)(F)C(F)=C(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(=C(F)F)C(=C(F)F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(=C=C(C(F)(F)F)C(F)(F)F)C(=C(F)F)C(F)(F)F)C(C(=C=C(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(=C(C(=C=C(F)F)C(C(F)=C=C(F)F)(C(F)(F)F)C(F)(F)F)C(F)=C(F)F)C(F)(F)C([SiH3])=C(F)C(F)(F)C(F)(F)F",
+    "chain_length": 120,
+    "target_group_id": 76,
+    "target_group_name": "silane",
+    "detected_groups": [
+      33,
+      34,
+      35,
+      117,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(C(C(=C=C=C=C(C(C(C(=C=C(F)F)C(F)(F)C(F)=C=C(F)F)=C(F)F)(C(=C(F)F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)=C(F)C(F)(F)F)C(F)(F)F)C(C(F)=C(F)F)(C(F)(F)F)C(F)(F)F)C(=C=C(C(F)(F)F)C(F)(F)F)C(C(=C(F)F)C(F)=C(F)F)=C(C(F)=C(F)C(F)(F)F)C(F)(F)C(C(F)=C(F)OOC(F)=C(F)F)(C(F)(F)F)C(F)(F)C(F)=C(F)F)=C(F)F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 53,
+    "target_group_name": "peroxydes",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 25,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C=C(C(F)=C(F)F)c1ooc(C(=C(F)C(F)(F)F)C(F)(F)F)c(C(F)(F)C(=C(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)c(C(F)(F)C(=C(C(=C(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F)c(C(F)(C(F)=C(F)C(F)=C(F)F)C(F)(F)C(F)(F)F)c1C(=C=C(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 53,
+    "target_group_name": "peroxydes",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(=C(C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      16,
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 160,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 30,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 45,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[PH](O)C#CC(C#CC#CC(F)(F)F)(C#CC#CC(F)(F)F)C(C#CC#CC#CC#CC#CC(C#CC#CC(C#CF)(C#CC#CF)C#CC(F)(F)C#CF)(C#CC#CC(F)(F)C(F)(F)F)C#CC(F)(C#CC#CC(F)(F)F)C(F)(F)F)(C#CC(F)(F)F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 67,
+    "target_group_name": "phosphinic acid",
+    "detected_groups": [
+      34,
+      35,
+      36
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)(C(C(F)(C(F)(F)F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)C(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "N#CSC(F)=C=C(C(=C=C(F)F)C(C(=C(F)C(F)(F)F)C(F)(F)C(F)(F)F)=C(C(=C(C(C(C(=C=C=C=C(F)F)C(F)=C(F)F)=C(C(=C=C=C(F)C(F)(F)F)C(F)(F)F)C(F)=C(F)C(F)(F)F)=C(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)C(=C=C(F)C(=C(F)F)C(F)(F)F)C(F)=C(F)C(F)(F)F)C(C(=C=C(C(F)=C(F)F)C(F)(F)C(F)(F)F)C(F)=C(F)F)(C(=C(F)F)C(=C(F)F)C(F)=C(F)F)C(C(=C=C=C=C(F)F)C(C(F)=C=C(F)F)=C(C(F)(F)F)C(F)(F)C(F)(F)F)(C(=C(F)F)C(=C(F)F)C(F)=C(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 90,
+    "target_group_id": 66,
+    "target_group_name": "thiocyanic acid",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(Cl)C(F)=C(F)C(F)(F)C(F)=C(C(=C=C=C=C=C=C(C(F)(F)F)C(F)(F)F)c1c(C(C(F)=C(C(=C(F)F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)c(C(C(=C=C=C(F)F)C(F)=C=C(F)F)(C(F)(F)C(F)=C(F)F)C(C(=C(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F)c(C(C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)=C(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)c(C(F)(F)F)c1C(C(=C(F)C(F)=C=C(F)F)C(F)(F)F)(C(=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(C(=C(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 80,
+    "target_group_id": 30,
+    "target_group_name": "acyl halide",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 48,
+    "target_group_name": "fluoride",
+    "detected_groups": [
+      3,
+      12,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 200,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "FC(F)=C(C(=C(F)C(=C=C(C(F)(F)F)C(F)(F)C(=C(F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)c1ncc[nH]1",
+    "chain_length": 20,
+    "target_group_id": 72,
+    "target_group_name": "heterocyclic azole",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 50,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 180,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(Cl)C(F)=C=C(C(=C=C=C(C(F)(F)C(F)(F)F)C(C(=C=C=C(F)F)C(F)(F)F)(C(F)(F)C(F)=C(F)F)C(C(=C(F)C(F)(F)F)C(F)(F)F)(C(=C(C(C(F)=C(F)F)=C(C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(C(F)=C(F)F)C(F)=C(F)C(F)=C(F)F)C(F)(F)F)C(C(=C=C=C(F)F)C(F)=C(F)C(F)(F)C(F)(F)F)=C(F)F)C(C(=C(F)C(=C=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)(C(=C(C(=C(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 70,
+    "target_group_id": 30,
+    "target_group_name": "acyl halide",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 35,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C[NH2+]CC(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(C(F)(F)C(F)(F)F)(C(F)(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 74,
+    "target_group_name": "glycine",
+    "detected_groups": [
+      34,
+      35,
+      115,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 60,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(OCc1c(F)c(C(F)(F)F)c(F)c(F)c1C(F)(F)F)C(F)(F)C(F)(F)F",
+    "chain_length": 5,
+    "target_group_id": 46,
+    "target_group_name": "ester",
+    "detected_groups": [
+      18,
+      34,
+      35,
+      37,
+      38,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 100,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=P(O)(O)OP(=O)(O)OP(=O)(O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 20,
+    "target_group_id": 110,
+    "target_group_name": "telomer triphosphate",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      108,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 10,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=[SH]CCCC(F)(F)C(F)(F)F",
+    "chain_length": 15,
+    "target_group_id": 99,
+    "target_group_name": "telomer sulfinyl",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)C(=C(C(=C(F)C(F)(F)F)C(F)(F)F)C(C(=C=C=C(F)F)C(=C=C=C=C(C(F)=C(F)F)C(F)(F)F)C(C(=C(C(F)=C=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)(c1c(C(=C=C(F)F)C(C(=C=C=C(F)F)C(F)(F)F)=C(C(F)=C(F)F)C(F)(F)C(F)(F)F)c(C(=C=C=C(C(F)=C(F)F)C(F)(F)F)C(F)(F)C(C(=C=C(C(F)=C(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)=C(C(=C(C(F)(F)F)C(F)(F)F)C(=C(F)C(F)(F)F)C(F)(F)C(F)=C(C(F)(F)F)C(F)(F)F)C(=C(C(=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)F)C(F)(F)F)c(C(=C(F)F)C(F)(F)C(F)(F)F)c(C(C(=C=C(C(F)(F)F)C(F)(C(=C(F)F)C(F)(F)F)C(F)(F)F)C(C(=C(F)F)C(F)(F)C(F)(F)F)=C(C(F)=C(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F)(C(F)(F)C(=C(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)c1C(C(C(F)=C=C=C(C(F)(F)F)C(F)(F)F)=C(C(F)=C(F)F)C(=C(F)F)C(F)(F)F)=C(C(=C=C=C(F)F)C(F)(F)F)C(F)=C(F)F)C(F)(F)F)(C(F)(F)F)C(F)(F)F)C(F)(F)F",
+    "chain_length": 140,
+    "target_group_id": 42,
+    "target_group_name": "carboxylic acid",
+    "detected_groups": [
+      18,
+      33,
+      34,
+      35,
+      54
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "O=C(O)CCNCCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 112,
+    "target_group_name": "telomer amino propanoic acid",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "CC(=O)OCCCC(F)(F)C(F)(F)F",
+    "chain_length": 40,
+    "target_group_id": 82,
+    "target_group_name": "telomer ester",
+    "detected_groups": [
+      34,
+      35,
+      88,
+      119
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  },
+  {
+    "smiles": "OC(=C(F)F)C(=C(C(C(=C(F)F)C(F)(F)F)=C(C(F)=C(F)F)C(F)(F)F)C(F)(F)C(F)(F)F)C(C(F)=C(F)F)(C(=C(F)F)C(F)=C(C(=C(F)F)C(F)(F)F)C(=C(F)C(F)(F)F)C(F)(F)F)C(=C(C(F)(F)F)C(F)(F)F)C(=C(C(=C=C(C(=C=C(C(F)(F)F)C(F)(F)C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)=C(C(F)=C=C(F)F)C(F)=C(F)F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)=C(F)F",
+    "chain_length": 60,
+    "target_group_id": 31,
+    "target_group_name": "alcohol",
+    "detected_groups": [
+      33,
+      34,
+      35
+    ],
+    "success": true,
+    "reason": "target_group_not_detected"
+  }
+]

@@ -106,12 +106,26 @@ def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False, bra
     return m2
 
 def get_branching_index(mol):
-    from .core import mol_to_nx
-    G = mol_to_nx(mol)
-    # Count branch points (degree > 2)
-    branch_points = sum(1 for node in G.nodes() if G.degree(node) > 2)
+    """
+    Calculate branching of carbon atoms in a molecules
+    Measure of branching vs linearity
+    For linear chains: branching → 1.0
+    For highly branched: branching → 0.0
+
+    1. extract carbon atoms and their connectivity
+    2. Count branch points (degree > 2 in the carbon subgraph)
+    3. Normalize by component size
+    """
+    # Count branch points: carbons with more than 2 carbon-carbon bonds
+    # (only C neighbours are counted so that functional-group heteroatoms, e.g.
+    #  the two oxygens on a -COOH terminus, do not create false branch points)
+    carbon_nodes = [atom.GetIdx() for atom in mol.GetAtoms() if atom.GetSymbol() == 'C']
+    branch_points = sum(
+        1 for node in carbon_nodes
+        if sum(1 for nb in mol.GetAtomWithIdx(node).GetNeighbors() if nb.GetSymbol() == 'C') > 2
+    )
     # Normalize by component size
-    branching_index = 1.0 - (branch_points / max(1, len(G.nodes()) - 2))  # -2 to account for endpoints
+    branching_index = 1.0 - (branch_points / max(1, len(carbon_nodes) - 2))  # -2 to account for endpoints
     branching_index = max(0.0, min(1.0, branching_index))  # Clamp to [0, 1]
     return branching_index
 
@@ -599,8 +613,8 @@ def generate_random_mol(n, functional_groups, perfluorinated=True, cycle=False, 
         functional_groups = [{'group_smiles':functional_groups,'n':kwargs.get('m',1),'mode':kwargs.get('mode','attach')}]
     elif isinstance(functional_groups,list) and isinstance(functional_groups[0],str):
         functional_groups = [{'group_smiles':functional_group[0],'n':kwargs.get('m',1),'mode':kwargs.get('mode','attach')} for functional_group in functional_groups]
-    mol = generate_random_carbon_chain(n, cycle, alkene, alkyne)
+    mol = generate_random_carbon_chain(n, cycle, alkene, alkyne, branching_range=kwargs.get('branching_range'))
     # Randomly fluorinate the molecule
     mol = fluorinate_mol(mol, perfluorinated=perfluorinated)
-    mol = append_functional_groups(mol,functional_groups,chain_n=n,**kwargs)
+    mol = append_functional_groups(mol,functional_groups,chain_n=n,**{k: v for k, v in kwargs.items() if k != 'branching_range'})
     return mol

@@ -1,0 +1,5121 @@
+{
+  "metadata": {
+    "timestamp": "20260330_154707",
+    "definitions_tested": [
+      "OECD Definition",
+      "EU PFAS Restriction",
+      "OPPT 2023",
+      "UK PFAS Definition",
+      "PFASSTRUCTv5"
+    ]
+  },
+  "benchmarks": {
+    "true_positives": {
+      "category": "true_positives",
+      "subcategories": {
+        "general": [
+          {
+            "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8HF15O2",
+              "molecular_weight": 414.06399999999996,
+              "num_atoms": 25,
+              "num_fluorines": 15,
+              "fluorine_ratio": 0.6
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.035047424000367755,
+            "name": "PFOA (C8)",
+            "category": "general"
+          },
+          {
+            "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C6HF11O2",
+              "molecular_weight": 314.04999999999995,
+              "num_atoms": 19,
+              "num_fluorines": 11,
+              "fluorine_ratio": 0.5789473684210527
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.0160683300018718,
+            "name": "PFHxA (C6)",
+            "category": "general"
+          },
+          {
+            "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C4HF7O2",
+              "molecular_weight": 214.03599999999997,
+              "num_atoms": 13,
+              "num_fluorines": 7,
+              "fluorine_ratio": 0.5384615384615384
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.012764312999934191,
+            "name": "PFBA (C4)",
+            "category": "general"
+          },
+          {
+            "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C10HF19O2",
+              "molecular_weight": 514.078,
+              "num_atoms": 31,
+              "num_fluorines": 19,
+              "fluorine_ratio": 0.6129032258064516
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.03257244700216688,
+            "name": "PFDA (C10)",
+            "category": "general"
+          },
+          {
+            "smiles": "OC(=O)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2HF3O2",
+              "molecular_weight": 114.02200000000002,
+              "num_atoms": 7,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.42857142857142855
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.005964807998680044,
+            "name": "TFA (C2)",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8HF17O3S",
+              "molecular_weight": 500.12600000000003,
+              "num_atoms": 29,
+              "num_fluorines": 17,
+              "fluorine_ratio": 0.5862068965517241
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.03316221599743585,
+            "name": "PFOS (C8)",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C6HF13O3S",
+              "molecular_weight": 400.112,
+              "num_atoms": 23,
+              "num_fluorines": 13,
+              "fluorine_ratio": 0.5652173913043478
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.01888015500298934,
+            "name": "PFHxS (C6)",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C4HF9O3S",
+              "molecular_weight": 300.098,
+              "num_atoms": 17,
+              "num_fluorines": 9,
+              "fluorine_ratio": 0.5294117647058824
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.025659246999566676,
+            "name": "PFBS (C4)",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)S(=O)(=O)O",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2HF5O3S",
+              "molecular_weight": 200.084,
+              "num_atoms": 11,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.45454545454545453
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.01345768200189923,
+            "name": "PFEtS (C2)",
+            "category": "general"
+          },
+          {
+            "smiles": "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8H5F13O",
+              "molecular_weight": 364.10099999999994,
+              "num_atoms": 22,
+              "num_fluorines": 13,
+              "fluorine_ratio": 0.5909090909090909
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.02452876200186438,
+            "name": "6:2 FTOH",
+            "category": "general"
+          },
+          {
+            "smiles": "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C10H5F17O",
+              "molecular_weight": 464.11499999999995,
+              "num_atoms": 28,
+              "num_fluorines": 17,
+              "fluorine_ratio": 0.6071428571428571
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.03110466599900974,
+            "name": "8:2 FTOH",
+            "category": "general"
+          },
+          {
+            "smiles": "OCCC(F)(F)C(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C5H5F7O",
+              "molecular_weight": 214.07999999999998,
+              "num_atoms": 13,
+              "num_fluorines": 7,
+              "fluorine_ratio": 0.5384615384615384
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.013463629002217203,
+            "name": "4:2 FTOH",
+            "category": "general"
+          },
+          {
+            "smiles": "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C6H5F9O",
+              "molecular_weight": 264.087,
+              "num_atoms": 16,
+              "num_fluorines": 9,
+              "fluorine_ratio": 0.5625
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.018281946999195497,
+            "name": "5:2 FTOH",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)N",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8H2F17NO2S",
+              "molecular_weight": 499.14200000000005,
+              "num_atoms": 29,
+              "num_fluorines": 17,
+              "fluorine_ratio": 0.5862068965517241
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.03357209800014971,
+            "name": "PFOSA",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)NC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C9H4F17NO2S",
+              "molecular_weight": 513.169,
+              "num_atoms": 30,
+              "num_fluorines": 17,
+              "fluorine_ratio": 0.5666666666666667
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.03603895400010515,
+            "name": "N-MeFOSA",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)NCC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C10H6F17NO2S",
+              "molecular_weight": 527.196,
+              "num_atoms": 31,
+              "num_fluorines": 17,
+              "fluorine_ratio": 0.5483870967741935
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.03335692099790322,
+            "name": "N-EtFOSA",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8F17I",
+              "molecular_weight": 545.958,
+              "num_atoms": 26,
+              "num_fluorines": 17,
+              "fluorine_ratio": 0.6538461538461539
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.018930508002085844,
+            "name": "C8F17I",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C6F13I",
+              "molecular_weight": 445.94399999999996,
+              "num_atoms": 20,
+              "num_fluorines": 13,
+              "fluorine_ratio": 0.65
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.019343996998941293,
+            "name": "C6F13I",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCOC(=O)C",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C12H7F17O2",
+              "molecular_weight": 506.15200000000016,
+              "num_atoms": 31,
+              "num_fluorines": 17,
+              "fluorine_ratio": 0.5483870967741935
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.03931710100005148,
+            "name": "8:2 fluorotelomer acrylate",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCOP(=O)(O)O",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8H6F13O4P",
+              "molecular_weight": 444.0800000000001,
+              "num_atoms": 26,
+              "num_fluorines": 13,
+              "fluorine_ratio": 0.5
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.03769468300015433,
+            "name": "6:2 fluorotelomer phosphate",
+            "category": "general"
+          },
+          {
+            "smiles": "FC1(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C6F12",
+              "molecular_weight": 300.0419999999999,
+              "num_atoms": 18,
+              "num_fluorines": 12,
+              "fluorine_ratio": 0.6666666666666666
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.013881876002415083,
+            "name": "Perfluorocyclohexane",
+            "category": "general"
+          },
+          {
+            "smiles": "FC1(F)C(F)(F)C(F)(F)C(F)(F)C1(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C5F10",
+              "molecular_weight": 250.03499999999994,
+              "num_atoms": 15,
+              "num_fluorines": 10,
+              "fluorine_ratio": 0.6666666666666666
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.008593133003159892,
+            "name": "Perfluorocyclopentane",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C4F10O",
+              "molecular_weight": 254.02299999999997,
+              "num_atoms": 15,
+              "num_fluorines": 10,
+              "fluorine_ratio": 0.6666666666666666
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.0169733249967976,
+            "name": "Perfluorodiethyl ether",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C4F10O2",
+              "molecular_weight": 270.02199999999993,
+              "num_atoms": 16,
+              "num_fluorines": 10,
+              "fluorine_ratio": 0.625
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.015114113000890939,
+            "name": "PFPE",
+            "category": "general"
+          }
+        ]
+      },
+      "summary": {
+        "total_molecules": 24,
+        "total_detections": 24,
+        "by_definition": {
+          "1": 24,
+          "2": 24,
+          "3": 23,
+          "4": 24,
+          "5": 24
+        }
+      },
+      "false_negative_details": []
+    },
+    "true_negatives": {
+      "category": "true_negatives",
+      "subcategories": {
+        "general": [
+          {
+            "smiles": "OC(=O)CCCCCCC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8H16O2",
+              "molecular_weight": 144.214,
+              "num_atoms": 10,
+              "num_fluorines": 0,
+              "fluorine_ratio": 0.0
+            },
+            "detected_definitions": [],
+            "detected_ids": [],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.0024674380001670215,
+            "name": "Octanoic acid (non-fluorinated analog of PFOA)",
+            "category": "general"
+          },
+          {
+            "smiles": "CCCCCCCCS(=O)(=O)O",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8H18O3S",
+              "molecular_weight": 194.296,
+              "num_atoms": 12,
+              "num_fluorines": 0,
+              "fluorine_ratio": 0.0
+            },
+            "detected_definitions": [],
+            "detected_ids": [],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.002786646997265052,
+            "name": "Octane sulfonic acid (non-fluorinated analog of PFOS)",
+            "category": "general"
+          },
+          {
+            "smiles": "OCCCCCCCC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8H18O",
+              "molecular_weight": 130.231,
+              "num_atoms": 9,
+              "num_fluorines": 0,
+              "fluorine_ratio": 0.0
+            },
+            "detected_definitions": [],
+            "detected_ids": [],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.0021669359994120896,
+            "name": "Octanol (non-fluorinated analog of FTOH)",
+            "category": "general"
+          },
+          {
+            "smiles": "OC(=O)CF",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2H3FO2",
+              "molecular_weight": 78.042,
+              "num_atoms": 5,
+              "num_fluorines": 1,
+              "fluorine_ratio": 0.2
+            },
+            "detected_definitions": [],
+            "detected_ids": [],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.008020149998628767,
+            "name": "Fluoroacetic acid",
+            "category": "general"
+          },
+          {
+            "smiles": "FCC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2H5F",
+              "molecular_weight": 48.06,
+              "num_atoms": 3,
+              "num_fluorines": 1,
+              "fluorine_ratio": 0.3333333333333333
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.005207345999224344,
+            "name": "Fluoroethane",
+            "category": "general"
+          },
+          {
+            "smiles": "FCCCF",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3H6F2",
+              "molecular_weight": 80.077,
+              "num_atoms": 5,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.4
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.005360291001125006,
+            "name": "1,4-difluorobutane",
+            "category": "general"
+          },
+          {
+            "smiles": "FC(C)CF",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3H6F2",
+              "molecular_weight": 80.077,
+              "num_atoms": 5,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.4
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.007499567000195384,
+            "name": "1,3-difluoropropane",
+            "category": "general"
+          },
+          {
+            "smiles": "c1ccc(F)cc1",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C6H5F",
+              "molecular_weight": 96.10399999999998,
+              "num_atoms": 7,
+              "num_fluorines": 1,
+              "fluorine_ratio": 0.14285714285714285
+            },
+            "detected_definitions": [],
+            "detected_ids": [],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.009211114000208909,
+            "name": "Fluorobenzene",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(F)Cl",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "CClF3",
+              "molecular_weight": 104.45800000000001,
+              "num_atoms": 5,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.6
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.003889929997967556,
+            "name": "Trifluoromethyl chloride (CF3-Cl) - halogen exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(F)Br",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "CBrF3",
+              "molecular_weight": 148.909,
+              "num_atoms": 5,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.6
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.005820942998980172,
+            "name": "Trifluoromethyl bromide (CF3-Br) - halogen exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(F)I",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "CF3I",
+              "molecular_weight": 195.909,
+              "num_atoms": 5,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.6
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.0077549410016217735,
+            "name": "Trifluoromethyl iodide (CF3-I) - halogen exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(F)[H]",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "CHF3",
+              "molecular_weight": 70.013,
+              "num_atoms": 4,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.75
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.004111004000151297,
+            "name": "Fluoroform (CHF3) - H exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(F)O",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "CHF3O",
+              "molecular_weight": 86.012,
+              "num_atoms": 5,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.6
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              4,
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                1,
+                4,
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.007320611002796795,
+            "name": "Trifluoromethanol (CF3-OH) - alcohol exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(F)OC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2H3F3O",
+              "molecular_weight": 100.039,
+              "num_atoms": 6,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.5
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              4,
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                1,
+                4,
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.008118074998492375,
+            "name": "Trifluoromethyl methyl ether (CF3-OCH3) - ether exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(F)N",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "CH2F3N",
+              "molecular_weight": 85.02800000000002,
+              "num_atoms": 5,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.6
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              4,
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                1,
+                4,
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.006742413999745622,
+            "name": "Trifluoromethylamine (CF3-NH2) - amine exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(Cl)C",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2H3ClF2",
+              "molecular_weight": 100.495,
+              "num_atoms": 5,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.4
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.007430560999637237,
+            "name": "1-Chloro-1,1-difluoroethane (CF2Cl-CH3) - halogen exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)([H])C",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2H4F2",
+              "molecular_weight": 66.05,
+              "num_atoms": 4,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.5
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.007207164999272209,
+            "name": "1,1-Difluoroethane (CF2H-CH3) - H exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(OC)C",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3H6F2O",
+              "molecular_weight": 96.076,
+              "num_atoms": 6,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.3333333333333333
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                1,
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.010663985998689895,
+            "name": "1,1-Difluoro-1-methoxyethane (CF2-OCH3-CH3) - ether exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "C(F)(F)(N)C",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2H5F2N",
+              "molecular_weight": 81.06500000000001,
+              "num_atoms": 5,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.4
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              5
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                1,
+                5
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.006246715998713626,
+            "name": "1,1-Difluoro-1-aminoethane (CF2-NH2-CH3) - amine exclusion",
+            "category": "general"
+          },
+          {
+            "smiles": "FC1(F)Oc2ccccc2O1",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C7H4F2O2",
+              "molecular_weight": 158.10299999999998,
+              "num_atoms": 11,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.18181818181818182
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              }
+            ],
+            "detected_ids": [
+              1
+            ],
+            "expected_ids": [],
+            "correctness": {
+              "true_positives": [],
+              "false_positives": [
+                1
+              ],
+              "false_negatives": [],
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1_score": 0.0
+            },
+            "execution_time": 0.008649014998809434,
+            "name": "Benzodioxole with CF2 - aromatic ether exclusion",
+            "category": "general"
+          }
+        ]
+      },
+      "summary": {
+        "total_molecules": 20,
+        "correct_rejections": 5,
+        "false_positives": 15,
+        "by_definition": {
+          "1": 6,
+          "2": 0,
+          "3": 0,
+          "4": 3,
+          "5": 14
+        }
+      },
+      "false_positive_details": [
+        {
+          "smiles": "FCC",
+          "molecule_name": "Fluoroethane",
+          "category": "general",
+          "detected_by": [
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "FCCCF",
+          "molecule_name": "1,4-difluorobutane",
+          "category": "general",
+          "detected_by": [
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "FC(C)CF",
+          "molecule_name": "1,3-difluoropropane",
+          "category": "general",
+          "detected_by": [
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(F)Cl",
+          "molecule_name": "Trifluoromethyl chloride (CF3-Cl) - halogen exclusion",
+          "category": "general",
+          "detected_by": [
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(F)Br",
+          "molecule_name": "Trifluoromethyl bromide (CF3-Br) - halogen exclusion",
+          "category": "general",
+          "detected_by": [
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(F)I",
+          "molecule_name": "Trifluoromethyl iodide (CF3-I) - halogen exclusion",
+          "category": "general",
+          "detected_by": [
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(F)[H]",
+          "molecule_name": "Fluoroform (CHF3) - H exclusion",
+          "category": "general",
+          "detected_by": [
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(F)O",
+          "molecule_name": "Trifluoromethanol (CF3-OH) - alcohol exclusion",
+          "category": "general",
+          "detected_by": [
+            "OECD Definition",
+            "UK PFAS Definition",
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            1,
+            4,
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(F)OC",
+          "molecule_name": "Trifluoromethyl methyl ether (CF3-OCH3) - ether exclusion",
+          "category": "general",
+          "detected_by": [
+            "OECD Definition",
+            "UK PFAS Definition",
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            1,
+            4,
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(F)N",
+          "molecule_name": "Trifluoromethylamine (CF3-NH2) - amine exclusion",
+          "category": "general",
+          "detected_by": [
+            "OECD Definition",
+            "UK PFAS Definition",
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            1,
+            4,
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(Cl)C",
+          "molecule_name": "1-Chloro-1,1-difluoroethane (CF2Cl-CH3) - halogen exclusion",
+          "category": "general",
+          "detected_by": [
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)([H])C",
+          "molecule_name": "1,1-Difluoroethane (CF2H-CH3) - H exclusion",
+          "category": "general",
+          "detected_by": [
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(OC)C",
+          "molecule_name": "1,1-Difluoro-1-methoxyethane (CF2-OCH3-CH3) - ether exclusion",
+          "category": "general",
+          "detected_by": [
+            "OECD Definition",
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            1,
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "C(F)(F)(N)C",
+          "molecule_name": "1,1-Difluoro-1-aminoethane (CF2-NH2-CH3) - amine exclusion",
+          "category": "general",
+          "detected_by": [
+            "OECD Definition",
+            "PFASSTRUCTv5"
+          ],
+          "detected_ids": [
+            1,
+            5
+          ],
+          "type": "false_positive"
+        },
+        {
+          "smiles": "FC1(F)Oc2ccccc2O1",
+          "molecule_name": "Benzodioxole with CF2 - aromatic ether exclusion",
+          "category": "general",
+          "detected_by": [
+            "OECD Definition"
+          ],
+          "detected_ids": [
+            1
+          ],
+          "type": "false_positive"
+        }
+      ]
+    },
+    "edge_cases": {
+      "category": "edge_cases",
+      "subcategories": {
+        "edge_cases": [
+          {
+            "smiles": "FC(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2F6",
+              "molecular_weight": 138.01000000000002,
+              "num_atoms": 8,
+              "num_fluorines": 6,
+              "fluorine_ratio": 0.75
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.007253656000102637,
+            "name": "Perfluoropropane (C3)",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "OC(=O)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2HF3O2",
+              "molecular_weight": 114.02200000000002,
+              "num_atoms": 7,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.42857142857142855
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.008139751000271644,
+            "name": "TFA - C2 PFCA",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)S(=O)(=O)O",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "CHF3O3S",
+              "molecular_weight": 150.077,
+              "num_atoms": 8,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.375
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.008655860998260323,
+            "name": "C1 perfluorosulfonic acid",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "OC(=O)CC(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C4H3F5O2",
+              "molecular_weight": 178.05599999999998,
+              "num_atoms": 11,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.45454545454545453
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.01126372100043227,
+            "name": "H-PFBA (one non-fluorinated carbon)",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)C(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3HF7",
+              "molecular_weight": 170.027,
+              "num_atoms": 10,
+              "num_fluorines": 7,
+              "fluorine_ratio": 0.7
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.010154897998290835,
+            "name": "Polyfluorobutane (missing one F)",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "OC(=O)C(F)(F)C(F)(F)CC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C5H6F4O2",
+              "molecular_weight": 174.093,
+              "num_atoms": 11,
+              "num_fluorines": 4,
+              "fluorine_ratio": 0.36363636363636365
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.017188306999742053,
+            "name": "Semi-fluorinated carboxylic acid",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)c1c(F)c(F)c(F)c(F)c1F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C7F8",
+              "molecular_weight": 236.06099999999995,
+              "num_atoms": 15,
+              "num_fluorines": 8,
+              "fluorine_ratio": 0.5333333333333333
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.012183295999420807,
+            "name": "Perfluorotoluene",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "c1c(F)c(F)c(F)c(F)c1F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C6HF5",
+              "molecular_weight": 168.064,
+              "num_atoms": 11,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.45454545454545453
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.008261229999334319,
+            "name": "Pentafluorobenzene",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)OC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3H3F5O",
+              "molecular_weight": 150.04600000000002,
+              "num_atoms": 9,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.5555555555555556
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.01013080100165098,
+            "name": "Perfluoroethyl methyl ether - OECD may differ from EU",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)NC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3H4F5N",
+              "molecular_weight": 149.062,
+              "num_atoms": 9,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.5555555555555556
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.00934867499745451,
+            "name": "Perfluoroethylmethylamine - OECD may differ from EU",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "ClC(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2ClF5",
+              "molecular_weight": 154.465,
+              "num_atoms": 8,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.625
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.0060020769997208845,
+            "name": "Chloroperfluoropropane - test halogen exclusions",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)C(Cl)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3ClF7",
+              "molecular_weight": 204.472,
+              "num_atoms": 11,
+              "num_fluorines": 7,
+              "fluorine_ratio": 0.6363636363636364
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.007698651003011037,
+            "name": "Chlorine on perfluoroalkyl - distance matters",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "CF4",
+              "molecular_weight": 88.00300000000001,
+              "num_atoms": 5,
+              "num_fluorines": 4,
+              "fluorine_ratio": 0.8
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.005217614001594484,
+            "name": "CF4 - Carbon tetrafluoride",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2F6",
+              "molecular_weight": 138.01000000000002,
+              "num_atoms": 8,
+              "num_fluorines": 6,
+              "fluorine_ratio": 0.75
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.008555346001230646,
+            "name": "C2F6 - Hexafluoroethane",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)C",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2H3F3",
+              "molecular_weight": 84.04,
+              "num_atoms": 5,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.6
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.007875808001699625,
+            "name": "Trifluoromethyl-methane - short chain with CF3",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(OC(=O)C)C",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C4H6F2O2",
+              "molecular_weight": 124.08599999999998,
+              "num_atoms": 8,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.25
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              }
+            ],
+            "detected_ids": [
+              1
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.011752505000913516,
+            "name": "CF2 with acetoxy - EU should reject, others may accept",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(SC)C",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3H6F2S",
+              "molecular_weight": 112.144,
+              "num_atoms": 6,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.3333333333333333
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.009176280000247061,
+            "name": "CF2 with methylthio - EU exclusion for -SR",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)C(F)(F)SC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3H3F5S",
+              "molecular_weight": 166.114,
+              "num_atoms": 9,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.5555555555555556
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.0076134800001455005,
+            "name": "CF3-CF2-SCH3 - sulfur at distance, should differ",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)=C(F)OC(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3F6O",
+              "molecular_weight": 166.01999999999998,
+              "num_atoms": 10,
+              "num_fluorines": 6,
+              "fluorine_ratio": 0.6
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.009618287997000152,
+            "name": "Fluorovinyl ether with CF3 - unsaturated edge case",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(N(C)C)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C4H6F5N",
+              "molecular_weight": 163.089,
+              "num_atoms": 10,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.5
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.008753807000175584,
+            "name": "CF2 with tertiary amine - EU should reject",
+            "category": "edge_cases"
+          },
+          {
+            "smiles": "FC(F)(F)C(N(C)C)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C5H7F6N",
+              "molecular_weight": 195.10599999999997,
+              "num_atoms": 12,
+              "num_fluorines": 6,
+              "fluorine_ratio": 0.5
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.011658954997983528,
+            "name": "Amine between CF3 groups - EU may accept",
+            "category": "edge_cases"
+          }
+        ],
+        "unclassified": [
+          {
+            "smiles": "FC(F)(F)C(F)(F)CCCCCCCC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C10H17F5",
+              "molecular_weight": 232.23599999999993,
+              "num_atoms": 15,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.3333333333333333
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.03464580599757028,
+            "name": "Lower F ratio - test threshold",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "FC(F)(F)CCCCCCCCCCCC",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C13H25F3",
+              "molecular_weight": 238.33699999999993,
+              "num_atoms": 16,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.1875
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.024862178001058055,
+            "name": "Very low F ratio (~0.15)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C(=O)(C(F)(F)Cl)C(F)(F)Cl",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3Cl2F4O",
+              "molecular_weight": 198.93,
+              "num_atoms": 10,
+              "num_fluorines": 4,
+              "fluorine_ratio": 0.4
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.0064281000013579614,
+            "name": "1,3-Dichloro-1,1,3,3-tetrafluoropropan-2-one (DTXSID1073159)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "COC(C(OC(C(=O)C(F)(F)F)(F)F)F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C6H4F8O3",
+              "molecular_weight": 276.07899999999995,
+              "num_atoms": 17,
+              "num_fluorines": 8,
+              "fluorine_ratio": 0.47058823529411764
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.020196682002278976,
+            "name": "1,1,1,3,3-Pentafluoro-3-(1,2,2-trifluoro-2-methoxyethoxy)propan-2-one (DTXSID40748237)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C(C(=O)CC(C(=O)C(F)(F)F)(F)F)C(C(=O)C(F)(F)F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C9H4F10O3",
+              "molecular_weight": 350.1079999999999,
+              "num_atoms": 22,
+              "num_fluorines": 10,
+              "fluorine_ratio": 0.45454545454545453
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.021309579999069683,
+            "name": "2,5,8-Nonanetrione, decafluoro- (DTXSID60435490)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C(C(CC(F)(F)F)(F)F)C(CC(F)(F)F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C7H6F10",
+              "molecular_weight": 280.10499999999996,
+              "num_atoms": 17,
+              "num_fluorines": 10,
+              "fluorine_ratio": 0.5882352941176471
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.010636250000970904,
+            "name": "1,1,1,3,3,5,5,7,7,7-Decafluoroheptane (DTXSID20776331)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C(=C(F)F)(OC(OC(=C(F)F)F)(F)F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C5F8O2",
+              "molecular_weight": 244.03699999999992,
+              "num_atoms": 15,
+              "num_fluorines": 8,
+              "fluorine_ratio": 0.5333333333333333
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.01619845300228917,
+            "name": "1-(Difluoro[(trifluoroethenyl)oxy]methoxy)-1,2,2-trifluoroethene (DTXSID00896607)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C(=C(F)F)(C(C(=C(F)F)F)(F)F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C5F8",
+              "molecular_weight": 212.03899999999996,
+              "num_atoms": 13,
+              "num_fluorines": 8,
+              "fluorine_ratio": 0.6153846153846154
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.0047254529999918304,
+            "name": "1,1,2,3,3,4,5,5-Octafluoropenta-1,4-diene (DTXSID30529779)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C1(=C(C(=C(C(=C1F)F)F)F)F)C2=C(C(C(=C(C2(F)F)F)F)(F)F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C12F12",
+              "molecular_weight": 372.1079999999999,
+              "num_atoms": 24,
+              "num_fluorines": 12,
+              "fluorine_ratio": 0.5
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.012011447000986664,
+            "name": "Dodecafluoro-2,5-dihydro-1,1-biphenyl (DTXSID20525346)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C(C(=O)F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C2HF3O",
+              "molecular_weight": 98.02300000000001,
+              "num_atoms": 6,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.5
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.007447674997820286,
+            "name": "2,2-Difluoroacetyl fluoride (DTXSID70381191)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C(=C(C(F)(F)Cl)F)(C(F)(F)Cl)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C4Cl2F6",
+              "molecular_weight": 232.938,
+              "num_atoms": 12,
+              "num_fluorines": 6,
+              "fluorine_ratio": 0.5
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.008214287001464982,
+            "name": "(2E)-1,4-Dichloro-hexafluoro-2-butene (DTXSID601020902)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C(C(C(C(F)F)F)F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C4H5F5",
+              "molecular_weight": 148.07399999999998,
+              "num_atoms": 9,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.5555555555555556
+            },
+            "detected_definitions": [
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.00960441699862713,
+            "name": "1,1,2,3,4-Pentafluorobutane (DTXSID50931113)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "CCN(CC)C1(OCCCO1)C(C(F)(F)F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C10H17F4NO2",
+              "molecular_weight": 259.24299999999994,
+              "num_atoms": 17,
+              "num_fluorines": 4,
+              "fluorine_ratio": 0.23529411764705882
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.02504190499894321,
+            "name": "N,N-Diethyl-2-(1,2,2,2-tetrafluoroethyl)-1,3-dioxan-2-amine (DTXSID40519722)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "COC(CC(=C(F)F)C(F)(F)F)SC1=CC=CC=C1",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C12H11F5OS",
+              "molecular_weight": 298.276,
+              "num_atoms": 19,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.2631578947368421
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.016451742998469854,
+            "name": "[4,4-Difluoro-1-methoxy-3-(trifluoromethyl)but-3-en-1-yl]sulfanyl)benzene (DTXSID20809173)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C1=CC(=CC(=C1)Cl)NOC(C(C(=O)C(F)(F)F)F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C10H6ClF6NO2",
+              "molecular_weight": 321.6039999999999,
+              "num_atoms": 20,
+              "num_fluorines": 6,
+              "fluorine_ratio": 0.3
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.019436209000559757,
+            "name": "4-[(3-Chloroanilino)oxy]-1,1,1,3,4,4-hexafluorobutan-2-one (DTXSID201023166)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "CC(C)(CS(=O)(=O)O)NC(=O)CCSCCC(C(C(C(F)(F)F)(F)F)(F)F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C13H18F9NO4S2",
+              "molecular_weight": 487.406,
+              "num_atoms": 29,
+              "num_fluorines": 9,
+              "fluorine_ratio": 0.3103448275862069
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.048991525000019465,
+            "name": "4:2 Fluorotelomer thioether amido sulfonic acid (DTXSID00892528)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "CN(C)CCCN(CCC(=O)O)S(=O)(=O)C(C(C(C(F)(F)F)(F)F)(F)F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C12H17F9N2O4S",
+              "molecular_weight": 456.32699999999994,
+              "num_atoms": 28,
+              "num_fluorines": 9,
+              "fluorine_ratio": 0.32142857142857145
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.044498993000161136,
+            "name": "N-(Perfluorobutanesulfonyl)-N-(3-dimethylaminopropyl)-3-aminopropanoic acid (DTXSID20882022)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C1=CC(=C(C=C1N)Cl)OC(C(OC(F)(F)F)F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C9H6ClF6NO2",
+              "molecular_weight": 309.59299999999996,
+              "num_atoms": 19,
+              "num_fluorines": 6,
+              "fluorine_ratio": 0.3157894736842105
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.020729673997266218,
+            "name": "3-Chloro-4-[1,1,2-trifluoro-2-(trifluoromethoxy)ethoxy]aniline (DTXSID10576660)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C1=CC=C2C(=C1)C(OC(O2)(C(F)(F)F)F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C9H4F6O2",
+              "molecular_weight": 258.1169999999999,
+              "num_atoms": 17,
+              "num_fluorines": 6,
+              "fluorine_ratio": 0.35294117647058826
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.012876288998086238,
+            "name": "2,4,4-Trifluoro-2-(trifluoromethyl)-2H,4H-1,3-benzodioxine (DTXSID80661330)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "CCCOC(=O)C(=C(F)F)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C7H7F5O2",
+              "molecular_weight": 218.12099999999992,
+              "num_atoms": 14,
+              "num_fluorines": 5,
+              "fluorine_ratio": 0.35714285714285715
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.012565609999001026,
+            "name": "Propyl 3,3-difluoro-2-(trifluoromethyl)prop-2-enoate (DTXSID80804225)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C[N+](C)(CCCNS(=O)(=O)CCC(C(C(C(C(C(F)(F)F)(F)F)(F)F)(F)F)(F)F)(F)F)CC(=O)[O-]",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C15H19F13N2O4S",
+              "molecular_weight": 570.3679999999998,
+              "num_atoms": 35,
+              "num_fluorines": 13,
+              "fluorine_ratio": 0.37142857142857144
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              },
+              {
+                "id": 5,
+                "name": "PFASSTRUCTv5",
+                "match_id": "D5"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.05459974499899545,
+            "name": "6:2 Fluorotelomer sulfonamide betaine (DTXSID4041284)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "CCCCC(CC(C(F)(F)Br)(F)Cl)Br",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8H12Br2ClF3",
+              "molecular_weight": 360.43899999999996,
+              "num_atoms": 14,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.21428571428571427
+            },
+            "detected_definitions": [
+              {
+                "id": 3,
+                "name": "OPPT 2023",
+                "match_id": "D3"
+              }
+            ],
+            "detected_ids": [
+              3
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.012102312000934035,
+            "name": "1,4-dibromo-2-chloro-1,1,2-trifluorooctane - low F ratio (DTXSID10382122)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C(C(OC(Cl)(Cl)Cl)(F)F)(F)Cl",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3HCl4F3O",
+              "molecular_weight": 251.84599999999998,
+              "num_atoms": 11,
+              "num_fluorines": 3,
+              "fluorine_ratio": 0.2727272727272727
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.01149080599861918,
+            "name": "2-Chloro-1,1,2-trifluoro-1-(trichloromethoxy)ethane - low F ratio (DTXSID30963477)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "C1=COC(=C1)C=C(S(=O)(=O)C(F)(F)F)S(=O)(=O)C(F)(F)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C8H4F6O5S2",
+              "molecular_weight": 358.23699999999997,
+              "num_atoms": 21,
+              "num_fluorines": 6,
+              "fluorine_ratio": 0.2857142857142857
+            },
+            "detected_definitions": [
+              {
+                "id": 1,
+                "name": "OECD Definition",
+                "match_id": "D1"
+              },
+              {
+                "id": 2,
+                "name": "EU PFAS Restriction",
+                "match_id": "D2"
+              },
+              {
+                "id": 4,
+                "name": "UK PFAS Definition",
+                "match_id": "D4"
+              }
+            ],
+            "detected_ids": [
+              1,
+              2,
+              4
+            ],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.020922332001646282,
+            "name": "2-[2,2-Bis(trifluoromethanesulfonyl)ethenyl]furan - borderline (DTXSID10711579)",
+            "category": "unclassified"
+          },
+          {
+            "smiles": "COC(=C(F)Cl)F",
+            "valid": true,
+            "molecular_properties": {
+              "formula": "C3H3ClF2O",
+              "molecular_weight": 128.505,
+              "num_atoms": 7,
+              "num_fluorines": 2,
+              "fluorine_ratio": 0.2857142857142857
+            },
+            "detected_definitions": [],
+            "detected_ids": [],
+            "expected_ids": null,
+            "correctness": null,
+            "execution_time": 0.008100194998405641,
+            "name": "1-Chloro-1,2-difluoro-2-methoxyethene - too few fluorines (DTXSID50777992)",
+            "category": "unclassified"
+          }
+        ]
+      },
+      "summary": {
+        "total_molecules": 46,
+        "unanimous_decisions": 17,
+        "split_decisions": 29,
+        "disagreement_matrix": {
+          "(1, 2, 4, 5)": 15,
+          "(5,)": 5,
+          "(1,)": 1,
+          "(1, 2, 5)": 4,
+          "(1, 2, 4)": 2,
+          "(3,)": 1,
+          "(1, 2)": 1
+        }
+      }
+    },
+    "concordance": {
+      "category": "concordance",
+      "compounds": [
+        {
+          "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "name": "PFOA (C8)",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "name": "PFHxA (C6)",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+          "name": "PFBA (C4)",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "name": "PFDA (C10)",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "OC(=O)C(F)(F)F",
+          "name": "TFA (C2)",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",
+          "name": "PFOS (C8)",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",
+          "name": "PFHxS (C6)",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",
+          "name": "PFBS (C4)",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)S(=O)(=O)O",
+          "name": "PFEtS (C2)",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "name": "6:2 FTOH",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "name": "8:2 FTOH",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "OCCC(F)(F)C(F)(F)C(F)(F)F",
+          "name": "4:2 FTOH",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "name": "5:2 FTOH",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)N",
+          "name": "PFOSA",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)NC",
+          "name": "N-MeFOSA",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)NCC",
+          "name": "N-EtFOSA",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
+          "name": "C8F17I",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)I",
+          "name": "C6F13I",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCOC(=O)C",
+          "name": "8:2 fluorotelomer acrylate",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)CCOP(=O)(O)O",
+          "name": "6:2 fluorotelomer phosphate",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC1(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)F",
+          "name": "Perfluorocyclohexane",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC1(F)C(F)(F)C(F)(F)C(F)(F)C1(F)F",
+          "name": "Perfluorocyclopentane",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
+          "name": "Perfluorodiethyl ether",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "smiles": "FC(F)(F)OC(F)(F)C(F)(F)OC(F)(F)F",
+          "name": "PFPE",
+          "category": "general",
+          "detected_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "summary": {
+        "total_compounds": 24,
+        "agreement_matrix": "[[24 24 23 24 24]\n [24 24 23 24 24]\n [23 23 24 23 23]\n [24 24 23 24 24]\n [24 24 23 24 24]]",
+        "jaccard_similarity": "[[0.         1.         0.95833333 1.         1.        ]\n [1.         0.         0.95833333 1.         1.        ]\n [0.95833333 0.95833333 0.         0.95833333 0.95833333]\n [1.         1.         0.95833333 0.         1.        ]\n [1.         1.         0.95833333 1.         0.        ]]"
+      }
+    },
+    "performance": {
+      "category": "performance",
+      "measurements": [
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.019114705002721166,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.011179616001754766,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.020887746002699714,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.011658078001346439,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.0088329230020463,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.010322081001504557,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.015560330997686833,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.01793096300025354,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.018640664999111323,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.016522851001354866,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.01371796099920175,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.015748365000035847,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.01411596799880499,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.01140267099981429,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.013084782000078121,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.011736325999663677,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.022344903998600785,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.014283663000242086,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.016343741001037415,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.01663337399804732,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.021244483003101777,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.021460994001245126,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.028854149000835605,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.011872057999426033,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.015996840000298107,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.013149520000297343,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.011222183002246311,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.014559310999175068,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.01793264099978842,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.014715610002895119,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.023063739001372596,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.01631505900149932,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.011385880003217608,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.01006747599967639,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.019037686000956455,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.0122348900003999,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.016395093000028282,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.0063231669992092066,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.007307501000468619,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.007077571000991156,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.015912473001662875,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.016425306999735767,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.017713110999466153,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.007994831998075824,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.016000829000404337,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.013936149000073783,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.01187789200048428,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.018237162999866996,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.02324445300109801,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.009697096000309102,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.017663227001321502,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.012684319997788407,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(C(F)(F)F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.013405752000835491,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.01057146299717715,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.014265064000937855,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.022996034000243526,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.012681349002377829,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.012974576002307003,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.01631310700031463,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.011545826000656234,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.011763768001401331,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.02099458299926482,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.011515273999975761,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.007422662998578744,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.013165016000129981,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.017961453002499184,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.016699785002856515,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.01074873200195725,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.015906485001323745,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.02425749000030919,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.02004920699982904,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.015863814998738235,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.02248476300155744,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.0242005820000486,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.012776922001648927,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 20,
+          "execution_time": 0.014728993002790958,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.01677764399937587,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.01642520400127978,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.018206526998255868,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.016332309001882095,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.014824891000898788,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.008496094000292942,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 29,
+          "execution_time": 0.020508082998276222,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 23,
+          "execution_time": 0.011355400001775706,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.016778956000052858,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 26,
+          "execution_time": 0.017669134998868685,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.009083466000447515,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.006902151002577739,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.02331212900026003,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(C(F)(F)F)(C(F)(F)C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 35,
+          "execution_time": 0.027476127001136774,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.0075323740020394325,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 17,
+          "execution_time": 0.008466896000754787,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.0129659329977585,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.008245862001786008,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.006854459999885876,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.006824056999903405,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.00627559900021879,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.006771046999347163,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(F)C(F)(C(F)(F)F)C(C(F)(F)F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 32,
+          "execution_time": 0.013515776001440827,
+          "num_definitions_matched": 5
+        },
+        {
+          "smiles": "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+          "num_atoms": 14,
+          "execution_time": 0.007464291997166583,
+          "num_definitions_matched": 5
+        }
+      ],
+      "summary": {
+        "total_molecules": 100,
+        "mean_time": 0.014660215310468629,
+        "median_time": 0.014421486999708577,
+        "std_time": 0.00500719830721816,
+        "by_size": {
+          "32": [
+            0.019114705002721166,
+            0.015560330997686833,
+            0.022344903998600785,
+            0.01793264099978842,
+            0.022996034000243526,
+            0.015863814998738235,
+            0.02248476300155744,
+            0.01642520400127978,
+            0.016332309001882095,
+            0.013515776001440827
+          ],
+          "17": [
+            0.011179616001754766,
+            0.015996840000298107,
+            0.013149520000297343,
+            0.007307501000468619,
+            0.007077571000991156,
+            0.009697096000309102,
+            0.012974576002307003,
+            0.011545826000656234,
+            0.007422662998578744,
+            0.014824891000898788,
+            0.008496094000292942,
+            0.008466896000754787
+          ],
+          "29": [
+            0.020887746002699714,
+            0.013084782000078121,
+            0.014283663000242086,
+            0.02324445300109801,
+            0.013405752000835491,
+            0.014265064000937855,
+            0.02099458299926482,
+            0.013165016000129981,
+            0.017961453002499184,
+            0.02004920699982904,
+            0.020508082998276222
+          ],
+          "26": [
+            0.011658078001346439,
+            0.01793096300025354,
+            0.01371796099920175,
+            0.01411596799880499,
+            0.011736325999663677,
+            0.021244483003101777,
+            0.021460994001245126,
+            0.014715610002895119,
+            0.01631505900149932,
+            0.019037686000956455,
+            0.015912473001662875,
+            0.016425306999735767,
+            0.017713110999466153,
+            0.013936149000073783,
+            0.012684319997788407,
+            0.011515273999975761,
+            0.016699785002856515,
+            0.017669134998868685
+          ],
+          "20": [
+            0.0088329230020463,
+            0.016343741001037415,
+            0.01663337399804732,
+            0.011872057999426033,
+            0.014559310999175068,
+            0.01006747599967639,
+            0.016000829000404337,
+            0.01057146299717715,
+            0.012681349002377829,
+            0.014728993002790958
+          ],
+          "23": [
+            0.010322081001504557,
+            0.018640664999111323,
+            0.016522851001354866,
+            0.0122348900003999,
+            0.01187789200048428,
+            0.018237162999866996,
+            0.017663227001321502,
+            0.012776922001648927,
+            0.01677764399937587,
+            0.018206526998255868,
+            0.011355400001775706
+          ],
+          "35": [
+            0.015748365000035847,
+            0.028854149000835605,
+            0.023063739001372596,
+            0.016395093000028282,
+            0.01631310700031463,
+            0.015906485001323745,
+            0.02425749000030919,
+            0.0242005820000486,
+            0.016778956000052858,
+            0.02331212900026003,
+            0.027476127001136774
+          ],
+          "14": [
+            0.01140267099981429,
+            0.011222183002246311,
+            0.011385880003217608,
+            0.0063231669992092066,
+            0.007994831998075824,
+            0.011763768001401331,
+            0.01074873200195725,
+            0.009083466000447515,
+            0.006902151002577739,
+            0.0075323740020394325,
+            0.0129659329977585,
+            0.008245862001786008,
+            0.006854459999885876,
+            0.006824056999903405,
+            0.00627559900021879,
+            0.006771046999347163,
+            0.007464291997166583
+          ]
+        },
+        "min_time": 0.00627559900021879,
+        "max_time": 0.028854149000835605
+      }
+    }
+  }
+}

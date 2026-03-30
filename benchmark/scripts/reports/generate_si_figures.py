@@ -77,14 +77,20 @@ def setup_style():
         "savefig.dpi": 300,
         "savefig.bbox": "tight",
         "savefig.pad_inches": 0.15,
+        # TrueType embedding avoids Type 3 glyph-name bugs (e.g. 'minus'
+        # treated as a PDF operator when Ubuntu font is active on log scale)
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
     })
 
 setup_style()
 
 def savefig(fig, name):
     """Save figure as both PDF and PNG."""
-    fig.savefig(os.path.join(OUTDIR, f"{name}.pdf"))
-    fig.savefig(os.path.join(OUTDIR, f"{name}.png"))
+    # Explicit format= prevents rcParam savefig.format from overriding
+    # the file extension (which would cause .png files to contain PDF bytes).
+    fig.savefig(os.path.join(OUTDIR, f"{name}.pdf"), format="pdf", bbox_inches="tight")
+    fig.savefig(os.path.join(OUTDIR, f"{name}.png"), format="png", bbox_inches="tight", dpi=150)
     plt.close(fig)
     print(f"  saved {name}.pdf / .png")
 
@@ -93,8 +99,8 @@ def savefig(fig, name):
 # 1. COMPUTATIONAL COMPLEXITY  (timing scaling comparison)
 # ═══════════════════════════════════════════════════════════════════════════════
 print("1. Computational complexity figures")
-
-timing_file = os.path.join(DATA, "timing_analysis_20260315_065228.json")
+timing_file = [f for f in os.listdir(DATA) if f.startswith("timing_analysis_") and f.endswith(".json")]
+timing_file = os.path.join(DATA, timing_file[0])
 with open(timing_file) as f:
     timing = json.load(f)
 
@@ -106,8 +112,8 @@ print(f"   HG mean: {ts['HalogenGroup_avg_time']:.1f} ms, Atlas mean: {ts['atlas
 # The clinventory timing JSON has per-molecule data in nested structure
 # Use the OECD clinventory timing file which is large (~50MB) — skip raw data,
 # use bracket summaries instead.
-
-clinv_file   = os.path.join(DATA, "clinventory_comparison_f_only_20260325_181212.json")
+clinv_file = [f for f in os.listdir(DATA) if f.startswith("clinventory_comparison_f_only_") and f.endswith(".json")]
+clinv_file   = os.path.join(DATA, clinv_file[0])
 with open(clinv_file) as f:
     clinv = json.load(f)
 
@@ -117,7 +123,8 @@ at_stats = clinv["timing_overall"]["atlas"]
 
 # --- Fig 1a: Multi-dataset timing box plot (OECD + CLInventory + large-molecule stress) ---
 # Data rebuilt with PFASGroups(halogens='F') on all three datasets (2026-03-25)
-oecd_timing_file = os.path.join(DATA, "oecd_clinventory_timing_f_only_20260325_181212.json")
+oecd_timing_file = [f for f in os.listdir(DATA) if f.startswith("oecd_clinventory_timing_f_only_") and f.endswith(".json")]
+oecd_timing_file = os.path.join(DATA, oecd_timing_file[0])
 with open(oecd_timing_file) as f:
     oecd_clinv_data = json.load(f)
 
@@ -131,16 +138,21 @@ stress_at   = stress_data["atlas_timing"]
 
 def _json_bxp(t):
     """Box-plot stats from a JSON summary dict that already contains p25/p75/p95.
-    Uses the actual IQR whiskers (Tukey 1.5×IQR rule, clamped to p5/p95).
-    whislo is guaranteed > 0 for log-scale safety."""
-    iqr = t["p75"] - t["p25"]
+    whislo/whishi follow Tukey 1.5×IQR rule but are clamped to the observed
+    min/max so they never extend beyond real data on a log scale."""
+    p25 = t.get("p25", t.get("q1", 0.0))
+    p75 = t.get("p75", t.get("q3", 0.0))
+    iqr = p75 - p25
+    data_min = t.get("min", p25)
+    data_max = t.get("max", p75)
     return {
-        "med":    t["median"],
-        "q1":     t["p25"],
-        "q3":     t["p75"],
-        "whislo": max(1e-4, t["p25"] - 1.5 * iqr),
-        "whishi": min(t.get("p95", t["max"]), t["p75"] + 1.5 * iqr),
-        "mean":   t["mean"],
+        "med":    t.get("median", t.get("med", 0.0)),
+        "q1":     p25,
+        "q3":     p75,
+        # Clamp to actual data min — avoids near-zero whislo on log scale
+        "whislo": max(data_min, p25 - 1.5 * iqr),
+        "whishi": min(data_max, p75 + 1.5 * iqr),
+        "mean":   t.get("mean", t.get("median", 0.0)),
         "fliers": [],
     }
 
@@ -181,14 +193,14 @@ for box, col in zip(bplot["boxes"], bp_colors):
     box.set_facecolor(col)
     box.set_alpha(0.75)
 
-n_oecd   = oecd_pg["n"]
-n_clinv  = clinv_pg["n"]
-n_stress = stress_data["n_valid"]
+n_oecd   = oecd_pg.get("n", oecd_pg.get("total", 0))
+n_clinv  = clinv_pg.get("n", clinv_pg.get("total", 0))
+n_stress = stress_data.get("n_valid", stress_data.get("n", stress_pg.get("n", 0)))
 ax.set_xticks([1.275, 3.275, 5.275])
 ax.set_xticklabels(
     [f"OECD list\n(n={n_oecd:,})",
      f"CLInventory (F)\n(n={n_clinv:,})",
-     f"Large PFAS benchmark\n(≥35 atoms, n={n_stress:,})"],
+     f"Large PFAS benchmark\n(>=35 atoms, n={n_stress:,})"],
     fontsize=9,
 )
 ax.set_ylabel("Execution time (ms)")
@@ -205,18 +217,22 @@ savefig(fig, "timing_box")
 # --- Fig 1b: Timing by molecular size bracket ---
 brackets = clinv["timing_by_atom_bracket"]
 bracket_order = ["tiny (<10)", "small (10-19)", "medium (20-34)", "large (35-59)", "very large (>=60)"]
-bracket_labels = ["<10", "10–19", "20–34", "35–59", "≥60"]
+bracket_labels = ["<10", "10-19", "20-34", "35-59", ">=60"]
 
 # We have ratio_hg_over_atlas and n per bracket
+# Use only bracket keys that actually exist in the JSON
+bracket_order = [b for b in bracket_order if b in brackets]
+bracket_labels = bracket_labels[:len(bracket_order)]
+
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.5))
 
 # Left: Bar chart of ratio by bracket
-ratios = [brackets[b]["ratio_hg_over_atlas"] for b in bracket_order]
-ns = [brackets[b]["n"] for b in bracket_order]
+ratios = [brackets[b].get("ratio_hg_over_atlas", brackets[b].get("ratio", 0)) for b in bracket_order]
+ns = [brackets[b].get("n", brackets[b].get("count", 0)) for b in bracket_order]
 bars = ax1.bar(bracket_labels, ratios, color=C2, alpha=0.8, edgecolor="white")
 for bar, r in zip(bars, ratios):
     ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.3,
-             f"{r:.1f}×", ha="center", va="bottom", fontsize=9)
+             f"{r:.1f}x", ha="center", va="bottom", fontsize=9)
 ax1.set_xlabel("Heavy atom count")
 ax1.set_ylabel("Time ratio (PFASGroups / PFAS-Atlas)")
 ax1.set_title("Speed ratio by molecular size")
@@ -228,7 +244,7 @@ for bar, n in zip(bars2, ns):
     ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height(),
              f"{n:,}", ha="center", va="bottom", fontsize=8)
 ax2.set_xlabel("Heavy atom count")
-ax2.set_ylabel("Number of molecules × iterations")
+ax2.set_ylabel("Number of molecules x iterations")
 ax2.set_title("Sample distribution")
 
 plt.tight_layout()
@@ -236,10 +252,14 @@ savefig(fig, "timing_by_bracket")
 
 # --- Fig 1c: Complexity model comparison (Full profile) ---
 print("  Timing complexity model comparison")
+# Fetch last version of pfas_timing_benchmark for each profile type (Full, No EGR, No metrics) — use these for model comparison and profile overlay plots
+full_json = [f for f in os.listdir(DATA) if f.startswith("pfas_timing_benchmark_full_") and f.endswith(".json")]
+noegr_json = [f for f in os.listdir(DATA) if f.startswith("pfas_timing_benchmark_no_resistance_") and f.endswith(".json")]
+no_metrics_json = [f for f in os.listdir(DATA) if f.startswith("pfas_timing_benchmark_no_metrics_") and f.endswith(".json")]
 timing_profile_files = [
-    ("Full",       "pfas_timing_benchmark_full_20260313_201139.json",       C0),
-    ("No EGR",     "pfas_timing_benchmark_no_resistance_20260313_213300.json", C2),
-    ("No metrics", "pfas_timing_benchmark_no_metrics_20260313_223709.json",  C1),
+    ("Full",       full_json[-1],        C0),
+    ("No EGR",     noegr_json[-1],       C2),
+    ("No metrics", no_metrics_json[-1],  C1),
 ]
 timing_profiles = {}
 for pname, fname, pcolor in timing_profile_files:
@@ -499,13 +519,12 @@ except Exception as _e:
 fig, ax = plt.subplots(figsize=(6, 4))
 # Use lognormal approximation based on mean/std
 for stats, label, color in [(hg_stats, "PFASGroups", C0), (at_stats, "PFAS-Atlas", C1)]:
-    mean, std, med = stats["mean"], stats["std"], stats["median"]
-    p25, p75, p95 = stats["p25"], stats["p75"], stats["p95"]
-    mn, mx = stats["min"], stats["max"]
-    # Plot key percentile points
-    x_pts = [mn, p25, med, mean, p75, p95, mx]
-    y_pts = [0, 0.25, 0.50, None, 0.75, 0.95, 1.0]
-    # Remove mean from CDF (not a percentile)
+    med = stats.get("median", stats.get("med", 0))
+    p25 = stats.get("p25", stats.get("q1", 0))
+    p75 = stats.get("p75", stats.get("q3", 0))
+    p95 = stats.get("p95", stats.get("p_95", p75))
+    mn  = stats.get("min", 0)
+    mx  = stats.get("max", p95)
     x_pts = [mn, p25, med, p75, p95, mx]
     y_pts = [0, 0.25, 0.50, 0.75, 0.95, 1.0]
     ax.plot(x_pts, y_pts, "o-", color=color, label=f"{label} (median={med:.1f} ms)", linewidth=2, markersize=4)
@@ -657,7 +676,7 @@ def plot_gb_bars(exp, fsets, fname):
                        rotation=45, ha="right")
     ax.set_ylabel("ROC-AUC")
     ax.set_title(f"{exp}: ROC-AUC per endpoint — Gradient Boosting"
-                 f"\n(bars = mean over CV folds; error bars = ±1 SD)")
+                 f"\n(bars = mean over CV folds; error bars = +/-1 SD)")
     ax.legend(fontsize=8, ncol=min(3, n_fsets), loc="upper right")
     ax.set_ylim(0, 1)
     savefig(fig, fname)

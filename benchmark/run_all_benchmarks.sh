@@ -420,6 +420,7 @@ else
     exit 1
 fi
 
+python scripts/reports/generate_si_figures.py
 cd ..
 echo ""
 

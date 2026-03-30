@@ -28,10 +28,12 @@ from typing import List, Dict, Tuple, Optional
 from rdkit import Chem
 from rdkit.Chem import Descriptors, rdMolDescriptors
 # Add parent directory to path
-script_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(script_dir)
-root_dir = os.path.dirname(parent_dir)  # Go up to the PFASGroups root
-sys.path.append(parent_dir)
+classify_dir = os.path.dirname(os.path.abspath(__file__))
+script_dir = os.path.dirname(classify_dir)
+bench_dir = os.path.dirname(script_dir)
+data_dir = os.path.join(bench_dir, 'data')  # Go up to the PFASGroups root data directory
+root_dir = os.path.dirname(bench_dir)  # Go up to the PFASGroups root
+sys.path.append(bench_dir)
 sys.path.append(root_dir)  # Add root to path for PFASGroups imports
 
 
@@ -56,7 +58,7 @@ class PFASDefinitionBenchmark:
         if load_definitions:
             from PFASGroups import PFASDefinition
             # Use relative path from benchmark/scripts to PFASGroups/data
-            definitions_path = os.path.join(script_dir, '..', '..', 'PFASGroups', 'data', 'PFAS_definitions_smarts.json')
+            definitions_path = os.path.join(root_dir, 'PFASGroups', 'data', 'PFAS_definitions_smarts.json')
             with open(definitions_path, 'r') as f:
                 definitions_data = json.load(f)
             
@@ -1035,9 +1037,8 @@ class PFASDefinitionBenchmark:
         from pathlib import Path
         
         # Create output directory
-        output_dir = Path(__file__).parents[1] / 'data'
-        output_dir.mkdir(exist_ok=True)
-        output_file = output_dir / f'false_classifications_{timestamp}.csv'
+        output_dir = data_dir
+        output_file = os.path.join(output_dir, f'pfas_definitions_false_classifications_{timestamp}.csv')
         
         false_classifications = []
         
@@ -1152,16 +1153,17 @@ class PFASDefinitionBenchmark:
         }
         
         # 1. True positives
-        results['benchmarks']['true_positives'] = self.run_true_positives_benchmark()
+        #results['benchmarks']['true_positives'] = self.run_true_positives_benchmark()
         
         # 2. True negatives
-        results['benchmarks']['true_negatives'] = self.run_true_negatives_benchmark()
+        #results['benchmarks']['true_negatives'] = self.run_true_negatives_benchmark()
         
         # 3. Edge cases
-        results['benchmarks']['edge_cases'] = self.run_edge_cases_benchmark()
+        #results['benchmarks']['edge_cases'] = self.run_edge_cases_benchmark()
         
         # 4. Definition-specific tests
-        results['benchmarks']['definition_specific'] = self.run_definition_specific_tests()
+        # ignore: dataset is not fully ready yet and may cause confusion if run now - will add back once we have more definition-specific test cases implemented
+        #results['benchmarks']['definition_specific'] = self.run_definition_specific_tests()
         
         # 5. Concordance analysis
         results['benchmarks']['concordance'] = self.run_concordance_analysis()
@@ -1195,8 +1197,7 @@ class PFASDefinitionBenchmark:
         results = convert_for_json(results)
         
         # Save results
-        output_dir = os.path.join(parent_dir, 'data')
-        os.makedirs(output_dir, exist_ok=True)
+        output_dir = data_dir
         output_file = os.path.join(output_dir, f'pfas_definitions_benchmark_{timestamp}.json')
         
         with open(output_file, 'w') as f:

@@ -8,7 +8,7 @@
 \definecolor{PGC2L}{HTML}{F2DCE9}
 
 %% LaTeX tables and text for HalogenGroups article
-%% Generated: 2026-03-15 06:53:21
+%% Generated: 2026-03-30 15:53:35
 %% 
 %% Include in your article with: \input{HalogenGroups_results.tex}
 %%
@@ -25,7 +25,7 @@ Table~\ref{tab:datasets} provides an overview of the benchmark datasets used to 
 \toprule
 \rowcolor[HTML]{D6E4F5}\textbf{Dataset} & \textbf{N} & \textbf{Source} & \textbf{Description} \\
 \midrule
-Enhanced Functional Groups & 3,920 & Generated & Systematically generated molecules covering all 55 PFAS functional groups \\
+Enhanced Functional Groups & 3,880 & Generated & Systematically generated molecules covering all 55 PFAS functional groups \\
 OECD Reference & 3,414 & OECD Database & Reference PFAS compounds from OECD reconciling terminology \\
 Complex Branched & 6 & Generated & Structurally complex molecules with extensive branching \\
 Non-Fluorinated & 3 & Generated & Negative control: molecules without fluorine \\
@@ -112,10 +112,10 @@ Table~\ref{tab:timing_overall} presents timing statistics for HalogenGroups and 
 \toprule
 \rowcolor[HTML]{D6E4F5}\textbf{Tool} & \textbf{N} & \textbf{Mean} & \textbf{Median} & \textbf{SD} & \textbf{Min} & \textbf{Max} \\
 \midrule
-\rowcolor[HTML]{FAEADE}HalogenGroups & 2,500 & 249.42 & 25.84 & 499.48 & 5.15 & 3194.47 \\
-\rowcolor[HTML]{D6E4F5}PFAS-Atlas & 2,500 & 63.57 & 37.83 & 72.99 & 0.17 & 445.71 \\
+\rowcolor[HTML]{FAEADE}HalogenGroups & 2,500 & 205.09 & 28.65 & 426.00 & 3.95 & 3324.46 \\
+\rowcolor[HTML]{D6E4F5}PFAS-Atlas & 2,500 & 66.97 & 38.45 & 82.96 & 0.16 & 601.62 \\
 \midrule
-\multicolumn{7}{l}{\textit{Speedup factor (Atlas/HalogenGroups): 0.25$\times$}} \\
+\multicolumn{7}{l}{\textit{Speedup factor (Atlas/HalogenGroups): 0.33$\times$}} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -132,14 +132,14 @@ Table~\ref{tab:timing_by_size} shows how execution time scales with molecule siz
 \toprule
 \rowcolor[HTML]{D6E4F5}\textbf{Size Range} & \textbf{N} & \textbf{PG Mean} & \textbf{PG SD} & \textbf{Atlas Mean} & \textbf{Atlas SD} \\
 \midrule
-\rowcolor[HTML]{FAEADE}0--20 & 1069 & 13.52 & 4.44 & 35.27 & 5.07 \\
-20--40 & 228 & 24.75 & 8.10 & 42.00 & 13.86 \\
-\rowcolor[HTML]{FAEADE}40--60 & 94 & 32.49 & 8.79 & 38.95 & 26.13 \\
-60--80 & 103 & 48.01 & 11.82 & 46.54 & 31.80 \\
-\rowcolor[HTML]{FAEADE}80--100 & 98 & 71.17 & 15.76 & 53.26 & 33.25 \\
-100--150 & 201 & 117.06 & 40.03 & 57.73 & 40.34 \\
-\rowcolor[HTML]{FAEADE}150--200 & 145 & 202.98 & 57.67 & 71.43 & 48.56 \\
-200--500 & 452 & 691.01 & 395.91 & 113.67 & 99.50 \\
+\rowcolor[HTML]{FAEADE}0--20 & 989 & 13.02 & 4.66 & 36.93 & 5.04 \\
+20--40 & 233 & 23.28 & 12.26 & 38.18 & 15.01 \\
+\rowcolor[HTML]{FAEADE}40--60 & 90 & 27.36 & 9.23 & 29.28 & 25.51 \\
+60--80 & 101 & 39.32 & 13.26 & 41.74 & 27.71 \\
+\rowcolor[HTML]{FAEADE}80--100 & 104 & 54.85 & 15.07 & 48.49 & 31.14 \\
+100--150 & 237 & 82.05 & 30.45 & 47.26 & 41.51 \\
+\rowcolor[HTML]{FAEADE}150--200 & 155 & 134.44 & 44.91 & 73.16 & 56.08 \\
+200--500 & 466 & 493.75 & 338.25 & 120.54 & 106.32 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -163,9 +163,9 @@ where $t$ is execution time (seconds), $n$ is number of atoms, and parameters we
 \toprule
 \rowcolor[HTML]{D6E4F5}\textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
 \midrule
-$a$ & 0.016052 & s \\
-$\alpha$ & 0.010078 & atoms$^{-1}$ \\
-$R^2$ & 0.8863 & -- \\
+$a$ & 0.014745 & s \\
+$\alpha$ & 0.009497 & atoms$^{-1}$ \\
+$R^2$ & 0.9030 & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -199,8 +199,8 @@ Table~\ref{tab:atlas_comparison} provides a detailed comparison of HalogenGroups
 \rowcolor[HTML]{D6E4F5}\textbf{Metric} & \textbf{HalogenGroups} & \textbf{PFAS-Atlas} & \textbf{Agreement (\%)} & \textbf{Advantage} \\
 \midrule
 \rowcolor[HTML]{FAEADE}PFAS Detection Rate & 0.0\% & 0.0\% & 100.0 & -- \\
-Mean Exec. Time (ms) & 249.42 & 63.57 & -- & PFAS-Atlas \\
-\rowcolor[HTML]{F5F5F5}Speedup Factor & -- & -- & -- & 0.25$\times$ \\
+Mean Exec. Time (ms) & 205.09 & 66.97 & -- & PFAS-Atlas \\
+\rowcolor[HTML]{F5F5F5}Speedup Factor & -- & -- & -- & 0.33$\times$ \\
 \rowcolor[HTML]{F2DCE9}Detailed Groups & 0 & -- & -- & HalogenGroups \\
 \bottomrule
 \end{tabular}
@@ -211,7 +211,7 @@ Mean Exec. Time (ms) & 249.42 & 63.57 & -- & PFAS-Atlas \\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{imgs/timing_exponential_fit.pdf}
-\caption{Exponential scaling of execution time with molecule size. Points represent individual molecules, solid line shows fitted model $t(n) = a \cdot e^{\alpha \cdot n}$, and dashed lines indicate 95\% confidence interval. Model parameters: $a = 0.016052$ s, $\alpha = 0.010078$ atoms$^{-1}$, $R^2 = 0.8863$.}
+\caption{Exponential scaling of execution time with molecule size. Points represent individual molecules, solid line shows fitted model $t(n) = a \cdot e^{\alpha \cdot n}$, and dashed lines indicate 95\% confidence interval. Model parameters: $a = 0.014745$ s, $\alpha = 0.009497$ atoms$^{-1}$, $R^2 = 0.9030$.}
 \label{fig:timing_scaling}
 \end{figure}
 
@@ -240,9 +240,9 @@ The benchmark results demonstrate that HalogenGroups achieves high accuracy in P
 
 \item \textbf{PFAS Definitions Benchmark:} Comparison of five PFAS definition systems shows accuracy ranging from 0.0\% to 0.0\% across OECD, EU, OPPT, UK, and PFASSTRUCTv5 definitions.
 
-\item \textbf{Performance Scaling:} Execution time follows an exponential model ($R^2 = 0.8863$) with mean processing time of 249.42 ms per molecule and median of 25.84 ms.
+\item \textbf{Performance Scaling:} Execution time follows an exponential model ($R^2 = 0.9030$) with mean processing time of 205.09 ms per molecule and median of 28.65 ms.
 
-\item \textbf{Comparative Performance:} Performance comparable to PFAS-Atlas (ratio: 0.25$\times$) while providing detailed functional group identification.
+\item \textbf{Comparative Performance:} Performance comparable to PFAS-Atlas (ratio: 0.33$\times$) while providing detailed functional group identification.
 
 \item \textbf{Robustness:} Successfully handles complex branched structures (6 molecules tested) and correctly excludes non-fluorinated compounds (3 negative controls).
 \end{itemize}

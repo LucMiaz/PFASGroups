@@ -24,6 +24,10 @@ import os
 import re
 from pathlib import Path
 
+analysis_dir = os.path.dirname(os.path.abspath(__file__))
+scripts_dir = os.path.dirname(analysis_dir)
+bench_dir = os.path.dirname(scripts_dir) # Go up to the benchmark directory
+repo_dir = os.path.dirname(bench_dir) # Go up to the PFASGroups root directory
 
 def _load_palette():
     """Load hex colours from color_scheme.yaml (stdlib only, no pyyaml needed)."""
@@ -610,8 +614,9 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
     nodes_HalogenGroup_set = set()
     nodes_atlas_set = set()
     nodes_HalogenGroup_oecd_set = set()
+    pfas_atlas = {}
     
-    with open('../HalogenGroup/data/PFAS_groups_smarts.json', 'r') as f:
+    with open(os.path.join(repo_dir,'PFASGroups','data','Halogen_groups_smarts.json'), 'r') as f:
         lookup = json.load(f)
     lookup = {k['id']:k['name'] for k in lookup}
     reverse_lookup = {v:k for k,v in lookup.items()}

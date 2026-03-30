@@ -5,16 +5,21 @@ from PFASGroups import parse_mol, get_compiled_PFASGroups
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
+from rdkit import rdBase
 import os, sys
+import time
+rdBase.DisableLog('rdApp.warning')  # Suppress RDKit warnings
 
-FILE_DIR = os.path.dirname(os.path.abspath(__file__))
-SCRIPT_DIR = os.path.dirname(FILE_DIR)
-REPO_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
-DATA_DIR = os.path.join(SCRIPT_DIR, 'data')
 
+CLASSIFY_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_DIR = os.path.dirname(CLASSIFY_DIR)
+BENCH_DIR = os.path.dirname(SCRIPT_DIR)
+REPO_DIR = os.path.dirname(BENCH_DIR)
+GIT_DIR = os.path.dirname(REPO_DIR)
+DATA_DIR = os.path.join(BENCH_DIR, 'data')
 
 # Try to import PFAS-Atlas
-atlas_dir = os.path.join(REPO_DIR, 'PFAS-atlas')
+atlas_dir = os.path.join(GIT_DIR, 'PFAS-atlas')
 try:
     sys.path.append(atlas_dir)  
     from classification_helper.classify_pfas import classify_pfas_molecule
@@ -27,10 +32,10 @@ except ImportError:
         ATLAS_AVAILABLE = True
         print("✅ PFAS-Atlas available (fallback import)")
     except ImportError:
-        print("❌ PFAS-Atlas not available")
+        print(f"❌ PFAS-Atlas not available as {atlas_dir} or {os.path.join(atlas_dir, 'classification_helper')}")
         ATLAS_AVAILABLE = False
 
-def generate_test_cases(self,n = 300, branching_range=None, min_carbons=5, max_carbons=15, seed=2025):
+def generate_test_cases(n = 300, branching_range=None, min_carbons=5, max_carbons=15, seed=2025):
     """
     Generate test cases with varying branching indices for classification testing.
     """
@@ -90,10 +95,6 @@ class TestBranching:
             'include_definitions': include_PFAS_definitions
         }
         
-        if not PFASGroups_AVAILABLE:
-            PFASGroups_result['error'] = 'PFASGroups not available'
-            return PFASGroups_result
-        
         try:
             mol = Chem.MolFromSmiles(smiles)
             if mol is not None:
@@ -115,6 +116,15 @@ class TestBranching:
                     for match in results['matches']:
                         if match.get('type') == 'HalogenGroup':
                             group_ids.append(match['id'])
+                            # Forward all summary metrics from parse_mol
+                            _SUMMARY_KEYS = (
+                                'mean_branching', 'total_branching', 'sum_component_branching_ratio',
+                                'mean_smarts_centrality', 'mean_component_fraction', 'total_components_fraction',
+                                'mean_eccentricity', 'median_eccentricity',
+                                'mean_diameter', 'mean_radius',
+                                'mean_effective_graph_resistance', 'mean_effective_graph_resistance_BDE',
+                                'mean_dist_to_barycentre', 'mean_dist_to_centre', 'mean_dist_to_periphery',
+                            )
                             all_matches.append({
                                 'type': 'group',
                                 'id': match['id'],
@@ -124,10 +134,7 @@ class TestBranching:
                                 'components_sizes': match.get('components_sizes', []),
                                 'num_components': match.get('num_components', 0),
                                 'components_types': match.get('components_types', []),
-                                # Summary metrics
-                                'mean_eccentricity': match.get('mean_eccentricity', 0.0),
-                                'mean_diameter': match.get('mean_diameter', float('nan')),
-                                'mean_radius': match.get('mean_radius', float('nan'))
+                                **{k: match.get(k) for k in _SUMMARY_KEYS},
                             })
                         elif match.get('type') == 'PFASdefinition':
                             definition_ids.append(match['id'])
@@ -185,8 +192,8 @@ class TestBranching:
         
         return atlas_result
     def run_tests(self):
+        rdBase.DisableLog('rdApp.warning')  # Suppress RDKit warnings during tests
         for tc in self.test_cases:
-            print(f"Testing SMILES: {tc['smiles']} (Branching Index: {tc['branching_index']:.2f})")
             pf_result = self.test_with_PFASGroups(tc['smiles'])
             tc['PFASGroups_result'] = pf_result
             if ATLAS_AVAILABLE:
@@ -212,11 +219,23 @@ class TestBranching:
         import json
         self.summarize_results()
         results = [self.summary] + self.test_cases
+        serialised_results = []
+        for item in results:
+            if isinstance(item, dict):
+                serialised_item = {}
+                for k, v in item.items():
+                    if isinstance(v, (str, int, float, bool)) or v is None:
+                        serialised_item[k] = v
+                    else:
+                        serialised_item[k] = str(v)  # Convert non-serializable items to string
+                serialised_results.append(serialised_item)
+            else:
+                serialised_results.append(str(item))
         with open(filename, 'w') as f:
-            json.dump(self.test_cases, f, indent=2)
+            json.dump(serialised_results, f, indent=2)
         
 if __name__ == "__main__":
     seed = 2025
-    tester = TestBranching(n=300, branching_range=(0.0, 0.4), min_carbons=5, max_carbons=15, seed=seed)
+    tester = TestBranching(n=300, branching_range=(0.0, 0.6), min_carbons=5, max_carbons=15, seed=seed)
     tester.run_tests()
     tester.save(os.path.join(DATA_DIR, f"branching_test_results_{seed}.json"))

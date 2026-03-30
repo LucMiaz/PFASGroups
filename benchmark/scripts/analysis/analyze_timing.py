@@ -727,9 +727,16 @@ def main():
     
     if len(sys.argv) < 2:
         print("Usage: python analyze_timing.py <timing_results.json>")
-        sys.exit(1)
-    
-    filename = sys.argv[1]
+        print("Using latest timing results from data directory...")
+        data_dir = "../data" if os.path.exists("../data") else "data"
+        json_files = [f for f in os.listdir(data_dir) if f.startswith("pfas_timing_benchmark_full_") and f.endswith(".json")]
+        if not json_files:
+            print("No timing results found in data directory. Please provide a timing results JSON file.")
+            sys.exit(1)
+        latest_file = max(json_files, key=lambda f: os.path.getctime(os.path.join(data_dir, f)))
+        filename = os.path.join(data_dir, latest_file)
+    else:
+        filename = sys.argv[1]
     print(f"TIMING PERFORMANCE ANALYSIS")
     print(f"=" * 50)
     print(f"Loading results from: {filename}")

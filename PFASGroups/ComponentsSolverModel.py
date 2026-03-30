@@ -230,7 +230,7 @@ class ComponentsSolver:
         ]
         if not non_hf_atoms:
             return 0.0
-        return calculate_branching(self.G, non_hf_atoms)
+        return calculate_branching(self.mol, non_hf_atoms)
 
     def get_full_component_atoms(self, component):
         """Get all atoms in a component including those attached (H, F, halogens).
@@ -724,7 +724,7 @@ class ComponentsSolver:
         """
         # Basic branching metric
         smarts_set = smarts_matches if smarts_matches is not None else set()
-        basic_metrics = calculate_component_metrics(self.G, component, smarts_set)
+        basic_metrics = calculate_component_metrics(self.mol, self.G, component, smarts_set)
 
         # Comprehensive graph metrics (cached)
         comp_metrics = self.compute_component_metrics(component)
@@ -879,22 +879,49 @@ class ComponentsSolver:
         return result
 
 
-def calculate_branching(G, subset):
-    # Calculate branching: measure of branching vs linearity
-    # For linear chains: branching → 1.0
-    # For highly branched: branching → 0.0
-    try:
-        subG = G.subgraph(subset)
-        # Count branch points (degree > 2)
-        branch_points = sum(1 for node in subG.nodes() if subG.degree(node) > 2)
-        # Normalize by component size
-        branching = 1.0 - (branch_points / max(1, len(subset) - 2))  # -2 to account for endpoints
-        branching = max(0.0, min(1.0, branching))  # Clamp to [0, 1]
-    except:
-        branching = 0.0
+def calculate_branching(mol, subset):
+    """
+    Calculate branching of carbon atoms in a molecules
+    Measure of branching vs linearity
+    For linear chains: branching → 1.0
+    For highly branched: branching → 0.0
+
+    1. extract carbon atoms and their connectivity
+    2. Count branch points (degree > 2 in the carbon subgraph)
+    3. Normalize by component size
+    """
+    # Count branch points (degree > 2 in the carbon subgraph)
+    if isinstance(mol, Chem.Mol):
+        try:
+            carbon_nodes = [atom.GetIdx() for atom in mol.GetAtoms() if atom.GetSymbol() == 'C' and atom.GetIdx() in subset]
+            # Only count C-C bonds so functional-group heteroatoms (e.g. -COOH oxygens)
+            # do not create false branch points on terminal carbons.
+            branch_points = sum(
+                1 for node in carbon_nodes
+                if sum(1 for nb in mol.GetAtomWithIdx(node).GetNeighbors() if nb.GetSymbol() == 'C') > 2
+            )
+        except:
+            return 0.0
+    elif isinstance(mol, nx.Graph):
+        try:
+            subG = mol.subgraph(subset)
+            # Work on carbon nodes only; count only C-C edges to avoid
+            # heteroatom bonds (e.g. C=O in carboxyl groups) inflating degree.
+            carbon_nodes = [n for n in subG.nodes() if subG.nodes[n].get('symbol') == 'C']
+            branch_points = sum(
+                1 for node in carbon_nodes
+                if sum(1 for nb in subG.neighbors(node) if subG.nodes[nb].get('symbol') == 'C') > 2
+            )
+        except:
+            return 0.0
+    else:
+        raise TypeError(f"Unsupported molecule type for branching calculation: {type(mol)}")
+    # Normalize by component size
+    branching = 1.0 - (branch_points / max(1, len(carbon_nodes) - 2))  # -2 to account for endpoints
+    branching = max(0.0, min(1.0, branching))  # Clamp to [0, 1]
     return branching
 
-def calculate_component_metrics(G, component, smarts_matches):
+def calculate_component_metrics(mol, G, component, smarts_matches):
     """Calculate branching and centrality metrics for a component.
 
     Parameters
@@ -918,7 +945,7 @@ def calculate_component_metrics(G, component, smarts_matches):
     subG = G.subgraph(component)
 
     # Calculate branching: fraction of nodes with degree > 2
-    branching = calculate_branching(subG, component)
+    branching = calculate_branching(mol, component)
 
     # Calculate SMARTS centrality: how central the matched atoms are
     smarts_in_component = smarts_matches.intersection(component)
