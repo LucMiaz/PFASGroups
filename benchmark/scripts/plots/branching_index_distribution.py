@@ -126,10 +126,9 @@ def _pick_in_window(values: np.ndarray, mol_list: list, pct: int,
             if i not in used
         ]
     # Primary: closest to the percentile target value; secondary: fewest heavy atoms
-    return min(candidates, key=lambda i: (
-        abs(values[i] - target),
-        _mol_atom_count(mol_list[i]),
-    ))
+    weights = np.array([1 / (abs(values[i] - target) + _mol_atom_count(mol_list[i]) + 1e-6) for i in candidates])
+    weights /= weights.sum()
+    return np.random.choice(candidates, 1, p=weights)[0]
 
 
 used_idx: set[int] = set()
