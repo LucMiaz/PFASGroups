@@ -879,7 +879,7 @@ class ComponentsSolver:
         return result
 
 
-def calculate_branching(mol, subset):
+def calculate_branching(mol, subset=None):
     """
     Calculate branching of carbon atoms in a molecules
     Measure of branching vs linearity
@@ -893,31 +893,29 @@ def calculate_branching(mol, subset):
     # Count branch points (degree > 2 in the carbon subgraph)
     if isinstance(mol, Chem.Mol):
         try:
-            carbon_nodes = [atom.GetIdx() for atom in mol.GetAtoms() if atom.GetSymbol() == 'C' and atom.GetIdx() in subset]
+            carbon_nodes = [atom.GetIdx() for atom in mol.GetAtoms() if atom.GetSymbol() == 'C' and (subset is None or atom.GetIdx() in subset)]
             # Only count C-C bonds so functional-group heteroatoms (e.g. -COOH oxygens)
             # do not create false branch points on terminal carbons.
             branch_points = sum(
-                1 for node in carbon_nodes
-                if sum(1 for nb in mol.GetAtomWithIdx(node).GetNeighbors() if nb.GetSymbol() == 'C') > 2
+                max(0, sum(1 for nb in mol.GetAtomWithIdx(node).GetNeighbors() if nb.GetSymbol() == 'C') - 2) for node in carbon_nodes
             )
         except:
             return 0.0
     elif isinstance(mol, nx.Graph):
         try:
-            subG = mol.subgraph(subset)
+            subG = mol.subgraph(subset) if subset is not None else mol
             # Work on carbon nodes only; count only C-C edges to avoid
             # heteroatom bonds (e.g. C=O in carboxyl groups) inflating degree.
             carbon_nodes = [n for n in subG.nodes() if subG.nodes[n].get('symbol') == 'C']
             branch_points = sum(
-                1 for node in carbon_nodes
-                if sum(1 for nb in subG.neighbors(node) if subG.nodes[nb].get('symbol') == 'C') > 2
+                max(0, sum(1 for nb in subG.neighbors(node) if subG.nodes[nb].get('symbol') == 'C') - 2) for node in carbon_nodes
             )
         except:
             return 0.0
     else:
         raise TypeError(f"Unsupported molecule type for branching calculation: {type(mol)}")
     # Normalize by component size
-    branching = 1.0 - (branch_points / max(1, len(carbon_nodes) - 2))  # -2 to account for endpoints
+    branching = 1 - 2 * branch_points / max(1, len(carbon_nodes))
     branching = max(0.0, min(1.0, branching))  # Clamp to [0, 1]
     return branching
 

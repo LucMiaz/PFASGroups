@@ -121,11 +121,10 @@ def get_branching_index(mol):
     #  the two oxygens on a -COOH terminus, do not create false branch points)
     carbon_nodes = [atom.GetIdx() for atom in mol.GetAtoms() if atom.GetSymbol() == 'C']
     branch_points = sum(
-        1 for node in carbon_nodes
-        if sum(1 for nb in mol.GetAtomWithIdx(node).GetNeighbors() if nb.GetSymbol() == 'C') > 2
+        max(0, sum(1 for nb in mol.GetAtomWithIdx(node).GetNeighbors() if nb.GetSymbol() == 'C') - 2) for node in carbon_nodes
     )
     # Normalize by component size
-    branching_index = 1.0 - (branch_points / max(1, len(carbon_nodes) - 2))  # -2 to account for endpoints
+    branching_index = 1.0 - 2 * (branch_points / max(1, len(carbon_nodes)))
     branching_index = max(0.0, min(1.0, branching_index))  # Clamp to [0, 1]
     return branching_index
 
@@ -555,7 +554,7 @@ def append_functional_groups(mol, functional_groups:list, **kwargs):
             raise e
     return mol
 
-def generate_random_mol(n, functional_groups, perfluorinated=True, cycle=False, alkene=False, alkyne=False, **kwargs):
+def generate_random_mol(n, functional_groups=None, perfluorinated=True, cycle=False, alkene=False, alkyne=False, **kwargs):
     """Generate a random PFAS-like molecule with functional groups.
 
     Complete pipeline combining chain generation, fluorination, and functional
@@ -607,14 +606,18 @@ def generate_random_mol(n, functional_groups, perfluorinated=True, cycle=False, 
 
     This is the primary high-level function for PFAS molecule generation.
     """
-    if isinstance(functional_groups, dict):
+    if functional_groups is None:
+        functional_groups = []
+    elif isinstance(functional_groups, dict):
         functional_groups = [functional_groups]
     elif isinstance(functional_groups, str) :
         functional_groups = [{'group_smiles':functional_groups,'n':kwargs.get('m',1),'mode':kwargs.get('mode','attach')}]
-    elif isinstance(functional_groups,list) and isinstance(functional_groups[0],str):
-        functional_groups = [{'group_smiles':functional_group[0],'n':kwargs.get('m',1),'mode':kwargs.get('mode','attach')} for functional_group in functional_groups]
+    elif isinstance(functional_groups,list):
+        if len(functional_groups) >0 and isinstance(functional_groups[0],str):
+            functional_groups = [{'group_smiles':functional_group[0],'n':kwargs.get('m',1),'mode':kwargs.get('mode','attach')} for functional_group in functional_groups]
     mol = generate_random_carbon_chain(n, cycle, alkene, alkyne, branching_range=kwargs.get('branching_range'))
     # Randomly fluorinate the molecule
     mol = fluorinate_mol(mol, perfluorinated=perfluorinated)
-    mol = append_functional_groups(mol,functional_groups,chain_n=n,**{k: v for k, v in kwargs.items() if k != 'branching_range'})
+    if len(functional_groups)>0:
+        mol = append_functional_groups(mol,functional_groups,chain_n=n,**{k: v for k, v in kwargs.items() if k != 'branching_range'})
     return mol
