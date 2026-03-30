@@ -138,11 +138,11 @@ def _select_groups(group_selection, selected_group_ids, pfas_groups):
     if group_selection == 'oecd':
         return [id_to_group[gid] for gid in range(1, 29) if gid in id_to_group]
     if group_selection == 'generic':
-        return [id_to_group[gid] for gid in range(29, 56) if gid in id_to_group]
+        return [id_to_group[gid] for gid in range(29, 77) if gid in id_to_group]
     if group_selection == 'telomers':
-        return [id_to_group[gid] for gid in range(74, 117) if gid in id_to_group]
+        return [id_to_group[gid] for gid in range(77, 119) if gid in id_to_group]
     if group_selection == 'generic+telomers':
-        ids = list(range(29, 56)) + list(range(74, 117))
+        ids = list(range(29, 119))
         return [id_to_group[gid] for gid in ids if gid in id_to_group]
 
     from .getter import get_HalogenGroups
