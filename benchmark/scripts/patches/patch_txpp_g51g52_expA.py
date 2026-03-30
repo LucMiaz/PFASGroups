@@ -50,12 +50,12 @@ def main() -> None:
     print("\nLoading TxP_PFAS fingerprints …")
     X_txpp_all = load_tsv_fingerprints(TXPP_TSV)  # (n, 129)
 
-    # ── Build the 2-column total_component embedding for groups 51 & 52 ─
+    # ── Build the 2-column total_component embedding for groups 34 & 35 ─
     print("\nComputing g51g52_total embedding (2 cols) …")
     pfg = build_pfg_matrices(
         smiles_all,
         configs={"g51g52_total": dict(component_metrics=["total_component"],
-                                      selected_group_ids=[51, 52])},
+                                      selected_group_ids=[34, 35])},
     )
     X_g5152 = pfg["g51g52_total"]  # (n, 2)
     print(f"  g51g52_total shape: {X_g5152.shape}")

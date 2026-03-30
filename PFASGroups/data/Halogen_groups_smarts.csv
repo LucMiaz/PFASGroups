@@ -1,0 +1,120 @@
+category§id§Group Name§SMARTS Patterns§Formula Constraints§Component Constraints
+OECD§1§OECD perfluoroalkyl alcohols§[#6X4$([#6!$([#6]=O)][OH1,Oh1,O-])]§gte(F≥2); only(C,F,O,H); rel(C≤(F+O-1)/2)§component=Perfluoroalkyl
+OECD§2§OECD telomer alcohols§[C$([#6][C$([CH2][OH1,Oh1,O-]),C$([CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-]),C$([CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][CH2][OH1,Oh1,O-])])] | C(F)(F)F§eq(O=1); gte(F≥2)§component=Perfluoroalkyl; max_dist=0
+OECD§3§OECD perfluoroalkane§§gte(F≥2); only(C,F,H); rel(C≤(F-1)/2)§component=Perfluoroalkyl
+OECD§4§OECD semi-fluorinated alkanes§[#6X4$([#6](F)(F))] | [#6X4$([#6][H,I,Br,Cl])]§eq(O=0, S=0); gte(F≥2); rel(C≤(Cl+I+Br+F+H-1)/2)§component=Polyfluoroalkyl
+OECD§5§OECD perfluoroalkene§[#6$([#6H0](F)=[#6H0]F)]§gte(F≥2); only(C,F,H); rel(C≤(F+0)/2)§max_dist=16
+OECD§6§OECD perfluoroalkyl carboxylic acids§[#6$([#6][#6](=O)([OH1,Oh1,O-]))]§eq(O=2); gte(F≥2); only(C,F,O,H); rel(C≤(F+0.5)/2)§component=Perfluoroalkyl
+OECD§7§OECD polyfluoroalkyl carboxylic acid§[#6$([#6][#6](=O)([OH1,Oh1,O-]))]§eq(O=2); gte(F≥2); only(C,F,O,H); rel(C≤(F+H+Cl+Br+I+0)/2)§component=Polyfluoroalkyl
+OECD§8§OECD perfluoroalkyl dicarboxylic acids§[#6](=O)[OH1,Oh1,O-] ×2§eq(O=4); gte(F≥2); only(C,F,O,H); rel(C≤(F+2)/2)§component=Perfluoroalkyl; max_dist=1
+OECD§9§OECD perfluoroalkylether carboxylic acids§[#6$([#6][#6](=O)([OH1,Oh1,O-]))] | [#6$([#6]([#8X2H0][#6!$(C=O)]))!$([#6](=O))]§gte(O≥3, F≥2); only(C,F,O,H); rel(C≤(F+0.5)/2)§component=Perfluoroalkyl
+OECD§10§OECD polyfluoroalkylether carboxylic acid§[#6$([#6][#6](=O)([OH1,Oh1,O-]))] | [#6$([#6]([#8X2H0][#6!$(C=O)]))!$([#6](=O))]§gte(O≥3, F≥2); only(C,F,H,Cl,Br,I,O); rel(C≤(F+H+Cl+Br+I+0)/2)§component=Polyfluoroalkyl
+OECD§11§OECD hydrofluoroethers§[#6][#8][#6]§gte(O≥1, F≥2); only(C,F,O,H); rel(C≤(F+H-1)/2)§component=Polyfluoroalkyl
+OECD§12§OECD hydrofluorocarbons§§eq(); gte(F≥2); only(C,F,H); rel(C≤(F+H-1)/2)§component=Polyfluoroalkyl
+OECD§13§OECD perfluoroalkyl iodides§§gte(I≥1, F≥2); rel(C≤(F+I-1)/2)§component=Perfluoroalkyl
+OECD§14§OECD perfluoroalkyl ketones§[#6X4$([#6]C(=O)[#6])]§gte(F≥2); only(C,F,O); rel(C≤(F+0)/2)§component=Perfluoroalkyl
+OECD§15§OECD semi-fluoroalkyl ketones§[#6X4$([#6]C(=O)[#6])]§gte(O≥1, F≥3); rel(C≤(Cl+I+Br+F+H-1)/2)§component=Polyfluoroalkyl
+OECD§16§OECD hydrofluoroolefins§[C$(C=C)]§eq(); gte(F≥2); only(C,F,H); rel(C≤(F+H+0)/2)§component=Polyfluoroalkyl; max_dist=16; linker=[CH2]
+OECD§17§OECD perfluoropolyethers§[#6$([#6]O[#6])]§gte(O≥2, F≥2); only(C,F,O); rel(C≤(F-1)/2)§component=Perfluoroalkyl
+OECD§18§OECD side-chain fluorinated aromatics§[#6X4$([#6]a)]§gte(F≥2)§component=Perfluoroalkyl
+OECD§19§OECD perfluoroalkylether sulfonic acids§[#6$([#6][#16](=O)(=O)([OH]))] | [#6$([#6]([#8X2H0][#6!$(C=O)]))!$([#6](=O))]§eq(S=1); gte(O≥4, F≥2); only(C,F,H,S,O); rel(C≤(F-0.5)/2)§component=Perfluoroalkyl
+OECD§20§OECD polyfluoroalkylether sulfonic acid§[#6$([#6][#16](=O)(=O)([OH]))] | [#6$([#6]([#8X2H0][#6!$(C=O)]))!$([#6](=O))]§eq(S=1); gte(O≥4, F≥2); only(C,F,H,Cl,Br,I,S,O); rel(C≤(F+H+Cl+Br+I-1)/2)§component=Polyfluoroalkyl
+OECD§21§OECD perfluoroalkyl sulfinic acids§[#6$([#6][#16X3](=O)[OH1,Oh1,O-])]§eq(S=1); gte(F≥2); only(C,F,S,O,H); rel(C≤(F-0.5)/2)§component=Perfluoroalkyl
+OECD§22§OECD perfluoroalkyl sulfonic acids§[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]§eq(S=1, O=3); gte(F≥2); only(C,F,H,S,O); rel(C≤(F-0.5)/2)§component=Perfluoroalkyl
+OECD§23§OECD polyfluoroalkyl sulfonic acid§[#6$([#6][#16](=O)(=O)[OH1,Oh1,O-])]§eq(S=1, O=3); gte(F≥2); only(C,F,H,Cl,Br,I,S,O); rel(C≤(F+H+Cl+Br+I-1)/2)§component=Polyfluoroalkyl
+OECD§24§OECD perfluoroalkyl disulfonic acids§[#16](=O)(=O)[OH1,Oh1,O-] ×2§eq(S=2, O=6); gte(F≥2); only(C,F,H,Cl,Br,I,S,O); rel(C≤(F+0)/2)§component=Perfluoroalkyl; max_dist=1
+OECD§25§OECD perfluoroalkane sulfonyl fluorides§[#6$([#6][#16](=O)(=O)[F])]§gte(F≥2); rel(C≤(F-1)/2)§component=Perfluoroalkyl; max_dist=0
+OECD§26§OECD perfluoroalkyl phosphinic acids§[#6X4$([#6][#15](=[#8])([#8])[#1,#6])]§eq(P=1, O=2); gte(F≥2); only(C,F,P,O,H); rel(C≤(F-0.5)/2)§component=Perfluoroalkyl
+OECD§27§OECD perfluoroalkyl phosphonic acids§[#6$([#6][#15](=[#8])([#8])[#8])]§eq(P=1, O=3); gte(F≥2); only(C,F,P,O,H); rel(C≤(F-0.5)/2)§component=Perfluoroalkyl
+OECD§28§OECD perfluoroalkyl-tert-amines§[#6$([#6][#7D3])]§gte(F≥2); only(C,F,H,N); rel(C≤(F-1.5)/2)§component=Perfluoroalkyl
+generic§29§acrylate§[CH2$(COC(=O)[CH1]=[CH2])]§gte(O≥2)§max_dist=0
+generic§30§acyl halide§[#6$([#6][#6](=O)[#9,#17,#35,#53])]§§max_dist=0
+generic§31§alcohol§[#6$([#6!$([#6]=O)][OH1,Oh1,O-])]§gte(O≥1)§max_dist=0
+generic§32§aldehyde§[C$(C[CH1,C$(C(F))](=O))]§gte(O≥1)§
+generic§33§alkene§[#6$(C[#6]=[#6])]§§max_dist=0
+generic§34§perhalogenated alkyl§§§saturation=per
+generic§35§polyhalogenated alkyl§§§saturation=poly
+generic§36§alkyne§[#6$([#6]#[#6])]§§max_dist=1
+generic§37§perhalogenated aryl compounds§§§saturation=per; form=aryl
+generic§38§polyhalogenated aryl compounds§§§saturation=poly; form=aryl
+generic§39§benzodioxole§[C$(C[c$(c1ccc2OC(F)(F)Oc2c1),c$(c1cc2OC(F)(F)Oc2cc1),c$(c1c2OC(F)(F)Oc2ccc1)]),C$(C(F)(F)(Oc2c1)Oc2ccc1)]§gte(O≥2)§max_dist=1
+generic§40§benzoyl peroxydes§[#6X4$([#6][#6](=[#8])[#8][#8][#6](=[#8]))]§§
+generic§41§bromide§[#6$([#6][#35])]§gte(Br≥1)§max_dist=1
+generic§42§carboxylic acid§[$([#6][#6](=O)[OH1,Oh1,O-])]§gte(O≥2)§max_dist=0
+generic§43§chloride§[#6$([#6][#17])]§gte(Cl≥1)§max_dist=1
+generic§44§perhalogenated cyclic compounds§§§saturation=per; form=cyclic
+generic§45§polyhalogenated cyclic compounds§§§saturation=poly; form=cyclic
+generic§46§ester§[#6X4$([#6](=O)O[#6]),#6X4$([#6]O[#6](=O)[#6])]§gte(O≥2)§max_dist=0
+generic§47§ether§[#6$([#6]([#8X2H0][#6!$(C=O)]))!$([#6](=O))]§gte(O≥1)§max_dist=0
+generic§48§fluoride§[#6$([#6][#9])]§gte(F≥1)§max_dist=1
+generic§49§glucuronate§[CX4$(C[O$(O[C@@H]1O[C@H](C(=O)O)[C@@H](O)[C@H](O)[C@H]1O),O$(O[C@H]1[C@H](O)O[C@H](C(=O)O)[C@@H](O)[C@@H]1O),O$(O[C@@H]1[C@@H](O)[C@H](O)O[C@H](C(=O)O)[C@H]1O),O$(O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1C(=O)O)])]§gte(O≥7)§max_dist=0
+generic§50§iodide§[#6$([#6][#53])]§gte(I≥1)§max_dist=1
+generic§51§ketone§[#6$([#6]C(=O)[#6])]§gte(O≥1)§
+generic§52§methacrylate§[CH2$(COC(=O)C(C)=[CH2])]§gte(O≥2)§max_dist=0
+generic§53§peroxydes§[#6X4$([#6][#8][#8])]§gte(O≥2)§
+generic§54§side-chain aromatics§[#6X4$([#6]a)]§§
+generic§55§sulfenic acid§[#6$([#6][#16X2][OH1,Oh1,O-])]§gte(S≥1, O≥1)§max_dist=0
+generic§56§sulfenyl halide§[#6$([#6][#16X2][F,Cl,Br,I])]§gte(S≥1)§max_dist=0
+generic§57§sulfinic acid§[#6$([#6][#16X3](=O)[O])]§gte(S≥1, O≥2)§max_dist=0
+generic§58§sulfinyl amido sulfonic acid§[C$(CS(=O)[CH2][CH2]C(=O)[NH]C([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]§gte(O≥5, S≥2, N≥1)§max_dist=0
+generic§59§sulfonamide§[CX4$([#6][#16]([#7])(=[#8])=[#8]),CX4$([#6][#7][#16](=[#8])=[#8])]§gte(S≥1, N≥1, O≥2)§max_dist=0
+generic§60§sulfonamidoethanol§[C$(CS(=O)(=O)NCC[OH1,Oh1,O-])]§gte(N≥1, O≥3, S≥1)§max_dist=0
+generic§61§sulfonic acid§[#6$([#6][#16](=O)(=O)O)]§gte(S≥1, O≥3)§max_dist=0
+generic§62§sulfonyl halide§[#6$([#6][#16](=O)(=O)[F,Cl,Br,I])]§gte(S≥1, O≥2)§max_dist=0
+generic§63§sulfonyl propanoic acid§[C$(CS(=O)(=O)[CH2][CH2]C(=O)[OH1,Oh1,O-])]§gte(O≥4, S≥1)§max_dist=0
+generic§64§sulfuric acid§[#6$([#6]O[#16](=O)(=O)O)]§gte(S≥1, O≥4)§max_dist=0
+generic§65§thia keto propanoic acid§[C$(CC(=O)SC(=O)C([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]§gte(O≥5, S≥1)§max_dist=0
+generic§66§thiocyanic acid§[CX4$(CSC#N)]§gte(N≥1, S≥1)§max_dist=0
+generic§67§phosphinic acid§[#6$([#6][#15](=[#8])([#8])[!$([#8])])]§gte(P≥1, O≥2)§max_dist=0
+generic§68§phosphonic acid§[#6$([#6][#15]([#8])(=[#8])[#8])]§gte(P≥1, O≥3)§max_dist=0
+generic§69§amide§[$([#6]([#7H0,#7H1,#7h1,#7H2])=[#8]),$([#6]~[#7H0,#7H1,#7h1,#7H2][#6X3]=[#8])]§gte(N≥1, O≥1)§max_dist=1
+generic§70§amine§[#6$([#6!$([#6]=O)][N!$(*[#6]=O)])]§gte(N≥1)§
+generic§71§heterocyclic azine§[$(*[#7r6,$([#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6]),$([#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#6r6,#8r6,#16r6]:[#7r6])])]§gte(N≥1)§max_dist=1
+generic§72§heterocyclic azole§[$(*[#7r5,$([#6r5,#8r5,#16r5]:[#7r5]),$([#6r5,#8r5,#16r5]:[#6r5,#8r5,#16r5]:[#7r5])])]§gte(N≥1)§max_dist=1
+generic§73§betaine§[CX4$([#6]N(C)(C)CC(=O)[OH1,Oh1,O-])]§gte(N≥1, O≥2)§max_dist=0
+generic§74§glycine§[C$(C[NH2+,N$([N+]([CH3])[CH3])]CC(=O)[OH1,Oh1,O-])]§gte(N≥1, O≥2)§max_dist=0
+generic§75§trichlorosilane§[C$(C[Si](Cl)(Cl)Cl)]§gte(Si≥1, Cl≥3)§max_dist=0
+generic§76§silane§[C$(C[SiH3])]§gte(Si≥1, H≥3)§max_dist=0
+telomer§77§telomer acrylate§[C$(C[CH2]OC(=O)[CH1]=[CH2])]§gte(O≥2)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§78§telomer alcohol§[C$(C[CH2][OH1,Oh1,O-])]§gte(O≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§79§telomer aldehyde§[C$(C[CH2][CH1](=O))]§gte(O≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§80§telomer alkene§[C$([CH1$(C(=C)C),CH2]=[CH1])]§§saturation=per; max_dist=16; linker=[CH2X4,CX3H1!$(CO)]
+telomer§81§telomer carboxylic acids§[C$(C[CH2]C(=O)[OH1,Oh1,O-])]§gte(O≥2)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§82§telomer ester§[C$(C[CH2]OC(=O)[CH2]),C$(C[CH2]C(=O)O[CH2X4])]§gte(O≥2)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§83§telomer ether carboxylic acids§[$([CH2X4,OH0X2][CH2]C(=O)[OH1,Oh1,O-])] | [O$(O([C])[C])]§gte(O≥3)§saturation=per; max_dist=16; linker=[CH2X4,OH0X2]
+telomer§84§telomer ethoxylates§[C$(C[CH2][OH1,Oh1,O-])] | [O$(O(C)C)]§gte(O≥1)§saturation=per; max_dist=16; linker=[CH2X4,O$(O([CH2])[CH2])]
+telomer§85§telomer glucuronic acid§[C$(C[CH2][O$(O[C@@H]1O[C@H](C(=O)O)[C@@H](O)[C@H](O)[C@H]1O),O$(O[C@H]1[C@H](O)O[C@H](C(=O)O)[C@@H](O)[C@@H]1O),O$(O[C@@H]1[C@@H](O)[C@H](O)O[C@H](C(=O)O)[C@H]1O),O$(O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1C(=O)O)])]§gte(O≥7)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§86§telomer iodide§[C$(C[CH2]I)]§gte(I≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§87§telomer methacrylate§[C$(C[CH2]OC(=O)C(C)=[CH2])]§gte(O≥2, H≥2)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§88§telomer methyl§[C$(C[CH2][CH3,CH2!$(C([CH2])[CH2])])]§§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§89§telomer unsaturated carboxylic acids§C(=O)[OH1,Oh1,O-] | [CH1]=[C]§gte(O≥2)§saturation=per; max_dist=16; linker=[CH2X4,CX3H1]
+telomer§90§telomer unsaturated halogen§[C$([CH2,CH1$(C=C)](~[CH2])[sI,F,Cl,Br])]§§saturation=per; max_dist=16; linker=[CH2X4,CX3H1!$(CO)]
+telomer§91§telomer unsaturated iodide§[C$(C~[CH2,CH1$(C=C)]I)]§gte(I≥1)§saturation=per; max_dist=16; linker=[CH2X4,CX3H1!$(CO)]
+telomer§92§telomer acetylhydroxyethanethioate§[C$(C[CH2]C(=O)SC([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]§gte(O≥4, S≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§93§telomer acetylsulfanylhydroxypropanoic acid§[C$(C[CH2]C(=O)SCC([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]§gte(O≥4, S≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§94§telomer formaldehyde bisulfite§[C$(C[CH2]C([OH1,Oh1,O-])S(=O)(=O)[OH1,Oh1,O-])]§gte(O≥4, S≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§95§telomer sulfenic acid§[C$(C[CH2][#16][OH1,Oh1,O-])]§gte(S≥1, O≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§96§telomer sulfure§[C$(C[CH2][S!$(S(=O))!$(SO)])]§gte(S≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§97§telomer sulfinic acid§[C$(C[CH2][#16](=O)[OH1,Oh1,O-])]§gte(S≥1, O≥2)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§98§telomer sulfinyl amido sulfonic acid§[C$(C[CH2]S(=O)[CH2][CH2]C(=O)[NH]C([CH3])([CH3])[CH2]S(=O)(=O)[OH1,Oh1,O-])]§gte(O≥5, S≥2, N≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§99§telomer sulfinyl§[C$(C[CH2]S(=O)[#6!$(C~O)])]§gte(O≥1, S≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§100§telomer sulfonamide§[C$(C[CH2][#16]([#7])(=[#8])=[#8]),C$(C[CH2][#7][#16](=[#8])=[#8])]§gte(S≥1, N≥1, O≥2)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§101§telomer sulfonamidoethanol§[C$(C[CH2]S(=O)(=O)NCC[OH1,Oh1,O-])]§gte(N≥1, O≥3, S≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§102§telomer sulfone§[C$(C[CH2][SX4](=O)(=O))]§gte(O≥2, S≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§103§telomer sulfonic acid§[C$(C[CH2][#16](=O)(=O)[OH1,Oh1,O-])]§gte(S≥1, O≥3)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§104§telomer sulfonyl propanoic acid§[C$(C[CH2]S(=O)(=O)[CH2][CH2]C(=O)[OH1,Oh1,O-])]§gte(O≥4, S≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§105§telomer sulfuric acid§[C$(C[CH2]O[#16](=O)(=O)[OX2])]§gte(S≥1, O≥4)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§106§telomer thia keto propanoic acid§[C$(C[CH2]C(=O)SC(=O)C([OH1,Oh1,O-])C(=O)[OH1,Oh1,O-])]§gte(O≥2)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§107§telomer thiocyanic acid§[C$(C[CH2]SC#N)]§gte(N≥1, S≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§108§telomer monophosphate§[C$(C[CH2]OP(=O)([O!$(O[CH2])])[OH1,Oh1,O-])]§gte(O≥4)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§109§telomer diphosphate§[C$(C[CH2]OP(=O)(O)O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]§gte(O≥4)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§110§telomer triphosphate§[C$(C[CH2]OP(=O)(O[CH2$(C[CH2,CX4$(C(F)(F)C)])])O[CH2$(C[CH2,CX4$(C(F)(F)C)])])]§gte(O≥4)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§111§telomer trimethylamine§[C$(C[CH2]N([CH3])([CH3])C)]§gte(N≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§112§telomer amino propanoic acid§[C$(C[CH2]N([CH2$(C[CH2,C$(C(F)F)])])[CH2][CH2]C(=O)[OH1,Oh1,O-])]§gte(O≥2, N≥1)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§113§telomer amino ethyl trimethyl ammonium§[C$(C[CH2][CH2][NH,Nh,N-][CH2][CH2][N+]([CH3])([CH3])[CH3])]§gte(N≥2)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§114§telomer betaine§[C$(C[CH2]N(C)(C)CC(=O)[OH1,Oh1,O-])]§gte(N≥1, O≥2)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§115§telomer glycine§[C$(C[CH2][NH2+,N$([N+]([CH3])[CH3])]CC(=O)[OH1,Oh1,O-])]§gte(N≥1, O≥2)§saturation=per; max_dist=16; linker=[CH2X4,CH1X4$(C(F))]
+telomer§116§telomer trichlorosilane§[C$(C[CH2][Si](Cl)(Cl)Cl)]§gte(Si≥1, Cl≥3)§saturation=per; max_dist=6; linker=[CH2X4]
+telomer§117§telomer silane§[C$(C[SiH3])]§gte(Si≥1, H≥3)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§118§telomer silyl§[C$(C[CH2][Si](OC)(OC)OC)]§gte(Si≥1, O≥3)§saturation=per; max_dist=16; linker=[CH2X4]
+telomer§119§telomers§§§saturation=per

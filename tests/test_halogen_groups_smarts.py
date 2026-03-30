@@ -83,7 +83,7 @@ def all_definitions(definitions_file):
 
 
 @pytest.mark.groups
-@pytest.mark.parametrize("group_id", range(1, 116))  # Test groups 1-113
+@pytest.mark.parametrize("group_id", range(1, 120))  # Test groups 1-119
 def test_individual_group(all_groups, group_id):
     """Test individual Halogen group by ID."""
     # Find the group

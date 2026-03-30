@@ -20,7 +20,7 @@ from itertools import groupby
 
 np.random.seed(2025)  # For reproducibility
 
-def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False):
+def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False, branching_range = None):
     """Generate a random carbon chain with n carbons and optional unsaturation.
 
     Creates molecular backbones by randomly connecting carbon atoms with
@@ -36,7 +36,8 @@ def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False):
         If True, allows C=C double bonds (50% probability per bond)
     alkyne : bool, default=False
         If True, allows C≡C triple bonds (50% probability per bond if no double bond)
-
+    branching_range : tuple of float, optional
+        If specified, the allowed range for the branching index of the generated molecule (1.0 = fully linear). After generating a molecule with n carbons, the branching index is calculated and if it falls outside the range, additional carbon atoms are added until the branching index is within the range or a maximum number of attempts is reached.
     Returns
     -------
     rdkit.Chem.Mol
@@ -84,8 +85,35 @@ def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False):
         rwm.AddBond(i, j, bondtype)
         Chem.SanitizeMol(rwm)
     m2 = rwm.GetMol()
+    if branching_range is not None:
+        branching_index = get_branching_index(m2)
+        attempts = 0
+        while (branching_index < branching_range[0] or branching_index > branching_range[1]) and attempts < n*5:
+            i = rwm.AddAtom(Chem.Atom(6))
+            j = None
+            while j is None:
+                j = np.random.randint(0, len(rwm.GetAtoms())-1)
+                if j == i:
+                    j = None
+                elif rwm.GetAtoms()[j].GetValence(which=Chem.rdchem.ValenceType.EXPLICIT) == 4:
+                    j = None
+            rwm.AddBond(i, j, Chem.BondType.SINGLE)
+            Chem.SanitizeMol(rwm)
+            m2 = rwm.GetMol()
+            branching_index = get_branching_index(m2)
+            attempts += 1
     Chem.SanitizeMol(m2)
     return m2
+
+def get_branching_index(mol):
+    from .core import mol_to_nx
+    G = mol_to_nx(mol)
+    # Count branch points (degree > 2)
+    branch_points = sum(1 for node in G.nodes() if G.degree(node) > 2)
+    # Normalize by component size
+    branching_index = 1.0 - (branch_points / max(1, len(G.nodes()) - 2))  # -2 to account for endpoints
+    branching_index = max(0.0, min(1.0, branching_index))  # Clamp to [0, 1]
+    return branching_index
 
 def get_attachment(mol, m, atom_symbols = ['C'], neighbors_symbols = {'C':['F','H']}):
     """Find attachment points in a molecule for adding functional groups.

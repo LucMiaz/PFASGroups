@@ -407,22 +407,8 @@ class ComponentsSolver:
 
         return augmented
 
-    def _kirchhoff_index(self, subG, uniform: bool = False) -> float:
-        """Kirchhoff (effective graph resistance) index via Laplacian pseudoinverse.
-
-        Parameters
-        ----------
-        subG : networkx.Graph
-            Subgraph to operate on (original component or 1-hop expanded).
-        uniform : bool
-            True  → all edge conductances = 1 (topological / unweighted).
-            False → BDE-calibrated conductances (bond-strength weighted).
-
-        Returns
-        -------
-        float
-            Sum of all pairwise effective resistance distances.
-        """
+    def _kirchhoff_index_pinv(self, subG, uniform: bool = False) -> float:
+        """Kirchhoff index via Laplacian pseudoinverse. Fast for n < 30."""
         nodes = list(subG.nodes())
         n = len(nodes)
         idx = {node: i for i, node in enumerate(nodes)}
@@ -449,6 +435,52 @@ class ComponentsSolver:
             for j in range(i + 1, n):
                 kirchhoff += max(diag[i] + diag[j] - 2.0 * Lp[i, j], 0.0)
         return kirchhoff
+
+    def _kirchhoff_index(self, subG, uniform: bool = False) -> float:
+        """Kirchhoff (effective graph resistance) index via Laplacian eigenspectrum.
+
+        Equivalent to nx.effective_graph_resistance (Theorem 2.2, Ellens et al.
+        2011) but without the internal G.copy(). Differences from nx:
+          - Uses np.linalg.eigvalsh (symmetric-aware, returns sorted reals)
+            instead of np.linalg.eigvals; results are identical for symmetric L.
+          - Builds the weighted Laplacian directly from edge data rather than
+            relying on graph weight attributes, enabling the BDE-weighted variant.
+
+        Parameters
+        ----------
+        subG : networkx.Graph
+            Subgraph to operate on (original component or 1-hop expanded).
+        uniform : bool
+            True  → all edge conductances = 1 (topological / unweighted).
+            False → BDE-calibrated conductances (bond-strength weighted).
+
+        Returns
+        -------
+        float
+            Sum of all pairwise effective resistance distances.
+        """
+        n = subG.number_of_nodes()
+        nodes = list(subG.nodes())
+        idx = {node: i for i, node in enumerate(nodes)}
+
+        L = np.zeros((n, n), dtype=float)
+        for u, v, data in subG.edges(data=True):
+            if uniform:
+                c = 1.0
+            else:
+                bond_order = data.get('order', 1.0)
+                z_u = subG.nodes[u].get('element', 6)
+                z_v = subG.nodes[v].get('element', 6)
+                c = self.bde_scheme.conductance(z_u, z_v, bond_order)
+            i, j = idx[u], idx[v]
+            L[i, i] += c
+            L[j, j] += c
+            L[i, j] -= c
+            L[j, i] -= c
+
+        # Eigenvalues only; skip the zero eigenvalue (index 0)
+        mu = np.sort(np.linalg.eigvalsh(L))
+        return float(np.sum(1.0 / mu[1:]) * n)
 
     def compute_component_metrics(self, component):
         """Compute comprehensive graph metrics for a component.
@@ -534,13 +566,14 @@ class ComponentsSolver:
             periphery = nx.periphery(subG)
 
             # Barycenter: nodes that minimize total distance to all other nodes
-            total_distances = {}
-            for node in subG.nodes():
-                lengths = nx.single_source_shortest_path_length(subG, node)
-                total_distances[node] = sum(lengths.values())
+            # total_distances = {}
+            # for node in subG.nodes():
+            #     lengths = nx.single_source_shortest_path_length(subG, node)
+            #     total_distances[node] = sum(lengths.values())
 
-            min_total_dist = min(total_distances.values())
-            barycenter = [node for node, dist in total_distances.items() if dist == min_total_dist]
+            # min_total_dist = min(total_distances.values())
+            # barycenter = [node for node, dist in total_distances.items() if dist == min_total_dist]
+            barycenter = nx.barycenter(subG)
 
             # Effective graph resistance (Kirchhoff index) — two variants:
             #   uniform:  topological (edge weights = 1), original C-skeleton component
