@@ -205,8 +205,8 @@ All resistance values are available per-component in the parse results:
    print(comp['effective_graph_resistance'])
 
    # BDE-weighted resistance from functional group to structural landmarks
-   print(comp['min_resistance_dist_to_barycenter'])
-   print(comp['min_resistance_dist_to_center'])
+   print(comp['min_resistance_dist_to_barycentre'])
+   print(comp['min_resistance_dist_to_centre'])
    print(comp['max_resistance_dist_to_periphery'])
 
 To limit computation time on very large components:

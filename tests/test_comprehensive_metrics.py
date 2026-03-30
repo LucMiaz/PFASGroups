@@ -40,8 +40,8 @@ def test_comprehensive_metrics():
                 assert 'smarts_centrality' in comp_data
                 assert 'diameter' in comp_data
                 assert 'radius' in comp_data
-                assert 'barycenter' in comp_data
-                assert 'min_dist_to_center' in comp_data
+                assert 'barycentre' in comp_data
+                assert 'min_dist_to_centre' in comp_data
             if found_component:
                 break
         assert found_component, f"No components found for {case['name']}"

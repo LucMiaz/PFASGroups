@@ -35,11 +35,14 @@ from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 # Re-use ANSI helpers and grid utility from PFASEmbeddings
 from .PFASEmbeddings import _ansi, _ANSI_BOLD, _ANSI_HALOGEN, _grid_images
 
-Color = Tuple[float, float, float]
+Colour = Tuple[float, float, float]
+Color = Colour  # US alias
 
 # Colours for parent vs homologue panels
-_PARENT_COLOR: Color = (0.95, 0.50, 0.10)   # orange
-_HOMOLOGUE_COLOR: Color = (0.20, 0.60, 0.95) # blue
+_PARENT_COLOUR: Colour = (0.95, 0.50, 0.10)   # orange
+_PARENT_COLOR = _PARENT_COLOUR  # US alias
+_HOMOLOGUE_COLOUR: Colour = (0.20, 0.60, 0.95) # blue
+_HOMOLOGUE_COLOR = _HOMOLOGUE_COLOUR  # US alias
 
 
 # ---------------------------------------------------------------------------
@@ -214,7 +217,7 @@ class HomologueSeries(dict):
         subwidth: int = 300,
         subheight: int = 300,
         highlight_atoms: Optional[List[int]] = None,
-        highlight_color: Optional[Color] = None,
+        highlight_colour: Optional[Colour] = None,
     ) -> Image.Image:
         """Render *mol* as a PIL image using Cairo."""
         d2d = Draw.MolDraw2DCairo(subwidth, subheight)
@@ -226,8 +229,8 @@ class HomologueSeries(dict):
         dopts.minFontSize = 11
 
         hl_atoms = highlight_atoms or []
-        if hl_atoms and highlight_color:
-            atom_colors = {idx: highlight_color for idx in hl_atoms}
+        if hl_atoms and highlight_colour:
+            atom_colors = {idx: highlight_colour for idx in hl_atoms}
             d2d.DrawMolecule(
                 mol,
                 legend=legend,

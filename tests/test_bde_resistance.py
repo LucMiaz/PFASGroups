@@ -281,8 +281,8 @@ class TestSmartsResistanceMetrics:
             'diameter',
             'radius',
             'component_fraction',
-            'min_dist_to_barycenter',
-            'min_dist_to_center',
+            'min_dist_to_barycentre',
+            'min_dist_to_centre',
             'max_dist_to_periphery',
         ):
             assert key in comp, f'{key} missing from component metrics'

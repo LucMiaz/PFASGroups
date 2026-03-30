@@ -195,7 +195,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
         matched1_len = 0
         for fd,mol in zip(formulas,frags):
             # match = pfgroup_obj, match_count, component_sizes, matched_components
-            # matched_components = list(dicts) with entries: 'component','size','component_fraction','smarts_matches','smarts_extra_atoms','SMARTS','branching','smarts_centrality','diameter','radius','effective_graph_resistance','eccentricity_values','mean_eccentricity','median_eccentricity','center','periphery','barycenter','min_dist_to_barycenter','min_resistance_dist_to_barycenter','min_dist_to_center','min_resistance_dist_to_center','max_dist_to_periphery','max_resistance_dist_to_periphery'
+            # matched_components = list(dicts) with entries: 'component','size','component_fraction','smarts_matches','smarts_extra_atoms','SMARTS','branching','smarts_centrality','diameter','radius','effective_graph_resistance','eccentricity_values','mean_eccentricity','median_eccentricity','centre','periphery','barycentre','min_dist_to_barycentre','min_resistance_dist_to_barycentre','min_dist_to_centre','min_resistance_dist_to_centre','max_dist_to_periphery','max_resistance_dist_to_periphery'
             match = pf.find_components(mol, fd, fluorinated_components_dict, **kwargs)
             if match is not None and len(match)>0:
                 group_matches.extend(match)
@@ -840,12 +840,12 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 mean_effective_graph_resistance_BDE = _nanmean(egr_bde_vals)
 
                 # Distance metrics summaries
-                min_dists_bc = [c['min_dist_to_barycenter'] for c in matched_components if c['min_dist_to_barycenter'] < float('inf')]
-                min_dists_center = [c['min_dist_to_center'] for c in matched_components if c['min_dist_to_center'] < float('inf')]
+                min_dists_bc = [c['min_dist_to_barycentre'] for c in matched_components if c['min_dist_to_barycentre'] < float('inf')]
+                min_dists_center = [c['min_dist_to_centre'] for c in matched_components if c['min_dist_to_centre'] < float('inf')]
                 max_dists_periph = [c['max_dist_to_periphery'] for c in matched_components if c['max_dist_to_periphery'] > 0]
 
-                mean_dist_to_barycenter = sum(min_dists_bc)/len(min_dists_bc) if len(min_dists_bc) > 0 else 0
-                mean_dist_to_center = sum(min_dists_center)/len(min_dists_center) if len(min_dists_center) > 0 else 0
+                mean_dist_to_barycentre = sum(min_dists_bc)/len(min_dists_bc) if len(min_dists_bc) > 0 else 0
+                mean_dist_to_centre = sum(min_dists_center)/len(min_dists_center) if len(min_dists_center) > 0 else 0
                 mean_dist_to_periphery = sum(max_dists_periph)/len(max_dists_periph) if len(max_dists_periph) > 0 else 0
 
                 summary_metrics = {
@@ -861,8 +861,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                     'mean_radius': mean_radius,
                     'mean_effective_graph_resistance': mean_resistance,
                     'mean_effective_graph_resistance_BDE': mean_effective_graph_resistance_BDE,
-                    'mean_dist_to_barycenter': mean_dist_to_barycenter,
-                    'mean_dist_to_center': mean_dist_to_center,
+                    'mean_dist_to_barycentre': mean_dist_to_barycentre,
+                    'mean_dist_to_centre': mean_dist_to_centre,
                     'mean_dist_to_periphery': mean_dist_to_periphery,
                 }
             else:
@@ -879,8 +879,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                     'mean_radius': float('nan'),
                     'mean_effective_graph_resistance': float('nan'),
                     'mean_effective_graph_resistance_BDE': float('nan'),
-                    'mean_dist_to_barycenter': 0,
-                    'mean_dist_to_center': 0,
+                    'mean_dist_to_barycentre': 0,
+                    'mean_dist_to_centre': 0,
                     'mean_dist_to_periphery': 0,
                 }
 

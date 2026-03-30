@@ -160,7 +160,8 @@ def _select_groups(group_selection, selected_group_ids, pfas_groups):
         f"Choose from: 'all', 'oecd', 'generic', 'telomers', 'generic+telomers'"
     )
 
-Color = Tuple[float, float, float]
+Colour = Tuple[float, float, float]
+Color = Colour  # US alias
 
 # ---------------------------------------------------------------------------
 # ANSI terminal styling helpers
@@ -194,13 +195,15 @@ def _ansi(text: str, *codes: str) -> str:
 # ---------------------------------------------------------------------------
 
 # Highlight colours by halogen element — mapped to the project colour palette
-_HALOGEN_COLORS: Dict[str, Color] = {
+_HALOGEN_COLOURS: Dict[str, Colour] = {
     "F":  _hex_to_rgb_float(_C1),   # blue  (most common PFAS element)
     "Cl": _hex_to_rgb_float(_C0),   # orange
     "Br": _hex_to_rgb_float(_C2),   # magenta
     "I":  _hex_to_rgb_float(_C3),   # dark purple
 }
-_HALOGEN_COLOR_DEFAULT: Color = (0.75, 0.75, 0.75)  # grey for unknown
+_HALOGEN_COLORS = _HALOGEN_COLOURS  # US alias
+_HALOGEN_COLOUR_DEFAULT: Colour = (0.75, 0.75, 0.75)  # grey for unknown
+_HALOGEN_COLOR_DEFAULT = _HALOGEN_COLOUR_DEFAULT  # US alias
 
 # Tint modifiers for form (shift hue slightly)
 _FORM_TINT: Dict[str, Tuple[float, float, float]] = {
@@ -214,19 +217,20 @@ _SAT_BRIGHTNESS: Dict[str, float] = {
     "poly": 0.65,  # partial saturation → dimmer
 }
 
-def _component_color(halogen: Optional[str], form: Optional[str], saturation: Optional[str]) -> Color:
+def _component_colour(halogen: Optional[str], form: Optional[str], saturation: Optional[str]) -> Colour:
     """Return an RGB highlight colour encoding halogen, form and saturation."""
-    base = _HALOGEN_COLORS.get(halogen or "", _HALOGEN_COLOR_DEFAULT)
+    base = _HALOGEN_COLOURS.get(halogen or "", _HALOGEN_COLOUR_DEFAULT)
     tint = _FORM_TINT.get(form or "", (0.0, 0.0, 0.0))
     brightness = _SAT_BRIGHTNESS.get(saturation or "", 0.85)
     r = min(1.0, max(0.0, (base[0] + tint[0]) * brightness))
     g = min(1.0, max(0.0, (base[1] + tint[1]) * brightness))
     b = min(1.0, max(0.0, (base[2] + tint[2]) * brightness))
     return (r, g, b)
+_component_color = _component_colour  # US alias
 
 
 # Simple color palette to distinguish PFAS groups in highlight plots (legacy fallback)
-_GROUP_COLORS: List[Color] = [
+_GROUP_COLOURS: List[Colour] = [
     _hex_to_rgb_float(_C0),  # orange
     _hex_to_rgb_float(_C1),  # blue
     _hex_to_rgb_float(_C2),  # magenta
@@ -234,6 +238,7 @@ _GROUP_COLORS: List[Color] = [
     (0.00, 0.70, 0.70),      # teal (extra)
     (0.60, 0.60, 0.60),      # grey (extra)
 ]
+_GROUP_COLORS = _GROUP_COLOURS  # US alias
 
 # ---------------------------------------------------------------------------
 # Component-SMARTS metadata cache
@@ -561,9 +566,22 @@ class ComponentView:
         return self.data.get("mean_eccentricity")
 
     @property
-    def min_dist_to_center(self) -> Optional[int]:
-        """Minimum graph distance from any SMARTS match atom to the component center."""
-        return self.data.get("min_dist_to_center")
+    def min_dist_to_centre(self) -> Optional[int]:
+        """Minimum graph distance from any SMARTS match atom to the component centre."""
+        return self.data.get("min_dist_to_centre")
+
+    @property
+    def min_dist_to_center(self) -> Optional[int]:  # US alias
+        return self.min_dist_to_centre
+
+    @property
+    def min_dist_to_barycentre(self) -> Optional[int]:
+        """Minimum graph distance from any SMARTS match atom to the component barycentre."""
+        return self.data.get("min_dist_to_barycentre")
+
+    @property
+    def min_dist_to_barycenter(self) -> Optional[int]:  # US alias
+        return self.min_dist_to_barycentre
 
     @property
     def max_dist_to_periphery(self) -> Optional[int]:
@@ -1066,8 +1084,8 @@ class PFASEmbedding(dict):
                         'entries': [],
                         'comp_metrics': (size_str, br_str, ecc_str, diam_str, rad_str, egr_str, frc_str),
                     }
-                # FG-specific entry: group name, SMARTS type, dist-to-center, dist-to-periphery
-                dct_v = comp.min_dist_to_center
+                # FG-specific entry: group name, SMARTS type, dist-to-centre, dist-to-periphery
+                dct_v = comp.min_dist_to_centre
                 dpr_v = comp.max_dist_to_periphery
                 dct_str = str(dct_v) if dct_v is not None else "\u2014"
                 dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
@@ -1187,7 +1205,7 @@ class PFASEmbedding(dict):
                         'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str, rad_str, egr_str, frc_str),
                     }
                 # FG-specific entry
-                dct_v = comp.min_dist_to_center
+                dct_v = comp.min_dist_to_centre
                 dpr_v = comp.max_dist_to_periphery
                 dct_str = str(dct_v) if dct_v is not None else "\u2014"
                 dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
@@ -1843,7 +1861,7 @@ class PFASEmbeddingSet(list):
                             'entries': [],
                             'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str, rad_str, egr_str, frc_str),
                         }
-                    dct_v = comp.min_dist_to_center
+                    dct_v = comp.min_dist_to_centre
                     dpr_v = comp.max_dist_to_periphery
                     dct_str = str(dct_v) if dct_v is not None else "\u2014"
                     dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"
@@ -2071,7 +2089,7 @@ class PFASEmbeddingSet(list):
                             'entries': [],
                             'comp_metrics': (str(comp.size), br_str, ecc_str, diam_str, rad_str, egr_str, frc_str),
                         }
-                    dct_v = comp.min_dist_to_center
+                    dct_v = comp.min_dist_to_centre
                     dpr_v = comp.max_dist_to_periphery
                     dct_str = str(dct_v) if dct_v is not None else "\u2014"
                     dpr_str = str(dpr_v) if dpr_v is not None else "\u2014"

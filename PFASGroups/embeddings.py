@@ -54,11 +54,11 @@ _GRAPH_METRICS = {
     'effective_graph_resistance',      # uniform weights, original C-skeleton
     'effective_graph_resistance_BDE',  # BDE weights, 1-hop expanded component
     'component_fraction',
-    'min_dist_to_center', 'max_dist_to_periphery',
-    'min_dist_to_barycenter',
+    'min_dist_to_centre', 'max_dist_to_periphery',
+    'min_dist_to_barycentre',
     'size',
-    'min_resistance_dist_to_center', 'max_resistance_dist_to_periphery',
-    'min_resistance_dist_to_barycenter',
+    'min_resistance_dist_to_centre', 'max_resistance_dist_to_periphery',
+    'min_resistance_dist_to_barycentre',
     'n_spacer',    # telomer CH₂ linker chain length (0 for non-telomers)
     'ring_size',   # smallest ring overlapping the component (0 for acyclic groups)
 }

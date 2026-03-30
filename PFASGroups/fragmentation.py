@@ -476,9 +476,9 @@ def generate_systematic_degradation_products(mol, componentSmartsName='Perfluoro
     return degradation_products
 
 
-def analyze_degradation_pathways(mol, componentSmartsName='Perfluoroalkyl', max_breaks=3):
+def analyse_degradation_pathways(mol, componentSmartsName='Perfluoroalkyl', max_breaks=3):
     """
-    Analyze possible degradation pathways and return detailed information about fragments.
+    Analyse possible degradation pathways and return detailed information about fragments.
 
     Args:
         mol: RDKit molecule object
@@ -543,3 +543,6 @@ def analyze_degradation_pathways(mol, componentSmartsName='Perfluoroalkyl', max_
     analysis['products'].sort(key=lambda x: (x['n_breaks'], x['molecular_weight']))
 
     return analysis
+
+
+analyze_degradation_pathways = analyse_degradation_pathways  # US alias

@@ -497,9 +497,9 @@ class ComponentsSolver:
             - diameter: maximum eccentricity
             - radius: minimum eccentricity
             - eccentricity_values: dict mapping node to its eccentricity
-            - center: nodes with minimum eccentricity
+            - centre: nodes with minimum eccentricity
             - periphery: nodes with maximum eccentricity
-            - barycenter: nodes minimizing sum of distances
+            - barycentre: nodes minimizing sum of distances
             - effective_graph_resistance: BDE-weighted Kirchhoff index
             - _rdist: internal BDE-weighted pairwise resistance distance dict
         """
@@ -510,9 +510,9 @@ class ComponentsSolver:
                 'diameter': float('nan'),
                 'radius': float('nan'),
                 'eccentricity_values': {},
-                'center': [],
+                'centre': [],
                 'periphery': [],
-                'barycenter': [],
+                'barycentre': [],
                 'effective_graph_resistance': float('nan'),
                 'effective_graph_resistance_BDE': float('nan'),
             }
@@ -526,9 +526,9 @@ class ComponentsSolver:
                 'diameter': 0,
                 'radius': 0,
                 'eccentricity_values': {list(component)[0]: 0} if len(component) == 1 else {},
-                'center': list(component),
+                'centre': list(component),
                 'periphery': list(component),
-                'barycenter': list(component),
+                'barycentre': list(component),
                 'effective_graph_resistance': 0.0,
                 'effective_graph_resistance_BDE': 0.0,
             }
@@ -544,9 +544,9 @@ class ComponentsSolver:
                 'diameter': float('inf'),
                 'radius': 0,
                 'eccentricity_values': {},
-                'center': [],
+                'centre': [],
                 'periphery': [],
-                'barycenter': [],
+                'barycentre': [],
                 'effective_graph_resistance': float('inf'),
                 'effective_graph_resistance_BDE': float('inf'),
             }
@@ -561,19 +561,19 @@ class ComponentsSolver:
             diameter = nx.diameter(subG)
             radius = nx.radius(subG)
 
-            # Center and periphery
-            center = nx.center(subG)
+            # Centre and periphery
+            centre = nx.center(subG)
             periphery = nx.periphery(subG)
 
-            # Barycenter: nodes that minimize total distance to all other nodes
+            # Barycentre: nodes that minimize total distance to all other nodes
             # total_distances = {}
             # for node in subG.nodes():
             #     lengths = nx.single_source_shortest_path_length(subG, node)
             #     total_distances[node] = sum(lengths.values())
 
             # min_total_dist = min(total_distances.values())
-            # barycenter = [node for node, dist in total_distances.items() if dist == min_total_dist]
-            barycenter = nx.barycenter(subG)
+            # barycentre = [node for node, dist in total_distances.items() if dist == min_total_dist]
+            barycentre = nx.barycenter(subG)
 
             # Effective graph resistance (Kirchhoff index) — two variants:
             #   uniform:  topological (edge weights = 1), original C-skeleton component
@@ -604,9 +604,9 @@ class ComponentsSolver:
                 'diameter': diameter,
                 'radius': radius,
                 'eccentricity_values': eccentricity_values,
-                'center': center,
+                'centre': centre,
                 'periphery': periphery,
-                'barycenter': barycenter,
+                'barycentre': barycentre,
                 'effective_graph_resistance': effective_graph_resistance,
                 'effective_graph_resistance_BDE': effective_graph_resistance_BDE,
             }
@@ -617,9 +617,9 @@ class ComponentsSolver:
                 'diameter': float('nan'),
                 'radius': float('nan'),
                 'eccentricity_values': {},
-                'center': [],
+                'centre': [],
                 'periphery': [],
-                'barycenter': [],
+                'barycentre': [],
                 'effective_graph_resistance': float('nan'),
                 'effective_graph_resistance_BDE': float('nan'),
             }
@@ -650,15 +650,15 @@ class ComponentsSolver:
 
         if len(smarts_in_comp) == 0 or len(component) <= 1:
             return {
-                'min_dist_to_barycenter': 0,
-                'min_dist_to_center': 0,
+                'min_dist_to_barycentre': 0,
+                'min_dist_to_centre': 0,
                 'max_dist_to_periphery': 0,
             }
 
         subG = self.G.subgraph(component)
 
-        min_dist_to_barycenter = float('inf')
-        min_dist_to_center = float('inf')
+        min_dist_to_barycentre = float('inf')
+        min_dist_to_centre = float('inf')
         max_dist_to_periphery = 0
 
         try:
@@ -666,17 +666,17 @@ class ComponentsSolver:
                 if smarts_node not in subG:
                     continue
 
-                for bc_node in comp_metrics['barycenter']:
+                for bc_node in comp_metrics['barycentre']:
                     try:
                         dist = nx.shortest_path_length(subG, smarts_node, bc_node)
-                        min_dist_to_barycenter = min(min_dist_to_barycenter, dist)
+                        min_dist_to_barycentre = min(min_dist_to_barycentre, dist)
                     except Exception:
                         pass
 
-                for center_node in comp_metrics['center']:
+                for centre_node in comp_metrics['centre']:
                     try:
-                        dist = nx.shortest_path_length(subG, smarts_node, center_node)
-                        min_dist_to_center = min(min_dist_to_center, dist)
+                        dist = nx.shortest_path_length(subG, smarts_node, centre_node)
+                        min_dist_to_centre = min(min_dist_to_centre, dist)
                     except Exception:
                         pass
 
@@ -687,19 +687,19 @@ class ComponentsSolver:
                     except Exception:
                         pass
 
-            if min_dist_to_barycenter == float('inf'):
-                min_dist_to_barycenter = 0
-            if min_dist_to_center == float('inf'):
-                min_dist_to_center = 0
+            if min_dist_to_barycentre == float('inf'):
+                min_dist_to_barycentre = 0
+            if min_dist_to_centre == float('inf'):
+                min_dist_to_centre = 0
 
         except Exception:
-            min_dist_to_barycenter = 0
-            min_dist_to_center = 0
+            min_dist_to_barycentre = 0
+            min_dist_to_centre = 0
             max_dist_to_periphery = 0
 
         return {
-            'min_dist_to_barycenter': min_dist_to_barycenter,
-            'min_dist_to_center': min_dist_to_center,
+            'min_dist_to_barycentre': min_dist_to_barycentre,
+            'min_dist_to_centre': min_dist_to_centre,
             'max_dist_to_periphery': max_dist_to_periphery,
         }
 
@@ -848,12 +848,12 @@ class ComponentsSolver:
             'eccentricity_values': comp_metrics.get('eccentricity_values', {}),
             'mean_eccentricity': mean_eccentricity,
             'median_eccentricity': median_eccentricity,
-            'center': comp_metrics.get('center', []),
+            'centre': comp_metrics.get('centre', []),
             'periphery': comp_metrics.get('periphery', []),
-            'barycenter': comp_metrics.get('barycenter', []),
+            'barycentre': comp_metrics.get('barycentre', []),
             # Distance metrics (with defaults)
-            'min_dist_to_barycenter': 0,
-            'min_dist_to_center': 0,
+            'min_dist_to_barycentre': 0,
+            'min_dist_to_centre': 0,
             'max_dist_to_periphery': 0,
             # Halogen density metrics — component-level (F, Cl, Br, I)
             **_comp_hal_vals,
@@ -871,8 +871,8 @@ class ComponentsSolver:
         # Override distance metrics with SMARTS-specific values if available
         if smarts_metrics is not None:
             result.update({
-                'min_dist_to_barycenter': smarts_metrics.get('min_dist_to_barycenter', 0),
-                'min_dist_to_center': smarts_metrics.get('min_dist_to_center', 0),
+                'min_dist_to_barycentre': smarts_metrics.get('min_dist_to_barycentre', 0),
+                'min_dist_to_centre': smarts_metrics.get('min_dist_to_centre', 0),
                 'max_dist_to_periphery': smarts_metrics.get('max_dist_to_periphery', 0),
             })
 

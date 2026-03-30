@@ -32,8 +32,8 @@ def test_parse_mols_output_structure():
                 'mean_diameter',
                 'mean_radius',
                 'mean_effective_graph_resistance',
-                'mean_dist_to_barycenter',
-                'mean_dist_to_center',
+                'mean_dist_to_barycentre',
+                'mean_dist_to_centre',
                 'mean_dist_to_periphery'
             ]
             
@@ -49,8 +49,8 @@ def test_parse_mols_output_structure():
                     'component', 'size', 'SMARTS',
                     'eccentricity_values', 'smarts_centrality',
                     'diameter', 'radius', 'effective_graph_resistance',
-                    'center', 'periphery', 'barycenter',
-                    'min_dist_to_barycenter', 'min_dist_to_center',
+                    'centre', 'periphery', 'barycentre',
+                    'min_dist_to_barycentre', 'min_dist_to_centre',
                     'max_dist_to_periphery'
                 ]
                 
@@ -80,8 +80,8 @@ def simulate_database_save():
             'mean_diameter': match.get('mean_diameter'),
             'mean_radius': match.get('mean_radius'),
             'mean_effective_graph_resistance': match.get('mean_effective_graph_resistance'),
-            'mean_dist_to_barycenter': match.get('mean_dist_to_barycenter'),
-            'mean_dist_to_center': match.get('mean_dist_to_center'),
+            'mean_dist_to_barycentre': match.get('mean_dist_to_barycentre'),
+            'mean_dist_to_centre': match.get('mean_dist_to_centre'),
             'mean_dist_to_periphery': match.get('mean_dist_to_periphery')
         }
         for key in summary_data:
@@ -99,11 +99,11 @@ def simulate_database_save():
                 'diameter': comp.get('diameter'),
                 'radius': comp.get('radius'),
                 'effective_graph_resistance': comp.get('effective_graph_resistance'),
-                'center': comp.get('center', []),
+                'centre': comp.get('centre', []),
                 'periphery': comp.get('periphery', []),
-                'barycenter': comp.get('barycenter', []),
-                'min_dist_to_barycenter': comp.get('min_dist_to_barycenter', 0),
-                'min_dist_to_center': comp.get('min_dist_to_center', 0),
+                'barycentre': comp.get('barycentre', []),
+                'min_dist_to_barycentre': comp.get('min_dist_to_barycentre', 0),
+                'min_dist_to_centre': comp.get('min_dist_to_centre', 0),
                 'max_dist_to_periphery': comp.get('max_dist_to_periphery', 0)
             }
             for key in component_data:
