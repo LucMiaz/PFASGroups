@@ -75,7 +75,7 @@ def generate_highly_branched_failing_cases(n, min_carbons=8, max_carbons=16, see
 
     PFGs = {x.id: x for x in get_compiled_PFASGroups()
             if x.test_dict.get('generate', {}).get('mode') == 'attach'
-            and x.id in range(29, 70)}
+            and x.id in [42, 61]}# keep the groups simple to be sure PFAS-Atlas should find them
 
     cases = []
     max_attempts = n * 40
@@ -133,14 +133,16 @@ def generate_highly_branched_failing_cases(n, min_carbons=8, max_carbons=16, see
 
 
 def generate_test_cases(n = 300, branching_range=None, min_carbons=5, max_carbons=15, seed=2025,
-                        n_highly_branched_failing=50):
+                        n_highly_branched_failing_proportion=0.25):
     """
     Generate test cases with varying branching indices for classification testing.
     """
     if branching_range is None:
         branching_range = (0.0, 0.4)  # Default range for branching index
     np.random.seed(seed)
-    PFGs = {x.id: x for x in get_compiled_PFASGroups() if x.test_dict.get('generate',{}).get('mode') == 'attach' and x.id in range(29,70)}
+    n_highly_branched_failing = int(n * n_highly_branched_failing_proportion)
+    n = n - n_highly_branched_failing  # Adjust n to account for highly branched failing cases
+    PFGs = {x.id: x for x in get_compiled_PFASGroups() if x.test_dict.get('generate',{}).get('mode') == 'attach' and x.id in [42, 61]}# keep the groups simple to be sure PFAS-Atlas should find them
     test_cases = []
     duplicated = 0
     while len(test_cases) < n and duplicated < n*2:
@@ -183,7 +185,7 @@ class TestBranching:
         group_ids = [g.get("id") for g in groups]
         assert tc['group_id'] in group_ids, f"Failed to classify {tc['smiles']} with branching index {tc['branching_index']:.2f} as group {tc['group_id']}"
     
-    def test_with_PFASGroups(self, smiles, include_PFAS_definitions=True,
+    def test_with_PFASGroups(self, test_case, include_PFAS_definitions=True,
                              limit_effective_graph_resistance=None,
                              compute_component_metrics=True):
         """Test molecule with PFASGroups detection
@@ -194,7 +196,8 @@ class TestBranching:
             limit_effective_graph_resistance: Limit or disable graph resistance computation (None=all, False/0=skip)
             compute_component_metrics: Whether to compute component graph metrics
         """
-        
+        smiles = test_case['smiles']
+        expected_group_id = test_case['group_id']
         start_time = time.perf_counter()
         PFASGroups_result = {
             'detected_groups': [],
@@ -258,15 +261,16 @@ class TestBranching:
                 
                 PFASGroups_result['detected_groups'] = group_ids
                 PFASGroups_result['detected_definitions'] = definition_ids
+                all_defs = len(PFASGroups_result['detected_definitions']) ==5
                 PFASGroups_result['matches'] = all_matches
-                PFASGroups_result['success'] = len(group_ids) > 0 or len(definition_ids) > 0
+                PFASGroups_result['success'] = expected_group_id in group_ids
                 
         except Exception as e:
             PFASGroups_result['error'] = str(e)
         finally:
             PFASGroups_result['execution_time'] = time.perf_counter() - start_time
         
-        return PFASGroups_result
+        return PFASGroups_result, all_defs
     
     def test_with_atlas(self, smiles):
         """Test molecule with PFAS-Atlas classification"""
@@ -291,10 +295,10 @@ class TestBranching:
             if predictions and len(predictions) >= 2:
                 atlas_result['first_class'] = predictions[0]
                 atlas_result['second_class'] = predictions[1]
-                atlas_result['success'] = True
+                atlas_result['success'] = predictions[0] not in  ['Other PFASs', "Unknown"]
             elif predictions and len(predictions) >= 1:
                 atlas_result['first_class'] = predictions[0]
-                atlas_result['success'] = True
+                atlas_result['success'] = predictions[0] not in  ['Other PFASs', "Unknown"]  # Consider it a success if it is classified as any PFAS class
                     
         except Exception as e:
             atlas_result['error'] = str(e)
@@ -305,8 +309,9 @@ class TestBranching:
     def run_tests(self):
         rdBase.DisableLog('rdApp.warning')  # Suppress RDKit warnings during tests
         for tc in self.test_cases:
-            pf_result = self.test_with_PFASGroups(tc['smiles'])
+            pf_result, all_defs = self.test_with_PFASGroups(tc)
             tc['PFASGroups_result'] = pf_result
+            tc['all_definitions_detected'] = all_defs
             if ATLAS_AVAILABLE:
                 atlas_result = self.test_with_atlas(tc['smiles'])
                 tc['PFASAtlas_result'] = atlas_result
@@ -348,6 +353,6 @@ class TestBranching:
 if __name__ == "__main__":
     seed = 2025
     tester = TestBranching(n=300, branching_range=(0.0, 0.6), min_carbons=5, max_carbons=15, seed=seed,
-                           n_highly_branched_failing=50)
+                           n_highly_branched_failing_proportion=0.25)
     tester.run_tests()
     tester.save(os.path.join(DATA_DIR, f"branching_test_results_{seed}.json"))

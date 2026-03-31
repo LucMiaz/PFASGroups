@@ -95,7 +95,11 @@ plt.rcParams.update(
 with open(DATA_DIR / "branching_test_results_2025.json") as fh:
     raw = json.load(fh)
 
-mols = [r for r in raw if "branching_index" in r]
+mols = []
+for _raw_i, _raw_r in enumerate(raw):
+    if "branching_index" in _raw_r:
+        _raw_r["_json_index"] = _raw_i
+        mols.append(_raw_r)
 bi   = np.array([m["branching_index"] for m in mols])
 print(f"Loaded {len(mols)} molecules  |  BI range [{bi.min():.4f}, {bi.max():.4f}]")
 
@@ -573,3 +577,284 @@ if len(pfas_mols) >= 3:
     plt.close(fig2)
 else:
     print("Not enough molecules with PFASGroups branching — skipping variant plot")
+
+# ── PFAS-Atlas failure examples ───────────────────────────────────────────────
+
+def _pfasatlas_success(mol_data: dict) -> bool:
+    """Return True when PFAS-Atlas reported success=True for this molecule."""
+    raw = mol_data.get("PFASAtlas_result")
+    if not raw:
+        return True   # missing data → don't count as failure
+    try:
+        result = ast.literal_eval(raw)
+        return bool(result.get("success", True))
+    except Exception:
+        return True
+
+
+# Molecules that have a branching_index AND where PFAS-Atlas failed
+fail_mask  = np.array([not _pfasatlas_success(m) for m in mols])
+fail_mols  = [m for m, f in zip(mols, fail_mask) if f]
+fail_bi    = bi[fail_mask]
+print(f"\nPFAS-Atlas failures: {len(fail_mols)} / {len(mols)}")
+
+if len(fail_mols) >= 3:
+    # Three palette entries: reuse the same 3 colours in a different order so
+    # the failure figure is visually distinct from the two figures above.
+    _FAIL_PALETTE = [
+        (TINTS["orange_red"][0], TINTS["orange_red"][3]),
+        (TINTS["magenta"][0],    TINTS["magenta"][3]),
+        (TINTS["dark_purple"][0], TINTS["dark_purple"][3]),
+    ]
+    _FAIL_PCTS   = [10, 50, 90]
+    _FAIL_LABELS = ["High branching", "Median branching", "Low branching"]
+    _FAIL_KEYS   = ["high", "median", "low"]
+
+    _fail_used: set[int] = set()
+    fail_examples: list[dict] = []
+    for _p, _label, _key, (_main_c, _fill_c) in zip(
+        _FAIL_PCTS, _FAIL_LABELS, _FAIL_KEYS, _FAIL_PALETTE
+    ):
+        _idx = _pick_in_window(fail_bi, fail_mols, _p, window=10, used=_fail_used)
+        _fail_used.add(_idx)
+        fail_examples.append(
+            {
+                "key":      _key,
+                "label":    _label,
+                "bi":       float(fail_bi[_idx]),
+                "mol_data": fail_mols[_idx],
+                "color":    _main_c,
+                "fill":     _fill_c,
+            }
+        )
+
+    # ── Save individual molecule SVGs for each failure example ────────────────
+    print("\nSaving PFAS-Atlas failure molecule SVGs …")
+    for _i, _ex in enumerate(fail_examples, 1):
+        _svg = mol_to_svg(_ex["mol_data"]["smiles"])
+        _out = IMGS_DIR / f"pfasatlas_fail_{_i}.svg"
+        _out.write_text(_svg, encoding="utf-8")
+        print(f"  ✓  {_out.name}")
+
+    # ── Combined figure: distribution (failures highlighted) + 3 mol panels ──
+    fig3 = plt.figure(figsize=(12, 7.5), facecolor="white")
+    gs3  = gridspec.GridSpec(
+        2, 3,
+        figure=fig3,
+        height_ratios=[1.4, 1.0],
+        hspace=0.10, wspace=0.10,
+        left=0.07, right=0.97, top=0.93, bottom=0.04,
+    )
+
+    ax_dist3 = fig3.add_subplot(gs3[0, :])
+
+    # Distribution: PFAS-Atlas success vs. failure (from the full mols list)
+    _n_atlas_ok   = int((~fail_mask).sum())
+    _n_atlas_fail = int(fail_mask.sum())
+    _lbl_ok   = f"PFAS-Atlas success (n={_n_atlas_ok})"
+    _lbl_afail = f"PFAS-Atlas failure (n={_n_atlas_fail})"
+    _hist3 = {_lbl_ok: TINTS["blue"][2],       _lbl_afail: TINTS["orange_red"][2]}
+    _kde3  = {_lbl_ok: TINTS["blue"][0],        _lbl_afail: TINTS["orange_red"][0]}
+
+    _plot_count_split(
+        ax_dist3, bi, ~fail_mask,
+        _lbl_ok, _lbl_afail,
+        _hist3, _kde3,
+    )
+    for _ex in fail_examples:
+        ax_dist3.axvline(
+            _ex["bi"], color=_ex["color"], linewidth=1.8, linestyle="--", alpha=0.85, zorder=5
+        )
+    ax_dist3.set_xlabel("Branching Index", labelpad=5, fontsize=12)
+    ax_dist3.set_ylabel("Count", labelpad=5, fontsize=12)
+    ax_dist3.set_title(
+        f"PFAS-Atlas failures by Branching Index — {len(fail_mols)} failed / {len(mols)} total",
+        fontsize=13, fontweight="bold", pad=8,
+    )
+    sns.despine(ax=ax_dist3, top=True, right=True)
+    ax_dist3.set_xlim(0.0, 1.0)
+
+    ax_mols3: list = []
+    mol_svgs3: list = []
+    for _col, _ex in enumerate(fail_examples):
+        _ax = fig3.add_subplot(gs3[1, _col])
+        mol_svgs3.append(mol_to_svg(_ex["mol_data"]["smiles"]))
+        _ax.set_xticks([])
+        _ax.set_yticks([])
+        for _spine in _ax.spines.values():
+            _spine.set_visible(True)
+            _spine.set_color(_ex["color"])
+            _spine.set_linewidth(2.5)
+        _pfas_group = _ex["mol_data"].get("PFASGroup", "")
+        # Show what PFAS-Atlas returned for context
+        _atlas_raw = _ex["mol_data"].get("PFASAtlas_result", "")
+        try:
+            _atlas_cls = ast.literal_eval(_atlas_raw).get("first_class", "?")
+        except Exception:
+            _atlas_cls = "?"
+        _json_idx = _ex["mol_data"].get("_json_index", "?")
+        _ax.set_title(
+            f"{_ex['label']}\n{_pfas_group}  —  BI = {_ex['bi']:.3f}\nAtlas: {_atlas_cls}  |  entry #{_json_idx}",
+            fontsize=9, color=_ex["color"], fontweight="bold", pad=5,
+        )
+        ax_mols3.append(_ax)
+
+    fig3.canvas.draw()
+    for _ex, _ax_mol in zip(fail_examples, ax_mols3):
+        _y_bot = ax_dist3.get_ylim()[0]
+        _d_src = ax_dist3.transData.transform((_ex["bi"], _y_bot))
+        _f_src = fig3.transFigure.inverted().transform(_d_src)
+        _pos   = _ax_mol.get_position()
+        _f_tgt = np.array([(_pos.x0 + _pos.x1) / 2.0, _pos.y1])
+        fig3.add_artist(
+            plt.Line2D(
+                [_f_src[0], _f_tgt[0]], [_f_src[1], _f_tgt[1]],
+                transform=fig3.transFigure,
+                color=_ex["color"], linewidth=1.2, linestyle=":",
+                alpha=0.65, zorder=10, clip_on=False,
+            )
+        )
+
+    print("\nSaving PFAS-Atlas failures figure …")
+    _save_vector(fig3, ax_mols3, mol_svgs3, IMGS_DIR / "branching_index_distribution_pfasatlas_fails")
+    plt.close(fig3)
+else:
+    print("Not enough PFAS-Atlas failures to export examples")
+
+# ── PFAS-definition failure examples ─────────────────────────────────────────
+
+_DEF_NAMES = {1: "OECD", 2: "EU", 3: "OPPT 2023", 4: "UK", 5: "PFASSTRUCTv5"}
+
+
+def _missing_defs(mol_data: dict) -> set:
+    """Return the set of definition IDs that were NOT detected for this molecule."""
+    return _ALL_DEFS - _get_detected_defs(mol_data)
+
+
+def _missing_defs_label(mol_data: dict) -> str:
+    """Human-readable list of missing definitions, e.g. 'Missing: OPPT 2023, UK'."""
+    missing = _missing_defs(mol_data)
+    if not missing:
+        return "all detected"
+    return "Missing: " + ", ".join(_DEF_NAMES.get(d, str(d)) for d in sorted(missing))
+
+
+# Molecules that fail at least one definition (~is_all5 already tracks this)
+def_fail_mols = [m for m, ok in zip(mols, is_all5) if not ok]
+def_fail_bi   = bi[~is_all5]
+print(f"\nDefinition failures: {len(def_fail_mols)} / {len(mols)}")
+
+if len(def_fail_mols) >= 3:
+    _DEF_FAIL_PALETTE = [
+        (TINTS["orange_red"][0], TINTS["orange_red"][3]),
+        (TINTS["magenta"][0],    TINTS["magenta"][3]),
+        (TINTS["dark_purple"][0], TINTS["dark_purple"][3]),
+    ]
+
+    _def_fail_used: set[int] = set()
+    def_fail_examples: list[dict] = []
+    for _p, _label, _key, (_main_c, _fill_c) in zip(
+        [10, 50, 90],
+        ["High branching", "Median branching", "Low branching"],
+        ["high", "median", "low"],
+        _DEF_FAIL_PALETTE,
+    ):
+        _idx = _pick_in_window(def_fail_bi, def_fail_mols, _p, window=10, used=_def_fail_used)
+        _def_fail_used.add(_idx)
+        def_fail_examples.append(
+            {
+                "key":      _key,
+                "label":    _label,
+                "bi":       float(def_fail_bi[_idx]),
+                "mol_data": def_fail_mols[_idx],
+                "color":    _main_c,
+                "fill":     _fill_c,
+            }
+        )
+
+    # ── Save individual molecule SVGs ─────────────────────────────────────────
+    print("\nSaving definition-failure molecule SVGs …")
+    for _i, _ex in enumerate(def_fail_examples, 1):
+        _svg = mol_to_svg(_ex["mol_data"]["smiles"])
+        _out = IMGS_DIR / f"def_fail_{_i}.svg"
+        _out.write_text(_svg, encoding="utf-8")
+        print(f"  ✓  {_out.name}")
+
+    # ── Combined figure ────────────────────────────────────────────────────────
+    fig4 = plt.figure(figsize=(12, 7.5), facecolor="white")
+    gs4  = gridspec.GridSpec(
+        2, 3,
+        figure=fig4,
+        height_ratios=[1.4, 1.0],
+        hspace=0.10, wspace=0.10,
+        left=0.07, right=0.97, top=0.93, bottom=0.04,
+    )
+
+    ax_dist4 = fig4.add_subplot(gs4[0, :])
+
+    _n_def_ok   = int(is_all5.sum())
+    _n_def_fail = int((~is_all5).sum())
+    _lbl_def_ok   = f"All 5 definitions (n={_n_def_ok})"
+    _lbl_def_fail = f"Fails ≥1 definition (n={_n_def_fail})"
+    _hist4 = {_lbl_def_ok: TINTS["dark_purple"][2], _lbl_def_fail: TINTS["magenta"][2]}
+    _kde4  = {_lbl_def_ok: TINTS["dark_purple"][0], _lbl_def_fail: TINTS["magenta"][0]}
+
+    _plot_count_split(
+        ax_dist4, bi, is_all5,
+        _lbl_def_ok, _lbl_def_fail,
+        _hist4, _kde4,
+    )
+    for _ex in def_fail_examples:
+        ax_dist4.axvline(
+            _ex["bi"], color=_ex["color"], linewidth=1.8, linestyle="--", alpha=0.85, zorder=5
+        )
+    ax_dist4.set_xlabel("Branching Index", labelpad=5, fontsize=12)
+    ax_dist4.set_ylabel("Count", labelpad=5, fontsize=12)
+    ax_dist4.set_title(
+        f"PFAS-definition failures by Branching Index — {len(def_fail_mols)} failed / {len(mols)} total",
+        fontsize=13, fontweight="bold", pad=8,
+    )
+    sns.despine(ax=ax_dist4, top=True, right=True)
+    ax_dist4.set_xlim(0.0, 1.0)
+
+    ax_mols4: list = []
+    mol_svgs4: list = []
+    for _col, _ex in enumerate(def_fail_examples):
+        _ax = fig4.add_subplot(gs4[1, _col])
+        mol_svgs4.append(mol_to_svg(_ex["mol_data"]["smiles"]))
+        _ax.set_xticks([])
+        _ax.set_yticks([])
+        for _spine in _ax.spines.values():
+            _spine.set_visible(True)
+            _spine.set_color(_ex["color"])
+            _spine.set_linewidth(2.5)
+        _pfas_group = _ex["mol_data"].get("PFASGroup", "")
+        _missing_lbl = _missing_defs_label(_ex["mol_data"])
+        _json_idx    = _ex["mol_data"].get("_json_index", "?")
+        _ax.set_title(
+            f"{_ex['label']}\n{_pfas_group}  —  BI = {_ex['bi']:.3f}\n{_missing_lbl}  |  entry #{_json_idx}",
+            fontsize=9, color=_ex["color"], fontweight="bold", pad=5,
+        )
+        ax_mols4.append(_ax)
+
+    fig4.canvas.draw()
+    for _ex, _ax_mol in zip(def_fail_examples, ax_mols4):
+        _y_bot = ax_dist4.get_ylim()[0]
+        _d_src = ax_dist4.transData.transform((_ex["bi"], _y_bot))
+        _f_src = fig4.transFigure.inverted().transform(_d_src)
+        _pos   = _ax_mol.get_position()
+        _f_tgt = np.array([(_pos.x0 + _pos.x1) / 2.0, _pos.y1])
+        fig4.add_artist(
+            plt.Line2D(
+                [_f_src[0], _f_tgt[0]], [_f_src[1], _f_tgt[1]],
+                transform=fig4.transFigure,
+                color=_ex["color"], linewidth=1.2, linestyle=":",
+                alpha=0.65, zorder=10, clip_on=False,
+            )
+        )
+
+    print("\nSaving definition-failure figure …")
+    _save_vector(fig4, ax_mols4, mol_svgs4, IMGS_DIR / "branching_index_distribution_def_fails")
+    plt.close(fig4)
+else:
+    print("Not enough definition failures to export examples")
