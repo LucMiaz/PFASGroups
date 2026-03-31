@@ -231,7 +231,7 @@ def attach_mol(mol, submol, atom_index, ensure_fluorination=True):
     rwm.RemoveBond(atom_index, atom_to_remove)
     rwm.RemoveAtom(atom_to_remove)  # remove the atom
     rwm.AddBond(atom_index, submol_index, Chem.BondType.SINGLE)
-    if ensure_fluorination:
+    if ensure_fluorination is True:
         # If the removed atom was H, add an F to maintain fluorination level
         for neighbor in atom.GetNeighbors():
             if neighbor.GetSymbol() in ['H','Cl','Br','I']:
@@ -244,7 +244,7 @@ def attach_mol(mol, submol, atom_index, ensure_fluorination=True):
     return rwm.GetMol()
 
 
-def insert_mol(mol, group_mol, atom_index, neighbor_index):
+def insert_mol(mol, group_mol, atom_index, neighbor_index, ensure_fluorination=True):
     """Insert a submolecule between two bonded atoms.
 
     Breaks the bond between two atoms and inserts the functional group,
@@ -292,7 +292,7 @@ def insert_mol(mol, group_mol, atom_index, neighbor_index):
     except:
         pass
     rwm.AddBond(atom2.GetIdx(), end_atom_index, Chem.BondType.SINGLE)
-    if ensure_fluorination:
+    if ensure_fluorination is True:
         # If the removed atom was H, add an F to maintain fluorination level
         for atom in [atom1, atom2]:
             for neighbor in atom.GetNeighbors():
