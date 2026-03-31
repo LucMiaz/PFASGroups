@@ -214,6 +214,28 @@ ax.grid(True, alpha=0.3, axis="y")
 fig.tight_layout()
 savefig(fig, "timing_box")
 
+# Save timing box data as CSV
+import csv as _csv_box
+_box_csv_path = os.path.join(OUTDIR, "timing_box.csv")
+_box_datasets = [
+    ("OECD",                   n_oecd,   oecd_pg,   oecd_at),
+    ("CLInventory (F)",        n_clinv,  clinv_pg,  clinv_at),
+    ("Large PFAS (>=35 atoms)", n_stress, stress_pg, stress_at),
+]
+_BOX_FIELDS = ["n", "mean", "std", "median", "min", "p25", "p75", "p95", "max"]
+with open(_box_csv_path, "w", newline="", encoding="utf-8") as _cf:
+    _w = _csv_box.writer(_cf)
+    _w.writerow(["dataset", "tool"] + _BOX_FIELDS)
+    for _ds_name, _n, _pg, _at in _box_datasets:
+        for _tool, _td in [("PFASGroups", _pg), ("PFAS-Atlas", _at)]:
+            _row = [_ds_name, _tool]
+            # n comes from the dataset-level count, not always in the timing dict
+            _row.append(_n)
+            for _fld in _BOX_FIELDS[1:]:  # skip "n" — already added
+                _row.append(_td.get(_fld, ""))
+            _w.writerow(_row)
+print("  saved timing_box.csv")
+
 # --- Fig 1b: Timing by molecular size bracket ---
 brackets = clinv["timing_by_atom_bracket"]
 bracket_order = ["tiny (<10)", "small (10-19)", "medium (20-34)", "large (35-59)", "very large (>=60)"]
@@ -278,7 +300,7 @@ if timing_profiles:
     try:
         from scipy.optimize import curve_fit as _curve_fit
 
-        def _q(n, a, c):  return a * n**2 + c
+        def _q(n, a, c):   return a * n**2 + c
         def _lin(n, a, c): return a * n + c
         def _nln(n, a, c): return a * n * np.log(np.maximum(n, 1)) + c
         def _exp(n, a, b): return a * np.exp(b * n)
@@ -343,6 +365,114 @@ if timing_profiles:
         ax.grid(True, alpha=0.3)
         fig.tight_layout()
         savefig(fig, "timing_profiles_comparison")
+
+        # --- Table 1c: Model fit statistics (R², AIC, BIC) per profile ---
+        print("  Timing model fit statistics table")
+
+        def _aic_bic(y, y_pred, k):
+            n      = len(y)
+            ss_res = np.sum((y - y_pred) ** 2)
+            sigma2 = max(ss_res / n, 1e-15)
+            ll     = -n / 2 * np.log(2 * np.pi * sigma2) - ss_res / (2 * sigma2)
+            return 2 * k - 2 * ll, k * np.log(n) - 2 * ll
+
+        _MODEL_STATS_DEFS = [
+            ("$O(n^2)$ quadratic",    _q,   [1e-5, 0.1],  2),
+            ("$O(n)$ linear",         _lin, [1e-3, 0.1],  2),
+            ("$O(n\\,\\ln n)$ lin-log", _nln, [1e-5, 0.1], 2),
+            ("$O(e^n)$ exponential",  _exp, [1.0, 0.001], 2),
+        ]
+
+        # Collect rows: (profile, model, R2, AIC, BIC, params)
+        _fit_rows = []
+        for _pname, _pdata in timing_profiles.items():
+            _xp, _yp = _pdata["n_atoms"], _pdata["times_ms"]
+            for _mname, _func, _p0, _k in _MODEL_STATS_DEFS:
+                try:
+                    _popt, _ = _curve_fit(_func, _xp, _yp, p0=_p0, maxfev=50000)
+                    _yhat    = _func(_xp, *_popt)
+                    _ss_res  = np.sum((_yp - _yhat) ** 2)
+                    _r2      = 1 - _ss_res / np.sum((_yp - _yp.mean()) ** 2)
+                    _aic, _bic = _aic_bic(_yp, _yhat, _k)
+                    _fit_rows.append((_pname, _mname, _r2, _aic, _bic,
+                                      ", ".join(f"{p:.3e}" for p in _popt)))
+                except Exception:
+                    _fit_rows.append((_pname, _mname, np.nan, np.nan, np.nan, "—"))
+
+        # Save as CSV
+        import csv as _csv
+        _csv_path = os.path.join(OUTDIR, "timing_model_fit_stats.csv")
+        with open(_csv_path, "w", newline="", encoding="utf-8") as _cf:
+            _writer = _csv.writer(_cf)
+            _writer.writerow(["profile", "model", "r2", "aic", "bic", "fitted_params"])
+            for _pn, _mn, _r2, _aic, _bic, _params in _fit_rows:
+                _writer.writerow([
+                    _pn, _mn,
+                    "" if np.isnan(_r2)  else f"{_r2:.6f}",
+                    "" if np.isnan(_aic) else f"{_aic:.2f}",
+                    "" if np.isnan(_bic) else f"{_bic:.2f}",
+                    _params,
+                ])
+        print(f"  saved timing_model_fit_stats.csv")
+
+        # Build matplotlib table figure
+        _profiles_order = list(timing_profiles.keys())
+        _models_order   = [r[1] for r in _fit_rows[:len(_MODEL_STATS_DEFS)]]  # from first profile
+        _col_labels = ["Profile", "Model", "$R^2$", "AIC", "BIC", "Fitted params $[a, c/b]$"]
+        _cell_text  = []
+        _cell_colors = []
+        _profile_colors = {
+            "Full":       C0,
+            "No EGR":     C2,
+            "No metrics": C1,
+        }
+        # Highlight the best model per profile (lowest AIC)
+        _best_per_profile = {}
+        for _pn in _profiles_order:
+            _rows_p = [r for r in _fit_rows if r[0] == _pn and not np.isnan(r[3])]
+            if _rows_p:
+                _best_per_profile[_pn] = min(_rows_p, key=lambda r: r[3])[1]
+
+        for _pn, _mn, _r2, _aic, _bic, _params in _fit_rows:
+            _is_best = (_best_per_profile.get(_pn) == _mn)
+            _r2_str  = f"{_r2:.4f}" if not np.isnan(_r2) else "—"
+            _aic_str = f"{_aic:,.0f}" if not np.isnan(_aic) else "—"
+            _bic_str = f"{_bic:,.0f}" if not np.isnan(_bic) else "—"
+            _cell_text.append([_pn, _mn, _r2_str, _aic_str, _bic_str, _params])
+            _pcol = _profile_colors.get(_pn, "#CCCCCC")
+            import matplotlib.colors as _mcolors
+            _base = _mcolors.to_rgba(_pcol, alpha=0.18 if _is_best else 0.06)
+            _cell_colors.append([_base] * 6)
+
+        _n_rows = len(_cell_text)
+        _fig_h  = 0.42 * _n_rows + 1.0
+        fig_tbl, ax_tbl = plt.subplots(figsize=(14, _fig_h))
+        ax_tbl.axis("off")
+        tbl = ax_tbl.table(
+            cellText=_cell_text,
+            colLabels=_col_labels,
+            cellColours=_cell_colors,
+            cellLoc="center",
+            loc="center",
+        )
+        tbl.auto_set_font_size(False)
+        tbl.set_fontsize(9)
+        tbl.auto_set_column_width(list(range(len(_col_labels))))
+        # Bold header
+        for _ci in range(len(_col_labels)):
+            tbl[0, _ci].set_text_props(fontweight="bold")
+        # Bold best-model rows
+        for _ri, (_pn, _mn, *_rest) in enumerate(_fit_rows):
+            if _best_per_profile.get(_pn) == _mn:
+                for _ci in range(len(_col_labels)):
+                    tbl[_ri + 1, _ci].set_text_props(fontweight="bold")
+        ax_tbl.set_title(
+            "Complexity model fit statistics per timing profile\n"
+            "(bold rows = best AIC per profile; colours match profile)",
+            fontsize=11, pad=8,
+        )
+        fig_tbl.tight_layout()
+        savefig(fig_tbl, "timing_model_fit_stats")
 
     except ImportError:
         print("  [warn] scipy not available — skipping model comparison plots")
