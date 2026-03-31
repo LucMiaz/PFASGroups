@@ -40,9 +40,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
+import pandas as pd
 import seaborn as sns
+from scipy.stats import gaussian_kde
 from rdkit import Chem
-from rdkit.Chem import Draw, rdDepictor
+from rdkit.Chem import rdDepictor
 from rdkit.Chem.Draw import rdMolDraw2D
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
@@ -96,6 +98,64 @@ with open(DATA_DIR / "branching_test_results_2025.json") as fh:
 mols = [r for r in raw if "branching_index" in r]
 bi   = np.array([m["branching_index"] for m in mols])
 print(f"Loaded {len(mols)} molecules  |  BI range [{bi.min():.4f}, {bi.max():.4f}]")
+
+# ── PFAS-definition split (from PFASGroups detected_definitions) ───────────────
+def _get_detected_defs(mol_data: dict) -> set:
+    """Return the set of detected PFAS definition IDs from PFASGroups_result."""
+    pg = mol_data.get("PFASGroups_result", {})
+    if isinstance(pg, str):
+        try:
+            pg = ast.literal_eval(pg)
+        except Exception:
+            return set()
+    if isinstance(pg, dict):
+        return set(pg.get("detected_definitions", []))
+    return set()
+
+
+_ALL_DEFS = {1, 2, 3, 4, 5}
+is_all5   = np.array([_get_detected_defs(m) >= _ALL_DEFS for m in mols])
+_n_all5   = int(is_all5.sum())
+_n_fail   = len(mols) - _n_all5
+print(f"PFAS-definition split: all-5={_n_all5}  fail≥1={_n_fail}")
+
+_LBL_ALL5 = f"Matches all 5 definitions (n={_n_all5})"
+_LBL_FAIL = f"Fails ≥1 definition (n={_n_fail})"
+_HIST_COLORS = {_LBL_ALL5: TINTS["blue"][2],       _LBL_FAIL: TINTS["orange_red"][2]}
+_KDE_COLORS  = {_LBL_ALL5: TINTS["blue"][0],       _LBL_FAIL: TINTS["orange_red"][0]}
+
+
+def _plot_count_split(
+    ax,
+    values: np.ndarray,
+    mask_all5: np.ndarray,
+    lbl_all5: str,
+    lbl_fail: str,
+    hist_colors: dict,
+    kde_colors: dict,
+    n_bins: int = 26,
+) -> None:
+    """Stacked count histogram + per-group count-scaled KDE on *ax*."""
+    _df = pd.DataFrame({
+        "v":     values,
+        "group": np.where(mask_all5, lbl_all5, lbl_fail),
+    })
+    sns.histplot(
+        data=_df, x="v", hue="group",
+        ax=ax, bins=n_bins, stat="count", multiple="stack",
+        palette=hist_colors,
+        hue_order=[lbl_fail, lbl_all5],   # fail on bottom, all-5 stacked above
+        edgecolor="white", linewidth=0.3, alpha=0.80,
+    )
+    # KDE scaled to count (density × N × bin_width)
+    _bw = (values.max() - values.min()) / n_bins
+    _x  = np.linspace(values.min(), values.max(), 300)
+    for _mask, _lbl in [(mask_all5, lbl_all5), (~mask_all5, lbl_fail)]:
+        _sub = values[_mask]
+        if len(_sub) > 1:
+            _kd = gaussian_kde(_sub)
+            ax.plot(_x, _kd(_x) * len(_sub) * _bw,
+                    color=kde_colors[_lbl], linewidth=2.4)
 
 # ── Select 3 representative examples (10th / 50th / 90th percentile) ─────────
 pcts   = [10, 50, 90]
@@ -170,9 +230,86 @@ def mol_to_svg(smiles: str) -> str:
     return d.GetDrawingText()
 
 
-def mol_to_pil(smiles: str):
-    mol = _prepare_mol(smiles)
-    return Draw.MolToImage(mol, size=(MOL_W, MOL_H))
+# ── Vector-preserving save helper ────────────────────────────────────────────
+import re as _re
+
+
+def _save_vector(
+    fig: plt.Figure,
+    ax_mols: list,
+    mol_svg_texts: list,
+    out_stem: Path,
+) -> None:
+    """Save *fig* as SVG + PDF with molecule structures kept as vector paths.
+
+    Renders the matplotlib figure skeleton to an in-memory SVG, then inlines
+    each molecule SVG body at the corresponding axes region so that bond-paths
+    are true vectors rather than raster bitmaps.  For PDF, cairosvg is used
+    when available; otherwise falls back to matplotlib's PDF backend.
+    """
+    # 1. Finalise layout, then render figure skeleton to an SVG string.
+    #    No bbox_inches cropping — keeps axes positions predictable.
+    fig.canvas.draw()
+    buf = io.StringIO()
+    fig.savefig(buf, format="svg")
+    fig_svg = buf.getvalue()
+
+    # 2. Read SVG canvas size (matplotlib SVG uses pt units: 1 in = 72 pt).
+    svg_w = float(_re.search(r'<svg[^>]+width="([\d.]+)pt"',  fig_svg).group(1))
+    svg_h = float(_re.search(r'<svg[^>]+height="([\d.]+)pt"', fig_svg).group(1))
+
+    # 3. For each molecule axes, compute its region in SVG coordinates then
+    #    inject the molecule as a nested <svg> element with a viewBox so the
+    #    coordinate scaling is handled by the SVG renderer, not by transforms.
+    injections: list = []
+    for ax, mol_svg_str in zip(ax_mols, mol_svg_texts):
+        pos  = ax.get_position()         # figure-fraction coords; y=0 at bottom
+        x_pt = pos.x0          * svg_w
+        y_pt = (1.0 - pos.y1)  * svg_h  # SVG y-axis points downward
+        w_pt = pos.width       * svg_w
+        h_pt = pos.height      * svg_h
+
+        mw = _re.search(r"width=['\"]?([\d.]+)px", mol_svg_str)
+        mh = _re.search(r"height=['\"]?([\d.]+)px", mol_svg_str)
+        mol_w = float(mw.group(1)) if mw else MOL_W
+        mol_h = float(mh.group(1)) if mh else MOL_H
+
+        body_m = _re.search(r"<svg[^>]*>(.*)</svg>", mol_svg_str, _re.DOTALL)
+        body   = body_m.group(1) if body_m else mol_svg_str
+        # Nested <svg> with viewBox maps the molecule's coordinate space to
+        # the axes area without requiring explicit scale() transforms.
+        injections.append(
+            f'<svg x="{x_pt:.3f}" y="{y_pt:.3f}" '
+            f'width="{w_pt:.3f}" height="{h_pt:.3f}" '
+            f'viewBox="0 0 {mol_w:.3f} {mol_h:.3f}" '
+            f'preserveAspectRatio="xMidYMid meet">'
+            f"{body}</svg>"
+        )
+
+    composed = fig_svg[:fig_svg.rfind("</svg>")] + "\n".join(injections) + "\n</svg>"
+
+    # 4. Write SVG.
+    out_svg = out_stem.with_suffix(".svg")
+    out_svg.write_text(composed, encoding="utf-8")
+    print(f"  ✓  {out_svg.name}")
+
+    # 5. Write PDF — try cairosvg, then inkscape CLI, then matplotlib fallback.
+    out_pdf = out_stem.with_suffix(".pdf")
+    try:
+        import cairosvg  # type: ignore
+        cairosvg.svg2pdf(bytestring=composed.encode("utf-8"), write_to=str(out_pdf))
+        print(f"  ✓  {out_pdf.name}  (cairosvg)")
+    except ImportError:
+        try:
+            import subprocess as _sp
+            _sp.run(
+                ["inkscape", "--export-filename", str(out_pdf), str(out_svg)],
+                check=True, capture_output=True,
+            )
+            print(f"  ✓  {out_pdf.name}  (inkscape)")
+        except Exception:
+            fig.savefig(out_pdf, format="pdf", bbox_inches="tight")
+            print(f"  ✓  {out_pdf.name}  (matplotlib fallback — molecules rasterised)")
 
 
 # ── Save individual molecule SVGs ─────────────────────────────────────────────
@@ -198,21 +335,10 @@ gs = gridspec.GridSpec(
 # ── Distribution (top, full width) ───────────────────────────────────────────
 ax_dist = fig.add_subplot(gs[0, :])
 
-sns.histplot(
-    bi,
-    ax=ax_dist,
-    bins=26,
-    stat="density",
-    color=TINTS["blue"][3],
-    edgecolor="white",
-    linewidth=0.3,
-    alpha=0.75,
-)
-sns.kdeplot(
-    bi,
-    ax=ax_dist,
-    color=TINTS["blue"][0],
-    linewidth=2.4,
+_plot_count_split(
+    ax_dist, bi, is_all5,
+    _LBL_ALL5, _LBL_FAIL,
+    _HIST_COLORS, _KDE_COLORS,
 )
 
 for ex in examples:
@@ -225,8 +351,9 @@ for ex in examples:
         zorder=5,
     )
 
+ax_dist.set_xlim(0.0, 1.)
 ax_dist.set_xlabel("Branching Index", labelpad=5, fontsize=12)
-ax_dist.set_ylabel("Density",         labelpad=5, fontsize=12)
+ax_dist.set_ylabel("Count",           labelpad=5, fontsize=12)
 ax_dist.set_title(
     f"Distribution of Branching Index — {len(mols)} PFAS molecules",
     fontsize=13, fontweight="bold", pad=8,
@@ -235,16 +362,11 @@ sns.despine(ax=ax_dist, top=True, right=True)
 
 # ── Molecule panels (bottom row) ──────────────────────────────────────────────
 ax_mols: list = []
+mol_svgs: list = []
 for col, ex in enumerate(examples):
     ax = fig.add_subplot(gs[1, col])
 
-    try:
-        img_arr = np.array(mol_to_pil(ex["mol_data"]["smiles"]))
-        ax.imshow(img_arr)
-    except Exception as err:  # noqa: BLE001
-        ax.text(0.5, 0.5, "Render error", transform=ax.transAxes,
-                ha="center", va="center", color="red")
-        print(f"  Warning [{ex['key']}]: {err}")
+    mol_svgs.append(mol_to_svg(ex["mol_data"]["smiles"]))
 
     ax.set_xticks([])
     ax.set_yticks([])
@@ -289,10 +411,9 @@ for ex, ax_mol in zip(examples, ax_mols):
     )
 
 # ── Save ──────────────────────────────────────────────────────────────────────
-out = IMGS_DIR / "branching_index_distribution.svg"
-fig.savefig(out, format="svg", bbox_inches="tight")
+print("\nSaving combined figure …")
+_save_vector(fig, ax_mols, mol_svgs, IMGS_DIR / "branching_index_distribution")
 plt.close(fig)
-print(f"\n✅  Saved combined figure: {out}")
 
 # ── PFASGroups branching variant ──────────────────────────────────────────────
 
@@ -380,39 +501,44 @@ if len(pfas_mols) >= 3:
     )
 
     ax_dist2 = fig2.add_subplot(gs2[0, :])
-    sns.histplot(
-        pfas_bi,
-        ax=ax_dist2,
-        bins=26,
-        stat="density",
-        color=TINTS["dark_purple"][3],
-        edgecolor="white",
-        linewidth=0.3,
-        alpha=0.75,
+
+    # Definition split for the pfas_mols subset
+    _is_all5_pfas = np.array([_get_detected_defs(m) >= _ALL_DEFS for m in pfas_mols])
+    _n_all5_pfas  = int(_is_all5_pfas.sum())
+    _n_fail_pfas  = len(pfas_mols) - _n_all5_pfas
+    _lbl_all5_pfas = f"Matches all 5 definitions (n={_n_all5_pfas})"
+    _lbl_fail_pfas = f"Fails ≥1 definition (n={_n_fail_pfas})"
+    _hist_colors2  = {
+        _lbl_all5_pfas: TINTS["dark_purple"][2],
+        _lbl_fail_pfas: TINTS["magenta"][2],
+    }
+    _kde_colors2   = {
+        _lbl_all5_pfas: TINTS["dark_purple"][0],
+        _lbl_fail_pfas: TINTS["magenta"][0],
+    }
+
+    _plot_count_split(
+        ax_dist2, pfas_bi, _is_all5_pfas,
+        _lbl_all5_pfas, _lbl_fail_pfas,
+        _hist_colors2, _kde_colors2,
     )
-    sns.kdeplot(pfas_bi, ax=ax_dist2, color=TINTS["dark_purple"][0], linewidth=2.4)
     for _ex in pfas_examples:
         ax_dist2.axvline(
             _ex["bi"], color=_ex["color"], linewidth=1.8, linestyle="--", alpha=0.85, zorder=5
         )
     ax_dist2.set_xlabel("PFASGroups Mean Branching (largest component, 1.0 = linear)", labelpad=5, fontsize=12)
-    ax_dist2.set_ylabel("Density", labelpad=5, fontsize=12)
+    ax_dist2.set_ylabel("Count", labelpad=5, fontsize=12)
     ax_dist2.set_title(
         f"Distribution of PFASGroups Branching — {len(pfas_mols)} PFAS molecules",
         fontsize=13, fontweight="bold", pad=8,
     )
     sns.despine(ax=ax_dist2, top=True, right=True)
-
+    ax_dist2.set_xlim(0.0, 1.)
     ax_mols2: list = []
+    mol_svgs2: list = []
     for _col, _ex in enumerate(pfas_examples):
         _ax = fig2.add_subplot(gs2[1, _col])
-        try:
-            _img_arr = np.array(mol_to_pil(_ex["mol_data"]["smiles"]))
-            _ax.imshow(_img_arr)
-        except Exception as _err:
-            _ax.text(0.5, 0.5, "Render error", transform=_ax.transAxes,
-                     ha="center", va="center", color="red")
-            print(f"  Warning [{_ex['key']}]: {_err}")
+        mol_svgs2.append(mol_to_svg(_ex["mol_data"]["smiles"]))
         _ax.set_xticks([])
         _ax.set_yticks([])
         for _spine in _ax.spines.values():
@@ -442,9 +568,8 @@ if len(pfas_mols) >= 3:
             )
         )
 
-    out2 = IMGS_DIR / "branching_index_distribution_pfasgroups.svg"
-    fig2.savefig(out2, format="svg", bbox_inches="tight")
+    print("\nSaving PFASGroups variant …")
+    _save_vector(fig2, ax_mols2, mol_svgs2, IMGS_DIR / "branching_index_distribution_pfasgroups")
     plt.close(fig2)
-    print(f"\n✅  Saved PFASGroups variant: {out2}")
 else:
     print("Not enough molecules with PFASGroups branching — skipping variant plot")

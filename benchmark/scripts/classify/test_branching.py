@@ -35,7 +35,105 @@ except ImportError:
         print(f"❌ PFAS-Atlas not available as {atlas_dir} or {os.path.join(atlas_dir, 'classification_helper')}")
         ATLAS_AVAILABLE = False
 
-def generate_test_cases(n = 300, branching_range=None, min_carbons=5, max_carbons=15, seed=2025):
+def generate_highly_branched_failing_cases(n, min_carbons=8, max_carbons=16, seed=None,
+                                           existing_smiles=None, p_fluorination=0.3,
+                                           phigh_fluorination=0.65, branching_range=(0.0, 0.2)):
+    """Generate very highly branched molecules that fail at least one PFAS definition.
+
+    Uses partial fluorination (not perfluorinated) and tight branching constraints so
+    that some molecules lack the CF₂–CF₂ or CF₃ stretches required by stricter
+    definitions (e.g. UK Definition 4).
+
+    Parameters
+    ----------
+    n : int
+        Number of molecules to attempt to generate.
+    min_carbons, max_carbons : int
+        Carbon-chain size range (larger chains give more branching possibility).
+    seed : int or None
+        Seed appended to the global RNG state (does not reset it).
+    existing_smiles : set or None
+        SMILES already in the dataset; duplicates are skipped.
+    p_fluorination : float
+        Minimum H→F probability passed to ``fluorinate_mol``.
+    phigh_fluorination : float
+        Maximum H→F probability passed to ``fluorinate_mol``.
+    branching_range : tuple of float
+        (min_BI, max_BI) – very low values (close to 0) give highly branched molecules.
+
+    Returns
+    -------
+    list of dict
+        Each entry has the same keys as regular test cases plus
+        ``'highly_branched_failing': True`` and
+        ``'detected_definitions_at_generation': [int, ...]``.
+    """
+    if existing_smiles is None:
+        existing_smiles = set()
+    if seed is not None:
+        np.random.seed(seed)
+
+    PFGs = {x.id: x for x in get_compiled_PFASGroups()
+            if x.test_dict.get('generate', {}).get('mode') == 'attach'
+            and x.id in range(29, 70)}
+
+    cases = []
+    max_attempts = n * 40
+
+    for _ in range(max_attempts):
+        if len(cases) >= n:
+            break
+        m = np.random.randint(min_carbons, max_carbons)
+        gid = np.random.choice(list(PFGs.keys()), 1)[0]
+        fg = PFGs[gid].test_dict.get('generate', {})
+
+        try:
+            mol = generate_random_mol(
+                m,
+                fg.get('smiles'),
+                mode=fg.get('mode', 'attach'),
+                perfluorinated=False,
+                p=p_fluorination,
+                phigh=phigh_fluorination,
+                branching_range=branching_range,
+                max_matched_definitions=4,
+            )
+        except Exception:
+            continue
+
+        smiles = Chem.MolToSmiles(mol)
+        if smiles in existing_smiles:
+            continue
+
+        # Record which definitions are matched (generate_random_mol guarantees ≤4)
+        try:
+            result = parse_mol(mol, include_PFAS_definitions=True)
+            detected = sorted({match['id'] for match in result.get('matches', [])
+                               if match.get('type') == 'PFASdefinition'})
+        except Exception:
+            detected = []
+
+        branching_index = get_branching_index(mol)
+        formula = CalcMolFormula(mol)
+        existing_smiles.add(smiles)
+        cases.append({
+            'group_id': gid,
+            'PFASGroup': PFGs[gid],
+            'smiles': smiles,
+            'formula': formula,
+            'branching_index': branching_index,
+            'detected_definitions_at_generation': sorted(detected),
+            'highly_branched_failing': True,
+        })
+
+    if len(cases) < n:
+        print(f"⚠  Could only generate {len(cases)}/{n} highly branched failing cases "
+              f"(increased max_attempts or lower p_fluorination may help)")
+    return cases
+
+
+def generate_test_cases(n = 300, branching_range=None, min_carbons=5, max_carbons=15, seed=2025,
+                        n_highly_branched_failing=50):
     """
     Generate test cases with varying branching indices for classification testing.
     """
@@ -57,6 +155,19 @@ def generate_test_cases(n = 300, branching_range=None, min_carbons=5, max_carbon
             duplicated += 1
             continue
         test_cases.append({"group_id": gid, "PFASGroup": PFGs[gid], "smiles": smiles, "formula": formula, "branching_index": branching_index})
+
+    if n_highly_branched_failing > 0:
+        existing = {tc['smiles'] for tc in test_cases}
+        failing = generate_highly_branched_failing_cases(
+            n=n_highly_branched_failing,
+            min_carbons=max(min_carbons, 8),
+            max_carbons=max(max_carbons, 16),
+            existing_smiles=existing,
+        )
+        test_cases.extend(failing)
+        print(f"Added {len(failing)} highly branched failing cases "
+              f"(target: {n_highly_branched_failing})")
+
     return test_cases
 
 class TestBranching:
@@ -236,6 +347,7 @@ class TestBranching:
         
 if __name__ == "__main__":
     seed = 2025
-    tester = TestBranching(n=300, branching_range=(0.0, 0.6), min_carbons=5, max_carbons=15, seed=seed)
+    tester = TestBranching(n=300, branching_range=(0.0, 0.6), min_carbons=5, max_carbons=15, seed=seed,
+                           n_highly_branched_failing=50)
     tester.run_tests()
     tester.save(os.path.join(DATA_DIR, f"branching_test_results_{seed}.json"))

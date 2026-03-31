@@ -615,9 +615,24 @@ def generate_random_mol(n, functional_groups=None, perfluorinated=True, cycle=Fa
     elif isinstance(functional_groups,list):
         if len(functional_groups) >0 and isinstance(functional_groups[0],str):
             functional_groups = [{'group_smiles':functional_group[0],'n':kwargs.get('m',1),'mode':kwargs.get('mode','attach')} for functional_group in functional_groups]
-    mol = generate_random_carbon_chain(n, cycle, alkene, alkyne, branching_range=kwargs.get('branching_range'))
-    # Randomly fluorinate the molecule
-    mol = fluorinate_mol(mol, perfluorinated=perfluorinated)
-    if len(functional_groups)>0:
-        mol = append_functional_groups(mol,functional_groups,chain_n=n,**{k: v for k, v in kwargs.items() if k != 'branching_range'})
-    return mol
+    _p     = kwargs.get('p', 0.3)
+    _phigh = kwargs.get('phigh', 1)
+    _max_defs     = kwargs.get('max_matched_definitions')
+    _skip_keys    = {'branching_range', 'max_matched_definitions', 'max_generation_attempts', 'p', 'phigh'}
+    _max_attempts = kwargs.get('max_generation_attempts', n * 10) if _max_defs is not None else 1
+    for _ in range(_max_attempts):
+        _fg = [dict(g) for g in functional_groups]  # copy so 'n' mutations don't bleed across retries
+        mol = generate_random_carbon_chain(n, cycle, alkene, alkyne, branching_range=kwargs.get('branching_range'))
+        mol = fluorinate_mol(mol, perfluorinated=perfluorinated, p=_p, phigh=_phigh)
+        if _fg:
+            mol = append_functional_groups(mol, _fg, chain_n=n,
+                                           **{k: v for k, v in kwargs.items() if k not in _skip_keys})
+        if _max_defs is not None:
+            from PFASGroups import parse_mol as _parse_mol  # lazy import – avoids circular dependency
+            _result = _parse_mol(mol, include_PFAS_definitions=True)
+            _detected = {m['id'] for m in _result.get('matches', []) if m.get('type') == 'PFASdefinition'}
+            if len(_detected) <= _max_defs:
+                return mol
+        else:
+            return mol
+    return mol  # return last attempt if constraint was not satisfied within max_attempts
