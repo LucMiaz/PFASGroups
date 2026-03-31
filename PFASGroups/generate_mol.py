@@ -17,7 +17,7 @@ Or use generate_random_mol() which combines all steps.
 import numpy as np
 from rdkit import Chem
 from itertools import groupby
-
+from typing import Union
 np.random.seed(2025)  # For reproducibility
 
 def generate_random_carbon_chain(n, cycle=False, alkene=False, alkyne=False, branching_range = None):
@@ -173,7 +173,7 @@ def get_attachment(mol, m, atom_symbols = ['C'], neighbors_symbols = {'C':['F','
     candidates = [x for i,x in enumerate(candidates) if i == len(candidates) or ((x[1],x[0]) not in candidates[i+1:] and (x[0],x[1]) not in candidates[i+1:])]
     return [candidates[x] for x in np.random.choice(range(len(candidates)),size = min(len(candidates),m), replace = False)]
 
-def append_functional_group(mol, group_smiles, insertion = 'attach', m=1, atom_indices:list = None, neighbor_atoms = ['C'],sanitize = False):
+def append_functional_group(mol, group_smiles, insertion = 'attach', m=1, atom_indices:Union[list,None] = None, neighbor_atoms = ['C'],sanitize = False, ensure_fluorination = True):
     """Append a functional group to a molecule.
     Args: insertion: 'attach' to attach to a specific atom, 'insert' place between two bonded atoms, replacing their bond.
     atom_indices: list of lists atom indices + neighbor_indices (atom_index,neighbor_index)
@@ -185,15 +185,15 @@ def append_functional_group(mol, group_smiles, insertion = 'attach', m=1, atom_i
         atom_indices = get_attachment(mol, m, atom_symbols=neighbor_atoms, neighbors_symbols = {neighbor_atoms[0]:['F','H']})
     for atom_index, neighbor_atom_index in atom_indices:
         if insertion == 'attach':
-            mol = attach_mol(mol, group_mol, atom_index)
+            mol = attach_mol(mol, group_mol, atom_index, ensure_fluorination)
         elif insertion == 'insert':
-            mol = insert_mol(mol, group_mol, atom_index, neighbor_atom_index)
+            mol = insert_mol(mol, group_mol, atom_index, neighbor_atom_index, ensure_fluorination)
     if sanitize is True:
         Chem.SanitizeMol(mol)
     return mol
 
 
-def attach_mol(mol, submol, atom_index):
+def attach_mol(mol, submol, atom_index, ensure_fluorination=True):
     """Attach a submolecule to a main molecule at a specific atom.
 
     Removes a random F or H neighbor from the attachment atom and bonds
@@ -224,12 +224,21 @@ def attach_mol(mol, submol, atom_index):
     rwm.InsertMol(submol)
     rwm.BeginBatchEdit() # start a batch
     atom = rwm.GetAtomWithIdx(atom_index)
+    next_atom = atom.GetNeighbors()[0]
     # choose random neighbor atom (either 'F' or 'H') to remove
     neighbors = [x.GetIdx() for x in atom.GetNeighbors() if x.GetSymbol() in ['F', 'H']]
     atom_to_remove = int(np.random.choice(neighbors))
     rwm.RemoveBond(atom_index, atom_to_remove)
     rwm.RemoveAtom(atom_to_remove)  # remove the atom
     rwm.AddBond(atom_index, submol_index, Chem.BondType.SINGLE)
+    if ensure_fluorination:
+        # If the removed atom was H, add an F to maintain fluorination level
+        for neighbor in atom.GetNeighbors():
+            if neighbor.GetSymbol() in ['H','Cl','Br','I']:
+                new_atom_index = rwm.AddAtom(Chem.Atom(9))  # Add F
+                rwm.RemoveBond(atom_index, neighbor.GetIdx())  # Remove bond to old neighbor
+                rwm.AddBond(atom, new_atom_index, Chem.BondType.SINGLE)
+                rwm.RemoveAtom(neighbor.GetIdx())  # Remove old neighbor
     rwm.CommitBatchEdit()  # finish the batch
     Chem.SanitizeMol(rwm)
     return rwm.GetMol()
@@ -283,6 +292,15 @@ def insert_mol(mol, group_mol, atom_index, neighbor_index):
     except:
         pass
     rwm.AddBond(atom2.GetIdx(), end_atom_index, Chem.BondType.SINGLE)
+    if ensure_fluorination:
+        # If the removed atom was H, add an F to maintain fluorination level
+        for atom in [atom1, atom2]:
+            for neighbor in atom.GetNeighbors():
+                if neighbor.GetSymbol() in ['H','Cl','Br','I']:
+                    new_atom_index = rwm.AddAtom(Chem.Atom(9))  # Add F
+                    rwm.RemoveBond(atom.GetIdx(), neighbor.GetIdx())  # Remove bond to old neighbor
+                    rwm.AddBond(atom.GetIdx(), new_atom_index, Chem.BondType.SINGLE)
+                    rwm.RemoveAtom(neighbor.GetIdx())  # Remove old neighbor
     rwm.CommitBatchEdit()  # finish the batch
     Chem.SanitizeMol(rwm)
     return rwm.GetMol()
