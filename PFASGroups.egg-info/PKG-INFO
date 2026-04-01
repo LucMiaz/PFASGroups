@@ -163,34 +163,40 @@ PFASGroups/
 | `HalogenGroups` | `['F', 'Cl', 'Br', 'I']` (all) | Multi-halogen analysis |
 | `PFASgroups` | `'F'` (fluorine only) | PFAS / fluorine-focused analysis |
 
-## Benchmark Summary (Feb 2026, using v. 2.2.3 only on F groups)
+## Benchmark Summary (Mar 2026, v. 3.2.2, F groups)
 
 Benchmarks were run on an Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz (4C/8T), 15.5 GB RAM, Python 3.9.23, RDKit 2025.09.2, NetworkX 3.2.1 (the old version of Python was taken for compatibility with PFAS-atlas).
 
 | Dataset/Profile | Count | Atom range | PFASgroups mean/median (ms) | PFAS-Atlas mean/median (ms) | Relative speed | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| OECD reference (real compounds) | 3,414 | Typical small/medium | 19.2 / 14.8 | 38.8 / 37.7 | 2.02x faster | Real-world dataset representing existing compounds. |
-| Timing stress-test (full metrics) | 2,500 | 11-625 | 251.8 / 24.4 | 58.5 / 34.2 | 0.23x | Synthetic stress-test with large molecules; heavy-tail runtime. |
-| Timing stress-test (no resistance) | 2,500 | 11-619 | 176.7 / 24.8 | N/A | 1.43x faster vs full | Disables effective graph resistance only. |
-| Timing stress-test (no metrics) | 2,500 | 11-619 | 97.7 / 19.7 | N/A | 2.58x faster vs full | Disables all component graph metrics. |
+| OECD reference (real compounds) | 3,707 | varied | 26.3 / 20.8 | 32.4 / 37.0 | 1.23x faster | Real-world OECD dataset. |
+| CLInventory, F only (real compounds) | 28,328 | varied | 23.2 / 17.5 | 5.1 / 1.0 | 4.6x slower | Large real-world dataset; Atlas faster due to smaller typical molecule size. |
+| Large PFAS (≥35 atoms) | 1,242 | ≥35 | 526.0 / 253.4 | 93.8 / 72.5 | 5.6x slower | Large-molecule subset; heavy-tail runtime. |
+| Stress-test (full metrics) | 2,500 | 11-622 | 271.8 / 35.9 | 67.0 / 38.7 | 4.1x slower | Synthetic stress-test; heavy-tail runtime. |
+| Stress-test (no EGR) | 2,500 | 11-625 | 272.6 / 31.6 | 67.2 / 38.7 | ≈ full | Disables effective graph resistance; negligible speedup. |
+| Stress-test (no metrics) | 2,500 | 9-621 | 205.1 / 28.7 | 67.0 / 38.4 | 1.33x faster vs full | Disables all component graph metrics. |
 
-Timing profile plots (full vs no resistance vs no metrics):
-- [benchmark/reports/timing_profiles_comparison.png](benchmark/reports/timing_profiles_comparison.png)
-- [benchmark/reports/timing_profiles_residuals.png](benchmark/reports/timing_profiles_residuals.png)
+Timing profile plots (full vs no EGR vs no metrics):
+- [benchmark/imgs/si/timing_profiles_comparison.png](benchmark/imgs/si/timing_profiles_comparison.png)
 
 Disable or limit graph metrics in the Python API:
 
 ```python
-from HalogenGroups import parse_smiles
+from PFASGroups import parse_smiles
+
+smiles_list = ['C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O',
+               'C1=CC(=CC=C1[N+](=O)[O-])OC2=C(C=C(C=C2)C(F)(F)F)[N+](=O)[O-]',
+               'C(C(C(C(F)(F)S(=O)(=O)O)(F)F)(F)F)(C(C(F)(F)F)(F)F)(C(F)(F)F)C(F)(F)F'
+                ]
 
 # Skip all component graph metrics (fastest)
-parse_smiles(smiles_list, compute_component_metrics=False)
+rFull = parse_smiles(smiles_list, compute_component_metrics=False)
 
 # Keep metrics but skip effective graph resistance entirely
-parse_smiles(smiles_list, limit_effective_graph_resistance=0)
+rNoEGR = parse_smiles(smiles_list, limit_effective_graph_resistance=0)
 
 # Compute resistance only for components below a size threshold
-parse_smiles(smiles_list, limit_effective_graph_resistance=200)
+rLimitEGR = parse_smiles(smiles_list, limit_effective_graph_resistance=20)
 ```
 
 CLI equivalents:
@@ -459,47 +465,6 @@ results = parse_smiles(
 )
 ```
 
-```python
-# Or extend defaults with your custom groups
-from HalogenGroups import get_HalogenGroups, HalogenGroup, parse_smiles, compile_componentSmarts, get_componentSMARTSs
-
-# Add custom PFAS groups
-groups = get_HalogenGroups()  # Get defaults
-groups.append(HalogenGroup(
-    id=999,
-    name="My Custom Group",
-    smarts={"[C](F)(F)F": 1},
-    componentSmarts=None,
-    componentSaturation="per",
-    componentHalogens="F",
-    componentForm="alkyl",
-    constraints={"gte": {"F": 1}}
-))
-
-results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
-
-# Custom max_dist_from_comp parameter
-# For functional groups without formula constraints,
-# max_dist_from_comp limits the maximum bond distance between
-# a functional group match and a fluorinated carbon terminal atom (default: 0)
-groups.append(HalogenGroup(
-    id=998,
-    name="Extended Distance Group",
-    smarts={"[#6$([#6][OH1])]": 1},
-    componentSmarts=None,
-    constraints={},
-    max_dist_from_comp=3  # Allow up to 3 bonds from fluorinated carbon
-))
-
-# Add custom path types (e.g., chlorinated analogs)
-paths = get_componentSMARTSs()
-paths['Perchlorinated'] = compile_componentSmarts(
-    "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # component pattern
-    "[C;X4](Cl)(Cl)Cl"                     # end pattern
-)
-
-results = parse_smiles(["ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"], componentSmartss=paths)
-```
 
 ```bash
 # Via command line
@@ -669,7 +634,7 @@ Key test files:
 
 Performance and coverage were benchmarked against [PFAS-Atlas](https://github.com/su-group/PFAS-atlas?tab=readme-ov-file) (Su *et al.* 2024, [DOI: 10.1016/j.scitotenv.2024.171229](https://www.sciencedirect.com/science/article/pii/S0048969724013688)).
 
-See the table in the [Benchmark Summary](#benchmark-summary-feb-2026-using-v-223-only-on-f-groups) section above for timing numbers. Full per-dataset comparison and Sankey diagrams are in `benchmark/reports/`.
+See the table in the [Benchmark Summary](#benchmark-summary-mar-2026-v-322-f-groups) section above for timing numbers. Full per-dataset comparison and Sankey diagrams are in `benchmark/reports/`.
 
 ### PFASSTRUCTv5 validation against Richard *et al.* 2023
 

@@ -257,48 +257,6 @@ results = parse_smiles(
 )
 ```
 
-```python
-# Or extend defaults with your custom groups
-from HalogenGroups import get_HalogenGroups, HalogenGroup, parse_smiles, compile_componentSmarts, get_componentSMARTSs
-
-# Add custom PFAS groups
-groups = get_HalogenGroups()  # Get defaults
-groups.append(HalogenGroup(
-    id=999,
-    name="My Custom Group",
-    smarts={"[C](F)(F)F":1}
-    componentSmarts="None,
-    componentSaturation="per",
-    componentHalogen="F",
-    componentForm="alkyl",
-    constraints={"gte":{"F":1}}
-))
-
-results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
-
-# Custom max_dist_from_CF parameter
-# For functional groups without formula constraints, when bycomponent=True,
-# the max_dist_from_CF parameter limits the maximum bond distance between
-# a functional group match and a fluorinated carbon terminal atom (default: 0)
-groups.append(PFASGroup(
-    id=998,
-    name="Extended Distance Group",
-    smarts1="[#6$([#6][OH1])]",
-    smarts2=None,
-    componentSmarts=None,
-    constraints={},
-    max_dist_from_CF=3  # Allow up to 3 bonds from fluorinated carbon
-))
-
-# Add custom path types (e.g., chlorinated analogs)
-paths = get_componentSMARTSs()
-paths['Perchlorinated'] = compile_componentSmarts(
-    "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",  # component pattern
-    "[C;X4](Cl)(Cl)Cl"                     # end pattern
-)
-
-results = parse_smiles(["ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"], componentSmartss=paths)
-```
 
 ```bash
 # Via command line

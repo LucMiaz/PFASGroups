@@ -18,7 +18,7 @@ from PIL import Image
 from io import BytesIO
 import pandas as pd
 import numpy as np
-from .parser import load_HalogenGroups
+
 
 
 def _load_palette() -> List[str]:
@@ -84,7 +84,13 @@ def _encode_count(match, mode: str) -> float:
     """Scalar encoding for one matched group given count *mode*."""
     if match is None or not match.get('components'):
         return 0.0
-    comps = match['components']
+    return _encode_count_comps(match['components'], mode)
+
+
+def _encode_count_comps(comps: list, mode: str) -> float:
+    """Like :func:`_encode_count` but accepts a pre-filtered component list."""
+    if not comps:
+        return 0.0
     if mode == 'binary':
         return 1.0
     if mode == 'count':
@@ -1353,6 +1359,7 @@ class PFASEmbedding(dict):
         aggregation=_UNSET,
         preset=_UNSET,
         pfas_groups=_UNSET,
+        halogens=_UNSET,
     ) -> np.ndarray:
         """Generate a 1-D embedding vector for this molecule.
 
@@ -1381,11 +1388,19 @@ class PFASEmbedding(dict):
             Named configuration from ``EMBEDDING_PRESETS``.
         pfas_groups : list, optional
             Custom group list (loaded from defaults when None).
+        halogens : str or list of str, optional
+            When provided, produce one block of ``n_groups`` columns *per
+            halogen*, filtering each block's components to that halogen only.
+            E.g. ``halogens=['F', 'Cl']`` yields a vector of length
+            ``2 × n_groups × len(component_metrics)``.
+            ``None`` (default) preserves the original behaviour: all
+            components are used regardless of halogen.
 
         Returns
         -------
         np.ndarray
-            1-D float array of length ``n_groups × len(component_metrics)
+            1-D float array of length
+            ``n_halogens × n_groups × len(component_metrics)
             + len(molecule_metrics)``.
         """
         # Return last cached result when called with no arguments
@@ -1393,6 +1408,7 @@ class PFASEmbedding(dict):
             component_metrics is _UNSET and molecule_metrics is _UNSET and
             group_selection is _UNSET and selected_group_ids is _UNSET and
             aggregation is _UNSET and preset is _UNSET and pfas_groups is _UNSET
+            and halogens is _UNSET
         )
         if _no_args and getattr(self, '_last_array', None) is not None:
             return self._last_array
@@ -1405,6 +1421,7 @@ class PFASEmbedding(dict):
         if aggregation is _UNSET:       aggregation = 'mean'
         if preset is _UNSET:            preset = None
         if pfas_groups is _UNSET:       pfas_groups = None
+        if halogens is _UNSET:          halogens = None
 
         from .embeddings import FINGERPRINT_PRESETS, _COUNT_MODES
         from .getter import get_compiled_HalogenGroups
@@ -1427,17 +1444,36 @@ class PFASEmbedding(dict):
         sel_groups = _select_groups(group_selection, selected_group_ids, pfas_groups)
         match_by_id = {m['id']: m for m in self.get('matches', [])}
 
+        # Normalise halogens to a list (or None for legacy single-block mode)
+        resolved_hal: Optional[List[str]] = (
+            [halogens] if isinstance(halogens, str)
+            else list(halogens) if halogens is not None
+            else None
+        )
+        _meta = _get_component_meta() if resolved_hal is not None else {}
+        hal_loop = resolved_hal if resolved_hal is not None else [None]
+
         row: List[float] = []
-        for m in resolved_cm:
-            for g in sel_groups:
-                match = match_by_id.get(g.id)
-                if match is None:
-                    row.append(0.0)
-                elif m in _COUNT_MODES:
-                    row.append(_encode_count(match, m))
-                else:
-                    comps = match.get('components', [])
-                    row.append(_agg(comps, m, aggregation))
+        for hal in hal_loop:
+            if hal is not None:
+                hal_groups = [g for g in sel_groups
+                              if g.excludeHalogens is None or hal not in g.excludeHalogens]
+            else:
+                hal_groups = sel_groups
+            for m in resolved_cm:
+                for g in hal_groups:
+                    match = match_by_id.get(g.id)
+                    if match is None:
+                        row.append(0.0)
+                    else:
+                        comps = match.get('components', [])
+                        if hal is not None:
+                            comps = [c for c in comps
+                                     if _meta.get(c.get('SMARTS', ''), {}).get('halogen') == hal]
+                        if m in _COUNT_MODES:
+                            row.append(_encode_count_comps(comps, m))
+                        else:
+                            row.append(_agg(comps, m, aggregation))
 
         all_comps = [c for m in match_by_id.values() for c in m.get('components', [])]
         for m in resolved_mm:
@@ -1462,6 +1498,7 @@ class PFASEmbedding(dict):
         selected_group_ids: Optional[List[int]] = None,
         preset: Optional[str] = None,
         pfas_groups=None,
+        halogens=None,
     ) -> List[str]:
         """Return the list of column labels for :meth:`to_array` without computing values.
 
@@ -1486,7 +1523,23 @@ class PFASEmbedding(dict):
 
         sel_groups = _select_groups(group_selection, selected_group_ids, pfas_groups)
 
-        names = [f"{g.name} [{m}]" for m in resolved_cm for g in sel_groups]
+        resolved_hal: Optional[List[str]] = (
+            [halogens] if isinstance(halogens, str)
+            else list(halogens) if halogens is not None
+            else None
+        )
+        hal_loop = resolved_hal if resolved_hal is not None else [None]
+
+        names = []
+        for hal in hal_loop:
+            if hal is not None:
+                hal_groups = [g for g in sel_groups
+                              if g.excludeHalogens is None or hal not in g.excludeHalogens]
+            else:
+                hal_groups = sel_groups
+            for m in resolved_cm:
+                for g in hal_groups:
+                    names.append(f"{g.name} [{m}]{f' ({hal})' if hal is not None else ''}")
         names += [f"mol:{m}" for m in resolved_mm]
         return names
 
@@ -1676,7 +1729,25 @@ class PFASEmbeddingSet(list):
             mols.append(mol)
         return cls.from_mols(mols, **kwargs)
 
+    def reorder(self, indices:Union[list,None] = None, key: Callable[["PFASEmbedding"], Any] = None, reverse: bool = False) -> "PFASEmbeddingSet":
+        """Return a new PFASEmbeddingSet with results reordered by a key function.
 
+        Parameters
+        ----------
+        indices : list of int, optional
+            Explicit list of indices defining the new order. If provided, this takes precedence over the key function.
+        key : callable
+            Function that takes a PFASEmbedding and returns a value to sort by.
+        reverse : bool, default False
+            Whether to sort in descending order.
+        """
+        if indices is not None:
+            if len(indices) != len(self):
+                raise ValueError("Length of indices must match the number of results.")
+            self[:] = [self[i] for i in indices]
+        else:
+            self[:] = sorted(self, key=key, reverse=reverse)
+        return self
 
     def iter_group_matches(
         self,
@@ -2589,6 +2660,7 @@ class PFASEmbeddingSet(list):
         aggregation=_UNSET,
         preset=_UNSET,
         pfas_groups=_UNSET,
+        halogens=_UNSET,
         progress: bool = True,
     ) -> "EmbeddingArray":
         """Stack per-molecule embedding rows into a ``(n_mols, n_cols)`` matrix.
@@ -2606,6 +2678,7 @@ class PFASEmbeddingSet(list):
             component_metrics is _UNSET and molecule_metrics is _UNSET and
             group_selection is _UNSET and selected_group_ids is _UNSET and
             aggregation is _UNSET and preset is _UNSET and pfas_groups is _UNSET
+            and halogens is _UNSET
         )
         if _no_args and getattr(self, '_last_array', None) is not None:
             return self._last_array
@@ -2618,6 +2691,7 @@ class PFASEmbeddingSet(list):
         if aggregation is _UNSET:       aggregation = 'mean'
         if preset is _UNSET:            preset = None
         if pfas_groups is _UNSET:       pfas_groups = None
+        if halogens is _UNSET:          halogens = None
 
         from .getter import get_compiled_HalogenGroups
         if pfas_groups is None:
@@ -2640,6 +2714,7 @@ class PFASEmbeddingSet(list):
                 aggregation=aggregation,
                 preset=preset,
                 pfas_groups=pfas_groups,
+                halogens=halogens,
             )
             for mol in _iter
         ]
@@ -2713,11 +2788,65 @@ class PFASEmbeddingSet(list):
             return float(kl_sym / max_kl) if max_kl > 0 else 0.0
         raise ValueError(f"Unknown method: {method!r}. Choose from 'forward', 'reverse', 'symmetric', 'minmax'.")
 
+    # ------------------------------------------------------------------
+    # Internal helper shared by all DR methods
+    # ------------------------------------------------------------------
+    def _color_labels(
+        self,
+        color_by,
+    ):
+        """Return (colors, unique_labels, colour_map) for scatter plots.
+
+        Parameters
+        ----------
+        color_by : None | ``'top_group'`` | list of str
+            * ``None`` – return ``(None, None, None)``; callers fall back to a
+              single default colour.
+            * ``'top_group'`` – derive one label per molecule from the
+              highest ``match_count`` ``HalogenGroup`` match.
+            * list of str – use directly as per-molecule labels (must be the
+              same length as ``self``).
+        """
+        import matplotlib.pyplot as plt
+        import matplotlib.patches as mpatches
+
+        if color_by is None:
+            return None, None, None
+
+        if color_by == 'top_group':
+            def _top(emb):
+                hits = [m for m in emb.get('matches', [])
+                        if m.get('type') == 'HalogenGroup']
+                if not hits:
+                    return 'No match'
+                return max(hits, key=lambda m: m['match_count'])['group_name']
+            labels = [_top(e) for e in self]
+        elif isinstance(color_by, (list, tuple)):
+            labels = list(color_by)
+        else:
+            raise ValueError(
+                "color_by must be None, 'top_group', or a list of per-molecule labels."
+            )
+
+        unique_labels = sorted(set(labels))
+        cmap = plt.colormaps.get_cmap('tab20')
+        colour_map = {
+            lbl: cmap(i / max(len(unique_labels) - 1, 1))
+            for i, lbl in enumerate(unique_labels)
+        }
+        colors = [colour_map[lbl] for lbl in labels]
+        handles = [
+            mpatches.Patch(color=colour_map[lbl], label=lbl)
+            for lbl in unique_labels
+        ]
+        return colors, handles, labels
+
     def perform_pca(
         self,
         n_components: int = 2,
         plot: bool = True,
         output_file: Optional[str] = None,
+        color_by=None,
     ) -> Dict:
         """Perform PCA on the embedding matrix.
 
@@ -2726,12 +2855,16 @@ class PFASEmbeddingSet(list):
         n_components : int, default 2
         plot : bool, default True
         output_file : str, optional
+        color_by : None | ``'top_group'`` | list of str, default None
+            Colour scatter-plot points.  Pass ``'top_group'`` to colour by the
+            PFAS group with the highest match count per molecule, or pass a
+            list of per-molecule label strings.  ``None`` uses a single colour.
 
         Returns
         -------
         dict
             Keys: ``'transformed'``, ``'explained_variance'``, ``'components'``,
-            ``'pca_model'``, ``'scaler'``.
+            ``'pca_model'``, ``'scaler'``, ``'labels'`` (if *color_by* is set).
         """
         try:
             from sklearn.decomposition import PCA
@@ -2749,13 +2882,19 @@ class PFASEmbeddingSet(list):
         pca = PCA(n_components=n_components)
         X_pca = pca.fit_transform(X)
 
+        colors, handles, labels = self._color_labels(color_by)
+
         if plot and n_components >= 2:
             fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
-            ax1.scatter(X_pca[:, 0], X_pca[:, 1], alpha=0.6, s=50)
+            ax1.scatter(X_pca[:, 0], X_pca[:, 1],
+                        c=colors, alpha=0.6, s=50)
             ax1.set_xlabel(f'PC1 ({pca.explained_variance_ratio_[0]:.1%} variance)')
             ax1.set_ylabel(f'PC2 ({pca.explained_variance_ratio_[1]:.1%} variance)')
             ax1.set_title('PCA of PFAS Group Embeddings')
             ax1.grid(True, alpha=0.3)
+            if handles:
+                ax1.legend(handles=handles, fontsize=7, loc='best',
+                           title='Group', title_fontsize=8)
             ax2.bar(range(1, n_components + 1), pca.explained_variance_ratio_)
             ax2.set_xlabel('Principal Component')
             ax2.set_ylabel('Explained Variance Ratio')
@@ -2768,13 +2907,16 @@ class PFASEmbeddingSet(list):
                 plt.show()
             plt.close()
 
-        return {
+        result = {
             'transformed': X_pca,
             'explained_variance': pca.explained_variance_ratio_,
             'components': pca.components_,
             'pca_model': pca,
             'scaler': scaler,
         }
+        if labels is not None:
+            result['labels'] = labels
+        return result
 
     def perform_kernel_pca(
         self,
@@ -2783,6 +2925,7 @@ class PFASEmbeddingSet(list):
         gamma: Optional[float] = None,
         plot: bool = True,
         output_file: Optional[str] = None,
+        color_by=None,
     ) -> Dict:
         """Perform kernel PCA on the embedding matrix.
 
@@ -2793,11 +2936,16 @@ class PFASEmbeddingSet(list):
         gamma : float, optional
         plot : bool, default True
         output_file : str, optional
+        color_by : None | ``'top_group'`` | list of str, default None
+            Colour scatter-plot points.  Pass ``'top_group'`` to colour by the
+            PFAS group with the highest match count per molecule, or pass a
+            list of per-molecule label strings.  ``None`` uses a single colour.
 
         Returns
         -------
         dict
-            Keys: ``'transformed'``, ``'kpca_model'``, ``'scaler'``, ``'kernel'``, ``'gamma'``.
+            Keys: ``'transformed'``, ``'kpca_model'``, ``'scaler'``, ``'kernel'``,
+            ``'gamma'``, ``'labels'`` (if *color_by* is set).
         """
         try:
             from sklearn.decomposition import KernelPCA
@@ -2816,13 +2964,19 @@ class PFASEmbeddingSet(list):
         kpca = KernelPCA(n_components=n_components, kernel=kernel, gamma=gamma)
         X_kpca = kpca.fit_transform(X)
 
+        colors, handles, labels = self._color_labels(color_by)
+
         if plot and n_components >= 2:
             fig, ax = plt.subplots(figsize=(8, 6))
-            ax.scatter(X_kpca[:, 0], X_kpca[:, 1], alpha=0.6, s=50)
+            ax.scatter(X_kpca[:, 0], X_kpca[:, 1],
+                       c=colors, alpha=0.6, s=50)
             ax.set_xlabel('Kernel PC1')
             ax.set_ylabel('Kernel PC2')
             ax.set_title(f'Kernel PCA ({kernel}) of PFAS Group Embeddings')
             ax.grid(True, alpha=0.3)
+            if handles:
+                ax.legend(handles=handles, fontsize=7, loc='best',
+                          title='Group', title_fontsize=8)
             plt.tight_layout()
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches='tight')
@@ -2830,13 +2984,16 @@ class PFASEmbeddingSet(list):
                 plt.show()
             plt.close()
 
-        return {
+        result = {
             'transformed': X_kpca,
             'kpca_model': kpca,
             'scaler': scaler,
             'kernel': kernel,
             'gamma': gamma,
         }
+        if labels is not None:
+            result['labels'] = labels
+        return result
 
     def perform_tsne(
         self,
@@ -2846,6 +3003,7 @@ class PFASEmbeddingSet(list):
         max_iter: int = 1000,
         plot: bool = True,
         output_file: Optional[str] = None,
+        color_by=None,
     ) -> Dict:
         """Perform t-SNE dimensionality reduction on the embedding matrix.
 
@@ -2857,11 +3015,16 @@ class PFASEmbeddingSet(list):
         max_iter : int, default 1000
         plot : bool, default True
         output_file : str, optional
+        color_by : None | ``'top_group'`` | list of str, default None
+            Colour scatter-plot points.  Pass ``'top_group'`` to colour by the
+            PFAS group with the highest match count per molecule, or pass a
+            list of per-molecule label strings.  ``None`` uses a single colour.
 
         Returns
         -------
         dict
-            Keys: ``'transformed'``, ``'tsne_model'``, ``'scaler'``, ``'perplexity'``.
+            Keys: ``'transformed'``, ``'tsne_model'``, ``'scaler'``, ``'perplexity'``,
+            ``'labels'`` (if *color_by* is set).
         """
         try:
             from sklearn.manifold import TSNE
@@ -2885,13 +3048,19 @@ class PFASEmbeddingSet(list):
         )
         X_tsne = tsne.fit_transform(X)
 
+        colors, handles, labels = self._color_labels(color_by)
+
         if plot and n_components >= 2:
             fig, ax = plt.subplots(figsize=(8, 6))
-            ax.scatter(X_tsne[:, 0], X_tsne[:, 1], alpha=0.6, s=50)
+            ax.scatter(X_tsne[:, 0], X_tsne[:, 1],
+                       c=colors, alpha=0.6, s=50)
             ax.set_xlabel('t-SNE 1')
             ax.set_ylabel('t-SNE 2')
             ax.set_title(f't-SNE (perplexity={perplexity}) of PFAS Group Embeddings')
             ax.grid(True, alpha=0.3)
+            if handles:
+                ax.legend(handles=handles, fontsize=7, loc='best',
+                          title='Group', title_fontsize=8)
             plt.tight_layout()
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches='tight')
@@ -2899,12 +3068,15 @@ class PFASEmbeddingSet(list):
                 plt.show()
             plt.close()
 
-        return {
+        result = {
             'transformed': X_tsne,
             'tsne_model': tsne,
             'scaler': scaler,
             'perplexity': perplexity,
         }
+        if labels is not None:
+            result['labels'] = labels
+        return result
 
     def perform_umap(
         self,
@@ -2914,6 +3086,7 @@ class PFASEmbeddingSet(list):
         metric: str = 'euclidean',
         plot: bool = True,
         output_file: Optional[str] = None,
+        color_by=None,
     ) -> Dict:
         """Perform UMAP dimensionality reduction on the embedding matrix.
 
@@ -2925,11 +3098,16 @@ class PFASEmbeddingSet(list):
         metric : str, default ``'euclidean'``
         plot : bool, default True
         output_file : str, optional
+        color_by : None | ``'top_group'`` | list of str, default None
+            Colour scatter-plot points.  Pass ``'top_group'`` to colour by the
+            PFAS group with the highest match count per molecule, or pass a
+            list of per-molecule label strings.  ``None`` uses a single colour.
 
         Returns
         -------
         dict
-            Keys: ``'transformed'``, ``'umap_model'``, ``'scaler'``, ``'n_neighbors'``, ``'min_dist'``.
+            Keys: ``'transformed'``, ``'umap_model'``, ``'scaler'``, ``'n_neighbors'``,
+            ``'min_dist'``, ``'labels'`` (if *color_by* is set).
         """
         try:
             import umap
@@ -2961,13 +3139,19 @@ class PFASEmbeddingSet(list):
             )
             X_umap = reducer.fit_transform(X)
 
+        colors, handles, labels = self._color_labels(color_by)
+
         if plot and n_components >= 2:
             fig, ax = plt.subplots(figsize=(8, 6))
-            ax.scatter(X_umap[:, 0], X_umap[:, 1], alpha=0.6, s=50)
+            ax.scatter(X_umap[:, 0], X_umap[:, 1],
+                       c=colors, alpha=0.6, s=50)
             ax.set_xlabel('UMAP 1')
             ax.set_ylabel('UMAP 2')
             ax.set_title(f'UMAP (n_neighbors={n_neighbors}) of PFAS Group Embeddings')
             ax.grid(True, alpha=0.3)
+            if handles:
+                ax.legend(handles=handles, fontsize=7, loc='best',
+                          title='Group', title_fontsize=8)
             plt.tight_layout()
             if output_file:
                 plt.savefig(output_file, dpi=300, bbox_inches='tight')
@@ -2975,13 +3159,16 @@ class PFASEmbeddingSet(list):
                 plt.show()
             plt.close()
 
-        return {
+        result = {
             'transformed': X_umap,
             'umap_model': reducer,
             'scaler': scaler,
             'n_neighbors': n_neighbors,
             'min_dist': min_dist,
         }
+        if labels is not None:
+            result['labels'] = labels
+        return result
 
     def column_names(
         self,
@@ -2991,6 +3178,7 @@ class PFASEmbeddingSet(list):
         selected_group_ids: Optional[List[int]] = None,
         preset: Optional[str] = None,
         pfas_groups=None,
+        halogens=None,
     ) -> List[str]:
         """Return column labels (delegates to first element)."""
         if self:
@@ -3001,6 +3189,7 @@ class PFASEmbeddingSet(list):
                 selected_group_ids=selected_group_ids,
                 preset=preset,
                 pfas_groups=pfas_groups,
+                halogens=halogens,
             )
         return []
 

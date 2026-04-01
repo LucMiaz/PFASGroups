@@ -390,7 +390,6 @@ def add_componentSmarts(filename = COMPONENTS_FILE):
                     if saturation is not None and path_info['saturation'] not in saturation:
                         continue
                     filtered_paths[name] = path_info
-
             kwargs["componentSmartss"] = kwargs.get("componentSmartss", filtered_paths)
             return func(*args, **kwargs)
         return wrapper

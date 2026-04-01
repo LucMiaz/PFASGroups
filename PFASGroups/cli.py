@@ -10,7 +10,8 @@ import sys
 import json
 
 
-from .parser import parse_smiles, get_componentSMARTSs, get_PFASGroups
+from .parser import parse_smiles
+from .getter import get_componentSMARTSs, get_HalogenGroups
 from .PFASEmbeddings import PFASEmbedding
 from rdkit import Chem
 
@@ -154,6 +155,11 @@ Note: Use get_componentSMARTSs() and get_PFASGroups() in Python to extend defaul
         help='Selected groups as range (e.g., "28-52") or comma-separated indices (e.g., "28,29,30")'
     )
     fp_parser.add_argument(
+        '--halogens',
+        nargs='+',
+        help='Filter components by halogen element symbol(s), e.g. F or F Cl Br I'
+    )
+    fp_parser.add_argument(
         '-f', '--format',
         choices=['vector', 'dict', 'sparse', 'detailed', 'int'],
         default='vector',
@@ -250,7 +256,7 @@ def cmd_parse(args):
     if args.component_smarts_file:
         kwargs['componentSmartss'] = get_componentSMARTSs(filename=args.component_smarts_file)
     if args.groups_file:
-        kwargs['pfas_groups'] = get_PFASGroups(filename=args.groups_file)
+        kwargs['pfas_groups'] = get_HalogenGroups(filename=args.groups_file)
     kwargs['compute_component_metrics'] = not args.no_component_metrics
     kwargs['limit_effective_graph_resistance'] = args.limit_effective_graph_resistance
     if args.halogens:
@@ -275,11 +281,50 @@ def cmd_parse(args):
     else:
         output_format = 'list'  # pylint: disable=unused-variable
 
-    # Parse PFAS with specified output format
+    # Parse PFAS — always returns a PFASEmbeddingSet
+    results = parse_smiles(smiles_list, bycomponent=args.bycomponent,
+                           **kwargs)
+
     if args.format == 'csv':
-        # Use CSV output format from parse_smiles
-        result = parse_smiles(smiles_list, bycomponent=args.bycomponent,
-                            output_format='csv', **kwargs)
+        # Build CSV output from PFASEmbeddingSet
+        import io
+        writer_buf = io.StringIO()
+        csv_writer = csv.writer(writer_buf)
+        csv_writer.writerow(['smiles', 'group_id', 'group_name', 'match_count',
+                             'component_idx', 'component_smarts', 'size',
+                             'branching', 'mean_eccentricity', 'component_fraction',
+                             'diameter', 'radius', 'effective_graph_resistance',
+                             'n_spacer', 'ring_size'])
+        for embedding in results:
+            smiles_val = embedding['smiles']
+            for match in embedding.get('matches', []):
+                if match.get('type') != 'HalogenGroup':
+                    continue
+                components = match.get('components', [])
+                if not components:
+                    csv_writer.writerow([
+                        smiles_val, match['id'], match['group_name'],
+                        match['match_count'], '', '', '', '', '', '', '', '', '', '', ''
+                    ])
+                for idx, comp in enumerate(components):
+                    csv_writer.writerow([
+                        smiles_val,
+                        match['id'],
+                        match['group_name'],
+                        match['match_count'],
+                        idx,
+                        comp.get('SMARTS', ''),
+                        comp.get('size', ''),
+                        comp.get('branching', ''),
+                        comp.get('mean_eccentricity', ''),
+                        comp.get('component_fraction', ''),
+                        comp.get('diameter', ''),
+                        comp.get('radius', ''),
+                        comp.get('effective_graph_resistance', ''),
+                        comp.get('n_spacer', ''),
+                        comp.get('ring_size', ''),
+                    ])
+        result = writer_buf.getvalue()
 
         if args.output:
             with open(args.output, 'w', encoding='utf-8') as f:
@@ -288,25 +333,38 @@ def cmd_parse(args):
         else:
             print(result, end='')
     else:
-        # Use list output format and convert to JSON
-        results = parse_smiles(smiles_list, bycomponent=args.bycomponent,
-                             output_format='list', **kwargs)
-
         # Convert to JSON format
         output_data = []
-        for smiles, matches in zip(smiles_list, results):
+        for embedding in results:
             result_entry = {
-                'smiles': smiles,
+                'smiles': embedding['smiles'],
                 'groups': []
             }
 
-            for group, match_count, chain_lengths, matched_chains in matches:
+            for match in embedding.get('matches', []):
+                if match.get('type') != 'HalogenGroup':
+                    continue
+                components_out = []
+                for comp in match.get('components', []):
+                    components_out.append({
+                        'smarts': comp.get('SMARTS'),
+                        'size': comp.get('size'),
+                        'branching': comp.get('branching'),
+                        'mean_eccentricity': comp.get('mean_eccentricity'),
+                        'component_fraction': comp.get('component_fraction'),
+                        'diameter': comp.get('diameter'),
+                        'radius': comp.get('radius'),
+                        'effective_graph_resistance': comp.get('effective_graph_resistance'),
+                        'n_spacer': comp.get('n_spacer'),
+                        'ring_size': comp.get('ring_size'),
+                    })
                 result_entry['groups'].append({
-                    'name': group.name,
-                    'id': group.id,
-                    'match_count': match_count,
-                    'chain_lengths': chain_lengths,
-                    'num_chains': len(matched_chains)
+                    'name': match['group_name'],
+                    'id': match['id'],
+                    'match_count': match['match_count'],
+                    'num_components': match['num_components'],
+                    'components_types': match.get('components_types', []),
+                    'components': components_out,
                 })
 
             output_data.append(result_entry)
@@ -330,7 +388,7 @@ def cmd_fingerprint(args):
     if args.component_smarts_file:
         kwargs['componentSmartss'] = get_componentSMARTSs(filename=args.component_smarts_file)
     if args.groups_file:
-        kwargs['pfas_groups'] = get_PFASGroups(filename=args.groups_file)
+        kwargs['pfas_groups'] = get_HalogenGroups(filename=args.groups_file)
 
     # Get SMILES from command line or file
     if args.input:
@@ -341,83 +399,69 @@ def cmd_fingerprint(args):
         print("Error: Provide SMILES as arguments or use --input", file=sys.stderr)
         sys.exit(1)
 
-    # Parse group selection
-    selected_groups = None
+    # Determine halogens
+    halogens = getattr(args, 'halogens', None) or 'F'
+
+    # Parse SMILES → PFASEmbeddingSet
+    embs = parse_smiles(smiles_list, halogens=halogens, **kwargs)
+
+    # Build fingerprint array and column names
+    array_kwargs = {}
     if args.groups:
-        selected_groups = parse_group_selection(args.groups)
+        array_kwargs['selected_group_ids'] = parse_group_selection(args.groups)
+    arr = embs.to_array(**array_kwargs)
+    col_names = embs.column_names(**{k: v for k, v in array_kwargs.items()
+                                    if k in ('selected_group_ids',)})
 
-    # Normalise representation arg: PFASEmbedding is now a numpy array subclass;
-    # the array itself is the fingerprint matrix.
-    import numpy as np
-    rfp = PFASEmbedding(
-        smiles_list,
-        count_mode=args.count_mode,
-        halogens=kwargs.pop('halogens', 'F'),
-    )
-    fps = rfp
-    group_info = {
-        'group_names': rfp.group_names,
-        'halogens': rfp.halogens,
-        'saturation': rfp.saturation,
-    }
+    # Format fingerprints per molecule
+    fingerprints = []
+    for i, smiles_val in enumerate(smiles_list):
+        row = arr[i].tolist()
+        if args.format == 'dict':
+            fingerprints.append({
+                'smiles': smiles_val,
+                'fingerprint': {col_names[j]: row[j] for j in range(len(col_names))}
+            })
+        else:  # vector
+            fingerprints.append({
+                'smiles': smiles_val,
+                'fingerprint': row
+            })
 
-    # Prepare output
+    # Build output
     output_data = {
-        'fingerprints': [],
-        'group_info': group_info
+        'smiles': smiles_list,
+        'column_names': col_names,
+        'fingerprints': fingerprints
     }
-
-    # Handle different representations
-    if args.format == 'vector':
-        output_data['fingerprints'] = fps.tolist() if isinstance(fps, np.ndarray) else fps
-    else:
-        output_data['fingerprints'] = fps.tolist() if isinstance(fps, np.ndarray) else fps
-
-    # Add SMILES to output for reference
-    output_data['smiles'] = smiles_list
 
     # Output based on requested format
     if args.output_format == 'csv':
-        # CSV output for fingerprints
         csv_rows = []
-        if args.format == 'vector':
-            # For vector representation, create columns for each group
-            import numpy as np
-            fps_list = fps if isinstance(fps, list) else [fps]
-            for _, (smiles, fp) in enumerate(zip(smiles_list, fps_list)):
-                row = {'smiles': smiles}
-                fp_array = fp.tolist() if isinstance(fp, np.ndarray) else fp
-                for j, val in enumerate(fp_array):
-                    group_idx = group_info['selected_indices'][j] if 'selected_indices' in group_info else j
-                    group_name = group_info['group_names'][group_idx] if group_idx < len(group_info['group_names']) else f'group_{group_idx}'
-                    row[f'{group_name}'] = val
-                csv_rows.append(row)
-        elif args.format == 'dict':
-            # For dict representation
-            fps_list = fps if isinstance(fps, list) else [fps]
-            for smiles, fp_dict in zip(smiles_list, fps_list):
-                row = {'smiles': smiles}
-                row.update(fp_dict)
-                csv_rows.append(row)
-        else:
-            print(f"Warning: CSV output not optimized for '{args.format}' representation, using JSON", file=sys.stderr)
-            args.output_format = 'json'
-
-        if args.output_format == 'csv':
-            fieldnames = list(csv_rows[0].keys()) if csv_rows else ['smiles']
-            if args.output:
-                with open(args.output, 'w', newline='', encoding='utf-8') as f:
-                    writer = csv.DictWriter(f, fieldnames=fieldnames)
-                    writer.writeheader()
-                    writer.writerows(csv_rows)
-                print(f"Results written to {args.output}")
+        for entry in fingerprints:
+            row = {'smiles': entry['smiles']}
+            fp = entry['fingerprint']
+            if isinstance(fp, dict):
+                row.update(fp)
             else:
-                writer = csv.DictWriter(sys.stdout, fieldnames=fieldnames)
+                for j, val in enumerate(fp):
+                    row[col_names[j] if j < len(col_names) else f'col_{j}'] = val
+            csv_rows.append(row)
+
+        fieldnames = list(csv_rows[0].keys()) if csv_rows else ['smiles']
+        if args.output:
+            with open(args.output, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(csv_rows)
-            return
+            print(f"Results written to {args.output}")
+        else:
+            writer = csv.DictWriter(sys.stdout, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(csv_rows)
+        return
 
-    # JSON output (default or fallback)
+    # JSON output (default)
     indent = 2 if args.pretty else None
     output_json = json.dumps(output_data, indent=indent)
 
@@ -433,26 +477,25 @@ def cmd_list_groups(args):
     """Execute list-groups command."""
     # Load groups (custom or default)
     if args.groups_file:
-        groups = get_PFASGroups(filename=args.groups_file)
+        groups = get_HalogenGroups(filename=args.groups_file)
     else:
-        groups = get_PFASGroups()
+        groups = get_HalogenGroups()
 
     # Create output
     groups_list = []
     for i, group in enumerate(groups):
         groups_list.append({
             'index': i,
-            'id': group.id,
-            'name': group.name,
-            'smarts1': group.smarts1,
-            'smarts2': group.smarts2,
-            'componentSmarts': group.componentSmarts
+            'id': group['id'],
+            'name': group['name'],
+            'smarts': list(group.get('smarts', {}).keys()),
+            'componentSmarts': group.get('componentSmarts')
         })
 
     output_data = {
         'total_groups': len(groups),
         'groups': groups_list,
-        'note': 'Use get_PFASGroups() in Python to load and extend these groups'
+        'note': 'Use get_HalogenGroups() in Python to load and extend these groups'
     }
 
     # Output results
@@ -477,11 +520,14 @@ def cmd_list_paths(args):
 
     # Create output - convert RDKit mols to SMARTS strings for display
     paths_list = []
-    for name, (chain_mol, end_mol) in paths.items():
+    for name, path_info in paths.items():
+        component_mol = path_info.get('component')
         paths_list.append({
             'name': name,
-            'chain_smarts': Chem.MolToSmarts(chain_mol),
-            'end_smarts': Chem.MolToSmarts(end_mol)
+            'smarts': Chem.MolToSmarts(component_mol) if component_mol else None,
+            'halogen': path_info.get('halogen'),
+            'form': path_info.get('form'),
+            'saturation': path_info.get('saturation')
         })
 
     output_data = {
@@ -515,14 +561,14 @@ def cmd_validate_config(args):
 
         # Validate groups if provided
         if args.groups_file:
-            groups = get_PFASGroups(filename=args.groups_file)
+            groups = get_HalogenGroups(filename=args.groups_file)
             print(f"✓ PFAS_groups_smarts.json loaded successfully from: {args.groups_file}")
             print(f"  Found {len(groups)} PFAS groups")
 
         if not args.component_smarts_file and not args.groups_file:
             # Validate defaults
             paths = get_componentSMARTSs()
-            groups = get_PFASGroups()
+            groups = get_HalogenGroups()
             print("✓ Default configuration loaded successfully")
             print(f"  Path types: {len(paths)}")
             print(f"  PFAS groups: {len(groups)}")
@@ -534,9 +580,15 @@ def cmd_validate_config(args):
         sys.exit(1)
 
 
-def main():
+def main(default_halogens=None):
     """Main CLI entry point."""
     args = parse_args()
+
+    # Apply default halogens when the entry point provides one and the user
+    # did not explicitly pass --halogens on the command line.
+    if default_halogens and args.command in ('parse', 'fingerprint'):
+        if not getattr(args, 'halogens', None):
+            args.halogens = default_halogens
 
     if args.command == 'parse':
         cmd_parse(args)
@@ -551,6 +603,15 @@ def main():
     else:
         print("Error: No command specified. Use --help for usage information.", file=sys.stderr)
         sys.exit(1)
+
+
+def main_halogen():
+    """Entry point for the ``halogengroups`` CLI.
+
+    Identical to ``pfasgroups`` but defaults to all four halogens
+    (F, Cl, Br, I) when ``--halogens`` is not specified on the command line.
+    """
+    main(default_halogens=['F', 'Cl', 'Br', 'I'])
 
 
 if __name__ == '__main__':

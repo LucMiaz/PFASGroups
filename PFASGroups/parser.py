@@ -22,8 +22,16 @@ from .core import (
     HALOGEN_GROUPS_FILE,
     rdkit_disable_log,
 )
+from .PFASEmbeddings import PFASEmbeddingSet
 
-
+def preprocess_HalogenGroups(_pfg: list) -> tuple:
+    pfg = [HalogenGroup(**x) for x in _pfg if x.get('compute',True)]
+    agg_pfg = [HalogenGroup(**x) for x in _pfg if not x.get('compute',True)]
+    # list of HalogenGroup names
+    pfg_names =  {pf.name:pf.id for pf in pfg}
+    # list groups aggregated by groups with compute=FALSE
+    agg_pfg = {ppf:list(map(pfg_names.get,list(filter(ppf.re_search.search,pfg_names.keys())))) for ppf in agg_pfg}
+    return pfg, agg_pfg
 
 # --- Load halogen groups from PFAS_groups_smarts.json ---
 def load_HalogenGroups():
@@ -32,17 +40,13 @@ def load_HalogenGroups():
     """
     with open(HALOGEN_GROUPS_FILE,'r') as f:
         _pfg = json.load(f)
-    pfg = [HalogenGroup(**x) for x in _pfg if x.get('compute',True)]
-    agg_pfg = [HalogenGroup(**x) for x in _pfg if not x.get('compute',True)]
-    # list of HalogenGroup names
-    pfg_names =  {pf.name:pf.id for pf in pfg}
-    # list groups aggregated by groups with compute=FALSE
-    agg_pfg = {ppf:list(map(pfg_names.get,list(filter(ppf.re_search.search,pfg_names.keys())))) for ppf in agg_pfg}
+    pfg, agg_pfg = preprocess_HalogenGroups(_pfg) 
     def inner(func):
         @functools.wraps(func)
         def wrapper(*args,**kwargs):
             _halogens = kwargs.get('halogens', ['F','Cl','Br','I']) or ['F','Cl','Br','I']
-            kwargs['pfas_groups'] = kwargs.get('pfas_groups',[p for p in pfg if p.excludeHalogens is None or set(p.excludeHalogens).isdisjoint(_halogens)])
+            _halogens_list = [_halogens] if isinstance(_halogens, str) else list(_halogens)
+            kwargs['pfas_groups'] = kwargs.get('pfas_groups',[p for p in pfg if p.excludeHalogens is None or any(h not in p.excludeHalogens for h in _halogens_list)])
             kwargs['agg_pfas_groups'] = kwargs.get('agg_pfas_groups',agg_pfg)
             return func(*args, **kwargs)
         return wrapper
@@ -151,8 +155,6 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
     ----------
     mol : rdkit.Chem.Mol
         RDKit molecule object
-    bycomponent : bool, optional
-        Whether to look for fluorinated components or for chains between functional groups
     **kwargs : dict
         Additional parameters (formula, pfas_groups, componentSmartss, etc.)
 
@@ -250,7 +252,7 @@ def parse_groups_in_mol(mol, fluorinated_components_dict=None, pfas_groups = Non
 
 
 @rdkit_disable_log(level='warning')
-def parse_smiles(smiles, bycomponent=False, output_format='list',
+def parse_smiles(smiles, output_format='list',
                   limit_effective_graph_resistance=None, compute_component_metrics=True,
                   halogens='F', form=None, saturation=None, progress=False,
                   verbose=False,
@@ -262,8 +264,6 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     -----------
     smiles : str or list of str
         Single SMILES string or list of SMILES strings
-    bycomponent : bool
-        Whether to use component-based analysis
     output_format : str, default 'list'
         Output format: 'list' (default), 'dataframe', or 'csv'
         - 'list': Returns nested lists of tuples (default behavior)
@@ -362,13 +362,12 @@ def parse_smiles(smiles, bycomponent=False, output_format='list',
     kwargs['saturation'] = saturation
     if len(mol_list)==0:
         raise ValueError("No valid SMILES provided for parsing.")
-    result = parse_mols(mol_list, bycomponent=bycomponent, output_format=output_format, progress=progress,
+    result = parse_mols(mol_list, output_format=output_format, progress=progress,
                         _smiles_list=smiles_list, **kwargs)
     if verbose:
         return result, {'fragmented': _frag_events, 'n_invalid': _n_invalid}
     return result
 
-from .PFASEmbeddings import PFASEmbeddingSet
 
 
 def parse_from_database(
@@ -680,8 +679,6 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
     -----------
     mols : list of rdkit.Chem.Mol
         Single RDKit molecule or list of molecules
-    bycomponent : bool
-        Whether to use component-based analysis
     output_format : str, default 'list'
         Output format: 'list' (default), 'dataframe', or 'csv'
         - 'list': Returns nested lists of tuples (default behavior)
@@ -741,8 +738,6 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 'error': 'invalid_smiles',
             }
             continue
-        # Add hydrogens to ensure consistent atom indexing
-        bycomponent = kwargs.pop('bycomponent', False)
         # Pass through component metric options and filters
         kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
         kwargs['compute_component_metrics'] = compute_component_metrics
@@ -750,7 +745,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         kwargs['form'] = form
         kwargs['saturation'] = saturation
         try:
-            matches, mol_with_h, formula = parse_groups_in_mol(mol, bycomponent=bycomponent, **kwargs)
+            matches, mol_with_h, formula = parse_groups_in_mol(mol, **kwargs)
         except Exception as exc:
             _smi_repr = orig_smi or Chem.MolToSmiles(mol)
             warnings.warn(f"parse_mols: error parsing '{_smi_repr}' — {exc}. Skipping.", UserWarning, stacklevel=2)
@@ -921,17 +916,17 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
             for match in entry['matches']:
                 if match['type'] == 'HalogenGroup':
                     rows.append({
-                        'smiles': smi,
+                        'smiles': entry['smiles'],
                         'match_id': match['match_id'],
                         'match_name': match['group_name'],
                         'match_count': match['match_count'],
                         'components_sizes': match['components_sizes'],
-                        'num_chains': match['num_chains'],
+                        'num_components': match.get('num_components', len(match.get('components', []))),
                         'match_type': match['type']
                     })
                 elif match['type'] == 'PFASdefinition':
                     rows.append({
-                        'smiles': smi,
+                        'smiles': entry['smiles'],
                         'match_id': match['match_id'],
                         'match_name': match['definition_name'],
                         'match_type': match['type']
@@ -945,118 +940,3 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
     if kwargs.get('fragmented_smiles',None):
         print(f"Note: {len(kwargs['fragmented_smiles'])} SMILES {'were' if len(kwargs['fragmented_smiles']) > 1 else 'was'} fragmented during parsing due to valence issues. Original SMILES are included in 'smiles' field of results for reference.")
     return PFASEmbeddingSet(results_list)
-
-def compile_componentSmarts(chain_smarts, end_smarts):
-    """
-    Compile a pair of SMARTS patterns into a ready-to-use path definition.
-
-    This function preprocesses SMARTS patterns for chain and end groups,
-    preparing them for use in PFAS parsing functions.
-
-    Parameters
-    ----------
-    chain_smarts : str
-        SMARTS pattern for the repeating chain unit
-    end_smarts : str
-        SMARTS pattern for the terminal group
-
-    Returns
-    -------
-    list
-        List containing [chain_mol, end_mol] where both are preprocessed RDKit Mol objects
-
-    Examples
-    --------
-    >>> chain = compile_componentSmarts(
-    ...     "[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
-    ...     "[C;X4](Cl)(Cl)Cl"
-    ... )
-    >>> paths = {'Perchlorinated': chain}
-    """
-    chain_mol = Chem.MolFromSmarts(chain_smarts)
-    chain_mol.UpdatePropertyCache()
-    Chem.GetSymmSSSR(chain_mol)
-    chain_mol.GetRingInfo().NumRings()
-
-    end_mol = Chem.MolFromSmarts(end_smarts)
-    end_mol.UpdatePropertyCache()
-    Chem.GetSymmSSSR(end_mol)
-    end_mol.GetRingInfo().NumRings()
-
-    return [chain_mol, end_mol]
-
-def compile_componentSmartss(paths_dict):
-    """
-    Compile multiple SMARTS path definitions from a dictionary.
-
-    This function takes a dictionary of path definitions (with 'component' and 'end' keys)
-    and preprocesses them for use in PFAS parsing functions.
-
-    Parameters
-    ----------
-    paths_dict : dict
-        Dictionary with structure::
-
-            {
-                'PathName': {'component': 'SMARTS', 'end': 'SMARTS'},
-                ...
-            }
-
-    Returns
-    -------
-    dict
-        Dictionary mapping path names to [chain_mol, end_mol] pairs
-
-    Examples
-    --------
-    >>> custom_paths = {
-    ...     'Perchlorinated': {
-    ...         'component': '[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)',
-    ...         'end': '[C;X4](Cl)(Cl)Cl'
-    ...     },
-    ...     'MixedHalo': {
-    ...         'component': '[C;X4]([F,Cl])([F,Cl])!@!=!#[C;X4]([F,Cl])',
-    ...         'end': '[C;X4]([F,Cl])([F,Cl])[F,Cl]'
-    ...     }
-    ... }
-    >>> compiled = compile_componentSmartss(custom_paths)
-    >>> results = parse_smiles(smiles, componentSmartss=compiled)
-    """
-    compiled = {}
-    for name, patterns in paths_dict.items():
-        if isinstance(patterns, dict):
-            if 'smarts' in patterns:
-                smarts_val = patterns['smarts']
-                if isinstance(smarts_val, str):
-                    smarts_val = Chem.MolFromSmarts(smarts_val)
-                    if smarts_val is None:
-                        raise ValueError(f"Invalid SMARTS for path '{name}'")
-                    smarts_val.UpdatePropertyCache()
-                    Chem.GetSymmSSSR(smarts_val)
-                    smarts_val.GetRingInfo().NumRings()
-                compiled[name] = {
-                    **patterns,
-                    'smarts': smarts_val,
-                    'component': smarts_val
-                }
-            elif 'component' in patterns and 'end' in patterns:
-                compiled[name] = compile_componentSmarts(patterns['component'], patterns['end'])
-            elif 'component' in patterns:
-                smarts_val = patterns['component']
-                if isinstance(smarts_val, str):
-                    smarts_val = Chem.MolFromSmarts(smarts_val)
-                    if smarts_val is None:
-                        raise ValueError(f"Invalid SMARTS for path '{name}'")
-                    smarts_val.UpdatePropertyCache()
-                    Chem.GetSymmSSSR(smarts_val)
-                    smarts_val.GetRingInfo().NumRings()
-                compiled[name] = {
-                    **patterns,
-                    'smarts': smarts_val,
-                    'component': smarts_val
-                }
-            else:
-                raise ValueError(f"Path '{name}' must define 'smarts' or 'component' (and optionally 'end')")
-        else:
-            raise ValueError(f"Path '{name}' must be a dict")
-    return compiled

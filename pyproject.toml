@@ -74,6 +74,7 @@ Documentation = "https://pfasgroups.readthedocs.io"
 
 [project.scripts]
 pfasgroups = "PFASGroups.cli:main"
+halogengroups = "PFASGroups.cli:main_halogen"
 
 [tool.setuptools]
 packages = ["HalogenGroups", "PFASGroups"]
