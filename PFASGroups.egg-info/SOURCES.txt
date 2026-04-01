@@ -5,11 +5,12 @@ HalogenGroups/__init__.py
 PFASGroups/ComponentsSolverModel.py
 PFASGroups/HalogenGroupModel.py
 PFASGroups/PFASDefinitionModel.py
+PFASGroups/PFASEmbeddings.py
 PFASGroups/__init__.py
 PFASGroups/cli.py
 PFASGroups/core.py
 PFASGroups/draw_mols.py
-PFASGroups/fingerprints.py
+PFASGroups/embeddings.py
 PFASGroups/fragmentation.py
 PFASGroups/generate_homologues.py
 PFASGroups/generate_mol.py
@@ -18,7 +19,6 @@ PFASGroups/getter.py
 PFASGroups/homologue_series.py
 PFASGroups/parser.py
 PFASGroups/prioritise.py
-PFASGroups/results_model.py
 PFASGroups.egg-info/PKG-INFO
 PFASGroups.egg-info/SOURCES.txt
 PFASGroups.egg-info/dependency_links.txt
@@ -43,6 +43,7 @@ tests/test_halogen_groups_smarts.py
 tests/test_linker_smarts.py
 tests/test_metrics.py
 tests/test_metrics_detailed.py
+tests/test_n_spacer_ring_size.py
 tests/test_pfasstructv5.py
 tests/test_prioritise.py
 tests/test_results_fingerprint.py

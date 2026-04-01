@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: PFASGroups
-Version: 3.2.0
+Version: 3.2.2
 Summary: A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, with a focus on per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 116 group classifications (28 OECD-defined PFAS groups, 45 generic groups and 43 telomers connected to halogenated components) with halogenated component size determination. Supports multi-halogen fingerprinting (F, Cl, Br, I) with per/poly saturation filtering and stackable fingerprint vectors.
 Author: Luc T. Miaz
 Author-email: "Luc T. Miaz" <luc@miaz.ch>
@@ -51,17 +51,17 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 ## Key Features
 
 ### Core Capabilities
-- **Halogen Group Identification**: Automated detection of 113 functional groups:
-  - 28 PFAS OECD groups
-  - 45 non-telomer groups
-  - 40 fluorotelomer groups with linker validation (Groups 69-112)
-  - 1 aggregate pattern-matching group (Group 113: Telomers)
+- **Halogen Group Identification**: Automated detection of 119 functional groups (114 compiled for fluorine-only embedding):
+  - 27 PFAS OECD groups
+  - 48 generic functional groups (IDs 29–73, 117–119; the last 3 are halogen-context-dependent or recently added)
+  - 43 fluorotelomer-specific groups with CH₂ linker validation
+  - 1 aggregate pattern-matching group (Group 116: Telomers, `compute=False`)
 - **Atom Reference Requirement**: For non-telomer groups, SMARTS patterns must match atoms that are part of or directly connected to the fluorinated component (per/polyfluorinated carbons), respecting the `max_dist_from_comp` constraint
 - **Linker Validation**: CH₂-specific validation for 40 fluorotelomer groups to distinguish from direct-attachment analogues. Telomer groups use `linker_smarts` to allow functional groups separated from perfluoro chains by non-fluorinated linkers
 - **Aggregate Groups**: Pattern-matching groups that collect related PFAS groups via regex (e.g., Group 113 matches all "telomer" groups)
 - **Component Length Analysis**: Quantification of per- and polyfluorinated alkyl components with CF₂ unit counting
-- **Graph Metrics**: Comprehensive structural characterization (branching, eccentricity, diameter, resistance, centrality)
-- **Customizable Definitions**: Easy extension to additional PFAS groups and halogenated chemical classes via JSON configuration
+- **Graph Metrics**: Comprehensive structural characterization (branching, eccentricity, diameter, resistance, centrality, telomer spacer length, ring size)
+- **Customizable Definitions**: Easy extension to additional PFAS groups and halogenated chemical classes via JSON configuration. Component type definitions in `data/component_smarts_halogens.json` support optional per-type `constraints` (e.g. `{"gte": {"F": 2}}`) that are evaluated against the component's full atom count (backbone carbons plus attached halogens) to enforce minimum halogen counts or element exclusions — without repeating the check in every group definition
 
 ### Additional Tools
 - **Homologue Series Generation**: Iterative component shortening to explore theoretical chemical space
@@ -71,6 +71,12 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 - **Batch Processing**: Efficient analysis of large chemical databases
 
 ## Installation
+
+### From Pypi
+
+```sh
+pip install PFASGroups
+```
 
 ### From source (recommended for development)
 
@@ -83,12 +89,6 @@ cd PFASGroups
 
 # Install in editable mode (development install)
 pip install -e .
-
-# Optional: install development dependencies (pytest, coverage)
-pip install -e ".[dev]"
-
-# Optional: install database support (SQLAlchemy)
-pip install -e ".[database]"
 ```
 
 > **Note for conda users**: install RDKit via conda before running pip:
@@ -102,8 +102,9 @@ After installation, both `HalogenGroups` (all halogens by default) and `PFASgrou
 
 ```python
 from PFASGroups import parse_smiles
-results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O")
-print(results[0].matched_groups)
+results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O")   # → PFASEmbeddingSet
+print(results)        # prints PFASEmbeddingSet summary (molecule count, matched groups, …)
+print(results[0])     # prints PFASEmbedding summary for the first molecule
 ```
 
 ## Repository Structure
@@ -116,8 +117,8 @@ PFASGroups/
 │   ├── __init__.py                  #   Public API
 │   ├── core.py                      #   SMARTS matching engine, component detection, decorators
 │   ├── parser.py                    #   parse_smiles / parse_mols entry points
-│   ├── fingerprints.py              #   generate_fingerprint
-│   ├── results_model.py             #   ResultsModel, ResultsFingerprint, MoleculeResult
+│   ├── embeddings.py                #   presets
+│   ├── PFASEmbeddings.py            #   PFASEmbeddingSet, PFASEmbedding
 │   ├── HalogenGroupModel.py         #   HalogenGroup data model
 │   ├── PFASDefinitionModel.py       #   PFASDefinition model
 │   ├── ComponentsSolverModel.py     #   Graph-based path-finding solver
@@ -196,13 +197,13 @@ CLI equivalents:
 
 ```bash
 # Skip all component graph metrics (fastest)
-halogengroups parse --no-component-metrics "C(C(F)(F)F)F"
+pfasgroups parse --no-component-metrics "C(C(F)(F)F)F"
 
 # Skip effective graph resistance entirely
-halogengroups parse --limit-effective-graph-resistance 0 "C(C(F)(F)F)F"
+pfasgroups parse --limit-effective-graph-resistance 0 "C(C(F)(F)F)F"
 
 # Compute resistance only for components below a size threshold
-halogengroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
+pfasgroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
 ```
 
 ## Quick Start
@@ -210,35 +211,34 @@ halogengroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
 ### Python API
 
 ```python
-from HalogenGroups import parse_smiles, generate_fingerprint
+from PFASGroups import parse_smiles
 
-# Parse PFAS structures
+# Parse PFAS structures — returns a PFASEmbeddingSet
 smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
-results = parse_smiles(smiles_list)
+results = parse_smiles(smiles_list)           # → PFASEmbeddingSet
+print(results)                                # summary: molecule count, top groups, …
+print(results[0])                             # per-molecule summary for first entry
 
-# Generate fingerprints for machine learning
-fingerprints, group_info = generate_fingerprint(smiles_list)
-
-# New in v2.2.4: Advanced fingerprint analysis
-fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
+# Embedding from a pre-parsed set (avoids re-parsing)
+arr  = results.to_array()                     # default: binary, all groups
+arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
+cols = results.column_names()                 # matching column labels
 
 # Filter components by halogen, form, and saturation
-results_f = parse_smiles(smiles_list, halogens='F')  # Fluorine only
-results_pfa = parse_smiles(smiles_list, halogens='F', saturation='per', form='alkyl')  # Perfluoroalkyl only
+results_f      = parse_smiles(smiles_list, halogens='F')  # Fluorine only
+results_pfa    = parse_smiles(smiles_list, halogens='F', saturation='per', form='alkyl')  # Perfluoroalkyl only
 results_cyclic = parse_smiles(smiles_list, form='cyclic')  # Cyclic forms only
 
-# Dimensionality reduction
-pca_results = fp.perform_pca(n_components=5, plot=True)
-tsne_results = fp.perform_tsne(perplexity=30, plot=True)
-umap_results = fp.perform_umap(n_neighbors=15, plot=True)
+# Dimensionality reduction (methods on PFASEmbeddingSet)
+pca_result  = results.perform_pca(n_components=5, plot=True)
+tsne_result = results.perform_tsne(perplexity=30, plot=True)
+umap_result = results.perform_umap(n_neighbors=15, plot=True)
 
-# Compare datasets using KL divergence
+# Compare two datasets using KL divergence
 other_results = parse_smiles(other_smiles_list)
-other_fp = other_results.to_fingerprint(group_selection='oecd')
-similarity = fp.compare_kld(other_fp, method='minmax')
+similarity = results.compare_kld(other_results, method='minmax')
 
-# Save/load to SQL database
-fp.to_sql(filename='fingerprints.db')
+# Save to SQL database
 results.to_sql(filename='results.db')
 
 # New in v2.2.4: Prioritization tool for screening and ranking
@@ -301,6 +301,70 @@ results_multi = parse_smiles(smiles_list, halogens=['F', 'Cl'])
 # - form: 'alkyl' or 'cyclic' (or list like ['alkyl', 'cyclic'] for both)
 ```
 
+## Embedding with Graph Metrics
+
+The `to_array()` / `to_fingerprint()` methods accept a `component_metrics` list that
+stacks one block of *N_G* columns per metric (default `N_G = 114` for fluorine-only).
+
+```python
+import numpy as np
+from PFASGroups import parse_smiles, EMBEDDING_PRESETS
+
+smiles = [
+    "O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",  # PFOA
+    "O=C(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",          # PFHpA
+    "OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",                              # 4:2 FTOH
+    "OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",               # 6:2 FTOH
+]
+results = parse_smiles(smiles)
+
+# --- binary embedding (default) ---
+arr_bin = results.to_array()                    # shape (4, 114)
+
+# --- preset 'best': binary + effective_graph_resistance ---
+# Best discrimination (mean Tanimoto 0.184, outperforms TxP-PFAS 129-bit)
+print(EMBEDDING_PRESETS['best']['description'])
+arr_best = results.to_array(preset='best')      # shape (4, 228) = 114 × 2
+
+# --- effective graph resistance directly ---
+arr_egr = results.to_array(
+    component_metrics=['binary', 'effective_graph_resistance']
+)                                               # shape (4, 228)
+
+# --- n_spacer: telomer CH₂ spacer length (encodes 'm' in 'm:n' notation) ---
+# Zero for non-telomers; distinguishes 2:1, 4:2, 6:2 FTOHs in a single column
+arr_ns = results.to_array(component_metrics=['n_spacer'])  # shape (4, 114)
+
+# --- ring_size: smallest ring overlapping each matched component ---
+# Zero for acyclic groups; 5 for azoles/furans; 6 for benzene/cyclohexane
+arr_rs = results.to_array(component_metrics=['ring_size'])  # shape (4, 114)
+
+# --- combined: EGR + n_spacer + ring_size + molecule-wide descriptors ---
+arr_combined = results.to_array(
+    component_metrics=['binary', 'effective_graph_resistance',
+                       'n_spacer', 'ring_size'],
+    molecule_metrics=['n_components', 'max_size',
+                      'mean_branching', 'max_branching',
+                      'mean_component_fraction', 'max_component_fraction'],
+)  # shape (4, 4*114 + 6) = (4, 462)
+
+# --- multi-halogen: one parse per halogen, then hstack ---
+arrs = []
+for hal in ['F', 'Cl', 'Br', 'I']:
+    r_hal = parse_smiles(smiles, halogens=hal)
+    arrs.append(r_hal.to_array(component_metrics=['effective_graph_resistance']))
+arr_4x = np.hstack(arrs)                        # shape (4, 456) = 4 × 114
+
+# --- column names ---
+cols = results.column_names(
+    component_metrics=['binary', 'effective_graph_resistance']
+)
+print(cols[:4])   # e.g. ['Perfluoroalkyl [binary]', ..., 'Perfluoroalkyl [EGR]', ...]
+```
+
+See [`examples/embedding_with_graph_metrics.py`](examples/embedding_with_graph_metrics.py)
+for a complete runnable script covering all options.
+
 CLI equivalents:
 
 ```bash
@@ -328,7 +392,7 @@ to analyse all halogens at once:
 ### Option A – import `HalogenGroups` (all halogens by default)
 
 ```python
-from HalogenGroups import parse_smiles, generate_fingerprint
+from HalogenGroups import parse_smiles
 
 smiles_list = [
     "C(C(F)(F)F)F",          # fluorinated
@@ -337,19 +401,18 @@ smiles_list = [
 ]
 
 # halogens defaults to ['F','Cl','Br','I'] — no extra argument needed
-results = parse_smiles(smiles_list)
+results = parse_smiles(smiles_list)           # → PFASEmbeddingSet
 
-# to_fingerprint() also defaults to all halogens
-fp = results.to_fingerprint(group_selection='oecd', count_mode='binary')
+# to_array() reads the halogen info already captured during parsing
+arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
+cols = results.column_names(group_selection='oecd')
 
-# generate_fingerprint() works the same way
-fingerprints, group_info = generate_fingerprint(smiles_list)
 ```
 
 ### Option B – import `PFASgroups` and specify `halogens` explicitly
 
 ```python
-from PFASgroups import parse_smiles, generate_fingerprint
+from PFASgroups import parse_smiles
 
 smiles_list = [
     "C(C(F)(F)F)F",
@@ -358,18 +421,10 @@ smiles_list = [
 ]
 
 # Explicitly pass all halogens
-results = parse_smiles(smiles_list, halogens=['F', 'Cl', 'Br', 'I'])
+results = parse_smiles(smiles_list, halogens=['F', 'Cl', 'Br', 'I'])  # → PFASEmbeddingSet
 
-fp = results.to_fingerprint(
-    group_selection='oecd',
-    count_mode='binary',
-    halogens=['F', 'Cl', 'Br', 'I'],
-)
-
-fingerprints, group_info = generate_fingerprint(
-    smiles_list,
-    halogens=['F', 'Cl', 'Br', 'I'],
-)
+arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
+cols = results.column_names(group_selection='oecd')
 ```
 
 Both approaches produce identical results. Use `HalogenGroups` when your workflow
@@ -471,15 +526,19 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 
 ## Summary of changes by version
 
+- **Version 3.2.2**: Fixed polyhalogenated alkyl components matching less than 2 halogens. Added option to pass 'halogens' to formula constraints. Added options to include component-wide formula constraints (on dist-1 neighbours from matched C-only components).
+
+- **Version 3.2.1**: Added n-spacer metric for telomers and ring size for aryl and cyclic groups. These can be used in the embeddings.
+
 - **Version 3.2.0**: Use of BDE for computing graph resistance.
 
 - **Version 3.1.4**: Changed fingerprint parameters to molecule wide and component wide, with pre-configuration for best combinations.
 
 - **Version 3.1.0**: Added support for other halogens, changed names to be more generic (with some support for backward compatibility). Added component smarts for other halogens, cyclic and alkyl components.
 
-- **Version 2.2.4 (Feb 2026)**: Advanced fingerprint analysis with dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP), KL divergence comparison for dataset similarity assessment, and SQL persistence for fingerprints and results. Added molecule prioritization tool for screening applications, ranking by similarity to reference lists or by intrinsic fluorination properties. Includes new `ResultsFingerprint` class with comprehensive analysis methods, automated plot generation, and extensive documentation.
+- **Version 2.2.4 (Feb 2026)**: Advanced fingerprint analysis with dimensionality reduction (PCA, kernel-PCA, t-SNE, UMAP), KL divergence comparison for dataset similarity assessment, and SQL persistence for results. Added molecule prioritization tool for screening applications, ranking by similarity to reference lists or by intrinsic fluorination properties. Introduced `PFASEmbeddingSet` and `PFASEmbedding` with comprehensive analysis methods, automated plot generation, and extensive documentation.
 
-- **Version 2.2.3 (Feb 2026)**: Added resultsModel to offer easier plotting and summarising capabilities for results.
+- **Version 2.2.3 (Feb 2026)**: Added `PFASEmbeddingSet` container to offer easier plotting and summarising capabilities for results.
 
 - **Version 2.2 (Feb 2026)**: Added linked_smarts option to specify a restriction on path between smarts groups and fluorinated component. Added new PFASgroups (telomers). **v2.2.2** Fixed telomers and added examples and counter-examples to each PFASgroup. Removed boundary O in fluorinated components (for both Per and Polyalkyl components).
 
@@ -492,22 +551,23 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 Major enhancement adding comprehensive dimensionality reduction and statistical comparison capabilities:
 
 **New Features:**
-- **ResultsFingerprint Class**: Advanced fingerprint analysis with flexible group selection
+- **PFASEmbeddingSet / PFASEmbedding**: Unified result container with flexible embedding generation
 - **Dimensionality Reduction**: PCA, kernel-PCA, t-SNE, and UMAP with automatic plotting
 - **Statistical Comparison**: KL divergence for comparing dataset compositions
-- **Database Persistence**: SQL save/load for fingerprints and results
+- **Database Persistence**: SQL save/load for results
 - **Molecule Prioritization**: Screening and ranking tool for PFAS datasets
 - **Comprehensive Documentation**: Complete API reference, examples, and 100+ tests
 
 **Key Methods:**
-- `ResultsModel.to_fingerprint()`: Convert results to analyzable fingerprints
-- `ResultsFingerprint.perform_pca()`: Principal Component Analysis
-- `ResultsFingerprint.perform_kernel_pca()`: Non-linear kernel PCA
-- `ResultsFingerprint.perform_tsne()`: t-SNE visualization
-- `ResultsFingerprint.perform_umap()`: Fast UMAP dimensionality reduction
-- `ResultsFingerprint.compare_kld()`: Dataset similarity via KL divergence
+- `PFASEmbeddingSet.to_array()`: Generate numeric embedding matrix from parsed results
+- `PFASEmbeddingSet.column_names()`: Column labels matching `to_array()` output
+- `PFASEmbeddingSet.perform_pca()`: Principal Component Analysis
+- `PFASEmbeddingSet.perform_kernel_pca()`: Non-linear kernel PCA
+- `PFASEmbeddingSet.perform_tsne()`: t-SNE visualization
+- `PFASEmbeddingSet.perform_umap()`: Fast UMAP dimensionality reduction
+- `PFASEmbeddingSet.compare_kld()`: Dataset similarity via KL divergence
 - `prioritise_molecules()`: Rank molecules by similarity or fluorination properties
-- SQL operations: `to_sql()` and `from_sql()` for persistence
+- `PFASEmbeddingSet.to_sql()`: Persist results to a SQLite/PostgreSQL database
 
 **Prioritization Strategies:**
 - **Reference-based**: Rank by distributional similarity to known PFAS (e.g., persistent chemicals)
@@ -525,10 +585,10 @@ Major enhancement adding comprehensive dimensionality reduction and statistical 
 
 See `docs/ResultsFingerprint_Guide.md`, `docs/prioritization.rst`, `examples/results_fingerprint_analysis.py`, and `examples/prioritization_examples.py` for details.
 
-### Version 2.2.3 (February 2026) - ResultsModel Container
+### Version 2.2.3 (February 2026) - PFASEmbeddingSet Container
 
 **New Features:**
-- ResultsModel container with visualization helpers
+- `PFASEmbeddingSet` container with visualization helpers
 - Enhanced component plotting utilities
 - Improved documentation and examples
 
@@ -558,6 +618,8 @@ Major enhancement adding comprehensive NetworkX graph theory metrics for detaile
 - `branching` (0-1): Measures linearity (1.0 = linear, 0.0 = highly branched) - renamed from "eccentricity"
 - `mean_eccentricity`, `median_eccentricity`: Graph-theoretic eccentricity statistics for component nodes
 - `smarts_centrality` (0-1): Functional group position (1.0 = central, 0.0 = peripheral)
+- `n_spacer` (int ≥ 0): Fluorotelomer CH₂ spacer length — the "m" in "m:n" telomer notation; 0 for all non-telomeric groups
+- `ring_size` (int ≥ 0): Smallest ring overlapping the matched component; 0 for acyclic chains, 5 for azoles/furans, 6 for benzene/cyclohexane derivatives
 - `component_fraction` (0-1): Fraction of total molecule atoms in this component (includes all attached atoms)
 - `total_components_fraction` (0-1): Fraction of molecule covered by union of all components
 - `diameter`: Maximum distance between any two atoms in component
