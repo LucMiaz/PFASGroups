@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional,
 import os
 import re
 from pathlib import Path
+from io import BytesIO
 
 if TYPE_CHECKING:
     try:
@@ -15,11 +16,11 @@ if TYPE_CHECKING:
 from rdkit import Chem
 from rdkit.Chem import Draw
 from PIL import Image
-from io import BytesIO
+
 import pandas as pd
 import numpy as np
 
-
+from typing import Callable
 
 def _load_palette() -> List[str]:
     """Load hex colours from color_scheme.yaml (stdlib only, no pyyaml needed)."""
