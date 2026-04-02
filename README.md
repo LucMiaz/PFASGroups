@@ -65,6 +65,20 @@ print(results)        # prints PFASEmbeddingSet summary (molecule count, matched
 print(results[0])     # prints PFASEmbedding summary for the first molecule
 ```
 
+## Graphical User Interface (GUI)
+
+A GUI is available to run the main commands from the module. To launch the GUI, call the following command from the PFASGroups folder:
+
+```python
+python -m gui
+```
+
+Note that pyQt6 must be installed as well as pyCSRML to benefit from all features.
+
+## Binary release 
+
+To be done...
+
 ## Repository Structure
 
 ```
