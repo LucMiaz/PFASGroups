@@ -11,39 +11,26 @@ Requirements
 Install with pip
 ----------------
 
-The recommended installation method is via pip.  RDKit must already be
-available in the target environment (it is not listed as a pip dependency
-because it is best installed via conda or a pre-built wheel).
+The recommended installation method is via pip.  RDKit must already be available in the target environment. It is recommended to use an environment manager (like Conda/Mamba, e.g [Miniforge](https://github.com/conda-forge/miniforge)) and install RDKit via 
+
+.. code-block:: bash
+
+   mamba install -y -c rdkit rdkit
+
+Then install PFASGroups from PyPI:
 
 .. code-block:: bash
 
    pip install PFASgroups
 
-Install with conda
-------------------
 
-If you manage environments with conda you can install both RDKit and the
-package in one step:
-
-.. code-block:: bash
-
-   conda install -c conda-forge rdkit
-   pip install PFASgroups
-
-Or create a fresh environment:
-
-.. code-block:: bash
-
-   conda create -n halogengroups -c conda-forge python=3.10 rdkit networkx
-   conda activate halogengroups
-   pip install PFASgroups
 
 Install from source
 -------------------
 
 .. code-block:: bash
 
-   git clone https://github.com/lucdecrem/PFASGroups.git
+   git clone https://github.com/LucMiaz/PFASGroups.git
    cd PFASGroups
    pip install -e .
 
@@ -104,6 +91,6 @@ work after installation).
 **scikit-learn / umap-learn not found**
 
 These are optional.  They are only needed when calling
-:meth:`~HalogenGroups.ResultsFingerprint.perform_pca`,
-:meth:`~HalogenGroups.ResultsFingerprint.perform_tsne`, or
-:meth:`~HalogenGroups.ResultsFingerprint.perform_umap`.
+:meth:`~PFASGroups.PFASEmbeddingSet.perform_pca`,
+:meth:`~PFASGroups.PFASEmbeddingSet.perform_tsne`, or
+:meth:`~PFASGroups.PFASEmbeddingSet.perform_umap`.

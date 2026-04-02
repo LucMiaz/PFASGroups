@@ -16,22 +16,22 @@
        for comp in match.components:     # MatchComponent objects
            print("  atoms:", comp.atoms)
 
-   fp = results.to_fingerprint()         # ResultsFingerprint
-   print(fp.fingerprints.shape)          # (2, 116)
+   arr = results.to_array()             # EmbeddingArray
+   print(arr.shape)                      # (2, 116)
 
 .. contents:: Contents
    :local:
    :depth: 2
 
-ResultsModel
+PFASEmbeddingSet
 ------------
 
-.. autoclass:: ResultsModel
+.. autoclass:: PFASEmbeddingSet
    :members:
    :undoc-members:
    :show-inheritance:
 
-``ResultsModel`` is a list-like container of :class:`MoleculeResult` objects.
+``PFASEmbeddingSet`` is a list-like container of :class:`MoleculeResult` objects.
 Its length equals the number of input SMILES.
 
 **Key methods:**
@@ -46,20 +46,20 @@ Its length equals the number of input SMILES.
      - Access the i-th :class:`MoleculeResult`
    * - ``results.to_dataframe()``
      - Flatten all matches to a ``pandas.DataFrame``
-   * - ``results.to_fingerprint(group_selection='all', component_metrics=['binary'], halogens='F', saturation='per')``
-     - Convert to a :class:`ResultsFingerprint` (**PFASGroups** default: ``halogens='F'``, 116 cols;
+   * - ``results.to_array(group_selection='all', component_metrics=['binary'], halogens='F', saturation='per')``
+     - Convert to an :class:`EmbeddingArray` (**PFASGroups** default: ``halogens='F'``, 116 cols;
        **HalogenGroups** subclass default: ``halogens=['F','Cl','Br','I']``, 464 cols)
    * - ``results.to_sql(filename)``
      - Persist to a SQLite or PostgreSQL database
-   * - ``ResultsModel.from_sql(filename)``
+   * - ``PFASEmbeddingSet.from_sql(filename)``
      - Load from a previously saved database
 
-to_fingerprint options:
+to_array options:
 
 .. note::
 
    The default value of ``halogens`` depends on which module the
-   :class:`ResultsModel` came from:
+   :class:`PFASEmbeddingSet` came from:
 
    * ``from PFASGroups import parse_smiles`` → ``halogens='F'`` (116 columns)
    * ``from HalogenGroups import parse_smiles`` → ``halogens=['F','Cl','Br','I']`` (464 columns)
@@ -70,20 +70,20 @@ to_fingerprint options:
 .. code-block:: python
 
    # PFASGroups default: all 116 groups, F only, binary → (n, 116)
-   fp = results.to_fingerprint()                                   # (n, 116)
+   arr = results.to_array()                                        # (n, 116)
 
    # Always-explicit (safe in any import context)
-   fp = results.to_fingerprint(halogens='F')                       # (n, 116)
+   arr = results.to_array(halogens='F')                            # (n, 116)
 
    # OECD groups only
-   fp = results.to_fingerprint(group_selection='oecd', halogens='F')  # (n, 28)
+   arr = results.to_array(group_selection='oecd', halogens='F')   # (n, 28)
 
    # Count or max-component encoding
-   fp = results.to_fingerprint(component_metrics=['count'], halogens='F')
-   fp = results.to_fingerprint(component_metrics=['max_component'], halogens='F')
+   arr = results.to_array(component_metrics=['count'], halogens='F')
+   arr = results.to_array(component_metrics=['max_component'], halogens='F')
 
    # Multi-halogen (advanced) — see halogengroups page
-   fp = results.to_fingerprint(halogens=['F', 'Cl', 'Br', 'I'])  # (n, 464)
+   arr = results.to_array(halogens=['F', 'Cl', 'Br', 'I'])       # (n, 464)
 
 MoleculeResult
 --------------
@@ -171,18 +171,19 @@ A single structural component of a group match.
    * - ``effective_graph_resistance``
      - Kirchhoff index of the component graph (``None`` if not computed)
 
-ResultsFingerprint
+EmbeddingArray
 ------------------
 
 See :doc:`fingerprint_analysis` for full documentation.
 
-The fingerprint matrix is stored as ``fp.fingerprints`` (``numpy.ndarray``):
+:class:`EmbeddingArray` is a numpy array subclass returned by
+:meth:`PFASEmbeddingSet.to_array`. It carries molecule identity metadata:
 
 .. code-block:: python
 
-   fp = results.to_fingerprint()
-   print(fp.fingerprints.shape)   # (n_mols, n_groups)
-   print(fp.group_names)          # list of group-name strings
+   arr = results.to_array()
+   print(arr.shape)        # (n_mols, n_groups)
+   print(arr.smiles)       # list of input SMILES strings
 
 HalogenGroup
 ------------
