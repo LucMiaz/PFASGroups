@@ -139,7 +139,7 @@ nitpick_ignore = [
     ('py:func', 'PFASGroups.parser.parse_mols'),
     ('py:func', 'PFASGroups.core.fragment_until_valence_is_correct'),
     ('py:func', 'rdkit.Chem.rdchem.Mol.GetSubstructMatches'),
-    ('py:meth', 'HalogenGroups.ResultsModel.to_fingerprint'),
+    ('py:meth', 'HalogenGroups.PFASEmbeddingSet.to_array'),
     ('py:meth', 'MoleculeResult.classify'),
     ('py:meth', 'PFASEmbedding.to_array'),
     ('py:meth', 'PFASEmbedding.compare_kld'),

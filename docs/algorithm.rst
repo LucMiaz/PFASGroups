@@ -229,20 +229,35 @@ To limit computation time on very large components:
 
 **Halogen fraction** — ratio of halogen atoms to total heavy atoms.
 
-Fingerprint generation
------------------------
+Embedding generation
+----------------------
 
-:func:`~PFASGroups.generate_fingerprint` converts a list of SMILES to a
-2-D numpy array.  The default mode is fluorine-only (``halogens='F'``),
-producing **116 columns** — one per group.  The column layout for multi-halogen
-mode is:
+The primary embedding API is :meth:`~PFASGroups.PFASEmbeddingSet.to_array`,
+called on a pre-parsed :class:`~PFASGroups.PFASEmbeddingSet` (avoids re-parsing):
+
+.. code-block:: python
+
+   results = parse_smiles(smiles)
+   arr = results.to_array()          # (n_mols, 114) binary, fluorine-only
+
+:func:`~PFASGroups.generate_fingerprint` is a convenience wrapper that parses
+and embeds in a single call, returning ``(array, info_dict)``:
+
+.. code-block:: python
+
+   fps, info = generate_fingerprint(smiles)   # (n_mols, 114), {'group_names': …}
+
+Both functions share the same ``component_metrics`` / ``group_selection`` /
+``halogens`` parameters.  The default mode is fluorine-only (``halogens='F'``),
+producing **114 compiled columns** — one per group.  The column layout for
+multi-halogen mode is:
 
 ``[group_0_F, group_0_Cl, group_0_Br, group_0_I,``
 ``  group_1_F, …,``
-``  group_115_F, group_115_Cl, group_115_Br, group_115_I]``
+``  group_113_F, group_113_Cl, group_113_Br, group_113_I]``
 
-Default F-only column count: 116 × 1 = **116**.
-All-halogen column count: 116 × 4 = **464** (see :ref:`multi_halogen_fingerprint`).
+Default F-only column count: 114 × 1 = **114**.
+All-halogen column count: 114 × 4 = **456** (see :ref:`multi_halogen_fingerprint`).
 
 Four count encoding values are available as items in ``component_metrics``:
 
