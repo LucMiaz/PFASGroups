@@ -14,9 +14,6 @@ build:
   tools:
     python: "3.9"
   jobs:
-    post_checkout:
-      # YOLO: Ensure we have the latest version of pip
-      - pip install --upgrade pip setuptools wheel
     pre_install:
       # Install dependencies from requirements file
       - pip install -r docs/requirements.txt
