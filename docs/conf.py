@@ -10,8 +10,8 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'HalogenGroups / PFASGroups'
 copyright = '2026, Luc T. Miaz'
 author = 'Luc T. Miaz'
-release = '3.2.0'
-version = '3.2.0'
+release = '3.2.2'
+version = '3.2.2'
 
 # -- General configuration ---------------------------------------------------
 extensions = [
@@ -30,7 +30,7 @@ copybutton_prompt_text = r'>>> |\.\.\. |\$ |\# |In \[\d+\]: | {2,5}\.\.\.: | {5,
 copybutton_prompt_is_regexp = True
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md', 'ResultsFingerprint_Guide.md']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md', 'ResultsFingerprint_Guide.md', 'fingerprint_options.md']
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_rtd_theme'
@@ -101,3 +101,58 @@ autodoc_default_options = {
     'undoc-members': True,
     'exclude-members': '__weakref__'
 }
+
+# ---------------------------------------------------------------------------
+# Nitpick / cross-reference suppression
+# ---------------------------------------------------------------------------
+# Suppress warnings for common false-positive cross-references produced by
+# Napoleon converting Google/NumPy-style docstring type-annotations to RST.
+nitpick_ignore = [
+    ('py:class', "default 'F'"),
+    ('py:class', "default 'per'"),
+    ('py:class', "default 'all'"),
+    ('py:class', "default 'binary'"),
+    ('py:class', "default None"),
+    ('py:class', "default True"),
+    ('py:class', "default False"),
+    ('py:class', 'optional'),
+    ('py:class', 'callable'),
+    ('py:class', 'array'),
+    ('py:class', 'column_names'),
+    ('py:class', 'Chem.Mol'),
+    ('py:class', 'rdkit.Chem.Mol'),
+    ('py:class', 'optional [ref.class]'),
+    ('py:class', 'SQLAlchemy Engine'),
+    ('py:class', 'ResultsFingerprint'),
+    ('py:class', 'GroupMatch'),
+    ('py:class', 'MatchComponent'),
+    ('py:class', 'PFASComponent'),
+    ('py:class', 'PFASEmbedding'),
+    ('py:class', 'PIL.Image.Image'),
+    ('py:class', '-> both'),
+    ('py:func', 'parse_smiles'),
+    ('py:func', 'parse_mols'),
+    ('py:func', 'generate_fingerprint'),
+    ('py:func', 'get_HalogenGroups'),
+    ('py:func', 'HalogenGroups.generate_fingerprint'),
+    ('py:func', 'PFASGroups.parser.parse_smiles'),
+    ('py:func', 'PFASGroups.parser.parse_mols'),
+    ('py:func', 'PFASGroups.core.fragment_until_valence_is_correct'),
+    ('py:func', 'rdkit.Chem.rdchem.Mol.GetSubstructMatches'),
+    ('py:meth', 'HalogenGroups.ResultsModel.to_fingerprint'),
+    ('py:meth', 'MoleculeResult.classify'),
+    ('py:meth', 'PFASEmbedding.to_array'),
+    ('py:meth', 'PFASEmbedding.compare_kld'),
+    ('py:class', 'PFASGroups.fingerprints.PFASFingerprint'),
+    ('py:class', 'default=None'),
+]
+
+# Suppress all "default XYZ", "optional", "callable", etc. via regex
+nitpick_ignore_regex = [
+    ('py:class', r"^default .*"),
+    ('py:class', r"^optional$"),
+    ('py:class', r"^callable$"),
+    ('py:class', r"^PFASGroups\.PFASEmbeddings\.\w+$"),
+    ('py:class', r"^sqlalchemy\..*"),
+    ('py:obj',   r"^PFASEmbedding\..*"),
+]

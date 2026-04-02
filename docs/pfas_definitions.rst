@@ -69,7 +69,7 @@ UK Environment Agency
 perfluorinated side-chains.
 
 PFASSTRUCTv5
------------
+------------
 
 **Reference**: `Schymanski et al., PFASSTRUCTV5 annotated structure database
 <https://zenodo.org/record/7370805>`_

@@ -30,7 +30,7 @@ The algorithm processes a SMILES string in four stages:
 Group library
 -------------
 
-The library contains **116 halogen groups** organised into three categories:
+The library contains **119 halogen groups** organised into four categories:
 
 .. list-table::
    :header-rows: 1
@@ -40,18 +40,22 @@ The library contains **116 halogen groups** organised into three categories:
      - Count
      - Description
    * - OECD
-     - 28
+     - 27
      - Groups adopted from the 2021 OECD PFAS definition framework
    * - Generic
-     - 45
+     - 48
      - Broader halogenated structural motifs (alkyl, aryl, acyl, sulfonyl, …)
    * - Fluorotelomer
      - 43
      - Fluorotelomer groups including telomer alcohols, sulfonates, amides
+   * - Aggregate
+     - 3
+     - Pattern-matching groups (e.g. ``Telomers``) with ``compute=False``;
+       included in fingerprint headers but not matched directly
 
-In addition one *aggregate* group (``Telomers``) is defined with
-``compute=False``; it is included in fingerprint headers but not matched
-directly.
+When fluorine-only mode is used (the default), **114 groups** are compiled
+(the 3 aggregate groups are always included in fingerprint headers but not
+directly matched).
 
 SMARTS-based matching
 ----------------------

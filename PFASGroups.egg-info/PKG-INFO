@@ -191,12 +191,16 @@ smiles_list = ['C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O',
 
 # Skip all component graph metrics (fastest)
 rFull = parse_smiles(smiles_list, compute_component_metrics=False)
+print(rFull)
+rFull.summary()
 
 # Keep metrics but skip effective graph resistance entirely
 rNoEGR = parse_smiles(smiles_list, limit_effective_graph_resistance=0)
+print(rNoEGR)
 
 # Compute resistance only for components below a size threshold
 rLimitEGR = parse_smiles(smiles_list, limit_effective_graph_resistance=20)
+print(rLimitEGR)
 ```
 
 CLI equivalents:
@@ -220,7 +224,38 @@ pfasgroups parse --limit-effective-graph-resistance 200 "C(C(F)(F)F)F"
 from PFASGroups import parse_smiles
 
 # Parse PFAS structures — returns a PFASEmbeddingSet
-smiles_list = ["C(C(F)(F)F)F", "FC(F)(F)C(F)(F)C(=O)O"]
+smiles_list = ["C[Si](C)(Cl)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "FC(=C(C(F)(F)F)C(F)(F)F)C(F)(F)C(F)(F)F",
+        "FC(F)(F)C(F)(C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+        "C[Si](Cl)(Cl)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "FC(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "CC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+        "FC(F)=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "FC(F)(F)N1C(F)(F)C(F)(F)C(F)(F)C(F)(F)C1(F)F",
+        "FC(F)(F)C(F)(F)C(F)(F)CCl",
+        "OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "OS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "FC(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)COC(=O)C=C",
+        "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)OC=C",
+        "FC(F)(F)C(I)(C(F)(F)F)C(F)(F)F",
+        "OC(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)F",
+        "C[Si](Cl)(Cl)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "FC(F)=C(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "CCN(CC)CC.NS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "[OH-].C[N+](C)(C)CCCNS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "[K+].[O-]S(=O)(=O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+        "[NH4+].[O-]P(=O)(OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "OCCN(CCO)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)F",
+        "OP(O)(=O)OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",
+        "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)N(C(F)(F)C(F)(F)C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "COC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+        "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)OCC=C",
+        "CC(C)CCOC(=O)CC(NC(=O)C(F)(F)C(F)(F)C(F)(F)F)C(=O)OCCC(C)C",
+        "CN(C(=O)C(F)(F)C(F)(F)C(F)(F)F)C(=O)C(F)(F)C(F)(F)C(F)(F)F",
+        "FC(F)(F)C(F)(F)C(F)(F)C=CI",
+        "OC(=O)C1=CC=CC=C1NC(=O)C(F)(F)C(F)(F)C(F)(F)F",
+        "FC(F)(F)C1(F)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C1(F)F"]
+
 results = parse_smiles(smiles_list)           # → PFASEmbeddingSet
 print(results)                                # summary: molecule count, top groups, …
 print(results[0])                             # per-molecule summary for first entry
@@ -240,44 +275,62 @@ pca_result  = results.perform_pca(n_components=5, plot=True)
 tsne_result = results.perform_tsne(perplexity=30, plot=True)
 umap_result = results.perform_umap(n_neighbors=15, plot=True)
 
+# Colour each point by the PFAS group with the highest match count
+pca_result  = results.perform_pca(n_components=5,  color_by='top_group')
+tsne_result = results.perform_tsne(perplexity=30,   color_by='top_group')
+umap_result = results.perform_umap(n_neighbors=15,  color_by='top_group')
+
+# Or supply your own per-molecule labels (e.g. from external metadata)
+labels = ['industrial'] * 10 + ['environmental'] * (len(smiles_list) - 10)
+pca_result  = results.perform_pca(color_by=labels)
+
 # Compare two datasets using KL divergence
+other_smiles_list = smiles_list[0:10] + \
+    ["OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(O)=O",
+     "OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",
+     "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)COCC=C"]
 other_results = parse_smiles(other_smiles_list)
 similarity = results.compare_kld(other_results, method='minmax')
+print(f"Similarity between the lists of compounds: {similarity:2.3f}")
 
 # Save to SQL database
 results.to_sql(filename='results.db')
 
-# New in v2.2.4: Prioritization tool for screening and ranking
-from HalogenGroups import prioritise_molecules
+# Prioritization tool for screening and ranking
+from PFASGroups import prioritise_molecules
 
 # Prioritize by similarity to reference list (e.g., known persistent PFAS)
 reference = ["FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(=O)O"]
-prioritized = prioritise_molecules(
+prioritised, scores = prioritise_molecules(
     molecules=smiles_list,
     reference=reference,
     return_scores=True
 )
+print(f"Prioritisation order: {'\n'.join([x['smiles'] for x in prioritised])}")
 
 # Prioritize by intrinsic fluorination properties (long chains, high F content)
-prioritized = prioritise_molecules(
+prioritised = prioritise_molecules(
     molecules=smiles_list,
     a=1.0,  # Weight for total fluorination
     b=5.0,  # Weight for longest chains
-    percentile=90  # Focus on 90th percentile of component sizes
+    percentile=90,  # Focus on 90th percentile of component sizes
+    return_scores = False
 )
+print(f"Prioritisation order: {'\n'.join([x['smiles'] for x in prioritised])}")
+
 ```
 
 ### Command Line
 
 ```bash
 # Parse SMILES strings
-halogengroups parse "C(C(F)(F)F)F" "FC(F)(F)C(F)(F)C(=O)O"
+pfasgroups parse "C(C(F)(F)F)F" "FC(F)(F)C(F)(F)C(=O)O"
 
 # Generate fingerprints
-halogengroups fingerprint "C(C(F)(F)F)F" --format dict
+pfasgroups fingerprint "C(C(F)(F)F)F" --format dict
 
 # List available PFAS groups
-halogengroups list-groups
+pfasgroups list-groups
 ```
 
 ### Filtering Components by Halogen, Form, and Saturation
@@ -332,18 +385,26 @@ arr_bin = results.to_array()                    # shape (4, 114)
 print(EMBEDDING_PRESETS['best']['description'])
 arr_best = results.to_array(preset='best')      # shape (4, 228) = 114 × 2
 
+print(arr_best.shape)
+
 # --- effective graph resistance directly ---
 arr_egr = results.to_array(
     component_metrics=['binary', 'effective_graph_resistance']
 )                                               # shape (4, 228)
 
+print(arr_egr.shape)
+
 # --- n_spacer: telomer CH₂ spacer length (encodes 'm' in 'm:n' notation) ---
 # Zero for non-telomers; distinguishes 2:1, 4:2, 6:2 FTOHs in a single column
 arr_ns = results.to_array(component_metrics=['n_spacer'])  # shape (4, 114)
 
+print(arr_egr.ns)
+
 # --- ring_size: smallest ring overlapping each matched component ---
 # Zero for acyclic groups; 5 for azoles/furans; 6 for benzene/cyclohexane
 arr_rs = results.to_array(component_metrics=['ring_size'])  # shape (4, 114)
+
+print(arr_rs.shape)
 
 # --- combined: EGR + n_spacer + ring_size + molecule-wide descriptors ---
 arr_combined = results.to_array(
@@ -354,41 +415,27 @@ arr_combined = results.to_array(
                       'mean_component_fraction', 'max_component_fraction'],
 )  # shape (4, 4*114 + 6) = (4, 462)
 
+print(arr_combined.shape)
+
 # --- multi-halogen: one parse per halogen, then hstack ---
-arrs = []
-for hal in ['F', 'Cl', 'Br', 'I']:
-    r_hal = parse_smiles(smiles, halogens=hal)
-    arrs.append(r_hal.to_array(component_metrics=['effective_graph_resistance']))
-arr_4x = np.hstack(arrs)                        # shape (4, 456) = 4 × 114
+halogens = ['F','Cl','Br','I']
+r_hal = parse_smiles(smiles, halogens=halogens)
+arr_4x = r_hal.to_array(component_metrics=['effective_graph_resistance'], molecule_metrics=['n_components','max_size','mean_branching'], halogens=halogens)
+
+print(arr_4x.shape)
 
 # --- column names ---
 cols = results.column_names(
     component_metrics=['binary', 'effective_graph_resistance']
 )
 print(cols[:4])   # e.g. ['Perfluoroalkyl [binary]', ..., 'Perfluoroalkyl [EGR]', ...]
+
+print(arr_4x[:4])
 ```
 
 See [`examples/embedding_with_graph_metrics.py`](examples/embedding_with_graph_metrics.py)
 for a complete runnable script covering all options.
 
-CLI equivalents:
-
-```bash
-# Filter for fluorine components only
-halogengroups parse --halogens F "C(C(F)(F)F)F"
-
-# Filter for perfluorinated alkyl
-halogengroups parse --halogens F --saturation per --form alkyl "FC(F)(F)C(F)(F)C(=O)O"
-
-# Filter for multiple halogens
-halogengroups parse --halogens F Cl "C(C(F)(F)F)Cl"
-
-# Filter for cyclic forms only
-halogengroups parse --form cyclic "your_smiles_here"
-
-# Filter for polyfluorinated components
-halogengroups parse --halogens F --saturation poly "FC(F)(F)C(C(F)(F)F)C(F)(F)F"
-```
 
 ## Multi-Halogen Analysis
 
@@ -410,9 +457,10 @@ smiles_list = [
 results = parse_smiles(smiles_list)           # → PFASEmbeddingSet
 
 # to_array() reads the halogen info already captured during parsing
-arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
+arr  = results.to_array(group_selection='oecd', component_metrics=['binary'], halogens = ['F','Cl','Br','I'])
 cols = results.column_names(group_selection='oecd')
 
+print(arr.shape)
 ```
 
 ### Option B – import `PFASgroups` and specify `halogens` explicitly
@@ -429,22 +477,8 @@ smiles_list = [
 # Explicitly pass all halogens
 results = parse_smiles(smiles_list, halogens=['F', 'Cl', 'Br', 'I'])  # → PFASEmbeddingSet
 
-arr  = results.to_array(group_selection='oecd', component_metrics=['binary'])
+arr  = results.to_array(group_selection='oecd', component_metrics=['binary'], halogens=['F', 'Cl', 'Br', 'I'])
 cols = results.column_names(group_selection='oecd')
-```
-
-Both approaches produce identical results. Use `HalogenGroups` when your workflow
-is always multi-halogen; use `PFASgroups` with an explicit `halogens` argument when
-you want to mix fluorine-only and multi-halogen calls in the same script.
-
-CLI equivalents (the CLI always requires an explicit `--halogens` flag):
-
-```bash
-# All four halogens
-halogengroups parse --halogens F Cl Br I "C(C(F)(F)F)F" "ClC(Cl)(Cl)C(Cl)(Cl)Cl"
-
-# Fingerprint with all halogens
-halogengroups fingerprint --halogens F Cl Br I "C(C(F)(F)F)F"
 ```
 
 ## Custom Configuration
@@ -453,26 +487,93 @@ Use custom pathtype definitions and PFAS groups:
 
 ```python
 # Load custom files entirely
-from HalogenGroups import get_componentSMARTSs, get_HalogenGroups, parse_smiles
+from PFASGroups import get_componentSMARTSs, get_HalogenGroups, parse_smiles
+from PFASGroups.core import preprocess_componentsSmarts
+from PFASGroups.parser import preprocess_HalogenGroups
 
-custom_paths = get_componentSMARTSs(filename='my_component_smartss.json')
-custom_groups = get_HalogenGroups(filename='my_groups.json')
+# You can load component smarts
+custom_paths = get_componentSMARTSs()
+# Add or modify componentSMARTSs as you want
+# ....
+# then preprocess them
+custom_paths = preprocess_componentsSmarts(custom_paths)
+
+
+# You can load HalogenGroups
+custom_groups = get_HalogenGroups()
+# Add or modify HalogenGroups as you want
+# ....
+# then preprocess them
+pfas_groups, agg_groups = preprocess_HalogenGroups(custom_groups)
+
 
 results = parse_smiles(
     ["C(C(F)(F)F)F"],
     componentSmartss=custom_paths,
-    pfas_groups=custom_groups
+    pfas_groups=pfas_groups,
+    agg_pfas_groups = agg_groups
 )
 ```
 
+```python
+# Or extend defaults with your custom groups
+from PFASGroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles, get_componentSMARTSs
+from PFASGroups.core import preprocess_componentsSmarts
 
-```bash
-# Via command line
-halogengroups parse --groups-file my_custom_groups.json "C(C(F)(F)F)F"
+# Add custom PFAS groups
+groups = get_compiled_HalogenGroups()  # Get defaults, precompiled
+# Create a new group
+custom_group = HalogenGroup(
+    id=999,
+    name="My Custom Group",
+    smarts={"[C](F)(F)F": 1},
+    componentSmarts=None,
+    componentSaturation="per",
+    componentHalogens="F",
+    componentForm="alkyl",
+    constraints={"gte": {"F": 1}}
+)
 
-# List available groups and paths
-halogengroups list-groups
-halogengroups list-paths
+# then add it to the lit of groups
+groups.append(custom_group)
+
+# pass the new set of groups as argument to parse_smiles
+results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=groups)
+
+# Alternatively, select and modify some existing default_groups
+from PFASGroups import get_HalogenGroups, HalogenGroup
+# get and subset the default groups
+default_groups = get_HalogenGroups()[2:4]
+# extract one group
+modified_group = default_groups[1]
+# modify its parameters, here simply require presence of at least two structures
+modified_group['smarts']={x:2 for x, i in modified_group['smarts'].items()}
+# replace the modified group in the groups list
+default_groups[1] = modified_group
+# compile the groups
+compiled_groups = [HalogenGroup(**x) for x in default_groups]
+
+# Possibly add another group with max_dist_from_comp = 3
+compiled_groups.append(HalogenGroup(
+    id=998,
+    name="Extended Distance Group",
+    smarts={"[#6$([#6][OH1])]": 1},
+    componentSmarts=None,
+    constraints={},
+    max_dist_from_comp=3  # Allow up to 3 bonds from fluorinated carbon
+))
+
+# parse the groups:
+results = parse_smiles(["FC(F)(F)C(F)(F)[N+](=O)[O-]"], pfas_groups=compiled_groups)
+
+# Add or modify custom path types (e.g., chlorinated analogs)
+paths = get_componentSMARTSs()
+paths['Cl']['alkyl'] = {"per":{
+                "component":"[C;X4](Cl)(Cl)!@!=!#[C;X4](Cl)(Cl)",
+                "name":"Custom Chloro"}}
+paths = preprocess_componentsSmarts(paths)
+
+results = parse_smiles(["ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"], halogens = 'Cl', componentSmartss=paths)
 ```
 
 ## Documentation
@@ -607,72 +708,6 @@ See `COMPREHENSIVE_METRICS_SUMMARY.md` for complete documentation.
 
 - Find SMARTS match connected to either a second SMARTS or a default path-related SMARTS using networkx shortest_path.
 
-## Tests and benchmarks
-
-### Automated pytest suite
-
-The module ships a comprehensive pytest suite in `tests/`. Run it from the repository root:
-
-```bash
-pytest tests/            # run all tests
-pytest tests/ -v         # verbose output
-pytest tests/ -k smarts  # run only SMARTS-related tests
-```
-
-Key test files:
-
-| File | What it tests |
-|------|---------------|
-| `tests/test_halogen_groups_smarts.py` | Per-group positive and negative examples embedded in the JSON configuration |
-| `tests/test_pfasstructv5.py` | PFASSTRUCTv5 definition against the PFASSTRUCTV5 from DSSTox (see below) |
-| `tests/test_results_fingerprint.py` | Fingerprint generation, group selection, and dimensionality-reduction methods |
-| `tests/test_definition_comparison.py` | Consistency of the five PFAS regulatory definitions |
-| `tests/test_linker_smarts.py` | CH₂ linker validation for fluorotelomer groups |
-| `tests/test_metrics.py` | Graph-theoretical component metric values |
-
-### Benchmarking against PFAS-Atlas
-
-Performance and coverage were benchmarked against [PFAS-Atlas](https://github.com/su-group/PFAS-atlas?tab=readme-ov-file) (Su *et al.* 2024, [DOI: 10.1016/j.scitotenv.2024.171229](https://www.sciencedirect.com/science/article/pii/S0048969724013688)).
-
-See the table in the [Benchmark Summary](#benchmark-summary-mar-2026-v-322-f-groups) section above for timing numbers. Full per-dataset comparison and Sankey diagrams are in `benchmark/reports/`.
-
-### PFASSTRUCTv5 validation against Richard *et al.* 2023
-
-The PFASSTRUCTv5 definition (definition ID 5, `'PFASSTRUCTv5'`, fluorineRatio ≥ 0.3) was validated against the PFASSTRUCTV5 list (update August 2022) in [DSSTox database](https://comptox.epa.gov/dashboard/chemical-lists/PFASSTRUCTV5), downloaded on 2 March 2026 as SDF v3000.
-
-The inventory (`tests/test_data/PFASSTRUCTV5_20221101.sdf`, 14,735 structures) was used as a positive test set: every molecule is expected to satisfy the PFASSTRUCTv5 definition. The automated test `tests/test_pfasstructv5.py` checks this:
-
-```bash
-# Pytest mode — a deterministic sample of 10 molecules (fast, suitable for CI):
-pytest tests/test_pfasstructv5.py -v
-
-# Direct mode — validates all 14,735 molecules and reports any failures:
-python tests/test_pfasstructv5.py
-```
-
-### HalogenGroups fingerprint comparison against CSRML (Richard *et al.* 2023)
-
-HalogenGroups binary fingerprints were compared against the 125-bit CSRML fingerprint system introduced by Richard *et al.* 2023, which was developed specifically for profiling and categorising PFAS. The comparison script `benchmark/scripts/compare_pfasgroups_vs_txppfas.py` generates:
-
-- Group coverage statistics and information-content distribution per group
-- Lorenz curves for class-richness concentration
-- PCA scatter plots comparing chemical-space coverage of both fingerprint systems
-- Pairwise Jaccard similarity distributions within each system
-- Cross-fingerprint similarity scatter (HalogenGroups vs. CSRML Jaccard)
-
-> Richard, A. M. *et al.* (2023). *A New CSRML Structure-Based Fingerprint Method for Profiling and Categorizing Per- and Polyfluoroalkyl Substances (PFAS).* Chemical Research in Toxicology, 36(3), 318–338. [DOI: 10.1021/acs.chemrestox.2c00403](https://doi.org/10.1021/acs.chemrestox.2c00403)
-
-```bash
-cd benchmark/scripts
-
-# HalogenGroups fingerprint analysis only (no CSRML CSV needed):
-python compare_pfasgroups_vs_txppfas.py --smiles ../data/test_set_for_PFASSTRUCTv5.tsv
-
-# Full comparison (requires Richard 2023 SI Table S2 exported as CSV):
-python compare_pfasgroups_vs_txppfas.py \
-  --smiles ../data/test_set_for_PFASSTRUCTv5.tsv \
-  --txppfas_csv ../data/richard2023_SI_table_S2.csv
-```
 
 
 ## Licence

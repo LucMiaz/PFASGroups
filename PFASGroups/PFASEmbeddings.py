@@ -2280,13 +2280,10 @@ class PFASEmbeddingSet(list):
     def table(self) -> str:
         """Return a more detailed text table with one row per molecule.
 
-        Columns:
-        - index: 1-based molecule index in this ResultsModel
-        - smiles: molecule SMILES
-        - group_matches: number of PFAS group matches
-        - definition_matches: number of PFAS definition matches
-        - groups: per-molecule PFAS groups with counts, e.g.
-          "Perfluoroalkyl (2); Polyfluoroalkyl (1)".
+        The TSV table has the following columns: ``index`` (1-based),
+        ``smiles``, ``group_matches`` (count), ``definition_matches`` (count),
+        and ``groups`` (per-molecule PFAS groups with counts, e.g.
+        ``"Perfluoroalkyl (2); Polyfluoroalkyl (1)"``).
         """
 
         lines: List[str] = []

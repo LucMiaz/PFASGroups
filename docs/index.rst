@@ -36,7 +36,7 @@ using SMARTS-based structural group matching.
 Key capabilities
 ----------------
 
-- **116 halogen groups**: 28 OECD, 45 generic, 43 fluorotelomer groups
+- **119 halogen groups**: 27 OECD, 48 generic, 43 fluorotelomer, 1 aggregate (114 compiled for F-only)
 - **PFAS definition screening**: classify molecules against 5 regulatory frameworks
 - **Fingerprinting**: generate 116-column fingerprints (binary, count  or max-component) for ML
 - **Group selection**: use all groups, OECD only, generic, telomers, or a custom subset

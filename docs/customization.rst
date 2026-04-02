@@ -176,5 +176,5 @@ repeat the check in each group definition in ``Halogen_groups_smarts.json``.
 The built-in poly-halogenated alkyl component types (*Polyfluoroalkyl*,
 *Polychloroalkyl*, *Polybromoalkyl*, *Polyiodoalkyl*) each carry
 ``{"gte": {"X": 2}}`` (where *X* is the respective halogen) to ensure that
-a component labelled *poly*halogenated bears at least two halogen substituents,
+a component labelled *polyhalogenated* bears at least two halogen substituents,
 distinguishing it from mono-halogenated components.
