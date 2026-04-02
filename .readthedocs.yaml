@@ -3,31 +3,11 @@
 
 version: 2
 
-# Build documentation in the docs/ directory with Sphinx
-sphinx:
-  configuration: docs/conf.py
-  fail_on_warning: false
-
-# Explicitly set the version of Python and its requirements
 build:
   os: ubuntu-22.04
   tools:
-    python: "3.9"
-  jobs:
-    pre_install:
-      # Install dependencies from requirements file
-      - pip install -r docs/requirements.txt
-    post_install:
-      # Install the package itself
-      - pip install -e .
-
-# Optionally set the formats of the documentation to build
-formats:
-  - pdf
-  - epub
-
-python:
-  install:
-    - requirements: docs/requirements.txt
-    - method: pip
-      path: .
+    python: "3.12"
+  commands:
+    - pip install -r docs/requirements.txt
+    - pip install -e .
+    - sphinx-build -T -b html docs/ $READTHEDOCS_OUTPUT/html
