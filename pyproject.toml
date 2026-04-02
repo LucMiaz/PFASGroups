@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PFASGroups"
-version = "3.2.2"
+version = "3.3.0"
 description = "A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, with a focus on per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 116 group classifications (28 OECD-defined PFAS groups, 45 generic groups and 43 telomers connected to halogenated components) with halogenated component size determination. Supports multi-halogen fingerprinting (F, Cl, Br, I) with per/poly saturation filtering and stackable fingerprint vectors."
 authors = [
     { name = "Luc T. Miaz", email = "luc@miaz.ch" }
@@ -65,6 +65,15 @@ dev = [
 database = [
     "sqlalchemy>=1.4.0",
 ]
+gui = [
+    "PySide6>=6.4",
+    "PySide6-WebEngineWidgets>=6.4",
+    "plotly>=5.0",
+    "umap-learn>=0.5",
+    "openpyxl>=3.0",
+    "sqlalchemy>=1.4.0",
+    "matplotlib>=3.5",
+]
 
 [project.urls]
 Homepage = "https://github.com/lucmiaz/PFASGroups"
@@ -75,13 +84,15 @@ Documentation = "https://pfasgroups.readthedocs.io"
 [project.scripts]
 pfasgroups = "PFASGroups.cli:main"
 halogengroups = "PFASGroups.cli:main_halogen"
+pfasgroups-gui = "gui.__main__:main"
 
 [tool.setuptools]
-packages = ["HalogenGroups", "PFASGroups"]
+packages = ["HalogenGroups", "PFASGroups", "gui", "gui.tabs", "gui.utils"]
 
 [tool.setuptools.package-data]
 HalogenGroups = ["data/*.json", "data/*.txt"]
 PFASGroups = ["data/*.json", "data/*.txt"]
+gui = ["data/*.html", "data/*.css", "data/*.js"]
 
 # Pytest configuration
 [tool.pytest.ini_options]

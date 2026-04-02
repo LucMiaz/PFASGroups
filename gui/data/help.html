@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PFASGroups GUI – Help</title>
+<style>
+  :root {
+    --orange:  #E15D0B;
+    --blue:    #306DBA;
+    --magenta: #9D206C;
+    --purple:  #51127C;
+    --bg:      #f7f7fa;
+    --card:    #ffffff;
+    --border:  #dde1ea;
+    --text:    #1c1c2e;
+    --muted:   #6b6b80;
+    --code-bg: #f0f0f8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    background: var(--bg);
+    color: var(--text);
+    padding: 28px 32px;
+    max-width: 860px;
+  }
+  h1 { font-size: 22px; color: var(--purple); margin-bottom: 4px; }
+  h2 {
+    font-size: 16px; font-weight: 700; color: var(--blue);
+    margin-top: 28px; margin-bottom: 10px;
+    padding-bottom: 4px; border-bottom: 2px solid var(--border);
+  }
+  h3 { font-size: 14px; font-weight: 600; color: var(--orange); margin: 14px 0 6px; }
+  p  { line-height: 1.65; margin-bottom: 10px; }
+  ul { padding-left: 20px; margin-bottom: 10px; }
+  li { line-height: 1.65; margin-bottom: 3px; }
+  code {
+    font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+    font-size: 12.5px; background: var(--code-bg);
+    padding: 1px 5px; border-radius: 3px; color: var(--magenta);
+  }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 12px;
+    font-size: 11px; font-weight: 700; margin: 2px;
+  }
+  .badge-tab { background: var(--purple); color: #fff; }
+  .badge-tip { background: #e8f5e9; color: #2e7d32; }
+  .note {
+    background: #fff8e7; border-left: 3px solid var(--orange);
+    padding: 8px 14px; border-radius: 0 4px 4px 0; margin: 10px 0;
+    font-size: 13px;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 20px; margin-bottom: 14px;
+  }
+  .step-num {
+    display: inline-block; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--blue); color: #fff; text-align: center;
+    line-height: 24px; font-size: 12px; font-weight: 700;
+    margin-right: 8px; vertical-align: middle;
+  }
+  hr { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+  .version { font-size: 11px; color: var(--muted); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<h1>PFASGroups GUI</h1>
+<p class="version">Desktop application for PFAS structure classification, prioritisation, and modelling</p>
+
+<hr>
+
+<!-- ────────────────────────────────────────────────────────────────── Tab 1 -->
+<h2><span class="step-num">1</span> Classification Tab</h2>
+<div class="card">
+  <h3>Purpose</h3>
+  <p>Load a molecular dataset and classify each molecule against the built-in PFAS group
+  definitions.  Matched groups are highlighted as colour-coded fragments in the
+  structure view (Tab 2).</p>
+
+  <h3>Data sources</h3>
+  <ul>
+    <li><b>File</b> – CSV, Excel (.xlsx/.xls), or SQLite (.db/.sqlite).  Browse for the
+        file, choose a sheet (Excel) and the SMILES / name columns.</li>
+    <li><b>Database</b> – SQLite, MariaDB, or PostgreSQL.  Fill in the connection form
+        (host, port, database name, user, password, table name).</li>
+    <li><b>Manual</b> – Paste SMILES directly.  One per line, or comma-separated with
+        optional names (<code>Name: SMILES</code>).</li>
+  </ul>
+
+  <h3>Options</h3>
+  <ul>
+    <li><b>Halogens</b> – Which halogens to include in the analysis.  Start with
+        <code>F only</code> for classical PFAS; broaden to include Cl/Br/I for expanded
+        screening.</li>
+    <li><b>Saturation filter</b> – <code>Perf. (CF₂/CF₃)</code> restricts to
+        perfluorinated chains; <code>All fluorinated</code> includes partially
+        fluorinated structures.</li>
+    <li><b>Compute metrics</b> – Calculate graph-theoretic component metrics (needed
+        for Tabs 4–6).</li>
+    <li><b>Check definitions</b> – Additionally test each molecule against the PFAS
+        definitions ticked below the option.</li>
+  </ul>
+
+  <div class="note">
+    Results automatically propagate to all other tabs once classification completes.
+  </div>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────────── Tab 2 -->
+<h2><span class="step-num">2</span> Results Tab</h2>
+<div class="card">
+  <h3>Purpose</h3>
+  <p>Browse the classified molecules as interactive compound cards.  Each card shows:</p>
+  <ul>
+    <li>The 2-D structure with matched PFAS groups highlighted in group-specific colours.</li>
+    <li>A list of matched group names and component counts.</li>
+    <li>PFAS definition badges (pass/fail) if definition checking was enabled.</li>
+  </ul>
+
+  <h3>Controls</h3>
+  <ul>
+    <li><b>Search</b> – filter cards by molecule name.</li>
+    <li><b>Show All / Hide All</b> – toggle structure visibility for all cards.</li>
+    <li><b>Export CSV</b> – save a summary table (name, SMILES, matched groups,
+        definition results) to a CSV file.</li>
+  </ul>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────────── Tab 3 -->
+<h2><span class="step-num">3</span> Definition &amp; SMARTS Tester Tab</h2>
+<div class="card">
+  <h3>Sub-tab A – PFAS Definitions</h3>
+  <p>Enter a SMILES string and test it against:</p>
+  <ul>
+    <li><b>Built-in definitions</b> (default, when the custom JSON field is left blank).</li>
+    <li><b>Custom <code>PFASDefinition</code> JSON</b> – paste an array of definition
+        objects.  Each must have <code>id</code>, <code>name</code>,
+        <code>smarts</code> (list of SMARTS strings), and optionally
+        <code>fluorineRatio</code> and <code>description</code>.</li>
+  </ul>
+
+  <h3>Sub-tab B – Custom Group (SMARTS)</h3>
+  <p>Define a custom <code>HalogenGroup</code> and test a molecule against it.  Fields:</p>
+  <ul>
+    <li><b>componentSmarts</b> – name of the underlying fluorine component pattern
+        (e.g. <code>Perfluoroalkyl</code>).</li>
+    <li><b>SMARTS dict (JSON)</b> – mapping of SMARTS pattern → required minimum count,
+        e.g. <code>{"[CX3](=O)[OX2H1]": 1}</code>.</li>
+    <li><b>Constraints (JSON)</b> – element-count constraints,
+        e.g. <code>{"gte": {"F": 4}}</code>.</li>
+  </ul>
+  <p>Diagnostics are printed as JSON in the right panel, showing which stage passed
+  or failed (component detection, SMARTS matching, constraint checking).</p>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────────── Tab 4 -->
+<h2><span class="step-num">4</span> Prioritise Tab</h2>
+<div class="card">
+  <h3>Purpose</h3>
+  <p>Rank the classified molecules to identify the most structurally diverse or
+  representative candidates.</p>
+
+  <h3>Modes</h3>
+  <ul>
+    <li><b>Intrinsic: total component size</b> – sum of all matched fragment sizes.</li>
+    <li><b>Intrinsic: max component size</b> – largest single matched fragment.</li>
+    <li><b>Intrinsic: total + max</b> – weighted combination;
+        use α and β to balance the two terms.</li>
+    <li><b>Reference-based KL divergence</b> – divergence from a supplied reference
+        dataset.  Supply a CSV/Excel/SQLite file as the reference.</li>
+  </ul>
+
+  <h3>Output</h3>
+  <p>A sortable ranking table and a horizontal bar chart showing the top-30
+  priority scores.  Higher scores indicate higher priority (more structural
+  novelty or complexity relative to the reference).</p>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────────── Tab 5 -->
+<h2><span class="step-num">5</span> Chemical Space Tab</h2>
+<div class="card">
+  <h3>Purpose</h3>
+  <p>Visualise the PFASGroups fingerprint space as an interactive 2-D scatter plot.</p>
+
+  <h3>Methods</h3>
+  <ul>
+    <li><b>UMAP</b> – fast, topology-preserving.  Adjust <em>n_neighbours</em>
+        (local structure) and <em>min_dist</em> (cluster compactness).</li>
+    <li><b>PCA</b> – linear; no hyper-parameters.</li>
+    <li><b>t-SNE</b> – non-linear; adjust <em>perplexity</em>.</li>
+  </ul>
+
+  <h3>Fingerprint presets</h3>
+  <p>Select a <code>FINGERPRINT_PRESETS</code> key.  <em>best</em> (binary +
+  effective_graph_resistance) gives the best inter-group discrimination according
+  to the MQG benchmark, but any preset can be used.</p>
+
+  <h3>Colour by</h3>
+  <p>By default, points are coloured by the dominant PFAS group.  If a label
+  column was loaded with the data, select it here to colour by an arbitrary
+  property.</p>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────────── Tab 6 -->
+<h2><span class="step-num">6</span> ML Modelling Tab</h2>
+<div class="card">
+  <h3>Purpose</h3>
+  <p>Compare fingerprint descriptors for binary property prediction using
+  <code>HistGradientBoostingClassifier</code> with repeated stratified k-fold CV.</p>
+
+  <h3>Target column</h3>
+  <p>Choose a column from your loaded data that contains binary labels (0/1 or
+  True/False).  Common examples: <em>bioactive</em>, <em>toxic</em>, <em>active</em>.</p>
+
+  <h3>Fingerprint sets</h3>
+  <ul>
+    <li><b>PFASGroups presets</b> – any combination of the benchmark-validated
+        fingerprint presets (binary, best, best_2, …).</li>
+    <li><b>Morgan (RDKit)</b> – radius-2 Morgan fingerprint, 512 bits.  Useful
+        baseline.</li>
+    <li><b>ToxPrint (729 bits)</b> – requires pyCSRML to be installed.</li>
+    <li><b>TxP_PFAS (129 bits)</b> – PFAS-specific ToxPrint subset; requires pyCSRML.</li>
+    <li><b>Custom TSV/CSV</b> – rows = molecules (same order as input), columns = bits.
+        No header row.</li>
+  </ul>
+
+  <h3>Bayesian correlated t-test</h3>
+  <p>All fingerprint-set pairs are compared using the Bayesian correlated t-test
+  (Benavoli et al. 2017) with ROPE = 0.01 ROC-AUC.  The table reports:</p>
+  <ul>
+    <li><b>P(A&gt;B)</b> – probability that set A is meaningfully better than B.</li>
+    <li><b>P(ROPE)</b> – probability that the two sets are practically equivalent.</li>
+    <li><b>P(B&gt;A)</b> – probability that set B is meaningfully better than A.</li>
+  </ul>
+
+  <div class="note">
+    A P(ROPE) &gt; 0.9 indicates the two fingerprint sets perform equivalently
+    on this dataset.
+  </div>
+</div>
+
+<hr>
+<h2>Keyboard shortcuts</h2>
+<div class="card">
+  <ul>
+    <li><code>Ctrl+Q</code> – quit the application.</li>
+    <li><code>Ctrl+W</code> – close (same as Ctrl+Q on Windows).</li>
+  </ul>
+</div>
+
+<h2>Installation</h2>
+<div class="card">
+  <p>Install the GUI dependencies into your environment:</p>
+  <p><code>pip install "PFASGroups[gui]"</code></p>
+  <p>Or from the repository:</p>
+  <p><code>pip install -e ".[gui]"</code></p>
+  <p>Then launch with:</p>
+  <p><code>pfasgroups-gui</code></p>
+</div>
+
+<h2>References</h2>
+<div class="card">
+  <ul>
+    <li>Benavoli A et al. (2017) <em>Time for a Change: a Tutorial for Comparing
+        Multiple Classifiers Through Bayesian Analysis.</em> JMLR 18(1):2653–2688.</li>
+    <li>Nadeau C &amp; Bengio Y (2003) <em>Inference for the Generalization Error.</em>
+        Machine Learning 52(3):239–281.</li>
+  </ul>
+</div>
+
+</body>
+</html>
