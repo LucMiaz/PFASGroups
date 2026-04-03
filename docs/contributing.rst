@@ -23,7 +23,7 @@ Setting up a development environment
 
 .. code-block:: bash
 
-   git clone https://github.com/lucdecrem/PFASGroups.git
+   git clone https://github.com/LucMiaz/PFASGroups.git
    cd PFASGroups
    conda create -n halogengroups-dev -c conda-forge python=3.10 rdkit networkx
    conda activate halogengroups-dev
@@ -96,5 +96,5 @@ Please include:
 Contact
 -------
 
-- **GitHub Issues**: https://github.com/lucdecrem/PFASGroups/issues
+- **GitHub Issues**: https://github.com/LucMiaz/PFASGroups/issues
 - **Email**: luc.miaz@aces.su.se
