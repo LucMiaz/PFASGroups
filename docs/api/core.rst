@@ -7,7 +7,7 @@
 
    from PFASGroups import parse_smiles, generate_fingerprint
 
-   # Parse — returns ResultsModel
+   # Parse — returns PFASEmbeddingSet
    results = parse_smiles(["CCCC(F)(F)F", "ClCCCl"])
 
    # Fingerprint — returns (numpy.ndarray, dict)
@@ -61,7 +61,7 @@ parse_smiles
      - ``None``
      - Custom list of :class:`HalogenGroup` instances
 
-**Returns:** :class:`ResultsModel`
+**Returns:** :class:`PFASEmbeddingSet`
 
 .. code-block:: python
 

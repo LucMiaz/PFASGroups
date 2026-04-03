@@ -65,20 +65,20 @@ Quick Comparison
 
 .. warning::
 
-   **The default fingerprint width depends on which module you import from.**
+   **The default embedding width depends on which module you import from.**
 
    ``parse_smiles`` from ``HalogenGroups`` returns a
-   ``HalogenGroups.ResultsModel`` subclass. Calling ``results.to_fingerprint()``
+   ``HalogenGroups.PFASEmbeddingSet`` subclass. Calling ``results.to_array()``
    on that object **without** an explicit ``halogens`` argument produces a
-   464-column fingerprint (116 groups × 4 halogens), **not** the standard
+   464-column array (116 groups × 4 halogens), **not** the standard
    116-column fluorine-only one.  To guarantee fluorine-only output,
    always pass ``halogens='F'`` explicitly::
 
-      fp = results.to_fingerprint(halogens='F')   # always 116 columns
+      arr = results.to_array(halogens='F')   # always 116 columns
 
    This applies to ``compute_config``, ``_txp_fingerprint``, and any similar
    helpers in notebooks or scripts that pass ``**kwargs`` to
-   ``to_fingerprint()`` — the ``halogens`` key must be present in those kwargs.
+   ``to_array()`` — the ``halogens`` key must be present in those kwargs.
 
 Functions with Altered Defaults
 ---------------------------------
@@ -98,7 +98,7 @@ The following functions have their ``halogens`` default overridden to
      - ``halogens=['F','Cl','Br','I']``
    * - :func:`generate_fingerprint`
      - ``halogens=['F','Cl','Br','I']``
-   * - :class:`ResultsModel`\ ``.to_fingerprint()``
+   * - :class:`PFASEmbeddingSet`\ ``.to_array()``
      - ``halogens=['F','Cl','Br','I']``, ``saturation='per'``
 
 All other functions (``parse_mol``, ``parse_groups_in_mol``, ``get_HalogenGroups``,
@@ -159,7 +159,7 @@ horizontally. With 116 groups and 4 halogens the resulting fingerprint has
    print(info['group_names'][:3])  # ['... [F]', '... [F]', '... [F]']
 
 
-Via ResultsModel
+Via PFASEmbeddingSet
 ~~~~~~~~~~~~~~~~
 
 .. code-block:: python
@@ -168,18 +168,18 @@ Via ResultsModel
 
    results = parse_smiles(smiles)
 
-   # to_fingerprint() defaults to all halogens in HalogenGroups
-   fp_all = results.to_fingerprint()                          # shape (n, 464)
-   fp_f   = results.to_fingerprint(halogens='F')             # shape (n, 116)
-   fp_fc  = results.to_fingerprint(halogens=['F', 'Cl'])     # shape (n, 232)
-   fp_oecd = results.to_fingerprint(
-       group_selection='oecd', halogens=['F', 'Cl', 'Br', 'I'])  # shape (n, 112)
+   # to_array() defaults to all halogens in HalogenGroups
+   arr_all  = results.to_array()                                   # shape (n, 464)
+   arr_f    = results.to_array(halogens='F')                      # shape (n, 116)
+   arr_fc   = results.to_array(halogens=['F', 'Cl'])              # shape (n, 232)
+   arr_oecd = results.to_array(
+       group_selection='oecd', halogens=['F', 'Cl', 'Br', 'I'])   # shape (n, 112)
 
    # Best preset (binary + effective_graph_resistance) with F only
-   fp_best = results.to_fingerprint(preset='best', halogens='F')  # shape (n, 232)
+   arr_best = results.to_array(preset='best', halogens='F')       # shape (n, 232)
 
    # Explicit component_metrics — count mode + graph metric with all halogens
-   fp_cm = results.to_fingerprint(
+   arr_cm = results.to_array(
        component_metrics=['binary', 'effective_graph_resistance'],
        halogens=['F', 'Cl', 'Br', 'I'])  # shape (n, 928)  — 2 × 116 × 4
 
@@ -236,9 +236,9 @@ that inject ``halogens=['F', 'Cl', 'Br', 'I']`` as a default keyword argument.
 Because Python keyword defaults can always be overridden at call time, every
 explicit ``halogens=...`` argument takes precedence.
 
-The ``ResultsModel`` subclass in ``HalogenGroups`` overrides only
-``to_fingerprint()``; all other methods (``show()``, ``summary()``, ``to_sql()``,
-etc.) are inherited unchanged from ``PFASGroups.results_model.ResultsModel``.
+The ``PFASEmbeddingSet`` subclass in ``HalogenGroups`` overrides only
+``to_array()``; all other methods (``show()``, ``summary()``, ``to_sql()``,
+etc.) are inherited unchanged from ``PFASGroups.PFASEmbeddings.PFASEmbeddingSet``.
 
 
 When to Use Which Import
@@ -263,5 +263,5 @@ See Also
 
 * :doc:`quickstart` — first steps with the package
 * :doc:`api/core` — full ``parse_smiles`` / ``generate_fingerprint`` reference
-* :doc:`api/models` — ``ResultsModel`` and ``ResultsFingerprint`` details
+* :doc:`api/models` — ``PFASEmbeddingSet`` and ``EmbeddingArray`` details
 * :doc:`customization` — adding custom halogen groups

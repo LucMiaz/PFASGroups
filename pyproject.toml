@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PFASGroups"
-version = "3.3.0"
-description = "A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, with a focus on per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 116 group classifications (28 OECD-defined PFAS groups, 45 generic groups and 43 telomers connected to halogenated components) with halogenated component size determination. Supports multi-halogen fingerprinting (F, Cl, Br, I) with per/poly saturation filtering and stackable fingerprint vectors."
+version = "3.2.2"
+description = "A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, with a focus on per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 119 groups. Supports creations of embeddings with graph metrics for Machine Learning workflows."
 authors = [
     { name = "Luc T. Miaz", email = "luc@miaz.ch" }
 ]
@@ -28,7 +28,6 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Chemistry",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
-    "Topic :: Scientific/Engineering :: Environmental Science",
 ]
 keywords = [
     "PFAS",

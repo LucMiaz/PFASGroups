@@ -30,7 +30,15 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 
 ## Installation
 
-### From Pypi
+The recommended installation method is via pip.  RDKit must already be available in the target environment. It is recommended to use an environment manager (like Conda/Mamba, e.g [Miniforge](https://github.com/conda-forge/miniforge)) and install RDKit via 
+
+```sh
+mamba install -y -c rdkit rdkit
+```
+
+### From PyPI
+
+PFASGroups is available on PyPI:
 
 ```sh
 pip install PFASGroups
