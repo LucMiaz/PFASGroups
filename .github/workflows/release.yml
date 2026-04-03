@@ -45,7 +45,7 @@ jobs:
         run: |
           conda install -y -c conda-forge rdkit
           pip install -e ".[gui]"
-          pip install pyinstaller
+          pip install "pyinstaller>=6.0" "pyinstaller-hooks-contrib>=2024.0"
 
       - name: Build with PyInstaller
         run: |
@@ -53,10 +53,36 @@ jobs:
             --onedir \
             --windowed \
             --name PFASGroups-gui \
-            --collect-all PySide6 \
-            --collect-all plotly \
+            --collect-data PySide6 \
+            --collect-data plotly \
             --add-data "gui/data:gui/data" \
             --add-data "PFASGroups/data:PFASGroups/data" \
+            --exclude-module PySide6.Qt3DAnimation \
+            --exclude-module PySide6.Qt3DCore \
+            --exclude-module PySide6.Qt3DExtras \
+            --exclude-module PySide6.Qt3DInput \
+            --exclude-module PySide6.Qt3DLogic \
+            --exclude-module PySide6.Qt3DRender \
+            --exclude-module PySide6.QtBluetooth \
+            --exclude-module PySide6.QtCharts \
+            --exclude-module PySide6.QtDataVisualization \
+            --exclude-module PySide6.QtDesigner \
+            --exclude-module PySide6.QtLocation \
+            --exclude-module PySide6.QtMultimedia \
+            --exclude-module PySide6.QtMultimediaWidgets \
+            --exclude-module PySide6.QtNfc \
+            --exclude-module PySide6.QtPdf \
+            --exclude-module PySide6.QtPdfWidgets \
+            --exclude-module PySide6.QtRemoteObjects \
+            --exclude-module PySide6.QtSensors \
+            --exclude-module PySide6.QtSerialBus \
+            --exclude-module PySide6.QtSerialPort \
+            --exclude-module PySide6.QtSpatialAudio \
+            --exclude-module PySide6.QtSql \
+            --exclude-module PySide6.QtTest \
+            --exclude-module PySide6.QtTextToSpeech \
+            --exclude-module PySide6.QtVirtualKeyboard \
+            --exclude-module PySide6.QtWebSockets \
             gui/__main__.py
 
       - name: Package - Windows
