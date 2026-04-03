@@ -25,25 +25,17 @@ jobs:
           - os: macos-latest
             artifact_name: PFASGroups-gui-macos.tar.gz
 
-    defaults:
-      run:
-        shell: bash -el {0}
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up conda environment
-        uses: conda-incubator/setup-miniconda@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          channels: conda-forge,defaults
-          channel-priority: strict
-          activate-environment: build-env
-          auto-activate-base: false
 
       - name: Install dependencies
         run: |
-          conda install -y -c conda-forge rdkit
+          pip install rdkit
           pip install -e ".[gui]"
           pip install "pyinstaller>=6.0" "pyinstaller-hooks-contrib>=2024.0"
 
@@ -53,8 +45,7 @@ jobs:
             --onedir \
             --windowed \
             --name PFASGroups-gui \
-            --collect-data PySide6 \
-            --collect-data plotly \
+            --contents-directory . \
             --add-data "gui/data:gui/data" \
             --add-data "PFASGroups/data:PFASGroups/data" \
             --exclude-module PySide6.Qt3DAnimation \
