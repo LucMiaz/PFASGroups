@@ -4258,8 +4258,8 @@
   },
   {
     "id": 65,
-    "name": "thia keto propanoic acid",
-    "alias": "Thia keto propanoic acid",
+    "name": "thioester keto dicarboxylic acid",
+    "alias": "Thioester keto dicarboxylic acid",
     "componentSmarts": null,
     "linker_smarts": null,
     "max_dist_from_comp": 0,
@@ -4331,7 +4331,7 @@
     "sorting": {
       "category": "generic",
       "elements": "SCO",
-      "group": "thia keto propanoic acids",
+      "group": "thioester keto dicarboxylic acids",
       "saturation": null,
       "aggregated": false
     }
@@ -7871,8 +7871,8 @@
   },
   {
     "id": 106,
-    "name": "telomer thia keto propanoic acid",
-    "alias": "telomer thia keto propanoic acid",
+    "name": "telomer thioester keto dicarboxylic acid",
+    "alias": "telomer thioester keto dicarboxylic acid",
     "componentSmarts": null,
     "componentSaturation": "per",
     "linker_smarts": "[CH2X4]",
@@ -7960,7 +7960,7 @@
     "sorting": {
       "category": "telomer",
       "elements": "SCO",
-      "group": "thia keto propanoic acids",
+      "group": "thioester keto dicarboxylic acids",
       "saturation": null,
       "aggregated": false
     }
