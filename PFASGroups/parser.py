@@ -716,6 +716,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
 
     # Parse all molecules
     import warnings
+    from rdkit import rdBase
     results = {}
     _iter = enumerate(mols)
     if progress:
@@ -750,17 +751,27 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
             _smi_repr = orig_smi or Chem.MolToSmiles(mol)
             warnings.warn(f"parse_mols: error parsing '{_smi_repr}' — {exc}. Skipping.", UserWarning, stacklevel=2)
             _key = f'__error_{mol_idx}__'
+            rdBase.DisableLog('rdApp.warning')
+            try:
+                _err_inchikey = Chem.MolToInchiKey(mol)
+                _err_inchi = Chem.MolToInchi(mol)
+            finally:
+                rdBase.EnableLog('rdApp.warning')
             results[_key] = {
                 'smiles': _smi_repr,
-                'inchikey': Chem.MolToInchiKey(mol),
-                'inchi': Chem.MolToInchi(mol),
+                'inchikey': _err_inchikey,
+                'inchi': _err_inchi,
                 'formula': None,
                 'matches': [],
                 'error': str(exc),
             }
             continue
-        inchikey = Chem.MolToInchiKey(mol)
-        inchi = Chem.MolToInchi(mol)
+        rdBase.DisableLog('rdApp.warning')
+        try:
+            inchikey = Chem.MolToInchiKey(mol)
+            inchi = Chem.MolToInchi(mol)
+        finally:
+            rdBase.EnableLog('rdApp.warning')
         smi = Chem.MolToSmiles(mol)
         # Store molblock with explicit H to preserve atom ordering for visualization
         # (MolToSmiles canonicalises atom order, breaking component atom indices)
@@ -896,11 +907,16 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         if include_PFAS_definitions is True:
             formula_dict = n_from_formula(formula)
             definitions = parse_definitions_in_mol(mol, formula=formula_dict, **kwargs)
-            inchikey = Chem.MolToInchiKey(mol)
+            rdBase.DisableLog('rdApp.warning')
+            try:
+                inchikey = Chem.MolToInchiKey(mol)
+                _def_inchi = Chem.MolToInchi(mol)
+            finally:
+                rdBase.EnableLog('rdApp.warning')
             results.setdefault(inchikey,{
                         "smiles": Chem.MolToSmiles(mol),
                         "inchikey": inchikey,
-                        "inchi": Chem.MolToInchi(mol),
+                        "inchi": _def_inchi,
                         "formula": formula}).setdefault("matches",[]).extend([
                             {'match_id': f"D{definition.id}",
                             'id': definition.id,

@@ -586,28 +586,6 @@ class HalogenGroup():
         self.component_specific_extra_atoms = []
         return max([0] + component_sizes), component_sizes, len(all_components), augmented_matched_components
 
-    def find_aryl_components(self,mol, component_solver=None, **kwargs):
-        """Find aryl components in a molecule with comprehensive metrics."""
-        matches = mol.GetSubstructMatches(self.smarts[0])
-        subset = [y for x in matches for y in x]
-        if len(subset)==0:
-            return 0, [], 0, []
-
-        components = component_solver._connected_components(subset)
-        component_sizes = [len(x) for x in components]
-
-        # Get molecular graph for metrics calculation
-        subset_set = set(subset)
-
-        # Convert components to the same format as other functions return with comprehensive metrics
-        matched_components = []
-        for comp in components:
-            matched_components.append(
-                component_solver.get_matched_component_dict(comp, subset_set, 'cyclic', self)
-            )
-
-        return max([0]+[len(x) for x in components]), component_sizes, len(components), matched_components
-
     def find_components(self, mol, fd, component_solver, **kwargs):
         """Find fluorinated components in a molecule that match this PFAS group's criteria."""
         group_matches = []
@@ -616,11 +594,7 @@ class HalogenGroup():
             # Create molecular graph once for this fragment
             G = mol_to_nx(mol)
             kwargs['G'] = G
-            if self.componentSmarts =='cyclic':
-                # treat cyclic groups separately
-                # Use first SMARTS pattern for cyclic
-                match_count, component_sizes, matched1_len, matched_components = self.find_aryl_components(mol, component_solver=component_solver, **kwargs)
-            elif self.smarts is not None and len(self.smarts) > 0:
+            if self.smarts is not None and len(self.smarts) > 0:
                 # Handle groups with SMARTS patterns
                 match_count, component_sizes, matched1_len, matched_components = self.find_alkyl_components(mol, component_solver, **kwargs)
             elif self.componentSmarts is not None:
