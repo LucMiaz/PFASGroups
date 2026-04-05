@@ -446,7 +446,7 @@ print(arr.shape)
 ### Option B – import `PFASgroups` and specify `halogens` explicitly
 
 ```python
-from PFASgroups import parse_smiles
+from PFASGroups import parse_smiles
 
 smiles_list = [
     "C(C(F)(F)F)F",

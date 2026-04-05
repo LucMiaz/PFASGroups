@@ -1,3 +1,4 @@
 [console_scripts]
 halogengroups = PFASGroups.cli:main_halogen
 pfasgroups = PFASGroups.cli:main
+pfasgroups-gui = gui.__main__:main
