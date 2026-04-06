@@ -13,3 +13,11 @@ sqlalchemy>=1.4.0
 [dev]
 pytest
 pytest-cov
+
+[gui]
+PySide6>=6.4
+plotly>=5.0
+umap-learn>=0.5
+openpyxl>=3.0
+sqlalchemy>=1.4.0
+matplotlib>=3.5

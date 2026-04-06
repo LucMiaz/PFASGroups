@@ -47,7 +47,7 @@ Examples:
   # List available path types
   PFASGroups list-paths
 
-Note: Use get_componentSMARTSs() and get_PFASGroups() in Python to extend defaults.
+Note: Use get_componentSMARTSs() and get_HalogenGroups() in Python to extend defaults.
         """
     )
 
@@ -186,7 +186,7 @@ Note: Use get_componentSMARTSs() and get_PFASGroups() in Python to extend defaul
     # List groups command
     list_parser = subparsers.add_parser(
         'list-groups',
-        help='List available PFAS groups (use in Python to extend with get_PFASGroups)'
+        help='List available PFAS groups (use in Python to extend with get_HalogenGroups)'
     )
     list_parser.add_argument(
         '-o', '--output',

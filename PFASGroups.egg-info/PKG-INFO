@@ -38,6 +38,13 @@ Requires-Dist: pytest; extra == "dev"
 Requires-Dist: pytest-cov; extra == "dev"
 Provides-Extra: database
 Requires-Dist: sqlalchemy>=1.4.0; extra == "database"
+Provides-Extra: gui
+Requires-Dist: PySide6>=6.4; extra == "gui"
+Requires-Dist: plotly>=5.0; extra == "gui"
+Requires-Dist: umap-learn>=0.5; extra == "gui"
+Requires-Dist: openpyxl>=3.0; extra == "gui"
+Requires-Dist: sqlalchemy>=1.4.0; extra == "gui"
+Requires-Dist: matplotlib>=3.5; extra == "gui"
 
 # PFASGroups
 
@@ -71,7 +78,15 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 
 ## Installation
 
-### From Pypi
+The recommended installation method is via pip.  RDKit must already be available in the target environment. It is recommended to use an environment manager (like Conda/Mamba, e.g [Miniforge](https://github.com/conda-forge/miniforge)) and install RDKit via 
+
+```sh
+mamba install -y -c rdkit rdkit
+```
+
+### From PyPI
+
+PFASGroups is available on PyPI:
 
 ```sh
 pip install PFASGroups
@@ -105,6 +120,20 @@ results = parse_smiles("FC(F)(F)C(F)(F)C(=O)O")   # → PFASEmbeddingSet
 print(results)        # prints PFASEmbeddingSet summary (molecule count, matched groups, …)
 print(results[0])     # prints PFASEmbedding summary for the first molecule
 ```
+
+## Graphical User Interface (GUI)
+
+A GUI is available to run the main commands from the module. To launch the GUI, call the following command from the PFASGroups folder:
+
+```python
+python -m gui
+```
+
+Note that pyQt6 must be installed as well as pyCSRML to benefit from all features.
+
+## Binary release 
+
+To be done...
 
 ## Repository Structure
 

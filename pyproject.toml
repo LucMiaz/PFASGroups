@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PFASGroups"
-version = "3.2.2"
+version = "3.3.0"
 description = "A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, with a focus on per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 119 groups. Supports creations of embeddings with graph metrics for Machine Learning workflows."
 authors = [
     { name = "Luc T. Miaz", email = "luc@miaz.ch" }

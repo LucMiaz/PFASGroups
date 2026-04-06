@@ -36,7 +36,7 @@ def get_compiled_HalogenGroups(**kwargs):
 
     Examples
     --------
-    >>> from PFASgroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
+    >>> from PFASGroups import get_compiled_HalogenGroups, HalogenGroup, parse_smiles
     >>> groups = get_compiled_HalogenGroups()
     >>> groups.append(HalogenGroup(
     ...     id=200, name="Perfluoroalkyl nitrates",

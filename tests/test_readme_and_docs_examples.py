@@ -362,7 +362,7 @@ def test_readme_option_a_halogengroups():
 
 
 def test_readme_option_b_pfasgroups():
-    """README Option B: `from PFASgroups import parse_smiles` with explicit halogens list."""
+    """README Option B: `from PFASGroups import parse_smiles` with explicit halogens list."""
     from PFASGroups import parse_smiles  # noqa: PLC0415  # only reached when installed
 
     results = parse_smiles(SMILES_MULTI_HAL, halogens=["F", "Cl", "Br", "I"])
