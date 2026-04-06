@@ -625,7 +625,7 @@ def create_enhanced_sankey_comparison(single_analysis, multi_analysis, results):
             expected = m['molecule_data']['group_name']
             atlas = m['atlas_result'].get('second_class','None')
             HalogenGroup_ids = m['PFASGroups_result']['detected_groups']
-            HalogenGroup = [lookup[id] for id in HalogenGroup_ids if id!=49 and id!=50 and id > 28]
+            HalogenGroup = [lookup[id] for id in HalogenGroup_ids if id!=34 and id!=35 and id!=48 and id > 28]# exclude per and polyhalogenated alkyl groups
             HalogenGroup = [f"- {reverse_lookup.get(pf)}: {pf}" for pf in HalogenGroup]
             HalogenGroup_oecd = [lookup[id] for id in HalogenGroup_ids if id<= 28]
             HalogenGroup_oecd = [f"- {reverse_lookup.get(pf)}: {pf}" for pf in HalogenGroup_oecd]

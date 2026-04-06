@@ -977,10 +977,10 @@ class EnhancedPFASBenchmark:
         # Get system specifications
         system_specs = self.get_system_specifications()
         
-        # Get available functional groups (IDs 29-114)
+        # Get available functional groups (IDs 29-118)
         excluded_timing_groups = []#{62, 103}
         available_groups = []
-        for group_id in range(29, 115):
+        for group_id in range(29, 119):
             if group_id in self.functional_smarts:
                 group_info = self.functional_smarts[group_id]
                 # Check if group has test generation data
@@ -992,7 +992,7 @@ class EnhancedPFASBenchmark:
         print("\n🚀 TIMING PERFORMANCE BENCHMARK WITH GRAPH COMPLEXITY METRICS")
         print("=" * 70)
         print(f"🧪 Timing profile: {profile_label}")
-        print(f"📊 Testing {max_molecules} molecules using grid-based sampling (IDs 29-114)")
+        print(f"📊 Testing {max_molecules} molecules using grid-based sampling (IDs 29-118)")
         print(f"🔄 Running {iterations} iterations per molecule for statistical averaging")
         print(f"📏 Chain length range: 5-200 carbon atoms (binned for systematic coverage)")
         print(f"🧬 Available functional groups: {len(available_groups)} groups")
