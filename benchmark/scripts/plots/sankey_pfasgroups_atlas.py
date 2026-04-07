@@ -219,7 +219,7 @@ def _group_category(gid: int) -> str:
 def _pg_groups(embedding) -> List[Tuple[int, str]]:
     """Return deduplicated list of (group_id, name) for all matched groups.
 
-    Groups in _CLASSIFY_EXCLUDED_IDS (51, 52 — generic catch-alls) are skipped.
+    Groups in _CLASSIFY_EXCLUDED_IDS (34,35 — generic catch-alls) are skipped.
     """
     seen: set = set()
     result: List[Tuple[int, str]] = []
@@ -234,7 +234,7 @@ def _pg_groups(embedding) -> List[Tuple[int, str]]:
 
 
 def _pg_has_generic(embedding) -> bool:
-    """Return True if a generic catch-all group (51 or 52) matched.
+    """Return True if a generic catch-all group (34 or 35) matched.
 
     These groups indicate a poly/per-fluorinated component was detected but
     no more specific PFASGroups group was assigned.
@@ -359,7 +359,7 @@ _NOT_CLASSIFIED_NONE    = "Not classified (no fluorinated component)"
 
 def build_flows(
     records: List[dict],
-    right_key: str = "atlas_class2",
+    right_key: str = "atlas_class1",
     top_n: int = 20,
     group_ids: Optional[set] = None,
     exclude_not_pfas: bool = False,
@@ -368,7 +368,7 @@ def build_flows(
     Returns list of (left_label, right_label, count).
 
     Left:  'name (id XX)'  (or _NOT_CLASSIFIED_GENERIC / _NOT_CLASSIFIED_NONE if no groups matched).
-    Right: atlas_class2 value (falls back to atlas_class1 when class2 is absent).
+    Right: atlas_class1 value (falls back to atlas_class1 when class1 is absent).
     Rare groups (outside top_n by molecule count) are merged into _OTHER_GROUPS.
     If group_ids is given, only groups whose id is in that set are kept;
     molecules with none of those groups are split into the two Not-classified buckets.
@@ -679,14 +679,14 @@ def parse_args() -> argparse.Namespace:
                    default=BENCHMARK_DIR / "imgs",
                    help="Output directory for figures (default imgs/)")
     p.add_argument("--groups",   default=None,
-                   help="Filter to a group-ID range, e.g. '1-28' or '29-115'")
+                   help="Filter to a group-ID range, e.g. '1-28' or '29-119'")
     p.add_argument("--exclude-not-pfas", action="store_true",
                    help="Drop molecules that are unmatched by PFASGroups AND "
                         "classified as non-PFAS by Atlas (removes Not classified → Not PFAS flows)")
-    p.add_argument("--right-key", default="atlas_class2",
+    p.add_argument("--right-key", default="atlas_class1",
                    choices=["atlas_class1", "atlas_class2"],
                    help="Atlas field to use for the right-side nodes "
-                        "(default: atlas_class2 — detailed; atlas_class1 — broad)")
+                        "(default: atlas_class1 — broad; atlas_class2 — detailed)")
     p.add_argument("--combine-datasets", action="store_true",
                    help="Combine all datasets into a single Sankey instead of "
                         "one per dataset")
@@ -708,8 +708,17 @@ def main() -> None:
             key=lambda p: p.stat().st_mtime,
             reverse=True,
         )
+        # Filter to files that actually contain a top-level "molecules" list
+        def _has_molecules(p: Path) -> bool:
+            try:
+                with p.open(encoding="utf-8") as _fh:
+                    first_chunk = _fh.read(8192)
+                return '"molecules"' in first_chunk
+            except Exception:
+                return False
+        candidates = [c for c in candidates if _has_molecules(c)]
         if not candidates:
-            sys.exit("ERROR: no oecd_clinventory_timing_*.json found in data/")
+            sys.exit("ERROR: no oecd_clinventory_timing_*.json with a 'molecules' key found in data/")
         input_path = candidates[0]
     print(f"Input: {input_path}")
 

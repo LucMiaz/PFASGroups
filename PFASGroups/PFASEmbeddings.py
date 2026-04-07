@@ -311,7 +311,7 @@ def _get_group_info() -> Dict[int, Dict[str, str]]:
 
 # Groups always excluded from the non-OECD category label (perhalogenated /
 # polyhalogenated alkyl catch-alls that add no structural specificity).
-_CLASSIFY_EXCLUDED_IDS: frozenset = frozenset({51, 52})
+_CLASSIFY_EXCLUDED_IDS: frozenset = frozenset({34,35})  # "Perhalogenated alkyl" and "Polyhalogenated alkyl"
 
 # Name subsumption for non-OECD classification: when a more-specific group
 # name (key) is present, every name in its list is suppressed.
