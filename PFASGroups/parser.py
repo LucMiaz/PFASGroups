@@ -668,6 +668,7 @@ def parse_mol(mol, progress=False, **kwargs):
     """
     return parse_mols([mol], progress=progress, **kwargs)[0]
 
+@rdkit_disable_log(level='warning')
 def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                limit_effective_graph_resistance=None, compute_component_metrics=True,
                halogens='F', form=None, saturation=None, progress=False,
