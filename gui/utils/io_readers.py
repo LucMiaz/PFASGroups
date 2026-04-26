@@ -156,7 +156,8 @@ def read_smiles_file(path: str | Path) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=[c for c in ["name", "smiles"] if c in (rows[0] if rows else {})])
 
 
-
+def read_file(path: str | Path, sheet: str | int | None = None) -> pd.DataFrame:
+    """Dispatch to the appropriate reader based on file extension."""
     p = Path(path)
     ext = p.suffix.lower()
     if ext == ".csv":
