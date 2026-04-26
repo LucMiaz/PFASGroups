@@ -169,7 +169,7 @@ class ClassifyTab(QWidget):
         row.addWidget(browse_btn)
         lay.addLayout(row)
 
-        hint = QLabel("Supported: CSV, Excel (.xlsx), SQLite (.db/.sqlite)")
+        hint = QLabel("Supported: CSV, Excel (.xlsx), SQLite (.db/.sqlite), SMILES (.smi/.smiles/.txt)")
         hint.setObjectName("muted")
         lay.addWidget(hint)
 
@@ -259,17 +259,50 @@ class ClassifyTab(QWidget):
 
         self._manual_text = QTextEdit()
         self._manual_text.setPlaceholderText(
-            "PFOA\tOC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F\n"
-            "PFOS\tOS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+            "OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F\n"
+            "OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
         )
         lay.addWidget(self._manual_text, stretch=1)
+
+        btn_row = QHBoxLayout()
+        btn_row.setSpacing(8)
+
+        examples_btn = QPushButton("Load examples")
+        examples_btn.setObjectName("btn_secondary")
+        examples_btn.setToolTip(
+            "Fill the text area with a set of representative PFAS compounds"
+        )
+        examples_btn.clicked.connect(self._load_example_smiles)
+        btn_row.addWidget(examples_btn)
+
+        clear_btn = QPushButton("Clear")
+        clear_btn.setObjectName("btn_secondary")
+        clear_btn.clicked.connect(self._manual_text.clear)
+        btn_row.addWidget(clear_btn)
+
+        btn_row.addStretch()
 
         parse_btn = QPushButton("Parse Pasted Data")
         parse_btn.setObjectName("btn_secondary")
         parse_btn.clicked.connect(self._parse_manual)
-        lay.addWidget(parse_btn)
+        btn_row.addWidget(parse_btn)
 
+        lay.addLayout(btn_row)
         return w
+
+    _EXAMPLE_SMILES = (
+        "PFOA,OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F\n"
+        "PFOS,OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F\n"
+        "PFNA,OC(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F\n"
+        "GenX,OC(=O)C(F)(F)OC(F)(F)C(F)(F)F\n"
+        "6:2_FTS,OS(=O)(=O)CCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F\n"
+        "HFPO-DA,OC(=O)C(F)(F)OC(F)(F)C(F)(F)OC(F)(F)F\n"
+        "PFBA,OC(=O)C(F)(F)C(F)(F)C(F)(F)F\n"
+        "PFBS,OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"
+    )
+
+    def _load_example_smiles(self):
+        self._manual_text.setPlainText(self._EXAMPLE_SMILES)
 
     # ── Options panel ─────────────────────────────────────────────────────
 
@@ -342,7 +375,7 @@ class ClassifyTab(QWidget):
         path, _ = QFileDialog.getOpenFileName(
             self, "Open Dataset",
             str(Path.home()),
-            "Data files (*.csv *.xlsx *.xls *.db *.sqlite *.sqlite3);;All files (*)"
+            "Data files (*.csv *.xlsx *.xls *.db *.sqlite *.sqlite3 *.smi *.smiles *.txt);;All files (*)"
         )
         if not path:
             return

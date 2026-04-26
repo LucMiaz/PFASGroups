@@ -11,7 +11,7 @@ Toolbar: Show All, Hide All, Export CSV.
 """
 from __future__ import annotations
 
-from PySide6.QtCore import Qt, QByteArray
+from PySide6.QtCore import Qt, QByteArray, QTimer
 from PySide6.QtGui import QPixmap, QImage
 from PySide6.QtSvgWidgets import QSvgWidget
 from PySide6.QtWidgets import (
@@ -21,6 +21,11 @@ from PySide6.QtWidgets import (
 )
 
 from gui import style
+from gui.utils.export_dialog import ExportDialog
+
+_CARD_W = 340        # fixed card width in px
+_CARD_SPACING = 12   # grid spacing in px
+_MAX_COLS = 3        # maximum number of columns
 
 
 class CompoundCard(QWidget):
@@ -41,7 +46,7 @@ class CompoundCard(QWidget):
             f"QWidget#compound_card {{ background: {style.C_SURFACE}; "
             f"border: 1px solid {style.C_BORDER}; border-radius: 6px; }}"
         )
-        self.setFixedWidth(300)
+        self.setFixedWidth(_CARD_W)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(10, 10, 10, 10)
@@ -55,9 +60,13 @@ class CompoundCard(QWidget):
         name_lbl.setWordWrap(True)
         hdr.addWidget(name_lbl, stretch=1)
 
-        self._hide_btn = QPushButton("Hide")
-        self._hide_btn.setObjectName("btn_secondary")
-        self._hide_btn.setFixedSize(46, 22)
+        self._hide_btn = QPushButton("▼")  # ▼ down arrow
+        self._hide_btn.setFixedSize(28, 28)
+        self._hide_btn.setStyleSheet(
+            "QPushButton { border: none; background: transparent; padding: 0;"
+            f" color: {style.C_DARK_PURPLE}; font-size: 16px; }}"
+            f"QPushButton:hover {{ color: {style.C_ORANGE}; }}"
+        )
         self._hide_btn.clicked.connect(self._toggle_visibility)
         hdr.addWidget(self._hide_btn)
         layout.addLayout(hdr)
@@ -72,14 +81,32 @@ class CompoundCard(QWidget):
         # Matched groups
         groups = self._get_groups(emb)
         if groups:
-            groups_lbl = QLabel()
-            groups_lbl.setWordWrap(True)
-            groups_lbl.setStyleSheet(f"color: {style.C_DARK_PURPLE}; font-size: 11px;")
-            text = "<b>Matched groups:</b><br/>" + "<br/>".join(f"• {g}" for g in groups[:8])
-            if len(groups) > 8:
-                text += f"<br/><i>…and {len(groups) - 8} more</i>"
-            groups_lbl.setText(text)
-            layout.addWidget(groups_lbl)
+            hdr_lbl = QLabel("<b>Matched groups:</b>")
+            hdr_lbl.setStyleSheet(f"color: {style.C_DARK_PURPLE}; font-size: 11px;")
+            layout.addWidget(hdr_lbl)
+
+            groups_box = QWidget()
+            groups_box.setStyleSheet("background: transparent;")
+            box_lay = QVBoxLayout(groups_box)
+            box_lay.setContentsMargins(0, 0, 0, 0)
+            box_lay.setSpacing(2)
+            for g in groups:
+                item_lbl = QLabel(f"\u2022 {g}")
+                item_lbl.setStyleSheet(
+                    f"color: {style.C_DARK_PURPLE}; font-size: 11px; background: transparent;"
+                )
+                item_lbl.setWordWrap(True)
+                box_lay.addWidget(item_lbl)
+            box_lay.addStretch()
+
+            groups_scroll = QScrollArea()
+            groups_scroll.setWidget(groups_box)
+            groups_scroll.setWidgetResizable(True)
+            groups_scroll.setMaximumHeight(90)
+            groups_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+            groups_scroll.setFrameShape(QFrame.Shape.NoFrame)
+            groups_scroll.setStyleSheet("background: transparent;")
+            layout.addWidget(groups_scroll)
         else:
             no_match = QLabel("<i>No PFAS groups matched.</i>")
             no_match.setStyleSheet(f"color: {style.C_TEXT_MUTED}; font-size: 11px;")
@@ -107,44 +134,36 @@ class CompoundCard(QWidget):
             pass
 
     def _get_groups(self, emb) -> list[str]:
-        groups = []
+        """Return unique matched PFAS group names in match order."""
+        seen: dict[str, int] = {}
         try:
-            matched = emb.get("matches") or emb.get("groups") or {}
-            if isinstance(matched, dict):
-                for gid, match_data in matched.items():
-                    if match_data:
-                        name = match_data.get("name") or str(gid)
-                        groups.append(name)
-            elif isinstance(matched, list):
-                for m in matched:
-                    if isinstance(m, dict):
-                        groups.append(m.get("name", str(m.get("id", ""))))
-                    else:
-                        groups.append(str(m))
+            for m in emb.get("matches", []):
+                if m.get("type") != "HalogenGroup":
+                    continue
+                name = m.get("group_name") or str(m.get("id") or "?")
+                seen[name] = seen.get(name, 0) + 1
         except Exception:
             pass
-        return groups
+        return list(seen.keys())
 
     def _add_definitions_row(self, emb, layout):
-        matched_def_ids = set()
+        def_ids: list = []
         try:
-            defs = emb.get("pfas_definitions") or emb.get("definitions") or []
-            for d in defs:
-                if isinstance(d, dict):
-                    matched_def_ids.add(d.get("id"))
-                else:
-                    matched_def_ids.add(getattr(d, "id", None))
+            for m in emb.get("matches", []):
+                if m.get("type") == "PFASdefinition":
+                    did = m.get("id")
+                    if did is not None and did not in def_ids:
+                        def_ids.append(did)
         except Exception:
             pass
 
-        if matched_def_ids:
+        if def_ids:
             def_row = QHBoxLayout()
             def_row.setSpacing(4)
-            for did in sorted(matched_def_ids):
-                if did is None:
-                    continue
-                badge = QLabel(f"DEF {did}")
+            for did in sorted(def_ids):
+                badge = QLabel(f"{did}")
                 badge.setObjectName("badge_pass")
+                badge.setToolTip(f"PFAS Definition {did}")
                 def_row.addWidget(badge)
             def_row.addStretch()
             layout.addLayout(def_row)
@@ -162,7 +181,7 @@ class CompoundCard(QWidget):
             item = self.layout().itemAt(i)
             if item and item.widget() and isinstance(item.widget(), QLabel) and item.widget() != self.layout().itemAt(0).layout().itemAt(0).widget() if self.layout().itemAt(0) else False:
                 item.widget().setVisible(visible)
-        self._hide_btn.setText("Show" if not visible else "Hide")
+        self._hide_btn.setText("▶" if not visible else "▼")  # ▶ right arrow if hidden, ▼ down arrow if visible
 
     def toggle(self):
         self._toggle_visibility()
@@ -175,6 +194,7 @@ class ResultsTab(QWidget):
         super().__init__(parent)
         self._embedding_set = None
         self._cards: list[CompoundCard] = []
+        self._current_n_cols: int = 0
         self._build_ui()
 
     # ── Build ────────────────────────────────────────────────────────────
@@ -207,19 +227,19 @@ class ResultsTab(QWidget):
         self._search.textChanged.connect(self._filter_cards)
         toolbar.addWidget(self._search)
 
-        show_all = QPushButton("Show All")
+        show_all = QPushButton("▶ Show All")
         show_all.setObjectName("btn_secondary")
         show_all.clicked.connect(lambda: self._set_all_visible(True))
         toolbar.addWidget(show_all)
 
-        hide_all = QPushButton("Hide All")
+        hide_all = QPushButton("▼ Hide All")
         hide_all.setObjectName("btn_secondary")
         hide_all.clicked.connect(lambda: self._set_all_visible(False))
         toolbar.addWidget(hide_all)
 
-        export_btn = QPushButton("Export CSV")
+        export_btn = QPushButton("Export\u2026")
         export_btn.setObjectName("btn_secondary")
-        export_btn.clicked.connect(self._export_csv)
+        export_btn.clicked.connect(self._export)
         toolbar.addWidget(export_btn)
 
         root.addLayout(toolbar)
@@ -245,6 +265,9 @@ class ResultsTab(QWidget):
 
     def set_results(self, embedding_set):
         self._embedding_set = embedding_set
+        # Destroy old cards before replacing them.
+        for card in self._cards:
+            card.deleteLater()
         self._clear_grid()
         self._cards = []
 
@@ -254,23 +277,36 @@ class ResultsTab(QWidget):
             self._cards.append(card)
 
         self._populate_grid(self._cards)
+        # Defer a re-layout so the viewport has its real width after Qt layout.
+        QTimer.singleShot(0, lambda: self._populate_grid(self._cards))
         self._count_lbl.setText(f"{len(self._cards):,} molecule(s) classified.")
 
     # ── Internal ─────────────────────────────────────────────────────────
 
     def _clear_grid(self):
+        """Remove all items from the grid layout.
+        CompoundCards stay parented to _grid_container (takeAt only removes
+        the layout item; setParent(None) would make them top-level windows)."""
         while self._grid.count():
             item = self._grid.takeAt(0)
             if item and item.widget():
-                item.widget().deleteLater()
+                w = item.widget()
+                if not isinstance(w, CompoundCard):
+                    w.deleteLater()
 
-    def _populate_grid(self, cards: list[CompoundCard], n_cols: int = 4):
+    def _n_cols(self) -> int:
+        vp_w = self._scroll.viewport().width()
+        return max(1, min(_MAX_COLS, vp_w // (_CARD_W + _CARD_SPACING)))
+
+    def _populate_grid(self, cards: list[CompoundCard]):
+        n = self._n_cols()
+        self._current_n_cols = n
         self._clear_grid()
         if not cards:
             self._grid.addWidget(self._placeholder, 0, 0)
             return
         for i, card in enumerate(cards):
-            row, col = divmod(i, n_cols)
+            row, col = divmod(i, n)
             self._grid.addWidget(card, row, col)
 
     def _filter_cards(self, text: str):
@@ -284,43 +320,31 @@ class ResultsTab(QWidget):
                 visible_cards.append(card)
             card.setVisible(not text or text in name or text in smi)
         # Re-layout only visible cards
-        self._clear_grid()
-        n_cols = 4
         visible = [c for c in self._cards if c.isVisible() and c != self._placeholder]
-        for i, card in enumerate(visible):
-            row, col = divmod(i, n_cols)
-            self._grid.addWidget(card, row, col)
+        self._populate_grid(visible)
 
     def _set_all_visible(self, visible: bool):
         for card in self._cards:
             card.set_content_visible(visible)
 
-    def _export_csv(self):
+    def showEvent(self, event):
+        super().showEvent(event)
+        # Reflow when the tab is first made visible (viewport width now known).
+        if self._cards:
+            QTimer.singleShot(0, lambda: self._populate_grid(
+                [c for c in self._cards if c.isVisible() and c != self._placeholder]
+            ))
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        new_cols = self._n_cols()
+        if new_cols != self._current_n_cols and self._cards:
+            visible = [c for c in self._cards if c.isVisible() and c != self._placeholder]
+            self._populate_grid(visible)
+
+    def _export(self):
         if not self._embedding_set:
             QMessageBox.information(self, "No Data", "No results to export.")
             return
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Export Results", "pfas_results.csv",
-            "CSV files (*.csv);;All files (*)"
-        )
-        if not path:
-            return
-        try:
-            df = self._embedding_set.to_dataframe()
-            df.to_csv(path, index=False)
-            QMessageBox.information(self, "Export Complete",
-                                    f"Results saved to:\n{path}")
-        except AttributeError:
-            # Fallback if to_dataframe() isn't available
-            import pandas as pd
-            rows = []
-            for emb in self._embedding_set:
-                rows.append({
-                    "name": emb.get("name", ""),
-                    "smiles": emb.get("smiles", ""),
-                })
-            pd.DataFrame(rows).to_csv(path, index=False)
-            QMessageBox.information(self, "Export Complete",
-                                    f"Results saved to:\n{path}")
-        except Exception as exc:
-            QMessageBox.critical(self, "Export Error", str(exc))
+        dlg = ExportDialog(self._embedding_set, "results", parent=self)
+        dlg.exec()

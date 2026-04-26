@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
 from gui import style
 
 _LOGO_PATH = Path(__file__).parent.parent / "logo" / "PFASGroups_logo.png"
+_TASKBAR_LOGO_PATH = Path(__file__).parent.parent / "logo" / "taskbar_logo.svg"
 
 
 class HeaderWidget(QWidget):
@@ -81,7 +82,9 @@ class MainWindow(QMainWindow):
         self.resize(1280, 900)
         self.setMinimumSize(900, 650)
 
-        if _LOGO_PATH.exists():
+        if _TASKBAR_LOGO_PATH.exists():
+            self.setWindowIcon(QIcon(str(_TASKBAR_LOGO_PATH)))
+        elif _LOGO_PATH.exists():
             self.setWindowIcon(QIcon(str(_LOGO_PATH)))
 
         # ── Central widget ─────────────────────────────────────────────────

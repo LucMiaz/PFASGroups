@@ -19,7 +19,6 @@ from rdkit import Chem
 from PFASGroups import parse_smiles
 from PFASGroups.ComponentsSolverModel import _BDEScheme, _get_bde_scheme, ComponentsSolver
 
-
 # ── helpers ────────────────────────────────────────────────────────────────────
 
 def _first_comp_metrics(smiles: str) -> dict:

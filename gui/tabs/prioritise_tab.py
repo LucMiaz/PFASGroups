@@ -27,6 +27,7 @@ from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 
 from gui import style
 from gui.workers import PrioritiseWorker
+from gui.utils.export_dialog import ExportDialog
 
 
 class PrioritiseTab(QWidget):
@@ -36,6 +37,7 @@ class PrioritiseTab(QWidget):
         super().__init__(parent)
         self._embedding_set = None
         self._worker = None
+        self._ranked: list = []
         self._build_ui()
 
     # ── Build ─────────────────────────────────────────────────────────────
@@ -137,8 +139,13 @@ class PrioritiseTab(QWidget):
         self._run_btn.setEnabled(False)
         self._run_btn.clicked.connect(self._run)
         left_lay.addWidget(self._run_btn)
-        left_lay.addStretch()
 
+        self._export_btn = QPushButton("Export\u2026")
+        self._export_btn.setObjectName("btn_secondary")
+        self._export_btn.setEnabled(False)
+        self._export_btn.clicked.connect(self._export)
+        left_lay.addWidget(self._export_btn)
+        left_lay.addStretch()
         # ── Right: results ────────────────────────────────────────────────
         right = QWidget()
         right_lay = QVBoxLayout(right)
@@ -244,6 +251,8 @@ class PrioritiseTab(QWidget):
     def _show_results(self, payload):
         """payload = {"ranked": list[tuple(name, smiles, score)], "statistics": dict}"""
         ranked = payload.get("ranked", [])
+        self._ranked = list(ranked)
+        self._export_btn.setEnabled(bool(self._ranked))
         stats = payload.get("statistics", {})
 
         # Populate table
@@ -278,6 +287,14 @@ class PrioritiseTab(QWidget):
     def _on_error(self, msg: str):
         QMessageBox.critical(self, "Prioritisation error", msg)
         self._run_btn.setEnabled(True)
+
+    def _export(self):
+        if not self._ranked:
+            QMessageBox.information(self, "No Data", "Run prioritisation first.")
+            return
+        from gui.utils.export_dialog import ExportDialog
+        dlg = ExportDialog(self._ranked, "prioritisation", parent=self)
+        dlg.exec()
 
 
 def _num_item(val) -> QTableWidgetItem:

@@ -29,6 +29,7 @@ from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from gui import style
 from gui.workers import ModelWorker
 from gui.utils.fingerprints import is_pycsrml_available
+from gui.utils.export_dialog import ExportDialog
 from PFASGroups.embeddings import FINGERPRINT_PRESETS
 
 
@@ -40,6 +41,7 @@ class ModellingTab(QWidget):
         self._embedding_set = None
         self._df = None
         self._worker = None
+        self._results_data: dict | None = None
         self._build_ui()
 
     # ── Build ─────────────────────────────────────────────────────────────
@@ -188,6 +190,12 @@ class ModellingTab(QWidget):
 
         right_lay.addWidget(results_tabs, stretch=1)
 
+        self._export_btn = QPushButton("Export\u2026")
+        self._export_btn.setObjectName("btn_secondary")
+        self._export_btn.setEnabled(False)
+        self._export_btn.clicked.connect(self._export)
+        right_lay.addWidget(self._export_btn)
+
         splitter.addWidget(left)
         splitter.addWidget(right)
         splitter.setSizes([350, 530])
@@ -321,6 +329,8 @@ class ModellingTab(QWidget):
         worker.start()
 
     def _show_results(self, payload: dict):
+        self._results_data = payload
+        self._export_btn.setEnabled(True)
         summary_df = payload["scores"]
         bayes = payload["bayes"]
 
@@ -361,6 +371,13 @@ class ModellingTab(QWidget):
     def _on_error(self, msg: str):
         QMessageBox.critical(self, "Benchmark error", msg)
         self._run_btn.setEnabled(True)
+
+    def _export(self):
+        if not self._results_data:
+            QMessageBox.information(self, "No Data", "Run the benchmark first.")
+            return
+        dlg = ExportDialog(self._results_data, "modelling", parent=self)
+        dlg.exec()
 
 
 def _hline() -> QWidget:

@@ -125,8 +125,38 @@ def get_excel_sheets(path: str | Path) -> list[str]:
         return []
 
 
-def read_file(path: str | Path, sheet: str | int = 0) -> pd.DataFrame:
-    """Dispatch to the correct reader based on file extension."""
+def read_smiles_file(path: str | Path) -> pd.DataFrame:
+    """Read a plain SMILES file (.smi / .smiles / .txt).
+
+    Each non-empty line is expected to be either::
+
+        SMILES
+        SMILES name
+        name SMILES       (if second token looks like a SMILES string)
+
+    Returns a DataFrame with columns ``smiles`` and optionally ``name``.
+    """
+    rows = []
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            # Split on whitespace (tab, space)
+            parts = line.split(None, 1)
+            if len(parts) == 1:
+                rows.append({"smiles": parts[0]})
+            else:
+                # Heuristic: the longer / more bracket-containing token is the SMILES
+                a, b = parts[0], parts[1]
+                if len(a) >= len(b) or any(c in a for c in "()[]@#"):
+                    rows.append({"smiles": a, "name": b})
+                else:
+                    rows.append({"smiles": b, "name": a})
+    return pd.DataFrame(rows, columns=[c for c in ["name", "smiles"] if c in (rows[0] if rows else {})])
+
+
+
     p = Path(path)
     ext = p.suffix.lower()
     if ext == ".csv":
@@ -135,6 +165,8 @@ def read_file(path: str | Path, sheet: str | int = 0) -> pd.DataFrame:
         return read_excel(p, sheet=sheet)
     if ext in (".db", ".sqlite", ".sqlite3"):
         return read_sqlite(p)
+    if ext in (".smi", ".smiles", ".txt"):
+        return read_smiles_file(p)
     # Fallback: try CSV
     return read_csv(p)
 
