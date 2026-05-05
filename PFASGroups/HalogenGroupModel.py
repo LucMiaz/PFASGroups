@@ -578,13 +578,12 @@ class HalogenGroup():
         if len(augmented_matched_components) == 0:
             return 0, [], 0, []
 
-        # Get all component sizes from all path types
-        all_components = list(set([comp for comps in augmented_matched_components for comp in comps]))
-        component_sizes = [len(x) for x in all_components]
+        # Get all component sizes from matched component dicts
+        component_sizes = [comp.get('size', 0) for comp in augmented_matched_components]
 
         self.all_matches = []  # Clear matches after use
         self.component_specific_extra_atoms = []
-        return max([0] + component_sizes), component_sizes, len(all_components), augmented_matched_components
+        return max([0] + component_sizes), component_sizes, len(augmented_matched_components), augmented_matched_components
 
     def find_aryl_components(self,mol, component_solver=None, **kwargs):
         """Find aryl components in a molecule with comprehensive metrics."""
