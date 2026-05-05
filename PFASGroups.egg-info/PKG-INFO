@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: PFASGroups
-Version: 3.2.2
+Version: 3.3.1
 Summary: A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, with a focus on per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 119 groups. Supports creations of embeddings with graph metrics for Machine Learning workflows.
 Author: Luc T. Miaz
 Author-email: "Luc T. Miaz" <luc@miaz.ch>
@@ -494,7 +494,7 @@ print(arr.shape)
 ### Option B – import `PFASgroups` and specify `halogens` explicitly
 
 ```python
-from PFASgroups import parse_smiles
+from PFASGroups import parse_smiles
 
 smiles_list = [
     "C(C(F)(F)F)F",

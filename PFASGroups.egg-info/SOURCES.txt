@@ -46,6 +46,7 @@ gui/tabs/prioritise_tab.py
 gui/tabs/results_tab.py
 gui/utils/__init__.py
 gui/utils/chemspace.py
+gui/utils/export_dialog.py
 gui/utils/fingerprints.py
 gui/utils/io_readers.py
 gui/utils/modelling.py
