@@ -11,7 +11,7 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 ### Core Capabilities
 - **Halogen Group Identification**: Automated detection of 119 functional groups (114 compiled for fluorine-only embedding):
   - 27 PFAS OECD groups
-  - 48 generic functional groups (IDs 29–73, 117–119; the last 3 are halogen-context-dependent or recently added)
+  - 48 generic functional groups (IDs 29-73, 117-119; the last 3 are halogen-context-dependent or recently added)
   - 43 fluorotelomer-specific groups with CH₂ linker validation
   - 1 aggregate pattern-matching group (Group 116: Telomers, `compute=False`)
 - **Atom Reference Requirement**: For non-telomer groups, SMARTS patterns must match atoms that are part of or directly connected to the fluorinated component (per/polyfluorinated carbons), respecting the `max_dist_from_comp` constraint
@@ -335,10 +335,199 @@ results_polyf_cyclic = parse_smiles(smiles_list, halogens='F', saturation='poly'
 results_multi = parse_smiles(smiles_list, halogens=['F', 'Cl'])
 
 # Valid filter options:
-# - halogens: 'F', 'Cl', 'Br', 'I', or list like ['F', 'Cl']
+# - halogens: 'F', 'Cl', 'Br', 'I', 'H', '*', or list like ['F', '*']
 # - saturation: 'per' or 'poly' (or list like ['per', 'poly'] for both)
 # - form: 'alkyl' or 'cyclic' (or list like ['alkyl', 'cyclic'] for both)
 ```
+
+## H-Component and Wildcard Features
+
+### H-Components (Hydrocarbon Chains)
+
+PFASGroups supports analysis of hydrocarbon chains using H as a pseudo-halogen. This is useful for:
+- Exploring homologous series of non-fluorinated organic compounds
+- Generating structural variants of neutral hydrocarbons
+- Validating component detection logic on simpler molecules
+
+#### Using H in Homologue Generation
+
+Generate shorter hydrocarbon homologues from a parent alkyl chain:
+
+```python
+from PFASGroups.generate_homologues import generate_homologues
+from rdkit import Chem
+
+# Simple hydrocarbon carboxylic acid
+mol = Chem.MolFromSmiles('OC(=O)CCCCCC')  # 6-carbon alkyl chain
+
+# Generate shorter homologues by removing CH2 units
+homologues = generate_homologues(mol, halogen='H')
+
+# Verify the halogen type
+print(f"Halogen: {homologues.halogen}")     # Output: H
+
+# Inspect generated homologues
+for inchikey, inner_dict in homologues.items():
+    for formula, mol_short in inner_dict.items():
+        print(f"  {formula}: {Chem.MolToSmiles(mol_short)}")
+
+# Already a HomologueSeries object
+series = homologues
+print(series.summary())        # Summary of all homologues
+print(series.entries)          # List of HomologueEntry objects
+```
+
+**Valid halogens** for `generate_homologues()`:
+- `'F'` (default) — fluorine for PFAS analysis
+- `'Cl'`, `'Br'`, `'I'` — other halogens
+- `'H'` — hydrocarbon chains (CH₂ units treated as pseudo-halogenated)
+
+#### Detecting H-Components
+
+When analyzing molecules with `halogens='H'`, PFASGroups can detect H-components through the normal parsing pipeline:
+
+```python
+from PFASGroups import parse_smiles, HalogenGroup
+
+# Molecule with a CH2-rich backbone and an alcohol-like functional pattern
+smiles = 'CCCCO'
+
+# Define a custom group constrained to H-alkyl components
+h_group = HalogenGroup(
+    id=9990,
+    name='Hydrocarbon alcohol via H-alkyl component',
+    smarts={'[#6$([#6!$([#6]=O)][OH1,Oh1,O-])]': 1},
+    componentSmarts='Alkyl',
+    componentSaturation='per',
+    componentHalogens='H',
+    componentForm='alkyl',
+    constraints={},
+    max_dist_from_comp=1,
+)
+
+# Parse using H mode
+results = parse_smiles(smiles, halogens='H', pfas_groups=[h_group], bycomponent=True)
+
+# Inspect H-component matches for the custom group
+h_matches = [m for m in results[0].matches if m.get('id') == 9990 and m.get('type') == 'HalogenGroup']
+print(f"Found {len(h_matches)} H-component match(es)")
+if h_matches:
+    print(f"Component count: {h_matches[0]['num_components']}")
+```
+
+### Wildcard Groups
+
+Wildcard groups provide generic functional group detection beyond the OECD PFAS classification. They match common organic functional groups across all halogens using pattern-based matching. Useful for:
+- Detecting generic functional groups (esters, ethers, alcohols, etc.)
+- Extending PFASGroups analysis to broader organic chemistry
+- Complementing halogen-specific PFAS groups
+
+#### Enabling Wildcard Matching
+
+Toggle wildcard group detection during parsing:
+
+```python
+from PFASGroups import parse_smiles
+
+smiles_list = [
+    "CCO",                    # ethanol (alcohol)
+    "CCOC",                   # ethyl methyl ether
+    "CC(=O)O",                # acetic acid (carboxylic acid)
+    "CC(=O)OC",               # methyl acetate (ester)
+    "FC(F)(F)C(F)(F)C(=O)O",  # PFOA (PFAS + carboxylic acid)
+]
+
+# Parse without wildcards (default)
+results_no_wc = parse_smiles(smiles_list, halogens='F')
+
+# Parse with wildcard groups enabled
+results_with_wc = parse_smiles(smiles_list, halogens='*')
+
+# Compare matches
+for i, (mol_off, mol_on) in enumerate(zip(results_no_wc, results_with_wc)):
+    print(f"\n{smiles_list[i]}")
+    print(f"  Without wildcards: {len(mol_off.matches)} match(es)")
+    if mol_off.matches:
+        for m in mol_off.matches:
+            print(f"       {m['id'] if m['type']=='PFASdefinition' else m.group_id} - {m['definition_name'] if m['type']=='PFASdefinition' else m.group_name} - {m['type']}")
+    
+    print(f"  With wildcards: {len(mol_on.matches)} match(es)")
+    if mol_on.matches:
+        for m in mol_on.matches:
+            print(f"       {m['id'] if m['type']=='PFASdefinition' else m.group_id} - {m['definition_name'] if m['type']=='PFASdefinition' else m.group_name} - {m['type']}")
+```
+
+#### Filtering Wildcard vs. Halogen Groups
+
+Wildcard matches are tagged with group IDs in the range 29-76 (and some higher IDs). You can filter by match type:
+
+```python
+from PFASGroups import parse_smiles
+
+smiles = "CCO"
+results = parse_smiles(smiles, halogens='*')
+mol = results[0]
+
+# Separate wildcard and halogen group matches
+halogen_matches = [m for m in mol.matches if m['type'] == 'HalogenGroup']
+wildcard_matches = [m for m in mol.matches if m['type'] == 'WildcardGroup']
+
+print(f"Halogen group matches: {len(halogen_matches)}")
+print(f"Wildcard group matches: {len(wildcard_matches)}")
+
+for wm in wildcard_matches:
+    print(f"  {wm.group_name} (Group {wm.group_id})")
+```
+
+**Note on the halogen field**: Each match dict includes a `halogen` field that indicates which halogens are present in that specific match:
+- **HalogenGroup**: Shows the actual halogens in components (e.g., `'F'`, `'Cl'`, `['F', 'H']`)
+- **WildcardGroup**: Always `'*'` (wildcard pseudo-halogen)
+- **PFASdefinition**: Always `'F'` (definitions require fluorine)
+
+#### Wildcard Group Categories
+
+Wildcard groups include generic functional group patterns such as:
+- **Alcohols** — hydroxyl (-OH) groups
+- **Ethers** — oxygen linkers (-O-)
+- **Esters** — carbonyl + ester motif (C(=O)O)
+- **Carboxylic acids** — carboxyl groups (C(=O)OH)
+- **Aldehydes, ketones** — carbonyl functional groups
+- **Alkenes, alkynes** — unsaturation
+- **Ring systems** — cyclic aromatic and aliphatic
+
+See [Halogen_groups_smarts.json](PFASGroups/data/Halogen_groups_smarts.json) (Groups 29-76) for the complete list of wildcard definitions.
+
+### Combined H and Wildcard Analysis
+
+Combine both features to analyze complex molecules:
+
+```python
+from PFASGroups import parse_smiles
+from PFASGroups.generate_homologues import generate_homologues
+from rdkit import Chem
+
+# Molecule: PFOA-like with a non-fluorinated side chain
+smiles = "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)CCCCCC(=O)O"
+mol = Chem.MolFromSmiles(smiles)
+
+# 1. Parse with both wildcards and PFAS detection
+results = parse_smiles(smiles, halogens=['F', '*'])
+print(f"PFAS + wildcard matches: {len(results[0].matches)}")
+
+# 2. Generate fluorine-based homologues
+pfas_homologues = generate_homologues(mol, halogen='F')
+print(f"Fluorinated homologues: {len(pfas_homologues)}")
+
+# 3. Extract the non-fluorinated section and analyze as H-component
+# (useful for studying the non-halogenated portion of hybrid molecules)
+```
+
+Notes on halogen controls:
+- `halogens='*'` runs wildcard functional-group matching only.
+- `halogens='H'` enables H-component analysis and excludes telomer groups.
+- `halogens=['H', '*']` runs both H-component and wildcard matching.
+- `halogens=['F', '*']` runs fluorinated PFAS matching and wildcard matching together.
+- PFAS definitions are evaluated only when `'F'` is included in `halogens`.
 
 ## Embedding with Graph Metrics
 
@@ -422,7 +611,7 @@ for a complete runnable script covering all options.
 PFASGroups supports fluorine, chlorine, bromine, and iodine. There are two ways
 to analyse all halogens at once:
 
-### Option A – import `HalogenGroups` (all halogens by default)
+### Option A - import `HalogenGroups` (all halogens by default)
 
 ```python
 from HalogenGroups import parse_smiles
@@ -443,7 +632,7 @@ cols = results.column_names(group_selection='oecd')
 print(arr.shape)
 ```
 
-### Option B – import `PFASgroups` and specify `halogens` explicitly
+### Option B - import `PFASgroups` and specify `halogens` explicitly
 
 ```python
 from PFASGroups import parse_smiles
@@ -571,6 +760,10 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+
+- **Version 3.4.0**: Added H components (use in homologue series generation) and wildcard components to match generic functional groups (broader use than PFAS).
+
+- **Version 3.3.x**: Added GUI prototype 
 
 - **Version 3.2.2**: Fixed polyhalogenated alkyl components matching less than 2 halogens. Added option to pass 'halogens' to formula constraints. Added options to include component-wide formula constraints (on dist-1 neighbours from matched C-only components).
 

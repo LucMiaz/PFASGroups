@@ -44,7 +44,8 @@ def _mol_from_input(mol_or_string):
     )
 
 # Halogen element symbols and their atomic numbers used to build per-halogen SMARTS
-_HALOGEN_ATOMIC_NUM = {'F': 9, 'Cl': 17, 'Br': 35, 'I': 53}
+# 'H' is included to support CH2-based hydrocarbon homologue series
+_HALOGEN_ATOMIC_NUM = {'F': 9, 'Cl': 17, 'Br': 35, 'I': 53, 'H': 1}
 
 # Default componentSmartsName per halogen (per-halo, alkyl chain)
 _DEFAULT_COMPONENT_NAME = {
@@ -52,6 +53,7 @@ _DEFAULT_COMPONENT_NAME = {
     'Cl': 'Perchloroalkyl',
     'Br': 'Perbromoalkyl',
     'I': 'Periodoalkyl',
+    'H': 'Alkyl',
 }
 
 
@@ -82,8 +84,8 @@ def find_halogenated_components(mol, component_smarts, halogen='F'):
     list of dict
         Each entry describes one halogenated component:
 
-        - ``'component'``  (``frozenset[int]``) – atom indices of all component atoms.
-        - ``'cx2_carbons'`` (``list[int]``)      – backbone C atoms bearing ≥ 2 halogen
+        - ``'component'``  (``frozenset[int]``) - atom indices of all component atoms.
+        - ``'cx2_carbons'`` (``list[int]``)      - backbone C atoms bearing ≥ 2 halogen
           substituents (i.e., candidate ``CX2`` units for homologue generation).
     """
     component_atom_idxs = get_substruct(mol, component_smarts)
@@ -103,14 +105,24 @@ def find_halogenated_components(mol, component_smarts, halogen='F'):
         # Identify CX2 backbone carbons: C in component bearing *exactly* 2 halogen
         # neighbours.  Terminal CF3 (3 halogens) and mono-halo atoms are excluded —
         # only true -CX2- repeating units qualify.
-        cx2 = [
-            idx for idx in cc
-            if mol.GetAtomWithIdx(idx).GetSymbol() == 'C'
-            and sum(
-                1 for nb in mol.GetAtomWithIdx(idx).GetNeighbors()
-                if nb.GetSymbol() == halogen
-            ) == 2
-        ]
+        #
+        # For halogen='H', H atoms are implicit in RDKit molecules, so we use
+        # GetTotalNumHs() instead of iterating explicit neighbours.
+        if halogen == 'H':
+            cx2 = [
+                idx for idx in cc
+                if mol.GetAtomWithIdx(idx).GetSymbol() == 'C'
+                and mol.GetAtomWithIdx(idx).GetTotalNumHs() == 2
+            ]
+        else:
+            cx2 = [
+                idx for idx in cc
+                if mol.GetAtomWithIdx(idx).GetSymbol() == 'C'
+                and sum(
+                    1 for nb in mol.GetAtomWithIdx(idx).GetNeighbors()
+                    if nb.GetSymbol() == halogen
+                ) == 2
+            ]
         results.append({'component': frozenset(cc), 'cx2_carbons': cx2})
 
     return results
@@ -155,7 +167,7 @@ def generate_homologues(mol_input, componentSmartsName=None, componentSmartss=No
     Returns
     -------
     dict
-        ``{InChIKey: {formula: rdkit.Chem.Mol}}`` – all unique shorter
+        ``{InChIKey: {formula: rdkit.Chem.Mol}}`` - all unique shorter
         homologues, keyed first by InChIKey and then by molecular formula.
 
     Raises
@@ -169,7 +181,7 @@ def generate_homologues(mol_input, componentSmartsName=None, componentSmartss=No
     --------
     >>> from rdkit import Chem
     >>> from HalogenGroups.generate_homologues import generate_homologues
-    >>> # PFOA – generate all shorter perfluoroalkyl chain homologues
+    >>> # PFOA - generate all shorter perfluoroalkyl chain homologues
     >>> pfoa = Chem.MolFromSmiles('OC(=O)' + 'C(F)(F)' * 7 + 'F')
     >>> homologues = generate_homologues(pfoa)
     >>> print(len(homologues))  # 6  (C2-C7)
@@ -198,7 +210,8 @@ def generate_homologues(mol_input, componentSmartsName=None, componentSmartss=No
 
     if halogen not in _HALOGEN_ATOMIC_NUM:
         raise ValueError(
-            f"halogen must be one of {list(_HALOGEN_ATOMIC_NUM)}, got {halogen!r}"
+            f"halogen must be one of {list(_HALOGEN_ATOMIC_NUM)}, got {halogen!r}. "
+            f"Use 'H' for hydrocarbon (CH2) backbone series."
         )
     if base_repeating is None:
         base_repeating = ['C']

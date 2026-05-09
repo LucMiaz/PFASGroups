@@ -41,7 +41,7 @@ def generate_highly_branched_failing_cases(n, min_carbons=8, max_carbons=16, see
     """Generate very highly branched molecules that fail at least one PFAS definition.
 
     Uses partial fluorination (not perfluorinated) and tight branching constraints so
-    that some molecules lack the CF₂–CF₂ or CF₃ stretches required by stricter
+    that some molecules lack the CF₂-CF₂ or CF₃ stretches required by stricter
     definitions (e.g. UK Definition 4).
 
     Parameters
@@ -59,7 +59,7 @@ def generate_highly_branched_failing_cases(n, min_carbons=8, max_carbons=16, see
     phigh_fluorination : float
         Maximum H→F probability passed to ``fluorinate_mol``.
     branching_range : tuple of float
-        (min_BI, max_BI) – very low values (close to 0) give highly branched molecules.
+        (min_BI, max_BI) - very low values (close to 0) give highly branched molecules.
 
     Returns
     -------

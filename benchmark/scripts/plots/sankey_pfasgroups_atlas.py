@@ -591,7 +591,7 @@ def plot_sankey(
     fig.update_layout(
         title_text=(
             f"<b>{title}</b>"
-            f"<br><sup>n = {n_pairs:,} molecule–group assignments</sup>"
+            f"<br><sup>n = {n_pairs:,} molecule-group assignments</sup>"
         ),
         title_x=0.5,
         font=dict(family="Ubuntu, sans-serif", size=12),
@@ -757,7 +757,7 @@ def main() -> None:
         lo, hi = int(m.group(1)), int(m.group(2))
         group_ids = set(range(lo, hi + 1))
         groups_suffix = f"_groups{lo}-{hi}"
-        print(f"Group filter: IDs {lo}–{hi} ({len(group_ids)} IDs)")
+        print(f"Group filter: IDs {lo}-{hi} ({len(group_ids)} IDs)")
 
     right_key    = args.right_key
     class_label  = " (detailed categories)" if right_key == "atlas_class2" else ""
@@ -783,7 +783,7 @@ def main() -> None:
                             group_ids=group_ids, exclude_not_pfas=args.exclude_not_pfas)
         title = f"PFASGroups → PFAS-Atlas{class_label}  |  {ds_name}"
         if groups_suffix:
-            title += f"  |  groups {lo}–{hi}"
+            title += f"  |  groups {lo}-{hi}"
         print_flows(flows, title)
 
         stem = f"sankey_{safe_ds}{groups_suffix}{right_suffix}_{ts}"

@@ -6,20 +6,20 @@ Benchmark bond-dissociation-energy based effective graph resistance (BDE-EGR)
 features on ToxCast invitrodb and Arp & Hale PTBM endpoints.
 
 Two BDE-EGR representations are tested:
-  1. PFG_BDE_EGR+mol  – PFASGroups component-level BDE-EGR (1 value per group ×
+  1. PFG_BDE_EGR+mol  - PFASGroups component-level BDE-EGR (1 value per group ×
                          molecule, matched to PFG_EGR+mol which uses topological EGR).
-  2. mol_kf           – Whole-molecule BDE Kirchhoff index (2 scalars: raw value
+  2. mol_kf           - Whole-molecule BDE Kirchhoff index (2 scalars: raw value
                          and value normalised by n*(n-1)/2).
 
 Experiments
 -----------
-  Exp A  – PFAS chemicals only (~808), invitrodb 15 binary ToxCast endpoints.
+  Exp A  - PFAS chemicals only (~808), invitrodb 15 binary ToxCast endpoints.
             CV: RepeatedStratifiedKFold(3 splits × 5 repeats = 15 outer folds)
             Bayesian baselines: PFG_EGR+mol, Morgan
-  Exp B  – All invitrodb chemicals (~9 014), same 15 binary endpoints.
+  Exp B  - All invitrodb chemicals (~9 014), same 15 binary endpoints.
             CV: StratifiedKFold(5 folds)
             Bayesian baselines: Morgan+PFG_EGR+mol, Morgan
-  PTBM   – Arp & Hale 2022 all chemicals, 9 binary hazard-label endpoints.
+  PTBM   - Arp & Hale 2022 all chemicals, 9 binary hazard-label endpoints.
             CV: StratifiedKFold(5 folds)
             Bayesian baseline: Morgan
 
@@ -253,8 +253,8 @@ def build_pfg_bde_matrices(
     Compute PFASGroups BDE-EGR component embedding with and without mol metrics.
 
     Configs produced:
-      "BDE_EGR"       – 115 cols (effective_graph_resistance_BDE only)
-      "BDE_EGR+mol"   – 125 cols (+ 10 molecule-wide graph metrics)
+      "BDE_EGR"       - 115 cols (effective_graph_resistance_BDE only)
+      "BDE_EGR+mol"   - 125 cols (+ 10 molecule-wide graph metrics)
 
     Returns dict name → (n, ncols) float64 array.  Results are cached.
     """

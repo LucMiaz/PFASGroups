@@ -475,7 +475,7 @@ print(f"PFASGroups branching computed for {len(pfas_mols)} molecules  "
       f"|  range [{pfas_bi.min():.4f}, {pfas_bi.max():.4f}]")
 
 if len(pfas_mols) >= 3:
-    # After fixing calculate_branching to count only C–C bonds, mean_branching
+    # After fixing calculate_branching to count only C-C bonds, mean_branching
     # has the same direction as branching_index: 1.0 = linear, 0.0 = highly branched.
     # So 10th percentile = most branched = "High branching", same as the first figure.
     _pfas_pcts = [10, 50, 90]

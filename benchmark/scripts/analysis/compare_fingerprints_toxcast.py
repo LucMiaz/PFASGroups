@@ -5,20 +5,20 @@ Compare fingerprint representations on ToxCast endpoint hit-calls.
 Experiment A  ─ CF-containing chemicals only (~808 compounds with ≥1
                 non-zero TxP_PFAS bit)
   Features compared  (PFAS-specific fingerprint evaluation):
-    • TxP_PFAS      – 129 PFAS-structural bits (Richard et al. 2023, v1)
-    • PFG_binary    – 115 binary group-presence bits (this work)
-    • PFG_binary+mol– PFG_binary + 10 molecule-wide graph metrics (125 cols)
-    • PFG_EGR       – effective graph resistance only (115 cols, no binary)
-    • PFG_EGR+mol   – PFG_EGR + 10 molecule-wide metrics (125 cols)
+    • TxP_PFAS      - 129 PFAS-structural bits (Richard et al. 2023, v1)
+    • PFG_binary    - 115 binary group-presence bits (this work)
+    • PFG_binary+mol- PFG_binary + 10 molecule-wide graph metrics (125 cols)
+    • PFG_EGR       - effective graph resistance only (115 cols, no binary)
+    • PFG_EGR+mol   - PFG_EGR + 10 molecule-wide metrics (125 cols)
 
 Experiment B  ─ Full ToxCast library (n ≈ 9 014)
   Features compared  (general + PFAS augmentation):
-    • ToxPrint+TxP_PFAS       – 729 + 129 = 858 bits
-    • Morgan+PFG_binary       – ECFP4 512 + PFG binary 115 (627 cols)
-    • Morgan+PFG_binary+mol   – ECFP4 512 + PFG binary+mol 125 (637 cols)
-    • Morgan+PFG_EGR          – ECFP4 512 + PFG EGR 115 (627 cols)
-    • Morgan+PFG_EGR+mol      – ECFP4 512 + PFG EGR+mol 125 (637 cols)
-    • Morgan                  – ECFP4 512-bit baseline
+    • ToxPrint+TxP_PFAS       - 729 + 129 = 858 bits
+    • Morgan+PFG_binary       - ECFP4 512 + PFG binary 115 (627 cols)
+    • Morgan+PFG_binary+mol   - ECFP4 512 + PFG binary+mol 125 (637 cols)
+    • Morgan+PFG_EGR          - ECFP4 512 + PFG EGR 115 (627 cols)
+    • Morgan+PFG_EGR+mol      - ECFP4 512 + PFG EGR+mol 125 (637 cols)
+    • Morgan                  - ECFP4 512-bit baseline
 
 Cross-validation strategy  (nested CV)
   Outer loop: StratifiedKFold(5) — unbiased performance estimate
@@ -706,7 +706,7 @@ def grouped_bar_by_fset(
     ax.set_ylabel(metric_label)
     ax.set_ylim(max(0, baseline - 0.05), 1.02)
     ax.set_title(
-        f"{DB} – {metric_label}  [{experiment}]"
+        f"{DB} - {metric_label}  [{experiment}]"
         f"\n(mean ± SD across folds × models, nested CV)"
     )
     ax.legend(fontsize=9)
@@ -758,7 +758,7 @@ def model_heatmap(
                     ax.text(j, i, f"{v:.2f}", ha="center", va="center",
                             fontsize=6, color="black")
         plt.colorbar(im, ax=ax, fraction=0.03)
-        ax.set_title(f"{exp} – {metric_label}", fontsize=10)
+        ax.set_title(f"{exp} - {metric_label}", fontsize=10)
 
     fig.suptitle(
         f"Model × Feature-Set Heatmap — {metric_label}\n(nested CV mean over folds)",
@@ -913,7 +913,7 @@ def summary_2x2(
         ax.set_xticklabels(endpoints, rotation=45, ha="right", fontsize=7)
         ax.set_ylim(max(0, bsl - 0.05), 1.02)
         ax.set_ylabel(mlabel, fontsize=9)
-        ax.set_title(f"{exp} – {mlabel}", fontsize=10)
+        ax.set_title(f"{exp} - {mlabel}", fontsize=10)
         ax.legend(fontsize=7, ncol=2)
 
     fig.suptitle(

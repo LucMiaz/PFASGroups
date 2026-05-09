@@ -29,7 +29,7 @@ def run_benchmark(
     feature_sets : mapping of {name: (n_mols, n_features) array}
     y : binary (0/1) target vector, length n_mols
     cv_splits / cv_repeats : cross-validation settings
-    progress_cb : int callback (0–100)
+    progress_cb : int callback (0-100)
 
     Returns
     -------

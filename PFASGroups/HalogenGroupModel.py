@@ -154,11 +154,11 @@ class HalogenGroup():
                 # No metadata available to infer component SMARTS
                 return
             # prepare halogens (accepts list, str or None)
-            if isinstance(self.componentHalogens,list) and len(set(self.componentHalogens).intersection(['F','Cl','Br','I'])) == 0:
+            if isinstance(self.componentHalogens,list) and len(set(self.componentHalogens).intersection(['F','Cl','Br','I','H'])) == 0:
                 raise ValueError(f"Invalid componentHalogens for HalogenGroup '{self.name}' (ID: {self.id})")
             if self.componentHalogens is None:
                 self.componentHalogens = ['F','Cl','Br','I']
-            elif isinstance(self.componentHalogens, str) and self.componentHalogens in ['F','Cl','Br','I']:
+            elif isinstance(self.componentHalogens, str) and self.componentHalogens in ['F','Cl','Br','I','H']:
                 self.componentHalogens = [self.componentHalogens]
             if self.componentSaturation is None:
                 self.componentSaturation = ['per','poly']
@@ -226,9 +226,9 @@ class HalogenGroup():
         constraints : dict
             Component constraints with optional keys:
 
-            * ``'gte'`` – ``{element: min_count}``; component must have at least
+            * ``'gte'`` - ``{element: min_count}``; component must have at least
               *min_count* atoms of *element*.
-            * ``'exclude'`` – list of element symbols that must be absent from
+            * ``'exclude'`` - list of element symbols that must be absent from
               the component.
 
         Returns

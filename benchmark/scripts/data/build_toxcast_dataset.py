@@ -40,7 +40,7 @@ DATA_DIR.mkdir(exist_ok=True)
 # Curated endpoint list
 # aeid → human-readable label (name kept short for column headers)
 # Criteria: burst_assay=0, cell_viability_assay=0, n_chems ≥ 7000,
-#            hit-rate 2–50 %, biologically interpretable target.
+#            hit-rate 2-50 %, biologically interpretable target.
 # ---------------------------------------------------------------------------
 ENDPOINTS = {
     762:  "AR_antagonist",          # androgen receptor antagonism
@@ -71,7 +71,7 @@ def get_engine(user: str, password: str, db: str) -> object:
 
 
 # ---------------------------------------------------------------------------
-# Step 1 – chemicals
+# Step 1 - chemicals
 # ---------------------------------------------------------------------------
 
 def load_chemicals(engine) -> pd.DataFrame:
@@ -88,7 +88,7 @@ def load_chemicals(engine) -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------------
-# Step 2 – PFASGroups fingerprints
+# Step 2 - PFASGroups fingerprints
 # ---------------------------------------------------------------------------
 
 def build_fingerprint_matrix(
@@ -147,7 +147,7 @@ def build_fingerprint_matrix(
 
 
 # ---------------------------------------------------------------------------
-# Step 3 – label matrix
+# Step 3 - label matrix
 # ---------------------------------------------------------------------------
 
 def build_label_matrix(engine, chids: list[int]) -> pd.DataFrame:
@@ -192,16 +192,16 @@ def build_label_matrix(engine, chids: list[int]) -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------------
-# Step 4 – assemble & save
+# Step 4 - assemble & save
 # ---------------------------------------------------------------------------
 
 def build_and_save(user: str, password: str, db: str) -> None:
     engine = get_engine(user, password, db)
 
-    # 1 – chemicals
+    # 1 - chemicals
     chem_df = load_chemicals(engine)
 
-    # 2 – fingerprints
+    # 2 - fingerprints
     X, group_names = build_fingerprint_matrix(chem_df["smiles"].tolist())
 
     fp_df = pd.DataFrame(X, columns=group_names, dtype=np.uint8)
@@ -215,7 +215,7 @@ def build_and_save(user: str, password: str, db: str) -> None:
     fp_df.to_parquet(fp_path, index=False)
     print(f"[saved] features → {fp_path}")
 
-    # 3 – labels
+    # 3 - labels
     y = build_label_matrix(engine, chem_df["chid"].tolist())
 
     # Merge fingerprints + labels on chid, keep only rows that have ≥1 label

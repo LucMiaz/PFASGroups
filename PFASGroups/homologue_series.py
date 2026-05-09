@@ -1,4 +1,4 @@
-"""HomologueSeries – result container for :func:`~PFASGroups.generate_homologues`.
+"""HomologueSeries - result container for :func:`~PFASGroups.generate_homologues`.
 
 Backward-compatible with the raw ``{InChIKey: {formula: mol}}`` dict that
 ``generate_homologues`` previously returned.  All existing code that iterates
@@ -6,10 +6,10 @@ or indexes the dict continues to work unchanged.
 
 The class adds:
 
-- :meth:`summary` / :meth:`summarise` – coloured text summary
-- :meth:`show` / :meth:`plot` – grid image of all homologues
-- :meth:`svg` – export to an SVG file
-- :meth:`to_sql` – persist to SQLite or PostgreSQL
+- :meth:`summary` / :meth:`summarise` - coloured text summary
+- :meth:`show` / :meth:`plot` - grid image of all homologues
+- :meth:`svg` - export to an SVG file
+- :meth:`to_sql` - persist to SQLite or PostgreSQL
 
 Example
 -------
@@ -46,7 +46,7 @@ _HOMOLOGUE_COLOR = _HOMOLOGUE_COLOUR  # US alias
 
 
 # ---------------------------------------------------------------------------
-# HomologueEntry – lightweight descriptor for a single homologue
+# HomologueEntry - lightweight descriptor for a single homologue
 # ---------------------------------------------------------------------------
 
 @dataclass
@@ -86,7 +86,7 @@ class HomologueEntry:
 
 
 # ---------------------------------------------------------------------------
-# HomologueSeries – dict subclass (backward-compatible) with rich API
+# HomologueSeries - dict subclass (backward-compatible) with rich API
 # ---------------------------------------------------------------------------
 
 class HomologueSeries(dict):
@@ -116,7 +116,7 @@ class HomologueSeries(dict):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Metadata – populated by generate_homologues after construction
+        # Metadata - populated by generate_homologues after construction
         self.parent_mol: Optional[Chem.Mol] = None
         self.parent_smiles: Optional[str] = None
         self.parent_formula: Optional[str] = None

@@ -7,11 +7,11 @@ For each dataset the script:
   • Classifies every molecule with PFASGroups (parse_mol) and PFAS-Atlas
   • Records per-molecule wall-clock time (ms, via time.perf_counter)
   • Computes molecular complexity metrics from RDKit + PFASGroups:
-      – n_heavy_atoms (size)
-      – fluorine_ratio  (n_F / n_heavy)
-      – branching_index (avg excess degree of C atoms beyond 2)
-      – n_rings, n_rot_bonds
-      – component sizes reported by PFASGroups
+      - n_heavy_atoms (size)
+      - fluorine_ratio  (n_F / n_heavy)
+      - branching_index (avg excess degree of C atoms beyond 2)
+      - n_rings, n_rot_bonds
+      - component sizes reported by PFASGroups
   • Saves results to data/oecd_clinventory_timing_<TIMESTAMP>.json
   • Saves all figures to imgs/ (PDF + PNG)
 
@@ -157,16 +157,16 @@ def apply_style():
 # Bracket helpers (reused from compare_clinventory_classifiers.py)
 # ---------------------------------------------------------------------------
 BRACKETS = [
-    "tiny (<10)", "small (10–19)", "medium (20–34)",
-    "large (35–59)", "very large (≥60)",
+    "tiny (<10)", "small (10-19)", "medium (20-34)",
+    "large (35-59)", "very large (≥60)",
 ]
 
 def atom_bracket(n: Optional[int]) -> str:
     if n is None: return "unknown"
     if n < 10:    return "tiny (<10)"
-    if n < 20:    return "small (10–19)"
-    if n < 35:    return "medium (20–34)"
-    if n < 60:    return "large (35–59)"
+    if n < 20:    return "small (10-19)"
+    if n < 35:    return "medium (20-34)"
+    if n < 60:    return "large (35-59)"
     return "very large (≥60)"
 
 def stats(vals: list) -> dict:

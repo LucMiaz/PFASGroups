@@ -18,13 +18,13 @@ import math
 
 # LaTeX color identifiers for table row highlighting
 # Requires \usepackage[table]{xcolor} in the article preamble
-_LX_HDR = "D6E4F5"   # light C1 blue – header rows
-_LX_C0L = "FAEADE"   # light C0 orange – HalogenGroups/PFASGroups rows
-_LX_C1L = "D6E4F5"   # light C1 blue – PFAS-Atlas rows
-_LX_C2L = "F2DCE9"   # light C2 magenta – third-category rows
-_LX_ALT = "F5F5F5"   # light grey – alternating data rows
+_LX_HDR = "D6E4F5"   # light C1 blue - header rows
+_LX_C0L = "FAEADE"   # light C0 orange - HalogenGroups/PFASGroups rows
+_LX_C1L = "D6E4F5"   # light C1 blue - PFAS-Atlas rows
+_LX_C2L = "F2DCE9"   # light C2 magenta - third-category rows
+_LX_ALT = "F5F5F5"   # light grey - alternating data rows
 _LATEX_COLOR_DEFS = (
-    "%% Colour palette – requires: \\usepackage[table]{xcolor}\n"
+    "%% Colour palette - requires: \\usepackage[table]{xcolor}\n"
     "\\definecolor{PGC0}{HTML}{E15D0B}\n"
     "\\definecolor{PGC1}{HTML}{306DBA}\n"
     "\\definecolor{PGC2}{HTML}{9D206C}\n"

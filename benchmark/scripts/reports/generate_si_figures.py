@@ -37,10 +37,10 @@ OUTDIR = os.path.join(IMGS, "si")
 os.makedirs(OUTDIR, exist_ok=True)
 
 # ── colour palette ───────────────────────────────────────────────────────────
-C0 = "#E15D0B"   # orange  – PFASGroups / HalogenGroups
-C1 = "#306DBA"   # blue    – PFAS-Atlas / TxP_PFAS / Morgan
-C2 = "#9D206C"   # magenta – third series
-C3 = "#51127C"   # purple  – fourth series
+C0 = "#E15D0B"   # orange  - PFASGroups / HalogenGroups
+C1 = "#306DBA"   # blue    - PFAS-Atlas / TxP_PFAS / Morgan
+C2 = "#9D206C"   # magenta - third series
+C3 = "#51127C"   # purple  - fourth series
 CMAP = [C0, C1, C2, C3]
 
 # PFG variant palette (orange shades + blue)
@@ -312,7 +312,7 @@ if timing_profiles:
             (r"$O(e^n)$ exponential",  _exp, [1.0, 0.001], "#D62728"),
         ]
 
-        # Model selection plot – uses Full profile data
+        # Model selection plot - uses Full profile data
         full = timing_profiles["Full"]
         x_full, y_full = full["n_atoms"], full["times_ms"]
         x_fit = np.linspace(x_full.min(), x_full.max(), 400)
@@ -339,7 +339,7 @@ if timing_profiles:
         fig.tight_layout()
         savefig(fig, "timing_model_comparison")
 
-        # Profile overlay – show all 3 profiles with quadratic fit
+        # Profile overlay - show all 3 profiles with quadratic fit
         x_fit2 = np.linspace(
             min(v["n_atoms"].min() for v in timing_profiles.values()),
             max(v["n_atoms"].max() for v in timing_profiles.values()),

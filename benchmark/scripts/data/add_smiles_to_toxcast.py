@@ -73,7 +73,7 @@ def _write_structures(conn, rows: list[dict]) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Step 1 – copy from an existing database
+# Step 1 - copy from an existing database
 # ---------------------------------------------------------------------------
 
 def fill_from_source_db(target_engine, source_engine) -> list[str]:
@@ -140,7 +140,7 @@ def fill_from_source_db(target_engine, source_engine) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Step 2 – fill remaining chemicals via PubChem
+# Step 2 - fill remaining chemicals via PubChem
 # ---------------------------------------------------------------------------
 
 def fill_from_pubchem(target_engine, batch_size: int = 10) -> None:
@@ -154,7 +154,7 @@ def fill_from_pubchem(target_engine, batch_size: int = 10) -> None:
         ).fetchall()
 
     if not rows:
-        print("[PubChem] Nothing left to fetch – all chemicals have a SMILES.")
+        print("[PubChem] Nothing left to fetch - all chemicals have a SMILES.")
         return
 
     print(f"[PubChem] Fetching structures for {len(rows):,} remaining chemicals …")

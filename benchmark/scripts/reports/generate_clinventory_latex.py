@@ -29,12 +29,12 @@ from pathlib import Path
 from typing import Optional
 
 # LaTeX row-color hex codes (no leading #; requires \usepackage[table]{xcolor})
-_LX_HDR = "D6E4F5"   # light C1 blue – header rows
-_LX_C0L = "FAEADE"   # light C0 orange – HalogenGroups/PFASGroups rows
-_LX_C1L = "D6E4F5"   # light C1 blue  – PFAS-Atlas rows
-_LX_C2L = "F2DCE9"   # light C2 magenta – third-category rows
+_LX_HDR = "D6E4F5"   # light C1 blue - header rows
+_LX_C0L = "FAEADE"   # light C0 orange - HalogenGroups/PFASGroups rows
+_LX_C1L = "D6E4F5"   # light C1 blue  - PFAS-Atlas rows
+_LX_C2L = "F2DCE9"   # light C2 magenta - third-category rows
 _LATEX_COLOR_DEFS = (
-    "%% Colour palette – requires: \\usepackage[table]{xcolor}\n"
+    "%% Colour palette - requires: \\usepackage[table]{xcolor}\n"
     "\\definecolor{PGC0}{HTML}{E15D0B}\n"
     "\\definecolor{PGC1}{HTML}{306DBA}\n"
     "\\definecolor{PGC2}{HTML}{9D206C}\n"
@@ -568,7 +568,7 @@ def main():
     # -----------------------------------------------------------------------
     # Tables file
     tables_parts = [
-        f"% Clinventory comparison tables \u2014 generated {datetime.now().isoformat()}\n",        "%% Colour palette – requires: \\usepackage[table]{xcolor}\n"
+        f"% Clinventory comparison tables \u2014 generated {datetime.now().isoformat()}\n",        "%% Colour palette - requires: \\usepackage[table]{xcolor}\n"
         "\\definecolor{PGC0}{HTML}{E15D0B}\n"
         "\\definecolor{PGC1}{HTML}{306DBA}\n"
         "\\definecolor{PGC2}{HTML}{9D206C}\n"

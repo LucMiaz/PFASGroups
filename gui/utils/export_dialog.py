@@ -41,7 +41,7 @@ _COMPONENT_METRICS: list[tuple[str, list[tuple[str, str]]]] = [
         ("size",                          "Size (C-atom count)"),
         ("branching",                     "Branching (1 = linear, 0 = fully branched)"),
         ("effective_graph_resistance",     "Effective graph resistance (EGR)"),
-        ("effective_graph_resistance_BDE", "EGR – BDE weighted"),
+        ("effective_graph_resistance_BDE", "EGR - BDE weighted"),
         ("component_fraction",             "Component fraction (% of mol C-atoms)"),
     ]),
     ("Eccentricity", [
@@ -87,10 +87,10 @@ _MOLECULE_METRICS: list[tuple[str, str]] = [
 
 _GROUP_SELECTIONS: list[tuple[str, str]] = [
     ("all",              "All groups"),
-    ("oecd",             "OECD groups (IDs 1–28)"),
-    ("generic",          "Generic groups (IDs 29–76)"),
-    ("telomers",         "Telomers (IDs 77–118)"),
-    ("generic+telomers", "Generic + Telomers (IDs 29–118)"),
+    ("oecd",             "OECD groups (IDs 1-28)"),
+    ("generic",          "Generic groups (IDs 29-76)"),
+    ("telomers",         "Telomers (IDs 77-118)"),
+    ("generic+telomers", "Generic + Telomers (IDs 29-118)"),
 ]
 
 _FORMAT_EXTS = {

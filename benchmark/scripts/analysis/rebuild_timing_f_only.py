@@ -4,12 +4,12 @@ Rebuild the timing comparison JSONs restricted to PFASGroups(halogens='F').
 
 Produces:
   data/oecd_clinventory_timing_f_only_<TS>.json
-      – summary stats for OECD, CLInventory (F) and stress datasets
-      – used by generate_si_figures.py for timing_box / timing_by_bracket
+      - summary stats for OECD, CLInventory (F) and stress datasets
+      - used by generate_si_figures.py for timing_box / timing_by_bracket
 
   data/clinventory_comparison_f_only_<TS>.json
-      – timing_overall, timing_by_atom_bracket, agreement_matrix
-      – used by generate_si_figures.py for atlas_agreement_bar / atlas_disagreement
+      - timing_overall, timing_by_atom_bracket, agreement_matrix
+      - used by generate_si_figures.py for atlas_agreement_bar / atlas_disagreement
 
 Sources:
   • OECD molecules         : existing oecd_clinventory_timing_20260315_062059.json

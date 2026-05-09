@@ -169,7 +169,7 @@ def compute_pfasgroups_fps(
 
     Returns
     -------
-    X           : np.ndarray of shape (n, n_groups) – binary (uint8)
+    X           : np.ndarray of shape (n, n_groups) - binary (uint8)
     group_names : list of str, length n_groups
     """
     from PFASGroups import generate_fingerprint
@@ -627,7 +627,7 @@ def main() -> None:
     smiles_list = df['SMILES'].tolist()
     print(f'  {n_mol} valid molecules')
     if n_mol < 5:
-        print('  WARNING: Very few molecules – statistical results will not be meaningful.')
+        print('  WARNING: Very few molecules - statistical results will not be meaningful.')
 
     # ── Compute PFASGroups fingerprints ───────────────────────────────────────
     print(f'\nComputing PFASGroups fingerprints (halogens={args.halogens}) ...')
@@ -656,7 +656,7 @@ def main() -> None:
         try:
             X_tx_full, names_tx_full, dtxsids_tx = load_txppfas_csv(txppfas_csv)
         except (ValueError, FileNotFoundError) as exc:
-            print(f'  WARNING: Cannot load TxP_PFAS CSV – {exc}')
+            print(f'  WARNING: Cannot load TxP_PFAS CSV - {exc}')
             print('  Proceeding with PFASGroups-only analysis.')
             txppfas_csv = None
             X_tx_full = names_tx_full = dtxsids_tx = None
@@ -716,7 +716,7 @@ def main() -> None:
             if min_n < n_mol:
                 print(f'  WARNING: Row-order alignment truncated to {min_n} molecules.')
     else:
-        print('\nNo TxP_PFAS CSV provided – running PFASGroups-only analysis.')
+        print('\nNo TxP_PFAS CSV provided - running PFASGroups-only analysis.')
         print('  To enable full comparison, see the docstring at the top of this file.')
 
     # ── Generate figures ──────────────────────────────────────────────────────

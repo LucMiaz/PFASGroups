@@ -1,4 +1,4 @@
-"""Tests for generate_homologues – component-based implementation.
+"""Tests for generate_homologues - component-based implementation.
 
 Covers:
 - Linear perfluoroalkyl chains (PFOA, PFOS-like)
@@ -64,7 +64,7 @@ class TestLinearPerfluoro:
     """generate_homologues on simple linear perfluoroalkyl chains."""
 
     def test_pfoa_count(self):
-        """C8 PFOA → 6 shorter homologues (C2–C7 chains)."""
+        """C8 PFOA → 6 shorter homologues (C2-C7 chains)."""
         pfoa = Chem.MolFromSmiles('OC(=O)' + 'C(F)(F)' * 7 + 'F')
         h = generate_homologues(pfoa)
         assert len(h) == 6, f"Expected 6 homologues, got {len(h)}: {formula_set(h)}"
@@ -89,20 +89,20 @@ class TestLinearPerfluoro:
         assert_valid_smiles(h)
 
     def test_pfos_like_count(self):
-        """C8 perfluoroalkyl sulfonate → 7 shorter homologues (C1–C7)."""
+        """C8 perfluoroalkyl sulfonate → 7 shorter homologues (C1-C7)."""
         pfos = Chem.MolFromSmiles('O=S(=O)(O)' + 'C(F)(F)' * 8 + 'F')
         h = generate_homologues(pfos)
         assert len(h) == 7, f"Expected 7 homologues, got {len(h)}: {formula_set(h)}"
         assert_all_connected(h)
 
     def test_no_cf2_units(self):
-        """CF3COOH has no internal –CF2– units → 0 homologues."""
+        """CF3COOH has no internal -CF2- units → 0 homologues."""
         cf3cooh = Chem.MolFromSmiles('OC(=O)C(F)(F)F')
         h = generate_homologues(cf3cooh)
         assert len(h) == 0, f"Expected 0 homologues, got {len(h)}: {smiles_set(h)}"
 
     def test_single_cf2(self):
-        """One –CF2– unit → exactly 1 homologue."""
+        """One -CF2- unit → exactly 1 homologue."""
         mol = Chem.MolFromSmiles('OC(=O)C(F)(F)C(F)(F)F')  # C3 acid, one CF2 + CF3
         h = generate_homologues(mol)
         assert len(h) == 1, f"Expected 1 homologue, got {len(h)}: {smiles_set(h)}"
@@ -130,6 +130,15 @@ class TestHalogenVariants:
         mol = Chem.MolFromSmiles('OC(=O)' + 'C(Br)(Br)' * 4 + 'Br')
         h = generate_homologues(mol, halogen='Br')
         assert len(h) >= 2, f"Expected ≥2 Br homologues, got {len(h)}"
+        assert_all_connected(h)
+        assert_valid_smiles(h)
+
+    def test_hydrocarbon_h_series(self):
+        """Hydrocarbon chain with CH2 units should produce homologues with halogen='H'."""
+        mol = Chem.MolFromSmiles('OC(=O)CCCCCC')
+        h = generate_homologues(mol, halogen='H')
+        assert len(h) >= 1, f"Expected at least one H-series homologue, got {len(h)}"
+        assert h.halogen == 'H'
         assert_all_connected(h)
         assert_valid_smiles(h)
 
@@ -175,7 +184,7 @@ class TestBranched:
         for mol in branched_mols:
             smi = Chem.MolToSmiles(mol)
             h = generate_homologues(mol)
-            # May be 0 (no CF2 units) or more – both are valid
+            # May be 0 (no CF2 units) or more - both are valid
             assert isinstance(h, dict), f"Expected dict for {smi}"
 
     def test_branched_homologues_connected(self, branched_mols):
@@ -215,7 +224,7 @@ class TestMultiComponent:
         # Two C4 perfluoro chains connected via an ether oxygen
         mol = Chem.MolFromSmiles('FC(F)(F)C(F)(F)CC(F)(F)C(F)(F)F')
         if mol is None:
-            pytest.skip("SMILES not parsed – skipping multi-chain test")
+            pytest.skip("SMILES not parsed - skipping multi-chain test")
         h = generate_homologues(mol)
         # Should find CF2 units → non-empty result
         # (exact count depends on component SMARTS matching)
@@ -259,6 +268,21 @@ class TestFindHalogenatedComponents:
         smarts = self._get_component_smarts('Perfluoroalkyl')
         comps = find_halogenated_components(mol, smarts, halogen='F')
         assert comps == [], "Expected no components in non-fluorinated molecule"
+
+    def test_h_alkyl_component_detects_ch2(self):
+        mol = Chem.MolFromSmiles('OC(=O)CCCCCC')
+        smarts = self._get_component_smarts('Alkyl')
+        comps = find_halogenated_components(mol, smarts, halogen='H')
+        assert len(comps) >= 1, "Expected at least one Alkyl component for hydrocarbon chain"
+        total_cx2 = sum(len(c['cx2_carbons']) for c in comps)
+        assert total_cx2 >= 2, f"Expected >=2 CH2 carbons in H-component path, got {total_cx2}"
+
+    def test_h_alkyl_component_no_ch2_units(self):
+        mol = Chem.MolFromSmiles('CC(=O)O')
+        smarts = self._get_component_smarts('Alkyl')
+        comps = find_halogenated_components(mol, smarts, halogen='H')
+        total_cx2 = sum(len(c['cx2_carbons']) for c in comps)
+        assert total_cx2 == 0, f"Expected 0 CH2 carbons for molecule without CH2 backbone, got {total_cx2}"
 
 
 # ---------------------------------------------------------------------------

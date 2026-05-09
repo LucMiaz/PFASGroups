@@ -64,7 +64,7 @@ IMGS_DIR.mkdir(exist_ok=True)
 _ubuntu_ok = any("Ubuntu" in f.name for f in fm.fontManager.ttflist)
 _FONT = "Ubuntu" if _ubuntu_ok else "sans-serif"
 if not _ubuntu_ok:
-    print("  [warning] Ubuntu font not found – falling back to sans-serif")
+    print("  [warning] Ubuntu font not found - falling back to sans-serif")
 plt.rcParams.update({"font.family": _FONT, "font.size": 9})
 
 METRICS = ["roc_auc", "avg_prec", "mcc", "bal_acc"]

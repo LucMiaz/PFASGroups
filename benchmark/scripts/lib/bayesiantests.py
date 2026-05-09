@@ -455,7 +455,7 @@ def hierarchical_MC_endpoints(diff, rope, rho, upperAlpha=2, lowerAlpha=1,
           'rope'   : float                — ROPE in original scale
 
     Note: the compiled Stan model is cached in the system temp directory so that
-    recompilation is skipped on subsequent calls (first call ~1–2 min; subsequent
+    recompilation is skipped on subsequent calls (first call ~1-2 min; subsequent
     calls ~seconds).
     """
     import hashlib

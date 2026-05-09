@@ -10,10 +10,10 @@ Two sets of figures are produced per experiment × model:
 
 Layout (one PNG per experiment × model × variant, 8 files total):
   3 subplots stacked vertically: Balanced Accuracy / Average Precision / ROC AUC.
-  X-axis  – ToxCast endpoints (alphabetical).
-  Bars    – one group per endpoint, one bar per feature_set.
+  X-axis  - ToxCast endpoints (alphabetical).
+  Bars    - one group per endpoint, one bar per feature_set.
             Error bars = ±1 std from nested-CV folds/repeats.
-  Colours – tone palette derived from color_scheme.yaml (4 base colours ×
+  Colours - tone palette derived from color_scheme.yaml (4 base colours ×
             4 lightness levels, interleaved for maximum contrast).
 
 Output files (benchmark/imgs/)
@@ -71,10 +71,10 @@ PALETTE = _cs["colorscheme"]  # ["#E15D0B", "#306DBA", "#9D206C", "#51127C"]
 # Tonal blend levels: (blend_factor, target) where target is "white" or "black".
 # Produces n_levels tones per base colour, from lightest to darkest.
 _TONE_LEVELS = [
-    (0.45, "white"),  # lightest  – 55 % white
-    (0.72, "white"),  # light     – 28 % white
+    (0.45, "white"),  # lightest  - 55 % white
+    (0.72, "white"),  # light     - 28 % white
     (1.00, "none"),   # original
-    (0.65, "black"),  # dark      – 35 % black
+    (0.65, "black"),  # dark      - 35 % black
 ]
 
 
@@ -111,7 +111,7 @@ TONE_PALETTE = _make_tone_palette(PALETTE)
 _ubuntu_available = any("Ubuntu" in f.name for f in fm.fontManager.ttflist)
 FONT_FAMILY = "Ubuntu" if _ubuntu_available else "sans-serif"
 if not _ubuntu_available:
-    print("  [warning] Ubuntu font not found in font cache – falling back to sans-serif")
+    print("  [warning] Ubuntu font not found in font cache - falling back to sans-serif")
 
 sns.set_theme(style="whitegrid", font=FONT_FAMILY)
 plt.rcParams.update({

@@ -52,7 +52,7 @@ def _load_palette():
 
 
 _PALETTE = _load_palette()
-_C_DATA = _PALETTE[0]   # orange  – raw data points
+_C_DATA = _PALETTE[0]   # orange  - raw data points
 
 # one colour per model (cycling if needed)
 _MODEL_COLORS = _PALETTE[1:]
@@ -164,9 +164,9 @@ def fit_model(key, func, p0, param_names):
 
 
 print("=" * 80)
-print("TIMING ANALYSIS – MODEL COMPARISON")
+print("TIMING ANALYSIS - MODEL COMPARISON")
 print("=" * 80)
-print(f"\nDataset: {len(df)} molecules, {x_data.min()}–{x_data.max()} atoms")
+print(f"\nDataset: {len(df)} molecules, {x_data.min()}-{x_data.max()} atoms")
 print(f"Mean time: {y_data.mean()*1000:.2f} ms  |  Median: {np.median(y_data)*1000:.2f} ms\n")
 print(f"{'Model':<18} {'R²':>8} {'RMSE(ms)':>10} {'AIC':>12} {'BIC':>12}  Parameters")
 print("-" * 80)

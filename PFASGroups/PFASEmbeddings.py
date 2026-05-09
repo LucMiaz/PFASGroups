@@ -198,7 +198,7 @@ def _ansi(text: str, *codes: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Molecule-highlight colour palettes (RGB float triples, 0–1)
+# Molecule-highlight colour palettes (RGB float triples, 0-1)
 # ---------------------------------------------------------------------------
 
 # Highlight colours by halogen element — mapped to the project colour palette
@@ -642,11 +642,19 @@ class MatchView(dict):
 
     @property
     def group_id(self) -> Optional[int]:
-        return self.get("id") if self.is_group else None
+        # Keep legacy semantics for HalogenGroup while also exposing wildcard
+        # ids through the same convenience accessor.
+        if self.is_group or self.get("type") == "WildcardGroup":
+            return self.get("id")
+        return None
 
     @property
     def group_name(self) -> Optional[str]:
-        return self.get("group_name") if self.is_group else None
+        # Keep legacy semantics for HalogenGroup while also exposing wildcard
+        # group names through the same convenience accessor.
+        if self.is_group or self.get("type") == "WildcardGroup":
+            return self.get("group_name")
+        return None
 
     @property
     def components(self) -> List[ComponentView]:
@@ -2798,11 +2806,11 @@ class PFASEmbeddingSet(list):
         Parameters
         ----------
         color_by : None | ``'top_group'`` | list of str
-            * ``None`` – return ``(None, None, None)``; callers fall back to a
+            * ``None`` - return ``(None, None, None)``; callers fall back to a
               single default colour.
-            * ``'top_group'`` – derive one label per molecule from the
+            * ``'top_group'`` - derive one label per molecule from the
               highest ``match_count`` ``HalogenGroup`` match.
-            * list of str – use directly as per-molecule labels (must be the
+            * list of str - use directly as per-molecule labels (must be the
               same length as ``self``).
         """
         import matplotlib.pyplot as plt
