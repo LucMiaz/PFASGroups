@@ -25,7 +25,7 @@ from .core import (
 from .PFASEmbeddings import PFASEmbeddingSet
 
 _REAL_HALOGENS = ['F', 'Cl', 'Br', 'I']
-_DEFAULT_NON_TELOMER_GROUPS_CACHE: list | None = None
+_DEFAULT_NON_TELOMER_GROUPS_CACHE: Optional[list] = None
 
 
 def _to_list(value):
@@ -190,7 +190,7 @@ def parse_definitions_in_mol(mol, **kwargs):
 
 # ── Wildcard (component-free) generic group matching ─────────────────────────
 
-_WILDCARD_GROUPS_CACHE: list | None = None
+_WILDCARD_GROUPS_CACHE: Optional[list] = None
 _WILDCARD_GROUP_ID_MIN = 29
 _WILDCARD_GROUP_ID_MAX = 76
 _WILDCARD_GROUP_EXCLUDED_IDS = {34, 35, 37, 38, 44, 45}

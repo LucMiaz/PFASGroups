@@ -65,6 +65,7 @@ tests/test_linker_smarts.py
 tests/test_metrics.py
 tests/test_metrics_detailed.py
 tests/test_n_spacer_ring_size.py
+tests/test_parser_wildcard.py
 tests/test_pfasstructv5.py
 tests/test_prioritise.py
 tests/test_readme_and_docs_examples.py
