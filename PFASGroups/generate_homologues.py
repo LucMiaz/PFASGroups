@@ -82,8 +82,8 @@ def find_halogenated_components(mol, component_smarts, halogen='F'):
     list of dict
         Each entry describes one halogenated component:
 
-        - ``'component'``  (``frozenset[int]``) – atom indices of all component atoms.
-        - ``'cx2_carbons'`` (``list[int]``)      – backbone C atoms bearing ≥ 2 halogen
+        - ``'component'``  (``frozenset[int]``) - atom indices of all component atoms.
+        - ``'cx2_carbons'`` (``list[int]``)      - backbone C atoms bearing ≥ 2 halogen
           substituents (i.e., candidate ``CX2`` units for homologue generation).
     """
     component_atom_idxs = get_substruct(mol, component_smarts)
@@ -155,7 +155,7 @@ def generate_homologues(mol_input, componentSmartsName=None, componentSmartss=No
     Returns
     -------
     dict
-        ``{InChIKey: {formula: rdkit.Chem.Mol}}`` – all unique shorter
+        ``{InChIKey: {formula: rdkit.Chem.Mol}}`` - all unique shorter
         homologues, keyed first by InChIKey and then by molecular formula.
 
     Raises
@@ -169,7 +169,7 @@ def generate_homologues(mol_input, componentSmartsName=None, componentSmartss=No
     --------
     >>> from rdkit import Chem
     >>> from HalogenGroups.generate_homologues import generate_homologues
-    >>> # PFOA – generate all shorter perfluoroalkyl chain homologues
+    >>> # PFOA - generate all shorter perfluoroalkyl chain homologues
     >>> pfoa = Chem.MolFromSmiles('OC(=O)' + 'C(F)(F)' * 7 + 'F')
     >>> homologues = generate_homologues(pfoa)
     >>> print(len(homologues))  # 6  (C2-C7)

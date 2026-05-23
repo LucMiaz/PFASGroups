@@ -4,9 +4,9 @@ Compare ToxCast v4.2 (cached parquet) with v4.3 (invitro_v4_3 database).
 
 Checks
 ------
-1. Chemical coverage  – same set of DTXSID/CASN/SMILES?
-2. Label matrix       – same hit-calls for shared chemicals?
-3. C-F chemicals      – focused diff for fluorinated compounds.
+1. Chemical coverage  - same set of DTXSID/CASN/SMILES?
+2. Label matrix       - same hit-calls for shared chemicals?
+3. C-F chemicals      - focused diff for fluorinated compounds.
 
 Usage
 -----
@@ -104,7 +104,7 @@ def load_labels_from_db(engine, chids: list[int]) -> pd.DataFrame:
 def is_cf_smiles(smiles: str) -> bool:
     """Heuristic: SMILES contains at least one C-F bond (capital F, attached to carbon)."""
     try:
-        # Simple string heuristic – works for standard SMILES
+        # Simple string heuristic - works for standard SMILES
         return "F" in smiles
     except Exception:
         return False
@@ -168,7 +168,7 @@ def compare(user: str, password: str) -> None:
     print(f"\n{'='*60}")
     print("3. LABEL MATRIX DIFF (shared chemicals only)")
 
-    # Align by chid – use dsstox -> chid mapping
+    # Align by chid - use dsstox -> chid mapping
     dtxsid_to_chid_old = dict(zip(old_meta["dsstox_substance_id"], old_meta["chid"]))
     dtxsid_to_chid_new = dict(zip(new_meta["dsstox_substance_id"], new_meta["chid"]))
 

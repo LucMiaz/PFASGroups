@@ -2,10 +2,10 @@
 QThread worker base classes for all long-running operations.
 
 Every worker emits:
-  progress(int)        – 0-100 completion percentage
-  status(str)          – short human-readable status message
-  result(object)       – arbitrary payload delivered on success
-  error(str)           – error message on failure
+  progress(int)        - 0-100 completion percentage
+  status(str)          - short human-readable status message
+  result(object)       - arbitrary payload delivered on success
+  error(str)           - error message on failure
 
 Usage
 -----

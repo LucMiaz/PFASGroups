@@ -198,7 +198,7 @@ def _ansi(text: str, *codes: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Molecule-highlight colour palettes (RGB float triples, 0–1)
+# Molecule-highlight colour palettes (RGB float triples, 0-1)
 # ---------------------------------------------------------------------------
 
 # Highlight colours by halogen element — mapped to the project colour palette
@@ -2798,11 +2798,11 @@ class PFASEmbeddingSet(list):
         Parameters
         ----------
         color_by : None | ``'top_group'`` | list of str
-            * ``None`` – return ``(None, None, None)``; callers fall back to a
+            * ``None`` - return ``(None, None, None)``; callers fall back to a
               single default colour.
-            * ``'top_group'`` – derive one label per molecule from the
+            * ``'top_group'`` - derive one label per molecule from the
               highest ``match_count`` ``HalogenGroup`` match.
-            * list of str – use directly as per-molecule labels (must be the
+            * list of str - use directly as per-molecule labels (must be the
               same length as ``self``).
         """
         import matplotlib.pyplot as plt

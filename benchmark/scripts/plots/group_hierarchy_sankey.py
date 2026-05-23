@@ -228,14 +228,14 @@ def load_rules(
 # ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
-# Backbone group IDs – pinned to fixed columns in the hierarchy.
+# Backbone group IDs - pinned to fixed columns in the hierarchy.
 # ---------------------------------------------------------------------------
-# # col 0 (display col 1) – broad poly classes, one per fluorocarbon type:
+# # col 0 (display col 1) - broad poly classes, one per fluorocarbon type:
 # _POLY_ID:        int = 52  # polyfluoroalkyl               (3.8 M)
 # _POLY_ARYL_ID:   int = 59  # Polyfluoroaryl compounds      (1.01 M)
 # _POLY_CYCLIC_ID: int = 57  # Polyfluoro cyclic compounds   (388 K)
 
-# # col 1 (display col 2) – fully-fluorinated sub-classes:
+# # col 1 (display col 2) - fully-fluorinated sub-classes:
 # _PERF_ID:        int = 51  # perfluoroalkyl                (3.27 M)
 # _PERF_ARYL_ID:   int = 58  # Perfluoroaryl compounds       (1.01 M, ≡ poly-aryl in data)
 # _PERF_CYCLIC_ID: int = 56  # Perfluoro cyclic compounds    (387 K,  ≈ poly-cyclic in data)
@@ -245,7 +245,7 @@ _POLY_ID:        int = 35  # polyfluoroalkyl               (3.8 M)
 _POLY_ARYL_ID:   int = 38  # Polyfluoroaryl compounds      (1.01 M)
 _POLY_CYCLIC_ID: int = 45  # Polyfluoro cyclic compounds   (388 K)
 
-# col 1 (display col 2) – fully-fluorinated sub-classes:
+# col 1 (display col 2) - fully-fluorinated sub-classes:
 _PERF_ID:        int = 34  # perfluoroalkyl                (3.27 M)
 _PERF_ARYL_ID:   int = 37  # Perfluoroaryl compounds       (1.01 M, ≡ poly-aryl in data)
 _PERF_CYCLIC_ID: int = 44  # Perfluoro cyclic compounds    (387 K,  ≈ poly-cyclic in data)
@@ -395,7 +395,7 @@ def build_sankey(
     n_perf_in_poly = _ovl(_POLY_ID, _PERF_ID)
     n_poly_only    = max(0, n_poly - n_perf_in_poly)
 
-    # FluoroDB rough total (sum of the 3 poly backbones – direct pairwise overlaps;
+    # FluoroDB rough total (sum of the 3 poly backbones - direct pairwise overlaps;
     # ignores triple overlap, so this is an overestimate, noted in label):
     ov_poly_aryl   = _ovl(_POLY_ID, _POLY_ARYL_ID)
     ov_poly_cyclic = _ovl(_POLY_ID, _POLY_CYCLIC_ID)

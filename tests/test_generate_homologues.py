@@ -1,4 +1,4 @@
-"""Tests for generate_homologues – component-based implementation.
+"""Tests for generate_homologues - component-based implementation.
 
 Covers:
 - Linear perfluoroalkyl chains (PFOA, PFOS-like)
@@ -64,7 +64,7 @@ class TestLinearPerfluoro:
     """generate_homologues on simple linear perfluoroalkyl chains."""
 
     def test_pfoa_count(self):
-        """C8 PFOA → 6 shorter homologues (C2–C7 chains)."""
+        """C8 PFOA → 6 shorter homologues (C2-C7 chains)."""
         pfoa = Chem.MolFromSmiles('OC(=O)' + 'C(F)(F)' * 7 + 'F')
         h = generate_homologues(pfoa)
         assert len(h) == 6, f"Expected 6 homologues, got {len(h)}: {formula_set(h)}"
@@ -89,20 +89,20 @@ class TestLinearPerfluoro:
         assert_valid_smiles(h)
 
     def test_pfos_like_count(self):
-        """C8 perfluoroalkyl sulfonate → 7 shorter homologues (C1–C7)."""
+        """C8 perfluoroalkyl sulfonate → 7 shorter homologues (C1-C7)."""
         pfos = Chem.MolFromSmiles('O=S(=O)(O)' + 'C(F)(F)' * 8 + 'F')
         h = generate_homologues(pfos)
         assert len(h) == 7, f"Expected 7 homologues, got {len(h)}: {formula_set(h)}"
         assert_all_connected(h)
 
     def test_no_cf2_units(self):
-        """CF3COOH has no internal –CF2– units → 0 homologues."""
+        """CF3COOH has no internal -CF2- units → 0 homologues."""
         cf3cooh = Chem.MolFromSmiles('OC(=O)C(F)(F)F')
         h = generate_homologues(cf3cooh)
         assert len(h) == 0, f"Expected 0 homologues, got {len(h)}: {smiles_set(h)}"
 
     def test_single_cf2(self):
-        """One –CF2– unit → exactly 1 homologue."""
+        """One -CF2- unit → exactly 1 homologue."""
         mol = Chem.MolFromSmiles('OC(=O)C(F)(F)C(F)(F)F')  # C3 acid, one CF2 + CF3
         h = generate_homologues(mol)
         assert len(h) == 1, f"Expected 1 homologue, got {len(h)}: {smiles_set(h)}"
@@ -175,7 +175,7 @@ class TestBranched:
         for mol in branched_mols:
             smi = Chem.MolToSmiles(mol)
             h = generate_homologues(mol)
-            # May be 0 (no CF2 units) or more – both are valid
+            # May be 0 (no CF2 units) or more - both are valid
             assert isinstance(h, dict), f"Expected dict for {smi}"
 
     def test_branched_homologues_connected(self, branched_mols):
@@ -215,7 +215,7 @@ class TestMultiComponent:
         # Two C4 perfluoro chains connected via an ether oxygen
         mol = Chem.MolFromSmiles('FC(F)(F)C(F)(F)CC(F)(F)C(F)(F)F')
         if mol is None:
-            pytest.skip("SMILES not parsed – skipping multi-chain test")
+            pytest.skip("SMILES not parsed - skipping multi-chain test")
         h = generate_homologues(mol)
         # Should find CF2 units → non-empty result
         # (exact count depends on component SMARTS matching)

@@ -1,4 +1,4 @@
-# JSON5 – JSON for Humans
+# JSON5 - JSON for Humans
 
 [![Build Status](https://app.travis-ci.com/json5/json5.svg?branch=main)][Build
 Status] [![Coverage

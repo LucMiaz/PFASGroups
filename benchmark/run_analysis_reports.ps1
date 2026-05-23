@@ -6,8 +6,8 @@
 #   .\run_analysis_reports.ps1
 #
 # Requires the following conda environments:
-#   pfasgroups  – for most analysis scripts
-#   pfasatlas   – for compare_clinventory_classifiers.py and generate_clinventory_latex.py
+#   pfasgroups  - for most analysis scripts
+#   pfasatlas   - for compare_clinventory_classifiers.py and generate_clinventory_latex.py
 #
 # Both environments must be accessible via `conda run`.
 

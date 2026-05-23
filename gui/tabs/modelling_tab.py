@@ -362,7 +362,7 @@ class ModellingTab(QWidget):
         colours = [style.C_BLUE if "PFASGroups" in n else style.C_ORANGE for n in names]
         self._ax.barh(names, vals, color=colours, alpha=0.85)
         self._ax.set_xlabel("Mean ROC-AUC")
-        self._ax.set_title("Fingerprint benchmark – ROC-AUC", fontsize=9)
+        self._ax.set_title("Fingerprint benchmark - ROC-AUC", fontsize=9)
         self._ax.set_xlim(0, 1)
         self._ax.axvline(0.5, color="grey", lw=0.8, ls="--")
         self._fig.tight_layout(pad=0.8)

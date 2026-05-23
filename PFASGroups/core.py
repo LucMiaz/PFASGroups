@@ -204,11 +204,11 @@ def fragment_until_valence_is_correct(mol, frags, verbose=False, _events=None):
         When *True* the function returns a 2-tuple ``(frags, events)`` instead
         of just ``frags``.  *events* is a list of dicts, one per fragmentation
         step, each containing:
-        ``atom_idx`` – index of the offending atom,
-        ``error`` – the original :class:`~rdkit.Chem.AtomValenceException`
+        ``atom_idx`` - index of the offending atom,
+        ``error`` - the original :class:`~rdkit.Chem.AtomValenceException`
         message,
-        ``n_fragments`` – how many pieces the bond-cut produced,
-        ``smiles`` – SMILES of the fragment being cut (may be ``None`` if
+        ``n_fragments`` - how many pieces the bond-cut produced,
+        ``smiles`` - SMILES of the fragment being cut (may be ``None`` if
         RDKit cannot generate one for an unsanitized mol).
     _events : list or None
         Internal accumulator used during recursion; do **not** pass explicitly.

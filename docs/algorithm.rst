@@ -68,8 +68,8 @@ Halogen filtering
 ~~~~~~~~~~~~~~~~~
 
 After matching, each hit is filtered to keep only components that actually
-contain the requested halogen(s).  For fluorine-only mode only C–F bonds are
-retained; for multi-halogen mode any C–X bond where X ∈ target set is kept.
+contain the requested halogen(s).  For fluorine-only mode only C-F bonds are
+retained; for multi-halogen mode any C-X bond where X ∈ target set is kept.
 
 This filtering happens at the component level, so a group match can be
 partially retained (some components kept, others discarded).
@@ -119,12 +119,12 @@ where:
   by ``molecular_quantum_graph``).
 * :math:`\text{BDE}(Z_u, Z_v, b) = \text{BDE}(Z_u, Z_v, 1) \cdot f(b)` —
   scaled by the **bond-order model** :math:`f(b)` described below.
-* :math:`\text{BDE}_\text{ref}` — the C–C single-bond BDE (~83 kcal/mol),
+* :math:`\text{BDE}_\text{ref}` — the C-C single-bond BDE (~83 kcal/mol),
   used as normalisation so that :math:`c_{CC,\text{single}} = 1`.
 
 Higher BDE → higher conductance → *shorter* effective resistance path.
-This means C–F bonds (BDE ≈ 130 kcal/mol, :math:`c \approx 1.56`) contribute
-less resistance than C–C bonds (BDE ≈ 83 kcal/mol, :math:`c = 1.0`).
+This means C-F bonds (BDE ≈ 130 kcal/mol, :math:`c \approx 1.56`) contribute
+less resistance than C-C bonds (BDE ≈ 83 kcal/mol, :math:`c = 1.0`).
 
 Bond-order model
 ~~~~~~~~~~~~~~~~
@@ -173,7 +173,7 @@ The exact resistance distance between atoms :math:`u` and :math:`v` is then:
 
    R(u,v) = L^+_{uu} + L^+_{vv} - 2\,L^+_{uv}
 
-where :math:`L^+` is the **Moore–Penrose pseudoinverse** of :math:`L` (computed
+where :math:`L^+` is the **Moore-Penrose pseudoinverse** of :math:`L` (computed
 via ``numpy.linalg.pinv``).
 
 The **Kirchhoff index** (reported as ``effective_graph_resistance``) satisfies

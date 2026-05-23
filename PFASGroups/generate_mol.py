@@ -646,7 +646,7 @@ def generate_random_mol(n, functional_groups=None, perfluorinated=True, cycle=Fa
             mol = append_functional_groups(mol, _fg, chain_n=n,
                                            **{k: v for k, v in kwargs.items() if k not in _skip_keys})
         if _max_defs is not None:
-            from PFASGroups import parse_mol as _parse_mol  # lazy import – avoids circular dependency
+            from PFASGroups import parse_mol as _parse_mol  # lazy import - avoids circular dependency
             _result = _parse_mol(mol, include_PFAS_definitions=True)
             _detected = {m['id'] for m in _result.get('matches', []) if m.get('type') == 'PFASdefinition'}
             if len(_detected) <= _max_defs:

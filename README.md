@@ -11,7 +11,7 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 ### Core Capabilities
 - **Halogen Group Identification**: Automated detection of 119 functional groups (114 compiled for fluorine-only embedding):
   - 27 PFAS OECD groups
-  - 48 generic functional groups (IDs 29–73, 117–119; the last 3 are halogen-context-dependent or recently added)
+  - 48 generic functional groups (IDs 29-73, 117-119; the last 3 are halogen-context-dependent or recently added)
   - 43 fluorotelomer-specific groups with CH₂ linker validation
   - 1 aggregate pattern-matching group (Group 116: Telomers, `compute=False`)
 - **Atom Reference Requirement**: For non-telomer groups, SMARTS patterns must match atoms that are part of or directly connected to the fluorinated component (per/polyfluorinated carbons), respecting the `max_dist_from_comp` constraint
@@ -422,7 +422,7 @@ for a complete runnable script covering all options.
 PFASGroups supports fluorine, chlorine, bromine, and iodine. There are two ways
 to analyse all halogens at once:
 
-### Option A – import `HalogenGroups` (all halogens by default)
+### Option A - import `HalogenGroups` (all halogens by default)
 
 ```python
 from HalogenGroups import parse_smiles
@@ -443,7 +443,7 @@ cols = results.column_names(group_selection='oecd')
 print(arr.shape)
 ```
 
-### Option B – import `PFASgroups` and specify `halogens` explicitly
+### Option B - import `PFASgroups` and specify `halogens` explicitly
 
 ```python
 from PFASGroups import parse_smiles

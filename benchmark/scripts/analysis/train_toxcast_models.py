@@ -9,11 +9,11 @@ For each endpoint:
   - Metrics: ROC-AUC, Average Precision (AUPRC), MCC, Balanced-Accuracy
 
 Outputs (all written to ../data/):
-  toxcast_cv_results.csv      – per-endpoint × per-model metrics
-  toxcast_auc_heatmap.png     – heatmap of ROC-AUC
-  toxcast_auprc_heatmap.png   – heatmap of Average Precision
-  models/                     – final models trained on full data (joblib)
-  toxcast_feature_importance.csv – mean RF feature importances per endpoint
+  toxcast_cv_results.csv      - per-endpoint × per-model metrics
+  toxcast_auc_heatmap.png     - heatmap of ROC-AUC
+  toxcast_auprc_heatmap.png   - heatmap of Average Precision
+  models/                     - final models trained on full data (joblib)
+  toxcast_feature_importance.csv - mean RF feature importances per endpoint
 
 Usage
 -----
@@ -234,7 +234,7 @@ def main() -> None:
 
     for ep in LABEL_COLS:
         if ep not in df.columns:
-            print(f"  [skip] {ep} – not in dataset")
+            print(f"  [skip] {ep} - not in dataset")
             continue
 
         mask = df[ep].notna()
@@ -285,11 +285,11 @@ def main() -> None:
     # ------------------------------------------------------------------
     # Heatmaps
     # ------------------------------------------------------------------
-    plot_heatmap(pivot_auc, f"{DB} / PFASGroups – ROC-AUC (5-fold CV)",
+    plot_heatmap(pivot_auc, f"{DB} / PFASGroups - ROC-AUC (5-fold CV)",
                  DATA_DIR / f"{DB}_auc_heatmap.png", vmin=0.5, vmax=1.0)
-    plot_heatmap(pivot_ap,  f"{DB} / PFASGroups – Average Precision (5-fold CV)",
+    plot_heatmap(pivot_ap,  f"{DB} / PFASGroups - Average Precision (5-fold CV)",
                  DATA_DIR / f"{DB}_auprc_heatmap.png", vmin=0.0, vmax=1.0)
-    plot_heatmap(pivot_mcc, f"{DB} / PFASGroups – MCC (5-fold CV)",
+    plot_heatmap(pivot_mcc, f"{DB} / PFASGroups - MCC (5-fold CV)",
                  DATA_DIR / f"{DB}_mcc_heatmap.png", vmin=-0.2, vmax=0.8, cmap="RdYlGn")
 
     # ------------------------------------------------------------------

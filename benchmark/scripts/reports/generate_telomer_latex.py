@@ -14,10 +14,10 @@ from pathlib import Path
 from collections import defaultdict
 
 # LaTeX row-color hex codes (no leading #; requires \usepackage[table]{xcolor})
-_LX_C0L = "FAEADE"   # light C0 orange – detected/HalogenGroups rows
-_LX_C1L = "D6E4F5"   # light C1 blue  – header rows
+_LX_C0L = "FAEADE"   # light C0 orange - detected/HalogenGroups rows
+_LX_C1L = "D6E4F5"   # light C1 blue  - header rows
 _LATEX_COLOR_DEFS = (
-    "%% Colour palette – requires: \\usepackage[table]{xcolor}\n"
+    "%% Colour palette - requires: \\usepackage[table]{xcolor}\n"
     "\\definecolor{PGC0}{HTML}{E15D0B}\n"
     "\\definecolor{PGC1}{HTML}{306DBA}\n"
     "\\definecolor{PGC2}{HTML}{9D206C}\n"

@@ -226,9 +226,9 @@ class HalogenGroup():
         constraints : dict
             Component constraints with optional keys:
 
-            * ``'gte'`` – ``{element: min_count}``; component must have at least
+            * ``'gte'`` - ``{element: min_count}``; component must have at least
               *min_count* atoms of *element*.
-            * ``'exclude'`` – list of element symbols that must be absent from
+            * ``'exclude'`` - list of element symbols that must be absent from
               the component.
 
         Returns

@@ -77,7 +77,7 @@
     "## 1. Molecule grid\n",
     "\n",
     "All molecules are PFCA (perfluoroalkyl carboxylic acids, `OC(=O)` head group).\n",
-    "The fluorinated tail varies on two axes: chain length (C2–C8) and branching type."
+    "The fluorinated tail varies on two axes: chain length (C2-C8) and branching type."
    ]
   },
   {
@@ -500,8 +500,8 @@
    "metadata": {},
    "source": [
     "## 2. Fingerprint configurations\n",
-    "Five base configs – `binary`, `total_component`, `egr` (`binary + effective_graph_resistance`),\n",
-    "`mdb` (`binary + min_dist_to_barycenter`), `egr+mdb` – each run with and without molecule-level\n",
+    "Five base configs - `binary`, `total_component`, `egr` (`binary + effective_graph_resistance`),\n",
+    "`mdb` (`binary + min_dist_to_barycenter`), `egr+mdb` - each run with and without molecule-level\n",
     "metrics (`n_components`, `total_size`, `max_branching`, `max_diameter`), giving **10 configurations** total."
    ]
   },
@@ -1506,7 +1506,7 @@
     "            _sil_str = f'SI={_sil:.3f}'\n",
     "        except Exception:\n",
     "            _sil_str = 'SI=N/A'\n",
-    "        ax.set_title(f'{d[\"label\"]} – {title_suf}\\n{_sil_str}', fontsize=7)\n",
+    "        ax.set_title(f'{d[\"label\"]} - {title_suf}\\n{_sil_str}', fontsize=7)\n",
     "        ax.axis('equal'); ax.grid(alpha=0.2)\n",
     "\n",
     "# Colorbar in its own axes strip (avoids intrusion into subplots)\n",
@@ -1650,11 +1650,11 @@
    "id": "31b4994a",
    "metadata": {},
    "source": [
-    "## 10. Separation quality scores – synthetic PFCA grid\n",
+    "## 10. Separation quality scores - synthetic PFCA grid\n",
     "\n",
     "For each fingerprint configuration (including `ideal_PFCA`), we compute the **silhouette score**\n",
-    "– a standard cluster-quality index in [-1, 1] (higher = tighter intra-group cohesion,\n",
-    "better inter-group separation) – across four structural groupings:\n",
+    "- a standard cluster-quality index in [-1, 1] (higher = tighter intra-group cohesion,\n",
+    "better inter-group separation) - across four structural groupings:\n",
     "\n",
     "| Grouping | What it captures |\n",
     "|---|---|\n",
@@ -2592,8 +2592,8 @@
     "plt.colorbar(im, ax=ax, fraction=0.03, label='Silhouette score (-1,1)')\n",
     "# Vertical separator between cosine and MDS halves\n",
     "ax.axvline(len(_GROUPINGS) - 0.5, color='white', lw=2)\n",
-    "ax.text(len(_GROUPINGS)/2 - 0.5,  -1.2, '– Cosine space',  ha='center', fontsize=8, fontstyle='italic')\n",
-    "ax.text(len(_GROUPINGS)*1.5 - 0.5,-1.2, '– MDS 2-D space',   ha='center', fontsize=8, fontstyle='italic')\n",
+    "ax.text(len(_GROUPINGS)/2 - 0.5,  -1.2, '- Cosine space',  ha='center', fontsize=8, fontstyle='italic')\n",
+    "ax.text(len(_GROUPINGS)*1.5 - 0.5,-1.2, '- MDS 2-D space',   ha='center', fontsize=8, fontstyle='italic')\n",
     "ax.set_title(\n",
     "    'Separation quality (silhouette score) - synthetic PFCA grid\\n'\n",
     "    'Rows sorted by branching discrimination (cosine space)',\n",
@@ -4944,10 +4944,10 @@
     "plt.show()\n",
     "\n",
     "# —— Summary table —————————————————————————————————————————————————————————————\n",
-    "print('\\nSilhouette scores – real-world sample:')\n",
+    "print('\\nSilhouette scores - real-world sample:')\n",
     "display(_rw_sep_df.style\n",
     "    .background_gradient(cmap='RdYlGn', vmin=-0.3, vmax=0.5)\n",
-    "    .format('{:.3f}', na_rep='–'))\n"
+    "    .format('{:.3f}', na_rep='-'))\n"
    ]
   },
   {

@@ -193,7 +193,7 @@ Combining with Saturation Filters
 
 The ``saturation`` parameter (``'per'``, ``'poly'``, or ``None``) applies to all
 halogens simultaneously and controls which component SMARTS are used for groups
-that have halogenated-chain components (OECD groups 1–28).
+that have halogenated-chain components (OECD groups 1-28).
 
 .. code-block:: python
 

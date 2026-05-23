@@ -2,12 +2,12 @@
 """
 Two-phase Tanimoto benchmark for PFASGroups fingerprint variants.
 
-Phase 1 – FP Selection
+Phase 1 - FP Selection
   Tests all 39 fingerprint configurations on a curated structural series
   (~30 PFAS) spanning chain-length homologues, branching position/size, and
   functional-group variants.  Selects the top-5 most discriminating configs.
 
-Phase 2 – Discrimination benchmark vs TxP-PFAS
+Phase 2 - Discrimination benchmark vs TxP-PFAS
   Runs the top-5 PFASGroups configs AND the TxP-PFAS (129-bit CSRML)
   fingerprint from Richard et al. 2023 on the same 18-compound set.
   Compares discrimination power: lower mean off-diagonal Tanimoto = more
@@ -20,7 +20,7 @@ Usage
 
 Outputs (all in <outdir>/)
 --------------------------
-    tanimoto_p1_discrimination.png   Bar chart – all FP configs sorted by mean T
+    tanimoto_p1_discrimination.png   Bar chart - all FP configs sorted by mean T
     tanimoto_p1_metric_impact.png    Per-metric impact relative to binary baseline
     tanimoto_p1_heatmaps.png         Heatmap grid (selected configs)
     tanimoto_p1_mds.png              2-D MDS grid (selected configs)
@@ -232,11 +232,11 @@ if str(REPO_ROOT) not in sys.path:
 warnings.filterwarnings('ignore')
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Phase-1 compound library – curated structural series
+# Phase-1 compound library - curated structural series
 # ══════════════════════════════════════════════════════════════════════════════
 # Groups: PFAA, PFSA, iso-PFCA, iso-PFSA, HFPO, FTOH, FTS
 P1_COMPOUNDS = [
-    # ── PFAA (perfluoroalkyl carboxylic acid) chain-length series C2–C11 ────
+    # ── PFAA (perfluoroalkyl carboxylic acid) chain-length series C2-C11 ────
     ("OC(=O)C(F)(F)F",                                                                                 "TFA (C2)",    "PFAA"),
     ("OC(=O)C(F)(F)C(F)(F)F",                                                                          "PFPrA (C3)",  "PFAA"),
     ("OC(=O)C(F)(F)C(F)(F)C(F)(F)F",                                                                   "PFBA (C4)",   "PFAA"),
@@ -267,7 +267,7 @@ P1_COMPOUNDS = [
     ("OS(=O)(=O)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",                                                        "iso-PFBS",    "iso-PFSA"),
     ("OS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(C(F)(F)F)C(F)(F)F",                                          "iso-PFHxS",   "iso-PFSA"),
 
-    # ── HFPO-DA (GenX) – cyclic ether PFCA ───────────────────────────────────
+    # ── HFPO-DA (GenX) - cyclic ether PFCA ───────────────────────────────────
     ("OC(=O)C(F)(C(F)(F)F)OC(F)(F)F",                                                                  "HFPO-DA",     "HFPO"),
 
     # ── FTOH (fluorotelomer alcohols) series 4:2 / 6:2 / 8:2 / 10:2 ─────────
@@ -280,13 +280,13 @@ P1_COMPOUNDS = [
     ("OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",                                        "6:2 FTS",     "FTS"),
     ("OCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)O",                           "8:2 FTS",     "FTS"),
 
-    # ── FTCA (fluorotelomer carboxylic acids) – same FT scaffold as FTOH, ─────
+    # ── FTCA (fluorotelomer carboxylic acids) - same FT scaffold as FTOH, ─────
     #    COOH instead of OH  →  tests FG discrimination (size-matched with FTOH)
     ("OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)F",                                                            "4:2 FTCA",    "FTCA"),
     ("OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",                                              "6:2 FTCA",    "FTCA"),
     ("OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",                               "8:2 FTCA",    "FTCA"),
 
-    # ── PFPA (perfluoroalkyl phosphonic acids) – same PF chain as PFCA/PFSA, ──
+    # ── PFPA (perfluoroalkyl phosphonic acids) - same PF chain as PFCA/PFSA, ──
     #    phosphonate head group  →  FG variation at constant component size
     ("OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",                                                         "PFBA-PA (C4)",   "PFPA"),
     ("OP(=O)(O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F",                                           "PFHxA-PA (C6)",  "PFPA"),
@@ -298,7 +298,7 @@ P1_COMPOUNDS = [
     ("OC(=O)C(F)(C(F)(F)C(F)(F)F)C(F)(F)C(F)(F)C(F)(F)F",                                              "C2F5-br alpha",  "iso-heavy"),
     ("OC(=O)C(F)(C(F)(F)F)C(F)(C(F)(F)F)C(F)(F)F",                                                     "double-CF3 br",  "iso-heavy"),
 
-    # ── FG-eccentric – same PF component, COOH at different topological ────────
+    # ── FG-eccentric - same PF component, COOH at different topological ────────
     #    distance from molecule centroid (central star vs. peripheral end)
     ("OC(=O)C(C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)F)F",                                                     "C5-star (ctr)",  "FG-eccentric"),
     ("OC(=O)C(C(F)(F)C(F)(F)C(F)(F)F)(C(F)(F)C(F)(F)C(F)(F)F)F",                                       "C7-star (ctr)",  "FG-eccentric"),
@@ -374,7 +374,7 @@ _P2_SERIES_COLOURS = {
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Extended compound set (Phase 2B) – PFASGroups-only (no TxP-PFAS CSV needed)
+# Extended compound set (Phase 2B) - PFASGroups-only (no TxP-PFAS CSV needed)
 # Groups span classic ionic PFAS, telomer family, sulfonamide PFAS, and
 # branched variants to test discrimination scaling with more chemical families.
 # ══════════════════════════════════════════════════════════════════════════════
@@ -392,7 +392,7 @@ P2B_COMPOUNDS = [
     ("6:2 FTOH",        "Telomer",     "OCCC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
     ("6:2 FTCA",        "Telomer",     "OC(=O)CC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
     ("6:2 FTS",         "Telomer",     "OCCS(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
-    # ── Sulfonamide-PFAS (SO2-N headgroup – structurally distinct) ────────────
+    # ── Sulfonamide-PFAS (SO2-N headgroup - structurally distinct) ────────────
     ("FOSA (C8)",       "Sulfonamide", "FC(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)S(=O)(=O)N"),
     ("N-MeFOSAA",       "Sulfonamide", "OC(=O)CN(C)S(=O)(=O)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)C(F)(F)F"),
     # ── Branched PFAS (same chain count as linear counterparts) ───────────────
@@ -672,7 +672,7 @@ def plot_p1_discrimination(all_data: list[dict], dpi: int = 130) -> plt.Figure:
     ax.set_yticks(y)
     ax.set_yticklabels(labels, fontsize=7)
     ax.set_xlabel('Tanimoto similarity (lower = more discriminating)')
-    ax.set_title(f'Phase 1 – Fingerprint discrimination (all {len(FP_CONFIGS)} configs)\n'
+    ax.set_title(f'Phase 1 - Fingerprint discrimination (all {len(FP_CONFIGS)} configs)\n'
                  f'n={len(P1_SMILES)} compounds spanning chain length, branching, and functional group')
     patches = [mpatches.Patch(color=col, label=sec) for sec, col in sec_col.items()]
     ax.legend(handles=patches, title='Section', loc='lower right', fontsize=7)
@@ -712,7 +712,7 @@ def plot_p1_metric_impact(all_data: list[dict], dpi: int = 130) -> plt.Figure:
         ax.set_title(title)
         ax.grid(axis='x', alpha=0.3)
         ax.invert_yaxis()
-    fig.suptitle('Phase 1 – Per-metric impact relative to binary baseline', fontsize=11)
+    fig.suptitle('Phase 1 - Per-metric impact relative to binary baseline', fontsize=11)
     fig.tight_layout()
     return fig
 
@@ -745,7 +745,7 @@ def plot_p1_heatmaps(all_data: list[dict], top_n: int = 8, dpi: int = 100) -> pl
                         f"{data['label']}\nmean T={data['mean_t']:.3f}")
     for ax in axes_flat[len(selected):]:
         ax.axis('off')
-    fig.suptitle('Phase 1 – Tanimoto heatmaps (binary baseline + top 8 configs)', fontsize=11)
+    fig.suptitle('Phase 1 - Tanimoto heatmaps (binary baseline + top 8 configs)', fontsize=11)
     fig.tight_layout()
     return fig
 
@@ -791,7 +791,7 @@ def plot_p1_mds(all_data: list[dict], top_n: int = 6, dpi: int = 100) -> plt.Fig
     axes_flat[0].legend(handles=handles, fontsize=6, loc='best',
                         framealpha=0.85, edgecolor='#cccccc')
     fig.suptitle(
-        'Phase 1 – MDS projections (binary baseline + top 6 configs)\n'
+        'Phase 1 - MDS projections (binary baseline + top 6 configs)\n'
         'Shaded regions = series hulls.  GSI = group-separation index (higher = better).',
         fontsize=10)
     fig.tight_layout()
@@ -821,7 +821,7 @@ def plot_p1_ranking(all_data: list[dict], dpi: int = 130) -> plt.Figure:
     ax.set_xticklabels([pair_labels[p] for p in shown[:len(tick_pos)]],
                        rotation=90, fontsize=5)
     plt.colorbar(im, ax=ax, fraction=0.02, pad=0.01)
-    ax.set_title('Phase 1 – Per-pair Tanimoto for top-20 configs (sorted by pair mean similarity)',
+    ax.set_title('Phase 1 - Per-pair Tanimoto for top-20 configs (sorted by pair mean similarity)',
                  fontsize=9)
     fig.tight_layout()
     return fig
@@ -883,7 +883,7 @@ def plot_p1_gsi_breakdown(all_data: list[dict], top_n: int = 6,
     ax.set_xticklabels(groups, rotation=25, ha='right', fontsize=8)
     ax.set_ylabel('Per-group separability\n(mean dist to other centroids / within-group spread)')
     ax.set_title(
-        f'Phase 1 – Per-group GSI breakdown (binary + top {top_n} configs)\n'
+        f'Phase 1 - Per-group GSI breakdown (binary + top {top_n} configs)\n'
         'Higher = that series is well separated by this fingerprint config.',
         fontsize=9)
     ax.legend(fontsize=7, ncol=2, loc='upper right', framealpha=0.85)
@@ -910,7 +910,7 @@ def plot_p2_heatmaps(p2_results: list[dict], txp_sim: np.ndarray,
     for ax in axes_flat[len(all_items):]:
         ax.axis('off')
     fig.suptitle(
-        f'Phase 2 – Pairwise Tanimoto heatmaps\n'
+        f'Phase 2 - Pairwise Tanimoto heatmaps\n'
         f'top-5 PFASGroups configs vs TxP-PFAS  |  n={len(mol_labels)} compounds',
         fontsize=11)
     fig.tight_layout()
@@ -947,7 +947,7 @@ def plot_p2_discrimination(p2_results: list[dict], txp_sim: np.ndarray,
     ax.set_yticklabels(labels, fontsize=8)
     ax.set_xlabel('Mean off-diagonal Tanimoto (lower = more discriminating)')
     ax.set_title(
-        f'Phase 2 – Discrimination comparison: top-5 PFASGroups configs vs TxP-PFAS\n'
+        f'Phase 2 - Discrimination comparison: top-5 PFASGroups configs vs TxP-PFAS\n'
         f'n={p2_results[0]["sim"].shape[0] if p2_results else 0} compounds  |  '
         f'lower bar = more discriminating'
     )
@@ -1013,7 +1013,7 @@ def plot_p2_mds(p2_results: list[dict], txp_sim: np.ndarray,
     axes_flat[0].legend(handles=hull_handles, fontsize=6, loc='best',
                         framealpha=0.85, edgecolor='#cccccc')
     fig.suptitle(
-        'Phase 2 – MDS projections: top-5 PFASGroups configs vs TxP-PFAS\n'
+        'Phase 2 - MDS projections: top-5 PFASGroups configs vs TxP-PFAS\n'
         'Shaded regions = chemical-family hulls.  GSI = group-separation index (higher = better).',
         fontsize=10)
     fig.tight_layout()
@@ -1079,7 +1079,7 @@ def plot_p2_gsi_breakdown(p2_results: list[dict], txp_sim: np.ndarray,
     ax.set_xticklabels(groups, rotation=20, ha='right', fontsize=8)
     ax.set_ylabel('Per-group separability\n(mean dist to other centroids / within-group spread)')
     ax.set_title(
-        'Phase 2 – Per-group GSI breakdown: top-5 PFASGroups configs vs TxP-PFAS\n'
+        'Phase 2 - Per-group GSI breakdown: top-5 PFASGroups configs vs TxP-PFAS\n'
         'If TxP-PFAS (red, black outline) is only taller for one group, its overall\n'
         'higher GSI is driven by that group alone.',
         fontsize=9)
@@ -1109,7 +1109,7 @@ def plot_p2_gsi_breakdown(p2_results: list[dict], txp_sim: np.ndarray,
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# Phase 2B – Extended compound set (PFASGroups-only, no TxP-PFAS CSV needed)
+# Phase 2B - Extended compound set (PFASGroups-only, no TxP-PFAS CSV needed)
 # ══════════════════════════════════════════════════════════════════════════════
 def plot_p2b_mds(p2b_results: list[dict], dpi: int = 100) -> plt.Figure:
     """MDS on extended P2B compound set, PFASGroups configs only."""
@@ -1156,8 +1156,8 @@ def plot_p2b_mds(p2b_results: list[dict], dpi: int = 100) -> plt.Figure:
         axes_flat[0].legend(handles=hull_handles, fontsize=6, loc='best',
                             framealpha=0.85, edgecolor='#cccccc')
     fig.suptitle(
-        f'Phase 2B – Extended compound set ({len(P2B_SMILES)} cpds, '
-        f'{len(set(P2B_SERIES))} families) – PFASGroups configs only\n'
+        f'Phase 2B - Extended compound set ({len(P2B_SMILES)} cpds, '
+        f'{len(set(P2B_SERIES))} families) - PFASGroups configs only\n'
         'Tests discrimination scaling: PFAA, PFSA, Telomer, Sulfonamide, Branched, PFPA, Ether-PFAS.',
         fontsize=9)
     fig.tight_layout()
@@ -1203,7 +1203,7 @@ def plot_p2b_gsi_breakdown(p2b_results: list[dict], dpi: int = 110) -> plt.Figur
     ax.set_xticklabels(groups, rotation=20, ha='right', fontsize=9)
     ax.set_ylabel('Per-group separability score')
     ax.set_title(
-        f'Phase 2B – Per-group GSI: {len(set(P2B_SERIES))} chemical families × top-5 PFASGroups configs\n'
+        f'Phase 2B - Per-group GSI: {len(set(P2B_SERIES))} chemical families × top-5 PFASGroups configs\n'
         'Shows which families are consistently well/poorly separated across all configs.',
         fontsize=9)
     ax.legend(fontsize=7, ncol=2, loc='upper right', framealpha=0.85)
@@ -1213,7 +1213,7 @@ def plot_p2b_gsi_breakdown(p2b_results: list[dict], dpi: int = 110) -> plt.Figur
 
 
 def plot_p2b_discrimination(p2b_results: list[dict], dpi: int = 110) -> plt.Figure:
-    """Bar chart – mean off-diagonal Tanimoto for top-5 configs on P2B compound set."""
+    """Bar chart - mean off-diagonal Tanimoto for top-5 configs on P2B compound set."""
     srt    = sorted(p2b_results, key=lambda d: d['mean_t'])
     labels = [d['label'] for d in srt]
     means  = [d['mean_t'] for d in srt]
@@ -1227,7 +1227,7 @@ def plot_p2b_discrimination(p2b_results: list[dict], dpi: int = 110) -> plt.Figu
     ax.set_yticklabels(labels, fontsize=9)
     ax.set_xlabel('Mean off-diagonal Tanimoto (lower = more discriminating)')
     ax.set_title(
-        f'Phase 2B – Discrimination on extended compound set\n'
+        f'Phase 2B - Discrimination on extended compound set\n'
         f'n={len(P2B_SMILES)} cpds across {len(set(P2B_SERIES))} chemical families',
         fontsize=9)
     ax.legend(fontsize=8)
@@ -1335,9 +1335,9 @@ structurally different.
   <strong>FP configs tested:</strong> {len(FP_CONFIGS)}
   ({len(ALL_GRAPH_METRICS)} graph metrics, {len(ALL_MOL_METRICS)} mol metrics)</p>
 <div class="note"><strong>Phase-1 compound series (11 chemical families):</strong>
-  PFAA chain C2–C11 (10), PFSA C4/C6/C8/C10 (4), iso-PFCA alpha/beta-branch (6),
-  iso-PFSA (2), HFPO-DA / GenX (1), FTOH 4:2–10:2 (4), FTS 6:2/8:2 (2),
-  <strong>FTCA</strong> 4:2–8:2 (3) &ndash; FTOH scaffold with COOH head,
+  PFAA chain C2-C11 (10), PFSA C4/C6/C8/C10 (4), iso-PFCA alpha/beta-branch (6),
+  iso-PFSA (2), HFPO-DA / GenX (1), FTOH 4:2-10:2 (4), FTS 6:2/8:2 (2),
+  <strong>FTCA</strong> 4:2-8:2 (3) &ndash; FTOH scaffold with COOH head,
   <strong>PFPA</strong> C4/C6 phosphonic acids (2),
   <strong>iso-heavy</strong> gem/double/large-branch (4) &ndash; branching degree,
   <strong>FG-eccentric</strong> star-topology C5/C7 (2) &ndash; FG topological position.
@@ -1351,10 +1351,10 @@ structurally different.
   Ether-PFAS) &ndash; PFASGroups only, no TxP-PFAS CSV required.</div>
 
 <div class="phase">
-<h2>Phase 1 – Fingerprint Selection</h2>
+<h2>Phase 1 - Fingerprint Selection</h2>
 <h3>1.0 Phase-1 compound structures</h3>
 <p>The {len(P1_SMILES)}&nbsp;compounds span 11 structural series chosen to challenge
-each fingerprint on: (a)&nbsp;chain-length homologues (PFAA C2–C11, PFSA C4–C10),
+each fingerprint on: (a)&nbsp;chain-length homologues (PFAA C2-C11, PFSA C4-C10),
 (b)&nbsp;branching position (iso-PFCA α/β) and degree (iso-heavy: gem-CF₃, double-CF₃,
 C₂F₅-branch), (c)&nbsp;functional-group variation at constant component size (FTCA vs FTOH
 vs FTS; PFPA vs PFCA vs PFSA), (d)&nbsp;topological FG position / eccentricity
@@ -1382,7 +1382,7 @@ may be less generically useful than one that scores more evenly across all serie
 </div>
 
 <div class="phase">
-<h2>Phase 2 – Discrimination benchmark vs TxP-PFAS</h2>
+<h2>Phase 2 - Discrimination benchmark vs TxP-PFAS</h2>
 <div class="note">TxP-PFAS (129-bit CSRML, Richard 2023) is included as a competitor.
   Lower mean T = more discriminating fingerprint.</div>
 <h3>2.0 Phase-2 compound structures</h3>
@@ -1405,7 +1405,7 @@ are comparable or lower, the global GSI advantage is group-specific, not general
 </div>
 
 {f'''<div class="phase">
-<h2>Phase 2B – Extended compound set ({len(P2B_SMILES)} compounds, PFASGroups only)</h2>
+<h2>Phase 2B - Extended compound set ({len(P2B_SMILES)} compounds, PFASGroups only)</h2>
 <div class="note">Phase&nbsp;2B tests discrimination on a larger, more diverse set of
 {len(P2B_SMILES)}&nbsp;compounds spanning {len(set(P2B_SERIES))}&nbsp;chemical families
 (PFAA, PFSA, Telomer, Sulfonamide, Branched, PFPA, Ether-PFAS). No TxP-PFAS CSV
@@ -1496,7 +1496,7 @@ def main(argv: list[str] | None = None) -> None:
             valid_smiles.append(resolved_smi)
             valid_labels.append(lbl)
         else:
-            print(f"  WARN: {dtx} ({lbl}) not found in CSV – skipped")
+            print(f"  WARN: {dtx} ({lbl}) not found in CSV - skipped")
 
     print(f"  {len(valid_rows)}/{len(P2_DTXSIDS)} compounds matched in TxP-PFAS CSV")
 
@@ -1526,7 +1526,7 @@ def main(argv: list[str] | None = None) -> None:
         fig.savefig(path, bbox_inches='tight')
         print(f"  Saved {path.name}")
 
-    # ── Phase 2B – extended compound set (PFASGroups only) ────────────────────
+    # ── Phase 2B - extended compound set (PFASGroups only) ────────────────────
     print(f"\nPhase 2B: computing top-5 FPs on extended set ({len(P2B_SMILES)} compounds) …")
     p2b_results = compute_all_fingerprints(P2B_SMILES, top5_cfgs)
 

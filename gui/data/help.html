@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PFASGroups GUI – Help</title>
+<title>PFASGroups GUI - Help</title>
 <style>
   :root {
     --orange:  #E15D0B;
@@ -83,25 +83,25 @@
 
   <h3>Data sources</h3>
   <ul>
-    <li><b>File</b> – CSV, Excel (.xlsx/.xls), or SQLite (.db/.sqlite).  Browse for the
+    <li><b>File</b> - CSV, Excel (.xlsx/.xls), or SQLite (.db/.sqlite).  Browse for the
         file, choose a sheet (Excel) and the SMILES / name columns.</li>
-    <li><b>Database</b> – SQLite, MariaDB, or PostgreSQL.  Fill in the connection form
+    <li><b>Database</b> - SQLite, MariaDB, or PostgreSQL.  Fill in the connection form
         (host, port, database name, user, password, table name).</li>
-    <li><b>Manual</b> – Paste SMILES directly.  One per line, or comma-separated with
+    <li><b>Manual</b> - Paste SMILES directly.  One per line, or comma-separated with
         optional names (<code>Name: SMILES</code>).</li>
   </ul>
 
   <h3>Options</h3>
   <ul>
-    <li><b>Halogens</b> – Which halogens to include in the analysis.  Start with
+    <li><b>Halogens</b> - Which halogens to include in the analysis.  Start with
         <code>F only</code> for classical PFAS; broaden to include Cl/Br/I for expanded
         screening.</li>
-    <li><b>Saturation filter</b> – <code>Perf. (CF₂/CF₃)</code> restricts to
+    <li><b>Saturation filter</b> - <code>Perf. (CF₂/CF₃)</code> restricts to
         perfluorinated chains; <code>All fluorinated</code> includes partially
         fluorinated structures.</li>
-    <li><b>Compute metrics</b> – Calculate graph-theoretic component metrics (needed
-        for Tabs 4–6).</li>
-    <li><b>Check definitions</b> – Additionally test each molecule against the PFAS
+    <li><b>Compute metrics</b> - Calculate graph-theoretic component metrics (needed
+        for Tabs 4-6).</li>
+    <li><b>Check definitions</b> - Additionally test each molecule against the PFAS
         definitions ticked below the option.</li>
   </ul>
 
@@ -123,9 +123,9 @@
 
   <h3>Controls</h3>
   <ul>
-    <li><b>Search</b> – filter cards by molecule name.</li>
-    <li><b>Show All / Hide All</b> – toggle structure visibility for all cards.</li>
-    <li><b>Export CSV</b> – save a summary table (name, SMILES, matched groups,
+    <li><b>Search</b> - filter cards by molecule name.</li>
+    <li><b>Show All / Hide All</b> - toggle structure visibility for all cards.</li>
+    <li><b>Export CSV</b> - save a summary table (name, SMILES, matched groups,
         definition results) to a CSV file.</li>
   </ul>
 </div>
@@ -133,24 +133,24 @@
 <!-- ────────────────────────────────────────────────────────────────── Tab 3 -->
 <h2><span class="step-num">3</span> Definition &amp; SMARTS Tester Tab</h2>
 <div class="card">
-  <h3>Sub-tab A – PFAS Definitions</h3>
+  <h3>Sub-tab A - PFAS Definitions</h3>
   <p>Enter a SMILES string and test it against:</p>
   <ul>
     <li><b>Built-in definitions</b> (default, when the custom JSON field is left blank).</li>
-    <li><b>Custom <code>PFASDefinition</code> JSON</b> – paste an array of definition
+    <li><b>Custom <code>PFASDefinition</code> JSON</b> - paste an array of definition
         objects.  Each must have <code>id</code>, <code>name</code>,
         <code>smarts</code> (list of SMARTS strings), and optionally
         <code>fluorineRatio</code> and <code>description</code>.</li>
   </ul>
 
-  <h3>Sub-tab B – Custom Group (SMARTS)</h3>
+  <h3>Sub-tab B - Custom Group (SMARTS)</h3>
   <p>Define a custom <code>HalogenGroup</code> and test a molecule against it.  Fields:</p>
   <ul>
-    <li><b>componentSmarts</b> – name of the underlying fluorine component pattern
+    <li><b>componentSmarts</b> - name of the underlying fluorine component pattern
         (e.g. <code>Perfluoroalkyl</code>).</li>
-    <li><b>SMARTS dict (JSON)</b> – mapping of SMARTS pattern → required minimum count,
+    <li><b>SMARTS dict (JSON)</b> - mapping of SMARTS pattern → required minimum count,
         e.g. <code>{"[CX3](=O)[OX2H1]": 1}</code>.</li>
-    <li><b>Constraints (JSON)</b> – element-count constraints,
+    <li><b>Constraints (JSON)</b> - element-count constraints,
         e.g. <code>{"gte": {"F": 4}}</code>.</li>
   </ul>
   <p>Diagnostics are printed as JSON in the right panel, showing which stage passed
@@ -166,11 +166,11 @@
 
   <h3>Modes</h3>
   <ul>
-    <li><b>Intrinsic: total component size</b> – sum of all matched fragment sizes.</li>
-    <li><b>Intrinsic: max component size</b> – largest single matched fragment.</li>
-    <li><b>Intrinsic: total + max</b> – weighted combination;
+    <li><b>Intrinsic: total component size</b> - sum of all matched fragment sizes.</li>
+    <li><b>Intrinsic: max component size</b> - largest single matched fragment.</li>
+    <li><b>Intrinsic: total + max</b> - weighted combination;
         use α and β to balance the two terms.</li>
-    <li><b>Reference-based KL divergence</b> – divergence from a supplied reference
+    <li><b>Reference-based KL divergence</b> - divergence from a supplied reference
         dataset.  Supply a CSV/Excel/SQLite file as the reference.</li>
   </ul>
 
@@ -188,10 +188,10 @@
 
   <h3>Methods</h3>
   <ul>
-    <li><b>UMAP</b> – fast, topology-preserving.  Adjust <em>n_neighbours</em>
+    <li><b>UMAP</b> - fast, topology-preserving.  Adjust <em>n_neighbours</em>
         (local structure) and <em>min_dist</em> (cluster compactness).</li>
-    <li><b>PCA</b> – linear; no hyper-parameters.</li>
-    <li><b>t-SNE</b> – non-linear; adjust <em>perplexity</em>.</li>
+    <li><b>PCA</b> - linear; no hyper-parameters.</li>
+    <li><b>t-SNE</b> - non-linear; adjust <em>perplexity</em>.</li>
   </ul>
 
   <h3>Fingerprint presets</h3>
@@ -218,13 +218,13 @@
 
   <h3>Fingerprint sets</h3>
   <ul>
-    <li><b>PFASGroups presets</b> – any combination of the benchmark-validated
+    <li><b>PFASGroups presets</b> - any combination of the benchmark-validated
         fingerprint presets (binary, best, best_2, …).</li>
-    <li><b>Morgan (RDKit)</b> – radius-2 Morgan fingerprint, 512 bits.  Useful
+    <li><b>Morgan (RDKit)</b> - radius-2 Morgan fingerprint, 512 bits.  Useful
         baseline.</li>
-    <li><b>ToxPrint (729 bits)</b> – requires pyCSRML to be installed.</li>
-    <li><b>TxP_PFAS (129 bits)</b> – PFAS-specific ToxPrint subset; requires pyCSRML.</li>
-    <li><b>Custom TSV/CSV</b> – rows = molecules (same order as input), columns = bits.
+    <li><b>ToxPrint (729 bits)</b> - requires pyCSRML to be installed.</li>
+    <li><b>TxP_PFAS (129 bits)</b> - PFAS-specific ToxPrint subset; requires pyCSRML.</li>
+    <li><b>Custom TSV/CSV</b> - rows = molecules (same order as input), columns = bits.
         No header row.</li>
   </ul>
 
@@ -232,9 +232,9 @@
   <p>All fingerprint-set pairs are compared using the Bayesian correlated t-test
   (Benavoli et al. 2017) with ROPE = 0.01 ROC-AUC.  The table reports:</p>
   <ul>
-    <li><b>P(A&gt;B)</b> – probability that set A is meaningfully better than B.</li>
-    <li><b>P(ROPE)</b> – probability that the two sets are practically equivalent.</li>
-    <li><b>P(B&gt;A)</b> – probability that set B is meaningfully better than A.</li>
+    <li><b>P(A&gt;B)</b> - probability that set A is meaningfully better than B.</li>
+    <li><b>P(ROPE)</b> - probability that the two sets are practically equivalent.</li>
+    <li><b>P(B&gt;A)</b> - probability that set B is meaningfully better than A.</li>
   </ul>
 
   <div class="note">
@@ -247,8 +247,8 @@
 <h2>Keyboard shortcuts</h2>
 <div class="card">
   <ul>
-    <li><code>Ctrl+Q</code> – quit the application.</li>
-    <li><code>Ctrl+W</code> – close (same as Ctrl+Q on Windows).</li>
+    <li><code>Ctrl+Q</code> - quit the application.</li>
+    <li><code>Ctrl+W</code> - close (same as Ctrl+Q on Windows).</li>
   </ul>
 </div>
 
@@ -266,9 +266,9 @@
 <div class="card">
   <ul>
     <li>Benavoli A et al. (2017) <em>Time for a Change: a Tutorial for Comparing
-        Multiple Classifiers Through Bayesian Analysis.</em> JMLR 18(1):2653–2688.</li>
+        Multiple Classifiers Through Bayesian Analysis.</em> JMLR 18(1):2653-2688.</li>
     <li>Nadeau C &amp; Bengio Y (2003) <em>Inference for the Generalization Error.</em>
-        Machine Learning 52(3):239–281.</li>
+        Machine Learning 52(3):239-281.</li>
   </ul>
 </div>
 
