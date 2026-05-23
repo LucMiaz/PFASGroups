@@ -44,7 +44,8 @@ def _mol_from_input(mol_or_string):
     )
 
 # Halogen element symbols and their atomic numbers used to build per-halogen SMARTS
-_HALOGEN_ATOMIC_NUM = {'F': 9, 'Cl': 17, 'Br': 35, 'I': 53}
+# 'H' is included to support CH2-based hydrocarbon homologue series
+_HALOGEN_ATOMIC_NUM = {'F': 9, 'Cl': 17, 'Br': 35, 'I': 53, 'H': 1}
 
 # Default componentSmartsName per halogen (per-halo, alkyl chain)
 _DEFAULT_COMPONENT_NAME = {
@@ -52,6 +53,7 @@ _DEFAULT_COMPONENT_NAME = {
     'Cl': 'Perchloroalkyl',
     'Br': 'Perbromoalkyl',
     'I': 'Periodoalkyl',
+    'H': 'Alkyl',
 }
 
 
@@ -103,14 +105,24 @@ def find_halogenated_components(mol, component_smarts, halogen='F'):
         # Identify CX2 backbone carbons: C in component bearing *exactly* 2 halogen
         # neighbours.  Terminal CF3 (3 halogens) and mono-halo atoms are excluded —
         # only true -CX2- repeating units qualify.
-        cx2 = [
-            idx for idx in cc
-            if mol.GetAtomWithIdx(idx).GetSymbol() == 'C'
-            and sum(
-                1 for nb in mol.GetAtomWithIdx(idx).GetNeighbors()
-                if nb.GetSymbol() == halogen
-            ) == 2
-        ]
+        #
+        # For halogen='H', H atoms are implicit in RDKit molecules, so we use
+        # GetTotalNumHs() instead of iterating explicit neighbours.
+        if halogen == 'H':
+            cx2 = [
+                idx for idx in cc
+                if mol.GetAtomWithIdx(idx).GetSymbol() == 'C'
+                and mol.GetAtomWithIdx(idx).GetTotalNumHs() == 2
+            ]
+        else:
+            cx2 = [
+                idx for idx in cc
+                if mol.GetAtomWithIdx(idx).GetSymbol() == 'C'
+                and sum(
+                    1 for nb in mol.GetAtomWithIdx(idx).GetNeighbors()
+                    if nb.GetSymbol() == halogen
+                ) == 2
+            ]
         results.append({'component': frozenset(cc), 'cx2_carbons': cx2})
 
     return results
@@ -198,7 +210,8 @@ def generate_homologues(mol_input, componentSmartsName=None, componentSmartss=No
 
     if halogen not in _HALOGEN_ATOMIC_NUM:
         raise ValueError(
-            f"halogen must be one of {list(_HALOGEN_ATOMIC_NUM)}, got {halogen!r}"
+            f"halogen must be one of {list(_HALOGEN_ATOMIC_NUM)}, got {halogen!r}. "
+            f"Use 'H' for hydrocarbon (CH2) backbone series."
         )
     if base_repeating is None:
         base_repeating = ['C']

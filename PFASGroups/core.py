@@ -370,6 +370,7 @@ def add_componentSmarts(filename = COMPONENTS_FILE):
             # Normalize filters to lists
             if halogens is not None:
                 halogens = [halogens] if isinstance(halogens, str) else list(halogens)
+                halogens = [h for h in halogens if h != '*']
             if form is not None:
                 form = [form] if isinstance(form, str) else list(form)
             if saturation is not None:

@@ -642,11 +642,19 @@ class MatchView(dict):
 
     @property
     def group_id(self) -> Optional[int]:
-        return self.get("id") if self.is_group else None
+        # Keep legacy semantics for HalogenGroup while also exposing wildcard
+        # ids through the same convenience accessor.
+        if self.is_group or self.get("type") == "WildcardGroup":
+            return self.get("id")
+        return None
 
     @property
     def group_name(self) -> Optional[str]:
-        return self.get("group_name") if self.is_group else None
+        # Keep legacy semantics for HalogenGroup while also exposing wildcard
+        # group names through the same convenience accessor.
+        if self.is_group or self.get("type") == "WildcardGroup":
+            return self.get("group_name")
+        return None
 
     @property
     def components(self) -> List[ComponentView]:

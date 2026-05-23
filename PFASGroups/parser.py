@@ -24,6 +24,46 @@ from .core import (
 )
 from .PFASEmbeddings import PFASEmbeddingSet
 
+_REAL_HALOGENS = ['F', 'Cl', 'Br', 'I']
+_DEFAULT_NON_TELOMER_GROUPS_CACHE: Optional[list] = None
+
+
+def _to_list(value):
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value]
+    return list(value)
+
+
+def _normalize_halogen_controls(halogens):
+    """Normalize halogen controls into real halogens + pseudo-option flags."""
+    if halogens is None:
+        halogen_list = list(_REAL_HALOGENS)
+    else:
+        halogen_list = _to_list(halogens)
+
+    include_wildcards = '*' in halogen_list
+    include_h_components = 'H' in halogen_list
+    real_halogens = [h for h in halogen_list if h in _REAL_HALOGENS]
+    return real_halogens, include_h_components, include_wildcards
+
+
+def _is_telomer_group(group):
+    name = (getattr(group, 'name', '') or '').lower()
+    return 'telomer' in name
+
+
+def _get_default_non_telomer_groups():
+    global _DEFAULT_NON_TELOMER_GROUPS_CACHE
+    if _DEFAULT_NON_TELOMER_GROUPS_CACHE is not None:
+        return _DEFAULT_NON_TELOMER_GROUPS_CACHE
+    with open(HALOGEN_GROUPS_FILE, 'r', encoding='utf-8') as f:
+        _pfg = json.load(f)
+    groups, _ = preprocess_HalogenGroups(_pfg)
+    _DEFAULT_NON_TELOMER_GROUPS_CACHE = [g for g in groups if not _is_telomer_group(g)]
+    return _DEFAULT_NON_TELOMER_GROUPS_CACHE
+
 def preprocess_HalogenGroups(_pfg: list) -> tuple:
     pfg = [HalogenGroup(**x) for x in _pfg if x.get('compute',True)]
     agg_pfg = [HalogenGroup(**x) for x in _pfg if not x.get('compute',True)]
@@ -45,7 +85,7 @@ def load_HalogenGroups():
         @functools.wraps(func)
         def wrapper(*args,**kwargs):
             _halogens = kwargs.get('halogens', ['F','Cl','Br','I']) or ['F','Cl','Br','I']
-            _halogens_list = [_halogens] if isinstance(_halogens, str) else list(_halogens)
+            _halogens_list = [h for h in _to_list(_halogens) if h != '*']
             kwargs['pfas_groups'] = kwargs.get('pfas_groups',[p for p in pfg if p.excludeHalogens is None or any(h not in p.excludeHalogens for h in _halogens_list)])
             kwargs['agg_pfas_groups'] = kwargs.get('agg_pfas_groups',agg_pfg)
             return func(*args, **kwargs)
@@ -97,7 +137,12 @@ def load_componentsSolver(**kwargs):
             kwargs['frags'] = frags
             args = tuple(args)  # Convert back to tuple
             halogens = kwargs.get('halogens', ['F','Cl','Br','I']) or ['F','Cl','Br','I']
-            _smarts = '[{}]'.format(','.join(halogens)) if isinstance(halogens, list) else f'[{halogens}]'
+            halogen_list = [halogens] if isinstance(halogens, str) else list(halogens)
+            halogen_list = [h for h in halogen_list if h != '*']
+            kwargs['halogens'] = halogen_list
+            if len(halogen_list) == 0:
+                return [], mol, CalcMolFormula(mol)
+            _smarts = '[{}]'.format(','.join(halogen_list))
             # check organic halogen:
             if not mol.GetSubstructMatch(Chem.MolFromSmarts(_smarts)):
                 #logger.debug("No organic halogens found, skipping componentsSolver")
@@ -112,7 +157,7 @@ def load_componentsSolver(**kwargs):
                 solver_kwargs['resistance_weights'] = kwargs['resistance_weights']
             if 'component_expansion' in kwargs:
                 solver_kwargs['component_expansion'] = kwargs['component_expansion']
-            with ComponentsSolver(mol, halogens=kwargs.get('halogens'), **solver_kwargs) as fluorinated_components_dict:
+            with ComponentsSolver(mol, halogens=halogen_list, **solver_kwargs) as fluorinated_components_dict:
                 kwargs['fluorinated_components_dict'] = kwargs.get('fluorinated_components_dict',fluorinated_components_dict)
                 return func(*args, **kwargs)
         return wrapper
@@ -141,6 +186,101 @@ def parse_definitions_in_mol(mol, **kwargs):
         if matched is True:
             definition_matches.append(pdef)
     return definition_matches
+
+
+# ── Wildcard (component-free) generic group matching ─────────────────────────
+
+_WILDCARD_GROUPS_CACHE: Optional[list] = None
+_WILDCARD_GROUP_ID_MIN = 29
+_WILDCARD_GROUP_ID_MAX = 76
+_WILDCARD_GROUP_EXCLUDED_IDS = {34, 35, 37, 38, 44, 45}
+
+
+def _load_wildcard_groups() -> list:
+    """Load generic groups from HALOGEN_GROUPS_FILE for component-free matching."""
+    global _WILDCARD_GROUPS_CACHE
+    if _WILDCARD_GROUPS_CACHE is not None:
+        return _WILDCARD_GROUPS_CACHE
+
+    groups = []
+    try:
+        with open(HALOGEN_GROUPS_FILE, 'r', encoding='utf-8') as _f:
+            data = json.load(_f)
+    except Exception:
+        _WILDCARD_GROUPS_CACHE = groups
+        return groups
+
+    for entry in data:
+        if not isinstance(entry, dict):
+            continue
+        gid = entry.get('id')
+        if not isinstance(gid, int):
+            continue
+        if not (_WILDCARD_GROUP_ID_MIN <= gid <= _WILDCARD_GROUP_ID_MAX):
+            continue
+        if gid in _WILDCARD_GROUP_EXCLUDED_IDS:
+            continue
+        sorting = entry.get('sorting') or {}
+        if isinstance(sorting, dict) and sorting.get('category') not in (None, 'generic'):
+            continue
+
+        smarts_map = entry.get('smarts') or {}
+        if not isinstance(smarts_map, dict) or not smarts_map:
+            continue
+
+        compiled = []
+        for smarts_str, required_count in smarts_map.items():
+            if not isinstance(smarts_str, str) or not smarts_str.strip():
+                continue
+            patt = Chem.MolFromSmarts(smarts_str)
+            if patt is None:
+                continue
+            try:
+                need = int(required_count)
+            except Exception:
+                need = 1
+            compiled.append((patt, max(1, need)))
+
+        if not compiled:
+            continue
+
+        label = str(entry.get('alias') or entry.get('name') or f'group_{gid}')
+        groups.append({'id': gid, 'name': label, 'patterns': compiled})
+
+    groups.sort(key=lambda g: g['id'])
+    _WILDCARD_GROUPS_CACHE = groups
+    return groups
+
+
+def _match_wildcard_groups_in_mol(mol) -> list:
+    """Match generic functional groups against *mol* without requiring halogenated components.
+
+    Returns a list of dicts ``{'id': int, 'name': str}`` for every generic
+    group (IDs 29-76, excluding non-generic categories) whose SMARTS patterns
+    are satisfied by *mol*.  H atoms are added explicitly before matching.
+
+    This is the 'empty component' / wildcard mode described in the feature
+    design: it runs FG SMARTS against the whole molecule rather than restricting
+    to halogenated sub-structures.
+    """
+    if mol is None:
+        return []
+    mol_with_h = Chem.AddHs(mol)
+    try:
+        Chem.SanitizeMol(mol_with_h)
+    except Exception:
+        mol_with_h = mol
+
+    results = []
+    for grp in _load_wildcard_groups():
+        ok = True
+        for patt, need in grp['patterns']:
+            if len(mol_with_h.GetSubstructMatches(patt)) < need:
+                ok = False
+                break
+        if ok:
+            results.append({'id': grp['id'], 'name': grp['name']})
+    return results
 
 
 # --- Main halogen group parsing functions ---
@@ -711,9 +851,31 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
     Returns:
     --------
     list, pandas.DataFrame, or str
-        Depends on output_format parameter
+        Depends on output_format parameter.
+        
+        When ``output_format='list'`` (default), returns a ``PFASEmbeddingSet`` 
+        containing ``PFASEmbedding`` objects. Each embedding contains match dicts
+        with the following structure:
+        
+        For **HalogenGroup** matches (``'type': 'HalogenGroup'``):
+        - ``'id'``: integer group ID
+        - ``'group_name'``: group name
+        - ``'halogen'``: str or list — halogen(s) in components
+          (e.g., 'F', 'Cl', ['F', 'H'], etc.)
+        - ``'match_count'``, ``'components'``, ``'num_components'``, etc.
+        
+        For **WildcardGroup** matches (``'type': 'WildcardGroup'``):
+        - ``'id'``: integer group ID
+        - ``'group_name'``: group name
+        - ``'halogen'``: ``'*'`` (wildcard pseudo-halogen)
+        
+        For **PFASdefinition** matches (``'type': 'PFASdefinition'``):
+        - ``'id'``: integer definition ID
+        - ``'definition_name'``: definition name
+        - ``'halogen'``: ``'F'`` (definitions only match when F is enabled)
     """
 
+    real_halogens, include_h_components, include_wildcards = _normalize_halogen_controls(halogens)
     # Parse all molecules
     import warnings
     results = {}
@@ -741,11 +903,32 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         # Pass through component metric options and filters
         kwargs['limit_effective_graph_resistance'] = limit_effective_graph_resistance
         kwargs['compute_component_metrics'] = compute_component_metrics
-        kwargs['halogens'] = halogens
         kwargs['form'] = form
         kwargs['saturation'] = saturation
+        parsed_halogen_matches = []
+        formula = None
+        mol_with_h = Chem.AddHs(mol)
+        non_telomer_groups = [g for g in kwargs.get('pfas_groups', []) if not _is_telomer_group(g)] if kwargs.get('pfas_groups') else _get_default_non_telomer_groups()
         try:
-            matches, mol_with_h, formula = parse_groups_in_mol(mol, **kwargs)
+            if len(real_halogens) > 0:
+                real_kwargs = dict(kwargs)
+                real_kwargs['halogens'] = real_halogens
+                matches_real, mol_with_h, formula = parse_groups_in_mol(mol, **real_kwargs)
+                parsed_halogen_matches.extend(matches_real)
+
+            if include_h_components:
+                h_kwargs = dict(kwargs)
+                h_kwargs['halogens'] = ['H']
+                if non_telomer_groups is not None:
+                    h_kwargs['pfas_groups'] = non_telomer_groups
+                matches_h, mol_with_h_h, formula_h = parse_groups_in_mol(mol, **h_kwargs)
+                parsed_halogen_matches.extend(matches_h)
+                mol_with_h = mol_with_h_h
+                if formula is None:
+                    formula = formula_h
+
+            if formula is None:
+                formula = CalcMolFormula(mol_with_h)
         except Exception as exc:
             _smi_repr = orig_smi or Chem.MolToSmiles(mol)
             warnings.warn(f"parse_mols: error parsing '{_smi_repr}' — {exc}. Skipping.", UserWarning, stacklevel=2)
@@ -772,9 +955,27 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                         "smiles_with_h": Chem.MolToSmiles(mol_with_h),  # kept for backward compat
                         "molblock_with_h": molblock_with_h})
 
+        # Helper to extract halogens from component atoms and their neighbors
+        def _extract_halogens_from_components(matched_components, mol_with_h):
+            """Extract unique halogens (F, Cl, Br, I, H) bonded to or in components."""
+            halogens = set()
+            for comp_dict in matched_components:
+                component_atom_indices = comp_dict.get('component', [])
+                for atom_idx in component_atom_indices:
+                    atom = mol_with_h.GetAtomWithIdx(atom_idx)
+                    symbol = atom.GetSymbol()
+                    if symbol in ('F', 'Cl', 'Br', 'I', 'H'):
+                        halogens.add(symbol)
+                    # Also check bonded atoms for halogens
+                    for neighbor in atom.GetNeighbors():
+                        neighbor_symbol = neighbor.GetSymbol()
+                        if neighbor_symbol in ('F', 'Cl', 'Br', 'I', 'H'):
+                            halogens.add(neighbor_symbol)
+            return sorted(list(halogens))  # Sort for consistency: Br, Cl, F, H, I
+
         # Build match results with comprehensive summary metrics
         match_results = []
-        for group, match_count, components_sizes, matched_components in matches:
+        for group, match_count, components_sizes, matched_components in parsed_halogen_matches:
             # Calculate summary metrics across all components for this group
             if len(matched_components) > 0:
                 # Basic metrics summaries
@@ -879,6 +1080,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                     'mean_dist_to_periphery': 0,
                 }
 
+            # Extract halogens from matched components
+            match_halogens = _extract_halogens_from_components(matched_components, mol_with_h)
             match_results.append({
                 'match_id': f"G{group.id}",
                 'id': group.id,
@@ -889,11 +1092,32 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                 'components': matched_components,
                 'components_types': list(set(str(c['SMARTS']) if isinstance(c['SMARTS'], list) else c['SMARTS'] for c in matched_components)),
                 'type':'HalogenGroup',
+                'halogen': match_halogens if len(match_halogens) != 1 else match_halogens[0],
                 **summary_metrics
             })
 
         results[inchikey].setdefault('matches',[]).extend(match_results)
-        if include_PFAS_definitions is True:
+
+        # Wildcard (component-free) functional group matching.
+        if include_wildcards:
+            wc_matches = _match_wildcard_groups_in_mol(mol)
+            results[inchikey].setdefault('matches', []).extend([
+                {
+                    'match_id': f"W{wm['id']}",
+                    'id': wm['id'],
+                    'group_name': wm['name'],
+                    'match_count': 1,
+                    'components_sizes': [],
+                    'num_components': 0,
+                    'components': [],
+                    'components_types': [],
+                    'type': 'WildcardGroup',
+                    'halogen': '*',
+                }
+                for wm in wc_matches
+            ])
+
+        if include_PFAS_definitions is True and 'F' in real_halogens:
             formula_dict = n_from_formula(formula)
             definitions = parse_definitions_in_mol(mol, formula=formula_dict, **kwargs)
             inchikey = Chem.MolToInchiKey(mol)
@@ -905,7 +1129,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                             {'match_id': f"D{definition.id}",
                             'id': definition.id,
                             'definition_name': definition.name,
-                            'type':'PFASdefinition'} for definition in definitions])
+                            'type':'PFASdefinition',
+                            'halogen': 'F'} for definition in definitions])
     # Convert results to list format (one entry per molecule)
     results_list = [r for r in results.values()]
     # Format output based on requested format

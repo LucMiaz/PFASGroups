@@ -64,6 +64,7 @@ Key capabilities
    :caption: Advanced Topics
 
    tutorial
+   advanced_features
    customization
    prioritization
    benchmarking

@@ -138,5 +138,14 @@
                 "component": "[#6aR$([#6aR][I,#6aR$([#6aR][#53])]),#6aR$([#6aR]([#9,#17,#35,#53])[#6aR]I)]"
             }
         }
+    },
+    "H": {
+        "alkyl": {
+            "per": {
+                "name": "Alkyl",
+                "component": "[CH2]",
+                "end": "[CH3]"
+            }
+        }
     }
 }

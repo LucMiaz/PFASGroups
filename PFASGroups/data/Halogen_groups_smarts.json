@@ -4,6 +4,7 @@
     "name": "OECD perfluoroalkyl alcohols",
     "alias": "Perfluoroalkyl alcohols",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "only": [
@@ -57,6 +58,7 @@
     "name": "OECD telomer alcohols",
     "alias": "telomer alcohols",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "max_dist_from_comp": 0,
     "constraints": {
@@ -132,6 +134,7 @@
     "name": "OECD perfluoroalkane",
     "alias": "Perfluoroalkane",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "only": [
@@ -181,6 +184,7 @@
     "name": "OECD semi-fluorinated alkanes",
     "alias": "SFAs",
     "componentSmarts": "Polyfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "gte": {
@@ -236,6 +240,7 @@
     "name": "OECD perfluoroalkene",
     "alias": "Perfluoroalkene",
     "componentSmarts": null,
+    "componentHalogen": "F",
     "max_dist_from_comp": 16,
     "linker_smarts": null,
     "constraints": {
@@ -287,6 +292,7 @@
     "name": "OECD perfluoroalkyl carboxylic acids",
     "alias": "PFCAs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "eq": {
@@ -343,6 +349,7 @@
     "name": "OECD polyfluoroalkyl carboxylic acid",
     "alias": "PolyFCAs",
     "componentSmarts": "Polyfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "eq": {
@@ -404,6 +411,7 @@
     "name": "OECD perfluoroalkyl dicarboxylic acids",
     "alias": "PFdiCAs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "max_dist_from_comp": 1,
     "linker_smarts": null,
     "constraints": {
@@ -462,6 +470,7 @@
     "name": "OECD perfluoroalkylether carboxylic acids",
     "alias": "PFECAs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "gte": {
@@ -518,6 +527,7 @@
     "name": "OECD polyfluoroalkylether carboxylic acid",
     "alias": "PolyFECAs",
     "componentSmarts": "Polyfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "gte": {
@@ -582,6 +592,7 @@
     "name": "OECD hydrofluoroethers",
     "alias": "HFEs",
     "componentSmarts": "Polyfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "gte": {
@@ -637,6 +648,7 @@
     "name": "OECD hydrofluorocarbons",
     "alias": "HFCs",
     "componentSmarts": "Polyfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "gte": {
@@ -689,6 +701,7 @@
     "name": "OECD perfluoroalkyl iodides",
     "alias": "PFAIs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "gte": {
@@ -735,6 +748,7 @@
     "name": "OECD perfluoroalkyl ketones",
     "alias": "Perfluoroalkyl ketones",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "only": [
@@ -787,6 +801,7 @@
     "name": "OECD semi-fluoroalkyl ketones",
     "alias": "Semi-fluoroalkyl ketones",
     "componentSmarts": "Polyfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "gte": {
@@ -842,6 +857,7 @@
     "name": "OECD hydrofluoroolefins",
     "alias": "HFOs",
     "componentSmarts": "Polyfluoroalkyl",
+    "componentHalogen": "F",
     "max_dist_from_comp": 16,
     "linker_smarts": "[CH2]",
     "constraints": {
@@ -895,6 +911,7 @@
     "name": "OECD perfluoropolyethers",
     "alias": "PFPEs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "only": [
@@ -948,6 +965,7 @@
     "name": "OECD side-chain fluorinated aromatics",
     "alias": "Side-chain fluorinated aromatics",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "gte": {
@@ -985,6 +1003,7 @@
     "name": "OECD perfluoroalkylether sulfonic acids",
     "alias": "PFESAs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "eq": {
@@ -1049,6 +1068,7 @@
     "name": "OECD polyfluoroalkylether sulfonic acid",
     "alias": "PolyFESAs",
     "componentSmarts": "Polyfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "eq": {
@@ -1121,6 +1141,7 @@
     "name": "OECD perfluoroalkyl sulfinic acids",
     "alias": "PFSiAs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "eq": {
@@ -1178,6 +1199,7 @@
     "name": "OECD perfluoroalkyl sulfonic acids",
     "alias": "PFSAs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "eq": {
@@ -1236,6 +1258,7 @@
     "name": "OECD polyfluoroalkyl sulfonic acid",
     "alias": "PolyFSAs",
     "componentSmarts": "Polyfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "eq": {
@@ -1302,6 +1325,7 @@
     "name": "OECD perfluoroalkyl disulfonic acids",
     "alias": "PFdiSAs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "max_dist_from_comp": 1,
     "linker_smarts": null,
     "constraints": {
@@ -1364,6 +1388,7 @@
     "name": "OECD perfluoroalkane sulfonyl fluorides",
     "alias": "PASFs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "max_dist_from_comp": 0,
     "linker_smarts": null,
     "constraints": {
@@ -1411,6 +1436,7 @@
     "name": "OECD perfluoroalkyl phosphinic acids",
     "alias": "PFPiAs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "eq": {
@@ -1468,6 +1494,7 @@
     "name": "OECD perfluoroalkyl phosphonic acids",
     "alias": "PFPAs",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "eq": {
@@ -1525,6 +1552,7 @@
     "name": "OECD perfluoroalkyl-tert-amines",
     "alias": "Perfluoroalkyl-tert-amines",
     "componentSmarts": "Perfluoroalkyl",
+    "componentHalogen": "F",
     "linker_smarts": null,
     "constraints": {
       "only": [

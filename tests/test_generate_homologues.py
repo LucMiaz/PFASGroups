@@ -133,6 +133,15 @@ class TestHalogenVariants:
         assert_all_connected(h)
         assert_valid_smiles(h)
 
+    def test_hydrocarbon_h_series(self):
+        """Hydrocarbon chain with CH2 units should produce homologues with halogen='H'."""
+        mol = Chem.MolFromSmiles('OC(=O)CCCCCC')
+        h = generate_homologues(mol, halogen='H')
+        assert len(h) >= 1, f"Expected at least one H-series homologue, got {len(h)}"
+        assert h.halogen == 'H'
+        assert_all_connected(h)
+        assert_valid_smiles(h)
+
     def test_invalid_halogen(self):
         mol = Chem.MolFromSmiles('OC(=O)' + 'C(F)(F)' * 4 + 'F')
         with pytest.raises(ValueError, match="halogen must be one of"):
@@ -259,6 +268,21 @@ class TestFindHalogenatedComponents:
         smarts = self._get_component_smarts('Perfluoroalkyl')
         comps = find_halogenated_components(mol, smarts, halogen='F')
         assert comps == [], "Expected no components in non-fluorinated molecule"
+
+    def test_h_alkyl_component_detects_ch2(self):
+        mol = Chem.MolFromSmiles('OC(=O)CCCCCC')
+        smarts = self._get_component_smarts('Alkyl')
+        comps = find_halogenated_components(mol, smarts, halogen='H')
+        assert len(comps) >= 1, "Expected at least one Alkyl component for hydrocarbon chain"
+        total_cx2 = sum(len(c['cx2_carbons']) for c in comps)
+        assert total_cx2 >= 2, f"Expected >=2 CH2 carbons in H-component path, got {total_cx2}"
+
+    def test_h_alkyl_component_no_ch2_units(self):
+        mol = Chem.MolFromSmiles('CC(=O)O')
+        smarts = self._get_component_smarts('Alkyl')
+        comps = find_halogenated_components(mol, smarts, halogen='H')
+        total_cx2 = sum(len(c['cx2_carbons']) for c in comps)
+        assert total_cx2 == 0, f"Expected 0 CH2 carbons for molecule without CH2 backbone, got {total_cx2}"
 
 
 # ---------------------------------------------------------------------------

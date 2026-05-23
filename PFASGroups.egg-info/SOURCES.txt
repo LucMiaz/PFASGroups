@@ -46,6 +46,7 @@ gui/tabs/prioritise_tab.py
 gui/tabs/results_tab.py
 gui/utils/__init__.py
 gui/utils/chemspace.py
+gui/utils/export_dialog.py
 gui/utils/fingerprints.py
 gui/utils/io_readers.py
 gui/utils/modelling.py
@@ -64,6 +65,7 @@ tests/test_linker_smarts.py
 tests/test_metrics.py
 tests/test_metrics_detailed.py
 tests/test_n_spacer_ring_size.py
+tests/test_parser_wildcard.py
 tests/test_pfasstructv5.py
 tests/test_prioritise.py
 tests/test_readme_and_docs_examples.py
