@@ -82,7 +82,7 @@ run_step() {
 }
 
 # ---------------------------------------------------------------------------
-# Step 1 – dataset build
+# Step 1 - dataset build
 # ---------------------------------------------------------------------------
 if [ "$SKIP_BUILD" -eq 1 ]; then
     echo ""
@@ -104,13 +104,13 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 2 – fingerprint comparison
+# Step 2 - fingerprint comparison
 # ---------------------------------------------------------------------------
 run_step "Running fingerprint comparison (nested CV)" \
          "$SCRIPT_DIR/scripts/analysis/compare_fingerprints_toxcast.py"
 
 # ---------------------------------------------------------------------------
-# Step 3 – summary
+# Step 3 - summary
 # ---------------------------------------------------------------------------
 echo ""
 echo "=== Output files ==="

@@ -172,7 +172,7 @@ Saturation filter
 
 .. code-block:: python
 
-   # Only perfluorinated (fully saturated C–F) groups
+   # Only perfluorinated (fully saturated C-F) groups
    results = parse_smiles(smiles, saturation='per')
 
    # Polyfluorinated groups (partially substituted)

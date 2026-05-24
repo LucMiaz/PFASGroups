@@ -145,7 +145,7 @@ The second return value is a dict with keys:
    print(info['group_names'][:2])     # list of group name strings
    print(info['halogens'])            # ['F']
 
-   # OECD groups only (indices 0–27)
+   # OECD groups only (indices 0-27)
    fps_oecd, _ = generate_fingerprint(["CCCC(F)(F)F"], selected_groups=range(0, 28))
    print(fps_oecd.shape)              # (1, 28)
 

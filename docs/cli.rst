@@ -179,7 +179,7 @@ Generate halogen-group fingerprints suitable for machine learning.
    # Dictionary representation
    halogengroups fingerprint --format dict "FC(F)(F)C(F)(F)C(=O)O"
 
-   # OECD groups only (IDs 1–28)
+   # OECD groups only (IDs 1-28)
    halogengroups fingerprint --groups 1-28 "FC(F)(F)C(F)(F)C(=O)O"
 
    # Count mode
@@ -312,7 +312,7 @@ For large input files:
 
 .. code-block:: bash
 
-   # Skip graph metrics (5–10× faster for large molecules)
+   # Skip graph metrics (5-10× faster for large molecules)
    halogengroups parse --no-component-metrics --input big_file.smi \
        --output results.json
 

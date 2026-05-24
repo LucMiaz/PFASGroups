@@ -114,7 +114,7 @@ benchmark data **without re-running data collection**. Accepts `-Env` and
 .\run_analysis_reports.ps1 -Env pfasatlas -SkipAtlas
 ```
 
-Runs in order (scripts 1–11):
+Runs in order (scripts 1-11):
 1. `analyze_timing.py` — timing performance analysis
 2. `analyze_timing_models.py` — exponential scaling model fits
 3. `compare_timing_profiles.py` — multi-profile timing comparison
@@ -150,9 +150,9 @@ and initialises the SQLite database. Called automatically by `quick-start.*`.
 
 | Script | Purpose |
 |--------|---------|
-| `enhanced_pfas_benchmark.py` | Interactive benchmark menu (options 1–6): functional groups, OECD validation, timing (3 profiles), non-fluorinated exclusion, complex branched structures. Primary data-collection script. |
+| `enhanced_pfas_benchmark.py` | Interactive benchmark menu (options 1-6): functional groups, OECD validation, timing (3 profiles), non-fluorinated exclusion, complex branched structures. Primary data-collection script. |
 | `benchmark_pfas_definitions.py` | Benchmarks five PFAS definitions (OECD, EU Restriction, OPPT 2023, UK, PFASSTRUCTv5) for accuracy, specificity, sensitivity, and inter-definition agreement. |
-| `test_highly_branched.py` | Tests functional groups 29–59 at varying branching distances (0–2 bonds) from perfluorinated chains; compares PFASGroups vs PFAS-Atlas detection. |
+| `test_highly_branched.py` | Tests functional groups 29-59 at varying branching distances (0-2 bonds) from perfluorinated chains; compares PFASGroups vs PFAS-Atlas detection. |
 | `validate_telomers.py` | Validates telomer detection against a PubChem fluorotelomer SDF dataset. |
 | `classify_halogengroups_clinventory.py` | Classifies all halogen-containing molecules in the PostgreSQL `clinventory` database with **HalogenGroups** (full halogen set). Writes `data/PFASGroups_clinventory_<TS>.json`. |
 | `classify_pfasgroups_clinventory.py` | Same as above but restricts HalogenGroups to fluorine only (`halogens='F'`). Writes `data/pfasgroups_clinventory_<TS>.json`. |

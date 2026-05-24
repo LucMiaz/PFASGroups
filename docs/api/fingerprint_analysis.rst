@@ -137,7 +137,7 @@ perform_tsne
 **Parameters:**
 
 - ``n_components`` (int, default 2)
-- ``perplexity`` (float, default 30.0): t-SNE perplexity (typically 5–50;
+- ``perplexity`` (float, default 30.0): t-SNE perplexity (typically 5-50;
   must be less than the number of molecules)
 - ``learning_rate`` (float, default 200.0)
 - ``max_iter`` (int, default 1000)

@@ -73,7 +73,7 @@ Write-Host "Benchmark dir : $ScriptDir" -ForegroundColor DarkGray
 Write-Host "Conda env     : $Env"       -ForegroundColor DarkGray
 
 # ---------------------------------------------------------------------------
-# Step 0 – choose database / dataset
+# Step 0 - choose database / dataset
 # ---------------------------------------------------------------------------
 if ($DB -eq "") {
     $DB = Read-Host "Database / dataset name [default: invitrodb_v4_3]"
@@ -84,7 +84,7 @@ Write-Host "Using database/dataset : $DB" -ForegroundColor DarkGray
 $ParquetPath = Join-Path $DataDir "${DB}_dataset.parquet"
 
 # ---------------------------------------------------------------------------
-# Step 1 – dataset build
+# Step 1 - dataset build
 # ---------------------------------------------------------------------------
 if ($SkipBuild) {
     Write-Step "Skipping dataset build (-SkipBuild)"
@@ -105,12 +105,12 @@ if ($SkipBuild) {
 }
 
 # ---------------------------------------------------------------------------
-# Step 2 – fingerprint comparison
+# Step 2 - fingerprint comparison
 # ---------------------------------------------------------------------------
 Invoke-CondaPython (Join-Path $ScriptDir "scripts\analysis\compare_fingerprints_toxcast.py") @("--db", $DB, "--both") "Running fingerprint comparison (nested CV)"
 
 # ---------------------------------------------------------------------------
-# Step 3 – summary
+# Step 3 - summary
 # ---------------------------------------------------------------------------
 Write-Step "Output files"
 if (Test-Path $DataDir) {
@@ -122,7 +122,7 @@ if (Test-Path $DataDir) {
 }
 
 # ---------------------------------------------------------------------------
-# Step 4 – performance plots
+# Step 4 - performance plots
 # ---------------------------------------------------------------------------
 Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\plot_performance_by_endpoint.py") @("--dataset", $DB) "Generating performance plots"
 
@@ -133,7 +133,7 @@ Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\plot_expa_filtered.py") 
 Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\bayesian_comparison.py") @("--dataset", $DB) "Generating Bayesian comparison plots"
 
 # ---------------------------------------------------------------------------
-# Step 5 – Unsupervised analysis reports
+# Step 5 - Unsupervised analysis reports
 # ---------------------------------------------------------------------------
 Invoke-CondaPython (Join-Path $ScriptDir "scripts\plots\umap_oecd_pfas.py") @() "Generating UMAP plots  --top 20"
 

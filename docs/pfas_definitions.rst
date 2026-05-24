@@ -30,8 +30,8 @@ OECD 2021
 Per- and Polyfluoroalkyl Substances. <https://www.oecd.org/en/publications/reconciling-terminology-of-the-universe-of-per-and-polyfluoroalkyl-substances-pfas_d2a7ea98-en.html>`_
 
 **Rule**: A substance is a PFAS if it contains at least one fully
-fluorinated methyl (CF₃–) or methylene (–CF₂–) group that is not part of
-a –CF₂–O– ether linkage.
+fluorinated methyl (CF₃-) or methylene (-CF₂-) group that is not part of
+a -CF₂-O- ether linkage.
 
 This definition is implemented through the 28 OECD halogen groups bundled
 in the library.  A molecule matches if it has at least one group with
@@ -54,7 +54,7 @@ Definition (2023)
 
 **Reference**: `US EPA PFAS Definition <https://www.epa.gov/pfas>`_
 
-**Rule**: Aliphatic fluorinated compounds containing ≥ 1 C–F bond that
+**Rule**: Aliphatic fluorinated compounds containing ≥ 1 C-F bond that
 meets structural criteria for persistence or the ability to degrade to
 persistent PFAS moieties.
 
