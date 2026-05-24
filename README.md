@@ -24,9 +24,47 @@ PFASGroups combines SMARTS pattern matching, molecular formula constraints, and 
 ### Additional Tools
 - **Homologue Series Generation**: Iterative component shortening to explore theoretical chemical space
 - **Fingerprint Generation**: PFAS fingerprints for machine learning applications
+- **Group Feature Extraction**: Fixed-length named feature vectors for ML pipelines (see below)
 - **Visualization**: Assign and visualize PFAS groupings
 - **Multiple Interfaces**: Python API, command-line tool, and browser-based JavaScript version (RDKitJS)
 - **Batch Processing**: Efficient analysis of large chemical databases
+
+## Group Feature Extraction
+
+`extract_group_features` returns a structured `GroupFeatureResult` covering three
+chemically meaningful feature sets derived from the six component groups and the
+48 generic functional groups:
+
+```python
+from rdkit import Chem
+from PFASGroups import extract_group_features
+
+mol = Chem.MolFromSmiles("FC(F)(F)C(F)(F)C(F)(F)C(=O)O")  # PFOA-like
+r = extract_group_features(mol)
+
+# Polyhalogenated group match counts (groups 35/38/45, all halogens combined)
+print(r.poly_counts)
+# {'poly_alkyl': 1.0, 'poly_aryl': 0.0, 'poly_cyclic': 0.0}
+
+# Perhalogenated group max component sizes per halogen (groups 34/37/44 × F/Cl/Br/I/H)
+print(r.per_halogen_sizes['g34_F'])   # longest perfluoroalkyl chain (carbons)
+# 4.0
+
+# Alkyl chain size via H pseudo-halogen (convenience view of per_halogen_sizes H column)
+print(r.h_chain_sizes)  # octane: {'alkyl_H': 6.0, 'aryl_H': 0.0, 'cyclic_H': 0.0}
+
+# Generic functional groups (ids 29-76, wildcard)
+print({k: v for k, v in r.generic_groups.items() if v})
+# {'g42': 1.0, 'g48': 1.0}  →  carboxylic acid + fluoride
+
+# Fixed-length float32 array of shape (66,) for ML use
+arr = r.to_array()
+names = r.feature_names()  # matching labels
+```
+
+SMILES strings are accepted directly in addition to `rdkit.Chem.Mol` objects.
+See the [Group Feature Extraction](docs/group_features.rst) documentation page for
+the full feature layout, group ID table, and worked examples.
 
 ## Installation
 
@@ -406,7 +444,7 @@ h_group = HalogenGroup(
 )
 
 # Parse using H mode
-results = parse_smiles(smiles, halogens='H', pfas_groups=[h_group], bycomponent=True)
+results = parse_smiles(smiles, halogens='H', pfas_groups=[h_group])
 
 # Inspect H-component matches for the custom group
 h_matches = [m for m in results[0].matches if m.get('id') == 9990 and m.get('type') == 'HalogenGroup']
@@ -760,6 +798,7 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+- **Version 3.4.1**: Added generic embedding for non-halogenated specific compounds which includes wildcard-components functional groups and halogen component size. Fixed H components and added cyclic and aryl H components.
 
 - **Version 3.4.0**: Added H components (use in homologue series generation) and wildcard components to match generic functional groups (broader use than PFAS).
 

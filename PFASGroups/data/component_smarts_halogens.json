@@ -143,8 +143,23 @@
         "alkyl": {
             "per": {
                 "name": "Alkyl",
-                "component": "[CH2]",
-                "end": "[CH3]"
+                "component": "[CH2!$([#6][F,Cl,Br,I]),CH3!$([#6][F,Cl,Br,I])]",
+                "end": "[CH3]",
+                "constraints": {"gte": {"H": 2}}
+            }
+        },
+        "cyclic": {
+            "per": {
+                "name": "Cyclic alkyl",
+                "component": "[#6aX4R$([#6aR]([#6aR!$([#6][F,Cl,Br,I])])([#6aR!$([#6][F,Cl,Br,I])])[!$([#6][F,Cl,Br,I])][!$([#6][F,Cl,Br,I])])]",
+                "constraints": {"gte": {"H": 2}}
+            }
+        },
+        "aryl": {
+            "per": {
+                "name": "Aryl",
+                "component": "[#6aX3R$([#6aR]([#6aR!$([#6][F,Cl,Br,I])])[#6aR!$([#6][F,Cl,Br,I])])!$([#6][F,Cl,Br,I])]",
+                "constraints": {"gte": {"H": 1}}
             }
         }
     }

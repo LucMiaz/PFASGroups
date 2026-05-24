@@ -16,6 +16,7 @@ PFASGroups/generate_homologues.py
 PFASGroups/generate_mol.py
 PFASGroups/generate_paper_figures.py
 PFASGroups/getter.py
+PFASGroups/group_features.py
 PFASGroups/homologue_series.py
 PFASGroups/parser.py
 PFASGroups/prioritise.py

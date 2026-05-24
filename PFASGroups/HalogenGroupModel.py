@@ -156,8 +156,15 @@ class HalogenGroup():
             # prepare halogens (accepts list, str or None)
             if isinstance(self.componentHalogens,list) and len(set(self.componentHalogens).intersection(['F','Cl','Br','I','H'])) == 0:
                 raise ValueError(f"Invalid componentHalogens for HalogenGroup '{self.name}' (ID: {self.id})")
+            _halogens_inferred = False
             if self.componentHalogens is None:
-                self.componentHalogens = ['F','Cl','Br','I']
+                # Derive from whichever halogens have component SMARTS defined in the
+                # available componentSmartss.  Fall back to real halogens only (no H)
+                # when the data provides no guidance.
+                _hal_order = ['F', 'Cl', 'Br', 'I', 'H']
+                _inferred = [h for h in _hal_order if h in componentSmarts_dict]
+                self.componentHalogens = _inferred if _inferred else ['F', 'Cl', 'Br', 'I']
+                _halogens_inferred = True
             elif isinstance(self.componentHalogens, str) and self.componentHalogens in ['F','Cl','Br','I','H']:
                 self.componentHalogens = [self.componentHalogens]
             if self.componentSaturation is None:
@@ -172,11 +179,17 @@ class HalogenGroup():
                 self.componentForm = 'alkyl'
             for halogen in self.componentHalogens:
                 if halogen not in componentSmarts_dict:
+                    if _halogens_inferred:
+                        continue
                     raise ValueError(f"No component SMARTS available for halogen '{halogen}' in HalogenGroup '{self.name}' (ID: {self.id})")
                 if self.componentForm not in componentSmarts_dict[halogen]:
+                    if _halogens_inferred:
+                        continue
                     raise ValueError(f"No component SMARTS available for form '{self.componentForm}' and halogen '{halogen}' in HalogenGroup '{self.name}' (ID: {self.id})")
                 for saturation in self.componentSaturation:
                     if saturation not in componentSmarts_dict[halogen][self.componentForm]:
+                        if _halogens_inferred:
+                            continue
                         raise ValueError(f"No component SMARTS available for saturation '{saturation}', form '{self.componentForm}', halogen '{halogen}' in HalogenGroup '{self.name}' (ID: {self.id})")
                     new_CS.append(componentSmarts_dict[halogen][self.componentForm][saturation])
             self.componentSmarts = new_CS

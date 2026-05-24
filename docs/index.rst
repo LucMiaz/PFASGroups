@@ -67,6 +67,7 @@ Key capabilities
    advanced_features
    customization
    prioritization
+   group_features
    benchmarking
    halogengroups
    cli
