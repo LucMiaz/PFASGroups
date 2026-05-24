@@ -143,7 +143,7 @@
         "alkyl": {
             "per": {
                 "name": "Alkyl",
-                "component": "[CH2!$([#6][F,Cl,Br,I]),CH3!$([#6][F,Cl,Br,I])]",
+                "component": "[CH2!$([#6][F,Cl,Br,I]),CH3$([CH3][#6])!$([#6][F,Cl,Br,I])]",
                 "end": "[CH3]",
                 "constraints": {"gte": {"H": 2}}
             }
