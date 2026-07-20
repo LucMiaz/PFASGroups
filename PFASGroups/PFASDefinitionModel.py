@@ -64,21 +64,21 @@ class PFASDefinition:
     def __str__(self):
         return self.name
     
-    def applies_to_molecule(self, 
-                  mol_or_smiles: Union[Chem.Mol, str], 
+    def applies_to_molecule(self,
+                  mol_or_smiles: Union[Chem.Mol, str],
                   formula: Optional[Dict[str, int]] = None,
                   **kwargs) -> bool:
         """Check if this PFAS definition applies to a given molecule.
-        
+
         This method evaluates whether a molecule meets the structural and/or compositional
         criteria defined by this PFASDefinition. The evaluation logic depends on the
         requireBoth flag:
-        
+
         - If requireBoth=False (default): Returns True if EITHER SMARTS matches OR
           fluorine ratio is met (logical OR)
         - If requireBoth=True: Returns True only if BOTH SMARTS matches AND fluorine
           ratio are met (logical AND)
-        
+
         Parameters
         ----------
         mol_or_smiles : Union[Chem.Mol, str]
@@ -88,16 +88,16 @@ class PFASDefinition:
             If None, will be computed from the molecule.
         **kwargs : dict
             Additional parameters:
-            
+
             - include_hydrogen (bool): Whether to include H in fluorine ratio calculation.
               Defaults to self.includeHydrogen
             - require_both (bool): Override the instance's requireBoth setting
-        
+
         Returns
         -------
         bool
             True if the molecule meets the definition criteria, False otherwise
-        
+
         Examples
         --------
         >>> pfas_def = PFASDefinition(
@@ -108,45 +108,101 @@ class PFASDefinition:
         True
         >>> pfas_def.applies_to_molecule("CCCCCC")  # No fluorine
         False
-        
+
         Notes
         -----
         - SMARTS patterns are checked using substructure matching (HasSubstructMatch)
-        - Fluorine ratio is calculated as: F_count / total_atom_count
+        - Fluorine ratio is mass-weighted: F mass / total mass (see `match_details`
+          for the breakdown of which criterion -- SMARTS, ratio, or both -- was met,
+          and the actual computed ratio value)
         - Invalid SMILES strings return False
+        """
+        return self.match_details(mol_or_smiles, formula=formula, **kwargs)['applies']
+
+    def match_details(self,
+                  mol_or_smiles: Union[Chem.Mol, str],
+                  formula: Optional[Dict[str, int]] = None,
+                  **kwargs) -> Dict:
+        """Evaluate a molecule against this definition and report each criterion separately.
+
+        Unlike `applies_to_molecule`, which collapses everything to a single bool,
+        this returns the SMARTS-match result, the fluorine-ratio result, and the
+        actual computed ratio value individually -- useful for explaining *why* a
+        molecule matched (e.g. distinguishing a genuine structural PFAS from one
+        that only clears a fluorine-content threshold).
+
+        Parameters
+        ----------
+        mol_or_smiles : Union[Chem.Mol, str]
+            Input molecule as RDKit Mol object or SMILES string
+        formula : Optional[Dict[str, int]], default=None
+            Pre-computed molecular formula as {element: count} dictionary.
+            If None, will be computed from the molecule.
+        **kwargs : dict
+            Same as `applies_to_molecule` (`include_hydrogen`, `require_both`).
+
+        Returns
+        -------
+        dict
+            - 'valid' (bool): False if the input SMILES could not be parsed
+            - 'smarts_match' (bool): whether any SMARTS pattern matched
+            - 'fluorine_ratio' (float or None): the computed ratio, or None if this
+              definition has no fluorineRatio threshold
+            - 'fluorine_ratio_threshold' (float or None): this definition's threshold
+            - 'ratio_match' (bool): whether the ratio met the threshold (True if no
+              threshold is defined, matching `applies_to_molecule`'s OR semantics)
+            - 'applies' (bool): the same overall result `applies_to_molecule` returns
         """
         # Convert SMILES to Mol if needed
         if isinstance(mol_or_smiles, str):
             mol = Chem.MolFromSmiles(mol_or_smiles)
             if mol is None:
-                return False
+                return {
+                    'valid': False,
+                    'smarts_match': False,
+                    'fluorine_ratio': None,
+                    'fluorine_ratio_threshold': self.fluorineRatio,
+                    'ratio_match': False,
+                    'applies': False,
+                }
         else:
             mol = mol_or_smiles
-        
+
         # Check SMARTS matches
         smarts_match = False
         for pattern in self.smarts_patterns:
             if mol.HasSubstructMatch(pattern):
                 smarts_match = True
                 break
-        
+
         # Check fluorine ratio if defined
         ratio_match = True  # Default to True if no ratio requirement
+        fluorine_ratio_value = None
         if self.fluorineRatio is not None:
             if formula is None:
                 formula = self._compute_formula(mol, kwargs.get("include_hydrogen", self.includeHydrogen))
-            
-            ratio_match = self._check_fluorine_ratio(formula, kwargs.get("include_hydrogen", self.includeHydrogen))
-        
+
+            fluorine_ratio_value = self._compute_fluorine_ratio(formula, kwargs.get("include_hydrogen", self.includeHydrogen))
+            ratio_match = fluorine_ratio_value >= self.fluorineRatio
+
         # Apply logic based on require_both
         if kwargs.get("require_both", self.requireBoth):
-            return smarts_match and ratio_match
-        else:
+            applies = smarts_match and ratio_match
+        elif self.fluorineRatio is None:
             # If no fluorine ratio is defined, only check SMARTS
-            if self.fluorineRatio is None:
-                return smarts_match
+            applies = smarts_match
+        else:
             # Otherwise, SMARTS OR ratio
-            return smarts_match or ratio_match
+            applies = smarts_match or ratio_match
+
+        return {
+            'valid': True,
+            'smarts_match': smarts_match,
+            'fluorine_ratio': round(fluorine_ratio_value, 4) if fluorine_ratio_value is not None else None,
+            'fluorine_ratio_threshold': self.fluorineRatio,
+            'ratio_match': ratio_match,
+            'applies': applies,
+        }
     
     def _compute_formula(self, mol: Chem.Mol, include_hydrogen: bool) -> Dict[str, int]:
         """Compute molecular formula as element count dictionary.
@@ -177,36 +233,44 @@ class PFASDefinition:
     
     def _check_fluorine_ratio(self, formula: Dict[str, int], include_hydrogen: bool) -> bool:
         """Check if the fluorine ratio in a molecular formula meets the threshold.
-        
+
+        Mass-weighted (F mass / total mass):
+        `fluorine_ratio = F_mass / (molecular_weight - H_mass)`.
+
         Parameters
         ----------
         formula : Dict[str, int]
             Molecular formula as {element: count} dictionary
         include_hydrogen : bool
-            If True, includes hydrogen atoms in total atom count.
-            If False, excludes hydrogen from total (heavy atoms only)
-        
+            If True, includes hydrogen mass in the total mass.
+            If False, excludes hydrogen mass from total (heavy atoms only) --
+            this is the "heavy atoms only" mode PFASSTRUCTv5 uses.
+
         Returns
         -------
         bool
-            True if (F_count / total_atoms) >= self.fluorineRatio, False otherwise
-        
+            True if (F_mass / total_mass) >= self.fluorineRatio, False otherwise
+
         Notes
         -----
-        - Returns False if total_atoms is 0
+        - Returns False if total_mass is 0
         - Formula with no fluorine (F_count=0) will fail unless fluorineRatio=0
         """
+        from rdkit.Chem import GetPeriodicTable
+        pt = GetPeriodicTable()
+
         f_count = formula.get('F', 0)
-        
+        f_mass = f_count * pt.GetAtomicWeight('F')
+
         if include_hydrogen:
-            total_atoms = sum(formula.values())
+            total_mass = sum(count * pt.GetAtomicWeight(sym) for sym, count in formula.items())
         else:
-            total_atoms = sum(v for k, v in formula.items() if k != 'H')
-        
-        if total_atoms == 0:
+            total_mass = sum(count * pt.GetAtomicWeight(sym) for sym, count in formula.items() if sym != 'H')
+
+        if total_mass == 0:
             return False
-        
-        ratio = f_count / total_atoms
+
+        ratio = f_mass / total_mass
         return ratio >= self.fluorineRatio
     
     def test(self, test_data=None):

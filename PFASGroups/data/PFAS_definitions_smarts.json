@@ -134,11 +134,13 @@
         ],
         "fluorineRatio": 0.3,
         "includeHydrogen": false,
-        "description": "Custom structural patterns or F ratio ≥ 0.3 (heavy atoms only)",
+        "description": "Custom structural patterns or F ratio >= 0.3, mass-weighted (F mass / heavy-atom mass).",
         "test": {
             "category": "definition",
             "examples": {
                 "positives": [
+                    "C1=COC(=C1)C=C(S(=O)(=O)C(F)(F)F)S(=O)(=O)C(F)(F)F",
+                    "COC(=C(F)Cl)F",
                     "C(=O)(C(F)(F)Cl)C(F)(F)Cl",
                     "COC(C(OC(C(=O)C(F)(F)F)(F)F)F)(F)F",
                     "C(C(=O)CC(C(=O)C(F)(F)F)(F)F)C(C(=O)C(F)(F)F)(F)F",
@@ -160,9 +162,7 @@
                 ],
                 "negatives": [
                     "CCCCC(CC(C(F)(F)Br)(F)Cl)Br",
-                    "C(C(OC(Cl)(Cl)Cl)(F)F)(F)Cl",
-                    "C1=COC(=C1)C=C(S(=O)(=O)C(F)(F)F)S(=O)(=O)C(F)(F)F",
-                    "COC(=C(F)Cl)F"
+                    "C(C(OC(Cl)(Cl)Cl)(F)F)(F)Cl"
                 ]
             }
         }

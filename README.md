@@ -798,6 +798,8 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+- **Version 3.4.3**: Fixed ratio error, specific to PFASSTRUCTv5
+
 - **Version 3.4.2**: Fixed ambiguity with OPPT 2023.
 
 - **Version 3.4.1**: Added generic embedding for non-halogenated specific compounds which includes wildcard-components functional groups and halogen component size. Fixed H components and added cyclic and aryl H components.
