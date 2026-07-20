@@ -231,8 +231,8 @@ class PFASDefinition:
         
         return formula
     
-    def _check_fluorine_ratio(self, formula: Dict[str, int], include_hydrogen: bool) -> bool:
-        """Check if the fluorine ratio in a molecular formula meets the threshold.
+    def _compute_fluorine_ratio(self, formula: Dict[str, int], include_hydrogen: bool) -> float:
+        """Compute the mass-weighted fluorine ratio of a molecular formula.
 
         Mass-weighted (F mass / total mass):
         `fluorine_ratio = F_mass / (molecular_weight - H_mass)`.
@@ -248,13 +248,8 @@ class PFASDefinition:
 
         Returns
         -------
-        bool
-            True if (F_mass / total_mass) >= self.fluorineRatio, False otherwise
-
-        Notes
-        -----
-        - Returns False if total_mass is 0
-        - Formula with no fluorine (F_count=0) will fail unless fluorineRatio=0
+        float
+            F_mass / total_mass, or 0.0 if total_mass is 0
         """
         from rdkit.Chem import GetPeriodicTable
         pt = GetPeriodicTable()
@@ -268,9 +263,22 @@ class PFASDefinition:
             total_mass = sum(count * pt.GetAtomicWeight(sym) for sym, count in formula.items() if sym != 'H')
 
         if total_mass == 0:
-            return False
+            return 0.0
 
-        ratio = f_mass / total_mass
+        return f_mass / total_mass
+
+    def _check_fluorine_ratio(self, formula: Dict[str, int], include_hydrogen: bool) -> bool:
+        """Check if the fluorine ratio in a molecular formula meets the threshold.
+
+        Thin boolean wrapper around `_compute_fluorine_ratio`, kept for backward
+        compatibility with any external callers of this (nominally private) method.
+
+        Returns
+        -------
+        bool
+            True if (F_mass / total_mass) >= self.fluorineRatio, False otherwise
+        """
+        ratio = self._compute_fluorine_ratio(formula, include_hydrogen)
         return ratio >= self.fluorineRatio
     
     def test(self, test_data=None):

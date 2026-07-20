@@ -146,15 +146,20 @@ class DefinitionTestWorker(Worker):
             self.progress.emit(50)
 
             matched = parse_definitions_in_mol(mol)
-            matched_ids = {d.id for d in matched}
+            matched_details = {pdef.id: details for pdef, details in matched}
 
             results = []
             for d in definitions:
+                details = matched_details.get(d.id)
                 results.append({
                     "id": d.id,
                     "name": d.name,
                     "description": d.description,
-                    "passed": d.id in matched_ids,
+                    "passed": d.id in matched_details,
+                    "smarts_match": details["smarts_match"] if details else False,
+                    "fluorine_ratio": details["fluorine_ratio"] if details else None,
+                    "fluorine_ratio_threshold": d.fluorineRatio,
+                    "ratio_match": details["ratio_match"] if details else False,
                 })
 
             self.progress.emit(100)

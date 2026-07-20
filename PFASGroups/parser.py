@@ -179,12 +179,21 @@ def parse_definitions_in_mol(mol, **kwargs):
     pfas_definitions = kwargs.get('pfas_definitions')
     for pdef in pfas_definitions:
         matched = False
+        best_details = None
         for mol in frags:
-            if pdef.applies_to_molecule(mol_or_smiles=mol, **kwargs) is True:
+            details = pdef.match_details(mol_or_smiles=mol, **kwargs)
+            # Keep the most informative details across fragments: prefer the
+            # fragment that actually matched, and among matches prefer the one
+            # with the higher fluorine ratio (most representative of the PFAS
+            # fragment rather than an unrelated counterion/fragment).
+            if details['applies'] is True:
                 matched = True
-                break
+                if best_details is None or (details['fluorine_ratio'] or 0) > (best_details['fluorine_ratio'] or 0):
+                    best_details = details
+            elif best_details is None:
+                best_details = details
         if matched is True:
-            definition_matches.append(pdef)
+            definition_matches.append((pdef, best_details))
     return definition_matches
 
 
@@ -696,9 +705,7 @@ def setup_halogen_groups_database(
 ):
     """Set up halogen groups metadata tables in a database.
 
-    This function creates tables to store halogen group definitions and SMARTS patterns,
-    similar to the load_pfas_groups function in zeropmdb.
-
+    This function creates tables to store halogen group definitions and SMARTS patterns.
     Parameters
     ----------
     conn : str or sqlalchemy.engine.Engine
@@ -873,6 +880,12 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         - ``'id'``: integer definition ID
         - ``'definition_name'``: definition name
         - ``'halogen'``: ``'F'`` (definitions only match when F is enabled)
+        - ``'smarts_match'``: bool, whether any of the definition's SMARTS patterns matched
+        - ``'fluorine_ratio'``: float or None, the computed mass-weighted F ratio
+          (None if this definition has no fluorineRatio threshold)
+        - ``'fluorine_ratio_threshold'``: float or None, the definition's configured threshold
+        - ``'ratio_match'``: bool, whether the ratio met the threshold (True if no
+          threshold is defined)
     """
 
     real_halogens, include_h_components, include_wildcards = _normalize_halogen_controls(halogens)
@@ -1130,7 +1143,12 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                             'id': definition.id,
                             'definition_name': definition.name,
                             'type':'PFASdefinition',
-                            'halogen': 'F'} for definition in definitions])
+                            'halogen': 'F',
+                            'smarts_match': details['smarts_match'],
+                            'fluorine_ratio': details['fluorine_ratio'],
+                            'fluorine_ratio_threshold': details['fluorine_ratio_threshold'],
+                            'ratio_match': details['ratio_match'],
+                            } for definition, details in definitions])
     # Convert results to list format (one entry per molecule)
     results_list = [r for r in results.values()]
     # Format output based on requested format
@@ -1154,7 +1172,11 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                         'smiles': entry['smiles'],
                         'match_id': match['match_id'],
                         'match_name': match['definition_name'],
-                        'match_type': match['type']
+                        'match_type': match['type'],
+                        'smarts_match': match.get('smarts_match'),
+                        'fluorine_ratio': match.get('fluorine_ratio'),
+                        'fluorine_ratio_threshold': match.get('fluorine_ratio_threshold'),
+                        'ratio_match': match.get('ratio_match'),
                     })
         df = pd.DataFrame(rows)
         return df.to_csv(index=False) if output_format == 'csv' else df
