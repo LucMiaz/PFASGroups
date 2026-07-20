@@ -63,12 +63,12 @@
         "id": 3,
         "name": "OPPT 2023",
         "smarts": [
-            "[#6H0X4](F)(F)[#6H0X4](F)",
-            "[#6](F)(F)([F,#8,#6H0X4])[#8][#6](F)(F)[F,#8,#6H0X4]",
-            "[#6](F)(F)(F)[#6]([#6](F)(F)F)([F,#6H0X4])[F,#6H0X4]"
+            "[#6X4](F)(F)[#6X4](F)",
+            "[#6](F)(F)([F,#8,#6X4])[#8][#6](F)(F)[F,#8,#6X4]",
+            "[#6](F)(F)(F)[#6]([#6](F)(F)F)([F,#6X4])[F,#6X4]"
         ],
         "fluorineRatio": null,
-        "description": "Three inclusion criteria.",
+        "description": "Three inclusion criteria. R groups are unconstrained per the final 2023 rule (40 CFR 705.3) -- the 2021 proposal's \"none of the R groups can be hydrogen\" language was dropped when finalized, so R positions (and the non-defining valence on the backbone CF2/CF carbons) may be H. Validated against EPA's published PFAS8a7v3 CompTox list: 99.96% coverage (13,035/13,040) with H unconstrained, vs 91.50% with H0 enforced.",
         "test": {
             "category": "definition",
             "examples": {
@@ -77,13 +77,13 @@
                     "C(F)(F)C(F)(F)C(F)(F)C",
                     "C(F)(F)(F)C(F)(F)OC(F)(F)C(F)(F)F",
                     "C(F)(F)(C(F)(F)F)C(F)(F)C(F)(F)F",
-                    "C(F)(F)(F)C(OC)(F)C(F)(F)F"
+                    "C(F)(F)(F)C(OC)(F)C(F)(F)F",
+                    "FC(F)C(F)F"
                 ],
                 "negatives": [
                     "CCCCCC",
                     "C(F)CCC",
                     "CC(F)(F)C",
-                    "FC(F)C(F)F",
                     "C1=CC=CC=C1"
                 ]
             }
@@ -163,6 +163,29 @@
                     "C(C(OC(Cl)(Cl)Cl)(F)F)(F)Cl",
                     "C1=COC(=C1)C=C(S(=O)(=O)C(F)(F)F)S(=O)(=O)C(F)(F)F",
                     "COC(=C(F)Cl)F"
+                ]
+            }
+        }
+    },
+    {
+        "id": 6,
+        "name": "OPPT 2021",
+        "smarts": [
+            "[#6H0X4](F)(F)[#6H0X4](F)"
+        ],
+        "fluorineRatio": null,
+        "description": "R-(CF2)-CF(R')R'', where the CF2 and CF moieties are saturated carbons and none of the R groups can be hydrogen (2021 proposed definition; superseded by OPPT 2023, which drops this H restriction).",
+        "test": {
+            "category": "definition",
+            "examples": {
+                "positives": [
+                    "C(F)(F)(F)C(F)(F)C(F)(F)F"
+                ],
+                "negatives": [
+                    "CCCCCC",
+                    "C(F)CCC",
+                    "CC(F)(F)C",
+                    "C1=CC=CC=C1"
                 ]
             }
         }
