@@ -6,6 +6,10 @@ A comprehensive cheminformatics package for automated detection, classification,
 
 PFASGroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
 
+## Citation
+
+Luc T. Miaz, Ian T. Cousins, Ida Rahu; PFASGroups: An Open-Source Framework for Automated Identification, Structural Classification, and Prioritization of Per- and Polyfluoroalkyl Substances. J. Chem. Inf. Model. 27 July 2026; 66 (14): 7813–7820. [DOI: 10.1021/acs.jcim.6c01058](https://doi.org/10.1021/acs.jcim.6c01058)
+
 ## Key Features
 
 ### Core Capabilities
