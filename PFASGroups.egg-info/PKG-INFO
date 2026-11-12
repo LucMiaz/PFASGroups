@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: PFASGroups
-Version: 3.4.5
+Version: 3.4.6
 Summary: A comprehensive cheminformatics package for automated detection, classification, and analysis of halogenated substances, with a focus on per- and polyfluoroalkyl substances (PFAS). Combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding to identify 119 groups. Supports creations of embeddings with graph metrics for Machine Learning workflows.
 Author: Luc T. Miaz
 Author-email: "Luc T. Miaz" <luc@miaz.ch>
@@ -53,6 +53,10 @@ A comprehensive cheminformatics package for automated detection, classification,
 ## Overview
 
 PFASGroups combines SMARTS pattern matching, molecular formula constraints, and graph-based pathfinding (using RDKit and NetworkX) to identify and classify PFAS compounds. The package enables systematic PFAS universe mapping and environmental monitoring applications.
+
+## Citation
+
+Luc T. Miaz, Ian T. Cousins, Ida Rahu; PFASGroups: An Open-Source Framework for Automated Identification, Structural Classification, and Prioritization of Per- and Polyfluoroalkyl Substances. J. Chem. Inf. Model. 27 July 2026; 66 (14): 7813–7820. [DOI: 10.1021/acs.jcim.6c01058](https://doi.org/10.1021/acs.jcim.6c01058)
 
 ## Key Features
 
@@ -846,6 +850,8 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+- **Version 3.4.6**: Add choice for F-ratio (count or mass, with or without H). Set right default for PFASSTRUCTv5
+
 - **Version 3.4.5**: Fixed difluoromethane in definitions.
 
 - **Version 3.4.4**: Add fluorine ratio and structural match to returned results (for debugging or diplay).
