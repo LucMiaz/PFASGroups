@@ -802,6 +802,8 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 - Integration with pandas and scikit-learn
 
 ## Summary of changes by version
+- **Version 3.4.6**: Add choice for F-ratio (count or mass, with or without H). Set right default for PFASSTRUCTv5
+
 - **Version 3.4.5**: Fixed difluoromethane in definitions.
 
 - **Version 3.4.4**: Add fluorine ratio and structural match to returned results (for debugging or diplay).
