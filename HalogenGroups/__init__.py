@@ -54,7 +54,12 @@ from PFASGroups import (
     generate_fingerprint as _generate_fingerprint_base,
 )
 
-__version__ = "3.1.0"
+try:
+    # Single source of truth: the version in pyproject.toml / setup.cfg.
+    from importlib.metadata import PackageNotFoundError as _PNF, version as _version
+    __version__ = _version("PFASGroups")
+except _PNF:  # imported from a source tree that was never installed
+    __version__ = "unknown"
 
 _ALL_HALOGENS = ['F', 'Cl', 'Br', 'I']
 

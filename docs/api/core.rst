@@ -1,4 +1,4 @@
-﻿Core API
+Core API
 ========
 
 .. currentmodule:: PFASGroups
@@ -10,10 +10,10 @@
    # Parse — returns PFASEmbeddingSet
    results = parse_smiles(["CCCC(F)(F)F", "ClCCCl"])
 
-   # Fingerprint — returns (numpy.ndarray, dict)
-   fps, info = generate_fingerprint(["CCCC(F)(F)F", "ClCCCl"])
-   print(fps.shape)             # (2, 116)   — 116 groups, F only, binary
-   print(info['group_names'][:2])
+   # Fingerprint — returns (EmbeddingArray, list of column names)
+   fps, cols = generate_fingerprint(["CCCC(F)(F)F", "ClCCCl"])
+   print(fps.shape)             # (2, 118)   — one binary column per group
+   print(cols[:2])
 
 .. contents:: Contents
    :local:
@@ -55,11 +55,13 @@ parse_smiles
      - ``None``
      - Max atoms for which EGR is computed; ``None`` = unlimited
    * - ``include_PFAS_definitions``
-     - ``False``
-     - Classify each molecule against the five PFAS definitions
-   * - ``halogen_groups``
-     - ``None``
-     - Custom list of :class:`HalogenGroup` instances
+     - ``True``
+     - Classify each molecule against the six PFAS definitions (fluorine only)
+   * - ``pfas_groups``
+     - all compiled groups
+     - Custom list of :class:`HalogenGroup` instances.  Unknown keywords are
+       ignored, so a misspelt name (e.g. ``halogen_groups``) silently falls
+       back to the default groups
 
 **Returns:** :class:`PFASEmbeddingSet`
 
@@ -129,30 +131,32 @@ generate_fingerprint
      - ``'per'``
      - ``'per'``, ``'poly'``, or ``None``
 
-**Returns:** ``(numpy.ndarray of shape (n_mols, n_cols), dict)``
+**Returns:** ``(EmbeddingArray of shape (n_mols, n_cols), list of column names)``
 
-The second return value is a dict with keys:
-``group_names`` (list), ``group_ids`` (list), ``selected_indices`` (list),
-``halogens`` (list), ``saturation`` (str or None).
+``generate_fingerprint`` parses the SMILES with ``halogens`` and
+``saturation`` and returns ``results.to_array(component_metrics=...)``, one
+column per group and metric.  For group selection or one block of columns per
+halogen, parse once and call :meth:`PFASEmbeddingSet.to_array` (below);
+``selected_groups`` and ``representation`` are currently accepted but not used.
 
 .. code-block:: python
 
    from PFASGroups import generate_fingerprint
 
-   # Default: 116-col binary, F only
-   fps, info = generate_fingerprint(["CCCC(F)(F)F", "ClCCCl"])
-   print(fps.shape)                   # (2, 116)
-   print(info['group_names'][:2])     # list of group name strings
-   print(info['halogens'])            # ['F']
+   from PFASGroups import parse_smiles
 
-   # OECD groups only (indices 0-27)
-   fps_oecd, _ = generate_fingerprint(["CCCC(F)(F)F"], selected_groups=range(0, 28))
-   print(fps_oecd.shape)              # (1, 28)
+   # Default: binary, one column per group
+   fps, cols = generate_fingerprint(["CCCC(F)(F)F", "ClCCCl"])
+   print(fps.shape)                   # (2, 118)
+   print(cols[:2])                    # ['OECD perfluoroalkyl alcohols [binary]', ...]
 
-   # Multi-halogen: 4 × 116 = 464 columns
-   fps_all, _ = generate_fingerprint(["CCCC(F)(F)F"],
-                                      halogens=['F', 'Cl', 'Br', 'I'])
-   print(fps_all.shape)               # (1, 464)
+   # Count or max-component encoding
+   fps_max, _ = generate_fingerprint(["CCCC(F)(F)F"], count_mode="max_component")
+
+   # OECD groups only, or one block per halogen: use to_array
+   results = parse_smiles(["CCCC(F)(F)F"], halogens=['F', 'Cl', 'Br', 'I'])
+   print(results.to_array(group_selection='oecd').shape)            # (1, 28)
+   print(results.to_array(halogens=['F', 'Cl', 'Br', 'I']).shape)   # (1, 468)
 
 Group library
 --------------
@@ -163,14 +167,14 @@ get_compiled_HalogenGroups
 .. autofunction:: get_compiled_HalogenGroups
 
 Returns a list of compiled :class:`HalogenGroup` instances
-(116 groups with ``compute=True``):
+(118 groups with ``compute=True``):
 
 .. code-block:: python
 
    from PFASGroups import get_compiled_HalogenGroups
 
    groups = get_compiled_HalogenGroups()
-   print(len(groups))      # 116
+   print(len(groups))      # 118
    print(groups[0].name)
 
 get_HalogenGroups

@@ -1,4 +1,4 @@
-﻿Quickstart
+Quickstart
 ==========
 
 Five-minute overview of the most common PFASGroups workflows.
@@ -9,7 +9,7 @@ Five-minute overview of the most common PFASGroups workflows.
 
    results = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
    arr, cols = results.to_array(), results.column_names()
-   print(arr.shape)   # (2, 114) — 114 groups compiled by default for fluorine-only
+   print(arr.shape)   # (2, 118) — one column per compiled group
 
 .. contents:: Contents
    :local:
@@ -62,9 +62,16 @@ Converting to a DataFrame
 
 .. code-block:: python
 
-   df = results.to_dataframe()
-   print(df.columns.tolist())
-   # ['smiles', 'inchi', 'group_name', 'group_id', ...]
+   import pandas as pd
+
+   # One row per molecule: SMILES, category and total component size
+   df = results.classify()
+
+   # One row per group match
+   df_matches = pd.DataFrame(
+       [{"smiles": mol.smiles, "group_id": m.group_id, "group_name": m.group_name,
+         "n_components": m["num_components"]}
+        for mol in results for m in mol.matches if m.is_group])
 
 Generating embeddings
 ---------------------
@@ -206,7 +213,7 @@ Command-line usage
    # Generate fingerprints
    pfasgroups fingerprint input.csv --output fps.csv
 
-   # List all 119 group names (114 compiled by default for fluorine-only)
+   # List all 119 groups (118 compiled; 'telomers' is an aggregate)
    pfasgroups list-groups
 
 See :doc:`cli` for the full CLI reference.

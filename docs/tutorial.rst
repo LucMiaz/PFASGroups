@@ -1,4 +1,4 @@
-﻿Tutorial
+Tutorial
 ========
 
 .. code-block:: python
@@ -6,7 +6,7 @@
    from PFASGroups import parse_smiles, prioritise_molecules, plot_HalogenGroups
 
    results  = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
-   arr      = results.to_array()                     # (2, 114) binary embedding
+   arr      = results.to_array()                     # (2, 118) binary embedding
    pca      = results.perform_pca(color_by='top_group')
    ranked   = prioritise_molecules(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
 
@@ -76,7 +76,8 @@ Iterating over results
 .. code-block:: python
 
    for mol in results:
-       flag = " (PFAS)" if any(m.is_PFAS for m in mol.matches) else ""
+       # PFAS = matches at least one PFAS definition (here: OECD, id 1)
+       flag = " (PFAS)" if any(m.is_definition and m["id"] == 1 for m in mol.matches) else ""
        print(f"{mol.smiles}: {len(mol.matches)} match(es){flag}")
 
 Drilling into a single match
@@ -85,15 +86,14 @@ Drilling into a single match
 .. code-block:: python
 
    mol   = results[0]
-   match = mol.matches[0]
+   match = next(m for m in mol.matches if m.is_group)   # matches also hold definitions
 
    print("Group   :", match.group_name)
    print("Group ID:", match.group_id)
-   print("Is PFAS :", match.is_PFAS)
-   print("Category:", match.group_category)
+   print("Halogen :", match["halogen"])
 
    for i, comp in enumerate(match.components):
-       print(f"  Component {i}: atoms {comp.atoms}")
+       print(f"  Component {i}: atoms {comp.atoms}, size {comp.size}")
        print(f"  EGR: {comp.effective_graph_resistance}")
 
 Exporting to DataFrame
@@ -101,10 +101,15 @@ Exporting to DataFrame
 
 .. code-block:: python
 
-   df = results.to_dataframe()
-   # columns: smiles, inchi, group_name, group_id, is_PFAS,
-   #          group_category, n_components, component_atoms, …
-   df.to_csv("results.csv", index=False)
+   import pandas as pd
+
+   rows = [{"smiles": mol.smiles, "group_id": m.group_id, "group_name": m.group_name,
+            "halogen": m["halogen"], "n_components": m["num_components"]}
+           for mol in results for m in mol.matches if m.is_group]
+   pd.DataFrame(rows).to_csv("results.csv", index=False)
+
+   # or one row per molecule
+   results.classify().to_csv("results_by_molecule.csv", index=False)
 
 Parsing RDKit Mol objects
 --------------------------
@@ -200,21 +205,21 @@ object — no re-parsing needed.
 
 .. code-block:: python
 
-   # Default: binary encoding, all groups → shape (n_mols, 114)
+   # Default: binary encoding, all groups → shape (n_mols, 118)
    arr = results.to_array()
-   print(arr.shape)      # (29, 114)
+   print(arr.shape)      # (29, 118)
    print(arr.smiles)     # list of SMILES strings, one per row
 
    # OECD groups only
-   arr_oecd = results.to_array(group_selection='oecd')          # (n, 27)
+   arr_oecd = results.to_array(group_selection='oecd')          # (n, 28)
 
    # Count or max-component size encoding
    arr_cnt  = results.to_array(component_metrics=['count'])
    arr_max  = results.to_array(component_metrics=['max_component'])
 
    # Preset 'best': binary + effective graph resistance
-   # (best mean Tanimoto in benchmarks — 2 × 114 columns)
-   arr_best = results.to_array(preset='best')                   # (n, 228)
+   # (best mean Tanimoto in benchmarks — 2 × 118 columns)
+   arr_best = results.to_array(preset='best')                   # (n, 236)
 
    # Stacked multi-metric embedding
    arr_multi = results.to_array(
@@ -406,9 +411,9 @@ the default:
    # Explicit multi-halogen parse via PFASGroups
    r_mh = parse_smiles(smiles_list, halogens=['F', 'Cl', 'Br', 'I'])
 
-   # Multi-halogen embedding: 114 groups × 4 halogens = 456 columns
+   # Multi-halogen embedding: one block of 117 columns per halogen = 468 columns
    arr_mh = r_mh.to_array(halogens=['F', 'Cl', 'Br', 'I'])
-   print(arr_mh.shape)   # (29, 456)
+   print(arr_mh.shape)   # (29, 468)
 
 See :doc:`halogengroups` for the full multi-halogen reference.
 
@@ -417,15 +422,15 @@ PFAS definition screening
 
 .. code-block:: python
 
-   results_defs = parse_smiles(smiles_list, include_PFAS_definitions=True)
+   results_defs = parse_smiles(smiles_list)   # definitions are included by default
 
    for mol in results_defs:
-       if mol.pfas_definition_matches:
-           names = [d.definition_name for d in mol.pfas_definition_matches]
+       names = [m["definition_name"] for m in mol.matches if m.is_definition]
+       if names:
            print(mol.smiles, "→", names)
 
-Available definitions: OECD 2021, EU REACH, OPPT 2023, UK Environment Agency,
-PFASSTRUCTv5.  See :doc:`pfas_definitions` for details.
+Available definitions: OECD, EU PFAS Restriction, OPPT 2023, UK PFAS
+Definition, PFASSTRUCTv5 and OPPT 2021.  See :doc:`pfas_definitions` for details.
 
 Loading and inspecting groups
 ------------------------------
@@ -435,9 +440,9 @@ Loading and inspecting groups
    from PFASGroups import get_compiled_HalogenGroups
 
    groups = get_compiled_HalogenGroups()
-   print(len(groups))        # 114 compiled groups (plus aggregate groups)
+   print(len(groups))        # 118 compiled groups (plus the 'telomers' aggregate)
 
    for g in groups[:5]:
-       print(g.name, g.category, g.id)
+       print(g.id, g.name)
 
 See :doc:`customization` for how to add custom group definitions.

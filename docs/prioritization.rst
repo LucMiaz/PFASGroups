@@ -1,10 +1,14 @@
 ﻿Prioritization
 ==============
 
-:func:`~PFASGroups.prioritise_molecules` ranks a set of molecules by
-their structural novelty.  It is useful for selecting a structurally diverse
-subset from a large chemical library, or for identifying which molecules in a
-test set are most different from a reference set.
+:func:`~PFASGroups.prioritise_molecules` (alias
+:func:`~PFASGroups.prioritize_molecules`) ranks a set of molecules for
+screening, in one of two modes:
+
+* **without a reference**, by their intrinsic fluorination: total size of the
+  fluorinated components and size of the largest ones;
+* **with a reference set**, by how similar their group profile is to the
+  reference (for example a list of known priority PFAS).
 
 .. contents:: Contents
    :local:
@@ -25,116 +29,133 @@ Basic usage
        "BrCCBr",
    ]
 
-   ranking = prioritise_molecules(molecules)
+   ranked, scores = prioritise_molecules(molecules)
 
-``ranking`` is a list of ``(smiles, score)`` tuples, sorted from highest to
-lowest novelty score.
-
-.. code-block:: python
-
-   for smiles, score in ranking:
-       print(f"{smiles:40s}  {score:.4f}")
-
-Novelty against a reference set
----------------------------------
-
-To measure novelty *relative to* a set of known molecules supply the
-``reference`` parameter:
+``ranked`` is a :class:`~PFASGroups.PFASEmbeddingSet` sorted from highest to
+lowest priority, and ``scores`` a NumPy array of the scores in the same order:
 
 .. code-block:: python
 
-   known = ["CCCC(F)(F)F", "FC(F)(F)C(=O)O"]
-   new_candidates = ["FCCC(F)(F)F", "ClCCCl", "BrCCBr"]
+   for mol, score in zip(ranked, scores):
+       print(f"{mol.smiles:40s}  {score:.1f}")
 
-   ranking = prioritise_molecules(new_candidates, reference=known)
+With ``return_scores=False`` only the sorted ``PFASEmbeddingSet`` is returned.
+``molecules`` can also be a list of RDKit molecules or an already parsed
+``PFASEmbeddingSet``, which avoids parsing twice.
 
-Molecules most dissimilar from the reference set receive the highest scores.
+Intrinsic prioritization (no reference)
+---------------------------------------
 
-Scoring formula
-----------------
-
-The score for molecule :math:`i` is computed from two components:
-
-**Intra-set distance** :math:`d_\text{self}(i)`:
-
-The average Tanimoto distance from molecule :math:`i` to all other molecules
-in the query set:
+Without a reference the score of molecule :math:`i` is
 
 .. math::
 
-   d_\text{self}(i) = \frac{1}{N-1} \sum_{j \neq i} \left(1 - T_{ij}\right)
+   \text{score}(i) = a \cdot \sum_k s_{ik} + b \cdot P_p(s_{i\cdot})
 
-**Reference distance** :math:`d_\text{ref}(i)` (when a reference set is given):
+where :math:`s_{ik}` are the sizes (number of halogenated carbons) of the
+fluorinated components of molecule :math:`i` and :math:`P_p` is their
+``percentile``-th percentile.  ``a`` weights the total fluorination and ``b``
+the presence of long chains; molecules without a fluorinated component score 0.
 
-The average Tanimoto distance from molecule :math:`i` to the top
-``percentile`` percent of the reference set:
+.. code-block:: python
+
+   # Emphasise long chains
+   ranked, scores = prioritise_molecules(molecules, a=0.5, b=2.0, percentile=95)
+
+   # Emphasise total fluorine content
+   ranked = prioritise_molecules(molecules, a=2.0, b=0.5, return_scores=False)
+
+Similarity to a reference set
+-----------------------------
+
+With ``reference``, each molecule is embedded with
+:meth:`~PFASGroups.PFASEmbeddingSet.to_array` and scored by the cosine
+similarity between its vector and the mean vector of the reference set:
 
 .. math::
 
-   d_\text{ref}(i) = \frac{1}{\lvert R_p \rvert}
-       \sum_{r \in R_p} \left(1 - T_{ir}\right)
+   \text{score}(i) = \frac{\mathbf{f}_i \cdot \bar{\mathbf{f}}_\text{ref}}
+                          {\lVert \mathbf{f}_i \rVert \, \lVert \bar{\mathbf{f}}_\text{ref} \rVert}
 
-**Combined score**:
+Scores lie in :math:`[0, 1]`; molecules that activate the same groups as the
+reference rank highest, and molecules without any group match score 0.
 
-.. math::
+.. code-block:: python
 
-   \text{score}(i) = a \cdot d_\text{self}(i) + b \cdot d_\text{ref}(i)
+   known_priority = ["FC(F)(F)C(F)(F)C(F)(F)C(=O)O"]
+   candidates = ["FC(F)(F)C(F)(F)C(=O)O", "FC(F)(F)C(F)(F)S(=O)(=O)O", "ClCCCl"]
 
-where :math:`a` and :math:`b` are weight parameters (both default to 1.0).
+   ranked, scores = prioritise_molecules(candidates, reference=known_priority)
+   print(ranked[0].smiles)   # the perfluoroalkyl carboxylic acid ranks first
+
+``group_selection`` and ``count_mode`` choose the embedding used for the
+comparison.
 
 Parameters
 ----------
 
-.. code-block:: python
-
-   prioritise_molecules(
-       molecules,
-       reference=None,    # optional list of reference SMILES
-       a=1.0,             # weight for intra-set distance
-       b=1.0,             # weight for reference distance
-       percentile=90.0,   # percentile cut-off for reference set
-       halogens='F',      # halogens to include in fingerprint
-       saturation=None,   # 'saturated', 'unsaturated', or None
-       component_metrics=['max_component'],  # fingerprint component metrics
-       return_scores=True,                   # if False, return sorted smiles only
-       ascending=False,   # if True, lowest score first
-   )
-
 .. list-table::
    :header-rows: 1
-   :widths: 25 75
+   :widths: 25 20 55
 
    * - Parameter
+     - Default
      - Description
    * - ``molecules``
-     - List of SMILES strings to rank
+     - *required*
+     - SMILES strings, RDKit molecules or a ``PFASEmbeddingSet``
    * - ``reference``
-     - Optional reference SMILES list.  If ``None`` only intra-set distance is
-       used (``a`` controls weighting, ``b`` is ignored).
-   * - ``a``
-     - Weight applied to the intra-set distance component (default 1.0)
-   * - ``b``
-     - Weight applied to the reference distance component (default 1.0).
-       Has no effect when ``reference=None``.
-   * - ``percentile``
-     - Only molecules in the top ``percentile`` percent of the reference set
-       (by distance to the query molecule) are used in :math:`d_\text{ref}`
-       (default 90.0)
+     - ``None``
+     - Reference molecules (same types as ``molecules``); switches to the
+       similarity mode
+   * - ``group_selection``
+     - ``'all'``
+     - Groups in the embedding (reference mode): ``'all'``, ``'oecd'``,
+       ``'generic'``, ``'telomers'`` or ``'generic+telomers'``
+   * - ``count_mode``
+     - ``'max_component'``
+     - Embedding encoding (reference mode): ``'binary'``, ``'count'`` or
+       ``'max_component'``
    * - ``halogens``
-     - Halogen(s) used to build fingerprints for distance computation
+     - ``'F'``
+     - Halogens used when parsing the reference
    * - ``saturation``
-     - Saturation filter passed to :func:`~PFASGroups.generate_fingerprint`
-   * - ``component_metrics``
-     - List of metrics for fingerprints: ``['max_component']``, ``['count']``,
-       ``['binary']``, or combined e.g. ``['binary', 'effective_graph_resistance']``
+     - ``None``
+     - ``'per'``, ``'poly'`` or ``None`` (both) when parsing the reference
+   * - ``a``
+     - ``1.0``
+     - Weight of the total component size (intrinsic mode)
+   * - ``b``
+     - ``1.0``
+     - Weight of the component-size percentile (intrinsic mode)
+   * - ``percentile``
+     - ``90.0``
+     - Percentile of the component sizes (intrinsic mode)
    * - ``return_scores``
-     - If ``True`` (default), return ``[(smiles, score), …]``.  If ``False``,
-       return ``[smiles, …]``.
+     - ``True``
+     - Return ``(ranked, scores)``; if ``False``, only ``ranked``
    * - ``ascending``
-     - Sort order.  Default ``False`` = highest novelty first.
+     - ``False``
+     - If ``True``, lowest priority first
+   * - ``progress``
+     - ``False``
+     - Show a progress bar while parsing
 
-Example: selecting a diverse subset
--------------------------------------
+Summary statistics
+------------------
+
+:func:`~PFASGroups.get_priority_statistics` summarises a ranking (mean,
+spread, top-*n* molecules and their most common groups):
+
+.. code-block:: python
+
+   from PFASGroups import get_priority_statistics
+
+   stats = get_priority_statistics(ranked, scores, top_n=3)
+   print(stats["score_mean"], stats["top_n_smiles"])
+
+Example: shortlist from a CSV file
+----------------------------------
 
 .. code-block:: python
 
@@ -142,9 +163,7 @@ Example: selecting a diverse subset
    from PFASGroups import prioritise_molecules
 
    df = pd.read_csv("pfas_candidates.csv")
-   smiles = df["SMILES"].tolist()
+   ranked, scores = prioritise_molecules(df["SMILES"].tolist())
 
-   ranking = prioritise_molecules(smiles, halogens='F')
-
-   # Take the top-50 most novel structures
-   top50 = [s for s, _ in ranking[:50]]
+   # Top 50 by intrinsic fluorination
+   top50 = [mol.smiles for mol in ranked[:50]]

@@ -409,8 +409,8 @@ def parse_smiles(smiles, output_format='list',
     """
     Parse SMILES string(s) and return halogen group information.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     smiles : str or list of str
         Single SMILES string or list of SMILES strings
     output_format : str, default 'list'
@@ -457,8 +457,8 @@ def parse_smiles(smiles, output_format='list',
     **kwargs : dict
         Additional parameters (pfas_groups, componentSmartss, etc.)
 
-    Returns:
-    --------
+    Returns
+    -------
     list, pandas.DataFrame, or str
         Depends on output_format parameter (or 2-tuple when verbose=True)
     """
@@ -822,8 +822,8 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
     """
     Parse RDKit molecule(s) and return halogen group information.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     mols : list of rdkit.Chem.Mol
         Single RDKit molecule or list of molecules
     output_format : str, default 'list'
@@ -853,10 +853,10 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
     progress : bool, default False
         If True, display a tqdm progress bar during parsing.
     **kwargs : dict
-        Additional parameters (halogen_groups, componentSmartss, etc.)
+        Additional parameters (pfas_groups, componentSmartss, etc.)
 
-    Returns:
-    --------
+    Returns
+    -------
     list, pandas.DataFrame, or str
         Depends on output_format parameter.
         
@@ -865,6 +865,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         with the following structure:
         
         For **HalogenGroup** matches (``'type': 'HalogenGroup'``):
+
         - ``'id'``: integer group ID
         - ``'group_name'``: group name
         - ``'halogen'``: str or list — halogen(s) in components
@@ -872,11 +873,13 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         - ``'match_count'``, ``'components'``, ``'num_components'``, etc.
         
         For **WildcardGroup** matches (``'type': 'WildcardGroup'``):
+
         - ``'id'``: integer group ID
         - ``'group_name'``: group name
         - ``'halogen'``: ``'*'`` (wildcard pseudo-halogen)
         
         For **PFASdefinition** matches (``'type': 'PFASdefinition'``):
+
         - ``'id'``: integer definition ID
         - ``'definition_name'``: definition name
         - ``'halogen'``: ``'F'`` (definitions only match when F is enabled)

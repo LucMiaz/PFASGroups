@@ -1,4 +1,4 @@
-﻿Embedding Analysis
+Embedding Analysis
 ==================
 
 .. currentmodule:: PFASGroups
@@ -10,8 +10,8 @@
    results = parse_smiles(["CCCC(F)(F)F", "FC(F)(F)C(=O)O"])
    arr = results.to_array()
 
-   print(arr.shape)                        # (2, 112)  — 112 groups, F only, binary
-   cols = results.column_names()           # list of 112 column label strings
+   print(arr.shape)                        # (2, 118)  — one binary column per group
+   cols = results.column_names()           # list of 118 column label strings
 
    # PCA in two lines
    pca_result = results.perform_pca(n_components=2)
@@ -24,8 +24,7 @@ on the set to get a ``(n_mols, n_cols)`` numpy matrix, or call it on a single
 
 .. seealso::
 
-   :doc:`/ResultsFingerprint_Guide` — complete metric reference with formulas,
-   preset benchmarks, and group selection tables.
+   :doc:`../algorithm` — metric definitions, count modes and presets.
 
 .. contents:: Contents
    :local:
@@ -38,6 +37,7 @@ PFASEmbeddingSet
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
 
 Generating an embedding array
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -51,10 +51,10 @@ Via :meth:`~PFASGroups.PFASEmbeddingSet.to_array`:
    smiles = ["CCCC(F)(F)F", "FC(F)(F)C(=O)O", "OCCOCCO"]
    results = parse_smiles(smiles)
 
-   # Default: all 112 groups, fluorine only, binary encoding
+   # Default: all 118 groups, binary encoding
    arr = results.to_array()
-   print(arr.shape)                      # (3, 112)
-   cols = results.column_names()         # list of 112 column label strings
+   print(arr.shape)                      # (3, 118)
+   cols = results.column_names()         # list of 118 column label strings
 
    # OECD groups only, count mode
    arr_oecd = results.to_array(group_selection='oecd', component_metrics=['count'])
@@ -63,7 +63,7 @@ Via :meth:`~PFASGroups.PFASEmbeddingSet.to_array`:
    # Best-performing preset (binary + effective_graph_resistance)
    arr_best = results.to_array(preset='best')
    cols_best = results.column_names(preset='best')
-   print(arr_best.shape)                 # (3, 224)  — 112 groups × 2 metrics
+   print(arr_best.shape)                 # (3, 236)  — 118 groups × 2 metrics
 
    # Single-molecule embedding
    vec = results[0].to_array(preset='best')   # 1-D array, length 224
@@ -131,7 +131,8 @@ perform_tsne
 
 .. code-block:: python
 
-   result = results.perform_tsne(n_components=2, perplexity=5, plot=True)
+   # perplexity must be smaller than the number of molecules
+   result = results.perform_tsne(n_components=2, perplexity=min(30, len(results) - 1), plot=True)
    coords = result['transformed']
 
 **Parameters:**

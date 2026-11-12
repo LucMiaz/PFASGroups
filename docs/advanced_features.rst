@@ -171,12 +171,12 @@ Wildcard groups are **disabled by default**. Enable them by including ``'*'`` in
 
    smiles = "CCO"  # ethanol
 
-  # Without wildcards
-  results_no_wc = parse_smiles(smiles, halogens='F')
+   # Without wildcards
+   results_no_wc = parse_smiles(smiles, halogens='F')
    print(f"Matches (no wildcards): {len(results_no_wc[0].matches)}")
 
    # With wildcards
-  results_with_wc = parse_smiles(smiles, halogens='*')
+   results_with_wc = parse_smiles(smiles, halogens='*')
    print(f"Matches (with wildcards): {len(results_with_wc[0].matches)}")
 
    # Wildcard matches are present in the second set
@@ -204,12 +204,12 @@ When both are enabled, you can distinguish them by match_id prefix:
    # Molecule with both PFAS and functional group interest
    smiles = "FC(F)(F)C(F)(F)C(=O)O"  # TFA with carboxylic acid
 
-  results = parse_smiles(smiles, halogens=['F', '*'])
+   results = parse_smiles(smiles, halogens=['F', '*'])
    mol = results[0]
 
    # Separate by match type
-   halogen_matches = [m for m in mol.matches if not m.match_id.startswith('W')]
-   wildcard_matches = [m for m in mol.matches if m.match_id.startswith('W')]
+   halogen_matches = [m for m in mol.matches if not m['match_id'].startswith('W')]
+   wildcard_matches = [m for m in mol.matches if m['match_id'].startswith('W')]
 
    print(f"Halogen group matches ({len(halogen_matches)}):")
    for m in halogen_matches:
@@ -284,7 +284,7 @@ You can filter matches to only those in specific wildcard groups:
        ("C#C", "alkyne"),
    ]
 
-    results = parse_smiles([smi for smi, _ in test_molecules], halogens='*')
+   results = parse_smiles([smi for smi, _ in test_molecules], halogens='*')
 
    for (smi, desc), mol in zip(test_molecules, results):
        print(f"{desc:20} ({smi:15}): ", end="")
@@ -354,10 +354,10 @@ You can analyze molecules using both features simultaneously:
    mol = Chem.MolFromSmiles(smiles)
 
    # 1. Detect all functional groups and PFAS patterns
-    results = parse_smiles(smiles, halogens=['F', '*'])
+   results = parse_smiles(smiles, halogens=['F', '*'])
    print("Detected groups:")
    for match in results[0].matches:
-       prefix = "PFAS" if not match.match_id.startswith('W') else "Generic"
+       prefix = "PFAS" if not match['match_id'].startswith('W') else "Generic"
        print(f"  [{prefix}] {match.group_name}")
 
    # 2. Generate PFAS (F-based) homologues
@@ -396,7 +396,7 @@ To create a custom wildcard group:
    )
 
    # Use in parsing
-    results = parse_smiles(["CC(=O)C", "CC(=O)CC"], pfas_groups=[custom_group], halogens='*')
+   results = parse_smiles(["CC(=O)C", "CC(=O)CC"], pfas_groups=[custom_group], halogens='*')
    for mol in results:
        if mol.matches:
            for m in mol.matches:

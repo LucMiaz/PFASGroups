@@ -18,10 +18,10 @@ Quick example:
    # Parse a SMILES and list detected groups
    pfasgroups parse "CCCC(F)(F)F"
 
-   # Generate a 116-column fingerprint (F only) and print as CSV
+   # Generate a 118-column fingerprint and print as CSV
    pfasgroups fingerprint --format csv "CCCC(F)(F)F" "FC(F)(F)C(=O)O"
 
-   # List all 116 built-in groups
+   # List all built-in groups
    pfasgroups list-groups
 
 
@@ -185,7 +185,7 @@ Generate halogen-group fingerprints suitable for machine learning.
    # Count mode
    halogengroups fingerprint --count-mode count "FC(F)(F)C(F)(F)C(=O)O"
 
-   # Multi-halogen stacked fingerprint (116 × 4 = 464 columns)
+   # Multi-halogen fingerprint
    halogengroups fingerprint --halogens F Cl Br I "FC(F)(F)C(F)(F)C(=O)O"
 
    # From file, save to CSV

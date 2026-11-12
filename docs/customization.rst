@@ -1,13 +1,16 @@
-﻿Customization
+Customization
 =============
 
 .. code-block:: python
 
-   from PFASGroups import parse_smiles, get_compiled_HalogenGroups, HalogenGroup
+   from PFASGroups import parse_smiles, get_compiled_HalogenGroups, get_HalogenGroups
 
    # Filter to OECD groups only
-   oecd_groups = [g for g in get_compiled_HalogenGroups() if g.category == 'OECD']
-   results = parse_smiles(["CCCC(F)(F)F"], halogen_groups=oecd_groups)
+   # The category of each group is in the raw JSON, under "sorting"
+   oecd_ids = {g["id"] for g in get_HalogenGroups()
+               if (g.get("sorting") or {}).get("category") == "OECD"}
+   oecd_groups = [g for g in get_compiled_HalogenGroups() if g.id in oecd_ids]
+   results = parse_smiles(["CCCC(F)(F)F"], pfas_groups=oecd_groups)
 
 The library is built on a composable set of :class:`~PFASGroups.HalogenGroup`
 objects.  You can extend, filter, or replace the default group library without
@@ -25,10 +28,10 @@ Inspecting the built-in groups
    from PFASGroups import get_compiled_HalogenGroups
 
    groups = get_compiled_HalogenGroups()
-   print(len(groups))           # 116
+   print(len(groups))           # 118
 
    for g in groups:
-       print(g.group_id, g.name, g.category)
+       print(g.id, g.name)
 
 Filtering groups
 -----------------
@@ -37,14 +40,18 @@ Pass a custom subset to ``parse_smiles`` via its ``halogen_groups`` parameter:
 
 .. code-block:: python
 
-   from PFASGroups import parse_smiles, get_compiled_HalogenGroups
+   from PFASGroups import parse_smiles, get_compiled_HalogenGroups, get_HalogenGroups
 
    all_groups = get_compiled_HalogenGroups()
 
    # Keep only OECD groups
-   oecd_only = [g for g in all_groups if g.category == 'OECD']
+   # The category of each group is in the raw JSON, under "sorting"
+   oecd_ids = {g["id"] for g in get_HalogenGroups()
+               if (g.get("sorting") or {}).get("category") == "OECD"}
+   oecd_only = [g for g in all_groups if g.id in oecd_ids]
 
-   results = parse_smiles(["CCCC(F)(F)F"], halogen_groups=oecd_only)
+   # Pass custom groups as pfas_groups (unknown keywords are ignored silently)
+   results = parse_smiles(["CCCC(F)(F)F"], pfas_groups=oecd_only)
 
 Defining a custom group
 ------------------------
@@ -57,16 +64,16 @@ category, SMARTS pattern, and group ID:
    from PFASGroups import HalogenGroup, parse_smiles
 
    my_group = HalogenGroup(
-       group_id=200,
+       id=200,
        name="my_custom_group",
-       category="Custom",
-       smarts="[CX4](F)(F)(F)[CX4](F)(F)",   # two adjacent CF3/CF2 units
-       is_PFAS=True,
-       compute=True,
+       smarts={"[CX4](F)(F)(F)[CX4](F)(F)": 1},   # CF3-CF2, at least once
+       componentSmarts="Perfluoroalkyl",
+       componentHalogens="F",
+       constraints={},
    )
 
-   results = parse_smiles(["CCCC(F)(F)F"], halogen_groups=[my_group])
-   print(results[0].matches)
+   results = parse_smiles(["FC(F)(F)C(F)(F)CC"], pfas_groups=[my_group])
+   print([m.group_name for m in results[0].matches if m.is_group])
 
 Combining built-in and custom groups
 --------------------------------------
@@ -77,15 +84,13 @@ Combining built-in and custom groups
 
    base_groups = get_compiled_HalogenGroups()
    my_group = HalogenGroup(
-       group_id=201,
-       name="chlorinated_alkyl",
-       category="Custom",
-       smarts="[CX4]([Cl])[CX4][Cl]",
-       is_PFAS=False,
-       compute=True,
+       id=201,
+       name="vicinal dichloride",
+       smarts={"[CX4]([Cl])[CX4][Cl]": 1},
+       constraints={},
    )
    extended = list(base_groups) + [my_group]
-   results = parse_smiles(["ClCCCl"], halogen_groups=extended)
+   results = parse_smiles(["ClCCCl"], pfas_groups=extended, halogens="Cl")
 
 HalogenGroup attributes
 ------------------------
@@ -96,20 +101,27 @@ HalogenGroup attributes
 
    * - Attribute
      - Description
-   * - ``group_id``
+   * - ``id``
      - Integer identifier (must be unique in the collection you pass)
    * - ``name``
      - Human-readable group name
-   * - ``category``
-     - Category label, e.g. ``'OECD'``, ``'Generic'``, ``'Fluorotelomer'``
    * - ``smarts``
-     - SMARTS pattern string (or list of SMARTS strings)
-   * - ``is_PFAS``
-     - Whether the group contributes to a PFAS classification
+     - Dict ``{SMARTS: minimum count}`` of functional-group patterns
+   * - ``componentSmarts``
+     - Halogenated component type the group is attached to (e.g.
+       ``'Perfluoroalkyl'``), or ``None``
+   * - ``componentHalogens`` / ``componentSaturation`` / ``componentForm``
+     - Restrict the component to halogens (``'F'``, ``['F', 'Cl']``, ...),
+       saturation (``'per'``, ``'poly'``) and form (``'alkyl'``, ``'cyclic'``)
+   * - ``constraints``
+     - Molecular-formula constraints (``'only'``, ``'gte'``, ``'lte'``,
+       ``'eq'``, ``'rel'``); see :class:`~PFASGroups.HalogenGroup`
+   * - ``max_dist_from_comp`` / ``linker_smarts``
+     - Allowed distance between component and functional group, and SMARTS
+       the linker atoms must match
    * - ``compute``
-     - If ``False`` the group appears in fingerprint headers but is not matched
-   * - ``description``
-     - Optional free-text description
+     - If ``False`` the group is an aggregate (``re_search`` regex over group
+       names, e.g. ``telomers``) and is not matched directly
 
 Using raw (uncompiled) groups
 -------------------------------
@@ -123,17 +135,18 @@ group definitions as plain data objects:
    raw = get_HalogenGroups()
 
    for g in raw:
-       print(g["name"], g["smarts"])
+       print(g["id"], g["name"], g.get("smarts"))   # aggregate groups have no SMARTS
 
-To compile them into :class:`~PFASGroups.HalogenGroup` instances call
-:func:`~PFASGroups.get_compiled_HalogenGroups` (which internally calls
-:func:`~PFASGroups.load_HalogenGroups`):
+:func:`~PFASGroups.get_compiled_HalogenGroups` returns them compiled.  To
+compile an edited copy of the raw definitions, build the
+:class:`~PFASGroups.HalogenGroup` instances yourself:
 
 .. code-block:: python
 
-   from PFASGroups import load_HalogenGroups, get_HalogenGroups
+   from PFASGroups import HalogenGroup, get_HalogenGroups, parse_smiles
    raw = get_HalogenGroups()
-   compiled = load_HalogenGroups(raw)
+   compiled = [HalogenGroup(**g) for g in raw if g.get("compute", True)]
+   results = parse_smiles(["FC(F)(F)C(F)(F)C(=O)O"], pfas_groups=compiled)
 
 Custom SMARTS tips
 -------------------

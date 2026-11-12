@@ -20,7 +20,12 @@ from .group_features import (
     PER_GROUP_IDS, POLY_GROUP_IDS, HALOGENS_ORDER,
     GENERIC_GROUP_VOCAB, GENERIC_GROUP_NAMES,
 )
-__version__ = "3.2.0"
+try:
+    # Single source of truth: the version in pyproject.toml / setup.cfg.
+    from importlib.metadata import PackageNotFoundError as _PNF, version as _version
+    __version__ = _version("PFASGroups")
+except _PNF:  # imported from a source tree that was never installed
+    __version__ = "unknown"
 __all__ = ['HalogenGroup', 'PFASDefinition', 'parse_smiles', 'parse_mols','parse_mol', 'parse_groups_in_mol', 'parse_from_database', 'setup_halogen_groups_database', 'plot_HalogenGroups', 'plot_mol','plot_mols', 'FINGERPRINT_PRESETS', 'PFASFingerprint', 'generate_fingerprint', 'get_compiled_componentSMARTSs', 'get_componentSMARTSs', 'get_HalogenGroups', 'get_compiled_HalogenGroups', 'get_compiled_PFASGroups', 'get_PFASDefinitions' ,'ComponentsSolver', 'generate_homologues', 'generate_degradation_products',"rdkit_disable_log","load_HalogenGroups", "HALOGEN_GROUPS_FILE", "_match_wildcard_groups_in_mol"]
 __all__.extend(['PFASEmbedding', 'PFASEmbeddingSet', 'EmbeddingArray', 'ResultsModel', 'MoleculeResult', 'prioritise_molecules', 'prioritize_molecules', 'get_priority_statistics'])
 __all__.extend(['HomologueSeries', 'HomologueEntry'])

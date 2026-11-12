@@ -67,14 +67,14 @@ Quick Comparison
 
    **The default embedding width depends on which module you import from.**
 
-   ``parse_smiles`` from ``HalogenGroups`` returns a
-   ``HalogenGroups.PFASEmbeddingSet`` subclass. Calling ``results.to_array()``
-   on that object **without** an explicit ``halogens`` argument produces a
-   464-column array (116 groups × 4 halogens), **not** the standard
-   116-column fluorine-only one.  To guarantee fluorine-only output,
-   always pass ``halogens='F'`` explicitly::
+   ``parse_smiles`` from ``HalogenGroups`` matches all four halogens at parse
+   time, but ``results.to_array()`` **without** ``halogens`` still returns one
+   column per group (118), as in ``PFASGroups``: a group matched through Cl
+   and one matched through F set the same column.  For one block of columns
+   per halogen, pass the ``halogens`` list explicitly::
 
-      arr = results.to_array(halogens='F')   # always 116 columns
+      arr = results.to_array(halogens='F')                     # 117 columns
+      arr = results.to_array(halogens=['F', 'Cl', 'Br', 'I'])  # 468 columns
 
    This applies to ``compute_config``, ``_txp_fingerprint``, and any similar
    helpers in notebooks or scripts that pass ``**kwargs`` to
@@ -140,27 +140,28 @@ To restrict to a subset of halogens with ``HalogenGroups``:
 Multi-Halogen Fingerprints
 ---------------------------
 
-:func:`generate_fingerprint` with multiple halogens **stacks** per-halogen vectors
-horizontally. With 116 groups and 4 halogens the resulting fingerprint has
-**116 × 4 = 464 columns**. Group names are suffixed ``[F]``, ``[Cl]``, ``[Br]``,
-``[I]``.
+:meth:`PFASEmbeddingSet.to_array` with a list of halogens **stacks** one block
+of 117 columns per halogen horizontally: 4 halogens give **117 × 4 = 468
+columns**.  Column names end with ``(F)``, ``(Cl)``, ``(Br)``, ``(I)``.
+:func:`generate_fingerprint` currently returns one column per group (118)
+whatever ``halogens`` is, so use ``to_array`` for per-halogen blocks.
 
 .. code-block:: python
 
-   from HalogenGroups import generate_fingerprint
+   from HalogenGroups import parse_smiles
 
    smiles = ["FC(F)(F)C(F)(F)C(=O)O",
              "ClC(Cl)(Cl)C(Cl)(Cl)C(=O)O"]
 
-   # Default: all 4 halogens, per-saturation → shape (2, 464)
-   fps, info = generate_fingerprint(smiles)
-   print(fps.shape)           # (2, 464)
-   print(info['halogens'])    # ['F', 'Cl', 'Br', 'I']
-   print(info['group_names'][:3])  # ['... [F]', '... [F]', '... [F]']
+   results = parse_smiles(smiles)
+   fps = results.to_array(halogens=['F', 'Cl', 'Br', 'I'])
+   print(fps.shape)                                          # (2, 468)
+   print(results.column_names(halogens=['F', 'Cl'])[117])    # 'OECD perfluoroalkyl alcohols [binary] (Cl)'
+
 
 
 Via PFASEmbeddingSet
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -168,24 +169,23 @@ Via PFASEmbeddingSet
 
    results = parse_smiles(smiles)
 
-   # to_array() defaults to all halogens in HalogenGroups
-   arr_all  = results.to_array()                                   # shape (n, 464)
-   arr_f    = results.to_array(halogens='F')                      # shape (n, 116)
-   arr_fc   = results.to_array(halogens=['F', 'Cl'])              # shape (n, 232)
+   arr_all  = results.to_array()                                   # shape (n, 118)
+   arr_f    = results.to_array(halogens='F')                      # shape (n, 117)
+   arr_fc   = results.to_array(halogens=['F', 'Cl'])              # shape (n, 234)
    arr_oecd = results.to_array(
        group_selection='oecd', halogens=['F', 'Cl', 'Br', 'I'])   # shape (n, 112)
 
    # Best preset (binary + effective_graph_resistance) with F only
-   arr_best = results.to_array(preset='best', halogens='F')       # shape (n, 232)
+   arr_best = results.to_array(preset='best', halogens='F')       # shape (n, 234)
 
    # Explicit component_metrics — count mode + graph metric with all halogens
    arr_cm = results.to_array(
        component_metrics=['binary', 'effective_graph_resistance'],
-       halogens=['F', 'Cl', 'Br', 'I'])  # shape (n, 928)  — 2 × 116 × 4
+       halogens=['F', 'Cl', 'Br', 'I'])  # shape (n, 936)  — 2 × 117 × 4
 
 Each entry in ``component_metrics`` adds one block of *n_groups × n_halogens*
-columns. The column naming follows the pattern ``"GroupName [halogen] [metric]"``
-(e.g. ``"Perfluoroalkyl [F] [binary]"``, ``"Perfluoroalkyl [F] [effective_graph_resistance]"``).
+columns. The column naming follows the pattern ``"GroupName [metric] (halogen)"``
+(e.g. ``"OECD perfluoroalkyl alcohols [binary] (F)"``).
 
 
 Combining with Saturation Filters
@@ -254,7 +254,7 @@ Use ``PFASGroups`` (``halogens='F'``) when:
 
 * You are working exclusively with PFAS (fluorine-only)
 * You need strict compatibility with published PFAS fingerprint benchmarks
-* You want smaller fingerprints (116-column vs. 464-column)
+* You want smaller fingerprints (117-column vs. 468-column)
 * You mix fluorine-only and multi-halogen calls in the same script
 
 

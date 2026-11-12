@@ -1,4 +1,4 @@
-﻿Algorithm
+Algorithm
 =========
 
 .. code-block:: python
@@ -40,7 +40,7 @@ The library contains **119 halogen groups** organised into four categories:
      - Count
      - Description
    * - OECD
-     - 27
+     - 28
      - Groups adopted from the 2021 OECD PFAS definition framework
    * - Generic
      - 48
@@ -49,13 +49,12 @@ The library contains **119 halogen groups** organised into four categories:
      - 43
      - Fluorotelomer groups including telomer alcohols, sulfonates, amides
    * - Aggregate
-     - 3
-     - Pattern-matching groups (e.g. ``Telomers``) with ``compute=False``;
-       included in fingerprint headers but not matched directly
+     - 1 (of the 43)
+     - ``telomers``, with ``compute=False``: a regular expression over group
+       names that aggregates the telomer groups; not matched directly
 
-When fluorine-only mode is used (the default), **114 groups** are compiled
-(the 3 aggregate groups are always included in fingerprint headers but not
-directly matched).
+**118 groups** are compiled (all but the aggregate group); the default
+embedding has one column per compiled group.
 
 SMARTS-based matching
 ----------------------
@@ -205,13 +204,14 @@ All resistance values are available per-component in the parse results:
    results = parse_smiles('OC(=O)C(F)(F)C(F)(F)C(F)(F)F', halogens='F')
    comp = results[0]['matches'][0]['components'][0]
 
-   # BDE-weighted Kirchhoff index
+   # Kirchhoff index, unweighted and BDE-weighted
    print(comp['effective_graph_resistance'])
+   print(comp['effective_graph_resistance_BDE'])
 
-   # BDE-weighted resistance from functional group to structural landmarks
-   print(comp['min_resistance_dist_to_barycentre'])
-   print(comp['min_resistance_dist_to_centre'])
-   print(comp['max_resistance_dist_to_periphery'])
+   # Graph distance from the functional group to structural landmarks
+   print(comp['min_dist_to_barycentre'])
+   print(comp['min_dist_to_centre'])
+   print(comp['max_dist_to_periphery'])
 
 To limit computation time on very large components:
 
@@ -238,26 +238,25 @@ called on a pre-parsed :class:`~PFASGroups.PFASEmbeddingSet` (avoids re-parsing)
 .. code-block:: python
 
    results = parse_smiles(smiles)
-   arr = results.to_array()          # (n_mols, 114) binary, fluorine-only
+   arr = results.to_array()          # (n_mols, 118) binary
 
 :func:`~PFASGroups.generate_fingerprint` is a convenience wrapper that parses
-and embeds in a single call, returning ``(array, info_dict)``:
+and embeds in a single call, returning ``(array, column_names)``:
 
 .. code-block:: python
 
-   fps, info = generate_fingerprint(smiles)   # (n_mols, 114), {'group_names': …}
+   from PFASGroups import generate_fingerprint
+   fps, cols = generate_fingerprint(smiles)   # (n_mols, 118), ['OECD ... [binary]', …]
 
-Both functions share the same ``component_metrics`` / ``group_selection`` /
-``halogens`` parameters.  The default mode is fluorine-only (``halogens='F'``),
-producing **114 compiled columns** — one per group.  The column layout for
-multi-halogen mode is:
+Both accept ``component_metrics``; ``to_array`` also takes
+``group_selection`` and ``halogens``.  By default there is **one column per
+compiled group (118)**.  With an explicit ``halogens`` list, ``to_array``
+returns one block of 117 columns per halogen, in the order given:
 
-``[group_0_F, group_0_Cl, group_0_Br, group_0_I,``
-``  group_1_F, …,``
-``  group_113_F, group_113_Cl, group_113_Br, group_113_I]``
+``[group_0 (F), …, group_116 (F), group_0 (Cl), …, group_116 (I)]``
 
-Default F-only column count: 114 × 1 = **114**.
-All-halogen column count: 114 × 4 = **456** (see :ref:`multi_halogen_fingerprint`).
+F-only block: **117** columns.  All four halogens: 117 × 4 = **468**
+(see :ref:`multi_halogen_fingerprint`).
 
 Four count encoding values are available as items in ``component_metrics``:
 
@@ -278,9 +277,9 @@ Four count encoding values are available as items in ``component_metrics``:
 PFAS definition classification
 --------------------------------
 
-When ``include_PFAS_definitions=True``, each molecule is additionally
-evaluated against five regulatory PFAS definitions.  Each definition is
-encoded as a set of logical rules operating on the group matches already
-computed.  No additional SMARTS matching is performed.
+With ``include_PFAS_definitions=True`` (the default), each molecule is also
+evaluated against six PFAS definitions.  Each definition has its own SMARTS
+patterns and, for PFASSTRUCTv5, a fluorine-ratio threshold; the results are
+added to ``mol.matches`` with ``type == 'PFASdefinition'``.
 
 See :doc:`pfas_definitions` for the rule logic of each definition.

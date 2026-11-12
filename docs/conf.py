@@ -10,8 +10,14 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'HalogenGroups / PFASGroups'
 copyright = '2026, Luc T. Miaz'
 author = 'Luc T. Miaz'
-release = '3.2.2'
-version = '3.2.2'
+# Read the version from the installed package metadata (RTD installs the
+# package), so the docs cannot drift from pyproject.toml again.
+try:
+    from importlib.metadata import version as _pkg_version
+    release = _pkg_version('PFASGroups')
+except Exception:  # building from a checkout that was never installed
+    release = 'unknown'
+version = release
 
 # -- General configuration ---------------------------------------------------
 extensions = [

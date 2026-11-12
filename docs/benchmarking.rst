@@ -1,4 +1,4 @@
-﻿Benchmarking
+Benchmarking
 ============
 
 .. code-block:: python
@@ -8,7 +8,7 @@
    # Parse 10 k molecules
    smiles = [...]   # your list
    results = parse_smiles(smiles)
-   fps, info = generate_fingerprint(smiles)   # shape (n, 116)
+   fps, cols = generate_fingerprint(smiles)   # shape (n, 118)
 
 This page describes the validation studies performed to assess the accuracy
 and completeness of the PFASGroups library.

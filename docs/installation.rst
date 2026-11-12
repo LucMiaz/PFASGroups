@@ -1,4 +1,4 @@
-﻿Installation
+Installation
 ============
 
 Requirements
@@ -68,7 +68,7 @@ Verify installation
 
    groups = get_compiled_HalogenGroups()
    print(f"Loaded {len(groups)} halogen groups")
-   # Loaded 116 halogen groups
+   # Loaded 118 halogen groups
 
    results = parse_smiles(["CCCC(F)(F)F"])
    print(results[0].matches[0].group_name)

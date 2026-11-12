@@ -1,8 +1,25 @@
-﻿Changelog
+Changelog
 =========
 
 Unreleased
 ----------
+
+**Documentation**
+
+- Examples updated to the 3.4 API: custom groups are passed as
+  ``pfas_groups=`` (``halogen_groups=`` was silently ignored),
+  :class:`HalogenGroup` takes ``id`` and a ``{SMARTS: count}`` dict, definition
+  matches are read from ``mol.matches`` (``m.is_definition``).
+- PFAS definitions page rewritten for the six built-in definitions and the
+  ``ratioBasis`` option; prioritization page rewritten to describe the actual
+  scores (intrinsic fluorination, or cosine similarity to a reference).
+- Group and column counts corrected (118 compiled groups, 117 per halogen
+  block); version shown in the docs read from the package metadata.
+
+Version 3.4.6
+-------------
+
+**Released:** 2026-11-12
 
 **Added**
 
@@ -21,16 +38,64 @@ Unreleased
   acid (0.31 by mass, 0.23 by count) matched PFASSTRUCTv5 although they are
   outside the published definition.
 
-Version 3.1.3
---------------
+Version 3.4.5
+-------------
 
-**Released:** 2026
+**Released:** 2026-09-11
 
-- Documentation rewrite for ReadTheDocs publication
-- Both ``HalogenGroups`` and ``PFASGroups`` entry points documented
-- All code examples updated to current API (``ResultsModel`` pattern)
-- CLI reference page added
-- API reference pages updated with autodoc
+- Fixed difluoromethane in the PFAS definitions.
+
+Version 3.4.4
+-------------
+
+- PFAS definition matches report the fluorine ratio and whether the
+  structural (SMARTS) criterion matched (``fluorine_ratio``,
+  ``fluorine_ratio_threshold``, ``smarts_match``, ``ratio_match``), for
+  debugging or display.
+
+Version 3.4.3
+-------------
+
+- Fixed the fluorine-ratio computation of PFASSTRUCTv5.
+
+Version 3.4.2
+-------------
+
+- Added OPPT 2021 next to OPPT 2023 to remove the ambiguity between the
+  proposed (2021) and final (2023) EPA definitions; OPPT 2023 leaves the R
+  groups unconstrained, as in 40 CFR 705.3.
+
+Version 3.4.1
+-------------
+
+- Generic embedding for non-halogenated compounds, with the wildcard
+  functional groups and the halogen component size.
+- Fixed the H components and added cyclic and aryl H components.
+
+Version 3.4.0
+-------------
+
+- H components (``halogens='H'``), used to generate hydrocarbon homologue
+  series, and wildcard groups (``halogens='*'``) matching generic functional
+  groups beyond PFAS.  See :doc:`advanced_features`.
+
+Version 3.3.x
+-------------
+
+- GUI prototype.
+
+Version 3.2.2
+-------------
+
+- Fixed polyhalogenated alkyl components matching fewer than 2 halogens.
+- ``halogens`` can be used in formula constraints, and component-wide formula
+  constraints apply to the distance-1 neighbours of C-only components.
+
+Version 3.2.1
+-------------
+
+- n-spacer metric for telomers and ring size for aryl and cyclic groups,
+  usable in the embeddings.
 
 Version 3.2.0
 --------------
@@ -49,17 +114,32 @@ Version 3.2.0
 
      groups = get_compiled_HalogenGroups()
      groups.append(HalogenGroup(
-         group_id=200, name="my_custom_group",
-         smarts="[CX4](F)(F)(F)",
-         category="Custom",
-         is_PFAS=True,
+         id=200, name="my_custom_group",
+         smarts={"[CX4](F)(F)(F)": 1},
      ))
-     results = parse_smiles(["FC(F)(F)C(F)(F)F"], halogen_groups=groups)
+     results = parse_smiles(["FC(F)(F)C(F)(F)F"], pfas_groups=groups)
 
 **API changes:**
 
 - ``generate_fingerprint`` return value is now a 2-D ``numpy.ndarray`` of
   shape ``(n_molecules, n_groups)`` instead of a Python list.
+
+Version 3.1.4
+-------------
+
+- Fingerprint parameters split into molecule-wide and component-wide, with
+  presets for the best combinations.
+
+Version 3.1.3
+--------------
+
+**Released:** 2026
+
+- Documentation rewrite for ReadTheDocs publication
+- Both ``HalogenGroups`` and ``PFASGroups`` entry points documented
+- All code examples updated to current API (``ResultsModel`` pattern)
+- CLI reference page added
+- API reference pages updated with autodoc
 
 Version 3.1.0
 --------------

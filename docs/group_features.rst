@@ -372,10 +372,11 @@ API Reference
 
 .. autoclass:: PFASGroups.GroupFeatureResult
    :members:
-   :undoc-members:
+   :exclude-members: poly_counts, per_halogen_sizes, h_chain_sizes, generic_groups
 
-.. autodata:: PFASGroups.PER_GROUP_IDS
-.. autodata:: PFASGroups.POLY_GROUP_IDS
-.. autodata:: PFASGroups.HALOGENS_ORDER
-.. autodata:: PFASGroups.GENERIC_GROUP_VOCAB
-.. autodata:: PFASGroups.GENERIC_GROUP_NAMES
+.. autodata:: PFASGroups.group_features.PER_GROUP_IDS
+.. autodata:: PFASGroups.group_features.POLY_GROUP_IDS
+.. autodata:: PFASGroups.group_features.HALOGENS_ORDER
+.. autodata:: PFASGroups.group_features.GENERIC_GROUP_VOCAB
+.. autodata:: PFASGroups.group_features.GENERIC_GROUP_NAMES
+   :no-value:

@@ -1,4 +1,4 @@
-﻿PFASGroups Documentation
+PFASGroups Documentation
 =========================
 
 .. image:: https://badge.fury.io/py/PFASgroups.svg
@@ -36,12 +36,12 @@ using SMARTS-based structural group matching.
 Key capabilities
 ----------------
 
-- **119 halogen groups**: 27 OECD, 48 generic, 43 fluorotelomer, 1 aggregate (114 compiled for F-only)
-- **PFAS definition screening**: classify molecules against 5 regulatory frameworks
-- **Fingerprinting**: generate 116-column fingerprints (binary, count  or max-component) for ML
+- **119 halogen groups**: 28 OECD, 48 generic, 43 fluorotelomer (including the ``telomers`` aggregate); 118 compiled
+- **PFAS definition screening**: classify molecules against 6 PFAS definitions
+- **Fingerprinting**: generate 118-column fingerprints (binary, count or max-component) for ML
 - **Group selection**: use all groups, OECD only, generic, telomers, or a custom subset
 - **Dimensionality reduction**: PCA, t-SNE, UMAP on fingerprint matrices
-- **Molecule prioritization**: rank molecules by structural novelty
+- **Molecule prioritization**: rank molecules by fluorination or by similarity to a reference list
 - **Command-line interface**: ``pfasgroups parse``, ``fingerprint``, ``list-groups``
 - **Multi-halogen support**: extend detection to Cl, Br, I via :doc:`halogengroups`
 
