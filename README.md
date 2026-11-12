@@ -804,6 +804,8 @@ See [USER_GUIDE.md](USER_GUIDE.md) for comprehensive examples including:
 ## Summary of changes by version
 Full details in [CHANGELOG.md](CHANGELOG.md).
 
+- **Version 3.4.7**: Documentation updated to the 3.4 API; `__version__` read from the package metadata; changelog in CHANGELOG.md.
+
 - **Version 3.4.6**: Add choice for F-ratio (count or mass, with or without H). Set right default for PFASSTRUCTv5
 
 - **Version 3.4.5**: Fixed difluoromethane in definitions.

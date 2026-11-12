@@ -3,13 +3,21 @@
 All notable changes to PFASGroups (and its `HalogenGroups` entry point) are
 listed here, newest first. Versions follow [semantic versioning](https://semver.org/).
 
-## Unreleased
+## Version 3.4.7
+
+**Released:** 2026-11-12
+
+**Fixed**
+
+- `PFASGroups.__version__` and `HalogenGroups.__version__` are read from the package metadata (they reported 3.2.0 and 3.1.0).
+- numpydoc headings in the `parse_smiles` / `parse_mols` docstrings (they rendered as plain text).
 
 **Documentation**
 
 - Examples updated to the 3.4 API: custom groups are passed as `pfas_groups=` (`halogen_groups=` was silently ignored), `HalogenGroup` takes `id` and a `{SMARTS: count}` dict, definition matches are read from `mol.matches` (`m.is_definition`).
 - PFAS definitions page rewritten for the six built-in definitions and the `ratioBasis` option; prioritization page rewritten to describe the actual scores (intrinsic fluorination, or cosine similarity to a reference).
 - Group and column counts corrected (118 compiled groups, 117 per halogen block); version shown in the docs read from the package metadata.
+- Changelog moved to `CHANGELOG.md` at the repository root.
 
 ## Version 3.4.6
 
