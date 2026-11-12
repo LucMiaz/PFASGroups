@@ -1,6 +1,26 @@
 ﻿Changelog
 =========
 
+Unreleased
+----------
+
+**Added**
+
+- ``ratioBasis`` key for PFAS definitions (``ratio_basis`` in Python): the
+  fluorine ratio is computed by mass (``"mass"``, the default, as in 3.4.x) or
+  by atom count (``"count"``). ``applies_to_molecule`` and ``match_details``
+  accept a ``ratio_basis`` argument for one call, and ``match_details`` and the
+  parser results report ``fluorine_ratio_basis``.
+
+**Changed**
+
+- PFASSTRUCTv5 uses ``"ratioBasis": "count"``: at least 30% of the non-hydrogen
+  atoms are fluorine, as Gaines et al. (2023, doi:10.1002/ieam.4735) define it
+  ("strictly on atom counting without considering the weight of the atoms").
+  With the mass ratio of 3.4.x, molecules such as 4-(trifluoromethyl)benzoic
+  acid (0.31 by mass, 0.23 by count) matched PFASSTRUCTv5 although they are
+  outside the published definition.
+
 Version 3.1.3
 --------------
 

@@ -134,7 +134,8 @@
         ],
         "fluorineRatio": 0.3,
         "includeHydrogen": false,
-        "description": "Custom structural patterns or F ratio >= 0.3, mass-weighted (F mass / heavy-atom mass).",
+        "ratioBasis": "count",
+        "description": "Custom structural patterns or F ratio >= 0.3 by atom count without hydrogen (F atoms / non-hydrogen atoms), as in Gaines et al. 2023.",
         "test": {
             "category": "definition",
             "examples": {

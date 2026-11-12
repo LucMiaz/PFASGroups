@@ -1,6 +1,15 @@
 from rdkit import Chem
 from typing import List, Dict, Optional, Union
 
+#: Bases on which a definition's fluorine ratio can be computed:
+#: ``"mass"`` is F mass / total mass, ``"count"`` is F atoms / total atoms.
+RATIO_BASES = ("mass", "count")
+
+#: Basis used when a definition does not give ``ratioBasis``. It stays ``"mass"``
+#: so that definitions written for versions 3.4.x keep their results; a
+#: definition whose source counts atoms (PFASSTRUCTv5) sets ``"count"`` itself.
+DEFAULT_RATIO_BASIS = "mass"
+
 class PFASDefinition:
     """Model class representing a PFAS definition based on structural criteria.
     
@@ -24,6 +33,12 @@ class PFASDefinition:
         Compiled SMARTS molecule objects for efficient matching
     includeHydrogen : bool
         Whether to include hydrogen atoms in fluorine ratio calculations
+    ratio_basis : str
+        Quantity the fluorine ratio is computed on: ``"mass"`` (F mass / total
+        mass, the default) or ``"count"`` (F atoms / total atoms). Set from the
+        ``ratioBasis`` key of the definition (``ratio_basis`` is accepted too).
+        PFASSTRUCTv5 uses ``"count"``: Gaines et al. (2023) define the threshold
+        "strictly on atom counting without considering the weight of the atoms".
     requireBoth : bool
         If True, requires both SMARTS match AND fluorine ratio.
         If False, requires SMARTS match OR fluorine ratio.
@@ -47,6 +62,9 @@ class PFASDefinition:
         self.fluorineRatio = fluorineRatio
         self.smarts_strings = smarts
         self.includeHydrogen = kwargs.get('includeHydrogen', True)
+        # JSON definitions use camelCase (ratioBasis); Python callers may pass ratio_basis.
+        self.ratio_basis = self._validate_ratio_basis(
+            kwargs.get('ratioBasis', kwargs.get('ratio_basis', DEFAULT_RATIO_BASIS)))
         self.requireBoth = kwargs.get('requireBoth', False)
         # Preload SMARTS patterns
         self.smarts_patterns = []
@@ -63,6 +81,26 @@ class PFASDefinition:
     
     def __str__(self):
         return self.name
+
+    @staticmethod
+    def _validate_ratio_basis(ratio_basis: str) -> str:
+        """Return *ratio_basis* in lower case, or raise if it is not a known basis.
+
+        Parameters
+        ----------
+        ratio_basis : str
+            ``"mass"`` or ``"count"``, in any case.
+
+        Raises
+        ------
+        ValueError
+            If *ratio_basis* is neither ``"mass"`` nor ``"count"``.
+        """
+        basis = str(ratio_basis).lower()
+        if basis not in RATIO_BASES:
+            raise ValueError(
+                f"ratio_basis must be one of {RATIO_BASES}, got {ratio_basis!r}")
+        return basis
     
     def applies_to_molecule(self,
                   mol_or_smiles: Union[Chem.Mol, str],
@@ -92,6 +130,8 @@ class PFASDefinition:
             - include_hydrogen (bool): Whether to include H in fluorine ratio calculation.
               Defaults to self.includeHydrogen
             - require_both (bool): Override the instance's requireBoth setting
+            - ratio_basis (str): ``"mass"`` or ``"count"``; overrides the
+              definition's ``ratio_basis`` for this call
 
         Returns
         -------
@@ -112,7 +152,8 @@ class PFASDefinition:
         Notes
         -----
         - SMARTS patterns are checked using substructure matching (HasSubstructMatch)
-        - Fluorine ratio is mass-weighted: F mass / total mass (see `match_details`
+        - Fluorine ratio is F mass / total mass when ``ratio_basis`` is ``"mass"``
+          and F atoms / total atoms when it is ``"count"`` (see `match_details`
           for the breakdown of which criterion -- SMARTS, ratio, or both -- was met,
           and the actual computed ratio value)
         - Invalid SMILES strings return False
@@ -139,7 +180,8 @@ class PFASDefinition:
             Pre-computed molecular formula as {element: count} dictionary.
             If None, will be computed from the molecule.
         **kwargs : dict
-            Same as `applies_to_molecule` (`include_hydrogen`, `require_both`).
+            Same as `applies_to_molecule` (`include_hydrogen`, `require_both`,
+            `ratio_basis`).
 
         Returns
         -------
@@ -149,10 +191,14 @@ class PFASDefinition:
             - 'fluorine_ratio' (float or None): the computed ratio, or None if this
               definition has no fluorineRatio threshold
             - 'fluorine_ratio_threshold' (float or None): this definition's threshold
+            - 'fluorine_ratio_basis' (str): ``"mass"`` or ``"count"``, the basis
+              the ratio was computed on
             - 'ratio_match' (bool): whether the ratio met the threshold (True if no
               threshold is defined, matching `applies_to_molecule`'s OR semantics)
             - 'applies' (bool): the same overall result `applies_to_molecule` returns
         """
+        ratio_basis = self._validate_ratio_basis(kwargs.get("ratio_basis", self.ratio_basis))
+
         # Convert SMILES to Mol if needed
         if isinstance(mol_or_smiles, str):
             mol = Chem.MolFromSmiles(mol_or_smiles)
@@ -162,6 +208,7 @@ class PFASDefinition:
                     'smarts_match': False,
                     'fluorine_ratio': None,
                     'fluorine_ratio_threshold': self.fluorineRatio,
+                    'fluorine_ratio_basis': ratio_basis,
                     'ratio_match': False,
                     'applies': False,
                 }
@@ -182,7 +229,8 @@ class PFASDefinition:
             if formula is None:
                 formula = self._compute_formula(mol, kwargs.get("include_hydrogen", self.includeHydrogen))
 
-            fluorine_ratio_value = self._compute_fluorine_ratio(formula, kwargs.get("include_hydrogen", self.includeHydrogen))
+            fluorine_ratio_value = self._compute_fluorine_ratio(
+                formula, kwargs.get("include_hydrogen", self.includeHydrogen), ratio_basis)
             ratio_match = fluorine_ratio_value >= self.fluorineRatio
 
         # Apply logic based on require_both
@@ -200,6 +248,7 @@ class PFASDefinition:
             'smarts_match': smarts_match,
             'fluorine_ratio': round(fluorine_ratio_value, 4) if fluorine_ratio_value is not None else None,
             'fluorine_ratio_threshold': self.fluorineRatio,
+            'fluorine_ratio_basis': ratio_basis,
             'ratio_match': ratio_match,
             'applies': applies,
         }
@@ -231,56 +280,77 @@ class PFASDefinition:
         
         return formula
     
-    def _compute_fluorine_ratio(self, formula: Dict[str, int], include_hydrogen: bool) -> float:
-        """Compute the mass-weighted fluorine ratio of a molecular formula.
+    def _compute_fluorine_ratio(self, formula: Dict[str, int], include_hydrogen: bool,
+                                ratio_basis: Optional[str] = None) -> float:
+        """Compute the fluorine ratio of a molecular formula, by mass or by atom count.
 
-        Mass-weighted (F mass / total mass):
-        `fluorine_ratio = F_mass / (molecular_weight - H_mass)`.
+        ``"mass"``:  F_mass / total_mass, with standard atomic weights.
+        ``"count"``: F_atoms / total_atoms.
+
+        The two differ because fluorine (19.0) is heavier than carbon (12.0),
+        nitrogen and oxygen: a molecule rich in these atoms has a higher mass
+        ratio than count ratio. 4-(Trifluoromethyl)benzoic acid, C8H5F3O2, is at
+        0.31 by mass and 0.23 by count without hydrogen.
 
         Parameters
         ----------
         formula : Dict[str, int]
             Molecular formula as {element: count} dictionary
         include_hydrogen : bool
-            If True, includes hydrogen mass in the total mass.
-            If False, excludes hydrogen mass from total (heavy atoms only) --
-            this is the "heavy atoms only" mode PFASSTRUCTv5 uses.
+            If True, hydrogen counts in the total (mass or atoms).
+            If False, hydrogen is left out of the total (heavy atoms only) --
+            this is the mode PFASSTRUCTv5 uses.
+        ratio_basis : str, optional
+            ``"mass"`` or ``"count"``. The definition's ``ratio_basis`` when None.
 
         Returns
         -------
         float
-            F_mass / total_mass, or 0.0 if total_mass is 0
+            The fluorine ratio in [0, 1], or 0.0 if the total is 0
+
+        Raises
+        ------
+        ValueError
+            If *ratio_basis* is neither ``"mass"`` nor ``"count"``.
         """
+        basis = self._validate_ratio_basis(self.ratio_basis if ratio_basis is None else ratio_basis)
+        counted = {sym: n for sym, n in formula.items() if include_hydrogen or sym != 'H'}
+
+        if basis == "count":
+            total_atoms = sum(counted.values())
+            return formula.get('F', 0) / total_atoms if total_atoms else 0.0
+
         from rdkit.Chem import GetPeriodicTable
         pt = GetPeriodicTable()
-
-        f_count = formula.get('F', 0)
-        f_mass = f_count * pt.GetAtomicWeight('F')
-
-        if include_hydrogen:
-            total_mass = sum(count * pt.GetAtomicWeight(sym) for sym, count in formula.items())
-        else:
-            total_mass = sum(count * pt.GetAtomicWeight(sym) for sym, count in formula.items() if sym != 'H')
-
+        total_mass = sum(n * pt.GetAtomicWeight(sym) for sym, n in counted.items())
         if total_mass == 0:
             return 0.0
+        return formula.get('F', 0) * pt.GetAtomicWeight('F') / total_mass
 
-        return f_mass / total_mass
-
-    def _check_fluorine_ratio(self, formula: Dict[str, int], include_hydrogen: bool) -> bool:
+    def _check_fluorine_ratio(self, formula: Dict[str, int], include_hydrogen: bool,
+                              ratio_basis: Optional[str] = None) -> bool:
         """Check if the fluorine ratio in a molecular formula meets the threshold.
 
         Thin boolean wrapper around `_compute_fluorine_ratio`, kept for backward
         compatibility with any external callers of this (nominally private) method.
 
+        Parameters
+        ----------
+        formula : Dict[str, int]
+            Molecular formula as {element: count} dictionary
+        include_hydrogen : bool
+            Whether hydrogen counts in the total
+        ratio_basis : str, optional
+            ``"mass"`` or ``"count"``. The definition's ``ratio_basis`` when None.
+
         Returns
         -------
         bool
-            True if (F_mass / total_mass) >= self.fluorineRatio, False otherwise
+            True if the fluorine ratio >= self.fluorineRatio, False otherwise
         """
-        ratio = self._compute_fluorine_ratio(formula, include_hydrogen)
+        ratio = self._compute_fluorine_ratio(formula, include_hydrogen, ratio_basis)
         return ratio >= self.fluorineRatio
-    
+
     def test(self, test_data=None):
         """Test this PFAS definition against test molecules from metadata.
         

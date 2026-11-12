@@ -881,9 +881,11 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
         - ``'definition_name'``: definition name
         - ``'halogen'``: ``'F'`` (definitions only match when F is enabled)
         - ``'smarts_match'``: bool, whether any of the definition's SMARTS patterns matched
-        - ``'fluorine_ratio'``: float or None, the computed mass-weighted F ratio
+        - ``'fluorine_ratio'``: float or None, the computed F ratio (by mass or by atom
+          count, according to the definition's ``ratioBasis``)
           (None if this definition has no fluorineRatio threshold)
         - ``'fluorine_ratio_threshold'``: float or None, the definition's configured threshold
+        - ``'fluorine_ratio_basis'``: ``'mass'`` or ``'count'``, the basis of the ratio
         - ``'ratio_match'``: bool, whether the ratio met the threshold (True if no
           threshold is defined)
     """
@@ -1147,6 +1149,7 @@ def parse_mols(mols, output_format='list', include_PFAS_definitions=True,
                             'smarts_match': details['smarts_match'],
                             'fluorine_ratio': details['fluorine_ratio'],
                             'fluorine_ratio_threshold': details['fluorine_ratio_threshold'],
+                            'fluorine_ratio_basis': details['fluorine_ratio_basis'],
                             'ratio_match': details['ratio_match'],
                             } for definition, details in definitions])
     # Convert results to list format (one entry per molecule)
